@@ -1,0 +1,179 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Tivio Malls Opportunities II | Post exportável</title>
+<link rel="preconnect" href="https://cdn-sites-assets.mziq.com" crossorigin>
+<link rel="preload" href="https://cdn-sites-assets.mziq.com/wp-content/themes/mziq_tivio_capital/assets/fonts/Versos-ExtraLight.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="https://cdn-sites-assets.mziq.com/wp-content/themes/mziq_tivio_capital/assets/fonts/Versos-Regular.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="https://cdn-sites-assets.mziq.com/wp-content/themes/mziq_tivio_capital/assets/fonts/Versos-SemiBold.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="https://cdn-sites-assets.mziq.com/wp-content/themes/mziq_tivio_capital/assets/fonts/Versos-Bold.woff2" as="font" type="font/woff2" crossorigin>
+<style>
+@font-face{font-family:Versos;src:url("https://cdn-sites-assets.mziq.com/wp-content/themes/mziq_tivio_capital/assets/fonts/Versos-ExtraLight.woff2") format("woff2");font-weight:200;font-style:normal;font-display:swap}
+@font-face{font-family:Versos;src:url("https://cdn-sites-assets.mziq.com/wp-content/themes/mziq_tivio_capital/assets/fonts/Versos-Regular.woff2") format("woff2");font-weight:400;font-style:normal;font-display:swap}
+@font-face{font-family:Versos;src:url("https://cdn-sites-assets.mziq.com/wp-content/themes/mziq_tivio_capital/assets/fonts/Versos-SemiBold.woff2") format("woff2");font-weight:600;font-style:normal;font-display:swap}
+@font-face{font-family:Versos;src:url("https://cdn-sites-assets.mziq.com/wp-content/themes/mziq_tivio_capital/assets/fonts/Versos-Bold.woff2") format("woff2");font-weight:700;font-style:normal;font-display:swap}
+:root{
+ --tv-verde:#C1F4D4;--tv-verde-escuro:#92D3AB;--tv-verde-ink:#0A2415;
+ --tv-verde-destaque:#3C7E54;--tv-logo-ink:#1B2529;
+ --tv-azul-escuro:#3C4A60;--tv-azul:#759DB4;--tv-cinza:#637881;
+ --tv-cinza-claro:#ABC6CD;--tv-azul-imob:#C8D7E0;--tv-offwhite:#E6EDF1;
+ --paper:#F7F9FA;--ink:#26364D;--muted:#637881;--line:#D9E2E7;
+ --r-sm:8px;--r-md:12px;--r-lg:20px;--r-xl:28px;--r-full:999px;
+ --ff:Versos,"Helvetica Neue",Helvetica,Arial,sans-serif;
+}
+*{box-sizing:border-box}
+html,body{margin:0;min-height:100%;font-family:var(--ff);background:#111820;color:var(--ink);-webkit-font-smoothing:antialiased}
+.workspace{min-height:100vh;padding:34px;display:grid;place-items:center;gap:22px;background:radial-gradient(900px 600px at 12% 0%,rgba(193,244,212,.13),transparent 60%),radial-gradient(800px 600px at 100% 100%,rgba(117,157,180,.14),transparent 65%),#0A0F14}
+.toolbar{width:min(1080px,calc(100vw - 40px));display:flex;justify-content:space-between;align-items:center;gap:16px;color:#fff}
+.toolbar-copy strong{display:block;font-size:15px}.toolbar-copy span{display:block;color:#9EADB7;font-size:12px;margin-top:3px}
+.export-btn{appearance:none;border:0;border-radius:999px;background:var(--tv-verde);color:#0A2415;padding:13px 22px;font:600 14px/1 var(--ff);cursor:pointer;box-shadow:0 10px 36px rgba(193,244,212,.18);transition:.2s}
+.export-btn:hover{background:var(--tv-verde-escuro);transform:translateY(-1px)}.export-btn:disabled{opacity:.55;cursor:wait}
+.frame{width:min(1080px,calc(100vw - 40px));overflow:auto;box-shadow:0 30px 90px rgba(0,0,0,.48);background:#fff}
+.post{width:1080px;height:1350px;position:relative;overflow:hidden;background:var(--paper);isolation:isolate}
+.post:before{content:"";position:absolute;inset:250px 0 0;z-index:-1;background:radial-gradient(650px 490px at 4% 5%,rgba(200,215,224,.32),transparent 62%),radial-gradient(600px 500px at 100% 48%,rgba(193,244,212,.22),transparent 65%),linear-gradient(180deg,#F9FBFC 0%,#F4F7F8 100%)}
+
+/* ─── Marca d'água · material de uso interno ─────────────────────── */
+.watermark{position:absolute;inset:-30%;z-index:4;pointer-events:none;display:flex;flex-direction:column;justify-content:center;gap:150px;transform:rotate(-28deg)}
+.watermark div{white-space:nowrap;text-align:center;font-size:30px;font-weight:600;line-height:1;letter-spacing:.30em;color:rgba(117,157,180,.13)}
+
+/* ─── Header ─────────────────────────────────────────────────────── */
+.hero{height:250px;background:var(--tv-azul-escuro);color:#fff;padding:36px 64px 30px;position:relative;overflow:hidden;display:flex;flex-direction:column;align-items:center;justify-content:center;
+  /* logo em versão dark. Para usar o SVG light mode, apague estas duas linhas */
+  --logo-st0:#C1F4D4;--logo-st1:#FFFFFF}
+.hero:after{content:"";position:absolute;width:420px;height:420px;border:1px solid rgba(255,255,255,.08);border-radius:50%;right:-145px;top:-270px;box-shadow:0 0 0 55px rgba(255,255,255,.025),0 0 0 110px rgba(255,255,255,.018)}
+
+/* Slot do SVG oficial — cole o <svg> dentro de #brand-logo.
+   .st0 = verde de destaque (#3c7e54 no light mode) · .st1 = ink (#1b2529 no light mode) */
+#brand-logo{height:64px;display:flex;align-items:center;justify-content:center;position:relative;z-index:1}
+#brand-logo svg{height:100%;width:auto;display:block}
+.st0{fill:var(--logo-st0,#3c7e54)}
+.st1{fill:var(--logo-st1,#1b2529)}
+/* lockup tipográfico provisório — remover ao colar o SVG oficial */
+.logo-fallback{text-align:center;line-height:1}
+.logo-fallback .lf-top{font-size:40px;font-weight:200;letter-spacing:-.012em;color:#fff}
+.logo-fallback .lf-top b{font-weight:700}
+.logo-fallback .lf-bottom{margin-top:10px;font-size:11px;font-weight:600;letter-spacing:.30em;text-transform:uppercase;color:var(--tv-verde)}
+
+.hero-sub{font-size:17px;line-height:1.2;text-align:center;color:rgba(255,255,255,.78);font-weight:400;margin-top:17px;position:relative;z-index:1}
+.fee{margin-top:15px;position:relative;z-index:1;display:inline-flex;align-items:center;gap:8px;border-radius:var(--r-full);background:var(--tv-verde);color:var(--tv-verde-ink);padding:7px 17px;font-size:12px;font-weight:600;letter-spacing:.02em;border:1px solid rgba(10,36,21,.08)}
+.fee i{width:5px;height:5px;border-radius:50%;background:var(--tv-verde-destaque)}
+
+/* ─── Conteúdo ───────────────────────────────────────────────────── */
+.content{padding:26px 64px 74px;position:relative;z-index:1}
+.section-head{text-align:center;margin-bottom:17px}.section-kicker{font-size:10px;letter-spacing:.22em;text-transform:uppercase;color:var(--tv-verde-destaque);font-weight:700}.section-head h2{font-size:25px;line-height:1.1;color:var(--tv-azul-escuro);font-weight:700;letter-spacing:-.01em;margin:6px 0 0}
+.structure-section{height:405px}.flow{position:relative;height:333px}
+.node{position:absolute;border-radius:var(--r-md);display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;box-shadow:0 8px 20px rgba(60,74,96,.06)}
+.node strong{font-weight:700;line-height:1.1}.node span{margin-top:7px;line-height:1.18}
+.node-root{top:0;left:330px;width:292px;height:70px;background:rgba(230,237,241,.88);border:1.5px solid #637881;color:var(--tv-azul-escuro)}
+.node-root strong{font-size:20px}.node-root span{font-size:13px;color:var(--muted)}
+.node-primary{top:128px;left:85px;width:350px;height:76px;background:var(--tv-azul);color:#fff;border:1.5px solid #3C4A60}
+.node-secondary{top:128px;right:85px;width:350px;height:76px;background:var(--tv-azul-escuro);color:#fff;border:1.5px solid var(--tv-azul-escuro)}
+.node-primary strong,.node-secondary strong{font-size:19px}.node-primary span,.node-secondary span{font-size:14px;color:rgba(255,255,255,.78)}
+.node-output{top:263px;width:350px;height:68px;background:rgba(230,237,241,.9);color:var(--tv-azul-escuro);border:1.5px solid var(--tv-azul)}
+.node-output.left{left:85px}.node-output.right{right:85px;border-color:var(--tv-azul-escuro)}
+.node-output strong{font-size:17px}.node-output span{font-size:13px;color:var(--muted);margin-top:6px}
+.connections{position:absolute;inset:0;width:100%;height:100%;overflow:visible}.connections path{fill:none;stroke:var(--tv-azul-escuro);stroke-width:2;stroke-linecap:round;stroke-linejoin:round}.connections polyline{fill:none;stroke:var(--tv-azul-escuro);stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.divider{height:1px;background:var(--line);margin:0 16px}
+.remuneration{height:260px;padding-top:21px}.metric-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+.metric{min-height:128px;padding:18px 17px;border-radius:var(--r-lg);background:linear-gradient(135deg,rgba(255,255,255,.94),rgba(230,237,241,.75));border:1px solid rgba(99,120,129,.18);position:relative;overflow:hidden;box-shadow:0 10px 26px rgba(60,74,96,.055)}
+.metric:before{content:"";position:absolute;left:0;top:0;bottom:0;width:4px;background:var(--accent,var(--tv-azul))}.metric .index{font-size:10px;letter-spacing:.14em;color:#82939D;font-weight:700}.metric strong{display:block;color:var(--tv-azul-escuro);font-size:19px;line-height:1.13;margin-top:17px}.metric span{display:block;color:var(--muted);font-size:12.3px;line-height:1.28;margin-top:8px}
+.differentials{padding-top:20px}.diff-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.diff{height:98px;border-radius:var(--r-lg);background:linear-gradient(135deg,rgba(193,244,212,.95),rgba(146,211,171,.86));border:1px solid rgba(51,127,81,.17);padding:17px 19px 15px 58px;position:relative;color:var(--tv-verde-ink);box-shadow:0 8px 20px rgba(51,127,81,.055)}
+.diff .num{position:absolute;left:17px;top:17px;width:28px;height:28px;border-radius:50%;display:grid;place-items:center;background:var(--tv-verde-destaque);color:#fff;font-size:11px;font-weight:700}.diff strong{display:block;font-size:17px;line-height:1.1}.diff span{display:block;font-size:12.3px;line-height:1.25;color:#234530;margin-top:8px}
+.footer{position:absolute;left:0;right:0;bottom:0;height:58px;background:var(--tv-azul-escuro);display:flex;align-items:center;justify-content:center;color:rgba(255,255,255,.72);font-size:11.5px;font-weight:400;letter-spacing:.10em;text-transform:uppercase;z-index:5}.footer i{width:4px;height:4px;border-radius:50%;background:var(--tv-verde);margin:0 11px}
+.toast{position:fixed;left:50%;bottom:28px;transform:translate(-50%,20px);background:#fff;color:#17212B;border:1px solid #D8E1E6;border-radius:999px;padding:11px 18px;font-size:13px;opacity:0;pointer-events:none;transition:.25s;box-shadow:0 16px 50px rgba(0,0,0,.28);z-index:10}.toast.show{opacity:1;transform:translate(-50%,0)}
+@media(max-width:1140px){.frame{transform-origin:top center}.workspace{place-items:start center}}
+@media print{.workspace{padding:0;background:#fff}.toolbar{display:none}.frame{width:1080px;box-shadow:none;overflow:visible}}
+</style>
+</head>
+<body>
+<div class="workspace">
+  <div class="toolbar">
+    <div class="toolbar-copy"><strong>Post Tivio Malls Opportunities II</strong><span>1080 × 1350 px · exportação PNG 3240 × 4050 px · 300 dpi</span></div>
+    <button class="export-btn" id="exportButton" type="button">Exportar PNG 300 dpi</button>
+  </div>
+  <div class="frame">
+    <main class="post" id="post" aria-label="Post sobre a estrutura do Tivio Malls Opportunities II">
+
+      <header class="hero">
+        <div id="brand-logo" role="img" aria-label="Tivio Malls Opportunities II FII">
+          <!-- ▼ COLE AQUI O <svg> OFICIAL DO FUNDO e remova a div abaixo ▼ -->
+          <div class="logo-fallback">
+            <div class="lf-top">TIVIO <b>MALLS</b></div>
+            <div class="lf-bottom">Opportunities II FII</div>
+          </div>
+        </div>
+        <div class="hero-sub">Estrutura das cotas e mecânica da remuneração</div>
+        <div class="fee"><i></i>Fee dist. 2,5%</div>
+      </header>
+
+      <div class="content">
+        <section class="structure-section">
+          <div class="section-head"><div class="section-kicker">01 · Estrutura</div><h2>Estrutura das cotas</h2></div>
+          <div class="flow">
+            <svg class="connections" viewBox="0 0 952 333" aria-hidden="true">
+              <defs><marker id="arrow" markerWidth="8" markerHeight="8" refX="6" refY="4" orient="auto"><path d="M0 0 L8 4 L0 8" fill="none" stroke="#3C4A60" stroke-width="1.6"/></marker></defs>
+              <path d="M476 70 V98 H260 V126" marker-end="url(#arrow)"/>
+              <path d="M476 98 H692 V126" marker-end="url(#arrow)"/>
+              <path d="M260 204 V259" marker-end="url(#arrow)"/>
+              <path d="M692 204 V259" marker-end="url(#arrow)"/>
+            </svg>
+            <div class="node node-root"><strong>9 shopping centers</strong><span>Participação do fundo</span></div>
+            <div class="node node-primary"><strong>Cota sênior · 80%</strong><span>IPCA + 9,75% a.a.</span></div>
+            <div class="node node-secondary"><strong>Cota subordinada · 20%</strong><span>Ganho de capital</span></div>
+            <div class="node node-output left"><strong>Rendimento dos shoppings</strong><span>Sem custos</span></div>
+            <div class="node node-output right"><strong>Venda dos shoppings</strong><span>Com todos os custos</span></div>
+          </div>
+        </section>
+        <div class="divider"></div>
+        <section class="remuneration">
+          <div class="section-head"><div class="section-kicker">02 · Remuneração</div><h2>Mecânica da remuneração</h2></div>
+          <div class="metric-grid">
+            <article class="metric" style="--accent:#759DB4"><div class="index">01</div><strong>9,75% a.a.</strong><span>Rendimento-alvo da cota sênior</span></article>
+            <article class="metric" style="--accent:#3C4A60"><div class="index">02</div><strong>IPCA</strong><span>Pago ao final, no resgate</span></article>
+            <article class="metric" style="--accent:#3C7E54"><div class="index">03</div><strong>100% livre de imposto</strong><span>Rendimento líquido ao cotista</span></article>
+            <article class="metric" style="--accent:#C1F4D4"><div class="index">04</div><strong>Sem taxa de entrada</strong><span>Não há cobrança</span></article>
+          </div>
+        </section>
+        <div class="divider"></div>
+        <section class="differentials">
+          <div class="section-head"><div class="section-kicker">03 · Destaques</div><h2>Diferenciais</h2></div>
+          <div class="diff-grid">
+            <article class="diff"><div class="num">01</div><strong>Portfólio resiliente</strong><span>Alta ocupação, baixa inadimplência e muita previsibilidade</span></article>
+            <article class="diff"><div class="num">02</div><strong>Colchão de subordinação</strong><span>20% de proteção à cota sênior</span></article>
+            <article class="diff"><div class="num">03</div><strong>Saída garantida</strong><span>Obrigação de recompra dos ativos pela subordinada ao final</span></article>
+            <article class="diff"><div class="num">04</div><strong>Investimento em “tijolo”</strong><span>Shoppings com localização irreplicável</span></article>
+          </div>
+        </section>
+      </div>
+
+      <div class="watermark" aria-hidden="true">
+        <div>MATERIAL DE USO INTERNO · MATERIAL DE USO INTERNO · MATERIAL DE USO INTERNO</div>
+        <div>MATERIAL DE USO INTERNO · MATERIAL DE USO INTERNO · MATERIAL DE USO INTERNO</div>
+        <div>MATERIAL DE USO INTERNO · MATERIAL DE USO INTERNO · MATERIAL DE USO INTERNO</div>
+        <div>MATERIAL DE USO INTERNO · MATERIAL DE USO INTERNO · MATERIAL DE USO INTERNO</div>
+        <div>MATERIAL DE USO INTERNO · MATERIAL DE USO INTERNO · MATERIAL DE USO INTERNO</div>
+        <div>MATERIAL DE USO INTERNO · MATERIAL DE USO INTERNO · MATERIAL DE USO INTERNO</div>
+        <div>MATERIAL DE USO INTERNO · MATERIAL DE USO INTERNO · MATERIAL DE USO INTERNO</div>
+        <div>MATERIAL DE USO INTERNO · MATERIAL DE USO INTERNO · MATERIAL DE USO INTERNO</div>
+        <div>MATERIAL DE USO INTERNO · MATERIAL DE USO INTERNO · MATERIAL DE USO INTERNO</div>
+        <div>MATERIAL DE USO INTERNO · MATERIAL DE USO INTERNO · MATERIAL DE USO INTERNO</div>
+      </div>
+
+      <footer class="footer"><span>Tivio Capital</span><i></i><span>Material de uso interno</span></footer>
+    </main>
+  </div>
+</div>
+<div class="toast" id="toast" role="status">PNG exportado com sucesso</div>
+<script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
+<script>
+const button=document.getElementById('exportButton');
+const toast=document.getElementById('toast');
+function crc32(bytes){let table=crc32.table;if(!table){table=crc32.table=[];for(let n=0;n<256;n++){let c=n;for(let k=0;k<8;k++)c=(c&1)?0xEDB88320^(c>>>1):c>>>1;table[n]=c>>>0}}let c=0xFFFFFFFF;for(const b of bytes)c=table[(c^b)&255]^(c>>>8);return(c^0xFFFFFFFF)>>>0}
+function chunk(type,data){const out=new Uint8Array(12+data.length);const view=new DataView(out.buffer);view.setUint32(0,data.length);for(let i=0;i<4;i++)out[4+i]=type.charCodeAt(i);out.set(data,8);view.setUint32(8+data.length,crc32(out.slice(4,8+data.length)));return out}
+async function setPngDpi(blob,dpi){const src=new Uint8Array(await blob.arrayBuffer());const ppm=Math.round(dpi/0.0254);const data=new Uint8Array(9);const v=new DataView(data.buffer);v.setUint32(0,ppm);v.setUint32(4,ppm);data[8]=1;const phys=chunk('pHYs',data);const insert=33;const out=new Uint8Array(src.length+phys.length);out.set(src.slice(0,insert),0);out.set(phys,insert);out.set(src.slice(insert),insert+phys.length);return new Blob([out],{type:'image/png'})}
+button.addEventListener('click',async()=>{button.disabled=true;button.textContent='Exportando...';try{await document.fonts.ready;const canvas=await html2canvas(document.getElementById('post'),{scale:3,width:1080,height:1350,backgroundColor:'#F7F9FA',useCORS:true,logging:false,imageTimeout:0});const blob=await new Promise(r=>canvas.toBlob(r,'image/png'));const dpiBlob=await setPngDpi(blob,300);const url=URL.createObjectURL(dpiBlob);const a=document.createElement('a');a.href=url;a.download='tivio-malls-opportunities-ii-300dpi.png';a.click();setTimeout(()=>URL.revokeObjectURL(url),1500);toast.classList.add('show');setTimeout(()=>toast.classList.remove('show'),2200)}catch(err){alert('Não foi possível exportar o PNG. Abra o HTML com conexão à internet para carregar a fonte Versos e o exportador.')}finally{button.disabled=false;button.textContent='Exportar PNG 300 dpi'}});
+</script>
+</body></html>
