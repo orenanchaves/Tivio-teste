@@ -1,0 +1,17 @@
+# credenciais
+.env
+*.env
+!.env.exemplo
+
+# artefatos gerados
+Update_Central_Analises/outputs/*.html
+
+# python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+
+# lixo de sistema
+desktop.ini
+.DS_Store
