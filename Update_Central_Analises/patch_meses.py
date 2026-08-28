@@ -21,14 +21,12 @@ Substituicoes cirurgicas no HTML ja existente:
   4) const MES_NOMES  = {...}                    (rotulo de cada chave)
   5) const MES_TOTAIS = {...}                    (contagem de cada chave)
   6) let currentMonth = N                        (periodo inicial)
-  7) a barra de referencia do topo (tv-refbar)
 
 O seletor de ano navega entre arquivos:
   dashboard_fundos_tivio_geral.html
   dashboard_fundos_tivio_<ano>.html
 """
 import re
-from datetime import datetime
 
 ABREV = {1: "Jan", 2: "Fev", 3: "Mar", 4: "Abr", 5: "Mai", 6: "Jun",
          7: "Jul", 8: "Ago", 9: "Set", 10: "Out", 11: "Nov", 12: "Dez"}
@@ -134,41 +132,6 @@ def _mes_totais_js(escopo, totais, anos_disponiveis) -> str:
     return "const MES_TOTAIS = {" + ",".join(partes) + "};"
 
 
-def _refbar_html(escopo, totais, anos_disponiveis, hoje) -> str:
-    chs = chaves(escopo, anos_disponiveis)
-    com_dado = [c for c in chs if int(totais.get(c, 0)) > 0]
-
-    if _geral(escopo):
-        if com_dado:
-            periodo = f"01/01/{com_dado[0]} a <b>31/12/{com_dado[-1]}</b>"
-        else:
-            periodo = "&mdash;"
-        recorte = "Geral · todos os anos"
-    else:
-        if com_dado:
-            periodo = (
-                f"01/{com_dado[0]:02d}/{escopo} a "
-                f"<b>{ABREV[com_dado[-1]]}/{escopo}</b>"
-            )
-        else:
-            periodo = "&mdash;"
-        recorte = f"Ano {escopo}"
-
-    return (
-        '<div class="tv-refbar">'
-        '<div class="tv-refbar-item"><span class="l">Período de referência</span>'
-        f'<span class="v">{periodo}</span></div>'
-        '<div class="tv-refbar-item"><span class="l">Recorte ativo</span>'
-        f'<span class="v">{recorte}</span></div>'
-        '<div class="tv-refbar-item"><span class="l">Base</span>'
-        '<span class="v">Databricks · marketdata.silver (ANBIMA) · '
-        f'atualizado em {hoje.strftime("%d/%m/%Y")}</span></div>'
-        '<div class="tv-refbar-spacer"></div>'
-        '<div class="tv-refbar-src">Fonte: CVM · ANBIMA · RCVM 175</div>'
-        "</div>"
-    )
-
-
 CSS_PATCH = """<style id="tv-meses-patch">
 .month-pill.off{opacity:.32;cursor:not-allowed;border-style:dashed;
   color:color-mix(in srgb,var(--veil) 30%,transparent)}
@@ -192,10 +155,10 @@ def _injetar_css(html: str) -> str:
 
 
 def aplicar(html: str, escopo, totais: dict, anos_disponiveis, hoje=None) -> str:
-    """Aplica todas as substituicoes e devolve o HTML novo."""
-    if hoje is None:
-        hoje = datetime.now()
+    """Aplica todas as substituicoes e devolve o HTML novo.
 
+    `hoje` fica na assinatura por compatibilidade com quem ja chamava.
+    """
     anos_disponiveis = [int(a) for a in (anos_disponiveis or [])]
     if not anos_disponiveis and not _geral(escopo):
         anos_disponiveis = [int(escopo)]
@@ -252,14 +215,7 @@ def aplicar(html: str, escopo, totais: dict, anos_disponiveis, hoje=None) -> str
         html, count=1,
     )
 
-    # 7) barra de referencia do topo
-    html = re.sub(
-        r'<div class="tv-refbar">.*?</div>\s*</div>',
-        lambda m: _refbar_html(escopo, totais, anos_disponiveis, hoje),
-        html, count=1, flags=re.DOTALL,
-    )
-
-    # 8) CSS do estado "apagado" + badge
+    # 7) CSS do estado "apagado" + badge
     html = _injetar_css(html)
 
     return html

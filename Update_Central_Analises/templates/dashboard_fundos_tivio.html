@@ -344,15 +344,6 @@ th.sortable.sort-desc::after{content:"↓";opacity:1;color:var(--accent-strong)}
 @media(min-width:2560px){html{font-size:17.5px}}
 
 /* ===== 2.4 · Barra de referencia + TiView (camada universal) ===== */
-.tv-refbar{display:flex;flex-wrap:wrap;align-items:center;gap:0;background:var(--card,var(--bg-elev-1));border:1px solid var(--border,color-mix(in srgb,var(--accent-strong) 15%,transparent));border-radius:14px;padding:12px 18px;margin-bottom:14px}
-.tv-refbar-item{display:flex;flex-direction:column;gap:4px;padding:2px 20px;min-width:0}
-.tv-refbar-item:first-child{padding-left:0}
-.tv-refbar-item+.tv-refbar-item{border-left:1px solid color-mix(in srgb,var(--veil) 8%,transparent)}
-.tv-refbar-item .l{font-size:9px;letter-spacing:1.4px;text-transform:uppercase;color:var(--muted,var(--text-muted));font-weight:700}
-.tv-refbar-item .v{font-size:12.5px;color:var(--text-primary);font-weight:600;letter-spacing:-0.1px}
-.tv-refbar-item .v b{color:var(--tivio,var(--accent-strong));font-weight:700}
-.tv-refbar-spacer{flex:1}
-.tv-refbar-src{font-size:10px;letter-spacing:1.2px;text-transform:uppercase;color:var(--muted,var(--text-muted));font-weight:600}
 .tiview{background:var(--card,var(--bg-elev-1));border:1px solid var(--border,color-mix(in srgb,var(--accent-strong) 15%,transparent));border-left:3px solid var(--tivio,var(--accent-strong));border-radius:14px;padding:18px 22px;margin-bottom:16px}
 .tiview-head{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:14px}
 .tiview-logo{font-size:15px;font-weight:700;letter-spacing:-0.3px;color:var(--text-primary)}
@@ -366,7 +357,6 @@ th.sortable.sort-desc::after{content:"↓";opacity:1;color:var(--accent-strong)}
 .tiview-list li::before{content:"";flex:0 0 6px;height:6px;margin-top:7px;border-radius:50%;background:var(--tivio,var(--accent-strong))}
 .tiview-list li[contenteditable]:focus{outline:none;border-style:solid;border-color:var(--tivio,var(--accent-strong));background:color-mix(in srgb,var(--accent-strong) 4%,transparent)}
 .tiview-ph{color:var(--muted,var(--text-muted));font-style:italic}
-@media(max-width:640px){.tv-refbar-item{padding:8px 0;border-left:none!important;width:100%}.tv-refbar-item+.tv-refbar-item{border-top:1px solid color-mix(in srgb,var(--veil) 8%,transparent)}}
 .tv-filter2{margin-top:-4px;flex-wrap:wrap;gap:10px}
 .tv-fgroup{display:inline-flex;align-items:center;gap:6px;padding:2px 10px;border-left:1px solid color-mix(in srgb,var(--veil) 8%,transparent)}
 .tv-flbl{font-size:9px;letter-spacing:1.2px;text-transform:uppercase;color:var(--muted);font-weight:700}
@@ -945,12 +935,6 @@ a.hub-card:active{transform:translateY(-1px) scale(.995)}
 </div>
 
 <div class="content">
-<div class="tv-refbar">
-<div class="tv-refbar-item"><span class="l">Período de referência</span><span class="v">01/01/2026 a <b>30/06/2026</b></span></div><div class="tv-refbar-item"><span class="l">Recorte ativo</span><span class="v">definido no filtro de mês abaixo</span></div><div class="tv-refbar-item"><span class="l">Base</span><span class="v">Monitor_Fundos_Tivio.xlsm · aba _DADOS</span></div><div class="tv-refbar-spacer"></div><div class="tv-refbar-src">Fonte: CVM · ANBIMA · RCVM 175</div>
-</div>
-
-
-
 <div class="tab-panel active" data-panel="1">
 <div class="kpi-row" id="vgKpis"></div>
 <div class="row" style="margin-top:14px">
