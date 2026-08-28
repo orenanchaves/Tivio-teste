@@ -243,7 +243,7 @@ html,body{background:var(--bg-base);font-family:var(--ff);color:var(--text);min-
 .month-pill{background:transparent;border:1px solid color-mix(in srgb,var(--veil) 10%,transparent);color:color-mix(in srgb,var(--veil) 55%,transparent);padding:5px 12px;border-radius:999px;font-family:inherit;font-size:11px;font-weight:600;cursor:pointer;transition:all .15s}
 .month-pill:hover{color:var(--text-primary);border-color:color-mix(in srgb,var(--veil) 25%,transparent)}
 .month-pill.active{background:color-mix(in srgb,var(--accent-strong) 10%,transparent);color:var(--tivio);border-color:var(--tivio)}
-.tabs{display:flex;gap:8px;padding:14px 0 16px;position:relative;z-index:2;overflow-x:auto;scrollbar-width:none}
+.tabs{display:flex;gap:8px;padding:18px 0 20px;position:relative;z-index:2;overflow-x:auto;scrollbar-width:none}
 .tabs::-webkit-scrollbar{display:none}
 .tab-btn{background:transparent;border:1px solid color-mix(in srgb,var(--veil) 10%,transparent);color:color-mix(in srgb,var(--veil) 65%,transparent);padding:9px 20px;border-radius:999px;font-family:inherit;font-size:13px;font-weight:500;cursor:pointer;white-space:nowrap;transition:all .2s}
 .tab-btn:hover{color:var(--text-primary);border-color:color-mix(in srgb,var(--veil) 25%,transparent)}
@@ -1221,7 +1221,14 @@ arr.forEach(f => {
     v: FUNDS_DATA.filter(f => periodoDe(f) === m).length,
     c: (m === currentMonth ? "#C1F4D4" : "#3E4B44")
   }));
-  bars(document.getElementById('vgEvolucao'), ev, {w:70, h:22});
+  const evEl = document.getElementById('vgEvolucao');
+  /* no modo Geral sao poucas barras (uma por ano): elas ocupam a altura
+     do painel em vez de deixar um vazio embaixo */
+  const poucas = ev.length <= 4;
+  evEl.style.flex = poucas ? "1" : "";
+  evEl.style.justifyContent = poucas ? "center" : "";
+  evEl.style.gap = poucas ? "18px" : "";
+  bars(evEl, ev, {w:70, h: poucas ? 30 : 22});
 
   /* --- segmentos --- */
   document.getElementById('vgSegmentos').innerHTML = SEG_META.map((m,i) => {
