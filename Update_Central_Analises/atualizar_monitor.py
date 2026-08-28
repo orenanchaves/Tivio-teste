@@ -181,6 +181,23 @@ def injetar_funds(html: str, funds_js: str) -> str:
     return html[:inicio] + f"const FUNDS_DATA = {funds_js};" + html[fim + 2:]
 
 
+def injetar_estreias(html: str, estreias_js: str) -> str:
+    """Mapa de estreia por gestora, para o painel de novas gestoras."""
+    alvo = "const GESTORA_ESTREIA = "
+
+    inicio = html.find(alvo)
+
+    if inicio == -1:
+        return html
+
+    fim = html.find("};", inicio)
+
+    if fim == -1:
+        raise RuntimeError("Fim do bloco GESTORA_ESTREIA nao encontrado.")
+
+    return html[:inicio] + alvo + estreias_js + ";" + html[fim + 2:]
+
+
 def atualizar_badge(html: str) -> str:
     hoje = datetime.now().strftime("%d/%m")
 
@@ -193,8 +210,10 @@ def atualizar_badge(html: str) -> str:
     )
 
 
-def gerar(template, escopo, sub, totais, anos, hoje, saida: Path) -> Path:
+def gerar(template, escopo, sub, totais, anos, hoje, saida: Path,
+          estreias_js: str = "{}") -> Path:
     html = injetar_funds(template, mm.gerar_funds_data(sub))
+    html = injetar_estreias(html, estreias_js)
     html = pm.aplicar(html, escopo, totais, anos, hoje)
     html = atualizar_badge(html)
 
@@ -252,10 +271,14 @@ def main():
 
     hoje = datetime.now()
 
+    # estreia de cada gestora na base inteira (usado pelo painel de novas)
+    estreias_js = mm.gerar_estreias_js(df)
+
     # --- Geral: todos os anos, barra de periodo por ano ---
     arq_geral = gerar(
         template, "geral", df, mm.totais_ano(df), anos, hoje,
         destino / "dashboard_fundos_tivio_geral.html",
+        estreias_js,
     )
     print(f"     OK  {arq_geral.name}  ({len(df)} classes · {len(anos)} anos)")
 
@@ -266,6 +289,7 @@ def main():
         arq = gerar(
             template, ano, sub, mm.totais_mes(sub), anos, hoje,
             destino / f"dashboard_fundos_tivio_{ano}.html",
+            estreias_js,
         )
         print(f"     OK  {arq.name}  ({len(sub)} classes)")
 

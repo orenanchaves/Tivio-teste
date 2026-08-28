@@ -40,4 +40,17 @@ Confirme que o dashboard abre e mostra os fundos mock; depois vire `USE_MOCK=fal
 | taxa de performance | `marketdata.silver.anbima_taxas_classe` (`tipo_taxa LIKE '%performance%'`) |
 | link CVM | montado do CNPJ com `LINK_CVM_BASE` |
 
+## Nome das gestoras
+A ANBIMA devolve a razão social. O dashboard resolve um **nome curto** por
+classe (`nomeCurto`, no template), em três passos:
+1. `GESTORA_REGRAS` — as 15 monitoradas (mesma chave do `GESTORA_META`);
+2. `GESTORA_ALIAS` — casas conhecidas fora da lista (Safra, Santander, BB,
+   Caixa, Opportunity, Franklin Templeton, UBS, Icatu, ...);
+3. regra geral — as duas primeiras palavras, sem forma jurídica
+   ("Rio das Pedras Gestora" -> "Rio das Pedras").
+
+Para incluir uma gestora nova no recorte peer, basta adicioná-la ao
+`GESTORA_META` e ao `GESTORA_REGRAS`; para só encurtar o nome, ao
+`GESTORA_ALIAS`.
+
 > O `mes_ref` (16) precisa ser NÚMERO 1..12 — é o que alimenta o filtro de meses.

@@ -98,3 +98,55 @@ def totais_ano(df: pd.DataFrame) -> dict:
     col = df["_ano"] if "_ano" in df else df.apply(ano_de, axis=1)
     g = col.groupby(col).size().to_dict()
     return {int(k): int(v) for k, v in g.items() if int(k) > 0}
+
+
+def _data_num(row) -> int:
+    """dd/mm/aaaa -> aaaammdd (0 quando nao da para ler)."""
+    d = str(row.get("data_registro", "") or "").strip()
+
+    if len(d) >= 10 and d[6:10].isdigit() and d[3:5].isdigit() and d[:2].isdigit():
+        return int(d[6:10] + d[3:5] + d[:2])
+
+    ano = ano_de(row)
+
+    if not ano:
+        return 0
+
+    try:
+        mes = int(row.get("mes_ref", 0) or 0)
+    except (TypeError, ValueError):
+        mes = 0
+
+    return ano * 10000 + max(min(mes, 12), 1) * 100 + 1
+
+
+def estreias(df: pd.DataFrame) -> dict:
+    """
+    {nome_da_gestora: aaaammdd_da_primeira_classe} sobre a base inteira.
+
+    O dashboard de um ano so enxerga aquele ano; sem esse mapa ele acharia
+    que toda gestora de 2025 estreou em 2025. O HTML recebe o mapa por nome
+    cru e agrupa pelo nome curto no navegador.
+    """
+    fora = {}
+
+    for _, row in df.iterrows():
+        nome = str(row.get("gestora", "") or "").strip()
+
+        if not nome:
+            continue
+
+        d = _data_num(row)
+
+        if not d:
+            continue
+
+        if nome not in fora or d < fora[nome]:
+            fora[nome] = d
+
+    return fora
+
+
+def gerar_estreias_js(df: pd.DataFrame) -> str:
+    return json.dumps(estreias(df), ensure_ascii=False)
+

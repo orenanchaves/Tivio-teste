@@ -77,7 +77,15 @@ taxa_administracao AS (
 
     SELECT
         codigo_classe,
-        MAX(try_cast(valor_percentual AS DOUBLE)) AS valor_percentual
+        MAX(
+            try_cast(
+                replace(
+                    trim(CAST(valor_percentual AS STRING)),
+                    ',',
+                    '.'
+                ) AS DOUBLE
+            )
+        ) AS valor_percentual
 
     FROM {catalog}.{schema}.anbima_taxas_classe
 
@@ -91,7 +99,15 @@ taxa_performance AS (
 
     SELECT
         codigo_classe,
-        MAX(try_cast(valor_percentual AS DOUBLE)) AS valor_percentual
+        MAX(
+            try_cast(
+                replace(
+                    trim(CAST(valor_percentual AS STRING)),
+                    ',',
+                    '.'
+                ) AS DOUBLE
+            )
+        ) AS valor_percentual
 
     FROM {catalog}.{schema}.anbima_taxas_classe
 
@@ -191,7 +207,12 @@ SELECT
             THEN '1'
             ELSE '0'
         END,
-        '0',
+        CASE
+            WHEN upper(COALESCE(af.tipo_fundo, '')) LIKE '%FIDC%'
+                OR upper(COALESCE(c.categoria_cvm, '')) LIKE '%FIDC%'
+            THEN '1'
+            ELSE '0'
+        END,
         CASE
             WHEN lower(COALESCE(c.infraestrutura, ''))
                  IN ('s', 'sim', 'true', '1')
@@ -200,12 +221,23 @@ SELECT
         END,
         CASE
             WHEN f.is_pension_fund
+                OR upper(COALESCE(c.nome_comercial_classe, '')) LIKE '%PREV%'
+                OR upper(COALESCE(c.nome_comercial_classe, '')) LIKE '%PGBL%'
+                OR upper(COALESCE(c.nome_comercial_classe, '')) LIKE '%VGBL%'
+                OR upper(COALESCE(c.nome_comercial_classe, '')) LIKE '%FLEXPREV%'
+                OR upper(COALESCE(c.tipo_anbima, '')) LIKE '%PREVID%'
+                OR upper(COALESCE(c.nivel1_categoria, '')) LIKE '%PREVID%'
+                OR lower(COALESCE(pf.tipo_investidor, '')) LIKE '%previd%'
             THEN '1'
             ELSE '0'
         END,
         CASE
             WHEN lower(COALESCE(c.investimento_exterior, ''))
                  IN ('s', 'sim', 'true', '1')
+                OR upper(COALESCE(c.nome_comercial_classe, '')) LIKE '%GLOBAL%'
+                OR upper(COALESCE(c.nome_comercial_classe, '')) LIKE '%INTERNACIONAL%'
+                OR upper(COALESCE(c.nome_comercial_classe, '')) LIKE '%EXTERIOR%'
+                OR upper(COALESCE(c.tipo_anbima, '')) LIKE '%EXTERIOR%'
             THEN '1'
             ELSE '0'
         END,

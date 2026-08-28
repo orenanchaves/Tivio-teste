@@ -1,6 +1,29 @@
-# Monitor de Novos Fundos · v3 (Geral + público-alvo + taxas + link CVM)
+# Monitor de Novos Fundos · v4 (radar de gestoras)
 
-## Novidades desta versão
+## Novidades da v4 (roadmap · curto prazo)
+- **Nome único por gestora** (`nomeCurto`): o nome jurídico da ANBIMA vira
+  um nome comercial — "BTG PACTUAL GESTAO E CONSULTORIA DE INVESTIMENTOS"
+  e "BTG Pactual Asset" viram **BTG**; as cinco razões sociais do Safra
+  viram **Safra**. Vale para as 15 monitoradas e para o resto do mercado.
+- **Crédito Privado por Gestora** passou a usar esse nome (era razão social).
+- **Top gestoras do período** (aba Por Gestora), com a **concentração das
+  5 maiores** e quantas classes ficam de fora por não ter gestor no cadastro.
+- **Novas gestoras**: quem teve a *primeira classe da base* no período.
+  `atualizar_monitor.py` injeta o mapa de estreias da base inteira, então o
+  arquivo de 2025 sabe quem já existia em 2024.
+- Todo painel de gestora abre o pop-up com as classes daquela gestora.
+
+### Sobre as taxas
+Na rodada de 28/08 (13.500 classes) `taxa_adm` e `taxa_perf` voltaram
+**zeradas**, com público-alvo (74%) e administrador (87%) preenchidos — ou
+seja, o problema está em `anbima_taxas_classe`, não no monitor. O SQL agora
+converte `valor_percentual` tratando vírgula decimal (a causa mais provável).
+Se continuar zerado, rode **`python teste_taxas.py`**: ele mostra os valores
+reais de `tipo_taxa`, se `valor_percentual` converte para número e se
+`codigo_classe` casa com as classes. A aba Taxas mostra "sem taxa informada"
+enquanto não vier dado — nada é estimado.
+
+## Novidades da v3
 - **Seletor de ano com "Geral"**: `Geral · 2026 · 2025 · 2024`.
   No modo Geral a barra de período vira **os anos** (2024/2025/2026) e o
   dashboard abre no *Período Completo* — todos os anos somados.
