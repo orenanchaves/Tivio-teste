@@ -280,6 +280,13 @@ html,body{background:var(--bg-base);font-family:var(--ff);color:var(--text);min-
 .lg-val{font-size:16px;font-weight:700;color:var(--text-primary)}
 .gestora-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:12px}
 .gcard{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:16px 18px;position:relative;overflow:hidden;transition:transform .2s;min-height:200px}
+.gcard-click{cursor:pointer}
+.gcard-click:hover{transform:translateY(-2px);border-color:color-mix(in srgb,var(--accent-strong) 35%,transparent)}
+.gbar-click{cursor:pointer;border-radius:8px;padding:2px 6px;margin:-2px -6px;transition:background .15s}
+.gbar-click:hover{background:color-mix(in srgb,var(--accent-strong) 8%,transparent)}
+.mg-wrap{max-height:46vh;overflow:auto;border-radius:8px}
+.mg-back{background:none;border:none;color:var(--accent-strong);font-family:inherit;font-size:11px;font-weight:700;cursor:pointer;padding:0;margin-bottom:10px;letter-spacing:.6px}
+.mg-back:hover{text-decoration:underline}
 .gcard:hover{transform:translateY(-3px);border-color:var(--accent,var(--border-strong))}
 .gcard-top{position:absolute;top:0;left:0;right:0;height:3px}
 .gcard-header{display:flex;justify-content:space-between;gap:10px;margin-top:6px}
@@ -1050,7 +1057,7 @@ Percentual ao ano declarado na ANBIMA (<b>tipo_taxa</b> contendo "administraçã
 <th class="sortable">DATA REG.</th><th class="sortable">DATA CONST.</th><th>CNPJ</th>
 <th class="sortable">SUBCLASSE / FUNDO GUARDA-CHUVA</th><th class="sortable">PRATELEIRA</th>
 <th class="sortable">GESTOR (JURIDICO)</th><th class="sortable">ADMINISTRADOR</th>
-<th>ESG</th><th>DETALHES</th><th>REG.</th>
+<th>ANO</th><th>DETALHES</th><th>CVM</th>
 </tr></thead>
 <tbody id="fundosBody"></tbody>
 </table></div>
@@ -1147,13 +1154,34 @@ const TIPO_META = {
   FIP:    {t:"Participações",          d:"Private equity e infra"},
   FIAGRO: {t:"Agroindustrial",         d:"Cadeias do agronegócio"}
 };
+/* Qual das 15 gestoras monitoradas a classe pertence (null = fora do recorte) */
+function grupoDe(f){
+  const g = (f[1] || "").toUpperCase();
+  if (g.includes("BTG")) return "BTG Pactual";
+  if (g.includes("ITAU ASSET") || g.includes("ITAU ")) return "Itau Asset";
+  if (g.includes("ITAU")) return "Itau Unibanco";
+  if (g.includes("BRADESCO")) return "Bradesco Asset";
+  if (g.includes("XP ")) return "XP Asset";
+  if (g.includes("KINEA")) return "Kinea";
+  if (g.includes("VINCI")) return "Vinci";
+  if (g.includes("SPX")) return "SPX";
+  if (g.includes("IBIUNA")) return "Ibiuna";
+  if (g.includes("RIZA")) return "Riza";
+  if (g.includes("CAPITANIA") || g.includes("CAPITÂNIA")) return "Capitania";
+  if (g.includes("VERDE")) return "Verde Asset";
+  if (g.includes("JGP")) return "JGP";
+  if (g.includes("AUGME")) return "Augme";
+  if (g.includes("PATRIA") || g.includes("PÁTRIA")) return "Patria";
+  return null;
+}
+
 const SEG_DESC = ["Debêntures, CDBs, notas","FIDC (direitos creditórios)","Debêntures de infra (isenção IR)","PGBL/VGBL","Investimento no exterior","Rótulo sustentável"];
 
 function bars(el, items, opt){
   opt = opt || {};
   const max = items.length ? Math.max.apply(null, items.map(i => i.v)) || 1 : 1;
   el.innerHTML = items.length ? items.map(i =>
-    '<div class="gbar-row">' +
+    '<div class="gbar-row'+(i.k?' gbar-click':'')+'"'+(i.k?' data-gkey="'+esc(i.k)+'" data-gfiltro="'+esc(opt.filtro||'')+'" title="Ver as classes · '+esc(i.n)+'"':'')+'>' +
       (opt.chip
         ? '<div class="gbar-logo"><span style="background:'+i.c+';color:var(--text-primary);padding:6px 14px;border-radius:6px;font-weight:700;font-size:13px">'+esc(i.n)+'</span></div>'
         : '<div style="width:'+(opt.w||170)+'px;font-size:12px;color:color-mix(in srgb,var(--veil) 85%,transparent)" title="'+esc(i.n)+'">'+esc(i.n)+'</div>') +
@@ -1183,35 +1211,9 @@ function renderPaineis(){
 
   /* --- gestoras --- */
 const byG = {};
-
-arr.forEach(f => {
-    const gestora = (f[1] || "").toUpperCase();
-    let grupo = null;
-
-    if (gestora.includes("BTG")) grupo = "BTG Pactual";
-    else if (gestora.includes("ITAU ASSET") || gestora.includes("ITAU ")) grupo = "Itau Asset";
-    else if (gestora.includes("ITAU")) grupo = "Itau Unibanco";
-    else if (gestora.includes("BRADESCO")) grupo = "Bradesco Asset";
-    else if (gestora.includes("XP ")) grupo = "XP Asset";
-    else if (gestora.includes("KINEA")) grupo = "Kinea";
-    else if (gestora.includes("VINCI")) grupo = "Vinci";
-    else if (gestora.includes("SPX")) grupo = "SPX";
-    else if (gestora.includes("IBIUNA")) grupo = "Ibiuna";
-    else if (gestora.includes("RIZA")) grupo = "Riza";
-    else if (gestora.includes("CAPITANIA") || gestora.includes("CAPITÂNIA")) grupo = "Capitania";
-    else if (gestora.includes("VERDE")) grupo = "Verde Asset";
-    else if (gestora.includes("JGP")) grupo = "JGP";
-    else if (gestora.includes("AUGME")) grupo = "Augme";
-    else if (gestora.includes("PATRIA") || gestora.includes("PÁTRIA")) grupo = "Patria";
-
-    if (!grupo) return;
-
-    byG[grupo] = (byG[grupo] || 0) + 1;
-});
-
-  console.log("GESTORAS DO PERIODO", byG);
+  arr.forEach(f => { const g = grupoDe(f); if (g) byG[g] = (byG[g] || 0) + 1; });
   const gItems = Object.keys(GESTORA_META)
-    .map(k => ({n: GESTORA_META[k].lbl, v: byG[k] || 0, c: GESTORA_META[k].cor}))
+    .map(k => ({n: GESTORA_META[k].lbl, v: byG[k] || 0, c: GESTORA_META[k].cor, k: k}))
     .sort((a,b) => b.v - a.v);
   bars(document.getElementById('vgGestoras'), gItems.filter(g => g.v > 0), {chip:true});
 
@@ -1246,8 +1248,8 @@ arr.forEach(f => {
   const byCP = {};
   cp.forEach(f => byCP[f[1]] = (byCP[f[1]] || 0) + 1);
   const cpItems = Object.entries(byCP).sort((a,b) => b[1]-a[1]).slice(0,8)
-    .map(([k,v]) => ({n: (GESTORA_META[k] ? GESTORA_META[k].lbl : k), v: v, c: (GESTORA_META[k] ? GESTORA_META[k].cor : "#4A90E2")}));
-  bars(document.getElementById('vgCredGestoras'), cpItems, {w:110, h:22});
+    .map(([k,v]) => ({n: (GESTORA_META[k] ? GESTORA_META[k].lbl : k), v: v, c: (GESTORA_META[k] ? GESTORA_META[k].cor : "#4A90E2"), k: k}));
+  bars(document.getElementById('vgCredGestoras'), cpItems, {w:110, h:22, filtro:"cp"});
 
   /* --- aba 2: gestoras --- */
   document.getElementById('gestoraGrid').innerHTML = Object.keys(GESTORA_META)
@@ -1256,7 +1258,7 @@ arr.forEach(f => {
     .map(g => {
       const pct = (g.v / tot * 100);
       const dim = g.v === 0;
-      return '<div class="gcard" style="--accent:'+(dim?'var(--text-muted)':g.m.cor)+';'+(dim?'opacity:0.55':'')+'">' +
+      return '<div class="gcard'+(dim?'':' gcard-click')+'"'+(dim?'':' onclick="openGestoraModal(\''+g.k+'\')" title="Ver as classes de '+esc(g.m.lbl)+'"')+' style="--accent:'+(dim?'var(--text-muted)':g.m.cor)+';'+(dim?'opacity:0.55':'')+'">' +
         '<div class="gcard-top" style="background:'+(dim?'var(--text-muted)':g.m.cor)+'"></div>' +
         '<div class="gcard-header"><div class="gcard-num" style="color:'+(dim?'var(--text-muted)':g.m.cor)+'">'+(dim?'—':g.v)+'</div>' +
         '<div class="gcard-chip"><span style="background:'+(dim?'var(--text-muted)':g.m.cor)+';color:var(--text-primary);padding:5px 12px;border-radius:6px;font-weight:700;font-size:12px">'+g.m.lbl+'</span>' +
@@ -1426,10 +1428,94 @@ renderCredito(arr);
 renderPaineis();
 }
 
-function openModal(idx){
+/* ==== popup da gestora: as classes daquela gestora no periodo ==== */
+const MG_FILTROS = {
+  "":   {rot: "",                        ok: () => true},
+  "cp": {rot: " · crédito privado",      ok: f => f[14][0] === "1"},
+  "cl": {rot: " · RF crédito livre",     ok: f => f[19] === "Renda Fixa" && f[20] === "Crédito Livre"}
+};
+
+function classesDaGestora(chave, filtro){
+  const fx = MG_FILTROS[filtro || ""] || MG_FILTROS[""];
+  const grupo = !!GESTORA_META[chave];
+  return FUNDS_DATA.filter(f =>
+    noPeriodo(f) &&
+    (grupo ? grupoDe(f) === chave : (f[1] || "").trim() === chave) &&
+    fx.ok(f)
+  );
+}
+
+function _medianaCol(lista, idx){
+  const v = lista.map(f => parseFloat(f[idx])).filter(x => !isNaN(x)).sort((a,b) => a-b);
+  if (!v.length) return "";
+  return v.length % 2 ? v[(v.length-1)/2] : (v[v.length/2 - 1] + v[v.length/2]) / 2;
+}
+
+function openGestoraModal(chave, filtro){
+  filtro = filtro || "";
+  const meta = GESTORA_META[chave];
+  const fx = MG_FILTROS[filtro] || MG_FILTROS[""];
+  const lista = classesDaGestora(chave, filtro);
+  const per = MES_NOMES[currentMonth];
+  const noPer = FUNDS_DATA.filter(noPeriodo).length || 1;
+
+  const nome = meta ? meta.lbl : chave;
+  document.getElementById("modalTitle").textContent = nome + " · " + per + fx.rot;
+
+  const excl = lista.filter(f => f[10] === "S").length;
+  const tipos = [...new Set(lista.map(f => f[2]).filter(Boolean))];
+  const mAdm = _medianaCol(lista, 23);
+  const mPerf = _medianaCol(lista, 24);
+
+  const linhas = lista.map(f => {
+    const idx = FUNDS_DATA.indexOf(f);
+    return '<tr onclick="openModal(' + idx + ',\'' + chave.replace(/'/g, "\\'") + '\',\'' + filtro + '\')">' +
+      '<td class="fnome" title="' + esc(f[0]) + '">' + esc(f[0]) + '</td>' +
+      '<td>' + tipoPill(f[2]) + '</td>' +
+      '<td class="fclass">' + esc(f[4]) + '</td>' +
+      '<td class="fclass">' + esc(f[9]) + '</td>' +
+      '<td class="fclass">' + pctCell(f[23]) + '</td>' +
+      '<td class="fclass">' + pctCell(f[24]) + '</td>' +
+      '<td>' + exclTag(f[10]) + '</td>' +
+      '<td class="fdata">' + esc(f[6]) + '</td>' +
+      '<td>' + (f[15]
+        ? '<a class="link-icon" href="' + esc(f[15]) + '" target="_blank" rel="noopener" onclick="event.stopPropagation()">&#8599;</a>'
+        : '<span style="color:var(--muted)">&mdash;</span>') + '</td></tr>';
+  }).join("");
+
+  document.getElementById("modalBody").innerHTML = `
+<div class="modal-detail-block"><h4>📊 RESUMO · ${esc(per)}</h4><div class="modal-detail-grid">
+<div class="modal-detail-item"><span class="dl-lbl">Classes no período</span><span class="dl-val">${lista.length}</span></div>
+<div class="modal-detail-item"><span class="dl-lbl">Participação</span><span class="dl-val">${(lista.length / noPer * 100).toFixed(1).replace(".", ",")}% das ${noPer} do período</span></div>
+<div class="modal-detail-item"><span class="dl-lbl">Tipos de fundo</span><span class="dl-val">${tipos.length ? esc(tipos.join(" · ")) : "—"}</span></div>
+<div class="modal-detail-item"><span class="dl-lbl">Exclusivas</span><span class="dl-val">${excl} de ${lista.length}</span></div>
+<div class="modal-detail-item"><span class="dl-lbl">Taxa adm mediana</span><span class="dl-val">${fmtPct(mAdm) || "—"}</span></div>
+<div class="modal-detail-item"><span class="dl-lbl">Taxa perf mediana</span><span class="dl-val">${fmtPct(mPerf) || "—"}</span></div>
+</div></div>
+<div class="modal-detail-block"><h4>📋 CLASSES</h4>
+${lista.length ? `<div class="mg-wrap"><table class="ftable"><thead><tr>
+<th>FUNDO</th><th>TIPO</th><th>CLASSIF. ANBIMA</th><th>PUBLICO</th>
+<th>TX. ADM.</th><th>TX. PERF.</th><th>EXCL.</th><th>DATA REG.</th><th>CVM</th>
+</tr></thead><tbody>${linhas}</tbody></table></div>
+<div style="font-size:10px;color:var(--muted);margin-top:10px">Clique em uma linha para abrir a ficha da classe.</div>`
+  : '<div style="color:var(--muted);font-size:12px">Sem classes no período filtrado.</div>'}
+</div>`;
+
+  document.getElementById("fundModal").classList.add("active");
+}
+
+/* barras de gestora clicaveis (Visão Geral, Crédito Privado e Renda Fixa) */
+document.addEventListener("click", e => {
+  const alvo = e.target.closest(".gbar-click");
+  if (!alvo) return;
+  openGestoraModal(alvo.dataset.gkey, alvo.dataset.gfiltro || "");
+});
+
+function openModal(idx, voltarChave, voltarFiltro){
 const f=FUNDS_DATA[idx];if(!f)return;
 document.getElementById("modalTitle").textContent=f[0];
 document.getElementById("modalBody").innerHTML=`
+${voltarChave?`<button class="mg-back" onclick="openGestoraModal('${voltarChave.replace(/'/g,"\\'")}','${voltarFiltro||""}')">&larr; voltar para ${esc(GESTORA_META[voltarChave]?GESTORA_META[voltarChave].lbl:voltarChave)}</button>`:""}
 <div class="modal-detail-block"><h4>📇 IDENTIFICAÇÃO</h4><div class="modal-detail-grid">
 <div class="modal-detail-item"><span class="dl-lbl">Gestora</span><span class="dl-val">${esc(f[1])}</span></div>
 <div class="modal-detail-item"><span class="dl-lbl">Tipo</span><span class="dl-val">${esc(f[2])}</span></div>
@@ -1442,7 +1528,7 @@ document.getElementById("modalBody").innerHTML=`
 <div class="modal-detail-block"><h4>🏗️ ESTRUTURA</h4><div class="modal-detail-grid">
 <div class="modal-detail-item"><span class="dl-lbl">Público-Alvo</span><span class="dl-val">${esc(f[9])}</span></div>
 <div class="modal-detail-item"><span class="dl-lbl">Exclusivo (CVM)</span><span class="dl-val">${exclTag(f[10])}</span></div>
-<div class="modal-detail-item"><span class="dl-lbl">ESG</span><span class="dl-val">${esc(f[11])}</span></div>
+<div class="modal-detail-item"><span class="dl-lbl">Ano de registro</span><span class="dl-val">${esc(f[11])}</span></div>
 <div class="modal-detail-item"><span class="dl-lbl">Condomínio</span><span class="dl-val">${esc(f[12])}</span></div>
 <div class="modal-detail-item"><span class="dl-lbl">Gestor (jurídico)</span><span class="dl-val">${esc(f[17])}</span></div>
 <div class="modal-detail-item"><span class="dl-lbl">Administrador</span><span class="dl-val">${esc(f[18])}</span></div>
@@ -1522,7 +1608,7 @@ const byG={}; cl.forEach(f=>{byG[f[1]]=(byG[f[1]]||0)+1;});
 const gg=Object.entries(byG).sort((a,b)=>b[1]-a[1]).slice(0,10);
 const mx=gg.length?gg[0][1]:1;
 const eg=document.getElementById("credGestoras");
-eg.innerHTML=gg.map(([n,v])=>'<div class="gbar-row"><div style="width:170px;font-size:12px;color:color-mix(in srgb,var(--veil) 85%,transparent)">'+esc(n)+'</div><div class="gbar-track" style="height:22px"><div class="gbar-fill" style="width:'+(v/mx*100).toFixed(1)+'%;background:linear-gradient(90deg,var(--tv-info),color-mix(in srgb,var(--tv-info) 53.3333%,transparent))"></div></div><div class="gbar-value" style="font-size:14px;width:32px">'+v+'</div></div>').join("")||'<div style="color:var(--muted);font-size:12px">Sem dados no período.</div>';
+eg.innerHTML=gg.map(([n,v])=>'<div class="gbar-row gbar-click" data-gkey="'+esc(n)+'" data-gfiltro="cl" title="Ver as classes · '+esc(n)+'"><div style="width:170px;font-size:12px;color:color-mix(in srgb,var(--veil) 85%,transparent)">'+esc(n)+'</div><div class="gbar-track" style="height:22px"><div class="gbar-fill" style="width:'+(v/mx*100).toFixed(1)+'%;background:linear-gradient(90deg,var(--tv-info),color-mix(in srgb,var(--tv-info) 53.3333%,transparent))"></div></div><div class="gbar-value" style="font-size:14px;width:32px">'+v+'</div></div>').join("")||'<div style="color:var(--muted);font-size:12px">Sem dados no período.</div>';
 
 const byD={}; rf.forEach(f=>{if(f[21])byD[f[21]]=(byD[f[21]]||0)+1;});
 const dd=Object.entries(byD).sort((a,b)=>b[1]-a[1]);

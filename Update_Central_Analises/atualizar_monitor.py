@@ -112,7 +112,7 @@ def _mock() -> pd.DataFrame:
     tipos = ["FI", "FIDC", "FII", "FIP", "FIAGRO"]
     anbima = ["Renda Fixa Duracao Livre", "Multimercados Livre",
               "Acoes Livre", "Previdencia Multimercado Livre"]
-    n1 = ["Renda Fixa", "Multimercados", "Acoes", "Previdencia"]
+    n1 = ["Renda Fixa", "Multimercados", "Ações", "Previdência"]
     publico = ["Publico Geral", "Qualificado", "Profissional"]
 
     linhas = []
@@ -153,7 +153,7 @@ def _mock() -> pd.DataFrame:
                     "administrador": "BEM DTVM LTDA.",
                     "categoria_n1": random.choice(n1),
                     "risco_credito": random.choice(
-                        ["Credito Livre", "Grau de Investimento", "Soberano", ""]
+                        ["Crédito Livre", "Grau de Investimento", "Soberano", ""]
                     ),
                     "duracao": "",
                     "registro": "Nao",
