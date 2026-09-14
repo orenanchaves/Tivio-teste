@@ -219,6 +219,40 @@ def atualizar_badge(html: str) -> str:
     )
 
 
+
+def diagnosticar_fonte(df: pd.DataFrame):
+    """Avisa quando a fonte esta defasada e o ultimo mes ficou truncado.
+
+    A ANBIMA publica o inicio de atividade das classes com semanas de
+    atraso. Sem esse aviso o mes corrente aparece no dashboard com uma
+    contagem baixa que parece real - foi o que fez agosto/2026 exibir 4
+    classes quando os agostos anteriores tiveram 24 e 19.
+    """
+    dt = pd.to_datetime(df["data_registro"], format="%d/%m/%Y",
+                        errors="coerce")
+
+    ultima = dt.max()
+
+    if pd.isna(ultima):
+        print("  ! nenhuma data valida em data_registro")
+        return None
+
+    hoje = pd.Timestamp.today().normalize()
+    atraso = (hoje - ultima).days
+
+    print(f"  fonte ate {ultima:%d/%m/%Y} ({atraso} dias de defasagem)")
+
+    fim_do_mes = ultima + pd.offsets.MonthEnd(0)
+
+    if ultima < fim_do_mes:
+        faltam = (fim_do_mes - ultima).days
+        print(f"  ! {ultima:%m/%Y} INCOMPLETO na fonte:"
+              f" faltam {faltam} dias do mes")
+        print("    nao compare esse mes com a planilha historica ainda")
+
+    return ultima
+
+
 def gerar(template, escopo, sub, totais, anos, hoje, saida: Path,
           estreias_js: str = "{}") -> Path:
     html = injetar_funds(template, mm.gerar_funds_data(sub))
@@ -277,6 +311,8 @@ def main():
 
     print(f"Depois filtro: {len(df)}")
 
+    diagnosticar_fonte(df)
+
     try:
         # ATENCAO: mes_ref sozinho nao distingue o ano. Sem o recorte de
         # ano abaixo, "agosto" somaria ago/2024 + ago/2025 + ago/2026
@@ -297,6 +333,26 @@ def main():
 
         print(f"\n=== {_NOME_MES.get(_MES_DIAG, _MES_DIAG)}/{_ano_diag} ===")
         print("Linhas:", len(agosto))
+
+        # o mesmo mes nos anos anteriores: mostra se a safra amadureceu
+        _hist = (
+            df[df["mes_ref"] == _MES_DIAG]
+            .assign(_a=lambda x: x.apply(mm.ano_de, axis=1))
+            .groupby("_a")
+            .size()
+        )
+
+        if len(_hist) > 1:
+            print("\nMesmo mes em outros anos:")
+            for _a, _n in _hist.items():
+                _marca = "  <- atual" if _a == _ano_diag else ""
+                print(f"  {_NOME_MES.get(_MES_DIAG, '')}/{_a}: {_n}{_marca}")
+
+            _outros = [n for a, n in _hist.items() if a != _ano_diag]
+
+            if _outros and len(agosto) < 0.5 * (sum(_outros) / len(_outros)):
+                print("  ! bem abaixo da media dos anos anteriores:"
+                      " provavel mes incompleto na fonte")
 
         print("\nPor tipo:")
         print(agosto["tipo"].value_counts())
