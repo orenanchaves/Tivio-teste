@@ -1429,10 +1429,17 @@ function _tvAguardaLib(){
    0x0 e ficaria em branco ao trocar de aba. O observador redesenha
    assim que o elemento ganha tamanho - serve para troca de aba, para
    o painel lateral e para qualquer mudanca de layout.              */
+var _tvLargura = new WeakMap();
+
 var _tvRO = (typeof ResizeObserver !== 'undefined')
   ? new ResizeObserver(function(ents){
       ents.forEach(function(e){
-        if(e.contentRect.width < 1) return;
+        var w = Math.round(e.contentRect.width);
+        if(w < 1) return;
+        /* so a largura dispara o resize. A altura quem define e bars(),
+           e reagir a ela realimentaria o proprio observador.          */
+        if(_tvLargura.get(e.target) === w) return;
+        _tvLargura.set(e.target, w);
         var i = echarts.getInstanceByDom(e.target);
         if(i) i.resize();
       });
@@ -1487,9 +1494,40 @@ function bars(el, items, opt){
   var fundo = _tok('--bg-elev-1', '#11181E');
   var tinta = _tok('--text-primary', '#FFF');
 
+  /* Altura: ocupa a folga do painel em vez de deixar um vazio embaixo
+     (credito privado com 1 gestora ficava com 90px de grafico dentro de
+     um painel de 498px). A folga e medida a partir do PAINEL e dos
+     IRMAOS, nunca do proprio elemento - medir a si mesmo com flex:1
+     realimenta o ResizeObserver e a altura dispara.                   */
   var alturaLinha = (opt.h || 26) + 14;
-  el.style.height = Math.max(items.length * alturaLinha + 16, 90) + "px";
+  var natural = Math.max(items.length * alturaLinha + 16, 90);
+
+  el.style.flex = "";
+  el.style.minHeight = "";
   el.style.gap = "";
+
+  var pane = el.closest ? el.closest('.panel') : null;
+  var alvo = natural;
+
+  if(pane){
+    var cs = getComputedStyle(pane);
+    var livre = pane.clientHeight
+              - parseFloat(cs.paddingTop || 0)
+              - parseFloat(cs.paddingBottom || 0);
+
+    for(var n = 0; n < pane.children.length; n++){
+      var filho = pane.children[n];
+      if(filho === el) continue;
+      var fcs = getComputedStyle(filho);
+      livre -= filho.offsetHeight
+             + parseFloat(fcs.marginTop || 0)
+             + parseFloat(fcs.marginBottom || 0);
+    }
+
+    if(livre > natural) alvo = Math.floor(livre);
+  }
+
+  el.style.height = alvo + "px";
 
   var chart = _tvInstancia(el);
 
@@ -1537,6 +1575,9 @@ function bars(el, items, opt){
       type: 'category',
       data: ordem.map(function(i){ return i.n; }),
       axisLine: {show:false}, axisTick: {show:false},
+      /* triggerEvent devolve o clique ao nome/chip da gestora: antes do
+         ECharts a linha inteira (.gbar-row) era o alvo, nao so a barra */
+      triggerEvent: true,
       axisLabel: {
         width: opt.w || 150, overflow: 'truncate', margin: 12,
         formatter: function(v, n){
@@ -1560,7 +1601,7 @@ function bars(el, items, opt){
           }
         };
       }),
-      barWidth: opt.h || 22,
+      barMaxWidth: opt.h || 22,
       cursor: items.some(function(i){ return !!i.k; }) ? 'pointer' : 'default',
       label: {
         show: true, position: 'right', color: tinta,
@@ -1575,8 +1616,19 @@ function bars(el, items, opt){
 
   chart.off('click');
   chart.on('click', function(p){
-    var it = ordem[p.dataIndex];
+    /* barra -> dataIndex · rotulo do eixo -> p.value tem o nome */
+    var it = (p.componentType === 'yAxis')
+      ? ordem.filter(function(i){ return i.n === p.value; })[0]
+      : ordem[p.dataIndex];
     if(it && it.k) openGestoraModal(it.k, opt.filtro || "");
+  });
+
+  /* cursor de mao tambem sobre os rotulos clicaveis */
+  chart.getZr().on('mousemove', function(e){
+    var alvo = e.target;
+    var sobreRotulo = alvo && alvo.__hoverStyle !== undefined
+                      && items.some(function(i){ return !!i.k; });
+    chart.getZr().setCursorStyle(sobreRotulo ? 'pointer' : 'default');
   });
 
   chart.resize();
