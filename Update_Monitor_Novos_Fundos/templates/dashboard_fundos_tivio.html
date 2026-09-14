@@ -6,6 +6,17 @@
      claro/escuro continua sendo resolvido pelos tokens, então NÃO é preciso
      escrever variantes `dark:` no HTML, `bg-elev-1` já muda sozinho.       -->
 <script src="https://cdn.tailwindcss.com/3.4.16"></script>
+<!-- ============ ECHARTS · grafico da evolucao mensal =====================
+     Carregado do cdnjs com queda para o jsDelivr. Se os dois falharem
+     (offline, CDN bloqueado por politica de rede), renderEvolucao() volta
+     sozinha para as barras em CSS de bars() - o painel nunca fica vazio.
+     Versao fixada de proposito: atualizar e uma decisao, nao um efeito
+     colateral de abrir o arquivo amanha.                                -->
+<script
+  src="https://cdnjs.cloudflare.com/ajax/libs/echarts/5.6.0/echarts.min.js"
+  onerror="(function(t){t.remove();var s=document.createElement('script');
+           s.src='https://cdn.jsdelivr.net/npm/echarts@5.6.0/dist/echarts.min.js';
+           document.head.appendChild(s);})(this)"></script>
 <script id="tivio-tw-config">
 /* Guarda: se o CDN estiver bloqueado (rede corporativa, offline, SharePoint
    sem acesso externo), `tailwind` não existe. Sem esta checagem o script
@@ -1347,6 +1358,166 @@ function novasGestoras(){
 
 const SEG_DESC = ["Debêntures, CDBs, notas","FIDC (direitos creditórios)","Debêntures de infra (isenção IR)","PGBL/VGBL","Investimento no exterior","Rótulo sustentável"];
 
+/* ==================================================================
+   EVOLUCAO MENSAL EM ECHARTS
+   ------------------------------------------------------------------
+   Substitui a lista de barras horizontais por um grafico de colunas:
+   da para comparar meses de relance, ver a media do periodo e clicar
+   numa coluna para filtrar o dashboard naquele mes.
+
+   As cores saem dos tokens do Design System (--accent-strong troca
+   com o tema), entao claro e escuro continuam resolvidos por CSS.
+
+   Degradacao: sem a lib, cai em bars() com o mesmo layout de antes.
+   ================================================================== */
+var _evoChart = null, _evoUltimo = null, _evoTentativas = 0;
+
+function _tok(nome, fallback){
+  var v = getComputedStyle(document.documentElement)
+            .getPropertyValue(nome).trim();
+  return v || fallback;
+}
+
+/* "#C1F4D4" + 0.35 -> "rgba(193,244,212,.35)" · aceita hex de 3 ou 6 */
+function _alpha(cor, a){
+  var h = String(cor).trim();
+  if(h.charAt(0) !== '#') return h;
+  h = h.slice(1);
+  if(h.length === 3) h = h[0]+h[0]+h[1]+h[1]+h[2]+h[2];
+  if(h.length !== 6) return cor;
+  var n = parseInt(h, 16);
+  return 'rgba('+((n>>16)&255)+','+((n>>8)&255)+','+(n&255)+','+a+')';
+}
+
+function _evoBarrasCss(el, items){
+  var poucas = items.length <= 4;
+  el.style.flex = poucas ? "1" : "";
+  el.style.justifyContent = poucas ? "center" : "";
+  el.style.gap = poucas ? "18px" : "";
+  bars(el, items, {w:70, h: poucas ? 30 : 22});
+}
+
+function renderEvolucao(el, items){
+  _evoUltimo = items;
+
+  /* lib ainda nao chegou: desenha as barras de sempre e tenta de novo.
+     O onerror do <script> pode estar baixando o segundo CDN agora.     */
+  if(!window.echarts){
+    _evoBarrasCss(el, items);
+    if(_evoTentativas < 20){
+      _evoTentativas++;
+      setTimeout(function(){
+        if(window.echarts && _evoUltimo){
+          el.innerHTML = "";
+          el.style.gap = "";
+          renderEvolucao(el, _evoUltimo);
+        }
+      }, 250);
+    }
+    return;
+  }
+
+  el.style.flex = "1";
+  el.style.minHeight = "220px";
+
+  if(!_evoChart || _evoChart.getDom() !== el){
+    if(_evoChart){ _evoChart.dispose(); }
+    _evoChart = echarts.init(el, null, {renderer:'canvas'});
+
+    /* clicar na coluna = clicar na pilha de periodo correspondente */
+    _evoChart.on('click', function(p){
+      var alvo = document.querySelector(
+        '.month-pill[data-month="'+(items[p.dataIndex] || {}).k+'"]');
+      if(alvo) alvo.click();
+    });
+  }
+
+  var accent = _tok('--accent-strong', '#C1F4D4');
+  var muted  = _tok('--text-muted', '#8A99A3');
+  var linha  = _tok('--line', 'rgba(255,255,255,.10)');
+  var fundo  = _tok('--bg-elev-1', '#11181E');
+  var tinta  = _tok('--text-primary', '#FFF');
+
+  var valores = items.map(function(i){ return i.v; });
+  var total   = valores.reduce(function(a,b){ return a+b; }, 0);
+  var comDado = valores.filter(function(v){ return v > 0; });
+  var media   = comDado.length ? total / comDado.length : 0;
+
+  _evoChart.setOption({
+    animationDuration: 420,
+    grid: {left:2, right:12, top:26, bottom:2, containLabel:true},
+    tooltip: {
+      trigger: 'axis',
+      axisPointer: {type:'shadow'},
+      backgroundColor: fundo,
+      borderColor: linha,
+      textStyle: {color: tinta, fontSize: 12},
+      formatter: function(ps){
+        var p = ps[0];
+        var pct = total ? (p.value / total * 100).toFixed(1) : '0,0';
+        return '<b>'+p.name+'</b><br>'+p.value+' classe'+(p.value===1?'':'s')+
+               '<br><span style="color:'+muted+'">'+
+               String(pct).replace('.', ',')+'% do periodo</span>';
+      }
+    },
+    xAxis: {
+      type: 'category',
+      data: items.map(function(i){ return i.n; }),
+      axisLine: {lineStyle:{color: linha}},
+      axisTick: {show:false},
+      axisLabel: {color: muted, fontSize: 11, interval: 0, hideOverlap: true}
+    },
+    yAxis: {
+      type: 'value',
+      splitLine: {lineStyle:{color: linha}},
+      axisLabel: {color: muted, fontSize: 11},
+      minInterval: 1
+    },
+    series: [{
+      type: 'bar',
+      data: items.map(function(i){
+        return {
+          value: i.v,
+          itemStyle: {
+            color: i.sel ? accent : _alpha(accent, .32),
+            borderRadius: [3, 3, 0, 0]
+          }
+        };
+      }),
+      barMaxWidth: 34,
+      label: {
+        show: true, position: 'top', color: muted,
+        fontSize: 11, fontWeight: 600,
+        formatter: function(p){ return p.value > 0 ? p.value : ''; }
+      },
+      markLine: media > 0 ? {
+        silent: true, symbol: 'none',
+        lineStyle: {color: muted, type: 'dashed', width: 1, opacity: .55},
+        label: {
+          color: muted, fontSize: 10, position: 'insideEndTop',
+          formatter: 'media ' + media.toFixed(1).replace('.', ',')
+        },
+        data: [{yAxis: media}]
+      } : undefined
+    }]
+  }, true);
+
+  _evoChart.resize();
+}
+
+/* o grafico e canvas: nao herda CSS, entao precisa ser redesenhado
+   quando o tema vira ou o painel muda de tamanho */
+window.addEventListener('resize', function(){
+  if(_evoChart) _evoChart.resize();
+});
+
+new MutationObserver(function(){
+  var el = document.getElementById('vgEvolucao');
+  if(_evoChart && _evoUltimo && el) renderEvolucao(el, _evoUltimo);
+}).observe(document.documentElement, {
+  attributes: true, attributeFilter: ['data-theme']
+});
+
 function bars(el, items, opt){
   opt = opt || {};
   const max = items.length ? Math.max.apply(null, items.map(i => i.v)) || 1 : 1;
@@ -1391,16 +1562,11 @@ const byG = {};
   const ev = PERIODO_KEYS.map(m => ({
     n: MES_NOMES[m],
     v: FUNDS_DATA.filter(f => periodoDe(f) === m).length,
-    c: (m === currentMonth ? "#C1F4D4" : "#3E4B44")
+    c: (m === currentMonth ? "#C1F4D4" : "#3E4B44"),
+    k: m,
+    sel: (m === currentMonth)
   }));
-  const evEl = document.getElementById('vgEvolucao');
-  /* no modo Geral sao poucas barras (uma por ano): elas ocupam a altura
-     do painel em vez de deixar um vazio embaixo */
-  const poucas = ev.length <= 4;
-  evEl.style.flex = poucas ? "1" : "";
-  evEl.style.justifyContent = poucas ? "center" : "";
-  evEl.style.gap = poucas ? "18px" : "";
-  bars(evEl, ev, {w:70, h: poucas ? 30 : 22});
+  renderEvolucao(document.getElementById('vgEvolucao'), ev);
 
   /* --- segmentos --- */
   document.getElementById('vgSegmentos').innerHTML = SEG_META.map((m,i) => {

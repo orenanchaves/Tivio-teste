@@ -53,7 +53,14 @@ HTML_ENTRADA = os.getenv("HTML_ENTRADA", _default_in)
 
 SAIDA_DIR = Path(os.getenv("SAIDA_DIR", "outputs"))
 
-SQL_FILE = BASE / "sql" / "monitor_fundos.sql"
+# monitor_fundos.sql (v1, default) | monitor_fundos_v2.sql (campos da planilha)
+SQL_ARQUIVO = os.getenv("MONITOR_SQL", "").strip() or "monitor_fundos.sql"
+
+SQL_FILE = BASE / "sql" / SQL_ARQUIVO
+
+# catalogo.schema.tabela do cadastro da CVM; vazio = roda sem ele.
+# Descobrir o nome com: python buscar_cadastro_cvm.py
+CVM_CADASTRO = os.getenv("CVM_CADASTRO", "").strip()
 
 USE_MOCK = os.getenv("USE_MOCK", "false").lower() == "true"
 
@@ -278,12 +285,23 @@ def main():
 
     template = entrada.read_text(encoding="utf-8")
 
-    query = SQL_FILE.read_text(encoding="utf-8").format(
+    bruto = SQL_FILE.read_text(encoding="utf-8")
+
+    # v2 traz o bloco opcional do cadastro da CVM entre marcadores;
+    # resolver() escolhe o ramo antes do .format() para nao sobrar chave.
+    if "{{CVM_INI}}" in bruto:
+        import sql_cvm
+        bruto = sql_cvm.montar(bruto, CVM_CADASTRO or None)
+
+    query = bruto.format(
         catalog=CATALOG,
         schema=SCHEMA,
         link_base=LINK_CVM_BASE,
         data_ini=DATA_INI,
     )
+
+    print(f"  sql: {SQL_ARQUIVO}"
+          f"{' + cadastro CVM' if CVM_CADASTRO else ''}")
 
     df = consultar(query)
 
