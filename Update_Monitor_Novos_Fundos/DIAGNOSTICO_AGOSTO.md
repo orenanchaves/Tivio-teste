@@ -1,7 +1,7 @@
 # Diagnóstico — divergência de Agosto entre o monitor novo e a planilha histórica
 
 **Monitor de Novos Fundos · Tivio Capital**
-Data da análise: 14/09/2026
+Data da análise: 14/09/2026 · revisto após o SQL v2 e o alerta de defasagem
 
 Fontes confrontadas:
 
@@ -24,12 +24,30 @@ classifica em colunas próprias. Não existe regra histórica a implementar.
 
 A divergência vem de quatro causas independentes que se acumulam:
 
-| # | Causa | Natureza | Impacto em Agosto |
-|---|---|---|---|
-| 01 | O "47" empilha três anos | bug de código | número inexistente |
-| 02 | Universo de peers diferente | escopo/negócio | −89 registros |
-| 03 | As bases medem eventos diferentes | conceitual | −12 registros |
-| 04 | Fonte ANBIMA defasada 39 dias | dado | agosto truncado em 06/08 |
+| # | Causa | Natureza | Impacto em Agosto | Status |
+|---|---|---|---|---|
+| 01 | O "47" empilha três anos | bug de código | número inexistente | **corrigido** |
+| 02 | Universo de peers diferente | escopo/negócio | −89 registros | aguarda decisão de negócio |
+| 03 | As bases medem eventos diferentes | conceitual | −12 registros | **bloqueado**: depende do catálogo restrito |
+| 04 | Fonte ANBIMA defasada 39 dias | dado externo | agosto truncado em 06/08 | fora do nosso controle; agora sinalizado |
+
+### Por que Agosto ainda não bate
+
+Só a causa 01 dependia de código nosso, e ela já saiu. As outras três não se
+resolvem no monitor:
+
+- **02** é escolha de escopo: enquanto a lista `PEERS` não incluir Itaú,
+  Bradesco, BTG e XP, faltam 89 dos 105 registros de agosto por definição.
+- **03** exige um campo que a ANBIMA não tem. A planilha marca o fundo no
+  registro da CVM, inclusive em Fase Pré-Operacional; esse campo vinha do
+  catálogo restrito, que hoje devolve `INSUFFICIENT_PERMISSIONS`. Sem ele, 12
+  dos 16 peers de agosto são invisíveis para o monitor.
+- **04** é prazo de publicação da ANBIMA. Agosto vai fechar em torno de 20
+  classes quando o restante for publicado — rodar de novo hoje não muda nada.
+
+**Conclusão prática: agosto não vai bater com a planilha enquanto o acesso ao
+catálogo restrito não voltar.** O que dava para fazer no código já está feito;
+o resto é permissão e decisão de escopo.
 
 ---
 
@@ -264,6 +282,28 @@ Mesmo mes em outros anos:
 Validado contra a base real: ago/2026 dispara os dois avisos; ago/2025 (19) e
 abr/2026 (25, acima de abr/2025) não disparam nenhum.
 
+**d) SQL v2 com os campos da planilha** — `sql/monitor_fundos_v2.sql`, opt-in via
+`MONITOR_SQL=monitor_fundos_v2.sql`. Preserva o contrato de 25 colunas de
+`monitor_metrics.COLS`; as novas entram depois. O que muda:
+
+| Campo | v1 | v2 |
+|---|---|---|
+| `data_constituicao` | recebia `af.data_vigencia_fundo` (errado em 596/596) | vazio sem o cadastro da CVM; a vigência vai para `data_vigencia_cadastro` |
+| `exclusivo` | só nome contendo "EXCLUSIV" (0 de 47) | três sinais + `exclusivo_origem` para auditar qual disparou |
+| classes irmãs | não existia | `qtd_classes_no_fundo`, `existe_classe_irma`, `classes_irmas` |
+| `tipo_estrutura` | não existia | Prateleira / Mandato / Solução Dedicada (**heurística**, conferir contra `_DADOS`) |
+| `ano_ref` | não existia | ano explícito — é o que faltava para o recorte mensal |
+| cadastro da CVM | removido | bloco opcional entre `CVM_INI/ELSE/FIM`, resolvido por `sql_cvm.montar()` |
+
+Os dois ramos do bloco da CVM foram testados: sem `CVM_CADASTRO` a query roda
+sem o join; com ela entram a CTE e o `LEFT JOIN`, sem alias duplicado nos dois
+casos.
+
+**e) `buscar_cadastro_cvm.py`** — varre `system.information_schema` atrás da
+tabela de cadastro da CVM, cujo nome não ficou registrado quando a dependência
+foi removida, e imprime a linha pronta para o `.env`. Se voltar vazio, essa é a
+resposta: a permissão ainda não foi concedida.
+
 ### Decisão pendente 1 — restaurar o acesso ao catálogo restrito
 
 **É o que resolve de verdade, e é pedido de permissão ao TI, não código.**
@@ -282,6 +322,17 @@ Recuperando o acesso, voltam de uma vez:
 - os fundos pré-operacionais (194 de 718 na planilha);
 - a data de registro na CVM, que alinha o eixo temporal das duas bases;
 - a flag `is_exclusive` de verdade (hoje marca 0 de 47; a planilha marca 293 de 718).
+
+**O SQL v2 já está preparado para receber os três.** Assim que a permissão sair:
+
+```bash
+python buscar_cadastro_cvm.py          # descobre catalogo.schema.tabela
+# cola o CVM_CADASTRO no .env, confere os nomes das colunas na CTE
+MONITOR_SQL=monitor_fundos_v2.sql python atualizar_monitor.py
+python comparar_agosto.py Monitor_Fundos_Tivio.xlsm --mes 8 --ano 2026
+```
+
+A última linha diz na hora se passou a bater.
 
 ### Decisão pendente 2 — alinhar o universo de peers
 
@@ -304,12 +355,12 @@ bater — e isso deve estar dito no dashboard.
 
 ## 10. Achados secundários
 
-| Achado | Onde | Efeito |
+| Achado | Efeito | Status |
 |---|---|---|
-| `data_constituicao` é data de vigência do cadastro, não de constituição | `monitor_fundos.sql` · `af.data_vigencia_fundo` | valor errado em 596/596 linhas; é posterior ou igual ao início da classe em 100% dos casos, mediana 178 dias depois |
-| Flag `exclusivo` não dispara | CTE `exclusivo_por_classe`, depende de "EXCLUSIV" no nome | 0 de 47 no monitor · 293 de 718 na planilha |
-| Nomenclatura de tipo divergente | planilha usa `FI` e `FIIM`; monitor usa `FIF` | impede comparação direta por tipo |
-| Atribuição duplicada de `anos` | `atualizar_monitor.py` | removida |
+| `data_constituicao` é data de vigência do cadastro, não de constituição | valor errado em 596/596 linhas; posterior ou igual ao início da classe em 100% dos casos, mediana 178 dias depois | **resolvido no v2** (vai para `data_vigencia_cadastro`) |
+| Flag `exclusivo` não dispara | 0 de 47 no monitor · 293 de 718 na planilha | **melhorado no v2** (três sinais); só fica igual à planilha com o cadastro da CVM |
+| Nomenclatura de tipo divergente | planilha usa `FI` e `FIIM`; monitor usa `FIF` | **aberto** — impede comparação direta por tipo |
+| Atribuição duplicada de `anos` | — | removida |
 
 ---
 
@@ -327,6 +378,14 @@ python comparar_agosto.py Monitor_Fundos_Tivio.xlsm --mes 9 --ano 2026 \
 MES_DIAG=8 ANO_DIAG=2026 python atualizar_monitor.py
 ```
 
+```bash
+# roda com o SQL v2 (campos da planilha)
+MONITOR_SQL=monitor_fundos_v2.sql python atualizar_monitor.py
+
+# procura a tabela de cadastro da CVM no catálogo restrito
+python buscar_cadastro_cvm.py
+```
+
 `comparar_agosto.py` aceita como base nova tanto um dashboard HTML (lê o array
 `FUNDS_DATA`) quanto um `.xlsx` exportado pelo monitor.
 
@@ -340,12 +399,16 @@ O monitor não está errado em Agosto — ele está **incompleto e desalinhado**
 - desalinhado porque mede início de atividade, enquanto a planilha mede registro
   na CVM, e porque acompanha um conjunto menor de gestoras.
 
-Nenhum desses pontos se resolve com regra de filtro. Ordem de prioridade
-sugerida:
+Nenhum desses pontos se resolve com regra de filtro, e nenhum dos dois restantes
+se resolve no código — o que era código já saiu.
 
-1. **Restaurar o acesso ao catálogo restrito da CVM** — destrava os
-   pré-operacionais, a data de registro e a flag de exclusivo de uma só vez.
-2. **Decidir o universo de peers** — continuidade do histórico ou recorte novo,
-   explicitado no dashboard.
-3. **Corrigir `data_constituicao`** — hoje exibe a data de vigência do cadastro.
-4. Só depois disso vale reavaliar a lógica do monitor.
+| Prioridade | Ação | De quem depende |
+|---|---|---|
+| 1 | **Restaurar o acesso ao catálogo restrito da CVM** — destrava pré-operacionais, data de registro e flag de exclusivo de uma vez. O v2 já espera os três. | TI (permissão) |
+| 2 | **Decidir o universo de peers** — continuidade do histórico (inclui Itaú, Bradesco, BTG, XP) ou recorte novo, dito no dashboard. | negócio |
+| 3 | **Adotar o v2** — corrige `data_constituicao` e melhora a flag de exclusivo mesmo sem o cadastro. | já disponível |
+| 4 | Padronizar a nomenclatura de tipo (`FI`/`FIIM` × `FIF`). | aberto |
+| 5 | Só depois disso vale reavaliar a lógica do monitor. | — |
+
+Enquanto 1 e 2 não forem resolvidos, **a divergência de Agosto é esperada, não é
+defeito** — e o alerta de fonte defasada agora avisa isso a cada rodada.
