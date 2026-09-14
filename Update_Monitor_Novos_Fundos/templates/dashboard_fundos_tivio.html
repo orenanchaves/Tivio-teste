@@ -1359,18 +1359,24 @@ function novasGestoras(){
 const SEG_DESC = ["Debêntures, CDBs, notas","FIDC (direitos creditórios)","Debêntures de infra (isenção IR)","PGBL/VGBL","Investimento no exterior","Rótulo sustentável"];
 
 /* ==================================================================
-   EVOLUCAO MENSAL EM ECHARTS
+   GRAFICOS EM ECHARTS
    ------------------------------------------------------------------
-   Substitui a lista de barras horizontais por um grafico de colunas:
-   da para comparar meses de relance, ver a media do periodo e clicar
-   numa coluna para filtrar o dashboard naquele mes.
+   Todos os paineis de barras do dashboard passam por bars(), entao a
+   troca e feita aqui dentro: quem chama nao muda, e os oito paineis
+   (gestoras, credito privado, top gestoras, novas, ANBIMA, publico,
+   faixas de taxa, taxa por gestora) sobem juntos e consistentes.
+   A evolucao mensal tem forma propria - colunas - e fica em
+   renderEvolucao().
 
-   As cores saem dos tokens do Design System (--accent-strong troca
-   com o tema), entao claro e escuro continuam resolvidos por CSS.
+   Cores saem dos tokens do Design System, entao claro e escuro
+   continuam resolvidos por CSS. Canvas nao herda CSS: por isso o
+   MutationObserver no fim redesenha tudo quando o tema vira.
 
-   Degradacao: sem a lib, cai em bars() com o mesmo layout de antes.
+   Degradacao: sem a lib (offline, CDN bloqueado) cai em barsCss(),
+   que e exatamente o render anterior. O painel nunca fica vazio.
    ================================================================== */
-var _evoChart = null, _evoUltimo = null, _evoTentativas = 0;
+var _tvCharts = [];          /* [{el, tipo, items, opt}] para redesenhar */
+var _tvEsperas = 0;
 
 function _tok(nome, fallback){
   var v = getComputedStyle(document.documentElement)
@@ -1378,7 +1384,7 @@ function _tok(nome, fallback){
   return v || fallback;
 }
 
-/* "#C1F4D4" + 0.35 -> "rgba(193,244,212,.35)" · aceita hex de 3 ou 6 */
+/* "#C1F4D4" + .32 -> "rgba(193,244,212,.32)" · aceita hex de 3 ou 6 */
 function _alpha(cor, a){
   var h = String(cor).trim();
   if(h.charAt(0) !== '#') return h;
@@ -1389,48 +1395,211 @@ function _alpha(cor, a){
   return 'rgba('+((n>>16)&255)+','+((n>>8)&255)+','+(n&255)+','+a+')';
 }
 
-function _evoBarrasCss(el, items){
-  var poucas = items.length <= 4;
-  el.style.flex = poucas ? "1" : "";
-  el.style.justifyContent = poucas ? "center" : "";
-  el.style.gap = poucas ? "18px" : "";
-  bars(el, items, {w:70, h: poucas ? 30 : 22});
+function _tvRegistra(el, tipo, items, opt){
+  for(var i = 0; i < _tvCharts.length; i++){
+    if(_tvCharts[i].el === el){
+      _tvCharts[i] = {el:el, tipo:tipo, items:items, opt:opt};
+      return;
+    }
+  }
+  _tvCharts.push({el:el, tipo:tipo, items:items, opt:opt});
 }
 
-function renderEvolucao(el, items){
-  _evoUltimo = items;
-
-  /* lib ainda nao chegou: desenha as barras de sempre e tenta de novo.
-     O onerror do <script> pode estar baixando o segundo CDN agora.     */
-  if(!window.echarts){
-    _evoBarrasCss(el, items);
-    if(_evoTentativas < 20){
-      _evoTentativas++;
-      setTimeout(function(){
-        if(window.echarts && _evoUltimo){
-          el.innerHTML = "";
-          el.style.gap = "";
-          renderEvolucao(el, _evoUltimo);
-        }
-      }, 250);
+/* a lib pode ainda estar a caminho (o onerror do <script> baixa o
+   segundo CDN). Desenha o fallback agora e tenta de novo por 5s.     */
+function _tvAguardaLib(){
+  if(window.echarts || _tvEsperas >= 20) return;
+  _tvEsperas++;
+  setTimeout(function(){
+    if(window.echarts){
+      _tvCharts.slice().forEach(function(c){
+        c.el.innerHTML = "";
+        if(c.tipo === 'evo') renderEvolucao(c.el, c.items);
+        else bars(c.el, c.items, c.opt);
+      });
+    } else {
+      _tvAguardaLib();
     }
+  }, 250);
+}
+
+/* Paineis de abas inativas estao em display:none, onde o canvas nasce
+   0x0 e ficaria em branco ao trocar de aba. O observador redesenha
+   assim que o elemento ganha tamanho - serve para troca de aba, para
+   o painel lateral e para qualquer mudanca de layout.              */
+var _tvRO = (typeof ResizeObserver !== 'undefined')
+  ? new ResizeObserver(function(ents){
+      ents.forEach(function(e){
+        if(e.contentRect.width < 1) return;
+        var i = echarts.getInstanceByDom(e.target);
+        if(i) i.resize();
+      });
+    })
+  : null;
+
+function _tvInstancia(el){
+  var inst = echarts.getInstanceByDom(el);
+  if(inst) return inst;
+  el.innerHTML = "";
+  inst = echarts.init(el, null, {renderer:'canvas'});
+  if(_tvRO) _tvRO.observe(el);
+  return inst;
+}
+
+/* ---------------------------------------------- barras horizontais */
+function barsCss(el, items, opt){
+  var max = items.length
+    ? Math.max.apply(null, items.map(function(i){ return i.v; })) || 1 : 1;
+  el.innerHTML = items.length ? items.map(function(i){
+    return '<div class="gbar-row'+(i.k?' gbar-click':'')+'"'+(i.k?' data-gkey="'+esc(i.k)+'" data-gfiltro="'+esc(opt.filtro||'')+'" title="Ver as classes · '+esc(i.n)+'"':'')+'>' +
+      (opt.chip
+        ? '<div class="gbar-logo"><span style="background:'+i.c+';color:var(--text-primary);padding:6px 14px;border-radius:6px;font-weight:700;font-size:13px">'+esc(i.n)+'</span></div>'
+        : '<div style="width:'+(opt.w||170)+'px;font-size:12px;color:color-mix(in srgb,var(--veil) 85%,transparent)" title="'+esc(i.n)+'">'+esc(i.n)+'</div>') +
+      '<div class="gbar-track" style="height:'+(opt.h||26)+'px"><div class="gbar-fill" style="width:'+(i.v/max*100).toFixed(1)+'%;background:linear-gradient(90deg,'+i.c+','+i.c+'88)"></div></div>' +
+      '<div class="gbar-value" style="font-size:14px;width:'+(opt.vw||36)+'px">'+(opt.fmt?opt.fmt(i.v):i.v)+'</div>' +
+    '</div>';
+  }).join('')
+    : '<div style="color:var(--muted);font-size:12px">Sem registros no período.</div>';
+}
+
+function bars(el, items, opt){
+  opt = opt || {};
+  if(!el) return;
+
+  if(!items || !items.length){
+    el.style.height = "";
+    el.innerHTML = '<div style="color:var(--muted);font-size:12px">Sem registros no período.</div>';
+    return;
+  }
+
+  _tvRegistra(el, 'bars', items, opt);
+
+  if(!window.echarts){
+    barsCss(el, items, opt);
+    _tvAguardaLib();
+    return;
+  }
+
+  var muted = _tok('--text-muted', '#8A99A3');
+  var linha = _tok('--line', 'rgba(255,255,255,.10)');
+  var fundo = _tok('--bg-elev-1', '#11181E');
+  var tinta = _tok('--text-primary', '#FFF');
+
+  var alturaLinha = (opt.h || 26) + 14;
+  el.style.height = Math.max(items.length * alturaLinha + 16, 90) + "px";
+  el.style.gap = "";
+
+  var chart = _tvInstancia(el);
+
+  /* o chip colorido da gestora vira um estilo rich por item */
+  var rich = {};
+  items.forEach(function(i, n){
+    rich['c' + n] = {
+      backgroundColor: opt.chip ? i.c : 'transparent',
+      color: opt.chip ? _tok('--text-primary', '#FFF') : muted,
+      fontWeight: opt.chip ? 700 : 400,
+      fontSize: opt.chip ? 12 : 11,
+      padding: opt.chip ? [4, 9, 4, 9] : [0, 0, 0, 0],
+      borderRadius: 5,
+      align: 'left'
+    };
+  });
+
+  /* ECharts desenha a categoria de baixo para cima: inverte para o
+     maior ficar no topo, como na lista de barras anterior          */
+  var ordem = items.slice().reverse();
+
+  chart.setOption({
+    animationDuration: 380,
+    /* o rotulo ocupa opt.w + a margem ate o eixo + o padding do chip;
+       faltando folga aqui o ECharts corta o primeiro caractere       */
+    grid: {
+      left: (opt.w || 150) + (opt.chip ? 34 : 24),
+      right: (opt.vw || 42) + 18,
+      top: 4, bottom: 4
+    },
+    tooltip: {
+      trigger: 'item',
+      backgroundColor: fundo, borderColor: linha,
+      textStyle: {color: tinta, fontSize: 12},
+      formatter: function(p){
+        var it = ordem[p.dataIndex];
+        return '<b>' + it.n + '</b><br>' +
+               (opt.fmt ? opt.fmt(it.v) : it.v) +
+               (it.k ? '<br><span style="color:' + muted +
+                       '">clique para ver as classes</span>' : '');
+      }
+    },
+    xAxis: {type:'value', show:false, max:'dataMax'},
+    yAxis: {
+      type: 'category',
+      data: ordem.map(function(i){ return i.n; }),
+      axisLine: {show:false}, axisTick: {show:false},
+      axisLabel: {
+        width: opt.w || 150, overflow: 'truncate', margin: 12,
+        formatter: function(v, n){
+          return '{c' + (items.length - 1 - n) + '|' + v + '}';
+        },
+        rich: rich
+      }
+    },
+    series: [{
+      type: 'bar',
+      data: ordem.map(function(i){
+        return {
+          value: i.v,
+          itemStyle: {
+            color: {
+              type: 'linear', x:0, y:0, x2:1, y2:0,
+              colorStops: [{offset:0, color:i.c},
+                           {offset:1, color:_alpha(i.c, .53)}]
+            },
+            borderRadius: [0, 4, 4, 0]
+          }
+        };
+      }),
+      barWidth: opt.h || 22,
+      cursor: items.some(function(i){ return !!i.k; }) ? 'pointer' : 'default',
+      label: {
+        show: true, position: 'right', color: tinta,
+        fontSize: 13, fontWeight: 600,
+        formatter: function(p){
+          var it = ordem[p.dataIndex];
+          return opt.fmt ? opt.fmt(it.v) : it.v;
+        }
+      }
+    }]
+  }, true);
+
+  chart.off('click');
+  chart.on('click', function(p){
+    var it = ordem[p.dataIndex];
+    if(it && it.k) openGestoraModal(it.k, opt.filtro || "");
+  });
+
+  chart.resize();
+}
+
+/* -------------------------------------------- evolucao: colunas */
+function renderEvolucao(el, items){
+  if(!el) return;
+  _tvRegistra(el, 'evo', items, null);
+
+  if(!window.echarts){
+    var poucas = items.length <= 4;
+    el.style.flex = poucas ? "1" : "";
+    el.style.justifyContent = poucas ? "center" : "";
+    el.style.gap = poucas ? "18px" : "";
+    barsCss(el, items, {w:70, h: poucas ? 30 : 22});
+    _tvAguardaLib();
     return;
   }
 
   el.style.flex = "1";
   el.style.minHeight = "220px";
+  el.style.gap = "";
 
-  if(!_evoChart || _evoChart.getDom() !== el){
-    if(_evoChart){ _evoChart.dispose(); }
-    _evoChart = echarts.init(el, null, {renderer:'canvas'});
-
-    /* clicar na coluna = clicar na pilha de periodo correspondente */
-    _evoChart.on('click', function(p){
-      var alvo = document.querySelector(
-        '.month-pill[data-month="'+(items[p.dataIndex] || {}).k+'"]');
-      if(alvo) alvo.click();
-    });
-  }
+  var chart = _tvInstancia(el);
 
   var accent = _tok('--accent-strong', '#C1F4D4');
   var muted  = _tok('--text-muted', '#8A99A3');
@@ -1443,18 +1612,16 @@ function renderEvolucao(el, items){
   var comDado = valores.filter(function(v){ return v > 0; });
   var media   = comDado.length ? total / comDado.length : 0;
 
-  _evoChart.setOption({
+  chart.setOption({
     animationDuration: 420,
     grid: {left:2, right:12, top:26, bottom:2, containLabel:true},
     tooltip: {
-      trigger: 'axis',
-      axisPointer: {type:'shadow'},
-      backgroundColor: fundo,
-      borderColor: linha,
+      trigger: 'axis', axisPointer: {type:'shadow'},
+      backgroundColor: fundo, borderColor: linha,
       textStyle: {color: tinta, fontSize: 12},
       formatter: function(ps){
         var p = ps[0];
-        var pct = total ? (p.value / total * 100).toFixed(1) : '0,0';
+        var pct = total ? (p.value / total * 100).toFixed(1) : '0.0';
         return '<b>'+p.name+'</b><br>'+p.value+' classe'+(p.value===1?'':'s')+
                '<br><span style="color:'+muted+'">'+
                String(pct).replace('.', ',')+'% do periodo</span>';
@@ -1463,8 +1630,7 @@ function renderEvolucao(el, items){
     xAxis: {
       type: 'category',
       data: items.map(function(i){ return i.n; }),
-      axisLine: {lineStyle:{color: linha}},
-      axisTick: {show:false},
+      axisLine: {lineStyle:{color: linha}}, axisTick: {show:false},
       axisLabel: {color: muted, fontSize: 11, interval: 0, hideOverlap: true}
     },
     yAxis: {
@@ -1485,6 +1651,7 @@ function renderEvolucao(el, items){
         };
       }),
       barMaxWidth: 34,
+      cursor: 'pointer',
       label: {
         show: true, position: 'top', color: muted,
         fontSize: 11, fontWeight: 600,
@@ -1502,35 +1669,34 @@ function renderEvolucao(el, items){
     }]
   }, true);
 
-  _evoChart.resize();
+  chart.off('click');
+  chart.on('click', function(p){
+    var it = items[p.dataIndex];
+    if(!it) return;
+    var alvo = document.querySelector('.month-pill[data-month="'+it.k+'"]');
+    if(alvo) alvo.click();
+  });
+
+  chart.resize();
 }
 
-/* o grafico e canvas: nao herda CSS, entao precisa ser redesenhado
-   quando o tema vira ou o painel muda de tamanho */
-window.addEventListener('resize', function(){
-  if(_evoChart) _evoChart.resize();
-});
-
+/* canvas nao herda CSS: redesenha tudo quando o tema vira */
 new MutationObserver(function(){
-  var el = document.getElementById('vgEvolucao');
-  if(_evoChart && _evoUltimo && el) renderEvolucao(el, _evoUltimo);
-}).observe(document.documentElement, {
-  attributes: true, attributeFilter: ['data-theme']
-});
+  if(!window.echarts) return;
+  _tvCharts.forEach(function(c){
+    if(c.tipo === 'evo') renderEvolucao(c.el, c.items);
+    else bars(c.el, c.items, c.opt);
+  });
+}).observe(document.documentElement,
+           {attributes:true, attributeFilter:['data-theme']});
 
-function bars(el, items, opt){
-  opt = opt || {};
-  const max = items.length ? Math.max.apply(null, items.map(i => i.v)) || 1 : 1;
-  el.innerHTML = items.length ? items.map(i =>
-    '<div class="gbar-row'+(i.k?' gbar-click':'')+'"'+(i.k?' data-gkey="'+esc(i.k)+'" data-gfiltro="'+esc(opt.filtro||'')+'" title="Ver as classes · '+esc(i.n)+'"':'')+'>' +
-      (opt.chip
-        ? '<div class="gbar-logo"><span style="background:'+i.c+';color:var(--text-primary);padding:6px 14px;border-radius:6px;font-weight:700;font-size:13px">'+esc(i.n)+'</span></div>'
-        : '<div style="width:'+(opt.w||170)+'px;font-size:12px;color:color-mix(in srgb,var(--veil) 85%,transparent)" title="'+esc(i.n)+'">'+esc(i.n)+'</div>') +
-      '<div class="gbar-track" style="height:'+(opt.h||26)+'px"><div class="gbar-fill" style="width:'+(i.v/max*100).toFixed(1)+'%;background:linear-gradient(90deg,'+i.c+','+i.c+'88)"></div></div>' +
-      '<div class="gbar-value" style="font-size:14px;width:'+(opt.vw||36)+'px">'+(opt.fmt?opt.fmt(i.v):i.v)+'</div>' +
-    '</div>').join('')
-    : '<div style="color:var(--muted);font-size:12px">Sem registros no período.</div>';
-}
+window.addEventListener('resize', function(){
+  if(!window.echarts) return;
+  _tvCharts.forEach(function(c){
+    var i = echarts.getInstanceByDom(c.el);
+    if(i) i.resize();
+  });
+});
 
 function renderPaineis(){
   const arr = FUNDS_DATA.filter(noPeriodo);
