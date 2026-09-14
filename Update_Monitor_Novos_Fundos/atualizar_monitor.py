@@ -72,6 +72,15 @@ LINK_CVM_BASE = os.getenv(
 # qual arquivo vira o dashboard_fundos_tivio.html: "recente" ou "geral"
 HTML_PRINCIPAL = os.getenv("HTML_PRINCIPAL", "recente").lower()
 
+# mes/ano do bloco de diagnostico (ANO_DIAG vazio = ano mais recente da base)
+_MES_DIAG = int(os.getenv("MES_DIAG", "").strip() or 8)
+
+_NOME_MES = {
+    1: "JANEIRO", 2: "FEVEREIRO", 3: "MARCO", 4: "ABRIL",
+    5: "MAIO", 6: "JUNHO", 7: "JULHO", 8: "AGOSTO",
+    9: "SETEMBRO", 10: "OUTUBRO", 11: "NOVEMBRO", 12: "DEZEMBRO",
+}
+
 
 # ----------------------------------------------------------------- consulta
 def consultar(query: str) -> pd.DataFrame:
@@ -269,9 +278,24 @@ def main():
     print(f"Depois filtro: {len(df)}")
 
     try:
-        agosto = df[df["mes_ref"] == 8]
+        # ATENCAO: mes_ref sozinho nao distingue o ano. Sem o recorte de
+        # ano abaixo, "agosto" somaria ago/2024 + ago/2025 + ago/2026
+        # (47 linhas), numero que nao existe em nenhum mes real e que nao
+        # e comparavel com a aba do Excel historico (um unico ano).
+        _ano_diag = int(os.getenv("ANO_DIAG", "").strip() or 0)
 
-        print("\n=== AGOSTO ===")
+        if not _ano_diag:
+            _anos_validos = [
+                a for a in df.apply(mm.ano_de, axis=1).unique() if a > 0
+            ]
+            _ano_diag = max(_anos_validos) if _anos_validos else 0
+
+        agosto = df[
+            (df["mes_ref"] == _MES_DIAG)
+            & (df.apply(mm.ano_de, axis=1) == _ano_diag)
+        ]
+
+        print(f"\n=== {_NOME_MES.get(_MES_DIAG, _MES_DIAG)}/{_ano_diag} ===")
         print("Linhas:", len(agosto))
 
         print("\nPor tipo:")
@@ -287,15 +311,15 @@ def main():
                 "tipo",
                 "exclusivo"
             ]
-        ].to_excel(
-            "agosto_peers.xlsx",
-            index=False
-        )
+        ]
 
-        print("Arquivo agosto_peers.xlsx gerado")
+        _saida_diag = BASE / f"peers_{_ano_diag}_{_MES_DIAG:02d}.xlsx"
+        agosto.to_excel(_saida_diag, index=False)
+
+        print(f"Arquivo {_saida_diag.name} gerado")
 
     except Exception as e:
-        print("Erro diagnostico agosto:", e)
+        print("Erro no diagnostico mensal:", e)
 
     if df.empty:
         print("  ! nenhuma gestora peer encontrada.")
