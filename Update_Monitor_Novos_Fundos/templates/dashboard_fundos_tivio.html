@@ -1395,6 +1395,45 @@ function _alpha(cor, a){
   return 'rgba('+((n>>16)&255)+','+((n>>8)&255)+','+(n&255)+','+a+')';
 }
 
+/* O canvas do ECharts NAO herda CSS: sem isto os graficos saem na fonte
+   padrao da lib enquanto a pagina inteira usa Versos. Le o mesmo token
+   --ff, entao segue a fonte da marca sem duplicar a lista.            */
+function _ff(){
+  return _tok('--ff', '"Versos","Helvetica Neue",Helvetica,Arial,sans-serif');
+}
+
+/* Mede o rotulo na fonte que esta realmente valendo. Reservar espaco por
+   conta fixa quebra dos dois lados: com a metrica do fallback sobra
+   espaco, com a do Versos falta e o ECharts corta. containLabel tambem
+   nao serve aqui - com o rotulo rich (o chip da gestora) ele reserva
+   menos que o bloco desenhado e joga o texto para fora do canvas.   */
+function _larguraTexto(textos, fonte){
+  var cv = _larguraTexto._cv
+        || (_larguraTexto._cv = document.createElement('canvas'));
+  var ctx = cv.getContext('2d');
+  ctx.font = fonte;
+  var maior = 0;
+  for(var i = 0; i < textos.length; i++){
+    maior = Math.max(maior, ctx.measureText(String(textos[i])).width);
+  }
+  return Math.ceil(maior);
+}
+
+/* axisLabel.width + overflow:'truncate' NAO truncam quando o rotulo usa
+   rich text (o chip da gestora): o bloco cresce ate o conteudo e o texto
+   longo sai pela esquerda do canvas. Entao o corte e feito aqui, antes
+   de montar a marcacao.                                              */
+function _cortar(txt, limite, fonte){
+  txt = String(txt);
+  if(_larguraTexto([txt], fonte) <= limite) return txt;
+  var corte = txt;
+  while(corte.length > 1 &&
+        _larguraTexto([corte + '…'], fonte) > limite){
+    corte = corte.slice(0, -1);
+  }
+  return corte + '…';
+}
+
 function _tvRegistra(el, tipo, items, opt){
   for(var i = 0; i < _tvCharts.length; i++){
     if(_tvCharts[i].el === el){
@@ -1469,6 +1508,35 @@ function barsCss(el, items, opt){
     : '<div style="color:var(--muted);font-size:12px">Sem registros no período.</div>';
 }
 
+/* Rotulo do eixo: com chip usa rich (fundo colorido por gestora), sem
+   chip usa texto simples - rich sem necessidade so traz o problema de
+   medicao de volta.                                                  */
+function _rotuloEixo(ordem, rotulos, opt, muted){
+  var base = {margin: 12, fontFamily: _ff()};
+
+  if(!opt.chip){
+    base.color = muted;
+    base.fontSize = 11;
+    base.formatter = function(v, n){ return rotulos[n]; };
+    return base;
+  }
+
+  var rich = {};
+  ordem.forEach(function(i, n){
+    rich['c' + n] = {
+      backgroundColor: i.c,
+      color: _tok('--text-primary', '#FFF'),
+      fontWeight: 700, fontSize: 12,
+      padding: [4, 9, 4, 9], borderRadius: 5,
+      align: 'left', fontFamily: _ff()
+    };
+  });
+
+  base.rich = rich;
+  base.formatter = function(v, n){ return '{c' + n + '|' + rotulos[n] + '}'; };
+  return base;
+}
+
 function bars(el, items, opt){
   opt = opt || {};
   if(!el) return;
@@ -1529,30 +1597,26 @@ function bars(el, items, opt){
 
   var chart = _tvInstancia(el);
 
-  /* o chip colorido da gestora vira um estilo rich por item */
-  var rich = {};
-  items.forEach(function(i, n){
-    rich['c' + n] = {
-      backgroundColor: opt.chip ? i.c : 'transparent',
-      color: opt.chip ? _tok('--text-primary', '#FFF') : muted,
-      fontWeight: opt.chip ? 700 : 400,
-      fontSize: opt.chip ? 12 : 11,
-      padding: opt.chip ? [4, 9, 4, 9] : [0, 0, 0, 0],
-      borderRadius: 5,
-      align: 'left'
-    };
-  });
-
   /* ECharts desenha a categoria de baixo para cima: inverte para o
      maior ficar no topo, como na lista de barras anterior          */
   var ordem = items.slice().reverse();
 
+  var fonteRotulo = (opt.chip ? '700 12px ' : '400 11px ') + _ff();
+  var limite = (opt.w || 150) - (opt.chip ? 20 : 0);
+
+  /* o eixo mostra exatamente estes textos - ja cortados */
+  var rotulos = ordem.map(function(i){
+    return _cortar(i.n, limite, fonteRotulo);
+  });
+
+  var larguraRotulo = _larguraTexto(rotulos, fonteRotulo)
+                    + (opt.chip ? 20 : 2);
+
   chart.setOption({
     animationDuration: 380,
-    /* o rotulo ocupa opt.w + a margem ate o eixo + o padding do chip;
-       faltando folga aqui o ECharts corta o primeiro caractere       */
+    textStyle: {fontFamily: _ff()},
     grid: {
-      left: (opt.w || 150) + (opt.chip ? 34 : 24),
+      left: larguraRotulo + (opt.chip ? 26 : 16),
       right: (opt.vw || 42) + 18,
       top: 4, bottom: 4
     },
@@ -1576,13 +1640,7 @@ function bars(el, items, opt){
       /* triggerEvent devolve o clique ao nome/chip da gestora: antes do
          ECharts a linha inteira (.gbar-row) era o alvo, nao so a barra */
       triggerEvent: true,
-      axisLabel: {
-        width: opt.w || 150, overflow: 'truncate', margin: 12,
-        formatter: function(v, n){
-          return '{c' + (items.length - 1 - n) + '|' + v + '}';
-        },
-        rich: rich
-      }
+      axisLabel: _rotuloEixo(ordem, rotulos, opt, muted)
     },
     series: [{
       type: 'bar',
@@ -1666,6 +1724,7 @@ function renderEvolucao(el, items){
 
   chart.setOption({
     animationDuration: 420,
+    textStyle: {fontFamily: _ff()},
     grid: {left:2, right:12, top:26, bottom:2, containLabel:true},
     tooltip: {
       trigger: 'axis', axisPointer: {type:'shadow'},
@@ -1730,6 +1789,19 @@ function renderEvolucao(el, items){
   });
 
   chart.resize();
+}
+
+/* As webfonts chegam depois do primeiro render: sem isto a largura dos
+   rotulos fica medida na fonte de fallback e o eixo sai desalinhado
+   quando o Versos entra. */
+if(document.fonts && document.fonts.ready){
+  document.fonts.ready.then(function(){
+    if(!window.echarts) return;
+    _tvCharts.forEach(function(c){
+      if(c.tipo === 'evo') renderEvolucao(c.el, c.items);
+      else bars(c.el, c.items, c.opt);
+    });
+  });
 }
 
 /* canvas nao herda CSS: redesenha tudo quando o tema vira */
