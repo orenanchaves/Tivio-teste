@@ -103,7 +103,7 @@ def carregar_excel() -> pd.DataFrame:
 
 def carregar_databricks() -> pd.DataFrame:
     query = db.ler_sql(SQL_FILE, data_ini=DATA_INI)
-    return db.consultar(query, mock=carregar_excel)
+    return db.consultar_ou_sair(query, mock=carregar_excel)
 
 
 def para_ofertas_data(df: pd.DataFrame) -> list:

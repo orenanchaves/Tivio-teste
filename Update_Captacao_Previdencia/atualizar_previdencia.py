@@ -191,12 +191,31 @@ def main():
         for aba, df in por_aba.items():
             print(f"     {aba:<10} {len(df)} fundos")
     else:
+        # O SQL roda, mas o agrupamento por plataforma ainda nao foi
+        # conferido contra a planilha. Em vez de recusar a conexao,
+        # mostra o que voltou - da para iterar no SQL - e para antes de
+        # gravar, que e onde um numero nao conferido viraria decisao.
+        print("  fonte: Databricks")
+
         query = db.ler_sql(SQL_FILE, data_ini=DATA_INI)
-        bruto = db.consultar(query)
+        bruto = db.consultar_ou_sair(query)
+
+        print(f"\n  {len(bruto)} linhas | colunas: {list(bruto.columns)}")
+
+        if len(bruto):
+            print("\n  amostra:")
+            print(bruto.head(5).to_string(index=False, max_colwidth=34))
+
+            if "plataforma" in bruto.columns:
+                print("\n  por plataforma:")
+                print(bruto["plataforma"].value_counts().head(10).to_string())
+
         sys.exit(
-            f"  ! FONTE=databricks devolveu {len(bruto)} linhas, mas o "
-            f"agrupamento por plataforma ainda nao foi conferido. "
-            f"Ver ORIGEM_DOS_DADOS.md; use FONTE=excel."
+            "\n  ! parando aqui de proposito: o agrupamento por plataforma "
+            "nao foi\n    conferido contra a planilha, e o ambiente de "
+            "Fundos Abertos - que usa\n    a mesma logica - tem divergencia "
+            "aberta. Ver ORIGEM_DOS_DADOS.md.\n    Para gerar o dashboard "
+            "hoje: FONTE=excel"
         )
 
     prev = montar_prev(por_aba)

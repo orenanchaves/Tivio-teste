@@ -5,6 +5,26 @@
 Cinco dashboards, um roteiro só. Cada pasta `Update_*` lê uma fonte, converte
 para o contrato do seu template e grava o HTML em `outputs/`.
 
+## Chave do Databricks — um arquivo só
+
+Copie `.env.exemplo` para `.env` **na raiz** e preencha. Ele atende todos os
+ambientes: `tivio_core/db.py` procura primeiro o `.env` da pasta do ambiente e
+depois o da raiz, então rotacionar a chave é mexer em um lugar só.
+
+Antes cada pasta precisava do seu próprio `.env` com a chave repetida — e dois
+ambientes novos ficaram sem nenhum.
+
+Confira antes de rodar qualquer coisa:
+
+```powershell
+pip install -r Update_Monitor_Novos_Fundos\requirements.txt
+python testar_conexao.py
+```
+
+`testar_conexao.py` mostra host, catálogo e usuário, confirma que o token está
+definido (sem imprimi-lo) e checa se as oito tabelas que os ambientes usam
+existem no schema configurado.
+
 ## Como rodar
 
 ```powershell

@@ -1,14 +1,46 @@
 # -*- coding: utf-8 -*-
 """Conexao com o Databricks, igual para todos os ambientes."""
 import os
+from pathlib import Path
 
 import pandas as pd
 
-try:
-    from dotenv import load_dotenv
-    load_dotenv()
-except Exception:
-    pass
+RAIZ = Path(__file__).resolve().parent.parent
+
+
+def carregar_env():
+    """Procura o .env na pasta do ambiente e depois na raiz.
+
+    Antes cada pasta Update_* precisava do seu proprio .env com a chave
+    do Databricks repetida. Alem do trabalho de copiar, rotacionar a
+    chave exigia lembrar de todos os lugares - e dois ambientes novos
+    ficaram sem nenhum.
+
+    Agora um unico .env na raiz atende todos. Um .env na pasta do
+    ambiente ainda vence, para o caso de um deles precisar de outro
+    workspace: o primeiro a definir a variavel ganha, porque
+    load_dotenv() nao sobrescreve o que ja existe.
+    """
+    try:
+        from dotenv import load_dotenv
+    except ImportError:
+        # falhar em silencio aqui produz o pior erro possivel: o script
+        # diz "faltando no .env" com o .env na frente da pessoa
+        achou = [c for c in (Path.cwd() / ".env", RAIZ / ".env") if c.exists()]
+
+        if achou:
+            print("  ! python-dotenv nao instalado: o .env encontrado em "
+                  f"{achou[0]} sera IGNORADO")
+            print("    pip install python-dotenv")
+
+        return
+
+    for caminho in (Path.cwd() / ".env", RAIZ / ".env"):
+        if caminho.exists():
+            load_dotenv(caminho)
+
+
+carregar_env()
 
 
 def usar_mock() -> bool:
@@ -33,11 +65,19 @@ def consultar(query: str, mock=None) -> pd.DataFrame:
                             "DATABRICKS_TOKEN") if not os.getenv(v)]
     if faltando:
         raise RuntimeError(
-            f"defina no .env: {', '.join(faltando)} "
-            f"(ou rode com USE_MOCK=true)"
+            f"faltando no .env: {', '.join(faltando)}\n"
+            f"     ponha em {RAIZ / '.env'} (serve todos os ambientes)\n"
+            f"     ou rode com USE_MOCK=true para nao conectar"
         )
 
-    from databricks import sql
+    try:
+        from databricks import sql
+    except ImportError:
+        raise RuntimeError(
+            "databricks-sql-connector nao instalado.\n"
+            "     pip install -r requirements.txt\n"
+            "     (ou rode com USE_MOCK=true para nao conectar)"
+        ) from None
 
     conn = sql.connect(
         server_hostname=os.getenv("DATABRICKS_HOST"),
@@ -68,3 +108,17 @@ def ler_sql(caminho, **placeholders) -> str:
     padrao.update(placeholders)
 
     return bruto.format(**padrao)
+
+
+def consultar_ou_sair(query: str, mock=None):
+    """consultar() que termina com mensagem limpa em vez de traceback.
+
+    Falta de credencial ou de dependencia sao erros de configuracao, nao
+    defeito: quem roda precisa ler o que fazer, nao a pilha de chamadas.
+    """
+    import sys
+
+    try:
+        return consultar(query, mock=mock)
+    except RuntimeError as e:
+        sys.exit(f"\n  ! {e}\n")
