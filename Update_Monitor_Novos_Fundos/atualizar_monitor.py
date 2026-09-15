@@ -2,24 +2,25 @@
 """
 atualizar_monitor.py - Monitor de Novos Fundos - Tivio Capital
 
-Le o SQL de sql/monitor_fundos.sql, consulta o Databricks e gera:
+Origem do universo:
+    ORIGEM=cvm     -> cadastro publico da CVM (default)
+    ORIGEM=anbima  -> comportamento antigo (Databricks/ANBIMA)
 
-    outputs/dashboard_fundos_tivio_geral.html   (todos os anos somados)
-    outputs/dashboard_fundos_tivio_<ano>.html   (um por ano com dado)
-    outputs/dashboard_fundos_tivio.html         (copia do dashboard principal)
-
-O seletor "Ano" no topo do dashboard navega entre esses arquivos
-(Geral / 2026 / 2025 / 2024).
+Gera:
+    outputs/dashboard_fundos_tivio_geral.html
+    outputs/dashboard_fundos_tivio_<ano>.html
+    outputs/dashboard_fundos_tivio.html
 
 Variaveis de ambiente (.env):
     DATABRICKS_HOST / DATABRICKS_PATH / DATABRICKS_TOKEN
     DATABRICKS_CATALOG   (default marketdata)
     DATABRICKS_SCHEMA    (default silver)
     DATA_INI             (default 2024-01-01)
-    LINK_CVM_BASE        (base da consulta publica da CVM)
+    LINK_CVM_BASE
     HTML_ENTRADA / SAIDA_DIR
     HTML_PRINCIPAL       recente (default) | geral
-    USE_MOCK             true = dados ficticios, nao conecta
+    USE_MOCK             true = dados ficticios
+    PEERS                todos | planilha | gestao
 """
 
 import os
@@ -53,16 +54,12 @@ HTML_ENTRADA = os.getenv("HTML_ENTRADA", _default_in)
 
 SAIDA_DIR = Path(os.getenv("SAIDA_DIR", "outputs"))
 
-# monitor_fundos.sql (v1, default) | monitor_fundos_v2.sql (campos da planilha)
 SQL_ARQUIVO = os.getenv("MONITOR_SQL", "").strip() or "monitor_fundos.sql"
 
 SQL_FILE = BASE / "sql" / SQL_ARQUIVO
 
-# origem do universo: "cvm" (cadastro publico) | "anbima" (comportamento antigo)
 ORIGEM = (os.getenv("ORIGEM", "").strip() or "cvm").lower()
 
-# catalogo.schema.tabela do cadastro da CVM; vazio = roda sem ele.
-# Descobrir o nome com: python buscar_cadastro_cvm.py
 CVM_CADASTRO = os.getenv("CVM_CADASTRO", "").strip()
 
 USE_MOCK = os.getenv("USE_MOCK", "false").lower() == "true"
@@ -72,17 +69,14 @@ SCHEMA = os.getenv("DATABRICKS_SCHEMA", "silver")
 
 DATA_INI = os.getenv("DATA_INI", "2024-01-01")
 
-# Consulta publica de fundos da CVM: a base recebe o CNPJ so com digitos.
 LINK_CVM_BASE = os.getenv(
     "LINK_CVM_BASE",
     "https://cvmweb.cvm.gov.br/SWB/Sistemas/SCW/CPublica/CConsolFdo/"
     "FormBuscaConsolFdo.aspx?TpConsulta=1&CNPJNome=",
 )
 
-# qual arquivo vira o dashboard_fundos_tivio.html: "recente" ou "geral"
 HTML_PRINCIPAL = os.getenv("HTML_PRINCIPAL", "recente").lower()
 
-# mes/ano do bloco de diagnostico (ANO_DIAG vazio = ano mais recente da base)
 _MES_DIAG = int(os.getenv("MES_DIAG", "").strip() or 8)
 
 _NOME_MES = {
@@ -90,6 +84,26 @@ _NOME_MES = {
     5: "MAIO", 6: "JUNHO", 7: "JULHO", 8: "AGOSTO",
     9: "SETEMBRO", 10: "OUTUBRO", 11: "NOVEMBRO", 12: "DEZEMBRO",
 }
+
+# ----------------------------------------------------------- peers monitorados
+# As 15 gestoras acompanhadas pela planilha historica. Itau, BTG e Bradesco
+# respondem pela maior parte do volume: sem elas o total nao bate com o Excel.
+PEERS_GESTAO = [
+    "Augme", "Capitania", "Ibiuna", "JGP", "Kinea",
+    "Patria", "Riza", "SPX", "Verde Asset", "Vinci",
+]
+
+PEERS_TODOS = PEERS_GESTAO + [
+    "BTG Pactual", "Bradesco Asset", "Itau Unibanco",
+    "Itau Asset", "XP Asset",
+]
+
+# default = 15 gestoras (igual a planilha). PEERS=gestao volta ao recorte menor.
+PEERS_FINAL = (
+    PEERS_GESTAO
+    if os.getenv("PEERS", "").strip().lower() == "gestao"
+    else PEERS_TODOS
+)
 
 
 # ----------------------------------------------------------------- consulta
@@ -139,8 +153,12 @@ def _mock() -> pd.DataFrame:
         meses = range(1, 13) if ano < 2026 else range(1, 9)
         for mes in meses:
             for i in range(random.randint(20, 40)):
-                cnpj = f"{random.randint(10, 99)}.{random.randint(100, 999)}." \
-                       f"{random.randint(100, 999)}/0001-{random.randint(10, 99)}"
+                cnpj = (
+                    f"{random.randint(10, 99)}."
+                    f"{random.randint(100, 999)}."
+                    f"{random.randint(100, 999)}/0001-"
+                    f"{random.randint(10, 99)}"
+                )
                 dig = re.sub(r"[^0-9]", "", cnpj)
                 cat = random.choice(anbima)
                 pub = random.choice(publico)
@@ -155,8 +173,10 @@ def _mock() -> pd.DataFrame:
                     ),
                     "categoria_anbima": cat,
                     "situacao": "Fase Pre-Operacional",
-                    "data_registro": f"{random.randint(1, 28):02d}/{mes:02d}/{ano}",
-                    "data_constituicao": f"{random.randint(1, 28):02d}/{mes:02d}/{ano}",
+                    "data_registro":
+                        f"{random.randint(1, 28):02d}/{mes:02d}/{ano}",
+                    "data_constituicao":
+                        f"{random.randint(1, 28):02d}/{mes:02d}/{ano}",
                     "cnpj": cnpj,
                     "publico_alvo": pub,
                     "exclusivo": exc,
@@ -172,7 +192,8 @@ def _mock() -> pd.DataFrame:
                     "administrador": "BEM DTVM LTDA.",
                     "categoria_n1": random.choice(n1),
                     "risco_credito": random.choice(
-                        ["Crédito Livre", "Grau de Investimento", "Soberano", ""]
+                        ["Crédito Livre", "Grau de Investimento",
+                         "Soberano", ""]
                     ),
                     "duracao": "",
                     "registro": "Nao",
@@ -229,14 +250,45 @@ def atualizar_badge(html: str) -> str:
     )
 
 
+# ------------------------------------------------------------- diagnosticos
+def contagem_por_gestora(df: pd.DataFrame, titulo: str = "CONTAGEM POR GESTORA"):
+    """Contagem por gestora: e o numero que se compara com a planilha."""
+    print(f"\n===== {titulo} =====")
+
+    if df.empty:
+        print("  (vazio)")
+        return
+
+    tmp = (
+        df.groupby("gestora")
+          .size()
+          .sort_values(ascending=False)
+    )
+
+    for gestora, qtd in tmp.items():
+        print(f"  {str(gestora):25} {qtd}")
+
+    print(f"  {'TOTAL':25} {len(df)}")
+
+
+def detalhe_gestora(df: pd.DataFrame, nome: str = "Kinea"):
+    """Lista as classes de uma gestora para conferencia linha a linha."""
+    print(f"\n===== {nome.upper()} =====")
+
+    sub = df[df["gestora"].fillna("").str.upper() == nome.upper()]
+
+    if sub.empty:
+        print("  (nenhuma classe)")
+        return
+
+    colunas = [c for c in ("data_registro", "fund_name", "cnpj", "situacao")
+               if c in sub.columns]
+
+    print(sub[colunas].to_string(index=False))
+
 
 def validar_base(df: pd.DataFrame):
-    """As checagens da secao "Validacoes finais" do plano de correcao.
-
-    Roda a cada execucao em vez de virar print temporario: o que quebra
-    em silencio aqui (duplicidade de CNPJ, registro sem gestora) so
-    apareceria como numero errado no dashboard semanas depois.
-    """
+    """Checagens que rodam a cada execucao."""
     print("\n  validacao da base")
 
     dup = int(df["cnpj"].duplicated().sum())
@@ -249,7 +301,9 @@ def validar_base(df: pd.DataFrame):
     print(f"     sem gestora ............ {sem_gest}")
 
     if "situacao" in df:
-        pre = int(df["situacao"].fillna("").str.contains("Pré-Oper|Pre-Oper").sum())
+        pre = int(
+            df["situacao"].fillna("").str.contains("Pré-Oper|Pre-Oper").sum()
+        )
         print(f"     pre-operacionais ....... {pre}"
               f"{'  <- ausentes: o LEFT JOIN virou INNER?' if not pre else ''}")
 
@@ -260,21 +314,16 @@ def validar_base(df: pd.DataFrame):
                       & (df[coluna].astype(str).str.strip() != "")).sum())
             print(f"     com {rotulo:<15} {ok}/{len(df)}")
 
-    anos = pd.to_datetime(df["data_registro"], format="%d/%m/%Y",
-                          errors="coerce").dt.year.value_counts().sort_index()
+    anos = pd.to_datetime(
+        df["data_registro"], format="%d/%m/%Y", errors="coerce"
+    ).dt.year.value_counts().sort_index()
 
     print("     por ano ................ "
           + " · ".join(f"{int(a)}: {int(n)}" for a, n in anos.items()))
 
 
 def diagnosticar_fonte(df: pd.DataFrame):
-    """Avisa quando a fonte esta defasada e o ultimo mes ficou truncado.
-
-    A ANBIMA publica o inicio de atividade das classes com semanas de
-    atraso. Sem esse aviso o mes corrente aparece no dashboard com uma
-    contagem baixa que parece real - foi o que fez agosto/2026 exibir 4
-    classes quando os agostos anteriores tiveram 24 e 19.
-    """
+    """Avisa quando a fonte esta defasada e o ultimo mes ficou truncado."""
     dt = pd.to_datetime(df["data_registro"], format="%d/%m/%Y",
                         errors="coerce")
 
@@ -316,6 +365,8 @@ def main():
     print("\nMonitor de Novos Fundos - atualizacao")
     print("-" * 46)
     print(f"  modo: {'DEMO (mock)' if USE_MOCK else 'DATABRICKS (real)'}")
+    print(f"  origem: {ORIGEM}")
+    print(f"  peers: {len(PEERS_FINAL)} gestoras")
 
     entrada = BASE / HTML_ENTRADA
 
@@ -328,8 +379,6 @@ def main():
     def _query():
         bruto = SQL_FILE.read_text(encoding="utf-8")
 
-        # v2 traz o bloco opcional do cadastro da CVM entre marcadores;
-        # resolver() escolhe o ramo antes do .format() para nao sobrar chave.
         if "{{CVM_INI}}" in bruto:
             import sql_cvm
             bruto = sql_cvm.montar(bruto, CVM_CADASTRO or None)
@@ -341,10 +390,10 @@ def main():
             data_ini=DATA_INI,
         )
 
+    # ------------------------------------------------------------ 1. origem
     if ORIGEM == "cvm":
         # A CVM define o universo e a data. A ANBIMA so enriquece, sempre
-        # por LEFT JOIN - INNER JOIN eliminaria os pre-operacionais, que
-        # sao o motivo da troca de origem.
+        # por LEFT JOIN - INNER JOIN eliminaria os pre-operacionais.
         import cvm_source as cvm
 
         df = cvm.converter_cvm_para_dashboard(
@@ -357,8 +406,6 @@ def main():
             try:
                 df = cvm.enriquecer_com_anbima(df, consultar(_query()))
             except Exception as e:
-                # o dashboard sai sem classificacao/taxas, mas sai - e o
-                # universo da CVM continua completo
                 print(f"  ! enriquecimento ANBIMA falhou ({type(e).__name__}:"
                       f" {str(e)[:90]}); segue so com a CVM")
     else:
@@ -368,63 +415,38 @@ def main():
 
     print(f"Antes filtro: {len(df)}")
 
-    # Recorte final quando a origem e a CVM. PEERS_TODOS inclui os
-    # bancoes e plataformas que a planilha historica acompanha e que o
-    # monitor nao tinha - responsaveis por 89 dos 105 registros de
-    # agosto/2026. PEERS_GESTAO e so o recorte de gestao.
-    PEERS_GESTAO = [
-        "Augme", "Capitania", "Ibiuna", "JGP", "Kinea",
-        "Patria", "Riza", "SPX", "Verde Asset", "Vinci",
-    ]
+    contagem_por_gestora(df, "ANTES DO FILTRO")
 
-    PEERS_TODOS = PEERS_GESTAO + [
-        "BTG Pactual", "Bradesco Asset", "Itau Unibanco",
-        "Itau Asset", "XP Asset",
-    ]
+    # ------------------------------------------------- 2. filtro de peers
+    # Um unico ponto de filtro. Duas rotas porque na CVM a gestora ja vem
+    # padronizada (correspondencia exata evita 'XP Asset' casar com 'SPX'),
+    # enquanto na ANBIMA o nome vem juridico e precisa de substring.
+    alvo = {p.strip().upper() for p in PEERS_FINAL}
 
-    PEERS_FINAL = (
-        PEERS_TODOS
-        if os.getenv("PEERS", "").strip().lower() in ("todos", "planilha")
-        else PEERS_GESTAO
-    )
-
-    PEERS = [
-        "SPX",
-        "IBIUNA",
-        "VINCI",
-        "RIZA",
-        "JGP",
-        "KINEA",
-        "AUGME",
-        "CAPITANIA",
-        "VERDE",
-        "PATRIA"
-    ]
+    gestora_norm = df["gestora"].fillna("").astype(str).str.strip().str.upper()
 
     if ORIGEM == "cvm":
-        # gestora ja vem padronizada por GESTOR_MAP: correspondencia exata
-        # evita que "XP Asset" case com "SPX" por substring, por exemplo.
-        import cvm_source as cvm
-        alvo = {p.strip().upper() for p in PEERS_FINAL}
-        df = df[df["gestora"].fillna("").str.upper().isin(alvo)].copy()
+        df = df[gestora_norm.isin(alvo)].copy()
     else:
         df = df[
-            df["gestora"]
-                .fillna("")
-                .str.upper()
-                .apply(lambda x: any(peer in x for peer in PEERS))
+            gestora_norm.apply(lambda x: any(p in x for p in alvo))
         ].copy()
 
     print(f"Depois filtro: {len(df)}")
 
+    # ------------------------------------------------- 3. diagnosticos
+    contagem_por_gestora(df, "DEPOIS DO FILTRO")
+    detalhe_gestora(df, "Kinea")
+
+    if df.empty:
+        print("  ! nenhuma gestora peer encontrada.")
+        sys.exit(1)
+
     validar_base(df)
     diagnosticar_fonte(df)
 
+    # ------------------------------------------- 4. diagnostico do mes
     try:
-        # ATENCAO: mes_ref sozinho nao distingue o ano. Sem o recorte de
-        # ano abaixo, "agosto" somaria ago/2024 + ago/2025 + ago/2026
-        # (47 linhas), numero que nao existe em nenhum mes real e que nao
-        # e comparavel com a aba do Excel historico (um unico ano).
         _ano_diag = int(os.getenv("ANO_DIAG", "").strip() or 0)
 
         if not _ano_diag:
@@ -433,15 +455,14 @@ def main():
             ]
             _ano_diag = max(_anos_validos) if _anos_validos else 0
 
-        agosto = df[
+        mes_sel = df[
             (df["mes_ref"] == _MES_DIAG)
             & (df.apply(mm.ano_de, axis=1) == _ano_diag)
         ]
 
         print(f"\n=== {_NOME_MES.get(_MES_DIAG, _MES_DIAG)}/{_ano_diag} ===")
-        print("Linhas:", len(agosto))
+        print("Linhas:", len(mes_sel))
 
-        # o mesmo mes nos anos anteriores: mostra se a safra amadureceu
         _hist = (
             df[df["mes_ref"] == _MES_DIAG]
             .assign(_a=lambda x: x.apply(mm.ano_de, axis=1))
@@ -457,37 +478,26 @@ def main():
 
             _outros = [n for a, n in _hist.items() if a != _ano_diag]
 
-            if _outros and len(agosto) < 0.5 * (sum(_outros) / len(_outros)):
+            if _outros and len(mes_sel) < 0.5 * (sum(_outros) / len(_outros)):
                 print("  ! bem abaixo da media dos anos anteriores:"
                       " provavel mes incompleto na fonte")
 
-        print("\nPor tipo:")
-        print(agosto["tipo"].value_counts())
+        if not mes_sel.empty:
+            print("\nPor tipo:")
+            print(mes_sel["tipo"].value_counts())
 
-        print("\nTop gestoras:")
-        print(agosto["gestora"].value_counts().head(20))
+            print("\nPor gestora:")
+            print(mes_sel["gestora"].value_counts().head(20))
 
-        agosto[
-            [
-                "fund_name",
-                "gestora",
-                "tipo",
-                "exclusivo"
-            ]
-        ]
+            _saida_diag = BASE / f"peers_{_ano_diag}_{_MES_DIAG:02d}.xlsx"
+            mes_sel.to_excel(_saida_diag, index=False)
 
-        _saida_diag = BASE / f"peers_{_ano_diag}_{_MES_DIAG:02d}.xlsx"
-        agosto.to_excel(_saida_diag, index=False)
-
-        print(f"Arquivo {_saida_diag.name} gerado")
+            print(f"Arquivo {_saida_diag.name} gerado")
 
     except Exception as e:
         print("Erro no diagnostico mensal:", e)
 
-    if df.empty:
-        print("  ! nenhuma gestora peer encontrada.")
-        sys.exit(1)
-
+    # ------------------------------------------------- 5. geracao do HTML
     df["_ano"] = df.apply(mm.ano_de, axis=1)
 
     anos = sorted(
@@ -500,13 +510,11 @@ def main():
     com_gestora = int((df["gestora"].fillna("").str.strip() != "").sum())
     com_publico = int((df["publico_alvo"].fillna("").str.strip() != "").sum())
     com_adm = int(pd.to_numeric(df["taxa_adm"], errors="coerce").notna().sum())
-    com_perf = int(pd.to_numeric(df["taxa_perf"], errors="coerce").notna().sum())
+    com_perf = int(
+        pd.to_numeric(df["taxa_perf"], errors="coerce").notna().sum()
+    )
     com_link = int((df["link_cvm"].fillna("").str.strip() != "").sum())
 
-    # --- cobertura segmentada (patch_cobertura.py) ---
-    # Estruturados (FIDC/FIP/FIAGRO) raramente informam taxa no cadastro
-    # ANBIMA: a remuneracao fica no regulamento. Medir os dois grupos
-    # juntos subestima a qualidade do dado dos fundos tradicionais.
     ESTRUTURADOS = ("FIDC", "FIP", "FIAGRO")
 
     _cat = df["categoria_n1"].fillna("").str.upper().str.strip()
@@ -544,7 +552,6 @@ def main():
         "(taxa no regulamento)"
     )
 
-    # detalhe por categoria, ordenado pelo tamanho da base
     print("  cobertura de taxa adm por categoria")
     for _categoria, _sub in sorted(
         df.groupby(_cat),
@@ -557,7 +564,6 @@ def main():
         _flag = " *" if _categoria in [s.upper() for s in ESTRUTURADOS] else ""
         print(f"     {_categoria:<16} {_ok:>5}/{_tot:<5} ({_pct:5.1f}%){_flag}")
     print("     * veiculo estruturado - ausencia esperada")
-    # --- fim cobertura segmentada ---
 
     print(f"  cobertura · gestora {com_gestora}/{len(df)}"
           f" · publico-alvo {com_publico}/{len(df)}")
@@ -570,10 +576,8 @@ def main():
 
     hoje = datetime.now()
 
-    # estreia de cada gestora na base inteira (usado pelo painel de novas)
     estreias_js = mm.gerar_estreias_js(df)
 
-    # --- Geral: todos os anos, barra de periodo por ano ---
     arq_geral = gerar(
         template, "geral", df, mm.totais_ano(df), anos, hoje,
         destino / "dashboard_fundos_tivio_geral.html",
@@ -581,7 +585,6 @@ def main():
     )
     print(f"     OK  {arq_geral.name}  ({len(df)} classes · {len(anos)} anos)")
 
-    # --- um arquivo por ano ---
     for ano in anos:
         sub = df[df["_ano"] == ano]
 
@@ -592,7 +595,6 @@ def main():
         )
         print(f"     OK  {arq.name}  ({len(sub)} classes)")
 
-    # --- dashboard principal ---
     if HTML_PRINCIPAL == "geral":
         origem, rotulo = arq_geral, "geral"
     else:

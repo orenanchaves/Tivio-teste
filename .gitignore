@@ -1,0 +1,6 @@
+**/.env
+**/__pycache__/
+*.pyc
+**/data/*.zip
+**/peers_*.xlsx
+**/agosto_peers.xlsx

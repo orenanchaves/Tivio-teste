@@ -877,13 +877,13 @@ a.hub-card:active{transform:translateY(-1px) scale(.995)}
     <nav class="topbar-nav" aria-label="Dashboards">
       <a class="dash-tab hub" href="index.html"><svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="flex:0 0 auto"><path d="M3 10.5 12 4l9 6.5"/><path d="M5 10v9h14v-9"/></svg>Central de Dashboards</a>
       <a class="dash-tab active" href="dashboard_fundos_tivio.html">Monitor de Novos Fundos <span class="dash-tab-badge" id="navBadgeMonitor">610</span></a>
-      <a class="dash-tab" href="dashboard_ofertas_fii.html">Monitor de Novas Ofertas · FII <span class="dash-tab-badge">218</span></a>
-      <a class="dash-tab" href="dashboard_captacao_previdencia.html">Captação · Previdência <span class="dash-tab-badge">40</span></a>
-      <a class="dash-tab" href="dashboard_captacao_fundos_abertos.html">Captação · Fundos Abertos <span class="dash-tab-badge">120</span></a>
-      <a class="dash-tab" href="dashboard_ranking_gestoras.html">Ranking · Gestoras <span class="dash-tab-badge">1.077</span></a>
-      <a class="dash-tab" href="dashboard_roa_prazo.html">Análise · ROA x Prazo <span class="dash-tab-badge">39</span></a>
-      <a class="dash-tab" href="dashboard_etf.html">Análise · ETF <span class="dash-tab-badge">175</span></a>
-      <a class="dash-tab" href="dashboard_escritorios.html">Base · Escritórios <span class="dash-tab-badge">54</span></a>
+      <a class="dash-tab" href="dashboard_ofertas_fii.html">Monitor de Novas Ofertas · FII</a>
+      <a class="dash-tab" href="dashboard_captacao_previdencia.html">Captação · Previdência</a>
+      <a class="dash-tab" href="dashboard_captacao_fundos_abertos.html">Captação · Fundos Abertos</a>
+      <a class="dash-tab" href="dashboard_ranking_gestoras.html">Ranking · Gestoras</a>
+      <a class="dash-tab" href="dashboard_roa_prazo.html">Análise · ROA x Prazo</a>
+      <a class="dash-tab" href="dashboard_etf.html">Análise · ETF</a>
+      <a class="dash-tab" href="dashboard_escritorios.html">Base · Escritórios</a>
   </nav>
     <button class="nav-arrow dir" type="button" aria-label="Rolar menu para a direita">&#8250;</button>
   </div>
@@ -1147,7 +1147,7 @@ let a=FUNDS_DATA.slice();
 a=a.filter(noPeriodo);
 if(fExcl==="only")a=a.filter(f=>f[10]==="S");
 else if(fExcl==="none")a=a.filter(f=>f[10]!=="S");
-if(fCat!=="all")a=a.filter(f=>f[19]===fCat);
+if(fCat==="__ESTRUT__")a=a.filter(f=>["FII","FIDC","FIP","FIAGRO"].includes((f[2]||"").trim()));else if(fCat==="__SEMCAT__")a=a.filter(f=>!(f[19]||"").trim());else if(fCat!=="all")a=a.filter(f=>f[19]===fCat);
 if(fCred!=="all")a=a.filter(f=>f[20]===fCred);
 if(currentSearch){const q=currentSearch.toLowerCase();a=a.filter(f=>(f[0]+" "+f[1]+" "+f[2]+" "+f[4]+" "+(f[13]||"")+" "+(f[18]||"")+" "+(f[9]||"")).toLowerCase().includes(q));}
 if(currentSort.col!==null){const c=currentSort.col;const num=COLS_NUM.has(c);a.sort((x,y)=>{let av=x[c],bv=y[c];if(num){av=parseFloat(av);bv=parseFloat(bv);if(isNaN(av))av=-1;if(isNaN(bv))bv=-1;return currentSort.dir==="asc"?av-bv:bv-av;}if(typeof av==="string")return currentSort.dir==="asc"?av.localeCompare(bv):bv.localeCompare(av);return currentSort.dir==="asc"?av-bv:bv-av;});}
@@ -2216,6 +2216,633 @@ ${f[15]?`<div style="margin-top:14px"><a class="link-icon" href="${esc(f[15])}" 
 document.getElementById("fundModal").classList.add("active");
 }
 
+
+/* popupGruposV3
+   Reutiliza o mesmo fundModal usado em Por Gestora.
+*/
+
+function openGrupoModal(titulo, lista) {
+  const per = MES_NOMES[currentMonth];
+  const noPer = FUNDS_DATA.filter(noPeriodo).length || 1;
+
+  const excl = lista.filter(f => f[10] === "S").length;
+  const tipos = [...new Set(lista.map(f => f[2]).filter(Boolean))];
+
+  const mAdm = _medianaCol(lista, 23);
+  const mPerf = _medianaCol(lista, 24);
+
+  const linhas = lista.map(f => {
+    const idx = FUNDS_DATA.indexOf(f);
+
+    return '<tr onclick="openModal(' + idx + ')">' +
+      '<td class="fnome" title="' + esc(f[0]) + '">' +
+        esc(f[0]) +
+      '</td>' +
+      '<td>' + esc(f[1]) + '</td>' +
+      '<td>' + tipoPill(f[2]) + '</td>' +
+      '<td class="fclass">' + esc(f[4] || f[19] || "") + '</td>' +
+      '<td class="fclass">' + esc(f[9]) + '</td>' +
+      '<td class="fclass">' + pctCell(f[23]) + '</td>' +
+      '<td class="fclass">' + pctCell(f[24]) + '</td>' +
+      '<td>' + exclTag(f[10]) + '</td>' +
+      '<td class="fdata">' + esc(f[6]) + '</td>' +
+    '</tr>';
+  }).join("");
+
+  document.getElementById("modalTitle").textContent =
+    titulo + " - " + per;
+
+  document.getElementById("modalBody").innerHTML = `
+    <div class="modal-detail-block">
+      <h4>RESUMO - ${esc(per)}</h4>
+
+      <div class="modal-detail-grid">
+
+        <div class="modal-detail-item">
+          <span class="dl-lbl">Classes no periodo</span>
+          <span class="dl-val">${lista.length}</span>
+        </div>
+
+        <div class="modal-detail-item">
+          <span class="dl-lbl">Participacao</span>
+          <span class="dl-val">
+            ${(lista.length / noPer * 100)
+              .toFixed(1)
+              .replace(".", ",")}% das ${noPer}
+          </span>
+        </div>
+
+        <div class="modal-detail-item">
+          <span class="dl-lbl">Tipos de fundo</span>
+          <span class="dl-val">
+            ${tipos.length ? esc(tipos.join(" / ")) : "-"}
+          </span>
+        </div>
+
+        <div class="modal-detail-item">
+          <span class="dl-lbl">Exclusivas</span>
+          <span class="dl-val">${excl} de ${lista.length}</span>
+        </div>
+
+        <div class="modal-detail-item">
+          <span class="dl-lbl">Taxa adm mediana</span>
+          <span class="dl-val">${fmtPct(mAdm) || "-"}</span>
+        </div>
+
+        <div class="modal-detail-item">
+          <span class="dl-lbl">Taxa perf mediana</span>
+          <span class="dl-val">${fmtPct(mPerf) || "-"}</span>
+        </div>
+
+      </div>
+    </div>
+
+    <div class="modal-detail-block">
+      <h4>CLASSES</h4>
+
+      ${lista.length ? `
+        <div class="mg-wrap">
+          <table class="ftable">
+            <thead>
+              <tr>
+                <th>FUNDO</th>
+                <th>GESTORA</th>
+                <th>TIPO</th>
+                <th>CLASSIF. ANBIMA</th>
+                <th>PUBLICO</th>
+                <th>TX. ADM.</th>
+                <th>TX. PERF.</th>
+                <th>EXCL.</th>
+                <th>DATA REG.</th>
+              </tr>
+            </thead>
+
+            <tbody>${linhas}</tbody>
+          </table>
+        </div>
+
+        <div style="
+          font-size:10px;
+          color:var(--muted);
+          margin-top:10px
+        ">
+          Clique em uma linha para abrir a ficha completa da classe.
+        </div>
+      ` : `
+        <div style="
+          color:var(--muted);
+          font-size:12px
+        ">
+          Sem classes neste recorte.
+        </div>
+      `}
+    </div>
+  `;
+
+  document
+    .getElementById("fundModal")
+    .classList
+    .add("active");
+}
+
+
+/* ----------------------------------------------------------
+   Funcoes publicas chamadas pelos cards e barras
+---------------------------------------------------------- */
+
+function popupTipo(tipo) {
+  const lista = FUNDS_DATA.filter(
+    f =>
+      noPeriodo(f) &&
+      String(f[2] || "").trim().toUpperCase() ===
+      String(tipo || "").trim().toUpperCase()
+  );
+
+  openGrupoModal("Tipo: " + tipo, lista);
+}
+
+
+function popupClassificacao(classificacao) {
+  const alvo = String(classificacao || "").trim().toUpperCase();
+
+  const lista = FUNDS_DATA.filter(f => {
+    if (!noPeriodo(f)) return false;
+
+    const classif = String(f[4] || "").trim().toUpperCase();
+    const nivel1 = String(f[19] || "").trim().toUpperCase();
+
+    return classif === alvo || nivel1 === alvo;
+  });
+
+  openGrupoModal(
+    "Classificacao ANBIMA: " + classificacao,
+    lista
+  );
+}
+
+
+function popupCredito(risco) {
+  const alvo = String(risco || "").trim().toUpperCase();
+
+  const lista = FUNDS_DATA.filter(
+    f =>
+      noPeriodo(f) &&
+      String(f[20] || "").trim().toUpperCase() === alvo
+  );
+
+  openGrupoModal(
+    "Renda Fixa - " + risco,
+    lista
+  );
+}
+
+
+function popupSegmento(nome, posicao) {
+  const lista = FUNDS_DATA.filter(
+    f =>
+      noPeriodo(f) &&
+      String(f[14] || "").charAt(posicao) === "1"
+  );
+
+  openGrupoModal(
+    "Segmento: " + nome,
+    lista
+  );
+}
+
+
+function popupTaxa(nome, coluna, minimo, maximo) {
+  const lista = FUNDS_DATA.filter(f => {
+    if (!noPeriodo(f)) return false;
+
+    const valor = Number(f[coluna]);
+
+    if (!Number.isFinite(valor)) return false;
+
+    if (minimo !== null && valor < minimo) return false;
+    if (maximo !== null && valor > maximo) return false;
+
+    return true;
+  });
+
+  openGrupoModal(
+    nome,
+    lista
+  );
+}
+
+
+/* ----------------------------------------------------------
+   Clique delegado, limitado somente aos paineis solicitados.
+
+   O patch tenta reconhecer o texto visivel do elemento.
+   Nenhum clique fora desses paineis e interceptado.
+---------------------------------------------------------- */
+
+(function () {
+  const normalizar = valor =>
+    String(valor || "")
+      .normalize("NFD")
+      .replace(/[\u0300-\u036f]/g, "")
+      .replace(/\s+/g, " ")
+      .trim()
+      .toLowerCase();
+
+  const tipos = [
+    "FI",
+    "FIF",
+    "FIDC",
+    "FII",
+    "FIP",
+    "FIAGRO",
+    "FIIM",
+    "ETF"
+  ];
+
+  function textoItem(elemento) {
+    const seletores = [
+      ".bar-lbl",
+      ".bar-label",
+      ".hbar-lbl",
+      ".kpi-lbl",
+      ".type-name",
+      ".card-title",
+      ".name",
+      ".lbl",
+      "strong",
+      "b"
+    ];
+
+    for (const seletor of seletores) {
+      const achado = elemento.querySelector(seletor);
+
+      if (achado) {
+        const texto = achado.textContent.trim();
+
+        if (texto) return texto;
+      }
+    }
+
+    return elemento.textContent
+      .trim()
+      .split("\n")
+      .map(v => v.trim())
+      .find(v =>
+        v &&
+        !/^[\d.,%]+$/.test(v)
+      ) || "";
+  }
+
+  function itemClicado(evento) {
+    return evento.target.closest(
+      [
+        ".hbar-row",
+        ".bar-row",
+        ".bar-item",
+        ".kpi-card",
+        ".metric-card",
+        ".stat-card",
+        ".type-card",
+        ".segment-card",
+        ".mini-card",
+        ".card"
+      ].join(",")
+    );
+  }
+
+  document.addEventListener("click", evento => {
+    if (evento.target.closest("#fundModal")) return;
+    if (evento.target.closest("a,button,select,input")) return;
+    if (evento.target.closest(".gbar-click")) return;
+
+    const painel = evento.target.closest(".tab-panel");
+
+    if (!painel) return;
+
+    const numeroPainel = painel.dataset.panel;
+
+    /*
+      Painel 0 = Visao Geral / Segmentos
+      Painel 2 = Por Tipo
+      Painel 4 = Classificacao ANBIMA
+      Painel 5 = Renda Fixa - Credito
+      Painel 6 = Taxas
+    */
+
+    if (!["0", "2", "4", "5", "6"].includes(numeroPainel)) {
+      return;
+    }
+
+    const item = itemClicado(evento);
+
+    if (!item || !painel.contains(item)) return;
+
+    const rotulo = textoItem(item);
+
+    if (!rotulo) return;
+
+    const rotuloNorm = normalizar(rotulo);
+
+    /* Por Tipo */
+    if (numeroPainel === "2") {
+      const tipo = tipos.find(
+        t => normalizar(t) === rotuloNorm
+      );
+
+      if (tipo) popupTipo(tipo);
+
+      return;
+    }
+
+    /* Por Classificacao ANBIMA */
+    if (numeroPainel === "4") {
+      popupClassificacao(rotulo);
+      return;
+    }
+
+    /* Renda Fixa - Credito */
+    if (numeroPainel === "5") {
+      popupCredito(rotulo);
+      return;
+    }
+
+    /* Taxas */
+    if (numeroPainel === "6") {
+      /*
+        Coluna 23 = taxa de administracao
+        Coluna 24 = taxa de performance
+      */
+
+      const painelTexto = normalizar(painel.textContent);
+      const coluna = painelTexto.includes("performance") ? 24 : 23;
+
+      const numeros = (
+        rotuloNorm.match(/\d+[,.]?\d*/g) || []
+      ).map(v =>
+        Number(v.replace(",", "."))
+      );
+
+      if (
+        rotuloNorm.includes("sem taxa") ||
+        rotuloNorm.includes("n/d")
+      ) {
+        const lista = FUNDS_DATA.filter(
+          f =>
+            noPeriodo(f) &&
+            (
+              f[coluna] === null ||
+              f[coluna] === undefined ||
+              f[coluna] === ""
+            )
+        );
+
+        openGrupoModal(rotulo, lista);
+        return;
+      }
+
+      if (
+        rotuloNorm.includes("ate") &&
+        numeros.length >= 1
+      ) {
+        popupTaxa(
+          rotulo,
+          coluna,
+          null,
+          numeros[0]
+        );
+
+        return;
+      }
+
+      if (
+        (
+          rotuloNorm.includes("acima") ||
+          rotuloNorm.includes("mais de")
+        ) &&
+        numeros.length >= 1
+      ) {
+        popupTaxa(
+          rotulo,
+          coluna,
+          numeros[0],
+          null
+        );
+
+        return;
+      }
+
+      if (numeros.length >= 2) {
+        popupTaxa(
+          rotulo,
+          coluna,
+          numeros[0],
+          numeros[1]
+        );
+
+        return;
+      }
+
+      return;
+    }
+
+    /* Visao Geral / Segmentos */
+    if (numeroPainel === "0") {
+      const mapaSegmentos = [
+        ["credito privado", "Credito Privado", 0],
+        ["credito estruturado", "Credito Estruturado", 1],
+        ["infraestrutura", "Infraestrutura", 2],
+        ["previdencia", "Previdencia", 3],
+        ["internacional", "Internacional / Exterior", 4],
+        ["esg", "ESG", 5]
+      ];
+
+      for (const [chave, nome, posicao] of mapaSegmentos) {
+        if (rotuloNorm.includes(chave)) {
+          popupSegmento(nome, posicao);
+          return;
+        }
+      }
+
+      const tipo = tipos.find(
+        t => normalizar(t) === rotuloNorm
+      );
+
+      if (tipo) {
+        popupTipo(tipo);
+      }
+    }
+  });
+
+  const estilo = document.createElement("style");
+
+  estilo.textContent = `
+    .tab-panel[data-panel="0"] .hbar-row,
+    .tab-panel[data-panel="0"] .bar-row,
+    .tab-panel[data-panel="0"] .bar-item,
+    .tab-panel[data-panel="2"] .card,
+    .tab-panel[data-panel="2"] .type-card,
+    .tab-panel[data-panel="4"] .hbar-row,
+    .tab-panel[data-panel="4"] .bar-row,
+    .tab-panel[data-panel="5"] .hbar-row,
+    .tab-panel[data-panel="5"] .bar-row,
+    .tab-panel[data-panel="6"] .card,
+    .tab-panel[data-panel="6"] .stat-card {
+      cursor: pointer;
+    }
+
+    .tab-panel[data-panel="0"] .hbar-row:hover,
+    .tab-panel[data-panel="0"] .bar-row:hover,
+    .tab-panel[data-panel="2"] .card:hover,
+    .tab-panel[data-panel="4"] .bar-row:hover,
+    .tab-panel[data-panel="5"] .bar-row:hover,
+    .tab-panel[data-panel="6"] .card:hover {
+      outline: 1px solid rgba(255,255,255,.16);
+      outline-offset: 2px;
+    }
+  `;
+
+  document.head.appendChild(estilo);
+})();
+
+
+/* popupAgrupamentosV4 - reutiliza fundModal/openModal existentes */
+function abrirPopupAgrupado(titulo, lista){
+  const per=MES_NOMES[currentMonth];
+  const totalPeriodo=FUNDS_DATA.filter(noPeriodo).length||1;
+  const exclusivas=lista.filter(f=>f[10]==="S").length;
+  const tipos=[...new Set(lista.map(f=>f[2]).filter(Boolean))];
+  const medAdm=_medianaCol(lista,23);
+  const medPerf=_medianaCol(lista,24);
+  const linhas=lista.map(f=>{
+    const idx=FUNDS_DATA.indexOf(f);
+    return '<tr onclick="openModal('+idx+')">'+
+      '<td class="fnome">'+esc(f[0])+'</td>'+
+      '<td>'+esc(f[1])+'</td>'+
+      '<td>'+tipoPill(f[2])+'</td>'+
+      '<td class="fclass">'+esc(f[4]||f[19]||"")+'</td>'+
+      '<td class="fclass">'+esc(f[9])+'</td>'+
+      '<td class="fclass">'+pctCell(f[23])+'</td>'+
+      '<td class="fclass">'+pctCell(f[24])+'</td>'+
+      '<td>'+exclTag(f[10])+'</td>'+
+      '<td class="fdata">'+esc(f[6])+'</td></tr>';
+  }).join("").replaceAll("undefined","");
+  document.getElementById("modalTitle").textContent=titulo+" - "+per;
+  document.getElementById("modalBody").innerHTML=`
+    <div class="modal-detail-block"><h4>RESUMO - ${esc(per)}</h4>
+      <div class="modal-detail-grid">
+        <div class="modal-detail-item"><span class="dl-lbl">Classes</span><span class="dl-val">${lista.length}</span></div>
+        <div class="modal-detail-item"><span class="dl-lbl">Participacao</span><span class="dl-val">${(lista.length/totalPeriodo*100).toFixed(1).replace(".",",")}% de ${totalPeriodo}</span></div>
+        <div class="modal-detail-item"><span class="dl-lbl">Tipos</span><span class="dl-val">${tipos.length?esc(tipos.join(" / ")):"-"}</span></div>
+        <div class="modal-detail-item"><span class="dl-lbl">Exclusivas</span><span class="dl-val">${exclusivas} de ${lista.length}</span></div>
+        <div class="modal-detail-item"><span class="dl-lbl">Taxa adm mediana</span><span class="dl-val">${fmtPct(medAdm)||"-"}</span></div>
+        <div class="modal-detail-item"><span class="dl-lbl">Taxa perf mediana</span><span class="dl-val">${fmtPct(medPerf)||"-"}</span></div>
+      </div>
+    </div>
+    <div class="modal-detail-block"><h4>CLASSES</h4>
+      ${lista.length?`<div class="mg-wrap"><table class="ftable"><thead><tr>
+        <th>FUNDO</th><th>GESTORA</th><th>TIPO</th><th>CLASSIF. ANBIMA</th><th>PUBLICO</th><th>TX. ADM.</th><th>TX. PERF.</th><th>EXCL.</th><th>DATA REG.</th>
+      </tr></thead><tbody>${linhas}</tbody></table></div>
+      <div style="font-size:10px;color:var(--muted);margin-top:10px">Clique em uma linha para abrir a ficha completa.</div>`:
+      '<div style="color:var(--muted);font-size:12px">Sem classes neste recorte.</div>'}
+    </div>`;
+  document.getElementById("fundModal").classList.add("active");
+}
+
+(function(){
+  const norm=s=>String(s||"").normalize("NFD").replace(/[\u0300-\u036f]/g,"").replace(/\s+/g," ").trim().toLowerCase();
+  const tipoMap={"fi":"FI","fif":"FIF","fidc":"FIDC","fii":"FII","fim":"FIIM","fiim":"FIIM","fip":"FIP","fiagro":"FIAGRO","etf":"FIIM"};
+  const segs={"credito privado":0,"credito estruturado":1,"infraestrutura":2,"previdencia":3,"internacional":4,"internacional / exterior":4,"esg":5};
+
+  function valoresPeriodo(indice){
+    return [...new Set(FUNDS_DATA.filter(noPeriodo).map(f=>String(f[indice]||"").trim()).filter(Boolean))]
+      .sort((a,b)=>b.length-a.length);
+  }
+  function textosCaminho(target,panel){
+    const out=[]; let el=target;
+    while(el&&el!==panel){
+      const t=(el.innerText||el.textContent||"").trim();
+      if(t&&t.length<240)out.push(t);
+      el=el.parentElement;
+    }
+    return out;
+  }
+  function casar(textos,valores){
+    for(const v of valores){
+      const nv=norm(v);
+      for(const t of textos){
+        const linhas=t.split(/\n/).map(norm);
+        if(linhas.some(x=>x===nv||x.startsWith(nv+" ")))return v;
+      }
+    }
+    return "";
+  }
+  function bucketTaxa(texto,valor){
+    if(valor===null||valor===undefined||valor==="")return false;
+    const n=Number(valor), s=norm(texto);
+    if(!Number.isFinite(n))return false;
+    const nums=(s.match(/\d+[,.]?\d*/g)||[]).map(x=>Number(x.replace(",",".")));
+    if(s.includes("ate")&&nums.length)return n<=nums[0];
+    if((s.includes("acima")||s.includes("mais de"))&&nums.length)return n>nums[0];
+    if(nums.length>=2)return n>=nums[0]&&n<=nums[1];
+    return false;
+  }
+  function tituloPainel(panel){
+    const h=panel.querySelector("h3,h2"); return norm(h?h.textContent:panel.textContent);
+  }
+
+  document.addEventListener("click",e=>{
+    if(e.target.closest("#fundModal,.gbar-click,a,button,select,input"))return;
+    const panel=e.target.closest(".tab-panel"); if(!panel)return;
+    const p=panel.dataset.panel; if(!["0","2","4","5","6"].includes(p))return;
+    const textos=textosCaminho(e.target,panel); if(!textos.length)return;
+    let titulo="", lista=null;
+
+    if(p==="2"){
+      let tipo="";
+      for(const t of textos){for(const [k,v] of Object.entries(tipoMap)){if(t.split(/\n/).map(norm).some(x=>x===k||x.startsWith(k+" "))){tipo=v;break;}}if(tipo)break;}
+      if(tipo){titulo="Tipo: "+tipo;lista=FUNDS_DATA.filter(f=>noPeriodo(f)&&String(f[2]||"").trim().toUpperCase()===tipo);}
+    }
+    else if(p==="4"){
+      const publico=casar(textos,valoresPeriodo(9));
+      const classif=casar(textos,valoresPeriodo(4));
+      const cat=casar(textos,valoresPeriodo(19));
+      const dur=casar(textos,valoresPeriodo(21));
+      const val=publico||classif||cat||dur;
+      if(val){
+        const idx=publico?9:classif?4:cat?19:21;
+        titulo=(publico?"Publico-alvo: ":idx===21?"Duracao: ":"Classificacao ANBIMA: ")+val;
+        lista=FUNDS_DATA.filter(f=>noPeriodo(f)&&norm(f[idx])===norm(val));
+      }
+    }
+    else if(p==="5"){
+      const risco=casar(textos,valoresPeriodo(20));
+      const dur=casar(textos,valoresPeriodo(21));
+      if(risco){titulo="Renda Fixa - "+risco;lista=FUNDS_DATA.filter(f=>noPeriodo(f)&&norm(f[20])===norm(risco));}
+      else if(dur){titulo="Duracao: "+dur;lista=FUNDS_DATA.filter(f=>noPeriodo(f)&&norm(f[21])===norm(dur));}
+    }
+    else if(p==="6"){
+      const txt=textos.find(t=>/\d+[,.]?\d*%/.test(t)&&(/ate|acima| a /i.test(t)))||"";
+      if(txt){const perf=tituloPainel(panel).includes("performance");const col=perf?24:23;titulo=(perf?"Taxa de performance: ":"Taxa de administracao: ")+txt.split(/\n/)[0];lista=FUNDS_DATA.filter(f=>noPeriodo(f)&&bucketTaxa(txt,f[col]));}
+      if(!lista){
+        const gest=casar(textos,valoresPeriodo(1));
+        if(gest){titulo="Taxas - "+gest;lista=FUNDS_DATA.filter(f=>noPeriodo(f)&&norm(f[1])===norm(gest)&&(f[23]!==""||f[24]!==""));}
+      }
+    }
+    else if(p==="0"){
+      for(const [nome,bit] of Object.entries(segs)){
+        if(textos.some(t=>norm(t).includes(nome))){titulo="Segmento: "+nome;lista=FUNDS_DATA.filter(f=>noPeriodo(f)&&String(f[14]||"").charAt(bit)==="1");break;}
+      }
+    }
+    if(!lista)return;
+    e.preventDefault(); e.stopPropagation();
+    abrirPopupAgrupado(titulo,lista);
+  },true);
+
+  const st=document.createElement("style");
+  st.textContent='.tab-panel[data-panel="2"]>*>*,.tab-panel[data-panel="4"] .bar-row,.tab-panel[data-panel="4"] .hbar-row,.tab-panel[data-panel="5"] .bar-row,.tab-panel[data-panel="5"] .hbar-row,.tab-panel[data-panel="6"] .bar-row,.tab-panel[data-panel="6"] .hbar-row{cursor:pointer}';
+  document.head.appendChild(st);
+})();
+
 function closeModal(){document.getElementById("fundModal").classList.remove("active");}
 
 document.querySelectorAll(".tab-btn").forEach(b=>b.addEventListener("click",()=>{
@@ -2293,9 +2920,11 @@ const n2=document.getElementById("n-filtered-2"); if(n2)n2.textContent=arr.lengt
 
 // popula selects
 (function(){
-const cats=[...new Set(FUNDS_DATA.map(f=>f[19]).filter(Boolean))].sort();
+const TIPOS_VEIC=["FI","FIF","FII","FIDC","FIP","FIAGRO","FIIM","ETF"];
+const cats=[...new Set(FUNDS_DATA.map(f=>(f[19]||"").trim()).filter(v=>v&&!TIPOS_VEIC.includes(v)))].sort();
 const sel=document.getElementById("fCatSel");
 cats.forEach(c=>{const o=document.createElement("option");o.value=c;o.textContent=c;sel.appendChild(o);});
+[["__ESTRUT__","Estruturados (FII/FIDC/FIP/FIAGRO)"],["__SEMCAT__","Sem classificacao ANBIMA"]].forEach(([v,t])=>{const o=document.createElement("option");o.value=v;o.textContent=t;sel.appendChild(o);});
 const creds=CRED_ORDER.filter(c=>FUNDS_DATA.some(f=>f[20]===c));
 const sel2=document.getElementById("fCredSel");
 creds.forEach(c=>{const o=document.createElement("option");o.value=c;o.textContent=c;sel2.appendChild(o);});
@@ -3228,4 +3857,78 @@ const TIVIEW_CATS = [
 })();
 </script>
 
+
+<script>
+/* A barra diz "FILTROS DA TABELA" e so afeta a Tabela Completa.
+   Visivel nas outras abas, ela sugere que os KPIs respondem ao
+   filtro - e eles nao respondem. */
+(function(){
+  function barra(){
+    const alvo = [...document.querySelectorAll("div,section")]
+      .filter(el => /FILTROS DA TABELA/i.test(el.textContent || ""))
+      .filter(el => el.querySelector("#fCatSel"));
+
+    return alvo.length ? alvo[alvo.length - 1] : null;
+  }
+
+  function ehTabela(btn){
+    return /tabela completa/i.test(btn.textContent || "");
+  }
+
+  function sincronizar(){
+    const b = barra();
+    if(!b) return;
+
+    const ativo = document.querySelector(".tab-btn.active");
+
+    b.style.display = (ativo && ehTabela(ativo)) ? "" : "none";
+  }
+
+  document.querySelectorAll(".tab-btn").forEach(btn => {
+    btn.addEventListener("click", () => setTimeout(sincronizar, 0));
+  });
+
+  sincronizar();
+})();
+</script>
+
+<script>
+/* moverBarraFiltros: a barra so vale para a Tabela Completa.
+   Acima das abas ela parecia um filtro global; abaixo, fica
+   colada ao conteudo que realmente filtra. */
+(function(){
+  function barra(){
+    const achados = [...document.querySelectorAll("div,section")]
+      .filter(el => /FILTROS DA TABELA/i.test(el.textContent || ""))
+      .filter(el => el.querySelector("#fCatSel"));
+
+    return achados.length ? achados[achados.length - 1] : null;
+  }
+
+  function linhaAbas(){
+    const btn = document.querySelector(".tab-btn");
+
+    return btn ? btn.parentElement : null;
+  }
+
+  function mover(){
+    const b = barra();
+    const abas = linhaAbas();
+
+    if(!b || !abas || !abas.parentElement) return false;
+
+    abas.parentElement.insertBefore(b, abas.nextSibling);
+
+    b.style.marginTop = "10px";
+
+    return true;
+  }
+
+  if(document.readyState === "loading"){
+    document.addEventListener("DOMContentLoaded", mover);
+  } else {
+    mover();
+  }
+})();
+</script>
 </body></html>

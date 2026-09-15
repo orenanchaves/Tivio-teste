@@ -1,0 +1,10 @@
+ticker,fee,gestora,categoria
+BOVA11,0.10,iShares,RV Brasil
+IMAB11,0.20,Itau,RF Inflacao
+IRFM11,0.20,Itau,RF Prefixado
+NLFA11,0.25,Nu Asset,Letras Financeiras
+DEBB11,0.60,BTG Pactual,Debentures
+LFTS11,0.20,BTG Pactual,Selic
+SPXI11,0.23,Itau,S&P 500
+NASD11,0.25,Trend,Nasdaq
+GOLD11,0.30,Trend,Ouro

@@ -1,0 +1,1907 @@
+<!DOCTYPE html>
+<html lang="pt-BR" data-theme="dark"><head>
+<!-- ============ TAILWIND CSS · ligado aos tokens do Design System ============
+     Os utilitários apontam para as mesmas variáveis CSS já usadas na página
+     (--accent-strong, --bg-base, --r-lg, --ff). Consequência prática: o tema
+     claro/escuro continua sendo resolvido pelos tokens, então NÃO é preciso
+     escrever variantes `dark:` no HTML — `bg-elev-1` já muda sozinho.       -->
+<script src="https://cdn.tailwindcss.com/3.4.16"></script>
+<script id="tivio-tw-config">
+/* Guarda: se o CDN estiver bloqueado (rede corporativa, offline, SharePoint
+   sem acesso externo), `tailwind` não existe. Sem esta checagem o script
+   lançaria "tailwind is not defined" no console. O layout não depende do
+   Tailwind — os utilitários são complemento, todo o visual vem do CSS da
+   página e dos tokens do design system.                                   */
+if(typeof tailwind!=='undefined'){
+tailwind.config = {
+  corePlugins:{ preflight:false },   /* preserva o CSS da página, sem reset */
+  theme:{
+    extend:{
+      colors:{
+        /* semânticos — trocam com o tema */
+        base:'var(--bg-base)', elev1:'var(--bg-elev-1)', elev2:'var(--bg-elev-2)',
+        line:'var(--line)', 'line-strong':'var(--line-strong)',
+        accent:'var(--accent-strong)', 'on-accent':'var(--on-accent)',
+        ink:'var(--ink)', muted:'var(--text-muted)',
+        primary:'var(--text-primary)', secondary:'var(--text-secondary)',
+        /* marca — fixos nos dois temas */
+        verde:'var(--tv-verde)', 'verde-escuro':'var(--tv-verde-escuro)',
+        'verde-ink':'var(--tv-verde-ink)', agro:'var(--tv-agro)',
+        azul:'var(--tv-azul)', 'azul-escuro':'var(--tv-azul-escuro)',
+        bradesco:'var(--tv-bradesco)',
+        /* data-viz */
+        pos:'var(--tv-pos)', neg:'var(--tv-neg)', warn:'var(--tv-warn)',
+        info:'var(--tv-info)', roxo:'var(--tv-roxo)'
+      },
+      borderRadius:{ sm:'var(--r-sm)', md:'var(--r-md)', lg:'var(--r-lg)',
+                     xl:'var(--r-xl)', full:'var(--r-full)' },
+      fontFamily:{ versos:['Versos','Helvetica Neue','Helvetica','Arial','sans-serif'],
+                   mono:['ui-monospace','SFMono-Regular','Menlo','Consolas','monospace'] },
+      boxShadow:{ glow:'var(--glow)', md:'var(--shadow-md)', lg:'var(--shadow-lg)' },
+      maxWidth:{ container:'var(--container)' },
+      transitionTimingFunction:{ tv:'cubic-bezier(.22,.9,.32,1)' }
+    }
+  }
+};
+}
+</script>
+
+<!-- ================= TIVIO DESIGN SYSTEM v1.0 · CAMADA DE TOKENS ================= -->
+<link rel="preconnect" href="https://cdn-sites-assets.mziq.com" crossorigin>
+<link rel="preload" href="https://cdn-sites-assets.mziq.com/wp-content/themes/mziq_tivio_capital/assets/fonts/Versos-ExtraLight.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="https://cdn-sites-assets.mziq.com/wp-content/themes/mziq_tivio_capital/assets/fonts/Versos-Regular.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="https://cdn-sites-assets.mziq.com/wp-content/themes/mziq_tivio_capital/assets/fonts/Versos-SemiBold.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="https://cdn-sites-assets.mziq.com/wp-content/themes/mziq_tivio_capital/assets/fonts/Versos-Bold.woff2" as="font" type="font/woff2" crossorigin>
+<style id="tivio-ds-tokens">
+/* ===== FONTE OFICIAL VERSOS (mesma origem do tivio.com) ===== */
+@font-face{font-family:Versos;src:local("Versos ExtraLight"),local("Versos-ExtraLight"),url(https://cdn-sites-assets.mziq.com/wp-content/themes/mziq_tivio_capital/assets/fonts/Versos-ExtraLight.woff2) format("woff2");font-weight:200;font-style:normal;font-display:swap}
+@font-face{font-family:Versos;src:local("Versos ExtraLight"),local("Versos-ExtraLight"),url(https://cdn-sites-assets.mziq.com/wp-content/themes/mziq_tivio_capital/assets/fonts/Versos-ExtraLight.woff2) format("woff2");font-weight:300;font-style:normal;font-display:swap}
+@font-face{font-family:Versos;src:local("Versos Regular"),local("Versos-Regular"),url(https://cdn-sites-assets.mziq.com/wp-content/themes/mziq_tivio_capital/assets/fonts/Versos-Regular.woff2) format("woff2");font-weight:400;font-style:normal;font-display:swap}
+@font-face{font-family:Versos;src:local("Versos Regular"),local("Versos-Regular"),url(https://cdn-sites-assets.mziq.com/wp-content/themes/mziq_tivio_capital/assets/fonts/Versos-Regular.woff2) format("woff2");font-weight:500;font-style:normal;font-display:swap}
+@font-face{font-family:Versos;src:local("Versos SemiBold"),local("Versos-SemiBold"),url(https://cdn-sites-assets.mziq.com/wp-content/themes/mziq_tivio_capital/assets/fonts/Versos-SemiBold.woff2) format("woff2");font-weight:600;font-style:normal;font-display:swap}
+@font-face{font-family:Versos;src:local("Versos Bold"),local("Versos-Bold"),url(https://cdn-sites-assets.mziq.com/wp-content/themes/mziq_tivio_capital/assets/fonts/Versos-Bold.woff2) format("woff2");font-weight:700;font-style:normal;font-display:swap}
+@font-face{font-family:Versos;src:local("Versos Bold"),local("Versos-Bold"),url(https://cdn-sites-assets.mziq.com/wp-content/themes/mziq_tivio_capital/assets/fonts/Versos-Bold.woff2) format("woff2");font-weight:800;font-style:normal;font-display:swap}
+
+:root{
+  /* ===== CORES DE MARCA (fixas nos dois temas) ===== */
+  --tv-verde:#C1F4D4;--tv-verde-escuro:#92D3AB;--tv-verde-light-accent:#337F51;--tv-verde-ink:#0A2415;
+  --tv-preto:#000;--tv-branco:#FFF;--tv-offwhite:#E6EDF1;
+  --tv-azul-escuro:#3C4A60;--tv-azul:#759DB4;--tv-cinza:#637881;--tv-cinza-claro:#ABC6CD;
+  --tv-azul-imob:#C8D7E0;--tv-bradesco:#CC092F;
+  --tv-agro:#52B97A;--agro:var(--tv-agro);
+
+  /* ===== PALETA DE DADOS (data-viz) — derivada da marca ===== */
+  --viz-1:var(--accent-strong);       /* verde Tivio  */
+  --viz-2:#4A90E2;                    /* azul dado    */
+  --viz-3:#E94E77;                    /* negativo     */
+  --viz-4:#F5A623;                    /* atenção      */
+  --viz-5:#9B59B6;                    /* roxo         */
+  --viz-6:var(--tv-azul);             /* azul marca   */
+  --tv-pos:#3DDC97;--tv-neg:#E94E77;--tv-warn:#F5A623;--tv-info:#4A90E2;--tv-roxo:#9B59B6;
+
+  /* ===== TEMA ESCURO (default) ===== */
+  --bg-base:#0A0F14;--bg-elev-1:#12181F;--bg-elev-2:#161D25;
+  --bg-glass:linear-gradient(135deg,rgba(255,255,255,.06),rgba(255,255,255,.015));
+  --bg-glass-strong:linear-gradient(135deg,rgba(255,255,255,.09),rgba(255,255,255,.02));
+  --text-primary:#FFF;--text-secondary:#E6EDF1;--text-muted:#8A99A3;
+  --line:rgba(255,255,255,.10);--line-strong:rgba(255,255,255,.18);
+  --header-bg:rgba(10,15,20,.65);--input-bg:rgba(255,255,255,.03);
+  --accent-strong:var(--tv-verde);--pill-bg:rgba(193,244,212,.10);--pill-border:rgba(193,244,212,.35);
+  --glow:0 0 60px rgba(193,244,212,.15);
+  --veil:#FFF;            /* tinta dos véus translúcidos (inverte no claro) */
+  --on-accent:#0A2415;    /* texto sobre superfície de ACENTO (verde Tivio) */
+  --ink:#0A0F14;          /* tinta escura fixa: texto sobre chips de marca  */
+
+  /* ===== MARCAS DE TERCEIROS =====
+     -fill  = valor institucional, idêntico nos dois temas (fundos e chips)
+     -txt   = variante escurecida para uso como TEXTO sobre fundo claro   */
+  --brand-amarelo:#FFC700;--brand-amarelo-txt:#FFC700;
+  --brand-laranja:#EC7000;--brand-laranja-txt:#EC7000;
+  --brand-teal:#00A69C;--brand-teal-txt:#00A69C;
+  --brand-azul:#0057B8;--brand-azul-txt:#0057B8;
+  --brand-azul-esc:#003DA5;--brand-azul-esc-txt:#003DA5;
+  --brand-vermelho:#E20A17;--brand-vermelho-txt:#E20A17;
+  --shadow-lg:0 40px 120px rgba(0,0,0,.6);
+  --shadow-md:0 12px 32px rgba(0,0,0,.35);
+
+  /* ===== TOKENS DE SISTEMA ===== */
+  --ff:"Versos","Helvetica Neue",Helvetica,Arial,sans-serif;
+  --ff-mono:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+  --r-sm:8px;--r-md:12px;--r-lg:20px;--r-xl:28px;--r-full:999px;--container:1240px;
+  --btn-radius:var(--r-full);--btn-gap:10px;--btn-weight:600;--btn-ease:cubic-bezier(.22,.9,.32,1);
+  --btn-xs-pad:6px 14px;--btn-xs-fs:11px;
+  --btn-sm-pad:8px 16px;--btn-sm-fs:12px;
+  --btn-md-pad:12px 22px;--btn-md-fs:14px;
+  --btn-lg-pad:16px 30px;--btn-lg-fs:15.5px;
+  --btn-focus-ring:0 0 0 3px color-mix(in srgb,var(--accent-strong) 45%,transparent);
+
+  /* ===== ALIASES LEGADOS DOS DASHBOARDS ===== */
+  --tivio:var(--accent-strong);
+  --bg:var(--bg-base);
+  --card:var(--bg-elev-1);
+  --border:var(--line);
+  --border-strong:var(--line-strong);
+  --text:var(--text-primary);
+  --muted:var(--text-muted);
+  --red:var(--tv-neg);
+  --amber:var(--tv-warn);
+}
+
+:root[data-theme="light"]{
+  --bg-base:#EEF3F6;--bg-elev-1:#FFF;--bg-elev-2:#F6F9FB;
+  --bg-glass:linear-gradient(135deg,rgba(255,255,255,.75),rgba(255,255,255,.45));
+  --bg-glass-strong:linear-gradient(135deg,rgba(255,255,255,.92),rgba(255,255,255,.70));
+  --text-primary:#0A0F14;--text-secondary:#12181F;--text-muted:#4A5A66;
+  --line:rgba(10,15,20,.10);--line-strong:rgba(10,15,20,.20);
+  --header-bg:rgba(255,255,255,.75);--input-bg:rgba(10,15,20,.02);
+  --accent-strong:var(--tv-verde-light-accent);--pill-bg:rgba(51,127,81,.08);--pill-border:rgba(51,127,81,.32);
+  --glow:0 0 60px rgba(51,127,81,.12);
+  --veil:#0A0F14;
+  --on-accent:#FFF;
+  --ink:#0A0F14;
+  /* fundos de marca preservados; só a variante de TEXTO escurece p/ contraste */
+  --brand-amarelo-txt:#8A6A00;--brand-laranja-txt:#B85400;--brand-teal-txt:#00726B;
+  --brand-azul-txt:#0057B8;--brand-azul-esc-txt:#003DA5;--brand-vermelho-txt:#C00812;
+  --shadow-lg:0 24px 70px rgba(10,15,20,.12);
+  --shadow-md:0 10px 26px rgba(10,15,20,.10);
+  --agro:var(--tv-verde-light-accent);
+  /* data-viz recalibrada para contraste sobre fundo claro */
+  --viz-2:#2E6DB4;--viz-3:#C42B54;--viz-4:#B87400;--viz-5:#7A3E93;
+  --tv-pos:#1E9E6A;--tv-neg:#C42B54;--tv-warn:#B87400;--tv-info:#2E6DB4;--tv-roxo:#7A3E93;
+}
+</style>
+<!-- ====== TIVIO DS · BOOT DA TRANSICAO (obrigatoriamente no <head>) ====== -->
+<script id="tivio-ds-boot-tema">
+/* Resolve o tema ANTES da primeira pintura.
+   O controlador completo (tivio-ds-theme) vive no fim do documento: bom
+   para montar os botoes, tarde demais para decidir a cor. Como o HTML vem
+   com data-theme="dark" fixo, quem escolheu claro via a pagina pintar
+   escura e virar no fim do parse. Aqui so a cor e resolvida — os botoes
+   continuam por conta do controlador, que aplica exatamente a mesma regra
+   (mesma chave, escolha do usuario vence o sistema).                     */
+(function(){
+  try{
+    var K='tivio-ds-theme', v=null;
+    try{ v=localStorage.getItem(K); }catch(e){}
+    if(v!=='light'&&v!=='dark'){
+      v=(window.matchMedia&&window.matchMedia('(prefers-color-scheme: dark)').matches)?'dark':'light';
+    }
+    document.documentElement.setAttribute('data-theme',v);
+  }catch(e){}
+})();
+</script>
+<style id="tivio-ds-boot-transicao">
+/* ===== ENTRADA DA PAGINA · CSS puro, de proposito =====
+   O JS da transicao so roda no fim do documento, quando o conteudo ja foi
+   pintado. Era ele que causava o solavanco: a pagina aparecia inteira e so
+   entao saltava para opacity:0 para "entrar". Uma animacao declarada aqui
+   no <head> ja vale na primeira pintura, entao nao existe salto. E, por nao
+   depender de JS, tambem nao trava: se o script falhar, revela do mesmo
+   jeito.                                                                  */
+@keyframes tv-veu-entrada{
+  0%{opacity:1}
+  16%{opacity:1}          /* segura opaco enquanto o conteudo assenta */
+  100%{opacity:0}
+}
+@keyframes tv-entrada-conteudo{
+  from{opacity:0;transform:translateY(12px)}
+  to{opacity:1;transform:none}
+}
+/* Veu de entrada no ::before do proprio <html>: existe desde a primeira
+   pintura, sem precisar que o body ou o JS estejam prontos.              */
+html::before{
+  content:"";position:fixed;inset:0;z-index:9998;pointer-events:none;
+  background:var(--bg-base,#0A0F14);
+  animation:none;opacity:0;   /* delay de entrada removido: pagina aparece na hora */
+}
+/* Entrada instantanea: sem fade da .slide entre dashboards. */
+.slide{animation:none}
+@media(prefers-reduced-motion:reduce){
+  html::before{animation:none;opacity:0}
+  .slide{animation:none}
+}
+@media print{html::before{display:none!important}}
+</style>
+<!-- =============== FIM DA CAMADA DE TOKENS =============== -->
+
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Análise · ETF · Tivio Capital</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+/* :root legado -> aliases do Tivio Design System (ver #tivio-ds-tokens) */
+:root{--tivio:var(--accent-strong);--bg:var(--bg-base);--card:var(--bg-elev-1);--border:var(--line);--border-strong:var(--line-strong);--text:var(--text-primary);--muted:var(--text-muted);--red:var(--tv-neg);--amber:var(--tv-warn)}
+
+html,body{background:var(--bg-base);font-family:var(--ff);color:var(--text);min-height:100vh;overflow-x:hidden}
+.slide{width:100%;max-width:1920px;margin:0 auto;min-height:100vh;background:var(--bg);background-image:radial-gradient(ellipse at 15% 20%,color-mix(in srgb,var(--accent-strong) 6%,transparent),transparent 55%),radial-gradient(ellipse at 85% 90%,color-mix(in srgb,var(--accent-strong) 3%,transparent),transparent 45%);padding:0 clamp(12px,3vw,52px) clamp(30px,5vw,60px);display:flex;flex-direction:column;position:relative;box-shadow:0 40px 120px rgba(0,0,0,0.6)}
+.slide::before{content:"";position:absolute;top:-200px;right:-150px;width:600px;height:600px;border-radius:50%;background:radial-gradient(circle,color-mix(in srgb,var(--accent-strong) 8%,transparent),transparent 60%);pointer-events:none}
+.topbar{display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:nowrap;padding:clamp(10px,1.2vw,16px) clamp(6px,0.8vw,12px) clamp(14px,1.6vw,20px);margin-bottom:clamp(14px,1.8vw,22px);border-bottom:1px solid color-mix(in srgb,var(--veil) 6%,transparent);position:relative;z-index:5}
+.topbar-logo{display:block;flex:0 0 auto;line-height:0;padding:2px 0}
+.topbar-logo svg{width:clamp(72px,6.5vw,100px);height:auto;display:block}
+.topbar-navwrap{display:flex;align-items:center;gap:8px;margin-left:auto;min-width:0;flex:1 1 0%;justify-content:flex-end;overflow:hidden}
+.topbar-nav{display:flex;align-items:center;gap:6px;flex:0 1 auto;flex-wrap:nowrap;overflow-x:auto;overflow-y:hidden;scroll-behavior:smooth;scrollbar-width:none;-ms-overflow-style:none;min-width:0;max-width:100%;padding:3px 0;margin-left:0;cursor:grab}
+.topbar-nav.arrastando{cursor:grabbing;scroll-behavior:auto}
+.topbar-nav::-webkit-scrollbar{display:none}
+.dash-tab{display:inline-flex;align-items:center;gap:6px;font-size:11px;font-weight:600;color:var(--muted);text-decoration:none;padding:8px 13px;border:1px solid transparent;border-radius:999px;transition:all .18s;white-space:nowrap;flex:0 0 auto}
+.dash-tab:hover{color:var(--tivio);border-color:var(--border)}
+.dash-tab.active{color:var(--tivio);border-color:var(--tivio);background:color-mix(in srgb,var(--accent-strong) 6%,transparent)}
+.dash-tab.hub{color:var(--text-primary);border-color:color-mix(in srgb,var(--veil) 14%,transparent)}
+.dash-tab.hub:hover{color:var(--tivio);border-color:var(--tivio)}
+.dash-tab-badge{font-size:9px;font-weight:700;color:var(--tivio);background:color-mix(in srgb,var(--accent-strong) 10%,transparent);border-radius:999px;padding:2px 7px}
+.dash-tab.active .dash-tab-badge{background:color-mix(in srgb,var(--accent-strong) 18%,transparent)}
+.nav-arrow{flex:0 0 auto;width:30px;height:30px;border-radius:50%;border:1px solid var(--border);background:var(--card);color:var(--text-primary);cursor:pointer;display:none;align-items:center;justify-content:center;padding:0;font-family:inherit;font-size:15px;font-weight:700;line-height:1;transition:color .16s,border-color .16s,opacity .16s}
+.nav-arrow:hover:not(:disabled){color:var(--tivio);border-color:var(--tivio)}
+.nav-arrow:disabled{opacity:0.22;cursor:default}
+.topbar-navwrap.rolavel .nav-arrow{display:flex}
+.header{display:flex;justify-content:space-between;align-items:center;padding:16px 0 14px;border-bottom:1px solid color-mix(in srgb,var(--veil) 5%,transparent);position:relative;z-index:2;flex-shrink:0;gap:16px;flex-wrap:wrap}
+.brand{display:flex;align-items:center;gap:16px;min-width:0;flex:1}
+.brand-title{display:flex;flex-direction:column;gap:2px;min-width:0}
+.brand-title .t1{font-size:clamp(9px,1vw,11px);letter-spacing:3px;color:var(--tivio);font-weight:600}
+.brand-title .t2{font-size:clamp(16px,1.6vw,20px);letter-spacing:-0.3px;color:var(--text-primary);font-weight:600}
+.brand-title .t3{font-size:clamp(10px,0.9vw,11px);color:var(--muted);margin-top:2px}
+.tiview-btn{display:inline-flex;align-items:center;gap:8px;margin-left:clamp(12px,1.4vw,22px);padding:8px 14px;border-radius:999px;border:1px solid var(--border);background:var(--card);font-family:inherit;cursor:pointer;transition:border-color .18s,background .18s;white-space:nowrap;align-self:center}
+.tiview-btn:hover{border-color:var(--tivio);background:color-mix(in srgb,var(--accent-strong) 6%,transparent)}
+.tvb-logo{font-size:13px;font-weight:700;letter-spacing:-0.2px;color:var(--text-primary)}
+.tvb-logo span{color:var(--tivio)}
+.tvb-tag{font-size:9px;letter-spacing:1.4px;text-transform:uppercase;font-weight:700;color:var(--tivio);border-left:1px solid color-mix(in srgb,var(--veil) 12%,transparent);padding-left:8px}
+.header-right{display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+.cdi-badges-group{display:flex;gap:6px}
+.cdi-mini-card{background:color-mix(in srgb,var(--accent-strong) 6%,transparent);border:1px solid color-mix(in srgb,var(--accent-strong) 25%,transparent);border-radius:10px;padding:6px 12px;display:flex;flex-direction:column;gap:2px;text-align:center;min-width:60px}
+.cdi-mini-lbl{font-size:8px;letter-spacing:1.5px;color:var(--muted);font-weight:600}
+.cdi-mini-val{font-size:14px;font-weight:700;color:var(--tivio);letter-spacing:-0.3px;line-height:1}
+.search{width:clamp(200px,25vw,340px);height:40px;display:flex;align-items:center;gap:10px;background:var(--bg-elev-1);border:1px solid var(--border);border-radius:999px;padding:0 18px}
+.search:focus-within{border-color:var(--tivio);box-shadow:0 0 0 3px color-mix(in srgb,var(--accent-strong) 8%,transparent)}
+.search svg{width:15px;height:15px;opacity:0.6;flex-shrink:0}
+.search input{flex:1;background:none;border:none;outline:none;color:var(--text-primary);font-family:inherit;font-size:12px;min-width:0}
+.search input::placeholder{color:color-mix(in srgb,var(--veil) 35%,transparent)}
+.tabs{display:flex;gap:8px;padding:14px 0 16px;position:relative;z-index:2;flex-shrink:0;overflow-x:auto;scrollbar-width:none}
+.tabs::-webkit-scrollbar{display:none}
+.tab-btn{background:transparent;border:1px solid color-mix(in srgb,var(--veil) 10%,transparent);color:color-mix(in srgb,var(--veil) 65%,transparent);padding:9px 20px;border-radius:999px;font-family:inherit;font-size:13px;font-weight:500;cursor:pointer;transition:all 0.2s;letter-spacing:0.3px;white-space:nowrap}
+.tab-btn:hover{color:var(--text-primary);border-color:color-mix(in srgb,var(--veil) 25%,transparent)}
+.tab-btn.active{background:color-mix(in srgb,var(--accent-strong) 8%,transparent);color:var(--tivio);border-color:var(--tivio)}
+.content{display:flex;flex-direction:column;position:relative;z-index:2}
+.tab-panel{display:none;flex-direction:column;gap:14px}
+.tab-panel.active{display:flex}
+.tv-refbar{
+    display:flex;
+    flex-wrap:nowrap;
+    align-items:center;
+    gap:0;
+    background:var(--card);
+    border:1px solid var(--border);
+    border-radius:14px;
+    padding:12px 18px;
+    margin-bottom:14px;
+    overflow-x:auto;
+}
+.tv-refbar-item{
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    gap:4px;
+    padding:2px 20px;
+    min-width:140px;
+}
+.tv-refbar-item:first-child{padding-left:0}
+.tv-refbar-item+.tv-refbar-item{border-left:1px solid color-mix(in srgb,var(--veil) 8%,transparent)}
+.tv-refbar-item .l{font-size:9px;letter-spacing:1.4px;text-transform:uppercase;color:var(--muted);font-weight:700}
+.tv-refbar-item .v{font-size:12.5px;color:var(--text-primary);font-weight:600;letter-spacing:-0.1px}
+.tv-refbar-item .v b{color:var(--tivio);font-weight:700}
+.tv-refbar-spacer{flex:1}
+.tv-refbar-src{font-size:10px;letter-spacing:1.2px;text-transform:uppercase;color:var(--muted);font-weight:600}
+.kpi-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px;flex-shrink:0}
+.kpi-card{background:var(--card);border:1px solid var(--border);border-top:2px solid var(--tivio);border-radius:14px;padding:20px 24px;transition:transform 0.2s,border-color 0.2s}
+.kpi-card:hover{transform:translateY(-3px);border-color:var(--border-strong)}
+.kpi-num{font-size:clamp(20px,2.2vw,28px);font-weight:700;letter-spacing:-1px;line-height:1.1}
+.kpi-lbl{font-size:9px;color:var(--muted);letter-spacing:2.3px;font-weight:600;margin-top:10px}
+.kpi-sub{font-size:12px;color:color-mix(in srgb,var(--veil) 55%,transparent);margin-top:6px}
+.top1-strip{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:16px 20px;flex-shrink:0}
+.top1-strip-lbl{font-size:10px;color:var(--tivio);letter-spacing:2.5px;font-weight:700;margin-bottom:12px}
+.top1-grid-compact{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:12px}
+.top1c{background:color-mix(in srgb,var(--veil) 2%,transparent);border:1px solid color-mix(in srgb,var(--veil) 6%,transparent);border-radius:10px;padding:14px 16px;display:flex;flex-direction:column;gap:10px;transition:all 0.2s}
+.top1c:hover{background:color-mix(in srgb,var(--accent-strong) 3%,transparent);border-color:var(--border-strong);transform:translateY(-2px)}
+.top1c-head{display:flex;justify-content:space-between;align-items:center}
+.top1c-chip{background:var(--bg-elev-2);color:var(--tivio);padding:3px 10px;border-radius:6px;font-size:10px;font-weight:700;letter-spacing:.5px;border:1px solid var(--border)}
+.top1c-name{font-size:12px;font-weight:700;color:var(--text-primary);line-height:1.35;letter-spacing:-0.1px;min-height:32px}
+.top1c-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;padding:10px 0;border-top:1px solid color-mix(in srgb,var(--veil) 5%,transparent)}
+.top1c-grid>div{display:flex;flex-direction:column;gap:2px}
+.top1c-grid .lbl{font-size:8px;letter-spacing:1.2px;color:var(--muted);font-weight:600}
+.top1c-grid .val{font-size:14px;font-weight:700;color:var(--text-primary);font-variant-numeric:tabular-nums}
+.top1c-footer{font-size:9.5px;color:var(--muted);letter-spacing:0.5px;padding-top:6px;border-top:1px solid color-mix(in srgb,var(--veil) 5%,transparent)}
+.row{display:flex;gap:16px}
+.two-col .panel-lg{flex:1.6}
+.two-col .panel-sm{flex:1}
+.panel{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:22px 24px;display:flex;flex-direction:column}
+.panel-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;flex-shrink:0;flex-wrap:wrap;gap:8px}
+.panel-head h3{font-size:clamp(14px,1.4vw,16px);font-weight:600;color:var(--text-primary)}
+.pill{background:color-mix(in srgb,var(--accent-strong) 8%,transparent);color:var(--tivio);padding:3px 10px;border-radius:999px;font-size:10px;font-weight:600;letter-spacing:1px;border:1px solid color-mix(in srgb,var(--accent-strong) 20%,transparent)}
+.panel-note{font-size:11px;color:var(--muted);margin-top:12px;line-height:1.5}
+.panel-note b{color:var(--text-primary)}
+.hl-wrap{display:flex;flex-direction:column;gap:12px}
+.hl-block{background:color-mix(in srgb,var(--veil) 2%,transparent);border:1px solid color-mix(in srgb,var(--veil) 4%,transparent);border-radius:10px;padding:14px}
+.hl-lbl{font-size:9px;letter-spacing:1.8px;color:var(--muted);font-weight:600;margin-bottom:8px}
+.hl-fund{font-size:12px;color:var(--text-primary);font-weight:500;line-height:1.4;margin-bottom:6px}
+.hl-val{font-size:18px;font-weight:700;letter-spacing:-0.3px}
+.diverging-bars{display:flex;flex-direction:column;gap:10px;padding:8px 0}
+.div-bar-row{display:flex;align-items:center;gap:12px;min-height:36px;flex-wrap:wrap}
+.div-bar-chip{width:clamp(140px,15vw,180px);flex-shrink:0}
+.chip{padding:4px 10px;border-radius:6px;font-weight:700;font-size:11px;display:inline-flex;align-items:center;line-height:1;white-space:nowrap}
+.chip.g{background:color-mix(in srgb,var(--accent-strong) 15%,transparent);color:var(--tivio);border:1px solid color-mix(in srgb,var(--accent-strong) 35%,transparent)}
+.chip.b{background:rgba(74,144,226,0.15);color:var(--tv-info);border:1px solid rgba(74,144,226,0.35)}
+.chip.o{background:rgba(245,166,35,0.15);color:var(--tv-warn);border:1px solid rgba(245,166,35,0.35)}
+.chip.r{background:rgba(233,78,119,0.15);color:var(--tv-neg);border:1px solid rgba(233,78,119,0.35)}
+.chip.k{background:color-mix(in srgb,var(--veil) 5%,transparent);color:var(--text-primary);border:1px solid color-mix(in srgb,var(--veil) 10%,transparent)}
+.div-bar-chart{flex:1;min-width:180px;position:relative;height:28px;display:flex;background:color-mix(in srgb,var(--veil) 2%,transparent);border-radius:6px}
+.div-bar-half{width:50%;height:100%;position:relative;overflow:hidden}
+.div-bar-half.left{display:flex;justify-content:flex-end;border-radius:6px 0 0 6px}
+.div-bar-half.right{display:flex;justify-content:flex-start;border-radius:0 6px 6px 0}
+.div-bar-fill{height:100%;transition:width 0.3s}
+.div-bar-half.left .div-bar-fill{border-radius:6px 0 0 6px}
+.div-bar-half.right .div-bar-fill{border-radius:0 6px 6px 0}
+.div-bar-zero{position:absolute;left:50%;top:-3px;bottom:-3px;width:2px;background:linear-gradient(180deg,color-mix(in srgb,var(--accent-strong) 70%,transparent),color-mix(in srgb,var(--accent-strong) 30%,transparent));z-index:3;transform:translateX(-1px);box-shadow:0 0 8px color-mix(in srgb,var(--accent-strong) 30%,transparent)}
+.div-bar-value{width:clamp(80px,10vw,110px);text-align:right;font-size:13px;font-weight:700;flex-shrink:0;font-variant-numeric:tabular-nums}
+.div-bar-scale{display:flex;justify-content:space-between;padding:8px clamp(80px,10vw,110px) 0 clamp(140px,15vw,180px);font-size:9px;color:var(--muted);letter-spacing:0.8px;font-weight:600;flex-wrap:wrap;gap:4px;margin-top:6px}
+.rank-table-wrap{overflow:auto;border-radius:6px;max-height:65vh}
+.rank-table-wrap::-webkit-scrollbar{width:6px;height:8px}
+.rank-table-wrap::-webkit-scrollbar-thumb{background:color-mix(in srgb,var(--accent-strong) 30%,transparent);border-radius:3px}
+.rank-table{width:100%;border-collapse:collapse;font-size:11.5px;min-width:640px}
+.rank-table thead{position:sticky;top:0;background:var(--bg-elev-2);z-index:10}
+.rank-table th{text-align:left;padding:10px 10px;font-size:9px;letter-spacing:1.2px;color:var(--muted);font-weight:600;border-bottom:1px solid color-mix(in srgb,var(--veil) 8%,transparent);background:var(--bg-elev-2)}
+.rank-table td{padding:9px 10px;border-bottom:1px solid color-mix(in srgb,var(--veil) 3%,transparent);color:color-mix(in srgb,var(--veil) 85%,transparent);vertical-align:middle;background:var(--card);transition:background 0.15s}
+.rank-table tbody tr:hover td{background:color-mix(in srgb,var(--accent-strong) 5%,transparent)}
+.rank-table .rank{font-size:13px;font-weight:700;color:var(--tivio);text-align:center;width:44px}
+.rank-table .fnome{font-weight:600;color:var(--text-primary);max-width:280px;font-size:11.5px}
+.rank-table .num{font-weight:600;font-variant-numeric:tabular-nums;text-align:right;font-size:11px}
+.rank-table .g{color:var(--tivio);font-weight:700}
+.rank-table .r{color:var(--tv-neg);font-weight:700}
+.rank-table .o{color:var(--tv-warn);font-weight:700}
+.rank-table .center{text-align:center}
+.rank-table .muted{color:var(--muted)}
+.table-notice{font-size:10px;color:var(--muted);padding-top:10px;margin-top:6px;border-top:1px solid color-mix(in srgb,var(--veil) 5%,transparent);line-height:1.6;flex-shrink:0}
+.table-notice b{color:var(--text-primary);font-weight:600}
+.tv-note{display:flex;gap:12px;align-items:flex-start;background:rgba(245,166,35,0.05);border:1px solid rgba(245,166,35,0.28);border-radius:12px;padding:13px 16px;font-size:12px;line-height:1.6;color:color-mix(in srgb,var(--veil) 86%,transparent);margin-top:14px}
+.tv-note .tv-note-tag{flex:0 0 auto;font-size:9px;letter-spacing:1.4px;font-weight:700;text-transform:uppercase;color:var(--tv-warn);border:1px solid rgba(245,166,35,0.4);border-radius:999px;padding:3px 9px;margin-top:1px}
+.timeline-h{display:flex;gap:12px;overflow-x:auto;padding-bottom:4px;scrollbar-width:none}
+.timeline-h::-webkit-scrollbar{display:none}
+.timeline-h-block{flex:1;min-width:190px;background:color-mix(in srgb,var(--veil) 2%,transparent);border:1px solid color-mix(in srgb,var(--veil) 4%,transparent);border-radius:10px;padding:14px}
+.yr{font-size:22px;font-weight:700;color:var(--tivio);letter-spacing:-.5px;margin-bottom:4px}
+.yr-t{font-size:12px;font-weight:600;color:var(--text-primary);margin-bottom:6px}
+.yr-d{font-size:11px;color:var(--muted);line-height:1.5}
+.three-paths{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:16px}
+.path-card{background:color-mix(in srgb,var(--veil) 2%,transparent);border:1px solid var(--border);border-top:3px solid var(--tivio);border-radius:14px;padding:22px 24px;display:flex;flex-direction:column;gap:14px}
+.path-tag{font-size:10px;color:var(--tivio);letter-spacing:2.5px;font-weight:700}
+.path-title{font-size:clamp(18px,1.8vw,20px);font-weight:700;color:var(--text-primary);letter-spacing:-.4px}
+.path-desc{font-size:13px;color:color-mix(in srgb,var(--veil) 75%,transparent);line-height:1.6;flex:1}
+.path-meta{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;padding-top:14px;border-top:1px solid color-mix(in srgb,var(--veil) 6%,transparent)}
+.path-meta>div{display:flex;flex-direction:column;gap:4px}
+.path-meta .l{font-size:8px;letter-spacing:1.4px;color:var(--muted);font-weight:700;text-transform:uppercase}
+.path-meta .v{font-size:12px;color:var(--tivio);font-weight:700}
+.big-stat{text-align:center;padding:14px 0}
+.big-stat .n{font-size:clamp(48px,6vw,64px);font-weight:800;color:var(--tivio);letter-spacing:-3px;line-height:1}
+.big-stat .l{font-size:11px;letter-spacing:1.5px;color:var(--text-primary);font-weight:600;margin-top:8px}
+.big-stat .s{font-size:11px;color:var(--muted);margin-top:4px}
+.tv-modal{position:fixed;inset:0;z-index:200;display:flex;align-items:center;justify-content:center;padding:24px}
+.tv-modal[hidden]{display:none}
+.tv-modal-bg{position:absolute;inset:0;background:rgba(0,0,0,0.72);backdrop-filter:blur(3px)}
+.tv-modal-card{position:relative;width:min(760px,100%);max-height:82vh;overflow-y:auto;background:var(--card);border:1px solid var(--border);border-left:3px solid var(--tivio);border-radius:18px;padding:26px 30px;box-shadow:0 40px 120px rgba(0,0,0,0.7)}
+.tv-modal-head{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:6px}
+.tv-modal-head .tvh{font-size:19px;font-weight:700;color:var(--text-primary);letter-spacing:-0.4px}
+.tv-modal-head .tvh span{color:var(--tivio)}
+.tv-modal-close{margin-left:auto;width:30px;height:30px;border-radius:50%;border:1px solid var(--border);background:transparent;color:var(--muted);font-size:17px;line-height:1;cursor:pointer;transition:all .16s}
+.tv-modal-close:hover{color:var(--text-primary);border-color:var(--tivio)}
+.tv-modal-sub{font-size:11px;color:var(--muted);letter-spacing:0.4px;margin-bottom:18px}
+.tv-modal-sub b{color:var(--text-primary);font-weight:600}
+.tv-modal-list{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:10px}
+.tv-modal-list li{display:flex;gap:11px;align-items:flex-start;background:color-mix(in srgb,var(--veil) 2%,transparent);border:1px solid color-mix(in srgb,var(--accent-strong) 18%,transparent);border-radius:12px;padding:14px 16px;font-size:13.5px;line-height:1.6;color:color-mix(in srgb,var(--veil) 92%,transparent)}
+.tv-modal-list li::before{content:"";flex:0 0 6px;height:6px;margin-top:8px;border-radius:50%;background:var(--tivio)}
+.tv-modal-foot{margin-top:18px;padding-top:14px;border-top:1px solid color-mix(in srgb,var(--veil) 6%,transparent);font-size:10.5px;color:var(--muted);line-height:1.6}
+@media(min-width:2200px){html{font-size:16.5px}.slide{max-width:2560px;padding-left:clamp(52px,4vw,96px);padding-right:clamp(52px,4vw,96px)}}
+@media(min-width:2560px){html{font-size:17.5px}}
+@media(max-width:1600px){.topbar-nav .dash-tab{font-size:10.5px;padding:7px 11px}}
+@media(max-width:1100px){.topbar{justify-content:flex-start}.topbar-navwrap{margin-left:0;justify-content:flex-start}}
+@media(max-width:900px){.row.two-col{flex-direction:column}.two-col .panel-lg,.two-col .panel-sm{flex:1}.brand{width:100%}.header-right{width:100%}}
+@media(max-width:860px){.tiview-btn{margin-left:0;margin-top:10px}}
+@media(max-width:640px){.tv-refbar-item{padding:8px 0;border-left:none!important;width:100%}.tv-refbar-item+.tv-refbar-item{border-top:1px solid color-mix(in srgb,var(--veil) 8%,transparent)}.topbar-nav .dash-tab{font-size:10px;padding:7px 10px}.nav-arrow{width:26px;height:26px;font-size:13px}.search{width:100%}.cdi-badges-group{width:100%;justify-content:space-between}.cdi-mini-card{flex:1}.kpi-card{padding:14px 16px}.panel{padding:16px 18px}.brand-title .t3{display:none}}
+@media(prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+</style>
+
+<!-- ============ TIVIO DESIGN SYSTEM v1.0 · CAMADA DE COMPONENTES ============ -->
+<style id="tivio-ds-components">
+/* ---------- 1. TIPOGRAFIA DO SISTEMA ---------- */
+html,body,button,input,select,textarea,optgroup{font-family:var(--ff)}
+body{-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;letter-spacing:.005em}
+html{scroll-behavior:smooth}
+/* numerais alinhados em tabelas/KPIs (o Versos herda o fallback tabular) */
+table,.kpi-val,.cdi-mini-val,.bn .n,[class*="valor"],[class*="value"],[class*="-num"]{font-variant-numeric:tabular-nums;font-feature-settings:"tnum" 1}
+code,pre,.mono,[class*="mono"]{font-family:var(--ff-mono)}
+
+/* ---------- 2. TRANSIÇÃO DE TEMA ---------- */
+html{color-scheme:dark}
+:root[data-theme="light"]{color-scheme:light}
+body,.slide,.card,.panel,.header,.topbar{transition:background-color .28s ease,border-color .28s ease,color .28s ease}
+@media(prefers-reduced-motion:reduce){*{transition-duration:.01ms!important;animation-duration:.01ms!important}}
+
+/* ---------- 3. LOGO HERDA O TEMA ---------- */
+.logo svg,.topbar-logo svg,.brand svg,.ds-logo svg{color:var(--text-primary)}
+.logo svg path,.topbar-logo svg path,.ds-logo svg path{fill:currentColor}
+
+/* ---------- 4. SISTEMA DE BOTÕES (DS) ---------- */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:var(--btn-gap);padding:var(--btn-md-pad);white-space:nowrap;border-radius:var(--btn-radius);font-family:var(--ff);font-size:var(--btn-md-fs);font-weight:var(--btn-weight);line-height:1.2;letter-spacing:.01em;border:1px solid transparent;cursor:pointer;text-decoration:none;position:relative;isolation:isolate;transition:background-color .2s var(--btn-ease),color .2s var(--btn-ease),border-color .2s var(--btn-ease),transform .2s var(--btn-ease),box-shadow .2s var(--btn-ease)}
+.btn:focus-visible{outline:none;box-shadow:var(--btn-focus-ring)}
+.btn:active{transform:translateY(0) scale(.985)}
+.btn svg{width:1em;height:1em;flex-shrink:0}
+.btn .arrow{transition:transform .2s var(--btn-ease)}.btn:hover .arrow{transform:translateX(3px)}
+.btn-primary{background:var(--accent-strong);color:var(--on-accent)}
+.btn-primary:hover{background:color-mix(in srgb,var(--accent-strong) 82%,var(--tv-verde-ink));transform:translateY(-1px);box-shadow:var(--glow)}
+.btn-glass{background:var(--bg-glass);color:var(--text-primary);border-color:var(--line-strong);backdrop-filter:blur(12px)}
+.btn-glass:hover{border-color:var(--accent-strong);color:var(--accent-strong);transform:translateY(-1px)}
+.btn-outline{background:transparent;color:var(--accent-strong);border-color:var(--pill-border)}
+.btn-outline:hover{background:var(--pill-bg);border-color:var(--accent-strong);transform:translateY(-1px)}
+.btn-soft{background:var(--pill-bg);color:var(--accent-strong);border-color:transparent}
+.btn-soft:hover{background:color-mix(in srgb,var(--accent-strong) 20%,transparent);transform:translateY(-1px)}
+.btn-ghost{background:transparent;color:var(--text-muted);border-color:transparent}
+.btn-ghost:hover{background:var(--input-bg);color:var(--text-primary)}
+.btn-dark{background:var(--tv-azul-escuro);color:#fff;border-color:transparent}
+.btn-dark:hover{background:#2b3a40;transform:translateY(-1px);box-shadow:var(--shadow-md)}
+.btn-danger{background:color-mix(in srgb,var(--tv-bradesco) 10%,transparent);color:var(--tv-bradesco);border-color:color-mix(in srgb,var(--tv-bradesco) 35%,transparent)}
+.btn-danger:hover{background:var(--tv-bradesco);color:#fff;border-color:var(--tv-bradesco)}
+.btn-xs{padding:var(--btn-xs-pad);font-size:var(--btn-xs-fs);gap:6px}
+.btn-sm{padding:var(--btn-sm-pad);font-size:var(--btn-sm-fs);gap:8px}
+.btn-lg{padding:var(--btn-lg-pad);font-size:var(--btn-lg-fs);gap:12px}
+.btn-block{display:flex;width:100%}
+.btn-icon{padding:0;width:40px;height:40px;border-radius:50%;gap:0}
+.btn-icon.btn-sm{width:32px;height:32px}
+.btn[disabled],.btn.is-disabled,.btn[aria-disabled="true"]{opacity:.42;cursor:not-allowed;pointer-events:none;filter:saturate(.4)}
+.btn-row{display:flex;gap:14px;flex-wrap:wrap;align-items:center}
+
+/* ---------- 5. PILLS / BADGES / SUPERFÍCIES (DS) ---------- */
+.pill{display:inline-flex;align-items:center;gap:6px;padding:5px 14px;border-radius:var(--r-full);font-size:11px;font-weight:700;background:var(--pill-bg);color:var(--accent-strong);border:1px solid var(--pill-border)}
+.badge{display:inline-block;padding:5px 14px;border-radius:var(--r-full);font-size:10px;letter-spacing:.28em;text-transform:uppercase;font-weight:700;background:var(--pill-bg);color:var(--accent-strong);border:1px solid var(--pill-border)}
+.surface{padding:26px;border-radius:var(--r-lg);border:1px solid var(--line);background:var(--bg-glass);backdrop-filter:blur(16px) saturate(140%);position:relative;overflow:hidden;transition:transform .25s,border-color .25s,box-shadow .25s}
+.surface:hover{transform:translateY(-3px);border-color:var(--accent-strong);box-shadow:0 12px 32px color-mix(in srgb,var(--accent-strong) 20%,transparent)}
+.bn{padding:26px 22px;min-height:140px;border:1px solid var(--line);border-left:3px solid var(--accent-strong);background:var(--bg-glass);border-radius:0 var(--r-md) var(--r-md) 0;backdrop-filter:blur(16px) saturate(140%)}
+.bn .n{display:flex;align-items:baseline;gap:4px;font-size:48px;font-weight:700;letter-spacing:-.03em;color:var(--accent-strong);line-height:1}
+.bn .k{font-size:13px;color:var(--text-muted);margin-top:14px;font-weight:500}
+
+/* ---------- 6. RAIOS NORMALIZADOS (tokens do DS) ---------- */
+.card,.panel,.box,.kpi,.kpi-card,.chart-card,.metric,.metric-card,.tbl-wrap,.table-wrap,.section-card,.grid-card,.info-card,.stat-card{border-radius:var(--r-lg)}
+.cdi-mini-card,.mini-card,.chip,.tag,.legend-item,.filter-box,.month-filter-bar{border-radius:var(--r-md)}
+.dash-tab,.tab-btn,.month-pill,.pill-btn,.back-btn,.dash-back-btn,.search,.btn-group{border-radius:var(--r-full)}
+
+/* ---------- 7. ACESSIBILIDADE / FOCO ---------- */
+a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,[tabindex]:focus-visible,.dash-tab:focus-visible,.tab-btn:focus-visible{outline:none;box-shadow:var(--btn-focus-ring);border-radius:var(--r-sm)}
+::selection{background:color-mix(in srgb,var(--accent-strong) 35%,transparent);color:var(--text-primary)}
+.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0}
+
+/* ---------- 8. SCROLLBARS ---------- */
+*{scrollbar-width:thin;scrollbar-color:color-mix(in srgb,var(--accent-strong) 40%,transparent) transparent}
+::-webkit-scrollbar{width:10px;height:10px}
+::-webkit-scrollbar-track{background:transparent}
+::-webkit-scrollbar-thumb{background:color-mix(in srgb,var(--accent-strong) 28%,transparent);border-radius:var(--r-full);border:2px solid transparent;background-clip:content-box}
+::-webkit-scrollbar-thumb:hover{background:color-mix(in srgb,var(--accent-strong) 50%,transparent);background-clip:content-box}
+
+/* ---------- 9. FORMULÁRIOS ---------- */
+input,select,textarea{color:var(--text-primary)}
+input::placeholder,textarea::placeholder{color:var(--text-muted);opacity:.85}
+select option{background:var(--bg-elev-1);color:var(--text-primary)}
+
+/* ---------- 10. TOGGLE DE TEMA (componente DS) ---------- */
+.tv-theme-toggle{display:inline-flex;align-items:center;gap:4px;padding:4px;border-radius:var(--r-full);background:var(--input-bg);border:1px solid var(--line-strong);flex-shrink:0}
+.tv-theme-toggle button{background:transparent;border:0;cursor:pointer;width:28px;height:28px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;color:var(--text-muted);transition:.2s;padding:0}
+.tv-theme-toggle button:hover{color:var(--text-primary)}
+.tv-theme-toggle button.active{background:var(--accent-strong);color:var(--on-accent)}
+.tv-theme-toggle svg{width:14px;height:14px}
+
+
+/* ---------- 10b. CORREÇÕES DE CONTRASTE HERDADAS ----------
+   O badge da aba ativa tinha texto escuro sobre fundo translúcido escuro
+   (ilegível no arquivo original). Agora usa o par acento / texto-sobre-acento. */
+.dash-tab.active .dash-tab-badge{background:var(--accent-strong)!important;color:var(--on-accent)!important;border-color:transparent!important}
+.dash-tab .dash-tab-badge{color:var(--accent-strong)}
+/* chip com fundo de marca claro (amarelo) sempre recebe tinta escura */
+[style*="var(--brand-amarelo)"]{color:var(--ink)!important}
+
+/* ---------- 11. AJUSTES ESPECÍFICOS DO TEMA CLARO ---------- */
+:root[data-theme="light"] body,:root[data-theme="light"] html{background:var(--bg-base)}
+:root[data-theme="light"] .slide{box-shadow:var(--shadow-lg)}
+:root[data-theme="light"] .dash-tab.active,:root[data-theme="light"] .tab-btn.active,:root[data-theme="light"] .month-pill.active{background:var(--pill-bg);color:var(--accent-strong);border-color:var(--accent-strong)}
+:root[data-theme="light"] .dash-tab.active .dash-tab-badge{background:var(--accent-strong);color:var(--on-accent)}
+:root[data-theme="light"] th{color:var(--text-muted)}
+:root[data-theme="light"] tr:hover td{background:color-mix(in srgb,var(--accent-strong) 6%,transparent)}
+/* barras/preenchimentos que usavam branco puro */
+:root[data-theme="light"] [style*="#FFFFFF"],:root[data-theme="light"] [style*="#ffffff"]{}
+
+/* ---------- 12. SVG / GRÁFICOS — atributos de apresentação herdam o tema ---------- */
+[fill="#C1F4D4"],[fill="#c1f4d4"]{fill:var(--accent-strong)}
+[stroke="#C1F4D4"],[stroke="#c1f4d4"]{stroke:var(--accent-strong)}
+[fill="#FFFFFF"],[fill="#fff"],[fill="#FFF"]{fill:var(--text-primary)}
+[stroke="#FFFFFF"],[stroke="#fff"],[stroke="#FFF"]{stroke:var(--text-primary)}
+[fill="#4A90E2"]{fill:var(--tv-info)}[stroke="#4A90E2"]{stroke:var(--tv-info)}
+[fill="#E94E77"]{fill:var(--tv-neg)}[stroke="#E94E77"]{stroke:var(--tv-neg)}
+[fill="#F5A623"]{fill:var(--tv-warn)}[stroke="#F5A623"]{stroke:var(--tv-warn)}
+[fill="#9B59B6"]{fill:var(--tv-roxo)}[stroke="#9B59B6"]{stroke:var(--tv-roxo)}
+[fill="#A7A7A7"]{fill:var(--text-muted)}[stroke="#A7A7A7"]{stroke:var(--text-muted)}
+svg text:not([fill]){fill:currentColor}
+
+/* ---------- 13. IMPRESSÃO ---------- */
+@media print{
+  :root{--bg-base:#fff}
+  .tv-theme-toggle,.dash-switcher,.topbar-navwrap,.nav-arrow,.search{display:none!important}
+  .slide{box-shadow:none;background:#fff!important}
+  body{color:#000}
+}
+</style>
+<style id="tivio-ds-navoverflow">
+/* ---- MENU DO TOPO: correção de transbordo + sinalização ----
+
+   CAUSA RAIZ: o scroller `.topbar-nav` estava com `justify-content:flex-end`.
+   Num container com `overflow-x:auto`, o conteúdo que excede transborda pela
+   BORDA INICIAL — o navegador não contabiliza esse excesso em `scrollWidth`,
+   então as abas somem à esquerda, ficam inalcançáveis por rolagem e as setas
+   nunca eram exibidas. Alinhando ao início, o excesso passa a ir para a
+   direita, onde é rolável e detectável.                                   */
+.topbar-nav{justify-content:flex-start!important}
+/* Espaçador de margem automática: absorve a folga e mantém as abas alinhadas
+   à direita enquanto cabem; colapsa para zero quando há excesso.          */
+.topbar-nav::before{content:"";flex:0 0 auto;margin-left:auto}
+
+.topbar-navwrap{position:relative}
+.topbar-navwrap.rolavel .topbar-nav{
+  -webkit-mask-image:linear-gradient(to right,transparent 0,#000 22px,#000 calc(100% - 22px),transparent 100%);
+          mask-image:linear-gradient(to right,transparent 0,#000 22px,#000 calc(100% - 22px),transparent 100%);
+}
+/* nas extremidades, não esmaece o lado já esgotado */
+.topbar-navwrap.rolavel.no-esq .topbar-nav{
+  -webkit-mask-image:linear-gradient(to right,#000 0,#000 calc(100% - 22px),transparent 100%);
+          mask-image:linear-gradient(to right,#000 0,#000 calc(100% - 22px),transparent 100%);
+}
+.topbar-navwrap.rolavel.no-dir .topbar-nav{
+  -webkit-mask-image:linear-gradient(to right,transparent 0,#000 22px,#000 100%);
+          mask-image:linear-gradient(to right,transparent 0,#000 22px,#000 100%);
+}
+.topbar-navwrap.rolavel.no-esq.no-dir .topbar-nav{-webkit-mask-image:none;mask-image:none}
+
+/* setas alinhadas ao design system */
+.nav-arrow{
+  background:var(--bg-glass,var(--card));border:1px solid var(--line-strong,var(--border));
+  color:var(--text-primary,#fff);backdrop-filter:blur(12px);
+  transition:color .18s,border-color .18s,background .18s,opacity .18s,transform .18s;
+}
+.nav-arrow:hover:not(:disabled){
+  color:var(--on-accent);background:var(--accent-strong);border-color:transparent;transform:translateY(-1px);
+}
+.nav-arrow:focus-visible{outline:none;box-shadow:var(--btn-focus-ring)}
+.nav-arrow:disabled{opacity:.2}
+/* pulso discreto na primeira vez que há conteúdo escondido */
+@keyframes tv-nav-hint{0%,100%{transform:translateX(0)}50%{transform:translateX(2px)}}
+.topbar-navwrap.rolavel:not(.no-dir) .nav-arrow.dir{animation:tv-nav-hint 1.6s ease-in-out 2}
+@media(prefers-reduced-motion:reduce){.topbar-navwrap .nav-arrow.dir{animation:none}}
+</style>
+<style id="tivio-ds-anim">
+/* =================== ANIMAÇÕES DO DESIGN SYSTEM ===================
+   Keyframes idênticos aos publicados em tivio-design-system.html.   */
+@keyframes brand-zoom-in{0%{opacity:0;transform:translateY(24px) scale(.82) rotate(-2deg)}55%{opacity:1;transform:translateY(0) scale(1.04) rotate(0)}100%{opacity:1;transform:translateY(0) scale(1) rotate(0)}}
+@keyframes brand-path-in{0%{opacity:0;filter:blur(6px)}100%{opacity:1;filter:blur(0)}}
+@keyframes slide-fade-in{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
+@keyframes draw-curve{to{stroke-dashoffset:0}}
+@keyframes warn-pulse{0%,100%{box-shadow:0 0 0 0 color-mix(in srgb,var(--accent-strong) 30%,transparent)}50%{box-shadow:0 0 0 8px transparent}}
+@keyframes tv-modal-in{from{opacity:0;transform:translateY(18px) scale(.97)}to{opacity:1;transform:translateY(0) scale(1)}}
+@keyframes tv-fade-in{from{opacity:0}to{opacity:1}}
+
+/* ---- entrada da marca no topo (uma vez, ao carregar) ---- */
+.topbar-logo svg,.logo svg{animation:brand-zoom-in .75s cubic-bezier(.16,.84,.28,1) both}
+
+/* ---- TiView: modal e conteúdo ---- */
+.tv-modal:not([hidden]) .tv-modal-bg{animation:tv-fade-in .28s ease both}
+.tv-modal:not([hidden]) .tv-modal-card{animation:tv-modal-in .42s cubic-bezier(.22,.9,.32,1) both}
+.tv-modal-card .tiview-logo{animation:brand-zoom-in .6s cubic-bezier(.16,.84,.28,1) both;animation-delay:.1s}
+.tv-modal-sub,.tv-modal-comp{animation:slide-fade-in .5s cubic-bezier(.22,.9,.32,1) both;animation-delay:.16s}
+/* lista de pontos com stagger, no mesmo tempo do DS */
+.tv-modal-list li{opacity:0;transform:translateY(28px);transition:opacity .7s cubic-bezier(.22,.9,.32,1),transform .7s cubic-bezier(.22,.9,.32,1)}
+.tv-modal-list.is-visible li{opacity:1;transform:translateY(0)}
+.tv-modal-list.is-visible li:nth-child(1){transition-delay:.05s}
+.tv-modal-list.is-visible li:nth-child(2){transition-delay:.15s}
+.tv-modal-list.is-visible li:nth-child(3){transition-delay:.25s}
+.tv-modal-list.is-visible li:nth-child(4){transition-delay:.35s}
+.tv-modal-list.is-visible li:nth-child(5){transition-delay:.45s}
+.tv-modal-list.is-visible li:nth-child(n+6){transition-delay:.55s}
+
+/* ---- reveal com stagger para blocos da página ---- */
+.tv-reveal>*{opacity:0;transform:translateY(28px);transition:opacity .7s cubic-bezier(.22,.9,.32,1),transform .7s cubic-bezier(.22,.9,.32,1)}
+.tv-reveal.is-visible>*{opacity:1;transform:translateY(0)}
+.tv-reveal.is-visible>*:nth-child(1){transition-delay:.05s}
+.tv-reveal.is-visible>*:nth-child(2){transition-delay:.15s}
+.tv-reveal.is-visible>*:nth-child(3){transition-delay:.25s}
+.tv-reveal.is-visible>*:nth-child(4){transition-delay:.35s}
+.tv-reveal.is-visible>*:nth-child(5){transition-delay:.45s}
+.tv-reveal.is-visible>*:nth-child(6){transition-delay:.55s}
+
+/* ---- botão TiView: pulso discreto quando há leitura nova ---- */
+.tiview-btn.tem-novidade{animation:warn-pulse 2.6s ease-in-out 3}
+.tiview-btn:not(:disabled):hover{transform:translateY(-1px)}
+.tiview-btn{transition:border-color .18s,background .18s,opacity .18s,transform .2s var(--btn-ease,cubic-bezier(.22,.9,.32,1))}
+
+/* ---- competência em destaque no modal ---- */
+.tv-modal-comp{display:inline-flex;align-items:center;gap:7px;padding:5px 14px;border-radius:var(--r-full,999px);background:var(--pill-bg);border:1px solid var(--pill-border);color:var(--accent-strong);font-size:10px;font-weight:700;letter-spacing:.22em;text-transform:uppercase;margin-bottom:14px}
+.tv-modal-comp::before{content:"";width:6px;height:6px;border-radius:50%;background:currentColor}
+
+@media(prefers-reduced-motion:reduce){
+  .topbar-logo svg,.logo svg,.tv-modal-card,.tv-modal-bg,.tv-modal-card .tiview-logo,.tv-modal-sub,.tv-modal-comp,.tiview-btn.tem-novidade{animation:none!important}
+  .tv-modal-list li,.tv-reveal>*{opacity:1!important;transform:none!important;transition:none!important}
+}
+</style>
+<style id="tivio-ds-transicao">
+/* ===================================================================
+   TRANSIÇÃO ENTRE DASHBOARDS + MOVIMENTO DE INTERFACE
+   Curva e tempos herdados do design system (--btn-ease).
+   =================================================================== */
+:root{
+  --tv-ease:cubic-bezier(.4,0,.2,1);
+  /* ~1s no total entre um dashboard e outro.
+     A saida fecha o veu em 300ms e a navegacao so dispara aos 360ms:
+     esses 60ms de folga garantem que a troca acontece com a tela ja
+     coberta. Sem a folga, a curva `ease` ainda estava em ~0.95 de
+     opacidade na hora de navegar e a emenda aparecia. */
+  --tv-t-saida:300ms;
+  --tv-t-entrada:560ms;
+}
+
+/* ---- 1. VÉU DE TRANSIÇÃO ---- */
+.tv-veu{
+  position:fixed;inset:0;z-index:9998;pointer-events:none;opacity:0;
+  background:var(--bg-base);
+  transition:opacity var(--tv-t-saida) cubic-bezier(.33,0,.2,1);
+}
+html.tv-saindo .tv-veu{opacity:1}
+/* durante a saída, o conteúdo recua de leve — dá sensação de profundidade */
+html.tv-saindo .slide{
+  transform:translateY(-6px) scale(.994);opacity:.55;
+  transition:transform var(--tv-t-saida) var(--tv-ease),opacity var(--tv-t-saida) ease;
+}
+
+/* ---- 2. ENTRADA DA PÁGINA ---- */
+@keyframes tv-page-in{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:none}}
+@keyframes tv-fade-in-soft{from{opacity:0}to{opacity:1}}
+html.tv-entrando .slide{animation:tv-page-in var(--tv-t-entrada) var(--tv-ease) both}
+/* topo entra antes do corpo, escalonado */
+@keyframes tv-topbar-in{from{opacity:0;transform:translateY(-10px)}to{opacity:1;transform:none}}
+html.tv-entrando .topbar,html.tv-entrando .dash-switcher{animation:tv-topbar-in .5s var(--tv-ease) both}
+html.tv-entrando .header{animation:tv-page-in .55s var(--tv-ease) both;animation-delay:.06s}
+
+/* ---- 3. TROCA DE ABAS ---- */
+@keyframes tv-panel-in{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}
+.tab-panel.active,.tv-tab-panel.active{animation:tv-panel-in .42s var(--tv-ease) both}
+/* a aba clicada responde na hora */
+.tab-btn,.dash-tab,.month-pill,.subtab-btn{transition:color .18s,background .18s,border-color .18s,transform .18s var(--tv-ease)}
+.tab-btn:active,.month-pill:active,.subtab-btn:active{transform:scale(.97)}
+.dash-tab{position:relative}
+.dash-tab::after{
+  content:"";position:absolute;left:14px;right:14px;bottom:2px;height:1px;
+  background:currentColor;transform:scaleX(0);transform-origin:50%;
+  transition:transform .26s var(--tv-ease);opacity:.5;
+}
+.dash-tab:hover::after{transform:scaleX(1)}
+.dash-tab.active::after{transform:scaleX(0)}
+
+/* ---- 4. BARRAS QUE PREENCHEM ---- */
+.div-bar-fill,.pv-bar-fill,.hl-bar-fill,.bar-fill,[class$="-bar-fill"],[class*="bar-fill"]{
+  transition:width .85s var(--tv-ease);
+}
+
+/* ---- 5. LINHAS DE TABELA EM CASCATA ---- */
+@keyframes tv-row-in{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+.tv-linhas tbody tr{animation:tv-row-in .4s var(--tv-ease) both}
+.tv-linhas tbody tr:nth-child(1){animation-delay:.02s}
+.tv-linhas tbody tr:nth-child(2){animation-delay:.05s}
+.tv-linhas tbody tr:nth-child(3){animation-delay:.08s}
+.tv-linhas tbody tr:nth-child(4){animation-delay:.11s}
+.tv-linhas tbody tr:nth-child(5){animation-delay:.14s}
+.tv-linhas tbody tr:nth-child(6){animation-delay:.17s}
+.tv-linhas tbody tr:nth-child(7){animation-delay:.20s}
+.tv-linhas tbody tr:nth-child(8){animation-delay:.23s}
+.tv-linhas tbody tr:nth-child(n+9){animation-delay:.26s}
+
+/* ---- 6. CARTÕES E SUPERFÍCIES ---- */
+.hub-card,.kpi-card,.cdi-mini-card{transition:transform .25s var(--tv-ease),border-color .25s,box-shadow .25s}
+.hub-card:hover{transform:translateY(-4px)}
+.kpi-card:hover{transform:translateY(-2px)}
+a.hub-card:active{transform:translateY(-1px) scale(.995)}
+
+/* ---- 7. BOTÃO TIVIEW ---- */
+.tiview-btn:active{transform:translateY(0) scale(.97)}
+
+/* ---- 8. ACESSIBILIDADE ---- */
+@media(prefers-reduced-motion:reduce){
+  .tv-veu{transition:none}
+  html.tv-saindo .slide{transform:none;opacity:1;transition:none}
+  html.tv-entrando .slide,html.tv-entrando .topbar,html.tv-entrando .header,
+  html.tv-entrando .dash-switcher,.tab-panel.active,.tv-tab-panel.active,
+  .tv-linhas tbody tr{animation:none!important}
+  .div-bar-fill,.pv-bar-fill,[class*="bar-fill"]{transition:none}
+  .dash-tab::after{transition:none}
+}
+@media print{.tv-veu{display:none!important}}
+</style>
+<style id="tivio-ds-toggle-fixo">
+/* ===== CONTROLE DE TEMA · último item da barra do topo =====
+   Fica no fluxo da barra (não é `fixed`), então:
+     · compartilha o eixo vertical do logo, alinhado por `align-items:center`;
+     · usa a mesma margem lateral da barra, espelhando o logo à esquerda;
+     · sobe junto com a página ao rolar, em vez de flutuar sobre o conteúdo.  */
+.topbar{
+  display:flex;align-items:center;
+  gap:clamp(12px,1.4vw,20px);
+  flex-wrap:nowrap;
+  padding-right:clamp(6px,0.8vw,12px);
+}
+.topbar-logo{flex:0 0 auto;order:0}
+.topbar-navwrap{flex:1 1 0%;min-width:0;order:1}
+
+.tv-theme-toggle{
+  position:static;
+  order:2;flex:0 0 auto;
+  display:inline-flex;align-items:center;gap:4px;padding:4px;
+  border-radius:var(--r-full);
+  background:var(--input-bg);
+  border:1px solid var(--line-strong);
+  box-shadow:none;backdrop-filter:none;
+}
+.tv-theme-toggle button{
+  background:transparent;border:0;cursor:pointer;width:28px;height:28px;
+  border-radius:50%;display:inline-flex;align-items:center;justify-content:center;
+  color:var(--text-muted);transition:background .2s,color .2s;padding:0;
+}
+.tv-theme-toggle button:hover{color:var(--text-primary)}
+.tv-theme-toggle button.active{background:var(--accent-strong);color:var(--on-accent)}
+.tv-theme-toggle button:focus-visible{outline:none;box-shadow:var(--btn-focus-ring)}
+.tv-theme-toggle svg{width:14px;height:14px}
+
+/* ===== TELAS ESTREITAS =====
+   Com logo, menu e tema na mesma linha, abaixo de ~700px sobravam menos de
+   180px para o menu — a 360px sobravam 68px, menos de um terço de uma aba.
+   Aqui a barra quebra em duas linhas: logo e tema em cima, menu ocupando a
+   largura inteira embaixo.                                                  */
+@media(max-width:700px){
+  /* o `!important` responde a uma regra anterior que fixa `nowrap` na barra */
+  .topbar{flex-wrap:wrap!important;row-gap:10px}
+  .topbar-logo{order:0}
+  .tv-theme-toggle{order:1;margin-left:auto}
+  .topbar-navwrap{order:2;flex:1 1 100%!important;width:100%;margin-left:0}
+  .tv-theme-toggle{padding:3px;gap:2px}
+  .tv-theme-toggle button{width:25px;height:25px}
+  .tv-theme-toggle svg{width:13px;height:13px}
+}
+.dash-switcher .tv-theme-toggle{margin-left:auto}
+@media print{.tv-theme-toggle{display:none!important}}
+</style>
+
+
+
+
+<!-- ============ FIM DA CAMADA DE COMPONENTES ============ -->
+</head><body>
+<div class="slide">
+<div class="topbar">
+  <a class="topbar-logo" href="index.html" title="Voltar à Central de Dashboards"><svg viewBox="100 95 870 310" xmlns="http://www.w3.org/2000/svg"><path fill="currentColor" d="M227.02,134.16l-2.53,3.27h102.14v-26.9h-51.56c-18.94,0-36.45,8.61-48.06,23.63ZM382.26,334.1c3.54-2.25,7.63-3.38,12.27-3.38,5.15,0,9.52,1.32,13.09,3.96,3.57,2.64,5.97,6.31,7.2,11.01h8.41c-1.29-7.02-4.46-12.56-9.52-16.62-5.06-4.06-11.32-6.09-18.79-6.09-6.44,0-12.11,1.43-17.01,4.3-4.89,2.87-8.66,6.91-11.3,12.13s-3.96,11.21-3.96,17.97,1.32,12.83,3.96,18.02c2.64,5.19,6.41,9.21,11.3,12.08,4.89,2.87,10.56,4.3,17.01,4.3,7.54,0,13.8-2.03,18.79-6.09,4.99-4.06,8.13-9.6,9.42-16.62h-8.41c-1.29,4.77-3.67,8.45-7.15,11.06-3.48,2.61-7.83,3.91-13.04,3.91-4.64,0-8.73-1.13-12.27-3.38-3.54-2.25-6.27-5.41-8.16-9.47-1.9-4.06-2.85-8.66-2.85-13.82s.95-9.84,2.85-13.86c1.9-4.02,4.62-7.16,8.16-9.42ZM488.35,323.57l-25.8,67.63h8.69l7.15-18.26h29.47l7.15,18.26h8.98l-25.7-67.63h-9.95ZM480.91,365.31l12.17-32.56,12.27,32.56h-24.45ZM210.25,176.57v111.2s28.51,0,28.51,0l-.02-111.2c0-13.53-4.37-26.35-12.64-37.06l-1.61-2.08-1.61,2.08c-8.27,10.71-12.64,23.52-12.64,37.06ZM396.06,110.53h-27.69v177.23h27.69V110.53ZM928.99,265.08c18.48-16.33,28.66-39.75,28.66-65.94s-10.18-49.61-28.66-65.94c-18.5-16.35-43.92-24.99-73.51-24.99s-55.01,8.64-73.51,24.99c-18.48,16.33-28.66,39.75-28.66,65.94s10.18,49.61,28.66,65.94c18.5,16.35,43.92,24.99,73.51,24.99s55.01-8.64,73.51-24.99ZM781.77,199.15c0-18.44,6.79-34.09,19.65-45.28,13.24-11.52,31.93-17.61,54.06-17.61s40.82,6.09,54.06,17.61c12.85,11.18,19.65,26.84,19.65,45.28s-6.79,34.09-19.65,45.28c-13.24,11.52-31.93,17.6-54.06,17.6s-40.83-6.09-54.06-17.6c-12.85-11.19-19.65-26.84-19.65-45.28ZM913.56,323.57h-8.4v67.63h39.23v-7.73h-30.82v-59.9ZM173.91,110.53h-51.56v26.9h102.14l-2.53-3.27c-11.6-15.02-29.12-23.63-48.06-23.63ZM716.56,331.3h21.93v59.9h8.41v-59.9h21.93v-7.73h-52.27v7.73ZM825.16,323.57l-25.8,67.63h8.7l7.15-18.26h29.47l7.15,18.26h8.98l-25.7-67.63h-9.95ZM817.72,365.31l12.17-32.56,12.27,32.56h-24.45ZM683.88,287.76h27.69V110.53h-27.69v177.23ZM662.46,391.2h8.41v-67.63h-8.41v67.63ZM606.13,326.13c-3.42-1.71-7.34-2.56-11.79-2.56h-25.99v67.63h8.41v-25.99h17.59c4.44,0,8.36-.85,11.74-2.56,3.38-1.71,6-4.14,7.87-7.29,1.87-3.16,2.8-6.83,2.8-11.01s-.92-7.84-2.75-10.97c-1.84-3.12-4.46-5.54-7.87-7.25ZM604.19,353.91c-2.64,2.38-6.18,3.58-10.63,3.58h-16.81v-26.18h16.91c4.44,0,7.97,1.18,10.58,3.53,2.61,2.35,3.91,5.52,3.91,9.52s-1.32,7.18-3.96,9.56ZM435.8,110.53s52.67,125.49,63.09,150.44c12.15,29.1,31.88,29.1,39.46,29.1h1.62l-72.21-179.55h-31.96ZM539.97,290.08h1.62c7.59,0,27.32,0,39.46-29.1,10.41-24.95,63.09-150.44,63.09-150.44h-31.96l-72.21,179.55Z"/></svg></a>
+  <div class="topbar-navwrap">
+    <button class="nav-arrow esq" type="button" aria-label="Rolar menu para a esquerda">&#8249;</button>
+    <nav class="topbar-nav" aria-label="Dashboards">
+      <a class="dash-tab hub" href="index.html"><svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="flex:0 0 auto"><path d="M3 10.5 12 4l9 6.5"/><path d="M5 10v9h14v-9"/></svg>Central de Dashboards</a>
+      <a class="dash-tab" href="dashboard_fundos_tivio.html">Monitor de Novos Fundos</a>
+      <a class="dash-tab" href="dashboard_ofertas_fii.html">Monitor de Novas Ofertas · FII</a>
+      <a class="dash-tab" href="dashboard_captacao_previdencia.html">Captação · Previdência</a>
+      <a class="dash-tab" href="dashboard_captacao_fundos_abertos.html">Captação · Fundos Abertos</a>
+      <a class="dash-tab" href="dashboard_ranking_gestoras.html">Ranking · Gestoras</a>
+      <a class="dash-tab" href="dashboard_roa_prazo.html">Análise · ROA x Prazo</a>
+      <a class="dash-tab active" href="dashboard_etf.html">Análise · ETF <span class="dash-tab-badge" id="etf-nav-badge">0</span></a>
+      <a class="dash-tab" href="dashboard_escritorios.html">Base · Escritórios</a>
+  </nav>
+    <button class="nav-arrow dir" type="button" aria-label="Rolar menu para a direita">&#8250;</button>
+  </div>
+</div>
+
+<div class="header">
+  <div class="brand">
+    <div class="brand-title">
+      <div class="t1">ANÁLISE</div>
+      <div class="t2">ETF</div>
+      <div class="t3">Inteligência de mercado · Peers · Fluxo · Regulatório · Tivio</div>
+    </div>
+  </div>
+  <div class="header-right">
+    <div class="cdi-badges-group">
+      <div class="cdi-mini-card"><div class="cdi-mini-lbl">CDI 30d</div><div class="cdi-mini-val">1.17%</div></div>
+      <div class="cdi-mini-card"><div class="cdi-mini-lbl">CDI 12m</div><div class="cdi-mini-val">14.84%</div></div>
+      <div class="cdi-mini-card"><div class="cdi-mini-lbl">CDI YTD</div><div class="cdi-mini-val">6.90%</div></div>
+    </div>
+    <div class="search">
+      <svg viewBox="0 0 24 24" fill="none" stroke="#C1F4D4" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.35-4.35"/></svg>
+      <input type="text" placeholder="Buscar ETF, gestora, categoria..."/>
+    </div>
+  </div>
+</div>
+
+<div class="tabs">
+  <button class="tab-btn active" data-tab="1">Visão Geral</button>
+  <button class="tab-btn" data-tab="2">Peers &amp; Gestoras</button>
+  <button class="tab-btn" data-tab="3">Benchmark de Taxas</button>
+  <button class="tab-btn" data-tab="4">Fluxo &amp; Captação</button>
+  <button class="tab-btn" data-tab="5">Pipeline &amp; Regulatório</button>
+  <button class="tab-btn" data-tab="6">Caminhos Tivio</button>
+</div>
+
+<div class="content">
+
+<div class="tv-refbar">
+<div class="tv-refbar-item">
+    <span class="l">Competência</span>
+    <span class="v">
+        <b id="etf-competencia">06/2026</b>
+    </span>
+</div>
+
+<div class="tv-refbar-item">
+    <span class="l">Universo</span>
+    <span class="v">
+        <b id="etf-universo">175</b> ETFs B3
+    </span>
+</div>
+  <div class="tv-refbar-item"><span class="l">Peer Inflação</span><span class="v"><b>12</b> candidatos</span></div>
+  <div class="tv-refbar-item"><span class="l">Peer Crédito</span><span class="v"><b>6</b> candidatos</span></div>
+  <div class="tv-refbar-spacer"></div>
+  <div class="tv-refbar-src">Fonte: B3 · CVM · ANBIMA · SEC · Morningstar</div>
+</div>
+</div>
+
+<div class="tab-panel active" data-panel="1">
+
+  <div class="kpi-row">
+    <div class="kpi-card"><div class="kpi-num" id="etf-kpi-n">175</div><div class="kpi-lbl">ETFs LISTADOS B3</div><div class="kpi-sub" id="etf-kpi-n-sub">60+ lançados só em 2025</div></div>
+    <div class="kpi-card"><div class="kpi-num" id="etf-kpi-pl">R$ 91 Bi</div><div class="kpi-lbl">PL DA CLASSE</div><div class="kpi-sub" id="etf-kpi-pl-sub">+68% em 2025</div></div>
+    <div class="kpi-card"><div class="kpi-num">919 mil</div><div class="kpi-lbl">INVESTIDORES ETF</div><div class="kpi-sub">+13,7x vs 67 mil em 2019</div></div>
+    <div class="kpi-card"><div class="kpi-num" style="color:var(--tivio)">+R$ 5,8 Bi</div><div class="kpi-lbl">CAPTAÇÃO 12m</div><div class="kpi-sub">RF concentra R$ 4,1 Bi</div></div>
+  </div>
+
+  <div class="top1-strip">
+    <div class="top1-strip-lbl">🌍 CONTEXTO GLOBAL · ETF ATIVO</div>
+    <div class="top1-grid-compact">
+      <div class="top1c">
+        <div class="top1c-head"><span class="top1c-chip">GLOBAL</span><span>🏆</span></div>
+        <div class="top1c-name">AUM ETF ativo global</div>
+        <div class="top1c-grid">
+          <div><span class="lbl">VALOR</span><span class="val" style="color:var(--tivio)">US$ 1,8 tri</span></div>
+          <div><span class="lbl">REF</span><span class="val" style="font-size:12px;color:var(--text-muted)">fim 2025</span></div>
+          <div><span class="lbl">CAGR EUA 3a</span><span class="val" style="color:var(--tivio)">+59% a.a.</span></div>
+          <div><span class="lbl">TENDÊNCIA</span><span class="val" style="font-size:12px;color:var(--text-muted)">acelerando</span></div>
+        </div>
+        <div class="top1c-footer">Fonte: Morningstar</div>
+      </div>
+      <div class="top1c">
+        <div class="top1c-head"><span class="top1c-chip">EUA 2025</span><span>📈</span></div>
+        <div class="top1c-name">Lançamentos ativos vs total</div>
+        <div class="top1c-grid">
+          <div><span class="lbl">PARTICIPAÇÃO</span><span class="val" style="color:var(--tivio)">84%</span></div>
+          <div><span class="lbl">TOTAL</span><span class="val">1.132</span></div>
+          <div><span class="lbl">FLUXO ATIVO</span><span class="val">31%</span></div>
+          <div><span class="lbl">MUDANÇA</span><span class="val" style="font-size:12px;color:var(--text-muted)">vs 15% em 2022</span></div>
+        </div>
+        <div class="top1c-footer">Fonte: SEC · Morningstar</div>
+      </div>
+      <div class="top1c">
+        <div class="top1c-head"><span class="top1c-chip">RF vs RV</span><span>🎯</span></div>
+        <div class="top1c-name">Taxa de acerto do ativo (bater índice)</div>
+        <div class="top1c-grid">
+          <div><span class="lbl">RENDA FIXA</span><span class="val" style="color:var(--tivio)">47%</span></div>
+          <div><span class="lbl">AÇÕES</span><span class="val" style="color:var(--tv-neg)">32%</span></div>
+          <div><span class="lbl">DELTA</span><span class="val" style="color:var(--tivio)">+15 p.p.</span></div>
+          <div><span class="lbl">LEITURA</span><span class="val" style="font-size:12px">RF &gt; RV</span></div>
+        </div>
+        <div class="top1c-footer">Fonte: Morningstar 2025</div>
+      </div>
+      <div class="top1c">
+        <div class="top1c-head"><span class="top1c-chip">SEC</span><span>⚖️</span></div>
+        <div class="top1c-name">Rule 6c-11 (ETF Rule)</div>
+        <div class="top1c-grid">
+          <div><span class="lbl">ANO</span><span class="val" style="color:var(--tivio)">2019</span></div>
+          <div><span class="lbl">IMPACTO</span><span class="val">4x participação ativa</span></div>
+          <div><span class="lbl">CUSTOM BASKETS</span><span class="val" style="color:var(--tivio)">liberadas</span></div>
+          <div><span class="lbl">EFEITO</span><span class="val" style="font-size:12px">padronização</span></div>
+        </div>
+        <div class="top1c-footer">Fonte: SEC</div>
+      </div>
+    </div>
+  </div>
+
+  
+  <div class="panel" id="etf-fase1-panel">
+    <div class="panel-head"><h3>Raio-X automatizado da base</h3><span class="pill" id="etf-fase1-ref">Databricks</span></div>
+    <div class="row two-col">
+      <div class="panel panel-lg">
+        <div class="panel-head"><h3>Top ETFs por PL</h3><span class="pill">Top 10</span></div>
+        <div class="rank-table-wrap">
+          <table class="rank-table">
+            <thead><tr><th>#</th><th>TICKER</th><th>ETF</th><th>GESTORA</th><th>CATEGORIA</th><th class="num">PL R$ Bi</th></tr></thead>
+            <tbody id="etf-top-pl-body"></tbody>
+          </table>
+        </div>
+      </div>
+      <div class="panel panel-sm">
+        <div class="panel-head"><h3>Distribuição por categoria</h3><span class="pill">PL</span></div>
+        <div class="diverging-bars" id="etf-categorias-pl"></div>
+      </div>
+    </div>
+    <div class="row two-col">
+      <div class="panel panel-lg">
+        <div class="panel-head"><h3>Participação por gestora</h3><span class="pill">Top 10 por PL</span></div>
+        <div class="diverging-bars" id="etf-gestoras-pl"></div>
+      </div>
+      <div class="panel panel-sm">
+        <div class="panel-head"><h3>Novos ETFs em 12 meses</h3><span class="pill" id="etf-novos-total">0 lançamentos</span></div>
+        <div class="rank-table-wrap">
+          <table class="rank-table">
+            <thead><tr><th>TICKER</th><th>GESTORA</th><th>INÍCIO</th><th class="num">PL R$ Mi</th></tr></thead>
+            <tbody id="etf-novos-body"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+<div class="row two-col">
+    <div class="panel panel-lg">
+      <div class="panel-head"><h3>Timeline · Do ETF passivo ao ativo (EUA → BR)</h3><span class="pill">1993 → 2026</span></div>
+      <div class="timeline-h">
+        <div class="timeline-h-block"><div class="yr">1993</div><div class="yr-t">SPY nasce</div><div class="yr-d">1º ETF do mundo — réplica do S&amp;P 500. Veículo por definição passivo.</div></div>
+        <div class="timeline-h-block"><div class="yr">2008</div><div class="yr-t">1º ETF ativo</div><div class="yr-d">Primeiros ETFs ativos nos EUA, raros e com regras pesadas de aprovação.</div></div>
+        <div class="timeline-h-block"><div class="yr">2019</div><div class="yr-t">ETF Rule 6c-11</div><div class="yr-d">SEC padroniza criação/resgate e libera custom baskets. Lançar ativo fica simples.</div></div>
+        <div class="timeline-h-block"><div class="yr">2025</div><div class="yr-t">Ativo &gt; Passivo</div><div class="yr-d">Nº de ETFs ativos supera o de passivos (jun/25). 84% dos lançamentos são ativos.</div></div>
+        <div class="timeline-h-block" style="border-color:rgba(245,166,35,0.35)"><div class="yr" style="color:var(--tv-warn)">BR ⌛</div><div class="yr-t">Anexo V RCVM 175</div><div class="yr-d">Sem atualização, o mercado brasileiro segue preso à fase "1993". Consulta pública prevista para 2026.</div></div>
+      </div>
+      <div class="panel-note">A alavanca no Brasil é <b>normativa</b>, não tecnológica. Enquanto o Anexo V não sai, o BR opera só ETF passivo.</div>
+    </div>
+    <div class="panel panel-sm">
+      <div class="panel-head"><h3>Destaques do mercado BR</h3><span class="pill">Jul/2026</span></div>
+      <div class="hl-wrap">
+        <div class="hl-block"><div class="hl-lbl">🏦 RF LIDEROU 2025</div><div class="hl-fund">A grande história do ano (Itaú Asset)</div><div class="hl-val" style="color:var(--tivio)">R$ 4,1 Bi captação</div></div>
+        <div class="hl-block"><div class="hl-lbl">📊 CONCENTRAÇÃO PEER TIVIO</div><div class="hl-fund">Candidatos mapeados no Monitor_ETFs_v3</div><div class="hl-val">12 Inflação · 6 Crédito</div></div>
+        <div class="hl-block"><div class="hl-lbl">🚀 NOVO ENTRANTE</div><div class="hl-fund">BTG TEVA ITBR Target 750</div><div class="hl-val" style="color:var(--tivio)">1º ETF debêntures BR</div></div>
+        <div class="hl-block"><div class="hl-lbl">⚠️ ANEXO V RCVM 175</div><div class="hl-fund">Sem update, mercado preso à fase 1993</div><div class="hl-val" style="color:var(--tv-warn)">watchlist CVM</div></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="tab-panel" data-panel="2">
+
+  <div class="panel">
+    <div class="panel-head"><h3>Mapa de Gestoras Ativas em ETFs</h3><span class="pill" id="etf-gestoras-pill">14 emissores mapeados</span></div>
+    <div class="rank-table-wrap">
+      <table class="rank-table">
+        <thead><tr><th>#</th><th>GESTORA</th><th class="num"># ETFs</th><th class="num">LANÇAMENTOS 12m</th><th class="num">PL R$ Bi</th><th>CATEGORIA DOMINANTE</th><th class="num">FEE MÉDIO</th><th>SINAL</th></tr></thead>
+        <tbody id="etf-gestoras-body">
+          <tr><td class="rank">🥇</td><td class="fnome">BTG Pactual</td><td class="num">18</td><td class="num g">5</td><td class="num">22,4</td><td>Renda Fixa</td><td class="num">0,45%</td><td class="o">🔥 alta expansão</td></tr>
+          <tr><td class="rank">🥈</td><td class="fnome">iShares / BlackRock</td><td class="num">14</td><td class="num">1</td><td class="num">18,1</td><td>RV Brasil</td><td class="num">0,30%</td><td class="muted">→ estável</td></tr>
+          <tr><td class="rank">🥉</td><td class="fnome">XP / Trend</td><td class="num">26</td><td class="num g">12</td><td class="num">15,8</td><td>Multi-categoria</td><td class="num">0,35%</td><td class="o">🔥 alta expansão</td></tr>
+          <tr><td class="rank">4</td><td class="fnome">Itaú</td><td class="num">12</td><td class="num g">3</td><td class="num">11,2</td><td>RF + RV</td><td class="num">0,28%</td><td class="g">↑ crescendo</td></tr>
+          <tr><td class="rank">5</td><td class="fnome">Bradesco</td><td class="num">7</td><td class="num">2</td><td class="num">6,8</td><td>RV Internacional</td><td class="num">0,32%</td><td class="muted">→ estável</td></tr>
+          <tr><td class="rank">6</td><td class="fnome">Banco do Brasil</td><td class="num">14</td><td class="num g">3</td><td class="num">4,2</td><td>Temáticos + RV</td><td class="num">0,38%</td><td class="g">↑ crescendo</td></tr>
+          <tr><td class="rank">7</td><td class="fnome">Investo</td><td class="num">11</td><td class="num g">6</td><td class="num">3,9</td><td>RV Int + Temáticos</td><td class="num">0,60%</td><td class="o">🔥 alta expansão</td></tr>
+          <tr><td class="rank">8</td><td class="fnome">Nu Asset</td><td class="num">2</td><td class="num g">2</td><td class="num">1,4</td><td>RF + Letras Financ.</td><td class="num">0,25%</td><td class="g">⚡ novo entrante</td></tr>
+          <tr><td class="rank">9</td><td class="fnome">Teva Indices</td><td class="num">5</td><td class="num g">2</td><td class="num">1,2</td><td>RF + Debêntures</td><td class="num">0,55%</td><td class="g">⚡ novo entrante</td></tr>
+          <tr><td class="rank">10</td><td class="fnome">Buena Vista</td><td class="num">4</td><td class="num g">3</td><td class="num">0,8</td><td>Cripto + RV Int</td><td class="num">0,80%</td><td class="g">⚡ novo entrante</td></tr>
+          <tr><td class="rank">11</td><td class="fnome">Trígono</td><td class="num">1</td><td class="num">1</td><td class="num">0,3</td><td>Small Caps Value</td><td class="num">0,50%</td><td class="g">⚡ novo entrante</td></tr>
+          <tr><td class="rank">12</td><td class="fnome muted">Kinea</td><td class="num muted">0</td><td class="num muted">0</td><td class="num muted">—</td><td class="muted">—</td><td class="num muted">—</td><td class="muted">watchlist</td></tr>
+          <tr><td class="rank">13</td><td class="fnome muted">Riza</td><td class="num muted">0</td><td class="num muted">0</td><td class="num muted">—</td><td class="muted">—</td><td class="num muted">—</td><td class="muted">watchlist</td></tr>
+          <tr style="background:color-mix(in srgb,var(--accent-strong) 4%,transparent)"><td class="rank">🎯</td><td class="fnome" style="color:var(--tivio)">Tivio Capital</td><td class="num muted">0</td><td class="num muted">0</td><td class="num muted">—</td><td class="muted">—</td><td class="num muted">—</td><td class="g">🎯 avaliação em curso</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="table-notice"><b>Base:</b> Monitor_ETFs_v3 · # ETFs inclui variações da mesma família. PL agregado por emissor/administrador. Fee médio é a média ponderada por categoria.</div>
+  </div>
+
+  <div class="row two-col">
+    <div class="panel panel-lg">
+      <div class="panel-head"><h3>🔥 Heatmap · Gestoras em expansão (últimos 6m)</h3><span class="pill"># lançamentos</span></div>
+      <div class="diverging-bars" id="etf-heatmap-gestoras"><div class="div-bar-row"><div class="div-bar-chip"><span class="chip g">XP / Trend</span></div><div class="div-bar-chart"><div class="div-bar-half left"></div><div class="div-bar-half right"><div class="div-bar-fill" style="width:100%;background:linear-gradient(90deg,var(--tivio),var(--tv-verde-escuro))"></div></div></div><div class="div-bar-value" style="color:var(--tivio)">12</div></div>
+        <div class="div-bar-row"><div class="div-bar-chip"><span class="chip g">Investo</span></div><div class="div-bar-chart"><div class="div-bar-half left"></div><div class="div-bar-half right"><div class="div-bar-fill" style="width:50%;background:linear-gradient(90deg,var(--tivio),var(--tv-verde-escuro))"></div></div></div><div class="div-bar-value" style="color:var(--tivio)">6</div></div>
+        <div class="div-bar-row"><div class="div-bar-chip"><span class="chip g">BTG Pactual</span></div><div class="div-bar-chart"><div class="div-bar-half left"></div><div class="div-bar-half right"><div class="div-bar-fill" style="width:42%;background:linear-gradient(90deg,var(--tivio),var(--tv-verde-escuro))"></div></div></div><div class="div-bar-value" style="color:var(--tivio)">5</div></div>
+        <div class="div-bar-row"><div class="div-bar-chip"><span class="chip g">Banco do Brasil</span></div><div class="div-bar-chart"><div class="div-bar-half left"></div><div class="div-bar-half right"><div class="div-bar-fill" style="width:25%;background:linear-gradient(90deg,var(--tivio),var(--tv-verde-escuro))"></div></div></div><div class="div-bar-value" style="color:var(--tivio)">3</div></div>
+        <div class="div-bar-row"><div class="div-bar-chip"><span class="chip g">Itaú</span></div><div class="div-bar-chart"><div class="div-bar-half left"></div><div class="div-bar-half right"><div class="div-bar-fill" style="width:25%;background:linear-gradient(90deg,var(--tivio),var(--tv-verde-escuro))"></div></div></div><div class="div-bar-value" style="color:var(--tivio)">3</div></div>
+        <div class="div-bar-row"><div class="div-bar-chip"><span class="chip g">Buena Vista</span></div><div class="div-bar-chart"><div class="div-bar-half left"></div><div class="div-bar-half right"><div class="div-bar-fill" style="width:25%;background:linear-gradient(90deg,var(--tivio),var(--tv-verde-escuro))"></div></div></div><div class="div-bar-value" style="color:var(--tivio)">3</div></div>
+        <div class="div-bar-row"><div class="div-bar-chip"><span class="chip g">Bradesco</span></div><div class="div-bar-chart"><div class="div-bar-half left"></div><div class="div-bar-half right"><div class="div-bar-fill" style="width:17%;background:linear-gradient(90deg,var(--tivio),var(--tv-verde-escuro))"></div></div></div><div class="div-bar-value" style="color:var(--tivio)">2</div></div>
+        <div class="div-bar-row"><div class="div-bar-chip"><span class="chip g">Nu Asset</span></div><div class="div-bar-chart"><div class="div-bar-half left"></div><div class="div-bar-half right"><div class="div-bar-fill" style="width:17%;background:linear-gradient(90deg,var(--tivio),var(--tv-verde-escuro))"></div></div></div><div class="div-bar-value" style="color:var(--tivio)">2</div></div>
+        <div class="div-bar-row"><div class="div-bar-chip"><span class="chip g">Teva</span></div><div class="div-bar-chart"><div class="div-bar-half left"></div><div class="div-bar-half right"><div class="div-bar-fill" style="width:17%;background:linear-gradient(90deg,var(--tivio),var(--tv-verde-escuro))"></div></div></div><div class="div-bar-value" style="color:var(--tivio)">2</div></div>
+        <div class="div-bar-row"><div class="div-bar-chip"><span class="chip g">Trígono</span></div><div class="div-bar-chart"><div class="div-bar-half left"></div><div class="div-bar-half right"><div class="div-bar-fill" style="width:8%;background:linear-gradient(90deg,var(--tivio),var(--tv-verde-escuro))"></div></div></div><div class="div-bar-value" style="color:var(--tivio)">1</div></div>
+      </div>
+      <div class="panel-note"><b>XP/Trend é o farol</b>: modelo "multi-categoria e escala" — mesmo padrão dos grandes emissores globais. <b>Investo</b> lidera em RV Int/temáticos. <b>BTG</b> segue de forma constante em RF.</div>
+    </div>
+    <div class="panel panel-sm">
+      <div class="panel-head"><h3>Concentração da classe</h3><span class="pill">PL R$ 91 Bi</span></div>
+      <div class="hl-wrap" id="etf-concentracao">
+        <div class="hl-block"><div class="hl-lbl">🥇 TOP 3 EMISSORES</div><div class="hl-fund">BTG + iShares + XP</div><div class="hl-val" style="color:var(--tivio)">R$ 56,3 Bi · 62% do PL</div></div>
+        <div class="hl-block"><div class="hl-lbl">📉 CAUDA LONGA</div><div class="hl-fund">10+ gestoras com PL &lt; R$ 1 Bi</div><div class="hl-val">espaço p/ consolidação</div></div>
+        <div class="hl-block"><div class="hl-lbl">🆕 NOVOS ENTRANTES 12m</div><div class="hl-fund">Nu · Teva · Buena Vista · Trígono</div><div class="hl-val" style="color:var(--tivio)">4 novos players</div></div>
+      </div>
+    </div>
+  </div>
+
+</div>
+<div class="tab-panel" data-panel="3">
+
+  <div class="panel">
+    <div class="panel-head"><h3>Régua de Custo · ETF vs Fundo Ativo (taxa a.a.)</h3><span class="pill">escala 0 – 1,50%</span></div>
+    <div class="diverging-bars">
+      <div class="div-bar-row"><div class="div-bar-chip"><span class="chip g">IRFM11 · ETF BR</span></div><div class="div-bar-chart"><div class="div-bar-half left"></div><div class="div-bar-half right"><div class="div-bar-fill" style="width:26.6%;background:var(--tivio)"></div></div></div><div class="div-bar-value" style="color:var(--tivio)">0,20%</div></div>
+      <div class="div-bar-row"><div class="div-bar-chip"><span class="chip g">IMAB11 · ETF BR</span></div><div class="div-bar-chart"><div class="div-bar-half left"></div><div class="div-bar-half right"><div class="div-bar-fill" style="width:26.6%;background:var(--tivio)"></div></div></div><div class="div-bar-value" style="color:var(--tivio)">0,20%</div></div>
+      <div class="div-bar-row"><div class="div-bar-chip"><span class="chip g">B5P211 · ETF BR</span></div><div class="div-bar-chart"><div class="div-bar-half left"></div><div class="div-bar-half right"><div class="div-bar-fill" style="width:26.6%;background:var(--tivio)"></div></div></div><div class="div-bar-value" style="color:var(--tivio)">0,20%</div></div>
+      <div class="div-bar-row"><div class="div-bar-chip"><span class="chip g">NLFA11 · ETF BR</span></div><div class="div-bar-chart"><div class="div-bar-half left"></div><div class="div-bar-half right"><div class="div-bar-fill" style="width:33.3%;background:var(--tivio)"></div></div></div><div class="div-bar-value" style="color:var(--tivio)">0,25%</div></div>
+      <div class="div-bar-row"><div class="div-bar-chip"><span class="chip g">DEBB11 · ETF BR</span></div><div class="div-bar-chart"><div class="div-bar-half left"></div><div class="div-bar-half right"><div class="div-bar-fill" style="width:80%;background:var(--tivio)"></div></div></div><div class="div-bar-value" style="color:var(--tivio)">0,60%</div></div>
+      <div class="div-bar-row"><div class="div-bar-chip"><span class="chip b">JAAA · ETF EUA</span></div><div class="div-bar-chart"><div class="div-bar-half left"></div><div class="div-bar-half right"><div class="div-bar-fill" style="width:26.6%;background:var(--tv-info)"></div></div></div><div class="div-bar-value" style="color:var(--tv-info)">0,20%</div></div>
+      <div class="div-bar-row"><div class="div-bar-chip"><span class="chip b">PRIV · ETF EUA</span></div><div class="div-bar-chart"><div class="div-bar-half left"></div><div class="div-bar-half right"><div class="div-bar-fill" style="width:73.3%;background:var(--tv-info)"></div></div></div><div class="div-bar-value" style="color:var(--tv-info)">0,55%</div></div>
+      <div class="div-bar-row"><div class="div-bar-chip"><span class="chip o">Estruturado BR</span></div><div class="div-bar-chart"><div class="div-bar-half left"></div><div class="div-bar-half right"><div class="div-bar-fill" style="width:60%;background:var(--tv-warn)"></div></div></div><div class="div-bar-value" style="color:var(--tv-warn)">0,30 – 0,60%</div></div>
+      <div class="div-bar-row"><div class="div-bar-chip"><span class="chip r">Crédito Priv. BR</span></div><div class="div-bar-chart"><div class="div-bar-half left"></div><div class="div-bar-half right"><div class="div-bar-fill" style="width:100%;background:var(--tv-neg)"></div></div></div><div class="div-bar-value" style="color:var(--tv-neg)">0,80 – 1,50%</div></div>
+    </div>
+    <div class="div-bar-scale"><span>0%</span><span>0,50%</span><span>1,00%</span><span>1,50%</span></div>
+    <div class="panel-note">ETFs de RF competem em faixa <b>0,20-0,25%</b>. <b>DEBB11 (0,60%)</b> é o teto entre ETFs BR. Delta médio de custo vs fundo ativo BR: <b>0,55-1,25 p.p.</b> — a variável central da decisão.</div>
+  </div>
+
+  <div class="panel">
+    <div class="panel-head"><h3>Tivio vs ETF equivalente</h3><span class="pill">5 estratégias mapeadas</span></div>
+    <div class="rank-table-wrap">
+      <table class="rank-table">
+        <thead><tr><th>FUNDO TIVIO</th><th class="num">TAXA TIVIO</th><th>ETF EQUIVALENTE</th><th class="num">TAXA ETF</th><th class="num">DELTA</th><th>ARGUMENTO COMERCIAL</th><th>STATUS</th></tr></thead>
+        <tbody>
+          <tr><td class="fnome">Tivio Banks</td><td class="num">0,25%</td><td>NLFA11 (Nu · LF S1-S3)</td><td class="num">0,25%</td><td class="num muted">0 p.p.</td><td>Empate em fee — ativo ganha em curadoria de crédito bancário S1-S3</td><td class="g">✅ competitivo</td></tr>
+          <tr><td class="fnome">Tivio Institucional D0</td><td class="num">0,19 – 0,60%</td><td>DEBB11 + LFTS11</td><td class="num">0,20 – 0,60%</td><td class="num muted">~0 p.p.</td><td>Faixa sobreposta — ganho em D+0 e gestão ativa de crédito privado pós-fixado</td><td class="g">✅ competitivo</td></tr>
+          <tr><td class="fnome">Tivio Institucional D15</td><td class="num">0,60%</td><td>DEBB11 (BTG)</td><td class="num">0,60%</td><td class="num muted">0 p.p.</td><td>Mesmo custo — delta em cobertura high/mid grade e prazo D+15</td><td class="o">⚠️ requer defesa</td></tr>
+          <tr style="background:color-mix(in srgb,var(--accent-strong) 4%,transparent)"><td class="fnome" style="color:var(--tivio)">Tivio Infra Plus</td><td class="num">0,20 – 0,25%</td><td>— sem ETF de infra no BR (FI-Infra ~0,85%)</td><td class="num muted">—</td><td class="num g">vantagem estrutural</td><td>Vazio competitivo — ETF de infra ainda não existe no Brasil</td><td class="g">🎯 janela aberta</td></tr>
+          <tr><td class="fnome">Tivio Ativo RF</td><td class="num">0,25% adm + 20% perf</td><td>IMAB11 + IRFM11</td><td class="num">0,20 – 0,25%</td><td class="num o">+perf fee</td><td>Delta na performance fee — precisa entregar alpha vs índice</td><td class="o">⚠️ prova de alpha</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="table-notice">Taxas exatas dos fundos Tivio a validar com dados internos. ETFs equivalentes selecionados por estratégia e público-alvo. FI-Infra referenciado como alternativo (não é ETF).</div>
+  </div>
+
+  <div class="row two-col">
+    <div class="panel panel-sm">
+      <div class="panel-head"><h3>Régua de acerto ativa</h3><span class="pill">SEC/Morningstar 2025</span></div>
+      <div class="big-stat">
+        <div class="n">47%</div>
+        <div class="l">GESTORES ATIVOS RF QUE SUPERAM O ÍNDICE</div>
+        <div class="s">vs 32% em ações · delta +15 p.p.</div>
+      </div>
+      <div class="panel-note" style="margin-top:8px"><b>Leitura Tivio:</b> a maior taxa de acerto da gestão ativa em renda fixa é precisamente o terreno em que a casa compete.</div>
+    </div>
+    <div class="panel panel-sm">
+      <div class="panel-head"><h3>Fontes &amp; metodologia</h3><span class="pill">referências</span></div>
+      <div class="hl-wrap">
+        <div class="hl-block"><div class="hl-lbl">SEC RULE 6C-11</div><div class="hl-fund">Padronizou ETFs em 2019 · custom baskets</div><div class="hl-val">marco regulatório</div></div>
+        <div class="hl-block"><div class="hl-lbl">MORNINGSTAR</div><div class="hl-fund">Taxa de acerto por classe</div><div class="hl-val">dados 2025</div></div>
+        <div class="hl-block"><div class="hl-lbl">FAIXAS TÍPICAS DE MERCADO</div><div class="hl-fund">Fundos ativos BR 0,80-1,50%</div><div class="hl-val" style="color:var(--tv-warn)">a validar internas</div></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="tv-note">
+    <span class="tv-note-tag">Nota</span>
+    <div>Taxas dos fundos ativos brasileiros são <b>faixas típicas de mercado</b>. As taxas exatas dos fundos Tivio devem ser validadas com dados internos e prospectos oficiais. O delta ilustra ordem de grandeza, não recomendação de precificação.</div>
+  </div>
+
+</div>
+
+<div class="tab-panel" data-panel="4">
+
+  <div class="kpi-row">
+    <div class="kpi-card"><div class="kpi-num" style="color:var(--tivio)">+R$ 5,8 Bi</div><div class="kpi-lbl">ETF CAPTAÇÃO 12m</div><div class="kpi-sub">RF concentra 70%</div></div>
+    <div class="kpi-card"><div class="kpi-num" style="color:var(--tv-neg)">-R$ 6,5 Bi</div><div class="kpi-lbl">FUNDOS ABERTOS 30d</div><div class="kpi-sub">Dashboard Fundos Abertos</div></div>
+    <div class="kpi-card"><div class="kpi-num">R$ 4,1 Bi</div><div class="kpi-lbl">RF ETF · CAPTAÇÃO</div><div class="kpi-sub">70% do fluxo total</div></div>
+    <div class="kpi-card"><div class="kpi-num">R$ 1,7 Bi</div><div class="kpi-lbl">RV ETF · CAPTAÇÃO</div><div class="kpi-sub">30% do fluxo total</div></div>
+  </div>
+
+  <div class="row two-col">
+    <div class="panel panel-lg">
+      <div class="panel-head"><h3>Captação líquida · ETF vs Fundo Aberto por categoria (12m)</h3><span class="pill">escala ±5 Bi</span></div>
+      <div class="diverging-bars">
+        <div class="div-bar-row"><div class="div-bar-chip"><span class="chip g">RF DI/Selic · ETF</span></div><div class="div-bar-chart"><div class="div-bar-half left"></div><div class="div-bar-half right"><div class="div-bar-fill" style="width:82%;background:var(--tivio)"></div></div><div class="div-bar-zero"></div></div><div class="div-bar-value" style="color:var(--tivio)">+R$ 4,1 Bi</div></div>
+        <div class="div-bar-row"><div class="div-bar-chip"><span class="chip k">RF DI/Selic · Fundo</span></div><div class="div-bar-chart"><div class="div-bar-half left"><div class="div-bar-fill" style="width:46%;background:var(--tv-neg)"></div></div><div class="div-bar-half right"></div><div class="div-bar-zero"></div></div><div class="div-bar-value" style="color:var(--tv-neg)">-R$ 2,3 Bi</div></div>
+        <div class="div-bar-row"><div class="div-bar-chip"><span class="chip g">RF Inflação · ETF</span></div><div class="div-bar-chart"><div class="div-bar-half left"></div><div class="div-bar-half right"><div class="div-bar-fill" style="width:16%;background:var(--tivio)"></div></div><div class="div-bar-zero"></div></div><div class="div-bar-value" style="color:var(--tivio)">+R$ 0,8 Bi</div></div>
+        <div class="div-bar-row"><div class="div-bar-chip"><span class="chip k">RF Inflação · Fundo</span></div><div class="div-bar-chart"><div class="div-bar-half left"></div><div class="div-bar-half right"><div class="div-bar-fill" style="width:24%;background:var(--tivio)"></div></div><div class="div-bar-zero"></div></div><div class="div-bar-value" style="color:var(--tivio)">+R$ 1,2 Bi</div></div>
+        <div class="div-bar-row"><div class="div-bar-chip"><span class="chip g">Crédito Priv. · ETF</span></div><div class="div-bar-chart"><div class="div-bar-half left"></div><div class="div-bar-half right"><div class="div-bar-fill" style="width:6%;background:var(--tivio)"></div></div><div class="div-bar-zero"></div></div><div class="div-bar-value" style="color:var(--tivio)">+R$ 0,3 Bi</div></div>
+        <div class="div-bar-row"><div class="div-bar-chip"><span class="chip k">Crédito Priv. · Fundo</span></div><div class="div-bar-chart"><div class="div-bar-half left"><div class="div-bar-fill" style="width:62%;background:var(--tv-neg)"></div></div><div class="div-bar-half right"></div><div class="div-bar-zero"></div></div><div class="div-bar-value" style="color:var(--tv-neg)">-R$ 3,1 Bi</div></div>
+        <div class="div-bar-row"><div class="div-bar-chip"><span class="chip g">RV Brasil · ETF</span></div><div class="div-bar-chart"><div class="div-bar-half left"></div><div class="div-bar-half right"><div class="div-bar-fill" style="width:18%;background:var(--tivio)"></div></div><div class="div-bar-zero"></div></div><div class="div-bar-value" style="color:var(--tivio)">+R$ 0,9 Bi</div></div>
+        <div class="div-bar-row"><div class="div-bar-chip"><span class="chip k">RV Brasil · Fundo</span></div><div class="div-bar-chart"><div class="div-bar-half left"><div class="div-bar-fill" style="width:36%;background:var(--tv-neg)"></div></div><div class="div-bar-half right"></div><div class="div-bar-zero"></div></div><div class="div-bar-value" style="color:var(--tv-neg)">-R$ 1,8 Bi</div></div>
+        <div class="div-bar-row"><div class="div-bar-chip"><span class="chip g">RV Int · ETF</span></div><div class="div-bar-chart"><div class="div-bar-half left"></div><div class="div-bar-half right"><div class="div-bar-fill" style="width:8%;background:var(--tivio)"></div></div><div class="div-bar-zero"></div></div><div class="div-bar-value" style="color:var(--tivio)">+R$ 0,4 Bi</div></div>
+        <div class="div-bar-row"><div class="div-bar-chip"><span class="chip k">RV Int · Fundo</span></div><div class="div-bar-chart"><div class="div-bar-half left"></div><div class="div-bar-half right"><div class="div-bar-fill" style="width:12%;background:var(--tivio)"></div></div><div class="div-bar-zero"></div></div><div class="div-bar-value" style="color:var(--tivio)">+R$ 0,6 Bi</div></div>
+        <div class="div-bar-row"><div class="div-bar-chip"><span class="chip g">Multimercado · ETF</span></div><div class="div-bar-chart"><div class="div-bar-half left"></div><div class="div-bar-half right"><div class="div-bar-fill" style="width:2%;background:var(--tivio)"></div></div><div class="div-bar-zero"></div></div><div class="div-bar-value" style="color:var(--tivio)">+R$ 0,1 Bi</div></div>
+        <div class="div-bar-row"><div class="div-bar-chip"><span class="chip k">Multimercado · Fundo</span></div><div class="div-bar-chart"><div class="div-bar-half left"><div class="div-bar-fill" style="width:84%;background:var(--tv-neg)"></div></div><div class="div-bar-half right"></div><div class="div-bar-zero"></div></div><div class="div-bar-value" style="color:var(--tv-neg)">-R$ 4,2 Bi</div></div>
+      </div>
+      <div class="div-bar-scale"><span style="color:var(--tv-neg)">-5 Bi</span><span>-2,5 Bi</span><span style="color:var(--tivio);font-weight:700">0</span><span>+2,5 Bi</span><span style="color:var(--tivio)">+5 Bi</span></div>
+      <div class="panel-note"><b>Migração clara:</b> ETF captura RF DI/Selic (+R$ 4,1 Bi) enquanto Fundo Aberto perde -R$ 2,3 Bi. <b>Multimercado</b> é a categoria com maior sangria em fundo aberto (-R$ 4,2 Bi) sem migração para ETF.</div>
+    </div>
+    <div class="panel panel-sm">
+      <div class="panel-head"><h3>Perfil do cotista ETF</h3><span class="pill">vs Fundo Aberto</span></div>
+      <div class="hl-wrap">
+        <div class="hl-block"><div class="hl-lbl">👥 INVESTIDORES ETF</div><div class="hl-fund">919 mil (vs 67 mil em 2019)</div><div class="hl-val" style="color:var(--tivio)">+13,7x em 6 anos</div></div>
+        <div class="hl-block"><div class="hl-lbl">💵 TICKET MÉDIO</div><div class="hl-fund">R$ 99 mil (fundo: R$ 285 mil)</div><div class="hl-val">-65% ticket</div></div>
+        <div class="hl-block"><div class="hl-lbl">🖥️ CANAL PREFERIDO</div><div class="hl-fund">B3 tela 68% · Assessoria 32%</div><div class="hl-val" style="color:var(--tivio)">B3 direto</div></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="panel">
+    <div class="panel-head"><h3>ETFs cross-listed nas plataformas parceiras</h3><span class="pill">9 ETFs · 4 plataformas</span></div>
+    <div class="rank-table-wrap">
+      <table class="rank-table">
+        <thead><tr><th>ETF</th><th>CATEGORIA</th><th class="center">XP</th><th class="center">BTG</th><th class="center">ITAÚ</th><th class="center">BRADESCO</th><th>CONCORRENTE TIVIO</th></tr></thead>
+        <tbody>
+          <tr><td class="fnome">BOVA11</td><td>RV Brasil</td><td class="center g">✅</td><td class="center g">✅</td><td class="center g">✅</td><td class="center g">✅</td><td class="muted">—</td></tr>
+          <tr><td class="fnome">IMAB11</td><td>RF Inflação</td><td class="center g">✅</td><td class="center g">✅</td><td class="center g">✅</td><td class="center g">✅</td><td style="color:var(--tivio);font-weight:600">Tivio Ativo RF</td></tr>
+          <tr><td class="fnome">IRFM11</td><td>RF Prefixado</td><td class="center g">✅</td><td class="center g">✅</td><td class="center g">✅</td><td class="center g">✅</td><td style="color:var(--tivio);font-weight:600">Tivio Ativo RF</td></tr>
+          <tr><td class="fnome">NLFA11</td><td>Letras Financeiras</td><td class="center g">✅</td><td class="center g">✅</td><td class="center g">✅</td><td class="center muted">—</td><td style="color:var(--tivio);font-weight:600">Tivio Banks</td></tr>
+          <tr><td class="fnome">DEBB11</td><td>Debêntures</td><td class="center g">✅</td><td class="center g">✅</td><td class="center g">✅</td><td class="center g">✅</td><td style="color:var(--tivio);font-weight:600">Tivio Institucional</td></tr>
+          <tr><td class="fnome">LFTS11</td><td>Selic</td><td class="center g">✅</td><td class="center g">✅</td><td class="center g">✅</td><td class="center g">✅</td><td style="color:var(--tivio);font-weight:600">Tivio Institucional D0</td></tr>
+          <tr><td class="fnome">SPXI11</td><td>S&amp;P 500</td><td class="center g">✅</td><td class="center g">✅</td><td class="center g">✅</td><td class="center g">✅</td><td class="muted">—</td></tr>
+          <tr><td class="fnome">NASD11</td><td>Nasdaq</td><td class="center g">✅</td><td class="center g">✅</td><td class="center muted">—</td><td class="center muted">—</td><td class="muted">—</td></tr>
+          <tr><td class="fnome">GOLD11</td><td>Ouro</td><td class="center g">✅</td><td class="center g">✅</td><td class="center muted">—</td><td class="center muted">—</td><td class="muted">—</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="table-notice">Presença nas plataformas indica <b>disponibilidade de compra/negociação</b>. ETFs de RF são os que mais concorrem diretamente com os fundos Tivio.</div>
+  </div>
+
+</div>
+
+<div class="tab-panel" data-panel="5">
+
+  <div class="panel">
+    <div class="panel-head"><h3>Ofertas em análise · CVM SRE</h3><span class="pill">6 no pipeline</span></div>
+    <div class="rank-table-wrap">
+      <table class="rank-table">
+        <thead><tr><th>EMISSOR</th><th>TICKER (PROPOSTO)</th><th>CATEGORIA</th><th>ESTRATÉGIA</th><th>REGISTRO CVM</th><th>STATUS</th></tr></thead>
+        <tbody>
+          <tr><td class="fnome">BTG Pactual</td><td class="muted">—</td><td>RF Ativa</td><td>Crédito Privado Ativo (aguarda Anexo V)</td><td class="muted">—</td><td class="o">🟡 aguardando regra ativa</td></tr>
+          <tr><td class="fnome">Investo</td><td>IVVB11 v2</td><td>RV Internacional</td><td>S&amp;P 500 hedged</td><td>Jun/26</td><td class="g">🟢 pipeline</td></tr>
+          <tr><td class="fnome">Trend / XP</td><td>CRIP11</td><td>Cripto</td><td>Bitcoin spot</td><td>Mai/26</td><td class="g">🟢 pipeline</td></tr>
+          <tr><td class="fnome">Teva</td><td>DEBI11</td><td>Renda Fixa</td><td>Debêntures incentivadas</td><td>Abr/26</td><td class="g">🟢 pipeline</td></tr>
+          <tr><td class="fnome">Buena Vista</td><td>ETH11</td><td>Cripto</td><td>Ethereum</td><td>Jun/26</td><td class="o">🟡 análise CVM</td></tr>
+          <tr><td class="fnome">Banco do Brasil</td><td>AGRO11 v2</td><td>Temático</td><td>IAGRO-FFS follow-on</td><td>Mai/26</td><td class="g">🟢 pipeline</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="table-notice"><b>Fonte:</b> RCVM 160 · CVM SRE. Alguns registros aguardam atualização do Anexo V RCVM 175 para ETF de gestão ativa. Base em integração ao pipeline mensal.</div>
+  </div>
+
+  <div class="row two-col">
+    <div class="panel panel-lg">
+      <div class="panel-head"><h3>Watchlist Regulatório · Anexo V RCVM 175</h3><span class="pill">linha do tempo</span></div>
+      <div class="timeline-h">
+        <div class="timeline-h-block"><div class="yr">Ago/24</div><div class="yr-t">Consulta pública inicial</div><div class="yr-d">CVM abre discussão sobre ETF de gestão ativa. Primeiros inputs de mercado.</div></div>
+        <div class="timeline-h-block"><div class="yr">Dez/25</div><div class="yr-t">Minuta preliminar</div><div class="yr-d">Publicação de minuta com estrutura proposta para o Anexo V atualizado.</div></div>
+        <div class="timeline-h-block"><div class="yr">Jun/26</div><div class="yr-t">Agenda CVM 2026</div><div class="yr-d">Agenda regulatória confirma consulta pública para ETF de gestão ativa neste ano.</div></div>
+        <div class="timeline-h-block" style="border-color:rgba(245,166,35,0.35)"><div class="yr" style="color:var(--tv-warn)">Q4/26 · Q1/27</div><div class="yr-t">Aprovação esperada</div><div class="yr-d">Publicação do Anexo V atualizado — janela para o mercado se preparar.</div></div>
+        <div class="timeline-h-block" style="border-color:var(--tivio);background:color-mix(in srgb,var(--accent-strong) 4%,transparent)"><div class="yr">🎯</div><div class="yr-t">Implicação Tivio</div><div class="yr-d">ETF ativo de RF vira produto viável. Janela para lançar primeiros produtos alinhada com Caminhos A/C.</div></div>
+      </div>
+      <div class="panel-note">Sem a atualização do Anexo V, o Brasil segue preso à "fase 1993" — ETFs apenas passivos. A <b>alavanca é normativa</b>, não tecnológica.</div>
+    </div>
+    <div class="panel panel-sm">
+      <div class="panel-head"><h3>Convergência com alternativos</h3><span class="pill">tese Tivio</span></div>
+      <div class="hl-wrap">
+        <div class="hl-block"><div class="hl-lbl">🏗️ INFRA</div><div class="hl-fund">DEBB11 (BTG) + BTG TEVA ITBR Target 750</div><div class="hl-val" style="color:var(--tivio)">1º ETF debêntures BR</div></div>
+        <div class="hl-block"><div class="hl-lbl">🏢 FIIs</div><div class="hl-fund">218 ofertas 180d · convergência sinalizada</div><div class="hl-val">Dashboard Ofertas FII</div></div>
+        <div class="hl-block"><div class="hl-lbl">🌾 AGRO</div><div class="hl-fund">AGRI11 (BB) IAGRO-FFS</div><div class="hl-val">nicho ativo</div></div>
+        <div class="hl-block"><div class="hl-lbl">💰 PRIVATE CREDIT EUA</div><div class="hl-fund">PRIV (Apollo + State Street) 0,55%</div><div class="hl-val" style="color:var(--tivio)">US$ 40 tri endereçável</div></div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<div class="tab-panel" data-panel="6">
+
+  <div class="panel">
+    <div class="panel-head"><h3>Três caminhos estratégicos</h3><span class="pill">Espelho · Building block · Co-branding</span></div>
+    <div class="three-paths">
+      <div class="path-card">
+        <div class="path-tag">CAMINHO A · ESPELHO</div>
+        <div class="path-title">Espelhar estratégias líquidas</div>
+        <div class="path-desc">Empacotar em ETF as estratégias mais líquidas (crédito high-grade, pós-fixado). Captura o investidor que prefere bolsa, custo e transparência.</div>
+        <div class="path-meta">
+          <div><span class="l">PÚBLICO</span><span class="v">Varejo · B3</span></div>
+          <div><span class="l">COMPLEXIDADE</span><span class="v">Média</span></div>
+          <div><span class="l">T2M</span><span class="v">6-9m pós Anexo V</span></div>
+        </div>
+      </div>
+      <div class="path-card">
+        <div class="path-tag">CAMINHO B · BUILDING BLOCK</div>
+        <div class="path-title">Building blocks de alocação</div>
+        <div class="path-desc">ETFs de RF como peças de carteiras e produtos de previdência, distribuídos via Bradesco/BRAM, XP Seguros e plataformas onde a Tivio já tem prateleira.</div>
+        <div class="path-meta">
+          <div><span class="l">PÚBLICO</span><span class="v">Alocador Instit.</span></div>
+          <div><span class="l">COMPLEXIDADE</span><span class="v">Baixa</span></div>
+          <div><span class="l">T2M</span><span class="v">Imediato</span></div>
+        </div>
+      </div>
+      <div class="path-card">
+        <div class="path-tag">CAMINHO C · CO-BRANDING</div>
+        <div class="path-title">Co-branding com plataforma</div>
+        <div class="path-desc">Índice/estratégia Tivio dentro do wrapper de um grande emissor de ETF — modelo JAAA (Janus + State Street) e PRIV (Apollo + State Street).</div>
+        <div class="path-meta">
+          <div><span class="l">PÚBLICO</span><span class="v">Escala Instit.</span></div>
+          <div><span class="l">COMPLEXIDADE</span><span class="v">Alta</span></div>
+          <div><span class="l">T2M</span><span class="v">12-18m</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row two-col">
+    <div class="panel panel-lg">
+      <div class="panel-head"><h3>Priorização &amp; roadmap</h3><span class="pill">sequência sugerida</span></div>
+      <div class="hl-wrap">
+        <div class="hl-block"><div class="hl-lbl">🥇 P1 · IMEDIATO</div><div class="hl-fund">Caminho B — estudo de viabilidade</div><div class="hl-val" style="color:var(--tivio)">Encaixe em Bradesco/BRAM + XP Seguros</div></div>
+        <div class="hl-block"><div class="hl-lbl">🥈 P2 · CURTO PRAZO</div><div class="hl-fund">Caminho A — preparação técnica</div><div class="hl-val">RF ativa D0/D15 aguardando Anexo V</div></div>
+        <div class="hl-block"><div class="hl-lbl">🥉 P3 · MÉDIO PRAZO</div><div class="hl-fund">Caminho C — aproximação parceiros</div><div class="hl-val">State Street · Investo · BTG</div></div>
+        <div class="hl-block" style="border-color:var(--border-strong);background:color-mix(in srgb,var(--accent-strong) 4%,transparent)"><div class="hl-lbl">🎯 CONTAS ENDEREÇÁVEIS</div><div class="hl-fund">919 mil investidores ETF · 1,1 mi contas B3</div><div class="hl-val" style="color:var(--tivio)">base de conversão</div></div>
+      </div>
+    </div>
+    <div class="panel panel-sm">
+      <div class="panel-head"><h3>Riscos &amp; mitigação</h3><span class="pill">4 vetores</span></div>
+      <div class="hl-wrap">
+        <div class="hl-block"><div class="hl-lbl">⚠️ REGULATÓRIO</div><div class="hl-fund">Anexo V ainda em consulta — sem prazo firme</div><div class="hl-val" style="color:var(--tivio)">mit: Caminho B independe</div></div>
+        <div class="hl-block"><div class="hl-lbl">💰 FEE COMPRESSION</div><div class="hl-fund">Delta 0,60% ETF vs ~1,00% ativo</div><div class="hl-val">mit: alpha + branding</div></div>
+        <div class="hl-block"><div class="hl-lbl">🏦 DISTRIBUIÇÃO B3</div><div class="hl-fund">Sem prateleira própria</div><div class="hl-val">mit: co-branding (Caminho C)</div></div>
+        <div class="hl-block"><div class="hl-lbl">📊 CAPACIDADE OPERACIONAL</div><div class="hl-fund">Formador de mercado, cesta cria/resg, custódia</div><div class="hl-val">mit: partnership com emissor</div></div>
+      </div>
+    </div>
+  </div>
+
+</div>
+</div>
+</div>
+
+
+<script>
+document.querySelectorAll('.tab-btn').forEach(function(b){
+  b.addEventListener('click', function(){
+    var t = b.dataset.tab;
+    document.querySelectorAll('.tab-btn').forEach(function(x){x.classList.toggle('active', x===b)});
+    document.querySelectorAll('.tab-panel').forEach(function(p){p.classList.toggle('active', p.dataset.panel===t)});
+  });
+});
+(function(){
+  var wrap = document.querySelector('.topbar-navwrap');
+  if(!wrap) return;
+  var nav = wrap.querySelector('.topbar-nav');
+  var esq = wrap.querySelector('.nav-arrow.esq');
+  var dir = wrap.querySelector('.nav-arrow.dir');
+  if(!nav || !esq || !dir) return;
+  function excede(){ if(!nav.clientWidth) return true; return nav.scrollWidth - nav.clientWidth > 4; }
+  function atualiza(){
+    var r = excede();
+    wrap.classList.toggle('rolavel', r);
+    if(!r) return;
+    esq.disabled = nav.scrollLeft <= 2;
+    dir.disabled = nav.scrollLeft + nav.clientWidth >= nav.scrollWidth - 2;
+  }
+  function passo(){ return Math.max(180, nav.clientWidth * 0.6); }
+  function rola(d){ if(typeof nav.scrollBy === 'function') nav.scrollBy({left:d, behavior:'smooth'}); else nav.scrollLeft += d; setTimeout(atualiza, 320); }
+  esq.addEventListener('click', function(){ rola(-passo()); });
+  dir.addEventListener('click', function(){ rola(passo()); });
+  nav.addEventListener('scroll', atualiza, {passive:true});
+  nav.addEventListener('wheel', function(e){
+    if(Math.abs(e.deltaX) > Math.abs(e.deltaY)) return;
+    if(!excede()) return;
+    e.preventDefault();
+    nav.scrollLeft += e.deltaY;
+  }, {passive:false});
+  var arrastando = false, x0 = 0, s0 = 0, moveu = 0;
+  nav.addEventListener('mousedown', function(e){ arrastando = true; moveu = 0; x0 = e.pageX; s0 = nav.scrollLeft; nav.classList.add('arrastando'); });
+  window.addEventListener('mousemove', function(e){ if(!arrastando) return; var d = e.pageX - x0; moveu = Math.abs(d); nav.scrollLeft = s0 - d; });
+  window.addEventListener('mouseup', function(){ if(!arrastando) return; arrastando = false; nav.classList.remove('arrastando'); atualiza(); });
+  nav.addEventListener('click', function(e){ if(moveu > 6){ e.preventDefault(); e.stopPropagation(); } }, true);
+  window.addEventListener('resize', atualiza);
+  window.addEventListener('load', atualiza);
+  if(document.fonts && document.fonts.ready) document.fonts.ready.then(atualiza).catch(function(){});
+  if(window.ResizeObserver){ var ro = new ResizeObserver(atualiza); ro.observe(nav); ro.observe(wrap); }
+  [0, 100, 400, 1200].forEach(function(t){ setTimeout(atualiza, t); });
+  var ativa = nav.querySelector('.dash-tab.active');
+  if(ativa) setTimeout(function(){
+    if(excede()){
+        var _ar = ativa.getBoundingClientRect(), _nr = nav.getBoundingClientRect();
+        var _max = nav.scrollWidth - nav.clientWidth;
+        var _alvo = nav.scrollLeft + (_ar.left - _nr.left) - (nav.clientWidth - _ar.width) / 2;
+        var _sb = nav.style.scrollBehavior; nav.style.scrollBehavior = 'auto';
+        nav.scrollLeft = Math.max(0, Math.min(_alvo, _max));
+        nav.style.scrollBehavior = _sb || '';
+        atualiza();
+      }
+  }, 150);
+})();
+</script>
+
+<!-- ============ TIVIO DS · CONTROLE DE TEMA (persistente entre dashboards) ============ -->
+<script id="tivio-ds-theme">
+(function(){
+  var KEY='tivio-ds-theme';
+  var root=document.documentElement;
+  var mq=window.matchMedia?window.matchMedia('(prefers-color-scheme: dark)'):null;
+
+  /* Dois botões apenas: claro e escuro.
+     "Seguir o navegador" continua existindo, mas como ESTADO INICIAL: enquanto
+     o usuário não escolher, a página acompanha o sistema (inclusive ao vivo).
+     No primeiro clique a escolha passa a mandar e fica gravada.            */
+  function doSistema(){ return (mq&&mq.matches)?'dark':'light'; }
+  function escolhido(){
+    var v;try{v=localStorage.getItem(KEY);}catch(e){}
+    return (v==='light'||v==='dark')?v:null;   /* null = ainda seguindo o sistema */
+  }
+  function pinta(){
+    var t=escolhido()||doSistema();
+    root.setAttribute('data-theme',t);
+    document.querySelectorAll('.tv-theme-toggle button').forEach(function(b){
+      var on=b.dataset.themeSet===t;
+      b.classList.toggle('active',on);
+      b.setAttribute('aria-pressed',String(on));
+    });
+  }
+  function define(t){
+    try{localStorage.setItem(KEY,t);}catch(e){}
+    pinta();
+  }
+
+  /* pinta antes da primeira renderização, evitando piscar de tema */
+  pinta();
+
+  /* enquanto não houver escolha, acompanha a troca de tema do sistema ao vivo */
+  if(mq){
+    var ouvir=function(){ if(!escolhido())pinta(); };
+    if(mq.addEventListener)mq.addEventListener('change',ouvir);
+    else if(mq.addListener)mq.addListener(ouvir);
+  }
+
+  function build(){
+    if(document.querySelector('.tv-theme-toggle'))return;
+    var wrap=document.createElement('div');
+    wrap.className='tv-theme-toggle';
+    wrap.setAttribute('role','group');
+    wrap.setAttribute('aria-label','Tema da página');
+    wrap.innerHTML=''
+      +'<button type="button" data-theme-set="light" title="Modo claro" aria-label="Modo claro"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></svg></button>'
+      +'<button type="button" data-theme-set="dark" title="Modo escuro" aria-label="Modo escuro"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg></button>';
+    wrap.addEventListener('click',function(e){
+      var b=e.target.closest('button[data-theme-set]');
+      if(b)define(b.dataset.themeSet);
+    });
+    /* Último item da barra do topo: alinhado à direita, no mesmo eixo do logo. */
+    var barra=document.querySelector('.topbar')
+           || document.querySelector('.dash-switcher')
+           || document.body;
+    barra.appendChild(wrap);
+    pinta();
+    /* o menu precisa remedir: o toggle acabou de ocupar espaço na barra */
+    window.dispatchEvent(new Event('resize'));
+  }
+  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',build);
+  else build();
+})();
+</script>
+
+<script id="tivio-ds-tokens-bridge">
+(function(){
+  /* ---- PONTE DE TOKENS: cores literais geradas por JS (gráficos, tabelas
+         renderizadas dinamicamente) passam a usar os tokens do DS ---- */
+  var MAP={'#C1F4D4':'var(--accent-strong)','#8FD0AB':'var(--tv-verde-escuro)',
+    '#5D9C59':'var(--tv-agro)','#E94E77':'var(--tv-neg)','#F5A623':'var(--tv-warn)',
+    '#4A90E2':'var(--tv-info)','#9B59B6':'var(--tv-roxo)','#6F42C1':'var(--tv-roxo)',
+    '#00C389':'var(--tv-pos)','#17B890':'var(--tv-pos)','#3DDC97':'var(--tv-pos)',
+    '#CC092F':'var(--tv-bradesco)','#A7A7A7':'var(--text-muted)','#8A8A8A':'var(--text-muted)',
+    '#FFFFFF':'var(--text-primary)','#0F0F0F':'var(--bg-elev-1)','#0A0A0A':'var(--bg-elev-1)',
+    '#161616':'var(--bg-elev-2)','#050505':'var(--bg-base)','#FFF':'var(--text-primary)',
+    '#000':'var(--bg-base)','#666':'var(--text-muted)','#888':'var(--text-muted)',
+    '#FFC700':'var(--brand-amarelo)','#EC7000':'var(--brand-laranja)',
+    '#00A69C':'var(--brand-teal)','#0057B8':'var(--brand-azul)',
+    '#003DA5':'var(--brand-azul-esc)','#E20A17':'var(--brand-vermelho)'};
+  /* mapa aplicado quando o hex está na posição `color:` */
+  var TXT={'#050505':'var(--ink)','#000':'var(--ink)','#000000':'var(--ink)',
+    '#0A0A0A':'var(--ink)','#0A2415':'var(--ink)',
+    '#FFC700':'var(--brand-amarelo-txt)','#EC7000':'var(--brand-laranja-txt)',
+    '#00A69C':'var(--brand-teal-txt)','#0057B8':'var(--brand-azul-txt)',
+    '#003DA5':'var(--brand-azul-esc-txt)','#E20A17':'var(--brand-vermelho-txt)'};
+  var RE=/#[0-9A-Fa-f]{8}\b|#[0-9A-Fa-f]{6}\b|#[0-9A-Fa-f]{3}\b/g;
+  var RE_COLOR=/(^|[;\s{])(color\s*:\s*)(#[0-9A-Fa-f]{3,8})\b/g;
+  function sub(css){
+    /* 1) color: <hex> -> mapa de texto (tinta fixa / marcas escurecidas) */
+    css=css.replace(RE_COLOR,function(all,pre,prop,hex){
+      var t=TXT[hex.toUpperCase()];
+      return t?pre+prop+t:all;
+    });
+    /* 2) demais literais -> tokens do DS */
+    css=css.replace(RE,function(h){
+      var aa=h.length===9?h.substring(7,9):null;
+      var base=(aa?h.substring(0,7):h).toUpperCase();
+      var tok=MAP[base]; if(!tok)return h;
+      if(aa){var p=(parseInt(aa,16)/255*100).toFixed(1);
+             return 'color-mix(in srgb,'+tok+' '+p+'%,transparent)';}
+      return tok;
+    });
+    /* 3) fundo de marca claro (amarelo) exige tinta escura, nunca branco */
+    if(css.indexOf('var(--brand-amarelo)')>=0)
+      css=css.replace(/(\bcolor\s*:\s*)var\(--text-primary\)/g,'$1var(--ink)');
+    return css;
+  }
+  function patch(el){
+    var v=el.getAttribute&&el.getAttribute('style');
+    if(!v||v.indexOf('#')<0)return;
+    var n=sub(v); if(n!==v)el.setAttribute('style',n);
+  }
+  function sweep(node){
+    if(node.nodeType!==1)return;
+    patch(node);
+    var list=node.querySelectorAll?node.querySelectorAll('[style*="#"]'):[];
+    for(var i=0;i<list.length;i++)patch(list[i]);
+  }
+  function start(){
+    sweep(document.body);
+    if(!('MutationObserver' in window))return;
+    var pend=[],sched=false;
+    new MutationObserver(function(muts){
+      for(var i=0;i<muts.length;i++){
+        var m=muts[i];
+        if(m.type==='attributes'){pend.push(m.target);}
+        else for(var j=0;j<m.addedNodes.length;j++)pend.push(m.addedNodes[j]);
+      }
+      if(sched||!pend.length)return; sched=true;
+      requestAnimationFrame(function(){
+        var q=pend;pend=[];sched=false;
+        for(var k=0;k<q.length;k++)sweep(q[k]);
+      });
+    }).observe(document.body,{childList:true,subtree:true,attributes:true,attributeFilter:['style']});
+  }
+  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',start);
+  else start();
+})();
+</script>
+
+
+<script id="tivio-ds-navoverflow-js">
+/* Complementa o controle de rolagem do menu:
+   - marca as classes .no-esq / .no-dir para a máscara de esmaecimento
+   - leva a aba ativa para o campo de visão ao abrir a página
+   - habilita navegação por teclado (setas ← →, Home, End)              */
+(function(){
+  var wrap=document.querySelector('.topbar-navwrap');
+  if(!wrap)return;
+  var nav=wrap.querySelector('.topbar-nav');
+  if(!nav)return;
+
+  function bordas(){
+    var fim=nav.scrollWidth-nav.clientWidth;
+    wrap.classList.toggle('no-esq',nav.scrollLeft<=2);
+    wrap.classList.toggle('no-dir',fim<=2||nav.scrollLeft>=fim-2);
+  }
+  nav.addEventListener('scroll',bordas,{passive:true});
+
+  /* O scroller usa `scroll-behavior:smooth` para os cliques nas setas. No
+     posicionamento inicial isso atrapalha: cada atribuição vira animação e
+     as leituras seguintes pegam valores intermediários, fazendo o cálculo
+     brigar consigo mesmo. Aqui o salto precisa ser instantâneo.          */
+  function semAnimacao(fn){
+    var antes=nav.style.scrollBehavior;
+    nav.style.scrollBehavior='auto';
+    fn();
+    nav.style.scrollBehavior=antes||'';
+  }
+
+  function mostrarAtiva(){
+    var a=nav.querySelector('.dash-tab.active');
+    if(!a)return bordas();
+    var max=nav.scrollWidth-nav.clientWidth;
+    if(max<=0){semAnimacao(function(){nav.scrollLeft=0;});return bordas();}
+    var ar=a.getBoundingClientRect(), nr=nav.getBoundingClientRect();
+    if(ar.left<nr.left+1||ar.right>nr.right-1){
+      var alvo=nav.scrollLeft+(ar.left-nr.left)-(nav.clientWidth-ar.width)/2;
+      semAnimacao(function(){
+        nav.scrollLeft=Math.max(0,Math.min(alvo,max));  /* absoluto e limitado */
+      });
+    }
+    bordas();
+  }
+
+  nav.setAttribute('tabindex','0');
+  nav.addEventListener('keydown',function(e){
+    var passo=Math.max(180,nav.clientWidth*0.6),d=0;
+    if(e.key==='ArrowRight')d=passo;
+    else if(e.key==='ArrowLeft')d=-passo;
+    else if(e.key==='Home')d=-nav.scrollWidth;
+    else if(e.key==='End')d=nav.scrollWidth;
+    else return;
+    e.preventDefault();
+    if(typeof nav.scrollBy==='function')nav.scrollBy({left:d,behavior:'smooth'});
+    else nav.scrollLeft+=d;
+    setTimeout(bordas,320);
+  });
+
+  /* O usuário rolando manualmente tem prioridade: a partir daí não
+     reposicionamos mais sozinhos.                                        */
+  var tocado=false;
+  ['pointerdown','wheel','keydown'].forEach(function(ev){
+    nav.addEventListener(ev,function(){tocado=true;},{passive:true,once:true});
+  });
+  nav.querySelectorAll('.nav-arrow,.dash-tab').forEach(function(el){
+    el.addEventListener('click',function(){tocado=true;});
+  });
+  wrap.querySelectorAll('.nav-arrow').forEach(function(el){
+    el.addEventListener('click',function(){tocado=true;});
+  });
+
+  /* Qualquer mudança tardia de layout (fonte que chega atrasada, scrollbar
+     que aparece, reveal que altera a altura) reposiciona a aba ativa.
+     Sem isso, a medição feita cedo demais deixava a aba fora de vista.    */
+  var t=null;
+  function reposiciona(){
+    if(tocado)return bordas();
+    clearTimeout(t);
+    t=setTimeout(function(){ if(!tocado)mostrarAtiva(); else bordas(); },60);
+  }
+  window.addEventListener('resize',reposiciona);
+  if(window.ResizeObserver){
+    var ro=new ResizeObserver(reposiciona);
+    ro.observe(nav);
+    [].forEach.call(nav.children,function(c){ro.observe(c);});
+  }
+
+  /* Convergência por quadro: o menu só pode ser medido quando a largura
+     do conteúdo para de mudar (fonte, ícones e badges já aplicados).
+     Repete a cada frame até estabilizar, em vez de apostar num timeout. */
+  var ultimoW=-1, estavel=0, inicio=Date.now();
+  (function converge(){
+    if(tocado)return;
+    var w=nav.scrollWidth;
+    if(w===ultimoW){estavel++;}else{estavel=0;ultimoW=w;}
+    mostrarAtiva();
+    /* para após 3 quadros estáveis com layout válido, ou 2s de guarda */
+    if(!(estavel>=3&&nav.scrollWidth>0)&&Date.now()-inicio<2000){
+      requestAnimationFrame(converge);
+    }
+  })();
+
+  if(document.readyState!=='complete')window.addEventListener('load',reposiciona);
+  if(document.fonts&&document.fonts.ready)document.fonts.ready.then(reposiciona).catch(function(){});
+})();
+</script>
+
+
+<script id="tivio-ds-reveal">
+/* Dispara o reveal com stagger quando o bloco entra na viewport.
+   Alvos: KPIs, cartões do hub e blocos marcados com .tv-reveal.       */
+(function(){
+  function marcar(){
+    var alvos=document.querySelectorAll('.kpi-row,.hub-cards,.hub-points,.tv-reveal');
+    if(!alvos.length)return;
+    alvos.forEach(function(el){el.classList.add('tv-reveal');});
+    if(!('IntersectionObserver' in window)){
+      alvos.forEach(function(el){el.classList.add('is-visible');});return;
+    }
+    var io=new IntersectionObserver(function(ents){
+      ents.forEach(function(e){
+        if(e.isIntersecting){e.target.classList.add('is-visible');io.unobserve(e.target);}
+      });
+    },{threshold:.12,rootMargin:'0px 0px -40px 0px'});
+    alvos.forEach(function(el){io.observe(el);});
+  }
+  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',marcar);
+  else marcar();
+})();
+</script>
+
+
+<script id="tivio-ds-transicao-js">
+/* ============ TRANSIÇÃO ENTRE DASHBOARDS ============
+   Intercepta os links internos, aplica o fade de saída e só então navega.
+   Tudo é defensivo: qualquer falha cai no comportamento padrão do link. */
+(function(){
+  var raiz=document.documentElement;
+  var REDUZIR=window.matchMedia&&window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  /* --- véu --- */
+  var veu=document.createElement('div');
+  veu.className='tv-veu';
+  veu.setAttribute('aria-hidden','true');
+  function montaVeu(){ if(document.body&&!veu.parentNode)document.body.appendChild(veu); }
+  if(document.body)montaVeu(); else document.addEventListener('DOMContentLoaded',montaVeu);
+
+  /* --- entrada --- */
+  /* A entrada e feita por CSS no <head> (tivio-ds-boot-transicao).
+     Fazia-se aqui com a classe `tv-entrando`, mas este script roda no
+     fim do documento: o conteudo ja estava pintado e saltava para tras
+     para poder "entrar". Agora so resta limpar o estado de saida. */
+  function entrar(){
+    raiz.classList.remove('tv-saindo');
+  }
+  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',entrar);
+  else entrar();
+
+  /* Voltar/avançar pelo histórico: o navegador pode restaurar a página do
+     cache com o véu ainda aplicado. Limpa sempre.                        */
+  window.addEventListener('pageshow',function(){
+    raiz.classList.remove('tv-saindo');
+  });
+  window.addEventListener('popstate',function(){ raiz.classList.remove('tv-saindo'); });
+
+  /* --- saída --- */
+  function interno(a){
+    if(!a)return false;
+    if(a.target&&a.target!=='_self')return false;
+    if(a.hasAttribute('download'))return false;
+    var href=a.getAttribute('href')||'';
+    if(!href||href.charAt(0)==='#')return false;
+    if(/^(mailto:|tel:|javascript:)/i.test(href))return false;
+    /* só arquivos .html vizinhos, que é o caso dos dashboards */
+    return /\.html(\?|#|$)/i.test(href)&&!/^[a-z]+:\/\//i.test(href);
+  }
+
+  document.addEventListener('click',function(e){
+    if(e.defaultPrevented)return;
+    if(e.button!==0||e.metaKey||e.ctrlKey||e.shiftKey||e.altKey)return;
+    var a=e.target.closest&&e.target.closest('a[href]');
+    if(!interno(a))return;
+
+    var url=a.getAttribute('href');
+    /* mesma página: não faz sentido animar */
+    try{
+      var atual=location.pathname.split('/').pop();
+      if(url.split('#')[0]===atual)return;
+    }catch(_){}
+
+    /* Delay removido: a passagem entre dashboards e imediata, sem fade de saida. */
+    return;
+  },false);
+  /* Fase de bolha (e não captura) de propósito: o menu do topo cancela o
+     clique quando o usuário estava arrastando a barra. Em captura, esse
+     cancelamento chegaria tarde demais e a página navegaria sem querer.  */
+})();
+</script>
+
+<script id="tivio-ds-movimento">
+/* Marca tabelas curtas para entrada em cascata e reaplica a animação
+   quando o painel de abas troca. Tabelas longas ficam de fora: cascata
+   em centenas de linhas atrapalha a leitura e pesa no scroll.          */
+(function(){
+  var LIMITE=40;
+  function marcar(escopo){
+    (escopo||document).querySelectorAll('table').forEach(function(t){
+      var tb=t.tBodies&&t.tBodies[0];
+      if(!tb)return;
+      if(tb.rows.length>0&&tb.rows.length<=LIMITE)t.classList.add('tv-linhas');
+      else t.classList.remove('tv-linhas');
+    });
+  }
+  function reanimar(el){
+    if(!el)return;
+    el.querySelectorAll('.tv-linhas').forEach(function(t){
+      t.classList.remove('tv-linhas'); void t.offsetWidth; t.classList.add('tv-linhas');
+    });
+  }
+  function iniciar(){
+    marcar();
+    document.addEventListener('click',function(e){
+      var b=e.target.closest&&e.target.closest('.tab-btn,.tv-tab-btn,.subtab-btn,.month-pill');
+      if(!b)return;
+      setTimeout(function(){
+        var p=document.querySelector('.tab-panel.active,.tv-tab-panel.active');
+        marcar(p||document); reanimar(p);
+      },30);
+    });
+  }
+  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',iniciar);
+  else iniciar();
+})();
+</script>
+
+<script>
+/* ====== ETF · dados do Databricks (injetado pelo atualizar_etf.py) ====== */
+const ETFS_DATA = [];
+
+/* ====== ETF · extensao: preenche KPIs + tabela de gestoras ====== */
+(function(){
+  const FD = (typeof ETFS_DATA !== 'undefined') ? ETFS_DATA : [];
+  if(!FD.length) return; // sem dados reais, mantem os numeros manuais
+
+  function moneyBi(v){ return 'R$ ' + (v/1e9).toLocaleString('pt-BR',{minimumFractionDigits:1,maximumFractionDigits:1}) + ' Bi'; }
+  function esc(s){ return (s==null?'':String(s)).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c])); }
+
+  /* ---- agrega por gestora ---- */
+  const g = {};
+  FD.forEach(e=>{
+    const k = e.gestora || 'N/D';
+g[k] = g[k] || {
+  gestora: k,
+  n: 0,
+  lancamentos12m: 0,
+  pl: 0,
+  _feePl: 0,
+  _plFee: 0,
+  cats: {}
+};
+    g[k].n++;
+    g[k].lancamentos12m += Number(
+  e.lancamento_12m || 0
+);
+    if(e.pl){ g[k].pl += e.pl; if(e.fee!=null){ g[k]._feePl += e.fee*e.pl; g[k]._plFee += e.pl; } }
+    if(e.categoria){ g[k].cats[e.categoria] = (g[k].cats[e.categoria]||0) + (e.pl||0); }
+  });
+const gestoras = Object.values(g).map(x=>({
+  gestora: x.gestora,
+  n: x.n,
+  lancamentos12m: x.lancamentos12m,
+  pl: x.pl,
+  fee: x._plFee
+    ? (x._feePl / x._plFee)
+    : null,
+  catDom: (
+    Object.entries(x.cats)
+      .sort((a,b)=>b[1]-a[1])[0]
+    || ['—']
+  )[0]
+})).sort((a,b)=>b.pl-a.pl);
+
+  const nEtfs = FD.length;
+  const universo =
+    document.getElementById(
+        "etf-universo"
+    );
+
+if (universo) {
+    universo.textContent =
+        String(nEtfs);
+}
+const competencia =
+    document.getElementById(
+        "etf-competencia"
+    );
+
+const datas = FD
+    .map(x => x.data_referencia)
+    .filter(Boolean)
+    .sort();
+
+if (
+    competencia &&
+    datas.length
+) {
+
+    const ref =
+        datas[datas.length - 1];
+
+    const p =
+        String(ref)
+            .slice(0, 10)
+            .split("-");
+
+    if (p.length === 3) {
+
+        competencia.textContent =
+            p[1] + "/" + p[0];
+
+    }
+}
+  const plTotal = FD.reduce((s,e)=>s+(e.pl||0),0);
+
+  const pillGestoras =
+    document.getElementById(
+        "etf-gestoras-pill"
+    );
+
+if (pillGestoras) {
+
+    pillGestoras.textContent =
+        `${gestoras.length} emissores mapeados`;
+
+}
+
+  /* ---- KPIs ---- */
+  const kN  = document.getElementById('etf-kpi-n');
+  const kPL = document.getElementById('etf-kpi-pl');
+  if(kN)  kN.textContent  = String(nEtfs);
+  if(kPL) kPL.textContent = moneyBi(plTotal);
+  const kNsub = document.getElementById('etf-kpi-n-sub');
+  const kPLsub= document.getElementById('etf-kpi-pl-sub');
+  if(kNsub)  kNsub.textContent  = gestoras.length + ' emissores';
+  if(kPLsub) kPLsub.textContent = 'soma capitalização B3';
+
+  /* ---- tabela de gestoras ---- */
+  const tb = document.getElementById('etf-gestoras-body');
+  if(tb){
+    tb.innerHTML = gestoras.map((x,i)=>{
+      const medal = i===0?'🥇':i===1?'🥈':i===2?'🥉':String(i+1);
+      const fee = x.fee!=null ? x.fee.toLocaleString('pt-BR',{minimumFractionDigits:2,maximumFractionDigits:2})+'%' : '—';
+      return '<tr>'+
+        '<td class="rank">'+medal+'</td>'+
+        '<td class="fnome">'+esc(x.gestora)+'</td>'+
+        '<td class="num">'+x.n+'</td>'+
+        '<td class="num">'+x.lancamentos12m+'</td>'+
+        '<td class="num">'+(x.pl/1e9).toLocaleString('pt-BR',{minimumFractionDigits:1,maximumFractionDigits:1})+'</td>'+
+        '<td>'+esc(x.catDom)+'</td>'+
+        '<td class="num">'+fee+'</td>'+
+        '<td class="muted">B3</td>'+
+      '</tr>';
+    }).join('');
+  }
+
+  console.log('[etf] '+nEtfs+' ETFs · '+gestoras.length+' gestoras · PL '+moneyBi(plTotal));
+})();
+</script>
+<script id="etf-fase1-auto">
+(function(){
+  const D = (typeof ETFS_DATA !== 'undefined' && Array.isArray(ETFS_DATA)) ? ETFS_DATA : [];
+  if(!D.length) return;
+
+  const esc = s => String(s == null ? '' : s).replace(/[&<>\"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','\"':'&quot;'}[c]));
+  const n = v => Number(v || 0);
+  const pct = v => v.toLocaleString('pt-BR',{minimumFractionDigits:1,maximumFractionDigits:1}) + '%';
+  const bi = v => (n(v)/1e9).toLocaleString('pt-BR',{minimumFractionDigits:2,maximumFractionDigits:2});
+  const mi = v => (n(v)/1e6).toLocaleString('pt-BR',{minimumFractionDigits:1,maximumFractionDigits:1});
+  const totalPL = D.reduce((s,x) => s+n(x.pl),0);
+  const ref = D.map(x=>x.data_referencia).filter(Boolean).sort().at(-1) || '';
+
+  const navBadge = document.getElementById('etf-nav-badge');
+  if(navBadge) navBadge.textContent = D.length.toLocaleString('pt-BR');
+  const refPill = document.getElementById('etf-fase1-ref');
+  if(refPill && ref) refPill.textContent = ref.slice(8,10)+'/'+ref.slice(5,7)+'/'+ref.slice(0,4);
+
+  const agrega = campo => {
+    const m = new Map();
+    D.forEach(x => {
+      const chave = x[campo] || 'N/D';
+      const atual = m.get(chave) || {nome:chave,n:0,pl:0,novos:0};
+      atual.n += 1; atual.pl += n(x.pl); atual.novos += n(x.lancamento_12m);
+      m.set(chave,atual);
+    });
+    return [...m.values()].sort((a,b)=>b.pl-a.pl);
+  };
+  const gestoras = agrega('gestora');
+  const categorias = agrega('categoria_macro');
+
+  const topBody = document.getElementById('etf-top-pl-body');
+  if(topBody){
+    topBody.innerHTML = [...D].sort((a,b)=>n(b.pl)-n(a.pl)).slice(0,10).map((x,i)=>`<tr><td class="rank">${i+1}</td><td class="fnome">${esc(x.ticker || '—')}</td><td>${esc(x.nome || '—')}</td><td>${esc(x.gestora || 'N/D')}</td><td>${esc(x.categoria || 'N/D')}</td><td class="num">${bi(x.pl)}</td></tr>`).join('');
+  }
+
+  function barras(id, lista, limite){
+    const el = document.getElementById(id); if(!el) return;
+    const itens = lista.slice(0,limite);
+    const max = Math.max(1,...itens.map(x=>x.pl));
+    el.innerHTML = itens.map(x=>{
+      const w = Math.max(2,x.pl/max*100);
+      const share = totalPL ? x.pl/totalPL*100 : 0;
+      return `<div class="div-bar-row"><div class="div-bar-chip"><span class="chip g">${esc(x.nome)}</span></div><div class="div-bar-chart"><div class="div-bar-half left"></div><div class="div-bar-half right"><div class="div-bar-fill" style="width:${w.toFixed(1)}%;background:linear-gradient(90deg,var(--tivio),var(--tv-verde-escuro))"></div></div></div><div class="div-bar-value" title="R$ ${bi(x.pl)} Bi">${pct(share)}</div></div>`;
+    }).join('');
+  }
+  barras('etf-categorias-pl',categorias,10);
+  barras('etf-gestoras-pl',gestoras,10);
+
+  const novos = D.filter(x=>n(x.lancamento_12m)>0).sort((a,b)=>String(b.data_inicio||'').localeCompare(String(a.data_inicio||'')) || n(b.pl)-n(a.pl));
+  const novosTotal = document.getElementById('etf-novos-total');
+  if(novosTotal) novosTotal.textContent = novos.length.toLocaleString('pt-BR') + ' lançamentos';
+  const novosBody = document.getElementById('etf-novos-body');
+  if(novosBody){
+    novosBody.innerHTML = novos.map(x=>`<tr><td class="fnome">${esc(x.ticker||'—')}</td><td>${esc(x.gestora||'N/D')}</td><td>${esc((x.data_inicio||'—').split('-').reverse().join('/'))}</td><td class="num">${mi(x.pl)}</td></tr>`).join('');
+  }
+
+  const heat = document.getElementById('etf-heatmap-gestoras');
+  if(heat){
+    const lista = [...gestoras].filter(x=>x.novos>0).sort((a,b)=>b.novos-a.novos || b.pl-a.pl);
+    const max = Math.max(1,...lista.map(x=>x.novos));
+    heat.innerHTML = lista.map(x=>`<div class="div-bar-row"><div class="div-bar-chip"><span class="chip g">${esc(x.nome)}</span></div><div class="div-bar-chart"><div class="div-bar-half left"></div><div class="div-bar-half right"><div class="div-bar-fill" style="width:${Math.max(3,x.novos/max*100).toFixed(1)}%;background:linear-gradient(90deg,var(--tivio),var(--tv-verde-escuro))"></div></div></div><div class="div-bar-value" style="color:var(--tivio)">${x.novos}</div></div>`).join('');
+  }
+
+  const conc = document.getElementById('etf-concentracao');
+  if(conc && gestoras.length){
+    const top3 = gestoras.slice(0,3); const top3PL = top3.reduce((s,x)=>s+x.pl,0);
+    const abaixo1 = gestoras.filter(x=>x.pl<1e9).length;
+    const playersNovos = gestoras.filter(x=>x.novos>0).length;
+    conc.innerHTML = `<div class="hl-block"><div class="hl-lbl">🥇 TOP 3 EMISSORES</div><div class="hl-fund">${top3.map(x=>esc(x.nome)).join(' + ')}</div><div class="hl-val" style="color:var(--tivio)">R$ ${bi(top3PL)} Bi · ${pct(totalPL?top3PL/totalPL*100:0)} do PL</div></div><div class="hl-block"><div class="hl-lbl">📉 CAUDA LONGA</div><div class="hl-fund">Gestoras com PL inferior a R$ 1 Bi</div><div class="hl-val">${abaixo1} emissores</div></div><div class="hl-block"><div class="hl-lbl">🆕 EMISSORES COM LANÇAMENTOS 12m</div><div class="hl-fund">Com pelo menos um ETF novo</div><div class="hl-val" style="color:var(--tivio)">${playersNovos} players</div></div>`;
+  }
+
+  console.log('[ETF Fase 1]', {etfs:D.length, gestoras:gestoras.length, categorias:categorias.length, novos12m:novos.length, plTotal:totalPL, referencia:ref});
+})();
+</script>
+</body></html>

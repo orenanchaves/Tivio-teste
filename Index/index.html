@@ -1,0 +1,2130 @@
+<!DOCTYPE html>
+<html lang="pt-BR" data-theme="dark"><head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Central de Dashboards · Tivio Capital</title>
+<link rel="preconnect" href="https://cdn-sites-assets.mziq.com" crossorigin>
+<link rel="preload" href="https://cdn-sites-assets.mziq.com/wp-content/themes/mziq_tivio_capital/assets/fonts/Versos-ExtraLight.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="https://cdn-sites-assets.mziq.com/wp-content/themes/mziq_tivio_capital/assets/fonts/Versos-Regular.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="https://cdn-sites-assets.mziq.com/wp-content/themes/mziq_tivio_capital/assets/fonts/Versos-SemiBold.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="https://cdn-sites-assets.mziq.com/wp-content/themes/mziq_tivio_capital/assets/fonts/Versos-Bold.woff2" as="font" type="font/woff2" crossorigin>
+<!-- ============ TAILWIND CSS · ligado aos tokens do Design System ============
+     Os utilitários apontam para as mesmas variáveis CSS já usadas na página
+     (--accent-strong, --bg-base, --r-lg, --ff). Consequência prática: o tema
+     claro/escuro continua sendo resolvido pelos tokens, então NÃO é preciso
+     escrever variantes `dark:` no HTML, `bg-elev-1` já muda sozinho.       -->
+<script src="https://cdn.tailwindcss.com/3.4.16"></script>
+<script id="tivio-tw-config">
+/* Guarda: se o CDN estiver bloqueado (rede corporativa, offline, SharePoint
+   sem acesso externo), `tailwind` não existe. Sem esta checagem o script
+   lançaria "tailwind is not defined" no console. O layout não depende do
+   Tailwind, os utilitários são complemento, todo o visual vem do CSS da
+   página e dos tokens do design system.                                   */
+if(typeof tailwind!=='undefined'){
+tailwind.config = {
+  corePlugins:{ preflight:false },   /* preserva o CSS da página, sem reset */
+  theme:{
+    extend:{
+      colors:{
+        /* semânticos, trocam com o tema */
+        base:'var(--bg-base)', elev1:'var(--bg-elev-1)', elev2:'var(--bg-elev-2)',
+        line:'var(--line)', 'line-strong':'var(--line-strong)',
+        accent:'var(--accent-strong)', 'on-accent':'var(--on-accent)',
+        ink:'var(--ink)', muted:'var(--text-muted)',
+        primary:'var(--text-primary)', secondary:'var(--text-secondary)',
+        /* marca, fixos nos dois temas */
+        verde:'var(--tv-verde)', 'verde-escuro':'var(--tv-verde-escuro)',
+        'verde-ink':'var(--tv-verde-ink)', agro:'var(--tv-agro)',
+        azul:'var(--tv-azul)', 'azul-escuro':'var(--tv-azul-escuro)',
+        bradesco:'var(--tv-bradesco)',
+        /* data-viz */
+        pos:'var(--tv-pos)', neg:'var(--tv-neg)', warn:'var(--tv-warn)',
+        info:'var(--tv-info)', roxo:'var(--tv-roxo)'
+      },
+      borderRadius:{ sm:'var(--r-sm)', md:'var(--r-md)', lg:'var(--r-lg)',
+                     xl:'var(--r-xl)', full:'var(--r-full)' },
+      fontFamily:{ versos:['Versos','Helvetica Neue','Helvetica','Arial','sans-serif'],
+                   mono:['ui-monospace','SFMono-Regular','Menlo','Consolas','monospace'] },
+      boxShadow:{ glow:'var(--glow)', md:'var(--shadow-md)', lg:'var(--shadow-lg)' },
+      maxWidth:{ container:'var(--container)' },
+      transitionTimingFunction:{ tv:'cubic-bezier(.22,.9,.32,1)' }
+    }
+  }
+};
+}
+</script>
+<style id="tivio-ds-tokens">
+/* ===== FONTE OFICIAL VERSOS (mesma origem do tivio.com) ===== */
+@font-face{font-family:Versos;src:local("Versos ExtraLight"),local("Versos-ExtraLight"),url(https://cdn-sites-assets.mziq.com/wp-content/themes/mziq_tivio_capital/assets/fonts/Versos-ExtraLight.woff2) format("woff2");font-weight:200;font-style:normal;font-display:swap}
+@font-face{font-family:Versos;src:local("Versos ExtraLight"),local("Versos-ExtraLight"),url(https://cdn-sites-assets.mziq.com/wp-content/themes/mziq_tivio_capital/assets/fonts/Versos-ExtraLight.woff2) format("woff2");font-weight:300;font-style:normal;font-display:swap}
+@font-face{font-family:Versos;src:local("Versos Regular"),local("Versos-Regular"),url(https://cdn-sites-assets.mziq.com/wp-content/themes/mziq_tivio_capital/assets/fonts/Versos-Regular.woff2) format("woff2");font-weight:400;font-style:normal;font-display:swap}
+@font-face{font-family:Versos;src:local("Versos Regular"),local("Versos-Regular"),url(https://cdn-sites-assets.mziq.com/wp-content/themes/mziq_tivio_capital/assets/fonts/Versos-Regular.woff2) format("woff2");font-weight:500;font-style:normal;font-display:swap}
+@font-face{font-family:Versos;src:local("Versos SemiBold"),local("Versos-SemiBold"),url(https://cdn-sites-assets.mziq.com/wp-content/themes/mziq_tivio_capital/assets/fonts/Versos-SemiBold.woff2) format("woff2");font-weight:600;font-style:normal;font-display:swap}
+@font-face{font-family:Versos;src:local("Versos Bold"),local("Versos-Bold"),url(https://cdn-sites-assets.mziq.com/wp-content/themes/mziq_tivio_capital/assets/fonts/Versos-Bold.woff2) format("woff2");font-weight:700;font-style:normal;font-display:swap}
+@font-face{font-family:Versos;src:local("Versos Bold"),local("Versos-Bold"),url(https://cdn-sites-assets.mziq.com/wp-content/themes/mziq_tivio_capital/assets/fonts/Versos-Bold.woff2) format("woff2");font-weight:800;font-style:normal;font-display:swap}
+
+:root{
+  /* ===== CORES DE MARCA (fixas nos dois temas) ===== */
+  --tv-verde:#C1F4D4;--tv-verde-escuro:#92D3AB;--tv-verde-light-accent:#337F51;--tv-verde-ink:#0A2415;
+  --tv-preto:#000;--tv-branco:#FFF;--tv-offwhite:#E6EDF1;
+  --tv-azul-escuro:#3C4A60;--tv-azul:#759DB4;--tv-cinza:#637881;--tv-cinza-claro:#ABC6CD;
+  --tv-azul-imob:#C8D7E0;--tv-bradesco:#CC092F;
+  --tv-agro:#52B97A;--agro:var(--tv-agro);
+
+  /* ===== PALETA DE DADOS (data-viz), derivada da marca ===== */
+  --viz-1:var(--accent-strong);       /* verde Tivio  */
+  --viz-2:#4A90E2;                    /* azul dado    */
+  --viz-3:#E94E77;                    /* negativo     */
+  --viz-4:#F5A623;                    /* atenção      */
+  --viz-5:#9B59B6;                    /* roxo         */
+  --viz-6:var(--tv-azul);             /* azul marca   */
+  --tv-pos:#3DDC97;--tv-neg:#E94E77;--tv-warn:#F5A623;--tv-info:#4A90E2;--tv-roxo:#9B59B6;
+
+  /* ===== TEMA ESCURO (default) ===== */
+  --bg-base:#0A0F14;--bg-elev-1:#12181F;--bg-elev-2:#161D25;
+  --bg-glass:linear-gradient(135deg,rgba(255,255,255,.06),rgba(255,255,255,.015));
+  --bg-glass-strong:linear-gradient(135deg,rgba(255,255,255,.09),rgba(255,255,255,.02));
+  --text-primary:#FFF;--text-secondary:#E6EDF1;--text-muted:#8A99A3;
+  --line:rgba(255,255,255,.10);--line-strong:rgba(255,255,255,.18);
+  --header-bg:rgba(10,15,20,.65);--input-bg:rgba(255,255,255,.03);
+  --accent-strong:var(--tv-verde);--pill-bg:rgba(193,244,212,.10);--pill-border:rgba(193,244,212,.35);
+  --glow:0 0 60px rgba(193,244,212,.15);
+  --veil:#FFF;            /* tinta dos véus translúcidos (inverte no claro) */
+  --on-accent:#0A2415;    /* texto sobre superfície de ACENTO (verde Tivio) */
+  --ink:#0A0F14;          /* tinta escura fixa: texto sobre chips de marca  */
+
+  /* ===== MARCAS DE TERCEIROS =====
+     -fill  = valor institucional, idêntico nos dois temas (fundos e chips)
+     -txt   = variante escurecida para uso como TEXTO sobre fundo claro   */
+  --brand-amarelo:#FFC700;--brand-amarelo-txt:#FFC700;
+  --brand-laranja:#EC7000;--brand-laranja-txt:#EC7000;
+  --brand-teal:#00A69C;--brand-teal-txt:#00A69C;
+  --brand-azul:#0057B8;--brand-azul-txt:#0057B8;
+  --brand-azul-esc:#003DA5;--brand-azul-esc-txt:#003DA5;
+  --brand-vermelho:#E20A17;--brand-vermelho-txt:#E20A17;
+  --shadow-lg:0 40px 120px rgba(0,0,0,.6);
+  --shadow-md:0 12px 32px rgba(0,0,0,.35);
+
+  /* ===== TOKENS DE SISTEMA ===== */
+  --ff:"Versos","Helvetica Neue",Helvetica,Arial,sans-serif;
+  --ff-mono:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+  --r-sm:8px;--r-md:12px;--r-lg:20px;--r-xl:28px;--r-full:999px;--container:1240px;
+  --btn-radius:var(--r-full);--btn-gap:10px;--btn-weight:600;--btn-ease:cubic-bezier(.22,.9,.32,1);
+  --btn-xs-pad:6px 14px;--btn-xs-fs:11px;
+  --btn-sm-pad:8px 16px;--btn-sm-fs:12px;
+  --btn-md-pad:12px 22px;--btn-md-fs:14px;
+  --btn-lg-pad:16px 30px;--btn-lg-fs:15.5px;
+  --btn-focus-ring:0 0 0 3px color-mix(in srgb,var(--accent-strong) 45%,transparent);
+
+  /* ===== ALIASES LEGADOS DOS DASHBOARDS ===== */
+  --tivio:var(--accent-strong);
+  --bg:var(--bg-base);
+  --card:var(--bg-elev-1);
+  --border:var(--line);
+  --border-strong:var(--line-strong);
+  --text:var(--text-primary);
+  --muted:var(--text-muted);
+  --red:var(--tv-neg);
+  --amber:var(--tv-warn);
+}
+
+:root[data-theme="light"]{
+  --bg-base:#EEF3F6;--bg-elev-1:#FFF;--bg-elev-2:#F6F9FB;
+  --bg-glass:linear-gradient(135deg,rgba(255,255,255,.75),rgba(255,255,255,.45));
+  --bg-glass-strong:linear-gradient(135deg,rgba(255,255,255,.92),rgba(255,255,255,.70));
+  --text-primary:#0A0F14;--text-secondary:#12181F;--text-muted:#4A5A66;
+  --line:rgba(10,15,20,.10);--line-strong:rgba(10,15,20,.20);
+  --header-bg:rgba(255,255,255,.75);--input-bg:rgba(10,15,20,.02);
+  --accent-strong:var(--tv-verde-light-accent);--pill-bg:rgba(51,127,81,.08);--pill-border:rgba(51,127,81,.32);
+  --glow:0 0 60px rgba(51,127,81,.12);
+  --veil:#0A0F14;
+  --on-accent:#FFF;
+  --ink:#0A0F14;
+  /* fundos de marca preservados; só a variante de TEXTO escurece p/ contraste */
+  --brand-amarelo-txt:#8A6A00;--brand-laranja-txt:#B85400;--brand-teal-txt:#00726B;
+  --brand-azul-txt:#0057B8;--brand-azul-esc-txt:#003DA5;--brand-vermelho-txt:#C00812;
+  --shadow-lg:0 24px 70px rgba(10,15,20,.12);
+  --shadow-md:0 10px 26px rgba(10,15,20,.10);
+  --agro:var(--tv-verde-light-accent);
+  /* data-viz recalibrada para contraste sobre fundo claro */
+  --viz-2:#2E6DB4;--viz-3:#C42B54;--viz-4:#B87400;--viz-5:#7A3E93;
+  --tv-pos:#1E9E6A;--tv-neg:#C42B54;--tv-warn:#B87400;--tv-info:#2E6DB4;--tv-roxo:#7A3E93;
+}
+</style>
+<!-- ====== TIVIO DS · BOOT DA TRANSICAO (obrigatoriamente no <head>) ====== -->
+<script id="tivio-ds-boot-tema">
+/* Resolve o tema ANTES da primeira pintura.
+   O controlador completo (tivio-ds-theme) vive no fim do documento: bom
+   para montar os botoes, tarde demais para decidir a cor. Como o HTML vem
+   com data-theme="dark" fixo, quem escolheu claro via a pagina pintar
+   escura e virar no fim do parse. Aqui so a cor e resolvida, os botoes
+   continuam por conta do controlador, que aplica exatamente a mesma regra
+   (mesma chave, escolha do usuario vence o sistema).                     */
+(function(){
+  try{
+    var K='tivio-ds-theme', v=null;
+    try{ v=localStorage.getItem(K); }catch(e){}
+    if(v!=='light'&&v!=='dark'){
+      v=(window.matchMedia&&window.matchMedia('(prefers-color-scheme: dark)').matches)?'dark':'light';
+    }
+    document.documentElement.setAttribute('data-theme',v);
+  }catch(e){}
+})();
+</script>
+<style id="tivio-ds-boot-transicao">
+/* ===== ENTRADA DA PAGINA · CSS puro, de proposito =====
+   O JS da transicao so roda no fim do documento, quando o conteudo ja foi
+   pintado. Era ele que causava o solavanco: a pagina aparecia inteira e so
+   entao saltava para opacity:0 para "entrar". Uma animacao declarada aqui
+   no <head> ja vale na primeira pintura, entao nao existe salto. E, por nao
+   depender de JS, tambem nao trava: se o script falhar, revela do mesmo
+   jeito.                                                                  */
+@keyframes tv-veu-entrada{
+  0%{opacity:1}
+  16%{opacity:1}          /* segura opaco enquanto o conteudo assenta */
+  100%{opacity:0}
+}
+@keyframes tv-entrada-conteudo{
+  from{opacity:0;transform:translateY(12px)}
+  to{opacity:1;transform:none}
+}
+/* Veu de entrada no ::before do proprio <html>: existe desde a primeira
+   pintura, sem precisar que o body ou o JS estejam prontos.              */
+html::before{
+  content:"";position:fixed;inset:0;z-index:9998;pointer-events:none;
+  background:var(--bg-base,#0A0F14);
+  animation:none;opacity:0;   /* delay de entrada removido: pagina aparece na hora */
+}
+/* Entrada instantanea: sem fade da .slide entre dashboards. */
+.slide{animation:none}
+@media(prefers-reduced-motion:reduce){
+  html::before{animation:none;opacity:0}
+  .slide{animation:none}
+}
+@media print{html::before{display:none!important}}
+</style>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+/* :root legado -> aliases do Tivio Design System (ver #tivio-ds-tokens) */
+:root{--tivio:var(--accent-strong);--bg:var(--bg-base);--card:var(--bg-elev-1);--border:var(--line);--border-strong:var(--line-strong);--text:var(--text-primary);--muted:var(--text-muted);--red:var(--tv-neg);--amber:var(--tv-warn)}
+
+html,body{background:var(--bg-base);font-family:var(--ff);color:var(--text);min-height:100vh;overflow-x:hidden}
+.slide{width:100%;max-width:1920px;margin:0 auto;min-height:100vh;background:var(--bg);background-image:radial-gradient(ellipse at 15% 20%,color-mix(in srgb,var(--accent-strong) 6%,transparent),transparent 55%),radial-gradient(ellipse at 85% 90%,color-mix(in srgb,var(--accent-strong) 3%,transparent),transparent 45%);padding:0 clamp(12px,3vw,52px) clamp(30px,5vw,60px);display:flex;flex-direction:column;position:relative;box-shadow:0 40px 120px rgba(0,0,0,0.6)}
+.slide::before{content:"";position:absolute;top:-200px;right:-150px;width:600px;height:600px;border-radius:50%;background:radial-gradient(circle,color-mix(in srgb,var(--accent-strong) 8%,transparent),transparent 60%);pointer-events:none}
+
+/* SWITCHER */
+.dash-switcher{display:flex;align-items:center;gap:12px;padding:8px clamp(12px,3vw,52px);margin:0 calc(-1 * clamp(12px,3vw,52px));background:color-mix(in srgb,var(--veil) 1.5%,transparent);border-bottom:1px solid color-mix(in srgb,var(--accent-strong) 8%,transparent);flex-shrink:0;min-height:44px;position:relative;z-index:3;flex-wrap:wrap}
+.dash-switcher-label{font-size:9px;letter-spacing:2px;color:var(--muted);font-weight:600;text-transform:uppercase;white-space:nowrap;display:flex;align-items:center;gap:6px}
+.dash-switcher-label::before{content:"◈";color:var(--tivio);font-size:11px}
+.dash-tabs{display:flex;gap:4px;flex:1;overflow-x:auto;scrollbar-width:none;min-width:200px}
+.dash-tabs::-webkit-scrollbar{display:none}
+.dash-tab{display:inline-flex;align-items:center;gap:6px;padding:5px 12px;border-radius:999px;font-size:11px;font-weight:500;color:color-mix(in srgb,var(--veil) 50%,transparent);border:1px solid color-mix(in srgb,var(--veil) 6%,transparent);text-decoration:none;transition:all 0.15s;white-space:nowrap;font-family:inherit;background:transparent;cursor:pointer}
+.dash-tab:hover{color:var(--text-primary);border-color:color-mix(in srgb,var(--veil) 20%,transparent);background:color-mix(in srgb,var(--veil) 3%,transparent)}
+.dash-tab.active{background:color-mix(in srgb,var(--accent-strong) 10%,transparent);color:var(--tivio);border-color:color-mix(in srgb,var(--accent-strong) 40%,transparent);font-weight:600}
+.dash-tab-badge{font-size:9px;background:color-mix(in srgb,var(--accent-strong) 15%,transparent);color:var(--tivio);padding:1px 6px;border-radius:999px;font-weight:700;border:1px solid color-mix(in srgb,var(--accent-strong) 25%,transparent)}
+.dash-tab.active .dash-tab-badge{background:var(--tivio);color:var(--on-accent)}
+.dash-back-btn{display:inline-flex;align-items:center;gap:6px;padding:6px 12px;border-radius:999px;font-size:11px;font-weight:600;color:var(--tivio);border:1px solid color-mix(in srgb,var(--accent-strong) 35%,transparent);text-decoration:none;transition:all 0.2s;white-space:nowrap;background:color-mix(in srgb,var(--accent-strong) 6%,transparent)}
+.dash-back-btn:hover{background:color-mix(in srgb,var(--accent-strong) 15%,transparent);border-color:var(--tivio);transform:translateX(-2px)}
+.dash-switcher-sep{width:1px;height:22px;background:color-mix(in srgb,var(--veil) 12%,transparent)}
+
+/* HEADER */
+.header{display:flex;justify-content:space-between;align-items:center;padding:16px 0 14px;border-bottom:1px solid color-mix(in srgb,var(--veil) 5%,transparent);position:relative;z-index:2;flex-shrink:0;gap:16px;flex-wrap:wrap}
+.brand{display:flex;align-items:center;gap:16px;min-width:0;flex:1}
+.logo svg{width:clamp(140px,15vw,200px);height:auto;display:block}
+.brand-sep{width:1px;height:44px;background:color-mix(in srgb,var(--veil) 12%,transparent);flex-shrink:0}
+.brand-title{display:flex;flex-direction:column;gap:2px;min-width:0}
+.brand-title .t1{font-size:clamp(9px,1vw,11px);letter-spacing:3px;color:var(--tivio);font-weight:600}
+.brand-title .t2{font-size:clamp(16px,1.6vw,20px);letter-spacing:-0.3px;color:var(--text-primary);font-weight:600}
+.brand-title .t3{font-size:clamp(10px,0.9vw,11px);color:var(--muted);margin-top:2px}
+.header-right{display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+.cdi-badges-group{display:flex;gap:6px}
+.cdi-mini-card{background:color-mix(in srgb,var(--accent-strong) 6%,transparent);border:1px solid color-mix(in srgb,var(--accent-strong) 25%,transparent);border-radius:10px;padding:6px 12px;display:flex;flex-direction:column;gap:2px;text-align:center;min-width:60px}
+.cdi-mini-lbl{font-size:8px;letter-spacing:1.5px;color:var(--muted);font-weight:600}
+.cdi-mini-val{font-size:14px;font-weight:700;color:var(--tivio);letter-spacing:-0.3px;line-height:1}
+.search{width:clamp(200px,25vw,340px);height:40px;display:flex;align-items:center;gap:10px;background:var(--bg-elev-1);border:1px solid var(--border);border-radius:999px;padding:0 18px}
+.search:focus-within{border-color:var(--tivio);box-shadow:0 0 0 3px color-mix(in srgb,var(--accent-strong) 8%,transparent)}
+.search svg{width:15px;height:15px;opacity:0.6;flex-shrink:0}
+.search input{flex:1;background:none;border:none;outline:none;color:var(--text-primary);font-family:inherit;font-size:12px;min-width:0}
+.search input::placeholder{color:color-mix(in srgb,var(--veil) 35%,transparent)}
+
+/* TABS */
+.tabs{display:flex;gap:8px;padding:14px 0 16px;position:relative;z-index:2;flex-shrink:0;overflow-x:auto;scrollbar-width:none}
+.tabs::-webkit-scrollbar{display:none}
+.tab-btn{background:transparent;border:1px solid color-mix(in srgb,var(--veil) 10%,transparent);color:color-mix(in srgb,var(--veil) 65%,transparent);padding:9px 20px;border-radius:999px;font-family:inherit;font-size:13px;font-weight:500;cursor:pointer;transition:all 0.2s;letter-spacing:0.3px;white-space:nowrap}
+.tab-btn:hover{color:var(--text-primary);border-color:color-mix(in srgb,var(--veil) 25%,transparent)}
+.tab-btn.active{background:color-mix(in srgb,var(--accent-strong) 8%,transparent);color:var(--tivio);border-color:var(--tivio)}
+
+.content{display:flex;flex-direction:column;position:relative;z-index:2}
+.tab-panel{display:none;flex-direction:column;gap:14px}
+.tab-panel.active{display:flex}
+.row{display:flex;gap:16px}
+.two-col{flex:1}
+
+.kpi-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px;flex-shrink:0}
+.kpi-card{background:var(--card);border:1px solid var(--border);border-top:2px solid var(--tivio);border-radius:14px;padding:20px 24px;transition:transform 0.2s,border-color 0.2s}
+.kpi-card:hover{transform:translateY(-3px);border-color:var(--border-strong)}
+.kpi-num{font-size:clamp(22px,2.4vw,32px);font-weight:700;letter-spacing:-1px;line-height:1.1;color:var(--text-primary)}
+.kpi-lbl{font-size:9px;color:var(--muted);letter-spacing:2.3px;font-weight:600;margin-top:10px}
+.kpi-sub{font-size:12px;color:color-mix(in srgb,var(--veil) 55%,transparent);margin-top:6px}
+
+.top1-strip{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:16px 20px;flex-shrink:0}
+.top1-strip-lbl{font-size:10px;color:var(--tivio);letter-spacing:2.5px;font-weight:700;margin-bottom:12px}
+.top1-grid-compact{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:12px}
+.top1c{background:color-mix(in srgb,var(--veil) 2%,transparent);border:1px solid color-mix(in srgb,var(--veil) 6%,transparent);border-radius:10px;padding:14px 16px;display:flex;flex-direction:column;gap:10px;transition:all 0.2s;cursor:pointer}
+.top1c:hover{background:color-mix(in srgb,var(--accent-strong) 3%,transparent);border-color:var(--border-strong);transform:translateY(-2px)}
+.top1c-head{display:flex;justify-content:space-between;align-items:center}
+.top1c-medal{font-size:18px}
+.top1c-name{font-size:12px;font-weight:700;color:var(--text-primary);line-height:1.35;letter-spacing:-0.1px;min-height:32px}
+.top1c-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;padding:10px 0;border-top:1px solid color-mix(in srgb,var(--veil) 5%,transparent)}
+.top1c-grid>div{display:flex;flex-direction:column;gap:2px}
+.top1c-grid .lbl{font-size:8px;letter-spacing:1.2px;color:var(--muted);font-weight:600}
+.top1c-grid .val{font-size:14px;font-weight:700;color:var(--text-primary);font-variant-numeric:tabular-nums}
+.top1c-footer{font-size:9.5px;color:var(--muted);letter-spacing:0.5px;padding-top:6px;border-top:1px solid color-mix(in srgb,var(--veil) 5%,transparent)}
+
+.panel{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:22px 24px;display:flex;flex-direction:column}
+.panel-lg{flex:1.6}
+.panel-sm{flex:1}
+.panel-full{flex:1;min-height:400px}
+.panel-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;flex-shrink:0;flex-wrap:wrap;gap:8px}
+.panel-head h3{font-size:clamp(14px,1.4vw,16px);font-weight:600;color:var(--text-primary)}
+.pill{background:color-mix(in srgb,var(--accent-strong) 8%,transparent);color:var(--tivio);padding:3px 10px;border-radius:999px;font-size:10px;font-weight:600;letter-spacing:1px;border:1px solid color-mix(in srgb,var(--accent-strong) 20%,transparent)}
+.panel-note{font-size:11px;color:var(--muted);margin-top:12px;line-height:1.5}
+
+.diverging-bars{flex:1;display:flex;flex-direction:column;gap:14px;justify-content:center;padding:16px 0;min-height:200px}
+.div-bar-row{display:flex;align-items:center;gap:12px;min-height:42px;flex-wrap:wrap}
+.div-bar-chip{width:clamp(120px,15vw,150px);flex-shrink:0}
+.div-bar-chart{flex:1;min-width:180px;position:relative;height:34px;display:flex;background:color-mix(in srgb,var(--veil) 2%,transparent);border-radius:6px}
+.div-bar-half{width:50%;height:100%;position:relative;overflow:hidden}
+.div-bar-half.left{display:flex;justify-content:flex-end;border-radius:6px 0 0 6px}
+.div-bar-half.right{display:flex;justify-content:flex-start;border-radius:0 6px 6px 0}
+.div-bar-fill{height:100%;transition:width 0.3s}
+.div-bar-half.left .div-bar-fill{border-radius:6px 0 0 6px}
+.div-bar-half.right .div-bar-fill{border-radius:0 6px 6px 0}
+.div-bar-zero{position:absolute;left:50%;top:-4px;bottom:-4px;width:2px;background:linear-gradient(180deg,color-mix(in srgb,var(--accent-strong) 70%,transparent),color-mix(in srgb,var(--accent-strong) 30%,transparent));z-index:3;transform:translateX(-1px);box-shadow:0 0 8px color-mix(in srgb,var(--accent-strong) 30%,transparent)}
+.div-bar-value{width:clamp(80px,10vw,110px);text-align:right;font-size:14px;font-weight:700;flex-shrink:0;font-variant-numeric:tabular-nums}
+.div-bar-scale{display:flex;justify-content:space-between;padding:8px clamp(80px,10vw,130px) 0 clamp(120px,15vw,160px);font-size:9px;color:var(--muted);letter-spacing:0.8px;font-weight:600;flex-wrap:wrap;gap:4px}
+
+.hl-wrap{display:flex;flex-direction:column;gap:14px;flex:1;justify-content:space-around}
+.hl-block{background:color-mix(in srgb,var(--veil) 2%,transparent);border:1px solid color-mix(in srgb,var(--veil) 4%,transparent);border-radius:10px;padding:14px}
+.hl-lbl{font-size:9px;letter-spacing:1.8px;color:var(--muted);font-weight:600;margin-bottom:8px}
+.hl-fund{font-size:12px;color:var(--text-primary);font-weight:500;line-height:1.4;margin-bottom:6px}
+.hl-val{font-size:20px;font-weight:700;letter-spacing:-0.5px}
+
+.subtabs{display:flex;gap:8px;margin-bottom:14px;flex-shrink:0;flex-wrap:wrap}
+.subtab-btn{background:color-mix(in srgb,var(--veil) 2%,transparent);border:1px solid color-mix(in srgb,var(--veil) 8%,transparent);border-radius:10px;padding:8px 14px;display:flex;align-items:center;gap:10px;cursor:pointer;font-family:inherit;transition:all 0.2s}
+.subtab-btn:hover{background:color-mix(in srgb,var(--veil) 5%,transparent);border-color:color-mix(in srgb,var(--veil) 15%,transparent)}
+.subtab-btn.active{border-color:var(--tivio);background:color-mix(in srgb,var(--accent-strong) 5%,transparent)}
+.subtab-count{font-size:10px;color:var(--muted)}
+
+.rank-panels-wrap{flex:1;display:flex;flex-direction:column;min-height:0}
+.rank-panel{display:none;flex:1;flex-direction:column;min-height:0}
+.rank-panel.active{display:flex}
+.rank-panel-head{display:flex;justify-content:space-between;align-items:center;padding:10px 14px;background:color-mix(in srgb,var(--veil) 2%,transparent);border-radius:8px;margin-bottom:10px;flex-shrink:0;flex-wrap:wrap;gap:8px}
+.rank-panel-total{font-size:11px;color:var(--muted)}
+.rank-panel-total b{color:var(--tivio);font-weight:700;font-size:13px}
+
+.rank-table-wrap{flex:1;overflow:auto;border-radius:6px;min-height:200px;max-height:60vh}
+.rank-table-wrap::-webkit-scrollbar{width:6px;height:8px}
+.rank-table-wrap::-webkit-scrollbar-thumb{background:color-mix(in srgb,var(--accent-strong) 30%,transparent);border-radius:3px}
+.rank-table{width:100%;border-collapse:collapse;font-size:12px;min-width:640px}
+.rank-table.full-table{width:max-content;min-width:100%;white-space:nowrap}
+.rank-table thead{position:sticky;top:0;background:var(--bg-elev-2);z-index:10}
+.rank-table th{text-align:left;padding:10px 12px;font-size:9px;letter-spacing:1.3px;color:var(--muted);font-weight:600;border-bottom:1px solid color-mix(in srgb,var(--veil) 8%,transparent);background:var(--bg-elev-2)}
+.rank-table td{padding:10px 12px;border-bottom:1px solid color-mix(in srgb,var(--veil) 3%,transparent);color:color-mix(in srgb,var(--veil) 85%,transparent);vertical-align:middle;background:var(--card);transition:background 0.15s}
+.rank-table tbody tr:hover td{background:color-mix(in srgb,var(--accent-strong) 5%,transparent)}
+.rank-table .rank{font-size:14px;font-weight:700;color:var(--tivio);text-align:center}
+.rank-table .fnome{font-weight:500;max-width:340px;overflow:hidden;text-overflow:ellipsis}
+.rank-table .fcap,.rank-table .frent,.rank-table .fcdi,.rank-table .fpl{font-weight:600;font-variant-numeric:tabular-nums}
+.rank-table .fprazo{color:var(--muted);font-size:11px}
+.rank-table td.sticky,.rank-table th.sticky{position:sticky;z-index:8}
+.rank-table .sticky-1{left:0}
+.rank-table .sticky-2{left:60px}
+.rank-table th.sticky{z-index:15}
+.table-notice{font-size:10.5px;color:var(--muted);padding-top:10px;margin-top:6px;border-top:1px solid color-mix(in srgb,var(--veil) 5%,transparent);line-height:1.6;flex-shrink:0}
+.table-notice b{color:var(--text-primary);font-weight:600}
+
+.cdi-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:12px;flex:1;overflow-y:auto;padding-right:4px;max-height:60vh}
+.cdi-grid::-webkit-scrollbar{width:5px}
+.cdi-grid::-webkit-scrollbar-thumb{background:color-mix(in srgb,var(--accent-strong) 25%,transparent);border-radius:3px}
+.cdi-card{background:color-mix(in srgb,var(--veil) 2%,transparent);border:1px solid color-mix(in srgb,var(--veil) 5%,transparent);border-radius:10px;padding:14px;display:flex;flex-direction:column;gap:10px;cursor:pointer;transition:all 0.2s}
+.cdi-card:hover{border-color:var(--border-strong);transform:translateY(-2px)}
+.cdi-card-head{display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap}
+.cdi-badge{font-size:11px;font-weight:700;padding:3px 9px;border-radius:999px}
+.cdi-badge-good{background:color-mix(in srgb,var(--accent-strong) 12%,transparent);color:var(--accent-strong);border:1px solid color-mix(in srgb,var(--accent-strong) 30%,transparent)}
+.cdi-card-name{font-size:12px;font-weight:600;color:var(--text-primary);line-height:1.35}
+.cdi-card-metrics{display:flex;gap:18px;padding-top:6px;border-top:1px solid color-mix(in srgb,var(--veil) 5%,transparent)}
+.cdi-card-metrics>div{display:flex;flex-direction:column}
+.cdi-card-metrics .lbl{font-size:9px;letter-spacing:1.2px;color:var(--muted);font-weight:600}
+.cdi-card-metrics .val{font-size:12.5px;font-weight:700;color:var(--text-primary);margin-top:2px}
+.cdi-stats{display:flex;flex-direction:column;gap:12px;flex:1;justify-content:center}
+.cdi-stat-box{background:color-mix(in srgb,var(--veil) 2%,transparent);border:1px solid color-mix(in srgb,var(--veil) 5%,transparent);border-radius:10px;padding:16px;text-align:center}
+.cdi-stat-num{font-size:clamp(28px,4vw,42px);font-weight:800;letter-spacing:-1.8px;line-height:1}
+.cdi-stat-lbl{font-size:9px;letter-spacing:1.8px;color:var(--muted);font-weight:600;margin-top:6px}
+.cdi-stat-sub{font-size:11px;color:color-mix(in srgb,var(--veil) 55%,transparent);margin-top:3px}
+
+.footer{display:flex;justify-content:space-between;align-items:center;padding-top:14px;margin-top:12px;border-top:1px solid color-mix(in srgb,var(--veil) 5%,transparent);font-size:10px;color:var(--muted);letter-spacing:1px;position:relative;z-index:2;flex-shrink:0;flex-wrap:wrap;gap:8px}
+.footer b{color:var(--tivio);font-weight:600}
+.footer .dot-sep{margin:0 10px;color:color-mix(in srgb,var(--veil) 20%,transparent)}
+
+/* MODAL */
+.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.85);backdrop-filter:blur(6px);display:none;z-index:1000;align-items:center;justify-content:center;padding:20px;animation:fadeIn 0.2s}
+.modal-overlay.active{display:flex}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+@keyframes slideUp{from{transform:translateY(20px);opacity:0}to{transform:translateY(0);opacity:1}}
+.modal-card{width:100%;max-width:900px;max-height:85vh;background:var(--bg-elev-1);border:1px solid color-mix(in srgb,var(--accent-strong) 25%,transparent);border-radius:20px;padding:28px 32px;display:flex;flex-direction:column;gap:16px;overflow:hidden;animation:slideUp 0.25s;box-shadow:0 40px 120px rgba(0,0,0,0.6)}
+.modal-head{display:flex;justify-content:space-between;align-items:flex-start;padding-bottom:14px;border-bottom:1px solid color-mix(in srgb,var(--veil) 6%,transparent);gap:14px}
+.modal-title{font-size:14px;font-weight:600;color:var(--text-primary);display:flex;flex-direction:column;gap:8px;flex:1;min-width:0}
+.modal-title .mt-name{font-size:clamp(14px,1.6vw,17px);font-weight:700;letter-spacing:-0.3px;line-height:1.3;word-break:break-word}
+.modal-close{cursor:pointer;width:34px;height:34px;border-radius:50%;background:color-mix(in srgb,var(--veil) 5%,transparent);border:1px solid color-mix(in srgb,var(--veil) 10%,transparent);color:var(--text-primary);display:flex;align-items:center;justify-content:center;font-size:15px;flex-shrink:0;font-family:inherit}
+.modal-close:hover{background:color-mix(in srgb,var(--accent-strong) 15%,transparent);border-color:var(--tivio);color:var(--tivio)}
+.modal-body{flex:1;overflow-y:auto;display:flex;flex-direction:column;gap:14px}
+.modal-body::-webkit-scrollbar{width:5px}
+.modal-body::-webkit-scrollbar-thumb{background:color-mix(in srgb,var(--accent-strong) 30%,transparent);border-radius:3px}
+.m-block{background:color-mix(in srgb,var(--veil) 2%,transparent);border:1px solid color-mix(in srgb,var(--veil) 5%,transparent);border-radius:12px;padding:18px 20px}
+.m-block h4{font-size:10px;letter-spacing:2px;color:var(--tivio);font-weight:700;margin-bottom:12px}
+.m-metrics{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:12px}
+.m-metric{display:flex;flex-direction:column;gap:4px;padding:8px 0}
+.m-metric-lbl{font-size:9px;color:var(--muted);letter-spacing:1.3px;font-weight:600;text-transform:uppercase}
+.m-metric-val{font-size:16px;font-weight:700;color:var(--text-primary);font-variant-numeric:tabular-nums;letter-spacing:-0.3px}
+.m-disclaimer{background:rgba(245,166,35,0.06);border:1px solid rgba(245,166,35,0.25);border-radius:10px;padding:12px 14px;color:color-mix(in srgb,var(--veil) 85%,transparent);font-size:12px;line-height:1.5;display:flex;gap:10px;align-items:flex-start}
+.m-disclaimer::before{content:"⚠";color:var(--tv-warn);font-size:16px;flex-shrink:0}
+
+/* RESPONSIVE breakpoints */
+@media(max-width:900px){
+  .row.two-col{flex-direction:column}
+  .panel-lg,.panel-sm{flex:1}
+  .brand-sep{display:none}
+  .brand{width:100%}
+  .header-right{width:100%}
+  .brand-title .t3{display:none}
+}
+@media(max-width:640px){
+  .dash-switcher{gap:8px}
+  .dash-switcher-label{display:none}
+  .dash-back-btn span:last-child{display:none}
+  .search{width:100%}
+  .cdi-badges-group{width:100%;justify-content:space-between}
+  .cdi-mini-card{flex:1}
+  .footer{font-size:9px}
+  .footer .dot-sep{margin:0 6px}
+  .kpi-card{padding:14px 16px}
+  .panel{padding:16px 18px}
+}
+
+th.sortable{cursor:pointer;user-select:none;position:relative;padding-right:18px !important}
+th.sortable:hover{color:var(--accent-strong)}
+th.sortable::after{content:"⇅";position:absolute;right:6px;top:50%;transform:translateY(-50%);font-size:9px;opacity:0.4}
+th.sortable.sort-asc::after{content:"↑";opacity:1;color:var(--accent-strong)}
+th.sortable.sort-desc::after{content:"↓";opacity:1;color:var(--accent-strong)}
+.filter-bar{display:flex;gap:8px;align-items:center;padding:6px 10px;background:color-mix(in srgb,var(--veil) 2%,transparent);border:1px solid color-mix(in srgb,var(--veil) 4%,transparent);border-radius:8px;margin-bottom:6px;flex-wrap:wrap}
+.filter-bar input{background:color-mix(in srgb,var(--veil) 3%,transparent);border:1px solid color-mix(in srgb,var(--veil) 8%,transparent);border-radius:6px;padding:4px 10px;color:var(--text-primary);font-family:inherit;font-size:11px;outline:none;min-width:160px;flex:1}
+.filter-bar input:focus{border-color:var(--tivio)}
+.filter-bar .filter-lbl{font-size:9px;letter-spacing:1.3px;color:var(--muted);font-weight:600}
+.filter-bar .filter-count{font-size:10px;color:var(--tivio);font-weight:600}
+.rank-table td.fdetalhes{font-size:10.5px;color:var(--text-muted);max-width:220px;white-space:normal;line-height:1.4}
+
+
+/* ===== 2.4 · Barra de referencia + TiView (camada universal) ===== */
+.tv-refbar{display:flex;flex-wrap:wrap;align-items:center;gap:0;background:var(--card,var(--bg-elev-1));border:1px solid var(--border,color-mix(in srgb,var(--accent-strong) 15%,transparent));border-radius:14px;padding:12px 18px;margin-bottom:14px}
+.tv-refbar-item{display:flex;flex-direction:column;gap:4px;padding:2px 20px;min-width:0}
+.tv-refbar-item:first-child{padding-left:0}
+.tv-refbar-item+.tv-refbar-item{border-left:1px solid color-mix(in srgb,var(--veil) 8%,transparent)}
+.tv-refbar-item .l{font-size:9px;letter-spacing:1.4px;text-transform:uppercase;color:var(--muted,var(--text-muted));font-weight:700}
+.tv-refbar-item .v{font-size:12.5px;color:var(--text-primary);font-weight:600;letter-spacing:-0.1px}
+.tv-refbar-item .v b{color:var(--tivio,var(--accent-strong));font-weight:700}
+.tv-refbar-spacer{flex:1}
+.tv-refbar-src{font-size:10px;letter-spacing:1.2px;text-transform:uppercase;color:var(--muted,var(--text-muted));font-weight:600}
+.tiview{background:var(--card,var(--bg-elev-1));border:1px solid var(--border,color-mix(in srgb,var(--accent-strong) 15%,transparent));border-left:3px solid var(--tivio,var(--accent-strong));border-radius:14px;padding:18px 22px;margin-bottom:16px}
+.tiview-head{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:14px}
+.tiview-logo{font-size:15px;font-weight:700;letter-spacing:-0.3px;color:var(--text-primary)}
+.tiview-logo span{color:var(--tivio,var(--accent-strong))}
+.tiview-tag{font-size:9px;letter-spacing:1.6px;text-transform:uppercase;font-weight:700;color:var(--tivio,var(--accent-strong));background:color-mix(in srgb,var(--accent-strong) 8%,transparent);border:1px solid color-mix(in srgb,var(--accent-strong) 25%,transparent);padding:4px 10px;border-radius:999px}
+.tiview-sep{flex:1;height:1px;background:color-mix(in srgb,var(--veil) 7%,transparent)}
+.tiview-hint{font-size:10px;color:var(--muted,var(--text-muted));letter-spacing:0.4px}
+.tiview-list{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:10px;list-style:none;margin:0;padding:0}
+.tiview-list li{display:flex;gap:10px;align-items:flex-start;background:color-mix(in srgb,var(--veil) 2%,transparent);border:1px dashed color-mix(in srgb,var(--accent-strong) 22%,transparent);border-radius:10px;padding:11px 14px;font-size:13px;line-height:1.55;color:color-mix(in srgb,var(--veil) 90%,transparent);transition:border-color .18s,background .18s}
+.tiview-list li:hover{border-color:color-mix(in srgb,var(--accent-strong) 45%,transparent)}
+.tiview-list li::before{content:"";flex:0 0 6px;height:6px;margin-top:7px;border-radius:50%;background:var(--tivio,var(--accent-strong))}
+.tiview-list li[contenteditable]:focus{outline:none;border-style:solid;border-color:var(--tivio,var(--accent-strong));background:color-mix(in srgb,var(--accent-strong) 4%,transparent)}
+.tiview-ph{color:var(--muted,var(--text-muted));font-style:italic}
+@media(max-width:640px){.tv-refbar-item{padding:8px 0;border-left:none!important;width:100%}.tv-refbar-item+.tv-refbar-item{border-top:1px solid color-mix(in srgb,var(--veil) 8%,transparent)}}
+
+
+/* ==== ROA x Prazo ==== */
+.scatter-wrap{position:relative;width:100%;overflow:visible;background:radial-gradient(ellipse at 30% 20%,color-mix(in srgb,var(--accent-strong) 3.5%,transparent),transparent 60%);border-radius:14px;padding:6px 4px}
+.scatter-wrap svg{width:100%;height:auto;display:block;overflow:visible}
+.sc-grid{stroke:color-mix(in srgb,var(--veil) 5%,transparent);stroke-width:1}
+.sc-grid-strong{stroke:color-mix(in srgb,var(--veil) 9%,transparent);stroke-width:1}
+.sc-axis{stroke:color-mix(in srgb,var(--veil) 30%,transparent);stroke-width:1.2}
+.sc-lbl{fill:var(--text-muted);font-size:11px;font-weight:500;font-family:var(--ff)}
+.sc-axt{fill:var(--accent-strong);font-size:11px;font-weight:700;letter-spacing:1.6px;font-family:var(--ff);text-transform:uppercase}
+.sc-halo{opacity:0.18}
+.sc-pt{cursor:pointer;transition:r .15s,fill-opacity .15s}
+.sc-pt:hover{fill-opacity:1}
+.sc-tag{fill:var(--text-secondary);font-size:11px;font-weight:600;font-family:var(--ff);pointer-events:none;paint-order:stroke;stroke:var(--bg-base);stroke-width:3.5px;stroke-linejoin:round}
+.sc-tag-tivio{fill:var(--accent-strong);font-size:12px;font-weight:800;letter-spacing:0.3px}
+.sc-quad{stroke:color-mix(in srgb,var(--accent-strong) 22%,transparent);stroke-width:1;stroke-dasharray:5 5}
+.sc-quadlbl{fill:color-mix(in srgb,var(--accent-strong) 50%,transparent);font-size:9.5px;font-weight:700;letter-spacing:1.6px;font-family:var(--ff);text-transform:uppercase}
+.sc-quadbg{fill:color-mix(in srgb,var(--accent-strong) 4.5%,transparent)}
+.sc-avg{fill:color-mix(in srgb,var(--accent-strong) 60%,transparent);font-size:9.5px;font-weight:700;font-family:var(--ff);letter-spacing:0.6px}
+.sc-tip{position:absolute;pointer-events:none;background:var(--bg-elev-1);border:1px solid var(--tivio);border-radius:10px;padding:11px 14px;font-size:12px;line-height:1.65;color:var(--text-primary);opacity:0;transition:opacity .12s;z-index:40;box-shadow:0 14px 38px rgba(0,0,0,0.75);max-width:300px}
+.sc-tip b{color:var(--accent-strong)}
+.legend{display:flex;flex-wrap:wrap;gap:14px;margin-top:14px;padding-top:14px;border-top:1px solid color-mix(in srgb,var(--veil) 6%,transparent)}
+.legend-item{display:flex;align-items:center;gap:8px;font-size:12px;color:var(--text-secondary);cursor:pointer;user-select:none;padding:5px 11px;border:1px solid color-mix(in srgb,var(--veil) 8%,transparent);border-radius:999px;transition:all .16s}
+.legend-item:hover{border-color:color-mix(in srgb,var(--accent-strong) 40%,transparent);color:var(--text-primary)}
+.legend-item.off{opacity:0.32;text-decoration:line-through}
+.legend-dot{width:11px;height:11px;border-radius:50%}
+.peer-select{background:var(--bg-elev-1);color:var(--text-primary);border:1px solid var(--border);border-radius:999px;padding:9px 14px;font-family:inherit;font-size:12px;font-weight:600;cursor:pointer;min-width:230px}
+.peer-select:focus{outline:none;border-color:var(--tivio)}
+.tv-note{display:flex;gap:12px;align-items:flex-start;background:rgba(245,166,35,0.05);border:1px solid rgba(245,166,35,0.28);border-radius:12px;padding:13px 16px;font-size:12px;line-height:1.6;color:color-mix(in srgb,var(--veil) 86%,transparent);margin-top:14px}
+.tv-note .tv-note-tag{flex:0 0 auto;font-size:9px;letter-spacing:1.4px;font-weight:700;text-transform:uppercase;color:var(--tv-warn);border:1px solid rgba(245,166,35,0.4);border-radius:999px;padding:3px 9px;margin-top:1px}
+
+
+/* ==== v2.7 · topbar: logo a esquerda, menu a direita ==== */
+.topbar{display:flex;align-items:center;justify-content:space-between;gap:clamp(20px,2.5vw,40px);flex-wrap:wrap;padding:clamp(10px,1.2vw,16px) clamp(6px,0.8vw,12px) clamp(14px,1.6vw,20px);margin-bottom:clamp(14px,1.8vw,22px);border-bottom:1px solid color-mix(in srgb,var(--veil) 6%,transparent);position:relative;z-index:5}
+.topbar-logo{display:block;flex:0 0 auto;line-height:0;padding:2px 0}
+.topbar-logo svg{width:clamp(72px,6.5vw,100px);height:auto;display:block}
+.topbar-nav{display:flex;align-items:center;gap:6px;flex-wrap:wrap;justify-content:flex-end;margin-left:auto}
+.topbar-nav .dash-tab{display:inline-flex;align-items:center;gap:6px;font-size:11px;font-weight:600;color:var(--muted);text-decoration:none;padding:8px 13px;border:1px solid transparent;border-radius:999px;transition:all .18s;white-space:nowrap}
+.topbar-nav .dash-tab:hover{color:var(--tivio);border-color:var(--border)}
+.topbar-nav .dash-tab.active{color:var(--tivio);border-color:var(--tivio);background:color-mix(in srgb,var(--accent-strong) 6%,transparent)}
+.topbar-nav .dash-tab.hub{color:var(--text-primary);border-color:color-mix(in srgb,var(--veil) 14%,transparent)}
+.topbar-nav .dash-tab.hub:hover{color:var(--tivio);border-color:var(--tivio)}
+.topbar-nav .dash-tab-badge{font-size:9px;font-weight:700;color:var(--tivio);background:color-mix(in srgb,var(--accent-strong) 10%,transparent);border-radius:999px;padding:2px 7px}
+.topbar-nav .dash-tab.active .dash-tab-badge{background:color-mix(in srgb,var(--accent-strong) 18%,transparent)}
+@media(max-width:1100px){.topbar{justify-content:flex-start}.topbar-nav{margin-left:0;justify-content:flex-start}}
+@media(max-width:640px){.topbar-nav .dash-tab{font-size:10px;padding:7px 10px}}
+
+
+/* ==== v3.3 · menu do topo: faixa unica, setas sempre acessiveis ==== */
+.topbar{flex-wrap:nowrap!important;gap:16px}
+.topbar-logo{flex:0 0 auto}
+.topbar-navwrap{display:flex!important;align-items:center;gap:8px;margin-left:auto;min-width:0;flex:1 1 0%;justify-content:flex-end;overflow:hidden}
+.topbar-nav{display:flex!important;align-items:center;gap:6px;flex:0 1 auto;flex-wrap:nowrap!important;overflow-x:auto;overflow-y:hidden;scroll-behavior:smooth;scrollbar-width:none;-ms-overflow-style:none;min-width:0;max-width:100%;padding:3px 0;margin-left:0;cursor:grab}
+.topbar-nav.arrastando{cursor:grabbing;scroll-behavior:auto}
+.topbar-nav::-webkit-scrollbar{display:none}
+.topbar-nav .dash-tab{flex:0 0 auto}
+.nav-arrow{flex:0 0 auto;width:30px;height:30px;border-radius:50%;border:1px solid var(--border);background:var(--card);color:var(--text-primary);cursor:pointer;display:none;align-items:center;justify-content:center;padding:0;font-family:inherit;font-size:15px;font-weight:700;line-height:1;transition:color .16s,border-color .16s,opacity .16s}
+.nav-arrow:hover:not(:disabled){color:var(--tivio);border-color:var(--tivio)}
+.nav-arrow:disabled{opacity:0.22;cursor:default}
+.topbar-navwrap.rolavel .nav-arrow{display:flex}
+@media(max-width:1600px){.topbar-nav .dash-tab{font-size:10.5px;padding:7px 11px}}
+@media(max-width:640px){.nav-arrow{width:26px;height:26px;font-size:13px}}
+
+/* ==== v3.4 · TiView: botao ao lado do titulo + pop-up ==== */
+.tiview-btn{display:inline-flex;align-items:center;gap:8px;margin-left:clamp(12px,1.4vw,22px);padding:8px 14px;border-radius:999px;border:1px solid var(--border);background:var(--card);font-family:inherit;cursor:pointer;transition:border-color .18s,background .18s,opacity .18s;white-space:nowrap;align-self:center}
+.tiview-btn:hover:not(:disabled){border-color:var(--tivio);background:color-mix(in srgb,var(--accent-strong) 6%,transparent)}
+.tiview-btn:disabled{cursor:default;opacity:0.5}
+.tiview-btn .tvb-logo{font-size:13px;font-weight:700;letter-spacing:-0.2px;color:var(--text-primary)}
+.tiview-btn .tvb-logo span{color:var(--tivio)}
+.tiview-btn .tvb-tag{font-size:9px;letter-spacing:1.4px;text-transform:uppercase;font-weight:700;color:var(--muted);border-left:1px solid color-mix(in srgb,var(--veil) 12%,transparent);padding-left:8px}
+.tiview-btn:not(:disabled) .tvb-tag{color:var(--tivio)}
+.tv-modal{position:fixed;inset:0;z-index:200;display:flex;align-items:center;justify-content:center;padding:24px}
+.tv-modal[hidden]{display:none}
+.tv-modal-bg{position:absolute;inset:0;background:rgba(0,0,0,0.72);backdrop-filter:blur(3px)}
+.tv-modal-card{position:relative;width:min(760px,100%);max-height:82vh;overflow-y:auto;background:var(--card,var(--bg-elev-1));border:1px solid var(--border);border-left:3px solid var(--tivio);border-radius:18px;padding:26px 30px;box-shadow:0 40px 120px rgba(0,0,0,0.7)}
+.tv-modal-head{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:6px}
+.tv-modal-head .tiview-logo{font-size:19px;font-weight:700;color:var(--text-primary);letter-spacing:-0.4px}
+.tv-modal-head .tiview-logo span{color:var(--tivio)}
+.tv-modal-close{margin-left:auto;width:30px;height:30px;border-radius:50%;border:1px solid var(--border);background:transparent;color:var(--muted);font-size:17px;line-height:1;cursor:pointer;transition:all .16s}
+.tv-modal-close:hover{color:var(--text-primary);border-color:var(--tivio)}
+.tv-modal-sub{font-size:11px;color:var(--muted);letter-spacing:0.4px;margin-bottom:18px}
+.tv-modal-sub b{color:var(--text-primary);font-weight:600}
+.tv-modal-list{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:10px}
+.tv-modal-list li{display:flex;gap:11px;align-items:flex-start;background:color-mix(in srgb,var(--veil) 2%,transparent);border:1px solid color-mix(in srgb,var(--accent-strong) 18%,transparent);border-radius:12px;padding:14px 16px;font-size:13.5px;line-height:1.6;color:color-mix(in srgb,var(--veil) 92%,transparent)}
+.tv-modal-list li::before{content:"";flex:0 0 6px;height:6px;margin-top:8px;border-radius:50%;background:var(--tivio)}
+.tv-modal-vazio{display:flex;flex-direction:column;gap:8px;align-items:flex-start;border:1px dashed color-mix(in srgb,var(--accent-strong) 25%,transparent);border-radius:12px;padding:20px;font-size:13px;line-height:1.6;color:var(--muted)}
+.tv-modal-vazio b{color:var(--text-primary)}
+.tv-modal-foot{margin-top:18px;padding-top:14px;border-top:1px solid color-mix(in srgb,var(--veil) 6%,transparent);font-size:10.5px;color:var(--muted);line-height:1.6}
+@media(max-width:860px){.tiview-btn{margin-left:0;margin-top:10px}}
+
+/* ==== v3.5 · tabelas da Análise ROA x Prazo ==== */
+.table-wrap{border:1px solid var(--border);border-radius:14px;overflow:auto;background:color-mix(in srgb,var(--veil) 1.5%,transparent);max-height:560px}
+.table-wrap::-webkit-scrollbar{height:9px;width:9px}
+.table-wrap::-webkit-scrollbar-track{background:color-mix(in srgb,var(--veil) 3%,transparent)}
+.table-wrap::-webkit-scrollbar-thumb{background:color-mix(in srgb,var(--accent-strong) 22%,transparent);border-radius:8px}
+.table-wrap::-webkit-scrollbar-thumb:hover{background:color-mix(in srgb,var(--accent-strong) 40%,transparent)}
+.ftable{width:100%;border-collapse:separate;border-spacing:0;font-size:12.5px}
+.ftable thead th{position:sticky;top:0;z-index:2;background:var(--bg-elev-1);font-size:9.5px;letter-spacing:1.3px;text-transform:uppercase;color:var(--muted);font-weight:700;padding:13px 14px;text-align:left;white-space:nowrap;border-bottom:1px solid color-mix(in srgb,var(--veil) 10%,transparent)}
+.ftable thead th.num{text-align:right}
+.ftable tbody td{padding:12px 14px;border-bottom:1px solid color-mix(in srgb,var(--veil) 4.5%,transparent);color:color-mix(in srgb,var(--veil) 86%,transparent);vertical-align:middle;white-space:nowrap}
+.ftable tbody tr:nth-child(even){background:color-mix(in srgb,var(--veil) 1.4%,transparent)}
+.ftable tbody tr:hover{background:color-mix(in srgb,var(--accent-strong) 5.5%,transparent)}
+.ftable tbody tr:last-child td{border-bottom:none}
+.ftable td.num{text-align:right;font-variant-numeric:tabular-nums;font-feature-settings:"tnum"}
+.ftable td.fnome{font-weight:600;color:var(--text-primary);max-width:330px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.ftable td.fclass{color:var(--muted);font-size:11.5px}
+.ftable td.cnpj{color:var(--muted);font-size:11px;font-variant-numeric:tabular-nums}
+.tipo-pill{display:inline-block;padding:4px 10px;border-radius:999px;font-size:10px;font-weight:700;letter-spacing:0.3px;white-space:nowrap}
+.taxa-cell{display:flex;align-items:center;justify-content:flex-end;gap:9px}
+.taxa-val{font-weight:700;font-variant-numeric:tabular-nums;min-width:52px;text-align:right}
+.taxa-bar{width:56px;height:5px;border-radius:4px;background:color-mix(in srgb,var(--veil) 7%,transparent);overflow:hidden;flex:0 0 auto}
+.taxa-bar>div{height:100%;border-radius:4px}
+.prazo-chip{display:inline-block;min-width:44px;text-align:center;padding:4px 9px;border-radius:7px;font-weight:700;font-size:11.5px;font-variant-numeric:tabular-nums;background:color-mix(in srgb,var(--accent-strong) 10%,transparent);color:var(--accent-strong);border:1px solid color-mix(in srgb,var(--accent-strong) 22%,transparent)}
+.prazo-chip.zero{background:color-mix(in srgb,var(--veil) 5%,transparent);color:var(--muted);border-color:color-mix(in srgb,var(--veil) 10%,transparent)}
+.diff-up{color:var(--accent-strong);font-weight:700;font-variant-numeric:tabular-nums}
+.diff-down{color:var(--tv-neg);font-weight:700;font-variant-numeric:tabular-nums}
+.diff-zero{color:var(--muted)}
+.tv-empty{color:var(--muted);font-size:12px;padding:22px;text-align:center}
+/* legenda clicável abaixo dos gráficos */
+.legend{display:flex;flex-wrap:wrap;gap:8px;margin-top:16px;padding-top:14px;border-top:1px solid color-mix(in srgb,var(--veil) 6%,transparent)}
+.legend-hint{width:100%;font-size:10.5px;color:var(--muted);letter-spacing:0.3px;margin-bottom:2px}
+.legend-item{display:inline-flex;align-items:center;gap:8px;font-size:11.5px;color:var(--text-secondary);cursor:pointer;user-select:none;padding:6px 12px;border:1px solid color-mix(in srgb,var(--veil) 9%,transparent);border-radius:999px;transition:all .16s;background:color-mix(in srgb,var(--veil) 2%,transparent)}
+.legend-item:hover{border-color:color-mix(in srgb,var(--accent-strong) 45%,transparent);color:var(--text-primary);background:color-mix(in srgb,var(--accent-strong) 5%,transparent)}
+.legend-item.off{opacity:0.34;text-decoration:line-through}
+.legend-item.fixa{cursor:default;border-style:dashed}
+.legend-item.fixa:hover{border-color:color-mix(in srgb,var(--veil) 9%,transparent);color:var(--text-secondary);background:color-mix(in srgb,var(--veil) 2%,transparent)}
+.legend-dot{width:10px;height:10px;border-radius:50%;flex:0 0 auto}
+.legend-count{font-size:9.5px;font-weight:700;color:var(--muted);background:color-mix(in srgb,var(--veil) 6%,transparent);border-radius:999px;padding:2px 6px}
+</style>
+<style id="tivio-ds-components">
+/* ---------- 1. TIPOGRAFIA DO SISTEMA ---------- */
+html,body,button,input,select,textarea,optgroup{font-family:var(--ff)}
+body{-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;letter-spacing:.005em}
+html{scroll-behavior:smooth}
+/* numerais alinhados em tabelas/KPIs (o Versos herda o fallback tabular) */
+table,.kpi-val,.cdi-mini-val,.bn .n,[class*="valor"],[class*="value"],[class*="-num"]{font-variant-numeric:tabular-nums;font-feature-settings:"tnum" 1}
+code,pre,.mono,[class*="mono"]{font-family:var(--ff-mono)}
+
+/* ---------- 2. TRANSIÇÃO DE TEMA ---------- */
+html{color-scheme:dark}
+:root[data-theme="light"]{color-scheme:light}
+body,.slide,.card,.panel,.header,.topbar{transition:background-color .28s ease,border-color .28s ease,color .28s ease}
+@media(prefers-reduced-motion:reduce){*{transition-duration:.01ms!important;animation-duration:.01ms!important}}
+
+/* ---------- 3. LOGO HERDA O TEMA ---------- */
+.logo svg,.topbar-logo svg,.brand svg,.ds-logo svg{color:var(--text-primary)}
+.logo svg path,.topbar-logo svg path,.ds-logo svg path{fill:currentColor}
+
+/* ---------- 4. SISTEMA DE BOTÕES (DS) ---------- */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:var(--btn-gap);padding:var(--btn-md-pad);white-space:nowrap;border-radius:var(--btn-radius);font-family:var(--ff);font-size:var(--btn-md-fs);font-weight:var(--btn-weight);line-height:1.2;letter-spacing:.01em;border:1px solid transparent;cursor:pointer;text-decoration:none;position:relative;isolation:isolate;transition:background-color .2s var(--btn-ease),color .2s var(--btn-ease),border-color .2s var(--btn-ease),transform .2s var(--btn-ease),box-shadow .2s var(--btn-ease)}
+.btn:focus-visible{outline:none;box-shadow:var(--btn-focus-ring)}
+.btn:active{transform:translateY(0) scale(.985)}
+.btn svg{width:1em;height:1em;flex-shrink:0}
+.btn .arrow{transition:transform .2s var(--btn-ease)}.btn:hover .arrow{transform:translateX(3px)}
+.btn-primary{background:var(--accent-strong);color:var(--on-accent)}
+.btn-primary:hover{background:color-mix(in srgb,var(--accent-strong) 82%,var(--tv-verde-ink));transform:translateY(-1px);box-shadow:var(--glow)}
+.btn-glass{background:var(--bg-glass);color:var(--text-primary);border-color:var(--line-strong);backdrop-filter:blur(12px)}
+.btn-glass:hover{border-color:var(--accent-strong);color:var(--accent-strong);transform:translateY(-1px)}
+.btn-outline{background:transparent;color:var(--accent-strong);border-color:var(--pill-border)}
+.btn-outline:hover{background:var(--pill-bg);border-color:var(--accent-strong);transform:translateY(-1px)}
+.btn-soft{background:var(--pill-bg);color:var(--accent-strong);border-color:transparent}
+.btn-soft:hover{background:color-mix(in srgb,var(--accent-strong) 20%,transparent);transform:translateY(-1px)}
+.btn-ghost{background:transparent;color:var(--text-muted);border-color:transparent}
+.btn-ghost:hover{background:var(--input-bg);color:var(--text-primary)}
+.btn-dark{background:var(--tv-azul-escuro);color:#fff;border-color:transparent}
+.btn-dark:hover{background:#2b3a40;transform:translateY(-1px);box-shadow:var(--shadow-md)}
+.btn-danger{background:color-mix(in srgb,var(--tv-bradesco) 10%,transparent);color:var(--tv-bradesco);border-color:color-mix(in srgb,var(--tv-bradesco) 35%,transparent)}
+.btn-danger:hover{background:var(--tv-bradesco);color:#fff;border-color:var(--tv-bradesco)}
+.btn-xs{padding:var(--btn-xs-pad);font-size:var(--btn-xs-fs);gap:6px}
+.btn-sm{padding:var(--btn-sm-pad);font-size:var(--btn-sm-fs);gap:8px}
+.btn-lg{padding:var(--btn-lg-pad);font-size:var(--btn-lg-fs);gap:12px}
+.btn-block{display:flex;width:100%}
+.btn-icon{padding:0;width:40px;height:40px;border-radius:50%;gap:0}
+.btn-icon.btn-sm{width:32px;height:32px}
+.btn[disabled],.btn.is-disabled,.btn[aria-disabled="true"]{opacity:.42;cursor:not-allowed;pointer-events:none;filter:saturate(.4)}
+.btn-row{display:flex;gap:14px;flex-wrap:wrap;align-items:center}
+
+/* ---------- 5. PILLS / BADGES / SUPERFÍCIES (DS) ---------- */
+.pill{display:inline-flex;align-items:center;gap:6px;padding:5px 14px;border-radius:var(--r-full);font-size:11px;font-weight:700;background:var(--pill-bg);color:var(--accent-strong);border:1px solid var(--pill-border)}
+.badge{display:inline-block;padding:5px 14px;border-radius:var(--r-full);font-size:10px;letter-spacing:.28em;text-transform:uppercase;font-weight:700;background:var(--pill-bg);color:var(--accent-strong);border:1px solid var(--pill-border)}
+.surface{padding:26px;border-radius:var(--r-lg);border:1px solid var(--line);background:var(--bg-glass);backdrop-filter:blur(16px) saturate(140%);position:relative;overflow:hidden;transition:transform .25s,border-color .25s,box-shadow .25s}
+.surface:hover{transform:translateY(-3px);border-color:var(--accent-strong);box-shadow:0 12px 32px color-mix(in srgb,var(--accent-strong) 20%,transparent)}
+.bn{padding:26px 22px;min-height:140px;border:1px solid var(--line);border-left:3px solid var(--accent-strong);background:var(--bg-glass);border-radius:0 var(--r-md) var(--r-md) 0;backdrop-filter:blur(16px) saturate(140%)}
+.bn .n{display:flex;align-items:baseline;gap:4px;font-size:48px;font-weight:700;letter-spacing:-.03em;color:var(--accent-strong);line-height:1}
+.bn .k{font-size:13px;color:var(--text-muted);margin-top:14px;font-weight:500}
+
+/* ---------- 6. RAIOS NORMALIZADOS (tokens do DS) ---------- */
+.card,.panel,.box,.kpi,.kpi-card,.chart-card,.metric,.metric-card,.tbl-wrap,.table-wrap,.section-card,.grid-card,.info-card,.stat-card{border-radius:var(--r-lg)}
+.cdi-mini-card,.mini-card,.chip,.tag,.legend-item,.filter-box,.month-filter-bar{border-radius:var(--r-md)}
+.dash-tab,.tab-btn,.month-pill,.pill-btn,.back-btn,.dash-back-btn,.search,.btn-group{border-radius:var(--r-full)}
+
+/* ---------- 7. ACESSIBILIDADE / FOCO ---------- */
+a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,[tabindex]:focus-visible,.dash-tab:focus-visible,.tab-btn:focus-visible{outline:none;box-shadow:var(--btn-focus-ring);border-radius:var(--r-sm)}
+::selection{background:color-mix(in srgb,var(--accent-strong) 35%,transparent);color:var(--text-primary)}
+.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0}
+
+/* ---------- 8. SCROLLBARS ---------- */
+*{scrollbar-width:thin;scrollbar-color:color-mix(in srgb,var(--accent-strong) 40%,transparent) transparent}
+::-webkit-scrollbar{width:10px;height:10px}
+::-webkit-scrollbar-track{background:transparent}
+::-webkit-scrollbar-thumb{background:color-mix(in srgb,var(--accent-strong) 28%,transparent);border-radius:var(--r-full);border:2px solid transparent;background-clip:content-box}
+::-webkit-scrollbar-thumb:hover{background:color-mix(in srgb,var(--accent-strong) 50%,transparent);background-clip:content-box}
+
+/* ---------- 9. FORMULÁRIOS ---------- */
+input,select,textarea{color:var(--text-primary)}
+input::placeholder,textarea::placeholder{color:var(--text-muted);opacity:.85}
+select option{background:var(--bg-elev-1);color:var(--text-primary)}
+
+/* ---------- 10. TOGGLE DE TEMA (componente DS) ---------- */
+.tv-theme-toggle{display:inline-flex;align-items:center;gap:4px;padding:4px;border-radius:var(--r-full);background:var(--input-bg);border:1px solid var(--line-strong);flex-shrink:0}
+.tv-theme-toggle button{background:transparent;border:0;cursor:pointer;width:28px;height:28px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;color:var(--text-muted);transition:.2s;padding:0}
+.tv-theme-toggle button:hover{color:var(--text-primary)}
+.tv-theme-toggle button.active{background:var(--accent-strong);color:var(--on-accent)}
+.tv-theme-toggle svg{width:14px;height:14px}
+
+
+/* ---------- 10b. CORREÇÕES DE CONTRASTE HERDADAS ----------
+   O badge da aba ativa tinha texto escuro sobre fundo translúcido escuro
+   (ilegível no arquivo original). Agora usa o par acento / texto-sobre-acento. */
+.dash-tab.active .dash-tab-badge{background:var(--accent-strong)!important;color:var(--on-accent)!important;border-color:transparent!important}
+.dash-tab .dash-tab-badge{color:var(--accent-strong)}
+/* chip com fundo de marca claro (amarelo) sempre recebe tinta escura */
+[style*="var(--brand-amarelo)"]{color:var(--ink)!important}
+
+/* ---------- 11. AJUSTES ESPECÍFICOS DO TEMA CLARO ---------- */
+:root[data-theme="light"] body,:root[data-theme="light"] html{background:var(--bg-base)}
+:root[data-theme="light"] .slide{box-shadow:var(--shadow-lg)}
+:root[data-theme="light"] .dash-tab.active,:root[data-theme="light"] .tab-btn.active,:root[data-theme="light"] .month-pill.active{background:var(--pill-bg);color:var(--accent-strong);border-color:var(--accent-strong)}
+:root[data-theme="light"] .dash-tab.active .dash-tab-badge{background:var(--accent-strong);color:var(--on-accent)}
+:root[data-theme="light"] th{color:var(--text-muted)}
+:root[data-theme="light"] tr:hover td{background:color-mix(in srgb,var(--accent-strong) 6%,transparent)}
+/* barras/preenchimentos que usavam branco puro */
+:root[data-theme="light"] [style*="#FFFFFF"],:root[data-theme="light"] [style*="#ffffff"]{}
+
+/* ---------- 12. SVG / GRÁFICOS, atributos de apresentação herdam o tema ---------- */
+[fill="#C1F4D4"],[fill="#c1f4d4"]{fill:var(--accent-strong)}
+[stroke="#C1F4D4"],[stroke="#c1f4d4"]{stroke:var(--accent-strong)}
+[fill="#FFFFFF"],[fill="#fff"],[fill="#FFF"]{fill:var(--text-primary)}
+[stroke="#FFFFFF"],[stroke="#fff"],[stroke="#FFF"]{stroke:var(--text-primary)}
+[fill="#4A90E2"]{fill:var(--tv-info)}[stroke="#4A90E2"]{stroke:var(--tv-info)}
+[fill="#E94E77"]{fill:var(--tv-neg)}[stroke="#E94E77"]{stroke:var(--tv-neg)}
+[fill="#F5A623"]{fill:var(--tv-warn)}[stroke="#F5A623"]{stroke:var(--tv-warn)}
+[fill="#9B59B6"]{fill:var(--tv-roxo)}[stroke="#9B59B6"]{stroke:var(--tv-roxo)}
+[fill="#A7A7A7"]{fill:var(--text-muted)}[stroke="#A7A7A7"]{stroke:var(--text-muted)}
+svg text:not([fill]){fill:currentColor}
+
+/* ---------- 13. IMPRESSÃO ---------- */
+@media print{
+  :root{--bg-base:#fff}
+  .tv-theme-toggle,.dash-switcher,.topbar-navwrap,.nav-arrow,.search{display:none!important}
+  .slide{box-shadow:none;background:#fff!important}
+  body{color:#000}
+}
+</style>
+<style id="tivio-ds-anim">
+/* =================== ANIMAÇÕES DO DESIGN SYSTEM ===================
+   Keyframes idênticos aos publicados em tivio-design-system.html.   */
+@keyframes brand-zoom-in{0%{opacity:0;transform:translateY(24px) scale(.82) rotate(-2deg)}55%{opacity:1;transform:translateY(0) scale(1.04) rotate(0)}100%{opacity:1;transform:translateY(0) scale(1) rotate(0)}}
+@keyframes brand-path-in{0%{opacity:0;filter:blur(6px)}100%{opacity:1;filter:blur(0)}}
+@keyframes slide-fade-in{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
+@keyframes draw-curve{to{stroke-dashoffset:0}}
+@keyframes warn-pulse{0%,100%{box-shadow:0 0 0 0 color-mix(in srgb,var(--accent-strong) 30%,transparent)}50%{box-shadow:0 0 0 8px transparent}}
+@keyframes tv-modal-in{from{opacity:0;transform:translateY(18px) scale(.97)}to{opacity:1;transform:translateY(0) scale(1)}}
+@keyframes tv-fade-in{from{opacity:0}to{opacity:1}}
+
+/* ---- entrada da marca no topo (uma vez, ao carregar) ---- */
+.topbar-logo svg,.logo svg{animation:brand-zoom-in .75s cubic-bezier(.16,.84,.28,1) both}
+
+/* ---- TiView: modal e conteúdo ---- */
+.tv-modal:not([hidden]) .tv-modal-bg{animation:tv-fade-in .28s ease both}
+.tv-modal:not([hidden]) .tv-modal-card{animation:tv-modal-in .42s cubic-bezier(.22,.9,.32,1) both}
+.tv-modal-card .tiview-logo{animation:brand-zoom-in .6s cubic-bezier(.16,.84,.28,1) both;animation-delay:.1s}
+.tv-modal-sub,.tv-modal-comp{animation:slide-fade-in .5s cubic-bezier(.22,.9,.32,1) both;animation-delay:.16s}
+/* lista de pontos com stagger, no mesmo tempo do DS */
+.tv-modal-list li{opacity:0;transform:translateY(28px);transition:opacity .7s cubic-bezier(.22,.9,.32,1),transform .7s cubic-bezier(.22,.9,.32,1)}
+.tv-modal-list.is-visible li{opacity:1;transform:translateY(0)}
+.tv-modal-list.is-visible li:nth-child(1){transition-delay:.05s}
+.tv-modal-list.is-visible li:nth-child(2){transition-delay:.15s}
+.tv-modal-list.is-visible li:nth-child(3){transition-delay:.25s}
+.tv-modal-list.is-visible li:nth-child(4){transition-delay:.35s}
+.tv-modal-list.is-visible li:nth-child(5){transition-delay:.45s}
+.tv-modal-list.is-visible li:nth-child(n+6){transition-delay:.55s}
+
+/* ---- reveal com stagger para blocos da página ---- */
+.tv-reveal>*{opacity:0;transform:translateY(28px);transition:opacity .7s cubic-bezier(.22,.9,.32,1),transform .7s cubic-bezier(.22,.9,.32,1)}
+.tv-reveal.is-visible>*{opacity:1;transform:translateY(0)}
+.tv-reveal.is-visible>*:nth-child(1){transition-delay:.05s}
+.tv-reveal.is-visible>*:nth-child(2){transition-delay:.15s}
+.tv-reveal.is-visible>*:nth-child(3){transition-delay:.25s}
+.tv-reveal.is-visible>*:nth-child(4){transition-delay:.35s}
+.tv-reveal.is-visible>*:nth-child(5){transition-delay:.45s}
+.tv-reveal.is-visible>*:nth-child(6){transition-delay:.55s}
+
+/* ---- botão TiView: pulso discreto quando há leitura nova ---- */
+.tiview-btn.tem-novidade{animation:warn-pulse 2.6s ease-in-out 3}
+.tiview-btn:not(:disabled):hover{transform:translateY(-1px)}
+.tiview-btn{transition:border-color .18s,background .18s,opacity .18s,transform .2s var(--btn-ease,cubic-bezier(.22,.9,.32,1))}
+
+/* ---- competência em destaque no modal ---- */
+.tv-modal-comp{display:inline-flex;align-items:center;gap:7px;padding:5px 14px;border-radius:var(--r-full,999px);background:var(--pill-bg);border:1px solid var(--pill-border);color:var(--accent-strong);font-size:10px;font-weight:700;letter-spacing:.22em;text-transform:uppercase;margin-bottom:14px}
+.tv-modal-comp::before{content:"";width:6px;height:6px;border-radius:50%;background:currentColor}
+
+@media(prefers-reduced-motion:reduce){
+  .topbar-logo svg,.logo svg,.tv-modal-card,.tv-modal-bg,.tv-modal-card .tiview-logo,.tv-modal-sub,.tv-modal-comp,.tiview-btn.tem-novidade{animation:none!important}
+  .tv-modal-list li,.tv-reveal>*{opacity:1!important;transform:none!important;transition:none!important}
+}
+</style>
+<style id="tivio-ds-transicao">
+/* ===================================================================
+   TRANSIÇÃO ENTRE DASHBOARDS + MOVIMENTO DE INTERFACE
+   Curva e tempos herdados do design system (--btn-ease).
+   =================================================================== */
+:root{
+  --tv-ease:cubic-bezier(.4,0,.2,1);
+  /* ~1s no total entre um dashboard e outro.
+     A saida fecha o veu em 300ms e a navegacao so dispara aos 360ms:
+     esses 60ms de folga garantem que a troca acontece com a tela ja
+     coberta. Sem a folga, a curva `ease` ainda estava em ~0.95 de
+     opacidade na hora de navegar e a emenda aparecia. */
+  --tv-t-saida:300ms;
+  --tv-t-entrada:560ms;
+}
+
+/* ---- 1. VÉU DE TRANSIÇÃO ---- */
+.tv-veu{
+  position:fixed;inset:0;z-index:9998;pointer-events:none;opacity:0;
+  background:var(--bg-base);
+  transition:opacity var(--tv-t-saida) cubic-bezier(.33,0,.2,1);
+}
+html.tv-saindo .tv-veu{opacity:1}
+/* durante a saída, o conteúdo recua de leve, dá sensação de profundidade */
+html.tv-saindo .slide{
+  transform:translateY(-6px) scale(.994);opacity:.55;
+  transition:transform var(--tv-t-saida) var(--tv-ease),opacity var(--tv-t-saida) ease;
+}
+
+/* ---- 2. ENTRADA DA PÁGINA ---- */
+@keyframes tv-page-in{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:none}}
+@keyframes tv-fade-in-soft{from{opacity:0}to{opacity:1}}
+html.tv-entrando .slide{animation:tv-page-in var(--tv-t-entrada) var(--tv-ease) both}
+/* topo entra antes do corpo, escalonado */
+@keyframes tv-topbar-in{from{opacity:0;transform:translateY(-10px)}to{opacity:1;transform:none}}
+html.tv-entrando .topbar,html.tv-entrando .dash-switcher{animation:tv-topbar-in .5s var(--tv-ease) both}
+html.tv-entrando .header{animation:tv-page-in .55s var(--tv-ease) both;animation-delay:.06s}
+
+/* ---- 3. TROCA DE ABAS ---- */
+@keyframes tv-panel-in{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}
+.tab-panel.active,.tv-tab-panel.active{animation:tv-panel-in .42s var(--tv-ease) both}
+/* a aba clicada responde na hora */
+.tab-btn,.dash-tab,.month-pill,.subtab-btn{transition:color .18s,background .18s,border-color .18s,transform .18s var(--tv-ease)}
+.tab-btn:active,.month-pill:active,.subtab-btn:active{transform:scale(.97)}
+.dash-tab{position:relative}
+.dash-tab::after{
+  content:"";position:absolute;left:14px;right:14px;bottom:2px;height:1px;
+  background:currentColor;transform:scaleX(0);transform-origin:50%;
+  transition:transform .26s var(--tv-ease);opacity:.5;
+}
+.dash-tab:hover::after{transform:scaleX(1)}
+.dash-tab.active::after{transform:scaleX(0)}
+
+/* ---- 4. BARRAS QUE PREENCHEM ---- */
+.div-bar-fill,.pv-bar-fill,.hl-bar-fill,.bar-fill,[class$="-bar-fill"],[class*="bar-fill"]{
+  transition:width .85s var(--tv-ease);
+}
+
+/* ---- 5. LINHAS DE TABELA EM CASCATA ---- */
+@keyframes tv-row-in{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+.tv-linhas tbody tr{animation:tv-row-in .4s var(--tv-ease) both}
+.tv-linhas tbody tr:nth-child(1){animation-delay:.02s}
+.tv-linhas tbody tr:nth-child(2){animation-delay:.05s}
+.tv-linhas tbody tr:nth-child(3){animation-delay:.08s}
+.tv-linhas tbody tr:nth-child(4){animation-delay:.11s}
+.tv-linhas tbody tr:nth-child(5){animation-delay:.14s}
+.tv-linhas tbody tr:nth-child(6){animation-delay:.17s}
+.tv-linhas tbody tr:nth-child(7){animation-delay:.20s}
+.tv-linhas tbody tr:nth-child(8){animation-delay:.23s}
+.tv-linhas tbody tr:nth-child(n+9){animation-delay:.26s}
+
+/* ---- 6. CARTÕES E SUPERFÍCIES ---- */
+.hub-card,.kpi-card,.cdi-mini-card{transition:transform .25s var(--tv-ease),border-color .25s,box-shadow .25s}
+.hub-card:hover{transform:translateY(-4px)}
+.kpi-card:hover{transform:translateY(-2px)}
+a.hub-card:active{transform:translateY(-1px) scale(.995)}
+
+/* ---- 7. BOTÃO TIVIEW ---- */
+.tiview-btn:active{transform:translateY(0) scale(.97)}
+
+/* ---- 8. ACESSIBILIDADE ---- */
+@media(prefers-reduced-motion:reduce){
+  .tv-veu{transition:none}
+  html.tv-saindo .slide{transform:none;opacity:1;transition:none}
+  html.tv-entrando .slide,html.tv-entrando .topbar,html.tv-entrando .header,
+  html.tv-entrando .dash-switcher,.tab-panel.active,.tv-tab-panel.active,
+  .tv-linhas tbody tr{animation:none!important}
+  .div-bar-fill,.pv-bar-fill,[class*="bar-fill"]{transition:none}
+  .dash-tab::after{transition:none}
+}
+@media print{.tv-veu{display:none!important}}
+</style>
+<style id="tivio-ds-navoverflow">
+/* ---- MENU DO TOPO: correção de transbordo + sinalização ----
+
+   CAUSA RAIZ: o scroller `.topbar-nav` estava com `justify-content:flex-end`.
+   Num container com `overflow-x:auto`, o conteúdo que excede transborda pela
+   BORDA INICIAL, o navegador não contabiliza esse excesso em `scrollWidth`,
+   então as abas somem à esquerda, ficam inalcançáveis por rolagem e as setas
+   nunca eram exibidas. Alinhando ao início, o excesso passa a ir para a
+   direita, onde é rolável e detectável.                                   */
+.topbar-nav{justify-content:flex-start!important}
+/* Espaçador de margem automática: absorve a folga e mantém as abas alinhadas
+   à direita enquanto cabem; colapsa para zero quando há excesso.          */
+.topbar-nav::before{content:"";flex:0 0 auto;margin-left:auto}
+
+.topbar-navwrap{position:relative}
+.topbar-navwrap.rolavel .topbar-nav{
+  -webkit-mask-image:linear-gradient(to right,transparent 0,#000 22px,#000 calc(100% - 22px),transparent 100%);
+          mask-image:linear-gradient(to right,transparent 0,#000 22px,#000 calc(100% - 22px),transparent 100%);
+}
+/* nas extremidades, não esmaece o lado já esgotado */
+.topbar-navwrap.rolavel.no-esq .topbar-nav{
+  -webkit-mask-image:linear-gradient(to right,#000 0,#000 calc(100% - 22px),transparent 100%);
+          mask-image:linear-gradient(to right,#000 0,#000 calc(100% - 22px),transparent 100%);
+}
+.topbar-navwrap.rolavel.no-dir .topbar-nav{
+  -webkit-mask-image:linear-gradient(to right,transparent 0,#000 22px,#000 100%);
+          mask-image:linear-gradient(to right,transparent 0,#000 22px,#000 100%);
+}
+.topbar-navwrap.rolavel.no-esq.no-dir .topbar-nav{-webkit-mask-image:none;mask-image:none}
+
+/* setas alinhadas ao design system */
+.nav-arrow{
+  background:var(--bg-glass,var(--card));border:1px solid var(--line-strong,var(--border));
+  color:var(--text-primary,#fff);backdrop-filter:blur(12px);
+  transition:color .18s,border-color .18s,background .18s,opacity .18s,transform .18s;
+}
+.nav-arrow:hover:not(:disabled){
+  color:var(--on-accent);background:var(--accent-strong);border-color:transparent;transform:translateY(-1px);
+}
+.nav-arrow:focus-visible{outline:none;box-shadow:var(--btn-focus-ring)}
+.nav-arrow:disabled{opacity:.2}
+/* pulso discreto na primeira vez que há conteúdo escondido */
+@keyframes tv-nav-hint{0%,100%{transform:translateX(0)}50%{transform:translateX(2px)}}
+.topbar-navwrap.rolavel:not(.no-dir) .nav-arrow.dir{animation:tv-nav-hint 1.6s ease-in-out 2}
+@media(prefers-reduced-motion:reduce){.topbar-navwrap .nav-arrow.dir{animation:none}}
+</style>
+
+<style id="tivio-hub-css">
+/* ===== CENTRAL DE DASHBOARDS · estilos próprios da página =====
+   Tudo construído sobre os tokens do design system, então o tema claro/escuro
+   é resolvido sozinho, sem variantes por tema espalhadas.               */
+.hub-header{display:flex;align-items:flex-start;justify-content:space-between;gap:24px;flex-wrap:wrap;padding:26px 0 18px;border-bottom:1px solid var(--line);position:relative;z-index:2}
+.hub-brand-info .h1{font-size:11px;letter-spacing:.28em;text-transform:uppercase;color:var(--accent-strong);font-weight:700}
+.hub-brand-info .h2{font-size:clamp(26px,3vw,38px);font-weight:300;letter-spacing:-.02em;color:var(--text-primary);margin:6px 0 4px;line-height:1.1}
+.hub-brand-info .h3{font-size:12.5px;color:var(--text-muted)}
+.hub-header-right{display:flex;align-items:center;gap:16px;flex-wrap:wrap}
+.hub-meta{font-size:11.5px;color:var(--text-muted);line-height:1.7;text-align:right}
+.hub-meta b{color:var(--accent-strong);font-weight:600}
+
+.hub-points{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:14px;margin:22px 0 18px;position:relative;z-index:2}
+.hub-point{padding:16px 18px;border:1px solid var(--line);border-left:3px solid var(--accent-strong);border-radius:0 var(--r-md) var(--r-md) 0;background:var(--bg-glass);backdrop-filter:blur(14px) saturate(140%);display:flex;flex-direction:column;gap:5px}
+.hub-point .p-lbl{font-size:9.5px;letter-spacing:.18em;text-transform:uppercase;color:var(--text-muted);font-weight:700}
+.hub-point .p-num{font-size:clamp(19px,2vw,25px);font-weight:700;letter-spacing:-.02em;color:var(--text-primary);line-height:1.05;font-variant-numeric:tabular-nums}
+.hub-point .p-sub{font-size:11px;color:var(--text-muted);line-height:1.5}
+
+.hub-intro{font-size:13px;color:var(--text-muted);line-height:1.7;max-width:960px;margin:0 0 26px;position:relative;z-index:2}
+
+.hub-secao{display:flex;align-items:center;gap:12px;margin:0 0 16px}
+.hub-secao .t{font-size:10.5px;letter-spacing:.24em;text-transform:uppercase;color:var(--text-muted);font-weight:700;white-space:nowrap}
+.hub-secao .linha{flex:1;height:1px;background:var(--line)}
+
+.hub-cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(288px,1fr));gap:18px;position:relative;z-index:2}
+.hub-card{position:relative;display:flex;flex-direction:column;padding:24px 22px 20px;border:1px solid var(--line);border-radius:var(--r-lg);background:var(--bg-glass);backdrop-filter:blur(16px) saturate(140%);overflow:hidden;text-decoration:none;color:inherit}
+.hub-card-top{position:absolute;top:0;left:0;right:0;height:3px;background:var(--accent)}
+.hub-card:hover{border-color:var(--accent);box-shadow:0 14px 34px color-mix(in srgb,var(--accent) 18%,transparent)}
+.hub-card-icon{width:44px;height:44px;border-radius:var(--r-md);display:flex;align-items:center;justify-content:center;background:color-mix(in srgb,var(--accent) 12%,transparent);border:1px solid color-mix(in srgb,var(--accent) 28%,transparent);margin-bottom:16px}
+.hub-card-icon svg{width:20px;height:20px;fill:none;stroke:var(--accent);stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
+.hub-card-cat{font-size:9.5px;letter-spacing:.24em;text-transform:uppercase;color:var(--text-muted);font-weight:700}
+.hub-card-title{font-size:20px;font-weight:700;color:var(--text-primary);letter-spacing:-.02em;margin:5px 0 10px;line-height:1.2}
+.hub-card-desc{font-size:12.5px;color:var(--text-muted);line-height:1.65;margin:0 0 18px}
+/* empurra números e rodapé para a base: elimina o vão em cards de texto curto */
+.hub-card-stats{margin-top:auto;display:flex;gap:14px;padding-top:16px;border-top:1px solid var(--line);flex-wrap:wrap}
+.hub-card-stat{display:flex;flex-direction:column;gap:2px;min-width:0}
+.hub-card-stat .n{font-size:15px;font-weight:700;color:var(--accent);letter-spacing:-.02em;font-variant-numeric:tabular-nums;white-space:nowrap}
+.hub-card-stat .l{font-size:9px;letter-spacing:.16em;text-transform:uppercase;color:var(--text-muted);font-weight:700;white-space:nowrap}
+.hub-card-footer{margin-top:16px}
+.hub-card-cta{font-size:12px;font-weight:700;color:var(--accent);display:inline-flex;align-items:center;gap:6px}
+.hub-card-cta::after{content:"→";transition:transform .2s cubic-bezier(.22,.9,.32,1)}
+.hub-card:hover .hub-card-cta::after{transform:translateX(4px)}
+
+.hub-card.soon{opacity:.62;cursor:default}
+.hub-card.soon:hover{transform:none;border-color:var(--line);box-shadow:none}
+.hub-card.soon .hub-card-cta{color:var(--text-muted)}
+.hub-card.soon .hub-card-cta::after{content:""}
+.soon-badge{position:absolute;top:16px;right:16px;font-size:8.5px;letter-spacing:.2em;text-transform:uppercase;font-weight:700;padding:4px 10px;border-radius:var(--r-full);background:var(--pill-bg);border:1px solid var(--pill-border);color:var(--accent-strong)}
+
+.hub-rodape{margin-top:34px;padding-top:18px;border-top:1px solid var(--line);font-size:10.5px;color:var(--text-muted);line-height:1.7}
+@media(max-width:640px){
+  .hub-header{padding-top:18px}
+  .hub-meta{text-align:left}
+  .hub-cards{grid-template-columns:1fr}
+}
+</style>
+
+<style id="tivio-ds-toggle-fixo">
+/* ===== CONTROLE DE TEMA · último item da barra do topo =====
+   Fica no fluxo da barra (não é `fixed`), então:
+     · compartilha o eixo vertical do logo, alinhado por `align-items:center`;
+     · usa a mesma margem lateral da barra, espelhando o logo à esquerda;
+     · sobe junto com a página ao rolar, em vez de flutuar sobre o conteúdo.  */
+.topbar{
+  display:flex;align-items:center;
+  gap:clamp(12px,1.4vw,20px);
+  flex-wrap:nowrap;
+  padding-right:clamp(6px,0.8vw,12px);
+}
+.topbar-logo{flex:0 0 auto;order:0}
+.topbar-navwrap{flex:1 1 0%;min-width:0;order:1}
+
+.tv-theme-toggle{
+  position:static;
+  order:2;flex:0 0 auto;
+  display:inline-flex;align-items:center;gap:4px;padding:4px;
+  border-radius:var(--r-full);
+  background:var(--input-bg);
+  border:1px solid var(--line-strong);
+  box-shadow:none;backdrop-filter:none;
+}
+.tv-theme-toggle button{
+  background:transparent;border:0;cursor:pointer;width:28px;height:28px;
+  border-radius:50%;display:inline-flex;align-items:center;justify-content:center;
+  color:var(--text-muted);transition:background .2s,color .2s;padding:0;
+}
+.tv-theme-toggle button:hover{color:var(--text-primary)}
+.tv-theme-toggle button.active{background:var(--accent-strong);color:var(--on-accent)}
+.tv-theme-toggle button:focus-visible{outline:none;box-shadow:var(--btn-focus-ring)}
+.tv-theme-toggle svg{width:14px;height:14px}
+
+/* ===== TELAS ESTREITAS =====
+   Com logo, menu e tema na mesma linha, abaixo de ~700px sobravam menos de
+   180px para o menu, a 360px sobravam 68px, menos de um terço de uma aba.
+   Aqui a barra quebra em duas linhas: logo e tema em cima, menu ocupando a
+   largura inteira embaixo.                                                  */
+@media(max-width:700px){
+  /* o `!important` responde a uma regra anterior que fixa `nowrap` na barra */
+  .topbar{flex-wrap:wrap!important;row-gap:10px}
+  .topbar-logo{order:0}
+  .tv-theme-toggle{order:1;margin-left:auto}
+  .topbar-navwrap{order:2;flex:1 1 100%!important;width:100%;margin-left:0}
+  .tv-theme-toggle{padding:3px;gap:2px}
+  .tv-theme-toggle button{width:25px;height:25px}
+  .tv-theme-toggle svg{width:13px;height:13px}
+}
+.dash-switcher .tv-theme-toggle{margin-left:auto}
+@media print{.tv-theme-toggle{display:none!important}}
+</style>
+<style id="tivio-tiview-cats">
+/* ==== TiView · subcategorias (abas dentro do pop-up) ==== */
+.tv-modal-cats{display:flex;gap:6px;flex-wrap:wrap;margin:0 0 16px;padding-bottom:14px;border-bottom:1px solid color-mix(in srgb,var(--veil) 6%,transparent)}
+.tv-cat-btn{display:inline-flex;align-items:center;gap:7px;padding:7px 14px;border-radius:999px;border:1px solid var(--border);background:color-mix(in srgb,var(--veil) 2%,transparent);color:var(--muted);font-family:inherit;font-size:11px;font-weight:700;letter-spacing:.3px;cursor:pointer;white-space:nowrap;transition:color .18s,background .18s,border-color .18s,transform .18s}
+.tv-cat-btn:hover:not(:disabled){color:var(--text-primary);border-color:color-mix(in srgb,var(--veil) 22%,transparent)}
+.tv-cat-btn:active:not(:disabled){transform:scale(.97)}
+.tv-cat-btn.active{background:color-mix(in srgb,var(--accent-strong) 10%,transparent);color:var(--tivio);border-color:color-mix(in srgb,var(--accent-strong) 40%,transparent)}
+.tv-cat-btn:disabled{opacity:.42;cursor:default}
+.tv-cat-btn .tv-cat-soon{font-size:8px;letter-spacing:1px;text-transform:uppercase;font-weight:700;color:var(--muted);border:1px solid color-mix(in srgb,var(--veil) 14%,transparent);border-radius:999px;padding:1px 6px}
+/* ---- conteudo rico da leitura ---- */
+.tv-rich{display:flex;flex-direction:column;gap:6px}
+.tv-rich .tv-rich-title{font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--tivio);font-weight:700;margin-bottom:6px}
+.tv-rich p{font-size:13px;line-height:1.6;color:color-mix(in srgb,var(--veil) 88%,transparent);margin:0}
+.tv-rich strong{color:var(--text-primary);font-weight:700}
+.tv-rich em{font-style:italic;color:color-mix(in srgb,var(--veil) 92%,transparent)}
+.tv-rich-num{display:flex;gap:12px;align-items:flex-start;background:color-mix(in srgb,var(--veil) 2%,transparent);border:1px solid color-mix(in srgb,var(--accent-strong) 15%,transparent);border-radius:12px;padding:13px 16px;margin-top:4px}
+.tv-rich-num .n{flex:0 0 auto;width:23px;height:23px;border-radius:50%;background:color-mix(in srgb,var(--accent-strong) 14%,transparent);border:1px solid color-mix(in srgb,var(--accent-strong) 30%,transparent);color:var(--tivio);font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center;margin-top:1px;font-variant-numeric:tabular-nums}
+.tv-rich-num .b{display:flex;flex-direction:column;gap:6px;min-width:0}
+.tv-rich-num .b .h{font-size:13.5px;font-weight:700;color:var(--text-primary);line-height:1.4}
+.tv-rich-subbullets{list-style:none;margin:2px 0 0;padding:0;display:flex;flex-direction:column;gap:6px}
+.tv-rich-subbullets li{display:flex;gap:8px;font-size:12.5px;line-height:1.5;color:color-mix(in srgb,var(--veil) 85%,transparent)}
+.tv-rich-subbullets li::before{content:"\2013";color:var(--tivio);flex:0 0 auto;font-weight:700}
+.tv-src{font-size:10.5px;color:var(--tivio);text-decoration:none;border-bottom:1px dotted color-mix(in srgb,var(--accent-strong) 45%,transparent);white-space:nowrap;font-weight:600}
+.tv-src:hover{border-bottom-style:solid}
+.tv-rich .tivio-read{margin-top:16px;padding:16px 18px;border-radius:14px;border:1px solid color-mix(in srgb,var(--accent-strong) 22%,transparent);border-left:3px solid var(--tivio);background:color-mix(in srgb,var(--accent-strong) 4%,transparent)}
+.tv-rich .tivio-read .h{font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--tivio);font-weight:700;margin-bottom:10px}
+.tv-rich .tivio-read ul{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:9px}
+.tv-rich .tivio-read li{display:flex;gap:10px;align-items:flex-start;font-size:12.5px;line-height:1.55;color:color-mix(in srgb,var(--veil) 88%,transparent)}
+.tv-rich .tivio-read li::before{content:"";flex:0 0 6px;height:6px;margin-top:7px;border-radius:50%;background:var(--tivio)}
+.tv-rich-author{margin-top:14px;padding-top:12px;border-top:1px solid color-mix(in srgb,var(--veil) 6%,transparent);font-size:11px;color:var(--muted);letter-spacing:.3px;text-align:right}
+.tv-rich-author b{color:var(--text-primary);font-weight:700}
+.tv-modal-vazio-cat{display:flex;flex-direction:column;gap:8px;align-items:flex-start;border:1px dashed color-mix(in srgb,var(--accent-strong) 25%,transparent);border-radius:12px;padding:22px;font-size:13px;line-height:1.6;color:var(--muted)}
+.tv-modal-vazio-cat b{color:var(--text-primary)}
+/* ---- reveal com stagger dentro do pop-up ---- */
+#tiviewCorpo .tv-rich>*{opacity:0;transform:translateY(18px);transition:opacity .6s cubic-bezier(.22,.9,.32,1),transform .6s cubic-bezier(.22,.9,.32,1)}
+#tiviewCorpo.is-visible .tv-rich>*{opacity:1;transform:translateY(0)}
+#tiviewCorpo.is-visible .tv-rich>*:nth-child(1){transition-delay:.04s}
+#tiviewCorpo.is-visible .tv-rich>*:nth-child(2){transition-delay:.09s}
+#tiviewCorpo.is-visible .tv-rich>*:nth-child(3){transition-delay:.14s}
+#tiviewCorpo.is-visible .tv-rich>*:nth-child(4){transition-delay:.19s}
+#tiviewCorpo.is-visible .tv-rich>*:nth-child(5){transition-delay:.24s}
+#tiviewCorpo.is-visible .tv-rich>*:nth-child(6){transition-delay:.29s}
+#tiviewCorpo.is-visible .tv-rich>*:nth-child(7){transition-delay:.34s}
+#tiviewCorpo.is-visible .tv-rich>*:nth-child(n+8){transition-delay:.39s}
+@media(prefers-reduced-motion:reduce){#tiviewCorpo .tv-rich>*{opacity:1!important;transform:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+<div class="slide">
+<div class="topbar">
+  <a class="topbar-logo" href="index.html" title="Voltar à Central de Dashboards"><svg viewBox="100 95 870 310" xmlns="http://www.w3.org/2000/svg"><path fill="currentColor" d="M227.02,134.16l-2.53,3.27h102.14v-26.9h-51.56c-18.94,0-36.45,8.61-48.06,23.63ZM382.26,334.1c3.54-2.25,7.63-3.38,12.27-3.38,5.15,0,9.52,1.32,13.09,3.96,3.57,2.64,5.97,6.31,7.2,11.01h8.41c-1.29-7.02-4.46-12.56-9.52-16.62-5.06-4.06-11.32-6.09-18.79-6.09-6.44,0-12.11,1.43-17.01,4.3-4.89,2.87-8.66,6.91-11.3,12.13s-3.96,11.21-3.96,17.97,1.32,12.83,3.96,18.02c2.64,5.19,6.41,9.21,11.3,12.08,4.89,2.87,10.56,4.3,17.01,4.3,7.54,0,13.8-2.03,18.79-6.09,4.99-4.06,8.13-9.6,9.42-16.62h-8.41c-1.29,4.77-3.67,8.45-7.15,11.06-3.48,2.61-7.83,3.91-13.04,3.91-4.64,0-8.73-1.13-12.27-3.38-3.54-2.25-6.27-5.41-8.16-9.47-1.9-4.06-2.85-8.66-2.85-13.82s.95-9.84,2.85-13.86c1.9-4.02,4.62-7.16,8.16-9.42ZM488.35,323.57l-25.8,67.63h8.69l7.15-18.26h29.47l7.15,18.26h8.98l-25.7-67.63h-9.95ZM480.91,365.31l12.17-32.56,12.27,32.56h-24.45ZM210.25,176.57v111.2s28.51,0,28.51,0l-.02-111.2c0-13.53-4.37-26.35-12.64-37.06l-1.61-2.08-1.61,2.08c-8.27,10.71-12.64,23.52-12.64,37.06ZM396.06,110.53h-27.69v177.23h27.69V110.53ZM928.99,265.08c18.48-16.33,28.66-39.75,28.66-65.94s-10.18-49.61-28.66-65.94c-18.5-16.35-43.92-24.99-73.51-24.99s-55.01,8.64-73.51,24.99c-18.48,16.33-28.66,39.75-28.66,65.94s10.18,49.61,28.66,65.94c18.5,16.35,43.92,24.99,73.51,24.99s55.01-8.64,73.51-24.99ZM781.77,199.15c0-18.44,6.79-34.09,19.65-45.28,13.24-11.52,31.93-17.61,54.06-17.61s40.82,6.09,54.06,17.61c12.85,11.18,19.65,26.84,19.65,45.28s-6.79,34.09-19.65,45.28c-13.24,11.52-31.93,17.6-54.06,17.6s-40.83-6.09-54.06-17.6c-12.85-11.19-19.65-26.84-19.65-45.28ZM913.56,323.57h-8.4v67.63h39.23v-7.73h-30.82v-59.9ZM173.91,110.53h-51.56v26.9h102.14l-2.53-3.27c-11.6-15.02-29.12-23.63-48.06-23.63ZM716.56,331.3h21.93v59.9h8.41v-59.9h21.93v-7.73h-52.27v7.73ZM825.16,323.57l-25.8,67.63h8.7l7.15-18.26h29.47l7.15,18.26h8.98l-25.7-67.63h-9.95ZM817.72,365.31l12.17-32.56,12.27,32.56h-24.45ZM683.88,287.76h27.69V110.53h-27.69v177.23ZM662.46,391.2h8.41v-67.63h-8.41v67.63ZM606.13,326.13c-3.42-1.71-7.34-2.56-11.79-2.56h-25.99v67.63h8.41v-25.99h17.59c4.44,0,8.36-.85,11.74-2.56,3.38-1.71,6-4.14,7.87-7.29,1.87-3.16,2.8-6.83,2.8-11.01s-.92-7.84-2.75-10.97c-1.84-3.12-4.46-5.54-7.87-7.25ZM604.19,353.91c-2.64,2.38-6.18,3.58-10.63,3.58h-16.81v-26.18h16.91c4.44,0,7.97,1.18,10.58,3.53,2.61,2.35,3.91,5.52,3.91,9.52s-1.32,7.18-3.96,9.56ZM435.8,110.53s52.67,125.49,63.09,150.44c12.15,29.1,31.88,29.1,39.46,29.1h1.62l-72.21-179.55h-31.96ZM539.97,290.08h1.62c7.59,0,27.32,0,39.46-29.1,10.41-24.95,63.09-150.44,63.09-150.44h-31.96l-72.21,179.55Z"/></svg></a>
+  <div class="topbar-navwrap">
+    <button class="nav-arrow esq" type="button" aria-label="Rolar menu para a esquerda">&#8249;</button>
+    <nav class="topbar-nav" aria-label="Dashboards">
+      <a class="dash-tab hub active" href="index.html"><svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="flex:0 0 auto"><path d="M3 10.5 12 4l9 6.5"/><path d="M5 10v9h14v-9"/></svg>Central de Dashboards</a>
+      <a class="dash-tab" href="dashboard_fundos_tivio.html">Monitor de Novos Fundos</a>
+      <a class="dash-tab" href="dashboard_ofertas_fii.html">Monitor de Novas Ofertas · FII</a>
+      <a class="dash-tab" href="dashboard_captacao_previdencia.html">Captação · Previdência</a>
+      <a class="dash-tab" href="dashboard_captacao_fundos_abertos.html">Captação · Fundos Abertos</a>
+      <a class="dash-tab" href="dashboard_ranking_gestoras.html">Ranking · Gestoras</a>
+      <a class="dash-tab" href="dashboard_roa_prazo.html">Análise · ROA x Prazo</a>
+      <a class="dash-tab" href="dashboard_etf.html">Análise · ETF</a>
+      <a class="dash-tab" href="dashboard_escritorios.html">Base · Escritórios</a>
+  </nav>
+    <button class="nav-arrow dir" type="button" aria-label="Rolar menu para a direita">&#8250;</button>
+  </div>
+</div>
+
+<div class="hub-header">
+  <div class="hub-brand-info">
+    <div class="h1">Central de Dashboards</div>
+    <div class="h2">Inteligência Comercial</div>
+    <div class="h3">Cobertura ANBIMA &middot; CVM &middot; Análise interna</div>
+  </div>
+  <div class="hub-header-right">
+    <button class="tiview-btn" id="tiviewBtn" type="button">
+      <span class="tvb-logo">Ti<span>View</span></span>
+      <span class="tvb-tag" id="tiviewBtnTag">Conclusões</span>
+    </button>
+    <div class="hub-meta">Atualizado <b>13/07/2026</b><br><b>7</b> dashboards ativos &middot; <b>4</b> em breve</div>
+  </div>
+</div>
+
+<div class="hub-points">
+<div class="hub-point"><span class="p-lbl">Novos fundos · Jun/26</span><span class="p-num">85</span><span class="p-sub">505 classes no semestre · BTG lídera com 24</span></div>
+<div class="hub-point"><span class="p-lbl">Ofertas de FII · 180d</span><span class="p-num">R$ 59,0 Bi</span><span class="p-sub">218 ofertas · 117 IPOs e 101 follow-ons</span></div>
+<div class="hub-point"><span class="p-lbl">Captação previdência · mês</span><span class="p-num">R$ 1,83 Bi</span><span class="p-sub">Renda Fixa DI/Selic é a categoria líder</span></div>
+<div class="hub-point"><span class="p-lbl">Fundos abertos · 30d</span><span class="p-num">-R$ 6,50 Bi</span><span class="p-sub">12m segue positivo em +R$ 26,52 Bi</span></div>
+<div class="hub-point"><span class="p-lbl">PL da indústria</span><span class="p-num">R$ 10,94 tri</span><span class="p-sub">+1,07% no período · Top 10 = 63,7%</span></div>
+<div class="hub-point"><span class="p-lbl">Classes exclusivas</span><span class="p-num">38%</span><span class="p-sub">dos novos registros de Jun/26 (campo CVM)</span></div>
+</div>
+
+<p class="hub-intro">Inteligência comercial da indústria de fundos em oito recortes: novos fundos, ofertas de FII, captação de previdência, ranking de fundos abertos, captação de gestoras, a matriz de ROA x prazo de resgate, a análise da classe de ETFs e a base de escritórios de distribuição. Fontes: ANBIMA, CVM e análise interna Tivio.</p>
+
+<div class="hub-secao"><span class="t">Dashboards ativos</span><span class="linha"></span></div>
+<div class="hub-cards">
+<a class="hub-card" href="dashboard_fundos_tivio.html" style="--accent:var(--accent-strong)">
+<div class="hub-card-top"></div>
+<div class="hub-card-icon"><svg viewBox="0 0 24 24"><path d="M4 20V10M9.5 20V5M15 20v-8M20.5 20V8"/></svg></div>
+<div class="hub-card-cat">MONITOR</div>
+<div class="hub-card-title">Novos Fundos</div>
+<div class="hub-card-desc">Cobertura dos novos fundos registrados na CVM/ANBIMA nos últimos 30 dias, com 15 gestoras peer monitoradas: BTG Pactual, Itaú, Bradesco, XP, Riza, Vinci, Kinea e SPX.</div>
+<div class="hub-card-stats"><div class="hub-card-stat"><span class="n">505</span><span class="l">Fundos</span></div><div class="hub-card-stat"><span class="n">15</span><span class="l">Gestoras</span></div><div class="hub-card-stat"><span class="n">6</span><span class="l">Tipos</span></div></div>
+<div class="hub-card-footer"><span class="hub-card-cta">Abrir dashboard</span></div>
+</a>
+<a class="hub-card" href="dashboard_ofertas_fii.html" style="--accent:var(--tv-pos)">
+<div class="hub-card-top"></div>
+<div class="hub-card-icon"><svg viewBox="0 0 24 24"><path d="M4 21V6l7-3v18M11 21h9V11l-9-3"/><path d="M14.5 14h2M14.5 17.5h2"/></svg></div>
+<div class="hub-card-cat">MONITOR</div>
+<div class="hub-card-title">Ofertas · FII</div>
+<div class="hub-card-desc">Cobertura das novas ofertas de Fundos Imobiliários (IPOs e follow-ons) registradas na CVM/ANBIMA, com volume captado e pipeline por tipo de oferta.</div>
+<div class="hub-card-stats"><div class="hub-card-stat"><span class="n">218</span><span class="l">Ofertas</span></div><div class="hub-card-stat"><span class="n">R$ 59 Bi</span><span class="l">Volume</span></div><div class="hub-card-stat"><span class="n">117</span><span class="l">IPOs</span></div></div>
+<div class="hub-card-footer"><span class="hub-card-cta">Abrir dashboard</span></div>
+</a>
+<a class="hub-card" href="dashboard_captacao_previdencia.html" style="--accent:var(--tv-roxo)">
+<div class="hub-card-top"></div>
+<div class="hub-card-icon"><svg viewBox="0 0 24 24"><path d="M12 3l7 3v6c0 4.2-2.9 7.9-7 9-4.1-1.1-7-4.8-7-9V6z"/><path d="M9.5 12.2l1.8 1.8 3.4-3.6"/></svg></div>
+<div class="hub-card-cat">CAPTAÇÃO</div>
+<div class="hub-card-title">Previdência</div>
+<div class="hub-card-desc">Ranking ANBIMA de captação líquida 30d em fundos previdenciários PGBL/VGBL, com top 10 por plataforma (XP, BTG, Itaú, Bradesco) e análise vs CDI.</div>
+<div class="hub-card-stats"><div class="hub-card-stat"><span class="n">40</span><span class="l">Fundos</span></div><div class="hub-card-stat"><span class="n">4</span><span class="l">Plataformas</span></div><div class="hub-card-stat"><span class="n">1,17%</span><span class="l">CDI 30d</span></div></div>
+<div class="hub-card-footer"><span class="hub-card-cta">Abrir dashboard</span></div>
+</a>
+<a class="hub-card" href="dashboard_captacao_fundos_abertos.html" style="--accent:var(--tv-info)">
+<div class="hub-card-top"></div>
+<div class="hub-card-icon"><svg viewBox="0 0 24 24"><path d="M3 17.5L9 11l4 3.5L20.5 7"/><path d="M15 6.5h5.5V12"/></svg></div>
+<div class="hub-card-cat">CAPTAÇÃO</div>
+<div class="hub-card-title">Fundos Abertos</div>
+<div class="hub-card-desc">Ranking ANBIMA de captação líquida 30d/12m/YTD em fundos abertos por plataforma (XP, BTG, Itaú, Bradesco) e categoria (Renda Fixa Ativa, Renda Fixa, Multimercado).</div>
+<div class="hub-card-stats"><div class="hub-card-stat"><span class="n">120</span><span class="l">Fundos</span></div><div class="hub-card-stat"><span class="n">4</span><span class="l">Plataformas</span></div><div class="hub-card-stat"><span class="n">3</span><span class="l">Categorias</span></div></div>
+<div class="hub-card-footer"><span class="hub-card-cta">Abrir dashboard</span></div>
+</a>
+<a class="hub-card" href="dashboard_ranking_gestoras.html" style="--accent:#E8B84B">
+<div class="hub-card-top"></div>
+<div class="hub-card-icon"><svg viewBox="0 0 24 24"><path d="M8 4h8v5a4 4 0 0 1-8 0z"/><path d="M8 5H5.5v1.5A3.5 3.5 0 0 0 8 9.8M16 5h2.5v1.5A3.5 3.5 0 0 1 16 9.8"/><path d="M12 13v4M9 20h6"/></svg></div>
+<div class="hub-card-cat">RANKING</div>
+<div class="hub-card-title">Captação de Gestoras</div>
+<div class="hub-card-desc">Ranking ANBIMA de captação líquida da indústria de gestoras, comparativo mês a mês, com market share, radar de risco e posição Tivio vs peers.</div>
+<div class="hub-card-stats"><div class="hub-card-stat"><span class="n">1.077</span><span class="l">Gestoras</span></div><div class="hub-card-stat"><span class="n">+1,07%</span><span class="l">Δ Indústria</span></div><div class="hub-card-stat"><span class="n">63,7%</span><span class="l">Top 10</span></div></div>
+<div class="hub-card-footer"><span class="hub-card-cta">Abrir dashboard</span></div>
+</a>
+<a class="hub-card" href="dashboard_roa_prazo.html" style="--accent:var(--tv-pos)">
+<div class="hub-card-top"></div>
+<div class="hub-card-icon"><svg viewBox="0 0 24 24"><line x1="4" y1="20" x2="20" y2="20"/><line x1="4" y1="20" x2="4" y2="4"/><circle cx="8.5" cy="15.5" r="1.6"/><circle cx="13" cy="10.5" r="1.6"/><circle cx="17.5" cy="7" r="1.6"/></svg></div>
+<div class="hub-card-cat">ANÁLISE</div>
+<div class="hub-card-title">ROA x Prazo de Resgate</div>
+<div class="hub-card-desc">Matriz de taxa global (proxy de ROA) contra prazo de cotização e pagamento, para os fundos Tivio, previdência e exclusivos, com 170 peers de mercado mapeados.</div>
+<div class="hub-card-stats"><div class="hub-card-stat"><span class="n">39</span><span class="l">Fundos</span></div><div class="hub-card-stat"><span class="n">170</span><span class="l">Peers</span></div><div class="hub-card-stat"><span class="n">6</span><span class="l">Categorias</span></div></div>
+<div class="hub-card-footer"><span class="hub-card-cta">Abrir dashboard</span></div>
+</a>
+<a class="hub-card" href="dashboard_etf.html" style="--accent:var(--tv-info)">
+<div class="hub-card-top"></div>
+<div class="hub-card-icon"><svg viewBox="0 0 24 24"><path d="M3 17.5 9 11l4 3.5 7.5-8"/><path d="M15 6.5h5.5V12"/><path d="M3 21h18"/></svg></div>
+<div class="hub-card-cat">ANÁLISE</div>
+<div class="hub-card-title">ETF</div>
+<div class="hub-card-desc">Inteligência de mercado da classe de ETFs: peers listados na B3, fluxo de captação, base de investidores e recorte regulatório, com leitura do posicionamento Tivio.</div>
+<div class="hub-card-stats"><div class="hub-card-stat"><span class="n">175</span><span class="l">ETFs B3</span></div><div class="hub-card-stat"><span class="n">91 Bi</span><span class="l">PL da classe (R$)</span></div><div class="hub-card-stat"><span class="n">919 mil</span><span class="l">Investidores</span></div></div>
+<div class="hub-card-footer"><span class="hub-card-cta">Abrir dashboard</span></div>
+</a>
+<a class="hub-card" href="dashboard_escritorios.html" style="--accent:#8A94A6">
+<div class="hub-card-top"></div>
+<div class="hub-card-icon"><svg viewBox="0 0 24 24"><path d="M4 21V5a1 1 0 0 1 1-1h9a1 1 0 0 1 1 1v16"/><path d="M15 21V9h4a1 1 0 0 1 1 1v11"/><path d="M3 21h18"/><path d="M7 8h2M7 12h2M7 16h2"/></svg></div>
+<div class="hub-card-cat">BASE</div>
+<div class="hub-card-title">Escritórios</div>
+<div class="hub-card-desc">Base dos escritórios de investimento e assessorias credenciadas monitorados pela Tivio, com o vínculo de distribuição por plataforma e o mapeamento da rede de originação comercial.</div>
+<div class="hub-card-stats"><div class="hub-card-stat"><span class="n">54</span><span class="l">Escritórios</span></div><div class="hub-card-stat"><span class="n">Multi</span><span class="l">Plataformas</span></div><div class="hub-card-stat"><span class="n">Base</span><span class="l">Distribuição</span></div></div>
+<div class="hub-card-footer"><span class="hub-card-cta">Abrir dashboard</span></div>
+</a>
+</div>
+
+<div class="hub-secao" style="margin-top:34px"><span class="t">Em desenvolvimento</span><span class="linha"></span></div>
+<div class="hub-cards">
+<div class="hub-card soon" style="--accent:var(--tv-agro)">
+<span class="soon-badge">Em breve</span>
+<div class="hub-card-top"></div>
+<div class="hub-card-icon"><svg viewBox="0 0 24 24"><path d="M4 20c4-1 6-4 7-8"/><path d="M11 12c3-3 6-4 9-4"/><path d="M20 8c0 5-3 8-8 8"/></svg></div>
+<div class="hub-card-cat">MONITOR</div>
+<div class="hub-card-title">Novas Ofertas · FIAGRO</div>
+<div class="hub-card-desc">Mesmo recorte do monitor de FII, aplicado a ofertas públicas de FIAGRO. Aguardando a base de ofertas segregada por classe na CVM.</div>
+<div class="hub-card-stats"><div class="hub-card-stat"><span class="n">—</span><span class="l">Ofertas</span></div><div class="hub-card-stat"><span class="n">—</span><span class="l">Volume</span></div><div class="hub-card-stat"><span class="n">—</span><span class="l">IPOs</span></div></div>
+<div class="hub-card-footer"><span class="hub-card-cta">Em desenvolvimento</span></div>
+</div>
+<div class="hub-card soon" style="--accent:var(--tv-info)">
+<span class="soon-badge">Em breve</span>
+<div class="hub-card-top"></div>
+<div class="hub-card-icon"><svg viewBox="0 0 24 24"><path d="M3 17.5 9 11l4 3.5 7.5-8"/><path d="M15 6.5h5.5V12"/><path d="M3 21h18"/></svg></div>
+<div class="hub-card-cat">MONITOR</div>
+<div class="hub-card-title">Novas Ofertas · ETF</div>
+<div class="hub-card-desc">Cobertura das novas ofertas de fundos de índice. Aguardando a base de ofertas de ETF (a origem atual só traz o registro do fundo, não a oferta).</div>
+<div class="hub-card-stats"><div class="hub-card-stat"><span class="n">—</span><span class="l">Ofertas</span></div><div class="hub-card-stat"><span class="n">—</span><span class="l">Volume</span></div><div class="hub-card-stat"><span class="n">—</span><span class="l">Gestoras</span></div></div>
+<div class="hub-card-footer"><span class="hub-card-cta">Em desenvolvimento</span></div>
+</div>
+<div class="hub-card soon" style="--accent:var(--tv-roxo)">
+<span class="soon-badge">Em breve</span>
+<div class="hub-card-top"></div>
+<div class="hub-card-icon"><svg viewBox="0 0 24 24"><path d="M12 3l9 5-9 5-9-5z"/><path d="M3 13l9 5 9-5"/></svg></div>
+<div class="hub-card-cat">MONITOR</div>
+<div class="hub-card-title">Novas Ofertas · FIP</div>
+<div class="hub-card-desc">Ofertas públicas de Fundos de Investimento em Participações. Aguardando a base de ofertas RCVM 160 segregada por classe.</div>
+<div class="hub-card-stats"><div class="hub-card-stat"><span class="n">—</span><span class="l">Ofertas</span></div><div class="hub-card-stat"><span class="n">—</span><span class="l">Volume</span></div><div class="hub-card-stat"><span class="n">—</span><span class="l">Gestoras</span></div></div>
+<div class="hub-card-footer"><span class="hub-card-cta">Em desenvolvimento</span></div>
+</div>
+<div class="hub-card soon" style="--accent:var(--tv-warn)">
+<span class="soon-badge">Em breve</span>
+<div class="hub-card-top"></div>
+<div class="hub-card-icon"><svg viewBox="0 0 24 24"><path d="M12 3l7 3v6c0 4.2-2.9 7.9-7 9-4.1-1.1-7-4.8-7-9V6z"/></svg></div>
+<div class="hub-card-cat">CAPTAÇÃO</div>
+<div class="hub-card-title">Seguradoras (Macro)</div>
+<div class="hub-card-desc">Visão macro de captação do setor segurador a partir da base pública da SUSEP, com sensibilidade por seguradora e leitura de sinistro versus resgate. Depende da carga da SUSEP e da FenaPrevi.</div>
+<div class="hub-card-stats"><div class="hub-card-stat"><span class="n">—</span><span class="l">Seguradoras</span></div><div class="hub-card-stat"><span class="n">—</span><span class="l">Captação</span></div><div class="hub-card-stat"><span class="n">—</span><span class="l">Sinistro</span></div></div>
+<div class="hub-card-footer"><span class="hub-card-cta">Em desenvolvimento</span></div>
+</div>
+</div>
+
+<div class="hub-rodape">Fontes: ANBIMA (ranking de gestores, captação e previdência), CVM (registro de fundos e ofertas RCVM 160/175) e análise interna Tivio Capital. Números referentes ao mês fechado de Jun/2026, exceto o ranking de gestoras (Abr/26 &rarr; Mai/26). Material de uso interno.</div>
+</div>
+
+<!-- ===== TIVIEW · pop-up de conclusoes (subcategorias) ===== -->
+<div class="tv-modal" id="tiviewModal" hidden>
+  <div class="tv-modal-bg" data-tvclose></div>
+  <div class="tv-modal-card" role="dialog" aria-modal="true" aria-labelledby="tvModalTitulo">
+    <div class="tv-modal-head">
+      <div class="tiview-logo" id="tvModalTitulo">Ti<span>View</span></div>
+      <span class="tiview-tag">Conclusoes</span>
+      <button class="tv-modal-close" type="button" data-tvclose aria-label="Fechar">&times;</button>
+    </div>
+    <div class="tv-modal-sub" id="tvModalSub"><b>Monitor &middot; Novos Fundos</b> &middot; leitura por categoria</div>
+    <div class="tv-modal-comp">Agosto de 2026</div>
+    <div class="tv-modal-cats" id="tiviewCats"></div>
+    <div class="tv-leitura-bar" id="tvLeituraBar" hidden>
+      <button class="tv-leitura-anchor" id="tvLeituraAnchor" type="button">Leitura para a Tivio</button>
+    </div>
+    <div id="tiviewCorpo"></div>
+    <div class="tv-modal-foot">Leitura da mesa Tivio sobre os dados desta pagina, por categoria de veiculo. Os pontos sao mantidos no bloco <b>TIVIEW_CATS</b>, no fim deste arquivo.</div>
+  </div>
+</div>
+<script>
+/* ===== TIVIEW · conclusoes por subcategoria =====
+   Cada categoria tem: id, nome (rotulo da aba), sub (linha de contexto) e html.
+   Categoria com html vazio aparece como aba "Em breve" (desabilitada).
+   Para publicar uma nova, basta preencher o html da categoria correspondente. */
+const TIVIEW_CATS = [
+  {
+    id: "fi",
+    nome: "Fundos de Investimentos",
+    sub: "recorte de Fundos de Investimentos",
+    html: `
+<div class="tv-rich">
+  <div class="tv-rich-title">Conclusões principais · Fundos de Investimentos</div>
+  <div class="tv-rich-num"><span class="n">1</span><div class="b">
+    <span class="h">Crédito privado + Infra dominam (~60% da safra)</span>
+    <p>Juntos, <strong>crédito privado e infra incentivada representam quase 60%</strong> dos lançamentos. Isso confirma o <strong>apetite forte por renda fixa "turbinada"</strong>: o investidor quer prêmio acima do CDI/CDI+, mas sem sair da renda fixa. A enxurrada de fundos <strong>incentivados de infraestrutura</strong> (isenção de IR) mostra que a <strong>captação via benefício fiscal continua sendo o grande chamariz comercial</strong> do momento.</p>
+  </div></div>
+  <div class="tv-rich-num"><span class="n">2</span><div class="b">
+    <span class="h">A Resolução CVM 175 explica o "boom" de estruturas</span>
+    <p>Boa parte são <strong>FIFs / Classes de Investimento (CIC)</strong>, a nova nomenclatura da <strong>RCVM 175</strong>. Muitos são <strong>"cascas" e classes espelho/dedicadas</strong> (ex.: toda a família <strong>"BP …"</strong> do BTG, Sergipe, Funasa, Energisa, Elétricas, Cemat, Planos I/II/R). Ou seja, <strong>nem todo "novo fundo" é um produto comercial de prateleira novo</strong>: uma parcela relevante é <strong>reorganização de estruturas existentes</strong> (mandatos exclusivos, previdência de patrocinadoras, planos corporativos).</p>
+  </div></div>
+  <div class="tv-rich-num"><span class="n">3</span><div class="b">
+    <span class="h">Os grandes bancos concentram a oferta</span>
+    <p><strong>Itaú (14), BTG (14) e Bradesco (8)</strong> somam ~44% da lista. O restante é pulverizado entre <strong>boutiques e assets independentes</strong> (Vinci, Kinea, SPX, JGP, Riza, Ibiuna, Lanx, Augme etc.). Isso mostra um mercado <strong>bipolarizado</strong>: as grandes casas lançando em escala (muito produto estruturado/exclusivo), e as boutiques trazendo <strong>estratégias de nicho</strong> (ações, MM macro, internacional).</p>
+  </div></div>
+  <div class="tv-rich-num"><span class="n">4</span><div class="b">
+    <span class="h">Movimento claro de internacionalização</span>
+    <p>Aparecem produtos com <strong>cara global/exterior</strong>: Conexão Apollo Diversified Credit, Riza Internacional, Trend Crédito USA BRL, Vinci Singapura, Bradesco Blend PIMCO. Sinaliza uma <strong>tendência de acesso a crédito/ativos globais com veículo local</strong> (muitas vezes com hedge cambial), tema que está ganhando espaço nas prateleiras.</p>
+  </div></div>
+  <div class="tv-rich-num"><span class="n">5</span><div class="b">
+    <span class="h">Previdência segue puxada por crédito</span>
+    <p>Dos 6 previdenciários, a maioria é <strong>PGBL/VGBL atrelada a crédito privado</strong> (Blend PIMCO, Multigestores Crédito Plus, Augme Prev, ACS Dual Advanced). Reforça que <strong>até na previdência o driver de captação é crédito privado</strong>, não multimercado macro.</p>
+  </div></div>
+  <div class="tivio-read">
+    <div class="h">Leitura para a Tivio</div>
+    <ul>
+      <li><strong>O mar está para crédito e infra</strong>, se a Tivio tem produto de crédito estruturado/alternativo, o ambiente competitivo está <strong>cheio</strong>, mas a demanda também está aquecida. Diferenciação vira palavra-chave.</li>
+      <li><strong>Pouquíssimo alternativo "puro"</strong> (private markets, real estate, FIDC do agro como o FarmTech que vimos): apareceram só os <strong>Itaú Apalaches/Himalaia Private Markets</strong>. Ou seja, <strong>alternativos ilíquidos ainda são um espaço menos concorrido</strong>, potencial janela para a Tivio.</li>
+      <li><strong>Vale monitorar as boutiques</strong>: elas são as que mais lançam estratégia diferenciada e podem ser <strong>parceiras ou benchmarks</strong> relevantes.</li>
+    </ul>
+  </div>
+  <div class="tv-rich-author">Escrito por <b>Vivian Oka · RI</b></div>
+</div>`
+  },
+  {
+    id: "fiagro",
+    nome: "FIAGRO",
+    sub: "recorte de FIAGRO",
+    html: `
+<div class="tv-rich">
+  <div class="tv-rich-title">Conclusões principais · FIAGRO</div>
+  <div class="tv-rich-num"><span class="n">1</span><div class="b">
+    <span class="h">É um clube fechado dos "bancões": zero boutique</span>
+    <p>Os <strong>5 FIAGROs são de Bradesco, Itaú e BTG</strong>. Nenhuma asset independente ou boutique apareceu nessa safra. Isso mostra que o <strong>FIAGRO nas cadeias produtivas ainda é um jogo de balanço e originação</strong>: exige capacidade de <strong>originar direitos creditórios do agro em escala</strong> (relacionamento com produtores, revendas, tradings), algo que favorece quem tem <strong>rede de distribuição e crédito bancário robusta</strong>. É uma barreira de entrada natural que blinda o segmento contra players menores.</p>
+  </div></div>
+  <div class="tv-rich-num"><span class="n">2</span><div class="b">
+    <span class="h">Todos são da mesma "família" estrutural do FarmTech</span>
+    <p>Repare que <strong>4 dos 5</strong> trazem no nome <em>"FI nas Cadeias Produtivas do Agronegócio, Responsabilidade Limitada"</em>, exatamente a estrutura do <strong>Bradesco FarmTech Plus</strong> que analisamos. Ou seja, são <strong>FIAGROs-FIDC</strong> (compram direitos creditórios do agro), estruturados sob a <strong>RCVM 175, Anexo Normativo VI</strong>, com lógica de <strong>cotas Sênior/Mezanino/Júnior e subordinação</strong>. Não são FIAGROs de terra (imobiliário) nem de ações do agro, são <strong>crédito do agro</strong>.</p>
+  </div></div>
+  <div class="tv-rich-num"><span class="n">3</span><div class="b">
+    <span class="h">BTG lidera em volume e usa estrutura "seriada"</span>
+    <p>O BTG sozinho fez <strong>3 dos 5</strong> (60%). E os nomes <strong>"Ceres 3"</strong> e <strong>"Ceres URA 3"</strong> indicam <strong>séries recorrentes</strong> (é o 3º de uma linha), sinal de que o BTG tem uma <strong>plataforma industrializada de FIAGRO de crédito</strong>, lançando veículos em sequência conforme origina carteira. É o concorrente mais ativo e mais "rodado" nesse nicho.</p>
+  </div></div>
+  <div class="tv-rich-num"><span class="n">4</span><div class="b">
+    <span class="h">Bradesco entra com o modelo "FarmTech" (cogestão + fintech do agro)</span>
+    <p>O <strong>FarmTech Plus</strong> tem uma pegada diferente: é uma <strong>cogestão do Bradesco com a FarmTech</strong> (gestora especializada no agro), mirando originação via fintech/cadeia de insumos. Enquanto o BTG escala com marca própria (Ceres), o <strong>Bradesco aposta em parceria com originador especializado</strong>, duas estratégias distintas de atacar o mesmo mercado.</p>
+  </div></div>
+  <div class="tivio-read">
+    <div class="h">Leitura para a Tivio</div>
+    <ul>
+      <li><strong>Nicho concentrado, mas aquecido:</strong> o FIAGRO de crédito virou vitrine dos grandes bancos. Se a Tivio quiser jogar aqui, o desafio <strong>não é gestão, é originação</strong>. Sem um parceiro originador forte no campo, competir de igual pra igual com BTG/Bradesco/Itaú é difícil.</li>
+      <li><strong>A parceria é o caminho:</strong> o modelo <strong>Bradesco + FarmTech</strong> mostra que dá pra entrar via <strong>cogestão com um especialista do agro</strong>, potencial blueprint caso a Tivio queira exposição ao setor sem construir originação do zero.</li>
+      <li><strong>Sinal de mercado:</strong> o crédito do agronegócio está <strong>puxando emissão via securitização</strong> (FIDC/FIAGRO). Combina com o que vimos na safra geral (crédito privado dominando ~34%), o agro é só uma <strong>vertical específica dessa mesma onda de crédito estruturado</strong>.</li>
+    </ul>
+  </div>
+  <div class="tv-rich-author">Escrito por <b>Vivian Oka · RI</b></div>
+</div>`
+  },
+  {
+    id: "fip",
+    nome: "FIP",
+    sub: "recorte de FIP",
+    html: `
+<div class="tv-rich">
+  <div class="tv-rich-title">Conclusões principais · FIP</div>
+  <div class="tv-rich-num"><span class="n">1</span><div class="b">
+    <span class="h">FIP virou item raro na prateleira</span>
+    <p>Numa safra de dezenas de fundos, <strong>só 1 FIP</strong> foi registrado em julho, e ainda assim <strong>não é um produto de captação de varejo/prateleira</strong>, e sim um <strong>veículo estruturado/exclusivo</strong> do próprio BTG (mandato). Isso confirma o que vimos nas análises anteriores: o dinheiro está indo para <strong>crédito privado e infra incentivada</strong>, não para <strong>private equity líquido/aberto</strong>. O FIP tradicional está em <strong>baixa de emissão</strong>.</p>
+  </div></div>
+  <div class="tv-rich-num"><span class="n">2</span><div class="b">
+    <span class="h">Private equity segue "fechado e institucional"</span>
+    <p>O FIP que aparece é <strong>condomínio fechado, profissional, estruturado</strong>, não é algo que um assessor vende no home broker. Reforça que <strong>PE/participações no Brasil segue restrito a capital institucional e grandes profissionais</strong>, via veículos sob medida, não distribuição em massa.</p>
+  </div></div>
+  <div class="tv-rich-num"><span class="n">3</span><div class="b">
+    <span class="h">BTG é praticamente o "dono" do produto estruturado</span>
+    <p>Somando as safras: BTG lidera FIAGRO (3 de 5), tem enxurrada de classes "BP …" e é o <strong>único a registrar FIP</strong> em julho. Mostra uma <strong>máquina de estruturação industrializada</strong>, o BTG lança veículo atrás de veículo (séries A/B/C/D) conforme origina negócio, algo difícil de igualar.</p>
+  </div></div>
+  <div class="tivio-read">
+    <div class="h">Leitura para a Tivio</div>
+    <ul>
+      <li><strong>Janela pouco concorrida, mas de nicho:</strong> se PE/participações quase não teve emissão, há <strong>menos ruído competitivo</strong> nesse espaço, mas também <strong>menos apetite de captação</strong>. É um mercado de <strong>poucos e grandes tickets institucionais</strong>.</li>
+      <li><strong>n=1 = cuidado:</strong> com um único FIP, isso é <strong>leitura de tendência</strong> (PE fora de moda vs. crédito), não estatística. O que importa é o <strong>contraste</strong>: enquanto crédito e infra explodem, PE minguou.</li>
+    </ul>
+  </div>
+  <div class="tv-rich-author">Escrito por <b>Vivian Oka · RI</b></div>
+</div>`
+  },
+  {
+    id: "fidc",
+    nome: "FIDC",
+    sub: "recorte de FIDC",
+    html: `
+<div class="tv-rich">
+  <div class="tv-rich-title">Conclusões principais · FIDC</div>
+  <div class="tv-rich-num"><span class="n">1</span><div class="b">
+    <span class="h">De novo, BTG e um "securitizador" dominam, nada de bancão de varejo</span>
+    <p>Igual aos FIAGROs, os FIDCs são <strong>estruturados por poucas casas especializadas</strong>: BTG (3) e Riza (2). Não aparece Itaú/Bradesco/Santander distribuindo FIDC para varejo. Isso confirma que <strong>FIDC é um produto de originação/securitização</strong>, não de prateleira: quem manda é quem tem <strong>motor de crédito e estruturação</strong> (BTG) ou <strong>plataforma de securitização</strong> (Riza).</p>
+  </div></div>
+  <div class="tv-rich-num"><span class="n">2</span><div class="b">
+    <span class="h">Todos "fechados, exclusivos, dedicados" = veículos de warehouse, não captação pública</span>
+    <p>Repare nas tags: <strong>"Exclusivo", "Solução Dedicada", "Mandato"</strong>, e quase todos <strong>condomínio fechado</strong>. Isso significa que <strong>não são fundos que o assessor vende no app</strong>, são <strong>estruturas dedicadas</strong> (muitas vezes com 1 cotista, como o BTG Apolo original que tem 1 cotista e R$ 455 mi). São veículos de <strong>funding para operações de crédito específicas</strong>, tipicamente com estrutura Sênior/Mezanino/Subordinada. <a class="tv-src" href="https://fidcs.com.br/fundo/60570464000165" target="_blank" rel="noopener">[fidcs.com.br]</a> <a class="tv-src" href="https://tradar.com.br/fidcs/btg-pactual-apolo-ii-fidc-rl" target="_blank" rel="noopener">[tradar.com.br]</a></p>
+  </div></div>
+  <div class="tv-rich-num"><span class="n">3</span><div class="b">
+    <span class="h">Consignado é o tema quente</span>
+    <p>O <strong>Aquarius Consignado Privado</strong> deixa explícito o segmento que mais bombou: <strong>crédito consignado privado</strong> (empréstimo com desconto em folha). O mercado de FIDC de consignado está gigante: os maiores passam de <strong>R$ 3 bi de PL</strong> (VTK, MT Consignado, Agibank), e a <strong>Riza</strong> já é top-4 nesse nicho com o Paketá (~R$ 1,9 bi). A nova safra reforça esse apetite por <strong>recebíveis de folha/INSS</strong>, considerados de baixo risco. <a class="tv-src" href="https://fidcs.com.br" target="_blank" rel="noopener">[fidcs.com.br]</a></p>
+  </div></div>
+  <div class="tv-rich-num"><span class="n">4</span><div class="b">
+    <span class="h">Estruturas "seriadas" (o BTG de novo)</span>
+    <p>Aparece o <strong>Apolo II</strong>, 2º da série (o Apolo I, de abr/2025, tem ~R$ 455 mi, subordinação de 3,2% com mezanino). Mesmo padrão do FIAGRO (Ceres 3) e do FIP (TRF I A/B/D): o BTG <strong>lança veículos em sequência</strong> conforme origina carteira. É uma <strong>linha de produção de crédito estruturado</strong>. <a class="tv-src" href="https://fidcs.com.br" target="_blank" rel="noopener">[fidcs.com.br]</a></p>
+  </div></div>
+  <div class="tv-rich-num"><span class="n">5</span><div class="b">
+    <span class="h">O único "em funcionamento" já nasceu rodando</span>
+    <p>Enquanto 5 estão pré-operacionais, o <strong>BTG Apolo II já está "Em Funcionamento Normal"</strong> e é o único <strong>aberto</strong>, sinal de que o BTG já tinha a carteira pronta para plugar no veículo assim que registrou. <a class="tv-src" href="https://tiviocapital-my.sharepoint.com/personal/vivian_oka_tivio_com/_layouts/15/Doc.aspx?sourcedoc=%7B5F3302CE-D3B9-471F-9625-7554BF99080A%7D&file=Monitor_Fundos_Tivio.xlsm&action=default&mobileredirect=true&DefaultItemOpen=1&isSPOFile=1" target="_blank" rel="noopener">[Monitor Fundos Tivio]</a> <a class="tv-src" href="https://tradar.com.br" target="_blank" rel="noopener">[tradar.com.br]</a></p>
+  </div></div>
+  <div class="tivio-read">
+    <div class="h">Leitura para a Tivio (fechando o ciclo completo)</div>
+    <p style="margin-bottom:10px">Agora com <strong>as 6 categorias mapeadas</strong> (FIs gerais, FIAGRO, FIP, FIDC, FII, ETF), o quadro da safra de julho/2026 está completo:</p>
+    <ul>
+      <li><strong>Crédito estruturado é o rei</strong>: domina FI, FIDC, FIAGRO e FII de papel. É onde está o dinheiro e a competição.</li>
+      <li><strong>ETF é a exceção "renda variável/temática"</strong>, o único bolsão de bolsa/ações, com forte presença de temáticos (ESG/Amazônia, value, infra, utilities). É um mercado de <strong>beta barato e distribuição em massa</strong>, dominado por quem tem escala (BTG à frente).</li>
+      <li><strong>BTG é onipresente</strong>: lidera FIAGRO, FIP, FIDC e ETF. Se a Tivio compete ou faz parceria em qualquer classe estruturada, o BTG é <strong>a referência competitiva incontornável</strong>.</li>
+      <li><strong>Sinal para o comercial:</strong> para <strong>captação de varejo líquida</strong>, ETF temático está em alta (fácil de vender uma "tese"). Para <strong>produto estruturado/alternativo</strong> (a praia da Tivio), o caminho segue sendo crédito + originação.</li>
+    </ul>
+  </div>
+  <div class="tv-rich-author">Escrito por <b>Vivian Oka · RI</b></div>
+</div>`
+  },
+  {
+    id: "fii",
+    nome: "FII",
+    sub: "recorte de FII",
+    html: `
+<div class="tv-rich">
+  <div class="tv-rich-title">Conclusões principais · FII</div>
+  <div class="tv-rich-num"><span class="n">1</span><div class="b">
+    <span class="h">FII virou "coisa de gestora especializada", não de bancão</span>
+    <p>Diferente de FIDC/FIAGRO (dominados por BTG), aqui o protagonista é a <strong>XP Asset/XP Vista</strong>, com a <strong>SPX Real Estate</strong> de coadjuvante. É o segmento onde as <strong>casas de real estate especializadas</strong> mandam, faz sentido, porque FII exige <strong>expertise imobiliária</strong> (gestão de imóvel, originação de CRI), não só balanço bancário.</p>
+  </div></div>
+  <div class="tv-rich-num"><span class="n">2</span><div class="b">
+    <span class="h">A "fábrica de CRI" da XP: 4 fundos-espelho de uma vez</span>
+    <p>Os <strong>XP CDI 92, 94, 96 e 97</strong> são todos <strong>FIIs de papel</strong> (compram CRIs) atrelados a <strong>% do CDI</strong>, registrados <strong>no mesmo dia (16/07)</strong> e <strong>fechados</strong>. Isso não é 4 produtos de varejo diferentes, é uma <strong>plataforma de securitização/warehouse</strong>: a XP cria vários veículos numerados para <strong>estruturar operações de crédito imobiliário sob medida</strong> (alguns marcados como "Exclusivo"/"Mandato"). Confirma o que vimos nas outras safras: <strong>crédito estruturado é o motor</strong>, aqui na versão imobiliária (CRI).</p>
+  </div></div>
+  <div class="tv-rich-num"><span class="n">3</span><div class="b">
+    <span class="h">A aposta contrária: XP Office Prime = retomada das lajes</span>
+    <p>O <strong>XP Office Prime</strong> é a grande sacada de "tijolo": um FII de <strong>R$ 1,1 bi</strong> para comprar <strong>dois prédios AAA em São Paulo</strong>, o <strong>JK Square (Itaim)</strong> e o <strong>River South (Marginal Pinheiros)</strong>, com inquilinos como Uber e Wise. A XP está <strong>apostando na retomada do mercado de escritórios</strong>, com TIR-alvo de <strong>IPCA + 10% a.a.</strong> e um ganho de reavaliação estimado de <strong>~15% já na largada</strong>. É um sinal relevante: <strong>depois de anos difíceis, lajes corporativas premium voltaram ao radar</strong> dos grandes players. <a class="tv-src" href="https://www.metatrader.com/pt/news/moneytimes/1895780-fundos-imobiliarios-xp-aposta-na-retomada-das-lajes" target="_blank" rel="noopener">[metatrader.com]</a> <a class="tv-src" href="https://www.broadcast.com.br/ultimas-noticias/xp-lanca-fundo-de-r-11-bi-para-comprar-predios-de-escritorios-de-primeira-linha-em-sao-paulo/" target="_blank" rel="noopener">[broadcast.com.br]</a></p>
+  </div></div>
+  <div class="tv-rich-num"><span class="n">4</span><div class="b">
+    <span class="h">Logística segue firme via desenvolvimento</span>
+    <p>O <strong>SPX Cajamar</strong> entra na vertical <strong>logística</strong> (galpões), a SPX Real Estate tem uma família de fundos de <strong>desenvolvimento de galpões</strong> (SPXG11/SPXM11), estrutura master-feeder. Cajamar é um dos maiores polos logísticos de SP, então o fundo provavelmente mira <strong>desenvolvimento/renda logística</strong>, segmento que segue sendo o <strong>queridinho do "tijolo"</strong> (e-commerce, last mile). <a class="tv-src" href="https://fii.spxcapital.com/spx-real-estate-desenvolvimento-de-galpoes-logisticos/" target="_blank" rel="noopener">[fii.spxcapital.com]</a> <a class="tv-src" href="https://web.cvm.gov.br/sre-publico-cvm/rest/download/a62c7597-d549-4e48-8713-3aca7937f42e" target="_blank" rel="noopener">[web.cvm.gov.br]</a></p>
+  </div></div>
+  <div class="tivio-read">
+    <div class="h">Leitura para a Tivio (fechando o ciclo completo)</div>
+    <p style="margin-bottom:10px">Agora com <strong>as 6 categorias mapeadas</strong> (FIs gerais, FIAGRO, FIP, FIDC, FII, ETF), o quadro da safra de julho/2026 está completo:</p>
+    <ul>
+      <li><strong>Crédito estruturado é o rei</strong>: domina FI, FIDC, FIAGRO e FII de papel. É onde está o dinheiro e a competição.</li>
+      <li><strong>ETF é a exceção "renda variável/temática"</strong>, o único bolsão de bolsa/ações, com forte presença de temáticos (ESG/Amazônia, value, infra, utilities). É um mercado de <strong>beta barato e distribuição em massa</strong>, dominado por quem tem escala (BTG à frente).</li>
+      <li><strong>BTG é onipresente</strong>: lidera FIAGRO, FIP, FIDC e ETF. Se a Tivio compete ou faz parceria em qualquer classe estruturada, o BTG é <strong>a referência competitiva incontornável</strong>.</li>
+      <li><strong>Sinal para o comercial:</strong> para <strong>captação de varejo líquida</strong>, ETF temático está em alta (fácil de vender uma "tese"). Para <strong>produto estruturado/alternativo</strong> (a praia da Tivio), o caminho segue sendo crédito + originação.</li>
+    </ul>
+  </div>
+  <div class="tv-rich-author">Escrito por <b>Vivian Oka · RI</b></div>
+</div>`
+  },
+  {
+    id: "etf",
+    nome: "ETF",
+    sub: "recorte de ETF",
+    html: `
+<div class="tv-rich">
+  <div class="tv-rich-title">Conclusões principais · ETF</div>
+  <div class="tv-rich-num"><span class="n">1</span><div class="b">
+    <span class="h">ETF é o "playground" dos grandes, e o BTG lidera de novo</span>
+    <p>Como nas outras classes, quem manda são <strong>os grandes bancos</strong>: BTG (3), Itaú e XP. Faz sentido, ETF exige <strong>escala, market maker e marca</strong> para negociar em bolsa. E o <strong>BTG aparece de novo como o mais ativo</strong>, reforçando o padrão de "fábrica de produtos" que vimos em FIDC, FIAGRO e FIP. Ele já tem uma <strong>família enorme de ETFs Teva</strong> (renda fixa e ações) e continua expandindo. <a class="tv-src" href="https://www.b3.com.br/pt_br/produtos-e-servicos/negociacao/renda-variavel/etf/renda-fixa/etfs-listados/" target="_blank" rel="noopener">[b3.com.br]</a></p>
+  </div></div>
+  <div class="tv-rich-num"><span class="n">2</span><div class="b">
+    <span class="h">Aqui NÃO é crédito, é a exceção da safra</span>
+    <p>Este é o <strong>único grupo que foge da onda de crédito privado</strong>. Enquanto FIDC/FIAGRO/FII/RF eram todos sobre "crédito estruturado", os ETFs são majoritariamente de <strong>renda variável e temáticos</strong>:</p>
+    <ul class="tv-rich-subbullets">
+      <li><strong>Value investing</strong> (Trend Giant, ações baratas) <a class="tv-src" href="https://conteudos.xpi.com.br/fundos-de-investimento/trend-valor-brasil-fia/" target="_blank" rel="noopener">[conteudos.xpi.com.br]</a></li>
+      <li><strong>MSCI Brazil 25/50</strong> (índice amplo de ações BR, usado por estrangeiros)</li>
+      <li><strong>Utilities</strong> (IT Now Utilidade Pública)</li>
+    </ul>
+  </div></div>
+  <div class="tv-rich-num"><span class="n">3</span><div class="b">
+    <span class="h">Temáticos/ESG ganham espaço</span>
+    <p>Dois destaques temáticos: o <strong>BTG Amazônia Para Todos</strong> (ESG/sustentabilidade, aposta na "economia verde" da Amazônia) e o <strong>BTG Teva Infraestrutura Híbrido</strong> (infra em formato "híbrido", misturando ações e renda fixa). Isso mostra que as gestoras estão <strong>empacotando teses (Amazônia, infra, value) em ETFs</strong>, produto barato, líquido e fácil de vender para o varejo. <a class="tv-src" href="https://maisretorno.com/etf/dinf11" target="_blank" rel="noopener">[maisretorno.com]</a> <a class="tv-src" href="https://tradar.com.br/etfs/btg-pactual-teva-infraestrutura-hibrido-etf/resumo" target="_blank" rel="noopener">[tradar.com.br]</a></p>
+  </div></div>
+  <div class="tv-rich-num"><span class="n">4</span><div class="b">
+    <span class="h">Infra aparece até no ETF</span>
+    <p>Repare que <strong>infraestrutura</strong> apareceu em TODAS as safras: como FI incentivado (RF), e agora como <strong>ETF híbrido</strong>. É o tema mais transversal da safra, junto com crédito. O <strong>DINF11</strong> é a forma de dar exposição à infra via bolsa, de maneira líquida. <a class="tv-src" href="https://maisretorno.com/etf/dinf11" target="_blank" rel="noopener">[maisretorno.com]</a></p>
+  </div></div>
+  <div class="tv-rich-num"><span class="n">5</span><div class="b">
+    <span class="h">Estrutura RCVM 175: "casca + classe de índice"</span>
+    <p>Vários vêm como <strong>"Classe de Índice"</strong> dentro da nova estrutura da Resolução 175 (ex.: Trend Giant é uma classe sob casca administrada pelo BNP). Confirma que a <strong>175 permitiu multiplicar classes/subclasses</strong> dentro de uma mesma casca, parte do "boom" de registros que vimos.</p>
+  </div></div>
+  <div class="tivio-read">
+    <div class="h">Leitura para a Tivio (fechando o ciclo completo)</div>
+    <p style="margin-bottom:10px">Agora com <strong>as 6 categorias mapeadas</strong> (FIs gerais, FIAGRO, FIP, FIDC, FII, ETF), o quadro da safra de julho/2026 está completo:</p>
+    <ul>
+      <li><strong>Crédito estruturado é o rei</strong>: domina FI, FIDC, FIAGRO e FII de papel. É onde está o dinheiro e a competição.</li>
+      <li><strong>ETF é a exceção "renda variável/temática"</strong>, o único bolsão de bolsa/ações, com forte presença de temáticos (ESG/Amazônia, value, infra, utilities). É um mercado de <strong>beta barato e distribuição em massa</strong>, dominado por quem tem escala (BTG à frente).</li>
+      <li><strong>BTG é onipresente</strong>: lidera FIAGRO, FIP, FIDC e ETF. Se a Tivio compete ou faz parceria em qualquer classe estruturada, o BTG é <strong>a referência competitiva incontornável</strong>.</li>
+      <li><strong>Sinal para o comercial:</strong> para <strong>captação de varejo líquida</strong>, ETF temático está em alta (fácil de vender uma "tese"). Para <strong>produto estruturado/alternativo</strong> (a praia da Tivio), o caminho segue sendo crédito + originação.</li>
+    </ul>
+  </div>
+  <div class="tv-rich-author">Escrito por <b>Vivian Oka · RI</b></div>
+</div>`
+  }
+];
+
+(function(){
+  var btn = document.getElementById('tiviewBtn');
+  var tag = document.getElementById('tiviewBtnTag');
+  var modal = document.getElementById('tiviewModal');
+  var corpo = document.getElementById('tiviewCorpo');
+  var catsWrap = document.getElementById('tiviewCats');
+  var subEl = document.getElementById('tvModalSub');
+  if(!btn || !modal || !corpo || !catsWrap) return;
+
+  var cats = Array.isArray(TIVIEW_CATS) ? TIVIEW_CATS : [];
+  function tem(c){ return c && typeof c.html === 'string' && c.html.trim().length > 0; }
+  var comConteudo = cats.filter(tem);
+
+  if(comConteudo.length === 0){
+    btn.disabled = true;
+    btn.title = 'Conclusoes desta pagina ainda nao publicadas';
+    if(tag) tag.textContent = 'Em breve';
+    return;
+  }
+
+  var atual = null;
+
+  /* ===== Botao ancora "Leitura para a Tivio" (destaque #c1f4d4) ===== */
+  var leituraBar = document.getElementById('tvLeituraBar');
+  var leituraBtn = document.getElementById('tvLeituraAnchor');
+  if(!document.getElementById('tv-leitura-anchor-css')){
+    var _stLeitura = document.createElement('style');
+    _stLeitura.id = 'tv-leitura-anchor-css';
+    _stLeitura.textContent =
+        '.tv-leitura-bar{display:flex;margin:0 0 16px}'
+      + '.tv-leitura-bar[hidden]{display:none}'
+      + '.tv-leitura-anchor{display:inline-flex;align-items:center;gap:9px;padding:9px 18px;border-radius:999px;'
+      + 'border:1px solid #c1f4d4;background:color-mix(in srgb,#c1f4d4 16%,transparent);color:var(--text-primary);'
+      + 'font-family:inherit;font-size:11px;font-weight:700;letter-spacing:.4px;text-transform:uppercase;cursor:pointer;'
+      + 'transition:background .18s,color .18s,transform .18s,box-shadow .18s;white-space:nowrap}'
+      + '.tv-leitura-anchor::before{content:"";width:9px;height:9px;border-radius:50%;background:#c1f4d4;'
+      + 'box-shadow:0 0 0 3px color-mix(in srgb,#c1f4d4 30%,transparent);flex:0 0 auto}'
+      + '.tv-leitura-anchor::after{content:"\\2193";font-size:13px;font-weight:700}'
+      + '.tv-leitura-anchor:hover{background:#c1f4d4;color:#0A2415;transform:translateY(-1px);'
+      + 'box-shadow:0 6px 18px color-mix(in srgb,#c1f4d4 35%,transparent)}'
+      + '.tv-leitura-anchor:active{transform:translateY(0) scale(.97)}';
+    document.head.appendChild(_stLeitura);
+  }
+  if(!document.getElementById('tv-viz-css')){
+    var _stViz = document.createElement('style');
+    _stViz.id = 'tv-viz-css';
+    _stViz.textContent = [
+      '.tvv{display:flex;flex-direction:column;gap:14px;margin:0 0 22px}',
+      '.tvv-head{display:flex;align-items:center;gap:10px;font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--tivio);font-weight:800}',
+      '.tvv-head::before{content:"";width:7px;height:7px;border-radius:50%;background:#c1f4d4;box-shadow:0 0 0 3px color-mix(in srgb,#c1f4d4 28%,transparent);flex:0 0 auto}',
+      '.tvv-head .ln{flex:1;height:1px;background:color-mix(in srgb,var(--veil) 8%,transparent)}',
+      '.tvv-stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(122px,1fr));gap:10px}',
+      '.tvv-stat{background:color-mix(in srgb,var(--veil) 2.5%,transparent);border:1px solid color-mix(in srgb,var(--veil) 7%,transparent);border-top:2px solid color-mix(in srgb,var(--veil) 14%,transparent);border-radius:12px;padding:14px 15px;display:flex;flex-direction:column;gap:2px;transition:transform .18s,border-color .18s}',
+      '.tvv-stat:hover{transform:translateY(-2px)}',
+      '.tvv-stat.key{border-top-color:#c1f4d4;background:color-mix(in srgb,#c1f4d4 6%,transparent)}',
+      '.tvv-stat .n{font-size:clamp(19px,2.3vw,26px);font-weight:800;letter-spacing:-.5px;line-height:1.05;color:var(--text-primary)}',
+      '.tvv-stat.key .n{color:var(--tivio)}',
+      '.tvv-stat .l{font-size:9.5px;letter-spacing:1px;text-transform:uppercase;color:var(--muted);font-weight:700;margin-top:7px}',
+      '.tvv-stat .s{font-size:10.5px;color:color-mix(in srgb,var(--veil) 55%,transparent);line-height:1.35;margin-top:2px}',
+      '.tvv-panel{background:color-mix(in srgb,var(--veil) 2%,transparent);border:1px solid color-mix(in srgb,var(--veil) 6%,transparent);border-radius:12px;padding:16px 18px}',
+      '.tvv-panel .pt{font-size:11.5px;font-weight:700;letter-spacing:.3px;color:var(--text-primary);margin-bottom:13px;display:flex;align-items:center;gap:9px;flex-wrap:wrap}',
+      '.tvv-panel .pt span{font-size:9px;letter-spacing:1px;text-transform:uppercase;color:var(--muted);font-weight:700;border-left:1px solid color-mix(in srgb,var(--veil) 12%,transparent);padding-left:9px}',
+      '.tvv-bars{display:flex;flex-direction:column;gap:9px}',
+      '.tvv-bar{display:flex;align-items:center;gap:12px}',
+      '.tvv-bar .bl{width:76px;flex:0 0 auto;font-size:11.5px;font-weight:600;color:color-mix(in srgb,var(--veil) 88%,transparent);text-align:right;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}',
+      '.tvv-bar .bt{flex:1;height:22px;background:color-mix(in srgb,var(--veil) 4%,transparent);border-radius:6px;overflow:hidden}',
+      '.tvv-bar .bf{height:100%;border-radius:6px;transition:width .85s cubic-bezier(.22,.9,.32,1);min-width:3px}',
+      '.tvv-bar .bv{width:30px;flex:0 0 auto;font-size:13px;font-weight:800;font-variant-numeric:tabular-nums;color:var(--text-primary)}',
+      '.tvv-comp{display:flex;flex-direction:column;gap:12px}',
+      '.tvv-comp-bar{display:flex;height:26px;border-radius:8px;overflow:hidden;border:1px solid color-mix(in srgb,var(--veil) 8%,transparent)}',
+      '.tvv-comp-seg{height:100%;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:800;color:#0A2415;min-width:0;transition:width .85s cubic-bezier(.22,.9,.32,1)}',
+      '.tvv-comp-legend{display:flex;flex-wrap:wrap;gap:12px}',
+      '.tvv-comp-legend .li{display:flex;align-items:center;gap:7px;font-size:11px;color:color-mix(in srgb,var(--veil) 85%,transparent)}',
+      '.tvv-comp-legend .dot{width:9px;height:9px;border-radius:3px;flex:0 0 auto}',
+      '.tvv-comp-legend b{color:var(--text-primary);font-weight:800}',
+      '.tv-rich .tv-rich-title{position:relative;padding-bottom:9px}',
+      '.tv-rich .tv-rich-title::after{content:"";position:absolute;left:0;bottom:0;width:38px;height:2px;background:#c1f4d4;border-radius:2px}',
+      '.tv-rich .tv-rich-num{border-left:2px solid color-mix(in srgb,#c1f4d4 38%,transparent);transition:border-color .18s,background .18s,transform .18s}',
+      '.tv-rich .tv-rich-num:hover{border-left-color:#c1f4d4;background:color-mix(in srgb,#c1f4d4 4%,transparent);transform:translateX(2px)}',
+      '.tv-rich .tivio-read{margin-top:20px;padding:0;border:1px solid color-mix(in srgb,#c1f4d4 26%,transparent);border-radius:16px;background:color-mix(in srgb,#c1f4d4 4%,transparent);overflow:hidden}',
+      '.tv-rich .tivio-read .h{display:flex;align-items:center;gap:10px;margin:0;padding:13px 18px;font-size:11px;letter-spacing:2px;text-transform:uppercase;color:#0A2415;font-weight:800;background:#c1f4d4}',
+      '.tv-rich .tivio-read .h::before{content:"";width:8px;height:8px;border-radius:2px;background:#0A2415;flex:0 0 auto}',
+      '.tv-rich .tivio-read>p{padding:14px 18px 0;margin:0;font-size:12.5px;line-height:1.65}',
+      '.tv-rich .tivio-read ul{list-style:none;margin:0;padding:6px 18px 16px;display:block}',
+      '.tv-rich .tivio-read li{display:block;position:relative;padding:13px 0 13px 32px;font-size:12.5px;line-height:1.65;color:color-mix(in srgb,var(--veil) 90%,transparent);border-bottom:1px solid color-mix(in srgb,#c1f4d4 13%,transparent)}',
+      '.tv-rich .tivio-read li:last-child{border-bottom:none}',
+      '.tv-rich .tivio-read li b,.tv-rich .tivio-read li strong{color:var(--text-primary);font-weight:800}',
+      '.tv-rich .tivio-read li::before{content:"\\2713";position:absolute;left:0;top:12px;width:20px;height:20px;display:inline-flex;align-items:center;justify-content:center;border-radius:6px;background:#c1f4d4;color:#0A2415;font-size:11px;font-weight:900}'
+    ].join('');
+    document.head.appendChild(_stViz);
+  }
+  var VIZ_TIVIEW = {
+    fi:{stats:[{n:"82",l:"Classes no mês",s:"Jul/26",key:true},{n:"62%",l:"Crédito + Infra",s:"do total da safra"},{n:"58",l:"Exclusivas",s:"71% · RCVM 175"},{n:"7",l:"Previdência",s:"puxada por crédito"}],
+       bt:"Emissão por gestora",bl:"Jul/26 · nº de classes",bars:[{n:"Itaú",v:22,c:"#EC7000"},{n:"Bradesco",v:20,c:"#CC092F"},{n:"Vinci",v:16,c:"#4A90E2"},{n:"BTG",v:13,c:"#0057B8"},{n:"Kinea",v:3,c:"#00A69C"},{n:"XP",v:2,c:"#E20A17"},{n:"SPX",v:2,c:"#6F42C1"},{n:"Augme",v:1,c:"#9B59B6"}],
+       ct:"Composição da safra",cl:"82 classes",comp:[{n:"Crédito privado",v:30,c:"#4A90E2"},{n:"Infra incentivada",v:21,c:"#F5A623"},{n:"Demais estratégias",v:31,c:"#c1f4d4"}]},
+    fiagro:{stats:[{n:"5",l:"FIAGROs",s:"Jul/26",key:true},{n:"3",l:"pelo BTG",s:"60% da safra"},{n:"0",l:"Boutiques",s:"só bancões"},{n:"4/5",l:"Cadeias Prod.",s:"estrutura FIDC-agro"}],
+       bt:"Emissão por gestora",bl:"Jul/26",bars:[{n:"BTG",v:3,c:"#0057B8"},{n:"Itaú",v:1,c:"#EC7000"},{n:"Bradesco",v:1,c:"#CC092F"}]},
+    fip:{stats:[{n:"1",l:"FIP registrado",s:"Jul/26",key:true},{n:"BTG",l:"Único emissor",s:"veículo exclusivo"},{n:"Fechado",l:"Estrutura",s:"institucional"}],
+       bt:"Emissão por classe",bl:"Jul/26 · FIP é o mais raro",bars:[{n:"FI",v:82,c:"#5a6b74"},{n:"FIDC",v:6,c:"#5a6b74"},{n:"FII",v:6,c:"#5a6b74"},{n:"FIAGRO",v:5,c:"#5a6b74"},{n:"ETF",v:5,c:"#5a6b74"},{n:"FIP",v:1,c:"#c1f4d4"}]},
+    fidc:{stats:[{n:"6",l:"FIDCs",s:"Jul/26",key:true},{n:"3+3",l:"Riza e BTG",s:"únicos emissores"},{n:"5/6",l:"Fechados",s:"warehouse/dedicados"},{n:"1",l:"Já operando",s:"BTG Apolo II"}],
+       bt:"Emissão por gestora",bl:"Jul/26",bars:[{n:"Riza",v:3,c:"#00C389"},{n:"BTG",v:3,c:"#0057B8"}]},
+    fii:{stats:[{n:"6",l:"FIIs",s:"Jul/26",key:true},{n:"5",l:"pela XP",s:"83% da safra"},{n:"4",l:"FIIs de papel",s:"CRI atrelado ao CDI"},{n:"R$1,1bi",l:"Office Prime",s:"aposta em lajes AAA"}],
+       bt:"Emissão por gestora",bl:"Jul/26",bars:[{n:"XP",v:5,c:"#E20A17"},{n:"SPX",v:1,c:"#6F42C1"}],
+       ct:"Perfil dos FIIs",cl:"6 fundos",comp:[{n:"Papel (CRI)",v:4,c:"#4A90E2"},{n:"Tijolo (lajes/log)",v:2,c:"#c1f4d4"}]},
+    etf:{stats:[{n:"5",l:"ETFs",s:"Jul/26",key:true},{n:"3",l:"pelo BTG",s:"60% da safra"},{n:"3",l:"Casas",s:"BTG · XP · Itaú"},{n:"RV",l:"Exceção da safra",s:"fora do crédito"}],
+       bt:"Emissão por gestora",bl:"Jul/26",bars:[{n:"BTG",v:3,c:"#0057B8"},{n:"XP",v:1,c:"#E20A17"},{n:"Itaú",v:1,c:"#EC7000"}],
+       ct:"Teses empacotadas",cl:"temáticos",comp:[{n:"Value / Amplo",v:2,c:"#4A90E2"},{n:"Infra / Utilities",v:2,c:"#F5A623"},{n:"ESG / Amazônia",v:1,c:"#c1f4d4"}]}
+  };
+  function construirVizTiView(id){
+    var d = VIZ_TIVIEW[id]; if(!d) return '';
+    var html = '<div class="tvv"><div class="tvv-head">Panorama em números<span class="ln"></span></div>';
+    html += '<div class="tvv-stats">';
+    d.stats.forEach(function(s){ html += '<div class="tvv-stat'+(s.key?' key':'')+'"><div class="n">'+s.n+'</div><div class="l">'+s.l+'</div><div class="s">'+s.s+'</div></div>'; });
+    html += '</div>';
+    if(d.bars && d.bars.length){
+      var mx = Math.max.apply(null, d.bars.map(function(b){return b.v;})) || 1;
+      html += '<div class="tvv-panel"><div class="pt">'+d.bt+'<span>'+d.bl+'</span></div><div class="tvv-bars">';
+      d.bars.forEach(function(b){ html += '<div class="tvv-bar"><div class="bl" title="'+b.n+'">'+b.n+'</div><div class="bt"><div class="bf" style="width:'+(b.v/mx*100).toFixed(1)+'%;background:linear-gradient(90deg,'+b.c+',color-mix(in srgb,'+b.c+' 55%,transparent))"></div></div><div class="bv">'+b.v+'</div></div>'; });
+      html += '</div></div>';
+    }
+    if(d.comp && d.comp.length){
+      var tot = d.comp.reduce(function(a,b){return a+b.v;}, 0) || 1;
+      html += '<div class="tvv-panel"><div class="pt">'+d.ct+'<span>'+d.cl+'</span></div><div class="tvv-comp"><div class="tvv-comp-bar">';
+      d.comp.forEach(function(c){ var p=(c.v/tot*100); html += '<div class="tvv-comp-seg" style="width:'+p.toFixed(1)+'%;background:'+c.c+'" title="'+c.n+': '+c.v+'">'+(p>=12?Math.round(p)+'%':'')+'</div>'; });
+      html += '</div><div class="tvv-comp-legend">';
+      d.comp.forEach(function(c){ html += '<div class="li"><span class="dot" style="background:'+c.c+'"></span>'+c.n+' <b>'+c.v+'</b></div>'; });
+      html += '</div></div></div>';
+    }
+    html += '</div>';
+    return html;
+  }
+  function irParaLeitura(){
+    var alvo = corpo.querySelector('.tivio-read');
+    if(!alvo) return;
+    var card = modal.querySelector('.tv-modal-card');
+    if(card){
+      var topo = alvo.getBoundingClientRect().top - card.getBoundingClientRect().top + card.scrollTop - 12;
+      card.scrollTo({ top: topo, behavior: 'smooth' });
+    } else {
+      alvo.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+  }
+  if(leituraBtn){ leituraBtn.addEventListener('click', irParaLeitura); }
+
+  function selecionar(cat){
+    if(!tem(cat)) return;
+    atual = cat;
+    Array.prototype.forEach.call(catsWrap.children, function(b){
+      b.classList.toggle('active', b.getAttribute('data-cat-id') === cat.id);
+    });
+    if(subEl && cat.sub){ subEl.innerHTML = '<b>Monitor &middot; Novos Fundos</b> &middot; ' + cat.sub; }
+    corpo.innerHTML = construirVizTiView(cat.id) + cat.html;
+    if(leituraBar){ leituraBar.hidden = !corpo.querySelector('.tivio-read'); }
+    corpo.classList.remove('is-visible'); void corpo.offsetWidth;
+    requestAnimationFrame(function(){ corpo.classList.add('is-visible'); });
+  }
+
+  cats.forEach(function(cat){
+    var b = document.createElement('button');
+    b.type = 'button';
+    b.className = 'tv-cat-btn';
+    b.setAttribute('data-cat-id', cat.id);
+    if(tem(cat)){
+      b.textContent = 'TiView · ' + cat.nome;
+      b.addEventListener('click', function(){ selecionar(cat); });
+    } else {
+      b.innerHTML = 'TiView · ' + cat.nome + ' <span class="tv-cat-soon">Em breve</span>';
+      b.disabled = true;
+      b.title = 'Conclusoes desta categoria ainda nao publicadas';
+    }
+    catsWrap.appendChild(b);
+  });
+
+  function abrir(){
+    modal.hidden = false; document.body.style.overflow = 'hidden';
+    if(!atual){ selecionar(comConteudo[0]); }
+    else { corpo.classList.remove('is-visible'); void corpo.offsetWidth; requestAnimationFrame(function(){ corpo.classList.add('is-visible'); }); }
+    var _c = modal.querySelector('.tv-modal-close'); if(_c) _c.focus();
+  }
+  function fechar(){ modal.hidden = true; document.body.style.overflow = ''; }
+
+  try{
+    var _k='tiview-cats-lido-Ago26';
+    if(!localStorage.getItem(_k)){
+      btn.classList.add('tem-novidade');
+      btn.addEventListener('click',function(){
+        btn.classList.remove('tem-novidade');
+        try{localStorage.setItem(_k,'1');}catch(e){}
+      },{once:true});
+    }
+  }catch(e){}
+
+  btn.addEventListener('click', abrir);
+  modal.querySelectorAll('[data-tvclose]').forEach(function(e){ e.addEventListener('click', fechar); });
+  document.addEventListener('keydown', function(e){ if(e.key === 'Escape' && !modal.hidden) fechar(); });
+})();
+</script>
+<!-- ============ TIVIO DS · CONTROLE DE TEMA (persistente entre dashboards) ============ -->
+<script id="tivio-ds-theme">
+(function(){
+  var KEY='tivio-ds-theme';
+  var root=document.documentElement;
+  var mq=window.matchMedia?window.matchMedia('(prefers-color-scheme: dark)'):null;
+
+  /* Dois botões apenas: claro e escuro.
+     "Seguir o navegador" continua existindo, mas como ESTADO INICIAL: enquanto
+     o usuário não escolher, a página acompanha o sistema (inclusive ao vivo).
+     No primeiro clique a escolha passa a mandar e fica gravada.            */
+  function doSistema(){ return (mq&&mq.matches)?'dark':'light'; }
+  function escolhido(){
+    var v;try{v=localStorage.getItem(KEY);}catch(e){}
+    return (v==='light'||v==='dark')?v:null;   /* null = ainda seguindo o sistema */
+  }
+  function pinta(){
+    var t=escolhido()||doSistema();
+    root.setAttribute('data-theme',t);
+    document.querySelectorAll('.tv-theme-toggle button').forEach(function(b){
+      var on=b.dataset.themeSet===t;
+      b.classList.toggle('active',on);
+      b.setAttribute('aria-pressed',String(on));
+    });
+  }
+  function define(t){
+    try{localStorage.setItem(KEY,t);}catch(e){}
+    pinta();
+  }
+
+  /* pinta antes da primeira renderização, evitando piscar de tema */
+  pinta();
+
+  /* enquanto não houver escolha, acompanha a troca de tema do sistema ao vivo */
+  if(mq){
+    var ouvir=function(){ if(!escolhido())pinta(); };
+    if(mq.addEventListener)mq.addEventListener('change',ouvir);
+    else if(mq.addListener)mq.addListener(ouvir);
+  }
+
+  function build(){
+    if(document.querySelector('.tv-theme-toggle'))return;
+    var wrap=document.createElement('div');
+    wrap.className='tv-theme-toggle';
+    wrap.setAttribute('role','group');
+    wrap.setAttribute('aria-label','Tema da página');
+    wrap.innerHTML=''
+      +'<button type="button" data-theme-set="light" title="Modo claro" aria-label="Modo claro"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></svg></button>'
+      +'<button type="button" data-theme-set="dark" title="Modo escuro" aria-label="Modo escuro"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg></button>';
+    wrap.addEventListener('click',function(e){
+      var b=e.target.closest('button[data-theme-set]');
+      if(b)define(b.dataset.themeSet);
+    });
+    /* Último item da barra do topo: alinhado à direita, no mesmo eixo do logo. */
+    var barra=document.querySelector('.topbar')
+           || document.querySelector('.dash-switcher')
+           || document.body;
+    barra.appendChild(wrap);
+    pinta();
+    /* o menu precisa remedir: o toggle acabou de ocupar espaço na barra */
+    window.dispatchEvent(new Event('resize'));
+  }
+  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',build);
+  else build();
+})();
+</script>
+
+<script id="tivio-ds-tokens-bridge">
+(function(){
+  /* ---- PONTE DE TOKENS: cores literais geradas por JS (gráficos, tabelas
+         renderizadas dinamicamente) passam a usar os tokens do DS ---- */
+  var MAP={'#C1F4D4':'var(--accent-strong)','#8FD0AB':'var(--tv-verde-escuro)',
+    '#5D9C59':'var(--tv-agro)','#E94E77':'var(--tv-neg)','#F5A623':'var(--tv-warn)',
+    '#4A90E2':'var(--tv-info)','#9B59B6':'var(--tv-roxo)','#6F42C1':'var(--tv-roxo)',
+    '#00C389':'var(--tv-pos)','#17B890':'var(--tv-pos)','#3DDC97':'var(--tv-pos)',
+    '#CC092F':'var(--tv-bradesco)','#A7A7A7':'var(--text-muted)','#8A8A8A':'var(--text-muted)',
+    '#FFFFFF':'var(--text-primary)','#0F0F0F':'var(--bg-elev-1)','#0A0A0A':'var(--bg-elev-1)',
+    '#161616':'var(--bg-elev-2)','#050505':'var(--bg-base)','#FFF':'var(--text-primary)',
+    '#000':'var(--bg-base)','#666':'var(--text-muted)','#888':'var(--text-muted)',
+    '#FFC700':'var(--brand-amarelo)','#EC7000':'var(--brand-laranja)',
+    '#00A69C':'var(--brand-teal)','#0057B8':'var(--brand-azul)',
+    '#003DA5':'var(--brand-azul-esc)','#E20A17':'var(--brand-vermelho)'};
+  /* mapa aplicado quando o hex está na posição `color:` */
+  var TXT={'#050505':'var(--ink)','#000':'var(--ink)','#000000':'var(--ink)',
+    '#0A0A0A':'var(--ink)','#0A2415':'var(--ink)',
+    '#FFC700':'var(--brand-amarelo-txt)','#EC7000':'var(--brand-laranja-txt)',
+    '#00A69C':'var(--brand-teal-txt)','#0057B8':'var(--brand-azul-txt)',
+    '#003DA5':'var(--brand-azul-esc-txt)','#E20A17':'var(--brand-vermelho-txt)'};
+  var RE=/#[0-9A-Fa-f]{8}\b|#[0-9A-Fa-f]{6}\b|#[0-9A-Fa-f]{3}\b/g;
+  var RE_COLOR=/(^|[;\s{])(color\s*:\s*)(#[0-9A-Fa-f]{3,8})\b/g;
+  function sub(css){
+    /* 1) color: <hex> -> mapa de texto (tinta fixa / marcas escurecidas) */
+    css=css.replace(RE_COLOR,function(all,pre,prop,hex){
+      var t=TXT[hex.toUpperCase()];
+      return t?pre+prop+t:all;
+    });
+    /* 2) demais literais -> tokens do DS */
+    css=css.replace(RE,function(h){
+      var aa=h.length===9?h.substring(7,9):null;
+      var base=(aa?h.substring(0,7):h).toUpperCase();
+      var tok=MAP[base]; if(!tok)return h;
+      if(aa){var p=(parseInt(aa,16)/255*100).toFixed(1);
+             return 'color-mix(in srgb,'+tok+' '+p+'%,transparent)';}
+      return tok;
+    });
+    /* 3) fundo de marca claro (amarelo) exige tinta escura, nunca branco */
+    if(css.indexOf('var(--brand-amarelo)')>=0)
+      css=css.replace(/(\bcolor\s*:\s*)var\(--text-primary\)/g,'$1var(--ink)');
+    return css;
+  }
+  function patch(el){
+    var v=el.getAttribute&&el.getAttribute('style');
+    if(!v||v.indexOf('#')<0)return;
+    var n=sub(v); if(n!==v)el.setAttribute('style',n);
+  }
+  function sweep(node){
+    if(node.nodeType!==1)return;
+    patch(node);
+    var list=node.querySelectorAll?node.querySelectorAll('[style*="#"]'):[];
+    for(var i=0;i<list.length;i++)patch(list[i]);
+  }
+  function start(){
+    sweep(document.body);
+    if(!('MutationObserver' in window))return;
+    var pend=[],sched=false;
+    new MutationObserver(function(muts){
+      for(var i=0;i<muts.length;i++){
+        var m=muts[i];
+        if(m.type==='attributes'){pend.push(m.target);}
+        else for(var j=0;j<m.addedNodes.length;j++)pend.push(m.addedNodes[j]);
+      }
+      if(sched||!pend.length)return; sched=true;
+      requestAnimationFrame(function(){
+        var q=pend;pend=[];sched=false;
+        for(var k=0;k<q.length;k++)sweep(q[k]);
+      });
+    }).observe(document.body,{childList:true,subtree:true,attributes:true,attributeFilter:['style']});
+  }
+  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',start);
+  else start();
+})();
+</script>
+<script id="tivio-ds-reveal">
+/* Dispara o reveal com stagger quando o bloco entra na viewport.
+   Alvos: KPIs, cartões do hub e blocos marcados com .tv-reveal.       */
+(function(){
+  function marcar(){
+    var alvos=document.querySelectorAll('.kpi-row,.hub-cards,.hub-points,.tv-reveal');
+    if(!alvos.length)return;
+    alvos.forEach(function(el){el.classList.add('tv-reveal');});
+    if(!('IntersectionObserver' in window)){
+      alvos.forEach(function(el){el.classList.add('is-visible');});return;
+    }
+    var io=new IntersectionObserver(function(ents){
+      ents.forEach(function(e){
+        if(e.isIntersecting){e.target.classList.add('is-visible');io.unobserve(e.target);}
+      });
+    },{threshold:.12,rootMargin:'0px 0px -40px 0px'});
+    alvos.forEach(function(el){io.observe(el);});
+  }
+  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',marcar);
+  else marcar();
+})();
+</script>
+<script id="tivio-ds-transicao-js">
+/* ============ TRANSIÇÃO ENTRE DASHBOARDS ============
+   Intercepta os links internos, aplica o fade de saída e só então navega.
+   Tudo é defensivo: qualquer falha cai no comportamento padrão do link. */
+(function(){
+  var raiz=document.documentElement;
+  var REDUZIR=window.matchMedia&&window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  /* --- véu --- */
+  var veu=document.createElement('div');
+  veu.className='tv-veu';
+  veu.setAttribute('aria-hidden','true');
+  function montaVeu(){ if(document.body&&!veu.parentNode)document.body.appendChild(veu); }
+  if(document.body)montaVeu(); else document.addEventListener('DOMContentLoaded',montaVeu);
+
+  /* --- entrada --- */
+  /* A entrada e feita por CSS no <head> (tivio-ds-boot-transicao).
+     Fazia-se aqui com a classe `tv-entrando`, mas este script roda no
+     fim do documento: o conteudo ja estava pintado e saltava para tras
+     para poder "entrar". Agora so resta limpar o estado de saida. */
+  function entrar(){
+    raiz.classList.remove('tv-saindo');
+  }
+  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',entrar);
+  else entrar();
+
+  /* Voltar/avançar pelo histórico: o navegador pode restaurar a página do
+     cache com o véu ainda aplicado. Limpa sempre.                        */
+  window.addEventListener('pageshow',function(){
+    raiz.classList.remove('tv-saindo');
+  });
+  window.addEventListener('popstate',function(){ raiz.classList.remove('tv-saindo'); });
+
+  /* --- saída --- */
+  function interno(a){
+    if(!a)return false;
+    if(a.target&&a.target!=='_self')return false;
+    if(a.hasAttribute('download'))return false;
+    var href=a.getAttribute('href')||'';
+    if(!href||href.charAt(0)==='#')return false;
+    if(/^(mailto:|tel:|javascript:)/i.test(href))return false;
+    /* só arquivos .html vizinhos, que é o caso dos dashboards */
+    return /\.html(\?|#|$)/i.test(href)&&!/^[a-z]+:\/\//i.test(href);
+  }
+
+  document.addEventListener('click',function(e){
+    if(e.defaultPrevented)return;
+    if(e.button!==0||e.metaKey||e.ctrlKey||e.shiftKey||e.altKey)return;
+    var a=e.target.closest&&e.target.closest('a[href]');
+    if(!interno(a))return;
+
+    var url=a.getAttribute('href');
+    /* mesma página: não faz sentido animar */
+    try{
+      var atual=location.pathname.split('/').pop();
+      if(url.split('#')[0]===atual)return;
+    }catch(_){}
+
+    /* Delay removido: a passagem entre dashboards e imediata, sem fade de saida. */
+    return;
+  },false);
+  /* Fase de bolha (e não captura) de propósito: o menu do topo cancela o
+     clique quando o usuário estava arrastando a barra. Em captura, esse
+     cancelamento chegaria tarde demais e a página navegaria sem querer.  */
+})();
+</script>
+<script id="tivio-ds-movimento">
+/* Marca tabelas curtas para entrada em cascata e reaplica a animação
+   quando o painel de abas troca. Tabelas longas ficam de fora: cascata
+   em centenas de linhas atrapalha a leitura e pesa no scroll.          */
+(function(){
+  var LIMITE=40;
+  function marcar(escopo){
+    (escopo||document).querySelectorAll('table').forEach(function(t){
+      var tb=t.tBodies&&t.tBodies[0];
+      if(!tb)return;
+      if(tb.rows.length>0&&tb.rows.length<=LIMITE)t.classList.add('tv-linhas');
+      else t.classList.remove('tv-linhas');
+    });
+  }
+  function reanimar(el){
+    if(!el)return;
+    el.querySelectorAll('.tv-linhas').forEach(function(t){
+      t.classList.remove('tv-linhas'); void t.offsetWidth; t.classList.add('tv-linhas');
+    });
+  }
+  function iniciar(){
+    marcar();
+    document.addEventListener('click',function(e){
+      var b=e.target.closest&&e.target.closest('.tab-btn,.tv-tab-btn,.subtab-btn,.month-pill');
+      if(!b)return;
+      setTimeout(function(){
+        var p=document.querySelector('.tab-panel.active,.tv-tab-panel.active');
+        marcar(p||document); reanimar(p);
+      },30);
+    });
+  }
+  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',iniciar);
+  else iniciar();
+})();
+</script>
+<script>
+/* v3.3 · menu do topo: rolagem lateral com setas */
+(function(){
+  var wrap = document.querySelector('.topbar-navwrap');
+  if(!wrap) return;
+  var nav = wrap.querySelector('.topbar-nav');
+  var esq = wrap.querySelector('.nav-arrow.esq');
+  var dir = wrap.querySelector('.nav-arrow.dir');
+  if(!nav || !esq || !dir) return;
+
+  function excede(){
+    if(!nav.clientWidth) return true;              /* sem layout ainda: mostra as setas */
+    return nav.scrollWidth - nav.clientWidth > 4;
+  }
+  function atualiza(){
+    var rolavel = excede();
+    wrap.classList.toggle('rolavel', rolavel);
+    if(!rolavel) return;
+    esq.disabled = nav.scrollLeft <= 2;
+    dir.disabled = nav.scrollLeft + nav.clientWidth >= nav.scrollWidth - 2;
+  }
+  function passo(){ return Math.max(180, nav.clientWidth * 0.6); }
+  function rola(d){
+    if(typeof nav.scrollBy === 'function') nav.scrollBy({left: d, behavior: 'smooth'});
+    else nav.scrollLeft += d;
+    setTimeout(atualiza, 320);
+  }
+  esq.addEventListener('click', function(){ rola(-passo()); });
+  dir.addEventListener('click', function(){ rola(passo()); });
+  nav.addEventListener('scroll', atualiza, {passive:true});
+
+  /* roda do mouse na horizontal */
+  nav.addEventListener('wheel', function(e){
+    if(Math.abs(e.deltaX) > Math.abs(e.deltaY)) return;   /* trackpad ja rola sozinho */
+    if(!excede()) return;
+    e.preventDefault();
+    nav.scrollLeft += e.deltaY;
+  }, {passive:false});
+
+  /* arrastar com o mouse */
+  var arrastando = false, x0 = 0, s0 = 0, moveu = 0;
+  nav.addEventListener('mousedown', function(e){
+    arrastando = true; moveu = 0; x0 = e.pageX; s0 = nav.scrollLeft;
+    nav.classList.add('arrastando');
+  });
+  window.addEventListener('mousemove', function(e){
+    if(!arrastando) return;
+    var d = e.pageX - x0;
+    moveu = Math.abs(d);
+    nav.scrollLeft = s0 - d;
+  });
+  window.addEventListener('mouseup', function(){
+    if(!arrastando) return;
+    arrastando = false;
+    nav.classList.remove('arrastando');
+    atualiza();
+  });
+  nav.addEventListener('click', function(e){
+    if(moveu > 6){ e.preventDefault(); e.stopPropagation(); }   /* nao navega ao arrastar */
+  }, true);
+
+  /* remede sempre que o layout puder ter mudado */
+  window.addEventListener('resize', atualiza);
+  window.addEventListener('load', atualiza);
+  if(document.fonts && document.fonts.ready) document.fonts.ready.then(atualiza).catch(function(){});
+  if(window.ResizeObserver){
+    var ro = new ResizeObserver(atualiza);
+    ro.observe(nav);
+    ro.observe(wrap);
+  }
+  [0, 100, 400, 1200].forEach(function(t){ setTimeout(atualiza, t); });
+
+  /* abre com a aba ativa visivel */
+  var ativa = nav.querySelector('.dash-tab.active');
+  if(ativa){
+    setTimeout(function(){
+      if(excede()){
+        var _ar = ativa.getBoundingClientRect(), _nr = nav.getBoundingClientRect();
+        var _max = nav.scrollWidth - nav.clientWidth;
+        var _alvo = nav.scrollLeft + (_ar.left - _nr.left) - (nav.clientWidth - _ar.width) / 2;
+        var _sb = nav.style.scrollBehavior; nav.style.scrollBehavior = 'auto';
+        nav.scrollLeft = Math.max(0, Math.min(_alvo, _max));
+        nav.style.scrollBehavior = _sb || '';
+        atualiza();
+      }
+    }, 150);
+  }
+})();
+</script>
+<script id="tivio-ds-navoverflow-js">
+/* Complementa o controle de rolagem do menu:
+   - marca as classes .no-esq / .no-dir para a máscara de esmaecimento
+   - leva a aba ativa para o campo de visão ao abrir a página
+   - habilita navegação por teclado (setas ← →, Home, End)              */
+(function(){
+  var wrap=document.querySelector('.topbar-navwrap');
+  if(!wrap)return;
+  var nav=wrap.querySelector('.topbar-nav');
+  if(!nav)return;
+
+  function bordas(){
+    var fim=nav.scrollWidth-nav.clientWidth;
+    wrap.classList.toggle('no-esq',nav.scrollLeft<=2);
+    wrap.classList.toggle('no-dir',fim<=2||nav.scrollLeft>=fim-2);
+  }
+  nav.addEventListener('scroll',bordas,{passive:true});
+
+  /* O scroller usa `scroll-behavior:smooth` para os cliques nas setas. No
+     posicionamento inicial isso atrapalha: cada atribuição vira animação e
+     as leituras seguintes pegam valores intermediários, fazendo o cálculo
+     brigar consigo mesmo. Aqui o salto precisa ser instantâneo.          */
+  function semAnimacao(fn){
+    var antes=nav.style.scrollBehavior;
+    nav.style.scrollBehavior='auto';
+    fn();
+    nav.style.scrollBehavior=antes||'';
+  }
+
+  function mostrarAtiva(){
+    var a=nav.querySelector('.dash-tab.active');
+    if(!a)return bordas();
+    var max=nav.scrollWidth-nav.clientWidth;
+    if(max<=0){semAnimacao(function(){nav.scrollLeft=0;});return bordas();}
+    var ar=a.getBoundingClientRect(), nr=nav.getBoundingClientRect();
+    if(ar.left<nr.left+1||ar.right>nr.right-1){
+      var alvo=nav.scrollLeft+(ar.left-nr.left)-(nav.clientWidth-ar.width)/2;
+      semAnimacao(function(){
+        nav.scrollLeft=Math.max(0,Math.min(alvo,max));  /* absoluto e limitado */
+      });
+    }
+    bordas();
+  }
+
+  nav.setAttribute('tabindex','0');
+  nav.addEventListener('keydown',function(e){
+    var passo=Math.max(180,nav.clientWidth*0.6),d=0;
+    if(e.key==='ArrowRight')d=passo;
+    else if(e.key==='ArrowLeft')d=-passo;
+    else if(e.key==='Home')d=-nav.scrollWidth;
+    else if(e.key==='End')d=nav.scrollWidth;
+    else return;
+    e.preventDefault();
+    if(typeof nav.scrollBy==='function')nav.scrollBy({left:d,behavior:'smooth'});
+    else nav.scrollLeft+=d;
+    setTimeout(bordas,320);
+  });
+
+  /* O usuário rolando manualmente tem prioridade: a partir daí não
+     reposicionamos mais sozinhos.                                        */
+  var tocado=false;
+  ['pointerdown','wheel','keydown'].forEach(function(ev){
+    nav.addEventListener(ev,function(){tocado=true;},{passive:true,once:true});
+  });
+  nav.querySelectorAll('.nav-arrow,.dash-tab').forEach(function(el){
+    el.addEventListener('click',function(){tocado=true;});
+  });
+  wrap.querySelectorAll('.nav-arrow').forEach(function(el){
+    el.addEventListener('click',function(){tocado=true;});
+  });
+
+  /* Qualquer mudança tardia de layout (fonte que chega atrasada, scrollbar
+     que aparece, reveal que altera a altura) reposiciona a aba ativa.
+     Sem isso, a medição feita cedo demais deixava a aba fora de vista.    */
+  var t=null;
+  function reposiciona(){
+    if(tocado)return bordas();
+    clearTimeout(t);
+    t=setTimeout(function(){ if(!tocado)mostrarAtiva(); else bordas(); },60);
+  }
+  window.addEventListener('resize',reposiciona);
+  if(window.ResizeObserver){
+    var ro=new ResizeObserver(reposiciona);
+    ro.observe(nav);
+    [].forEach.call(nav.children,function(c){ro.observe(c);});
+  }
+
+  /* Convergência por quadro: o menu só pode ser medido quando a largura
+     do conteúdo para de mudar (fonte, ícones e badges já aplicados).
+     Repete a cada frame até estabilizar, em vez de apostar num timeout. */
+  var ultimoW=-1, estavel=0, inicio=Date.now();
+  (function converge(){
+    if(tocado)return;
+    var w=nav.scrollWidth;
+    if(w===ultimoW){estavel++;}else{estavel=0;ultimoW=w;}
+    mostrarAtiva();
+    /* para após 3 quadros estáveis com layout válido, ou 2s de guarda */
+    if(!(estavel>=3&&nav.scrollWidth>0)&&Date.now()-inicio<2000){
+      requestAnimationFrame(converge);
+    }
+  })();
+
+  if(document.readyState!=='complete')window.addEventListener('load',reposiciona);
+  if(document.fonts&&document.fonts.ready)document.fonts.ready.then(reposiciona).catch(function(){});
+})();
+</script>
+</body>
+</html>
