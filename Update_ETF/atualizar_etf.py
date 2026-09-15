@@ -37,6 +37,9 @@ import etf_metrics as em
 
 # --------------------------------------------------------------------------
 BASE = Path(__file__).resolve().parent
+sys.path.insert(0, str(BASE.parent))
+
+from tivio_core import template as _tvtpl   # noqa: E402
 TEMPLATE = BASE / "templates" / "dashboard_etf.html"
 OUT_DIR = BASE / "outputs"
 OUT_HTML = OUT_DIR / "dashboard_etf.html"
@@ -357,6 +360,17 @@ def main():
         print(f"[inject] bloco KPIS atualizado ({n}).")
 
     OUT_DIR.mkdir(exist_ok=True)
+    # O menu tinha o contador fixo <span ... id="etf-nav-badge">, que
+    # nao acompanhava o dado e exigia atualizacao manual.
+    html, _n_badge = _tvtpl.remover_badges_menu(html)
+
+    if _n_badge:
+        print(f"[menu] {_n_badge} contador(es) fixo(s) removido(s)")
+
+    # Apache ECharts: o modulo compartilhado troca as barras em CSS
+    # ja renderizadas por graficos com animacao, tooltip e clique.
+    html = _tvtpl.ativar_charts(html, '.diverging-bars')
+
     OUT_HTML.write_text(html, encoding="utf-8")
 
     modo = "MOCK" if USE_MOCK else "DATABRICKS"

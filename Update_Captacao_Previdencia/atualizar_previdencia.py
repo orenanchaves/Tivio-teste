@@ -139,7 +139,45 @@ def montar_prev(por_aba: dict) -> dict:
             ),
             "atualizado": datetime.now().strftime("%d/%m/%Y"),
         },
-        "vg": {},
+        # vg alimenta o painel "Captação Líquida do mês por Plataforma"
+        # (plat_flow) e a faixa de KPIs. Deixar vazio aqui renderiza o
+        # painel em branco - foi o que aconteceu na primeira versao.
+        "vg": _montar_vg(gestoras, todos),
+    }
+
+
+def _montar_vg(gestoras: dict, todos: list) -> dict:
+    """Barras por plataforma e a faixa de KPIs do topo."""
+    fluxo = [
+        {"plat": "Itau" if plat == "Itaú" else plat,
+         "value": dados["total"]["m_cap"]}
+        for plat, dados in gestoras.items()
+    ]
+
+    fluxo.sort(key=lambda x: x["value"], reverse=True)
+
+    rent = [f["m_rent"] for f in todos if f["m_rent"]]
+    media = sum(rent) / len(rent) if rent else 0.0
+
+    bateram = sum(1 for f in todos if f["m_cdi"] and f["m_cdi"] > 1)
+    resgates = sum(f["resg"] for f in todos)
+
+    return {
+        "kpis": [
+            {"label": "Plataforma líder (mês)",
+             "value": fluxo[0]["plat"] if fluxo else "—",
+             "sub": "maior captação líquida"},
+            {"label": "Rentabilidade média do mês",
+             "value": f"{media * 100:.2f}%",
+             "sub": "média dos fundos no ranking"},
+            {"label": "Fundos que bateram o CDI",
+             "value": f"{bateram}/{len(todos)}",
+             "sub": "no mês fechado"},
+            {"label": "Resgates totais",
+             "value": resgates,
+             "sub": "volume total saído (mês)"},
+        ],
+        "plat_flow": fluxo,
     }
 
 
@@ -235,6 +273,13 @@ def main():
 
     if n:
         print(f"  {n} contador(es) removido(s) do menu")
+
+    # Apache ECharts: o modulo compartilhado troca as barras em CSS
+
+    # ja renderizadas por graficos com animacao, tooltip e clique.
+
+    html = template.ativar_charts(html, '.diverging-bars, .pv-bars')
+
 
     saida.gravar(html, OUT_HTML)
 

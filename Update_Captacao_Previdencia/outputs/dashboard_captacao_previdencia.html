@@ -1835,7 +1835,7 @@ document.querySelectorAll('.rank-table-wrap').forEach(wrap => {
 <script>
 /* ===== Extensão Captação Previdência · Update 2.3 · Tivio ===== */
 (function(){
-  const PREV = {"gestoras": {"XP": {"funds": [{"rank": 1, "nome": "Mag Cash Xp Seg Prev Ficfirf Rl", "m_cap": 163771025.24, "m_rent": 0.01117647518786, "m_cdi": 1.02243535383945, "y_cap": 1224621955.49, "y_rent": 0.1478343015101715, "y_cdi": 1.010443596116191, "ytd_cap": 1051428952.94, "ytd_rent": 0.094939980356328, "ytd_cdi": 1.018237882551855, "pl": 1439735671.28, "resg": 24990220.25, "cotiz": "D+1"}, {"rank": 2, "nome": "Trend Pós-Fixado XP Seg Prev FIC FIRF", "m_cap": 145954693.66, "m_rent": 0.0109169607028631, "m_cdi": 0.9986947039624227, "y_cap": 2261202540.05, "y_rent": 0.1444794812975427, "y_cdi": 0.9875134874381407, "ytd_cap": 1641218471.53, "ytd_rent": 0.0923379327048912, "ytd_cdi": 0.9903307407876171, "pl": 7069673258.75, "resg": 194810265.44, "cotiz": "D+1"}, {"rank": 3, "nome": "JGP Crédito Prev Advisory XP Seg FIC RF CP", "m_cap": 110921713.05, "m_rent": 0.0112037045187527, "m_cdi": 1.024926320812323, "y_cap": 777872744.62, "y_rent": 0.1501152255518345, "y_cdi": 1.026033652466999, "ytd_cap": 233344482.37, "ytd_rent": 0.0963270576137056, "ytd_cdi": 1.033114382464612, "pl": 3676879472.99, "resg": 57297694.61, "cotiz": "D+1"}, {"rank": 4, "nome": "XP Crédito Estruturado XP Seg Prev FIC FIRF", "m_cap": 48921525.89, "m_rent": 0.0107952988896062, "m_cdi": 0.9875649571509071, "y_cap": 624882784.93, "y_rent": 0.1539417226946203, "y_cdi": 1.052187660663931, "ytd_cap": 569334932.7, "ytd_rent": 0.090659225475596, "ytd_cdi": 0.9723264891734223, "pl": 953577231.72, "resg": 26275847.41, "cotiz": "D+1"}, {"rank": 5, "nome": "Bradesco Ultra Xp Seg Prev Ficfirf", "m_cap": 46859486.52, "m_rent": 0.0108277623140735, "m_cdi": 0.9905347443444685, "y_cap": 376285175.32, "y_rent": 0.144723381468105, "y_cdi": 0.9891805387443585, "ytd_cap": 195992070.71, "ytd_rent": 0.0933352897093693, "ytd_cdi": 1.001027463923397, "pl": 781379329.12, "resg": 12620390.23, "cotiz": "D+1"}, {"rank": 6, "nome": "Icatu Vanguarda Dinâmico Cdi Xp Seg Fim Crédito Rl", "m_cap": 46550098.17, "m_rent": 0.0105859783518942, "m_cdi": 0.9684161007857179, "y_cap": 488106700.27, "y_rent": 0.1500029749646694, "y_cdi": 1.025266422630604, "ytd_cap": 210011626.21, "ytd_rent": 0.0939888730208526, "ytd_cdi": 1.008037190327997, "pl": 600773365.04, "resg": 4447613.97, "cotiz": "—"}, {"rank": 7, "nome": "Patria Previdenciário XP Seg FIC MM CP RL", "m_cap": 41598211.0, "m_rent": 0.0116165255930422, "m_cdi": 1.062691613900616, "y_cap": 322582832.87, "y_rent": 0.1588105588753439, "y_cdi": 1.085466029006697, "ytd_cap": 274900339.77, "ytd_rent": 0.0983485750156103, "ytd_cdi": 1.054795296986941, "pl": 372039218.66, "resg": 1269194.73, "cotiz": "D+1"}, {"rank": 8, "nome": "Bnp Paribas Match Plus Xp Seguros Ficfirf Cp", "m_cap": 38557335.62, "m_rent": 0.0107662310334206, "m_cdi": 0.984905800008344, "y_cap": 314947060.37, "y_rent": 0.1453047151923159, "y_cdi": 0.9931539395913523, "ytd_cap": 256988824.58, "ytd_rent": 0.0923476811261492, "ytd_cdi": 0.9904352932826009, "pl": 782302972.0, "resg": 6220352.33, "cotiz": "D+1"}, {"rank": 9, "nome": "Xp Liquidez 50 Firf Rl", "m_cap": 35640130.64, "m_rent": 0.0110724070629921, "m_cdi": 1.012915095593067, "y_cap": 735265036.16, "y_rent": 0.1465203417844427, "y_cdi": 1.001462715651681, "ytd_cap": 661764557.28, "ytd_rent": 0.0934952355128544, "ytd_cdi": 1.002742893773419, "pl": 1046171628.83, "resg": 45262516.89, "cotiz": "D+1"}, {"rank": 10, "nome": "Atena Prev Xp Seg Fic Firf Cp", "m_cap": 34231190.97, "m_rent": 0.0109674615170842, "m_cdi": 1.003314569974689, "y_cap": 250357452.17, "y_rent": 0.1481582160758323, "y_cdi": 1.012657543726572, "ytd_cap": 238173140.53, "ytd_rent": 0.0942024206564846, "ytd_cdi": 1.010327503550243, "pl": 492335365.53, "resg": 3404298.57, "cotiz": "D+1"}], "total": {"m_cap": 713005410.76, "y_cap": 7376124282.25, "ytd_cap": 5333157398.62, "pl": 17214867513.920002, "resg": 376598394.43000007}, "top3": ["Mag Cash Xp Seg Prev Ficfirf Rl", "Trend Pós-Fixado XP Seg Prev FIC FIRF", "JGP Crédito Prev Advisory XP Seg FIC RF CP"]}, "BTG": {"funds": [{"rank": 1, "nome": "BTG CORP PLUS PREV FC FI MULT CRED PRIV", "m_cap": 241175323.52, "m_rent": 0.0112825018247895, "m_cdi": 1.03213477876755, "y_cap": 589561990.8100001, "y_rent": 0.1523114437188606, "y_cdi": 1.041044746373327, "ytd_cap": 637646273.66, "ytd_rent": 0.0974340212364521, "ytd_cdi": 1.044986644193094, "pl": 1066478056.91, "resg": 33466983.96, "cotiz": "D+1"}, {"rank": 2, "nome": "BTG PACT TESOURO SELIC PREV FI RF REF DI", "m_cap": 166490475.59, "m_rent": 0.0110528672015128, "m_cdi": 1.011127569127902, "y_cap": 2310611535.62, "y_rent": 0.1474107944291658, "y_cdi": 1.007548936260254, "ytd_cap": 1585289364.91, "ytd_rent": 0.0940339419362088, "ytd_cdi": 1.008520557575062, "pl": 6793501960.93, "resg": 168775354.45, "cotiz": "D+1"}, {"rank": 3, "nome": "BTG CDB PLUS PREV FI MULT CRED PRIV", "m_cap": 99393214.89, "m_rent": 0.0108076498174345, "m_cdi": 0.9886948326306192, "y_cap": 592372198.42, "y_rent": 0.1460750080219917, "y_cdi": 0.9984188709971844, "ytd_cap": 526016542.84, "ytd_rent": 0.0934385189494793, "ytd_cdi": 1.002134604692466, "pl": 2130339342.78, "resg": 46806069.36, "cotiz": "D+1"}, {"rank": 4, "nome": "TYTON CREDITO PREVIDENCIA FIM", "m_cap": 96757054.49, "m_rent": 0.0104749437877131, "m_cdi": 0.9582585455629206, "y_cap": 610118934.25, "y_rent": 0.1618449063543961, "y_cdi": 1.106205714906919, "ytd_cap": 485332850.1, "ytd_rent": 0.1030507327782479, "ytd_cdi": 1.105226265538682, "pl": 732186079.72, "resg": 5588285.350000001, "cotiz": "—"}, {"rank": 5, "nome": "ARTESANAL PREV FIM RESP LIMITADA", "m_cap": 86576569.23, "m_rent": 0.0113329401657364, "m_cdi": 1.036748929660949, "y_cap": 852722697.25, "y_rent": 0.1517573863229302, "y_cdi": 1.037257778518913, "ytd_cap": 762447414.02, "ytd_rent": 0.095185059356426, "ytd_cdi": 1.020866371847736, "pl": 1287797947.85, "resg": 13295915.23, "cotiz": "D+10 d.u."}, {"rank": 6, "nome": "ACS MAG PREV CASH FC FI RF", "m_cap": 43725378.14, "m_rent": 0.0109670493224447, "m_cdi": 1.003276861988494, "y_cap": 312963260.34, "y_rent": 0.1468830985869347, "y_cdi": 1.003942148938011, "ytd_cap": 287071686.17, "ytd_rent": 0.0947351994379577, "ytd_cdi": 1.016041592981057, "pl": 421464126.3, "resg": 6288879.29, "cotiz": "—"}, {"rank": 7, "nome": "BTG TOTAL PREV FC FI MULT", "m_cap": 32340166.65, "m_rent": 0.0164491965547251, "m_cdi": 1.504789284377704, "y_cap": 77671563.77, "y_rent": 0.1567405597402916, "y_cdi": 1.071317638892812, "ytd_cap": 78134517.14, "ytd_rent": 0.1053574390701377, "ytd_cdi": 1.129965850711414, "pl": 90075110.52, "resg": 374330.47, "cotiz": "—"}, {"rank": 8, "nome": "M8 CAPITAL PREV FIC FIRF CRED PRIV RL", "m_cap": 32126631.25, "m_rent": 0.0115945045122813, "m_cdi": 1.060677102963916, "y_cap": 468932793.22, "y_rent": 0.1495034242138991, "y_cdi": 1.021852006274626, "ytd_cap": 425978337.52, "ytd_rent": 0.0946565249614053, "ytd_cdi": 1.015197803756381, "pl": 907964679.47, "resg": 8244921.98, "cotiz": "D+1"}, {"rank": 9, "nome": "ACS BRA ULTRA PREV", "m_cap": 30646926.82, "m_rent": 0.0108066382570122, "m_cdi": 0.9886022940510653, "y_cap": 191948236.29, "y_rent": 0.1442068346734562, "y_cdi": 0.9856499548716345, "ytd_cap": 108850757.49, "ytd_rent": 0.0929592806998547, "ytd_cdi": 0.9969947411839191, "pl": 889951820.01, "resg": 14109818.95, "cotiz": "—"}, {"rank": 10, "nome": "POLI CHAR BP PREV RF", "m_cap": 28149334.23, "m_rent": 0.0119253080117331, "m_cdi": 1.090939344621349, "y_cap": 50904100.47, "y_rent": 0.0, "y_cdi": 0.0, "ytd_cap": 50904100.47, "ytd_rent": 0.0, "ytd_cdi": 0.0, "pl": 52106653.55, "resg": 136494.78, "cotiz": "—"}], "total": {"m_cap": 857381074.8100001, "y_cap": 6057807310.4400015, "ytd_cap": 4947671844.320001, "pl": 14371865778.039999, "resg": 297087053.82}, "top3": ["BTG CORP PLUS PREV FC FI MULT CRED PRIV", "BTG PACT TESOURO SELIC PREV FI RF REF DI", "BTG CDB PLUS PREV FI MULT CRED PRIV"]}, "Itaú": {"funds": [{"rank": 1, "nome": "ITAÚ FLEXPREV DUAL ADVANCED FIF DA CLASSE DE INVESTIMENTO EM COTAS MULT CRÉD PRIV RESP LIMITADA", "m_cap": 2090463113.62, "m_rent": 0.0112273659409223, "m_cdi": 1.027090891854774, "y_cap": 4965043060.33, "y_rent": 0.1505024691578654, "y_cdi": 1.028680452417036, "ytd_cap": 4849242741.74, "ytd_rent": 0.095638213684321, "ytd_cdi": 1.025726483484301, "pl": 5153484582.55, "resg": 42379558.77, "cotiz": "—"}, {"rank": 2, "nome": "ITAÚ FLEXPREV DUAL ADVANCED FUNDO DE INVESTIMENTO FINANCEIRO MULTIMERCADO CRED PRIV RESP LIMITADA", "m_cap": 2086454330.23, "m_rent": 0.0118570915277422, "m_cdi": 1.084698831062774, "y_cap": 4949518318.01, "y_rent": 0.1596857625675623, "y_cdi": 1.091448023422509, "ytd_cap": 4834078004.04, "ytd_rent": 0.1013502306926812, "ytd_cdi": 1.086988262577403, "pl": 5148507711.69, "resg": 46388342.16, "cotiz": "D+1"}, {"rank": 3, "nome": "ITAÚ FLEXPREV MASTER GD MULTIMERCADO FUNDO DE INVESTIMENTO FINANCEIRO RESP LIMITADA", "m_cap": 545782133.43, "m_rent": 0.0122117953776121, "m_cdi": 1.117147501162617, "y_cap": 4486440114.01, "y_rent": 0.147049119356961, "y_cdi": 1.005076896572231, "ytd_cap": 3368844481.23, "ytd_rent": 0.089137024601186, "ytd_cdi": 0.9560007790841585, "pl": 5253325333.93, "resg": 159747327.15, "cotiz": "D+1"}, {"rank": 4, "nome": "ITAÚ FLEXPREV PRIVILÈGE FUNDO DE INVESTIMENTO FINANCEIRO RENDA FIXA REFERENCIADO DI - RESP LIMITADA", "m_cap": 482143590.5100001, "m_rent": 0.011215551546154, "m_cdi": 1.02601009896683, "y_cap": 7860392491.19, "y_rent": 0.1491273134688957, "y_cdi": 1.019281299139428, "ytd_cap": 7357496337.29, "ytd_rent": 0.095385785392106, "ytd_cdi": 1.023019172520084, "pl": 31467458940.21, "resg": 624653827.65, "cotiz": "D+1"}, {"rank": 5, "nome": "ITAÚ FLEXPREV PRIVILÈGE FIF CIC RF REFERENCIADO DI - RESP LIMITADA", "m_cap": 482143590.5100001, "m_rent": 0.0109834904851908, "m_cdi": 1.004780916331862, "y_cap": 7987714291.02, "y_rent": 0.1459592792676914, "y_cdi": 0.9976278679791115, "ytd_cap": 7484123134.07, "ytd_rent": 0.093396963301122, "ytd_cdi": 1.001688917477948, "pl": 31524341911.53, "resg": 624653827.65, "cotiz": "D+1"}, {"rank": 6, "nome": "ITAÚ FLEXPREV GLOBAL DINÂMICO BAIXA VOL MULTIMERCADO FIF DA CIC RESPONSABILIDADE LIMITADA", "m_cap": 396477894.36, "m_rent": 0.0111141169255524, "m_cdi": 1.016730756377762, "y_cap": 7206225795.64, "y_rent": 0.140046040302432, "y_cdi": 0.9572110338363264, "ytd_cap": 5289604540.27, "ytd_rent": 0.0872911313745767, "ytd_cdi": 0.9362034460383213, "pl": 7878749548.45, "resg": 131381339.77, "cotiz": "D+1"}, {"rank": 7, "nome": "CAPITÂNIA PREVIDENCE ITAÚ FIE I FIF DA CIC RENDA FIXA CRÉDITO PRIVADO RESPONSABILIDADE LIMITADA", "m_cap": 231163229.11, "m_rent": 0.0103270614051262, "m_cdi": 0.9447301143155544, "y_cap": 720368994.99, "y_rent": 0.1536362379505203, "y_cdi": 1.05009968040337, "ytd_cap": 712762769.59, "ytd_rent": 0.0995367362208528, "ytd_cdi": 1.067538408426565, "pl": 827891692.86, "resg": 5836556.28, "cotiz": "D+1"}, {"rank": 8, "nome": "CAPITÂNIA PREVIDENCE ITAÚ FIFE FIF RENDA FIXA CRÉDITO PRIVADO RESPONSABILIDADE LIMITADA", "m_cap": 230637960.36, "m_rent": 0.0113857999509512, "m_cdi": 1.04158459674664, "y_cap": 717283665.05, "y_rent": 0.1685294220376146, "y_cdi": 1.151894205306297, "ytd_cap": 710103881.82, "ytd_rent": 0.1088393383991095, "ytd_cdi": 1.167309462819658, "pl": 826799821.97, "resg": 5836773.99, "cotiz": "D+1"}, {"rank": 9, "nome": "ITAÚ FLEXPREV CRÉDITO BANCÁRIO FIF CIC RENDA FIXA CRÉDITO PRIVADO RESP LIMITADA", "m_cap": 203052979.45, "m_rent": 0.0110747470114605, "m_cdi": 1.013129156466468, "y_cap": 805149714.92, "y_rent": 0.0, "y_cdi": 0.0, "ytd_cap": 805149714.92, "ytd_rent": 0.0, "ytd_cdi": 0.0, "pl": 839683156.79, "resg": 19419338.86, "cotiz": "D+1"}, {"rank": 10, "nome": "ITAÚ FLEXPREV GD CENTRALIZADOR MULTIMERCADO FIF DA CLASSE DE INVESTIMENTO EM COTAS RESP LIMITADA", "m_cap": 171600191.59, "m_rent": 0.0115088861367114, "m_cdi": 1.052844646608082, "y_cap": 6142291158.46, "y_rent": 0.1437208410642725, "y_cdi": 0.9823282012249053, "ytd_cap": 4347761283.44, "ytd_rent": 0.0881535623379958, "ytd_cdi": 0.9454530780136294, "pl": 7149710308.0, "resg": 414622615.47, "cotiz": "D+1"}], "total": {"m_cap": 6919919013.169999, "y_cap": 45840427603.62, "ytd_cap": 39759166888.41, "pl": 96069953007.98, "resg": 2074919507.75}, "top3": ["ITAÚ FLEXPREV DUAL ADVANCED FIF DA CLASSE DE INVESTIMENTO EM COTAS MULT CRÉD PRIV RESP LIMITADA", "ITAÚ FLEXPREV DUAL ADVANCED FUNDO DE INVESTIMENTO FINANCEIRO MULTIMERCADO CRED PRIV RESP LIMITADA", "ITAÚ FLEXPREV MASTER GD MULTIMERCADO FUNDO DE INVESTIMENTO FINANCEIRO RESP LIMITADA"]}, "Bradesco": {"funds": [{"rank": 1, "nome": "Bradesco CP Premium RF CP", "m_cap": 490832296.51, "m_rent": 0.0105736374614642, "m_cdi": 0.9672871435374438, "y_cap": 9979691935.97, "y_rent": 0.1415316417861747, "y_cdi": 0.9673650812413884, "ytd_cap": 6396292232.82, "ytd_rent": 0.090533309692911, "ytd_cdi": 0.9709760336597407, "pl": 83402034450.86, "resg": 19833105.68, "cotiz": "D+1"}, {"rank": 2, "nome": "Bradesco Private 001 RF", "m_cap": 129418026.91, "m_rent": 0.0107358740559397, "m_cdi": 0.9821287127343621, "y_cap": 866634110.9, "y_rent": 0.1434013253157183, "y_cdi": 0.9801443194147516, "ytd_cap": 810295765.91, "ytd_rent": 0.0915106130298586, "ytd_cdi": 0.9814576798186032, "pl": 937894203.67, "resg": 1029817.03, "cotiz": "D+1"}, {"rank": 3, "nome": "Bradesco Tivio HYD60 CP", "m_cap": 95706164.84, "m_rent": 0.0108462875726758, "m_cdi": 0.9922294539032197, "y_cap": 329178539.37, "y_rent": 0.0, "y_cdi": 0.0, "ytd_cap": 329178539.37, "ytd_rent": 0.0, "ytd_cdi": 0.0, "pl": 335961200.85, "resg": 230605.73, "cotiz": "—"}, {"rank": 4, "nome": "Bradesco 206 DI FIF", "m_cap": 88736733.15, "m_rent": 0.0108468556229197, "m_cdi": 0.9922814197191283, "y_cap": 1122821798.64, "y_rent": 0.0, "y_cdi": 0.0, "ytd_cap": 950127898.11, "ytd_rent": 0.0924471142083567, "ytd_cdi": 0.991501719994536, "pl": 1170220474.82, "resg": 23660322.82, "cotiz": "D+1"}, {"rank": 5, "nome": "Bradesco SulAmérica RF CP", "m_cap": 53009158.33, "m_rent": 0.0111272379818299, "m_cdi": 1.01793108399379, "y_cap": 332390543.48, "y_rent": 0.0, "y_cdi": 0.0, "ytd_cap": 280782279.77, "ytd_rent": 0.0913325253339762, "ytd_cdi": 0.9795476769127331, "pl": 355222351.59, "resg": 7882461.75, "cotiz": "D+1"}, {"rank": 6, "nome": "Bradesco Vitia RF CP", "m_cap": 52320683.44, "m_rent": 0.0115436192050568, "m_cdi": 1.05602206313939, "y_cap": 148783503.99, "y_rent": 0.0, "y_cdi": 0.0, "ytd_cap": 123583503.99, "ytd_rent": 0.0985000898693564, "ytd_cdi": 1.056420304315514, "pl": 154947856.02, "resg": 0.0, "cotiz": "D+1"}, {"rank": 7, "nome": "Bradesco RF-A RF", "m_cap": 35089709.05, "m_rent": 0.0105858152521649, "m_cdi": 0.9684011802560666, "y_cap": -86171652.66999999, "y_rent": 0.1415000821291688, "y_cdi": 0.9671493718086556, "ytd_cap": 1107196168.68, "ytd_rent": 0.0903152286918207, "ytd_cdi": 0.9686370997781288, "pl": 25068100467.9, "resg": 48953063.12, "cotiz": "D+1"}, {"rank": 8, "nome": "Bradesco Prev UltraConservador III RF CP", "m_cap": 12447594.99, "m_rent": 0.0109207336352592, "m_cdi": 0.9990398556676409, "y_cap": 35481870.32, "y_rent": 0.0, "y_cdi": 0.0, "ytd_cap": 34270295.74, "ytd_rent": 0.0919328411209245, "ytd_cdi": 0.985986105417463, "pl": 36515495.87, "resg": 14673.0, "cotiz": "D+1"}, {"rank": 9, "nome": "Bradesco Dahlia Total Return PGBL/VGBL FI em Cotas de FIF", "m_cap": 4334617.21, "m_rent": -0.0004653684732763, "m_cdi": -0.04257238276311007, "y_cap": 87994167.72, "y_rent": 0.1176461162332836, "y_cdi": 0.8041081368905681, "ytd_cap": 84363536.67, "ytd_rent": 0.0572842918966425, "ytd_cdi": 0.6143780087735385, "pl": 100267915.39, "resg": 4938603.87, "cotiz": "—"}, {"rank": 10, "nome": "Bradesco Prev Ultra Conservador I MM CP", "m_cap": 489374.64, "m_rent": 0.0109466619631901, "m_cdi": 1.00141180556212, "y_cap": -49202399.32, "y_rent": 0.1400639039407128, "y_cdi": 0.9573331313381902, "ytd_cap": -33150829.3, "ytd_rent": 0.0899786803065272, "ytd_cdi": 0.9650275949738164, "pl": 609811796.89, "resg": 108133.22, "cotiz": "—"}], "total": {"m_cap": 962384359.07, "y_cap": 12767602418.399998, "ytd_cap": 10082939391.76, "pl": 112170976213.86002, "resg": 106650786.22}, "top3": ["Bradesco CP Premium RF CP", "Bradesco Private 001 RF", "Bradesco Tivio HYD60 CP"]}}, "cdi": {"m": 0.010931, "y": 0.146306, "ytd": 0.093239}, "resumo": {"titulo": "RANKING CAPTAÇÃO & RENTABILIDADE — PREVIDÊNCIA", "periodo": "CDI mês: 1.09%   |   CDI 12m: 14.63%   |   CDI YTD: 9.32%", "atualizado": "15/09/2026"}, "vg": {}};
+  const PREV = {"gestoras": {"XP": {"funds": [{"rank": 1, "nome": "Mag Cash Xp Seg Prev Ficfirf Rl", "m_cap": 163771025.24, "m_rent": 0.01117647518786, "m_cdi": 1.02243535383945, "y_cap": 1224621955.49, "y_rent": 0.1478343015101715, "y_cdi": 1.010443596116191, "ytd_cap": 1051428952.94, "ytd_rent": 0.094939980356328, "ytd_cdi": 1.018237882551855, "pl": 1439735671.28, "resg": 24990220.25, "cotiz": "D+1"}, {"rank": 2, "nome": "Trend Pós-Fixado XP Seg Prev FIC FIRF", "m_cap": 145954693.66, "m_rent": 0.0109169607028631, "m_cdi": 0.9986947039624227, "y_cap": 2261202540.05, "y_rent": 0.1444794812975427, "y_cdi": 0.9875134874381407, "ytd_cap": 1641218471.53, "ytd_rent": 0.0923379327048912, "ytd_cdi": 0.9903307407876171, "pl": 7069673258.75, "resg": 194810265.44, "cotiz": "D+1"}, {"rank": 3, "nome": "JGP Crédito Prev Advisory XP Seg FIC RF CP", "m_cap": 110921713.05, "m_rent": 0.0112037045187527, "m_cdi": 1.024926320812323, "y_cap": 777872744.62, "y_rent": 0.1501152255518345, "y_cdi": 1.026033652466999, "ytd_cap": 233344482.37, "ytd_rent": 0.0963270576137056, "ytd_cdi": 1.033114382464612, "pl": 3676879472.99, "resg": 57297694.61, "cotiz": "D+1"}, {"rank": 4, "nome": "XP Crédito Estruturado XP Seg Prev FIC FIRF", "m_cap": 48921525.89, "m_rent": 0.0107952988896062, "m_cdi": 0.9875649571509071, "y_cap": 624882784.93, "y_rent": 0.1539417226946203, "y_cdi": 1.052187660663931, "ytd_cap": 569334932.7, "ytd_rent": 0.090659225475596, "ytd_cdi": 0.9723264891734223, "pl": 953577231.72, "resg": 26275847.41, "cotiz": "D+1"}, {"rank": 5, "nome": "Bradesco Ultra Xp Seg Prev Ficfirf", "m_cap": 46859486.52, "m_rent": 0.0108277623140735, "m_cdi": 0.9905347443444685, "y_cap": 376285175.32, "y_rent": 0.144723381468105, "y_cdi": 0.9891805387443585, "ytd_cap": 195992070.71, "ytd_rent": 0.0933352897093693, "ytd_cdi": 1.001027463923397, "pl": 781379329.12, "resg": 12620390.23, "cotiz": "D+1"}, {"rank": 6, "nome": "Icatu Vanguarda Dinâmico Cdi Xp Seg Fim Crédito Rl", "m_cap": 46550098.17, "m_rent": 0.0105859783518942, "m_cdi": 0.9684161007857179, "y_cap": 488106700.27, "y_rent": 0.1500029749646694, "y_cdi": 1.025266422630604, "ytd_cap": 210011626.21, "ytd_rent": 0.0939888730208526, "ytd_cdi": 1.008037190327997, "pl": 600773365.04, "resg": 4447613.97, "cotiz": "—"}, {"rank": 7, "nome": "Patria Previdenciário XP Seg FIC MM CP RL", "m_cap": 41598211.0, "m_rent": 0.0116165255930422, "m_cdi": 1.062691613900616, "y_cap": 322582832.87, "y_rent": 0.1588105588753439, "y_cdi": 1.085466029006697, "ytd_cap": 274900339.77, "ytd_rent": 0.0983485750156103, "ytd_cdi": 1.054795296986941, "pl": 372039218.66, "resg": 1269194.73, "cotiz": "D+1"}, {"rank": 8, "nome": "Bnp Paribas Match Plus Xp Seguros Ficfirf Cp", "m_cap": 38557335.62, "m_rent": 0.0107662310334206, "m_cdi": 0.984905800008344, "y_cap": 314947060.37, "y_rent": 0.1453047151923159, "y_cdi": 0.9931539395913523, "ytd_cap": 256988824.58, "ytd_rent": 0.0923476811261492, "ytd_cdi": 0.9904352932826009, "pl": 782302972.0, "resg": 6220352.33, "cotiz": "D+1"}, {"rank": 9, "nome": "Xp Liquidez 50 Firf Rl", "m_cap": 35640130.64, "m_rent": 0.0110724070629921, "m_cdi": 1.012915095593067, "y_cap": 735265036.16, "y_rent": 0.1465203417844427, "y_cdi": 1.001462715651681, "ytd_cap": 661764557.28, "ytd_rent": 0.0934952355128544, "ytd_cdi": 1.002742893773419, "pl": 1046171628.83, "resg": 45262516.89, "cotiz": "D+1"}, {"rank": 10, "nome": "Atena Prev Xp Seg Fic Firf Cp", "m_cap": 34231190.97, "m_rent": 0.0109674615170842, "m_cdi": 1.003314569974689, "y_cap": 250357452.17, "y_rent": 0.1481582160758323, "y_cdi": 1.012657543726572, "ytd_cap": 238173140.53, "ytd_rent": 0.0942024206564846, "ytd_cdi": 1.010327503550243, "pl": 492335365.53, "resg": 3404298.57, "cotiz": "D+1"}], "total": {"m_cap": 713005410.76, "y_cap": 7376124282.25, "ytd_cap": 5333157398.62, "pl": 17214867513.920002, "resg": 376598394.43000007}, "top3": ["Mag Cash Xp Seg Prev Ficfirf Rl", "Trend Pós-Fixado XP Seg Prev FIC FIRF", "JGP Crédito Prev Advisory XP Seg FIC RF CP"]}, "BTG": {"funds": [{"rank": 1, "nome": "BTG CORP PLUS PREV FC FI MULT CRED PRIV", "m_cap": 241175323.52, "m_rent": 0.0112825018247895, "m_cdi": 1.03213477876755, "y_cap": 589561990.8100001, "y_rent": 0.1523114437188606, "y_cdi": 1.041044746373327, "ytd_cap": 637646273.66, "ytd_rent": 0.0974340212364521, "ytd_cdi": 1.044986644193094, "pl": 1066478056.91, "resg": 33466983.96, "cotiz": "D+1"}, {"rank": 2, "nome": "BTG PACT TESOURO SELIC PREV FI RF REF DI", "m_cap": 166490475.59, "m_rent": 0.0110528672015128, "m_cdi": 1.011127569127902, "y_cap": 2310611535.62, "y_rent": 0.1474107944291658, "y_cdi": 1.007548936260254, "ytd_cap": 1585289364.91, "ytd_rent": 0.0940339419362088, "ytd_cdi": 1.008520557575062, "pl": 6793501960.93, "resg": 168775354.45, "cotiz": "D+1"}, {"rank": 3, "nome": "BTG CDB PLUS PREV FI MULT CRED PRIV", "m_cap": 99393214.89, "m_rent": 0.0108076498174345, "m_cdi": 0.9886948326306192, "y_cap": 592372198.42, "y_rent": 0.1460750080219917, "y_cdi": 0.9984188709971844, "ytd_cap": 526016542.84, "ytd_rent": 0.0934385189494793, "ytd_cdi": 1.002134604692466, "pl": 2130339342.78, "resg": 46806069.36, "cotiz": "D+1"}, {"rank": 4, "nome": "TYTON CREDITO PREVIDENCIA FIM", "m_cap": 96757054.49, "m_rent": 0.0104749437877131, "m_cdi": 0.9582585455629206, "y_cap": 610118934.25, "y_rent": 0.1618449063543961, "y_cdi": 1.106205714906919, "ytd_cap": 485332850.1, "ytd_rent": 0.1030507327782479, "ytd_cdi": 1.105226265538682, "pl": 732186079.72, "resg": 5588285.350000001, "cotiz": "—"}, {"rank": 5, "nome": "ARTESANAL PREV FIM RESP LIMITADA", "m_cap": 86576569.23, "m_rent": 0.0113329401657364, "m_cdi": 1.036748929660949, "y_cap": 852722697.25, "y_rent": 0.1517573863229302, "y_cdi": 1.037257778518913, "ytd_cap": 762447414.02, "ytd_rent": 0.095185059356426, "ytd_cdi": 1.020866371847736, "pl": 1287797947.85, "resg": 13295915.23, "cotiz": "D+10 d.u."}, {"rank": 6, "nome": "ACS MAG PREV CASH FC FI RF", "m_cap": 43725378.14, "m_rent": 0.0109670493224447, "m_cdi": 1.003276861988494, "y_cap": 312963260.34, "y_rent": 0.1468830985869347, "y_cdi": 1.003942148938011, "ytd_cap": 287071686.17, "ytd_rent": 0.0947351994379577, "ytd_cdi": 1.016041592981057, "pl": 421464126.3, "resg": 6288879.29, "cotiz": "—"}, {"rank": 7, "nome": "BTG TOTAL PREV FC FI MULT", "m_cap": 32340166.65, "m_rent": 0.0164491965547251, "m_cdi": 1.504789284377704, "y_cap": 77671563.77, "y_rent": 0.1567405597402916, "y_cdi": 1.071317638892812, "ytd_cap": 78134517.14, "ytd_rent": 0.1053574390701377, "ytd_cdi": 1.129965850711414, "pl": 90075110.52, "resg": 374330.47, "cotiz": "—"}, {"rank": 8, "nome": "M8 CAPITAL PREV FIC FIRF CRED PRIV RL", "m_cap": 32126631.25, "m_rent": 0.0115945045122813, "m_cdi": 1.060677102963916, "y_cap": 468932793.22, "y_rent": 0.1495034242138991, "y_cdi": 1.021852006274626, "ytd_cap": 425978337.52, "ytd_rent": 0.0946565249614053, "ytd_cdi": 1.015197803756381, "pl": 907964679.47, "resg": 8244921.98, "cotiz": "D+1"}, {"rank": 9, "nome": "ACS BRA ULTRA PREV", "m_cap": 30646926.82, "m_rent": 0.0108066382570122, "m_cdi": 0.9886022940510653, "y_cap": 191948236.29, "y_rent": 0.1442068346734562, "y_cdi": 0.9856499548716345, "ytd_cap": 108850757.49, "ytd_rent": 0.0929592806998547, "ytd_cdi": 0.9969947411839191, "pl": 889951820.01, "resg": 14109818.95, "cotiz": "—"}, {"rank": 10, "nome": "POLI CHAR BP PREV RF", "m_cap": 28149334.23, "m_rent": 0.0119253080117331, "m_cdi": 1.090939344621349, "y_cap": 50904100.47, "y_rent": 0.0, "y_cdi": 0.0, "ytd_cap": 50904100.47, "ytd_rent": 0.0, "ytd_cdi": 0.0, "pl": 52106653.55, "resg": 136494.78, "cotiz": "—"}], "total": {"m_cap": 857381074.8100001, "y_cap": 6057807310.4400015, "ytd_cap": 4947671844.320001, "pl": 14371865778.039999, "resg": 297087053.82}, "top3": ["BTG CORP PLUS PREV FC FI MULT CRED PRIV", "BTG PACT TESOURO SELIC PREV FI RF REF DI", "BTG CDB PLUS PREV FI MULT CRED PRIV"]}, "Itaú": {"funds": [{"rank": 1, "nome": "ITAÚ FLEXPREV DUAL ADVANCED FIF DA CLASSE DE INVESTIMENTO EM COTAS MULT CRÉD PRIV RESP LIMITADA", "m_cap": 2090463113.62, "m_rent": 0.0112273659409223, "m_cdi": 1.027090891854774, "y_cap": 4965043060.33, "y_rent": 0.1505024691578654, "y_cdi": 1.028680452417036, "ytd_cap": 4849242741.74, "ytd_rent": 0.095638213684321, "ytd_cdi": 1.025726483484301, "pl": 5153484582.55, "resg": 42379558.77, "cotiz": "—"}, {"rank": 2, "nome": "ITAÚ FLEXPREV DUAL ADVANCED FUNDO DE INVESTIMENTO FINANCEIRO MULTIMERCADO CRED PRIV RESP LIMITADA", "m_cap": 2086454330.23, "m_rent": 0.0118570915277422, "m_cdi": 1.084698831062774, "y_cap": 4949518318.01, "y_rent": 0.1596857625675623, "y_cdi": 1.091448023422509, "ytd_cap": 4834078004.04, "ytd_rent": 0.1013502306926812, "ytd_cdi": 1.086988262577403, "pl": 5148507711.69, "resg": 46388342.16, "cotiz": "D+1"}, {"rank": 3, "nome": "ITAÚ FLEXPREV MASTER GD MULTIMERCADO FUNDO DE INVESTIMENTO FINANCEIRO RESP LIMITADA", "m_cap": 545782133.43, "m_rent": 0.0122117953776121, "m_cdi": 1.117147501162617, "y_cap": 4486440114.01, "y_rent": 0.147049119356961, "y_cdi": 1.005076896572231, "ytd_cap": 3368844481.23, "ytd_rent": 0.089137024601186, "ytd_cdi": 0.9560007790841585, "pl": 5253325333.93, "resg": 159747327.15, "cotiz": "D+1"}, {"rank": 4, "nome": "ITAÚ FLEXPREV PRIVILÈGE FUNDO DE INVESTIMENTO FINANCEIRO RENDA FIXA REFERENCIADO DI - RESP LIMITADA", "m_cap": 482143590.5100001, "m_rent": 0.011215551546154, "m_cdi": 1.02601009896683, "y_cap": 7860392491.19, "y_rent": 0.1491273134688957, "y_cdi": 1.019281299139428, "ytd_cap": 7357496337.29, "ytd_rent": 0.095385785392106, "ytd_cdi": 1.023019172520084, "pl": 31467458940.21, "resg": 624653827.65, "cotiz": "D+1"}, {"rank": 5, "nome": "ITAÚ FLEXPREV PRIVILÈGE FIF CIC RF REFERENCIADO DI - RESP LIMITADA", "m_cap": 482143590.5100001, "m_rent": 0.0109834904851908, "m_cdi": 1.004780916331862, "y_cap": 7987714291.02, "y_rent": 0.1459592792676914, "y_cdi": 0.9976278679791115, "ytd_cap": 7484123134.07, "ytd_rent": 0.093396963301122, "ytd_cdi": 1.001688917477948, "pl": 31524341911.53, "resg": 624653827.65, "cotiz": "D+1"}, {"rank": 6, "nome": "ITAÚ FLEXPREV GLOBAL DINÂMICO BAIXA VOL MULTIMERCADO FIF DA CIC RESPONSABILIDADE LIMITADA", "m_cap": 396477894.36, "m_rent": 0.0111141169255524, "m_cdi": 1.016730756377762, "y_cap": 7206225795.64, "y_rent": 0.140046040302432, "y_cdi": 0.9572110338363264, "ytd_cap": 5289604540.27, "ytd_rent": 0.0872911313745767, "ytd_cdi": 0.9362034460383213, "pl": 7878749548.45, "resg": 131381339.77, "cotiz": "D+1"}, {"rank": 7, "nome": "CAPITÂNIA PREVIDENCE ITAÚ FIE I FIF DA CIC RENDA FIXA CRÉDITO PRIVADO RESPONSABILIDADE LIMITADA", "m_cap": 231163229.11, "m_rent": 0.0103270614051262, "m_cdi": 0.9447301143155544, "y_cap": 720368994.99, "y_rent": 0.1536362379505203, "y_cdi": 1.05009968040337, "ytd_cap": 712762769.59, "ytd_rent": 0.0995367362208528, "ytd_cdi": 1.067538408426565, "pl": 827891692.86, "resg": 5836556.28, "cotiz": "D+1"}, {"rank": 8, "nome": "CAPITÂNIA PREVIDENCE ITAÚ FIFE FIF RENDA FIXA CRÉDITO PRIVADO RESPONSABILIDADE LIMITADA", "m_cap": 230637960.36, "m_rent": 0.0113857999509512, "m_cdi": 1.04158459674664, "y_cap": 717283665.05, "y_rent": 0.1685294220376146, "y_cdi": 1.151894205306297, "ytd_cap": 710103881.82, "ytd_rent": 0.1088393383991095, "ytd_cdi": 1.167309462819658, "pl": 826799821.97, "resg": 5836773.99, "cotiz": "D+1"}, {"rank": 9, "nome": "ITAÚ FLEXPREV CRÉDITO BANCÁRIO FIF CIC RENDA FIXA CRÉDITO PRIVADO RESP LIMITADA", "m_cap": 203052979.45, "m_rent": 0.0110747470114605, "m_cdi": 1.013129156466468, "y_cap": 805149714.92, "y_rent": 0.0, "y_cdi": 0.0, "ytd_cap": 805149714.92, "ytd_rent": 0.0, "ytd_cdi": 0.0, "pl": 839683156.79, "resg": 19419338.86, "cotiz": "D+1"}, {"rank": 10, "nome": "ITAÚ FLEXPREV GD CENTRALIZADOR MULTIMERCADO FIF DA CLASSE DE INVESTIMENTO EM COTAS RESP LIMITADA", "m_cap": 171600191.59, "m_rent": 0.0115088861367114, "m_cdi": 1.052844646608082, "y_cap": 6142291158.46, "y_rent": 0.1437208410642725, "y_cdi": 0.9823282012249053, "ytd_cap": 4347761283.44, "ytd_rent": 0.0881535623379958, "ytd_cdi": 0.9454530780136294, "pl": 7149710308.0, "resg": 414622615.47, "cotiz": "D+1"}], "total": {"m_cap": 6919919013.169999, "y_cap": 45840427603.62, "ytd_cap": 39759166888.41, "pl": 96069953007.98, "resg": 2074919507.75}, "top3": ["ITAÚ FLEXPREV DUAL ADVANCED FIF DA CLASSE DE INVESTIMENTO EM COTAS MULT CRÉD PRIV RESP LIMITADA", "ITAÚ FLEXPREV DUAL ADVANCED FUNDO DE INVESTIMENTO FINANCEIRO MULTIMERCADO CRED PRIV RESP LIMITADA", "ITAÚ FLEXPREV MASTER GD MULTIMERCADO FUNDO DE INVESTIMENTO FINANCEIRO RESP LIMITADA"]}, "Bradesco": {"funds": [{"rank": 1, "nome": "Bradesco CP Premium RF CP", "m_cap": 490832296.51, "m_rent": 0.0105736374614642, "m_cdi": 0.9672871435374438, "y_cap": 9979691935.97, "y_rent": 0.1415316417861747, "y_cdi": 0.9673650812413884, "ytd_cap": 6396292232.82, "ytd_rent": 0.090533309692911, "ytd_cdi": 0.9709760336597407, "pl": 83402034450.86, "resg": 19833105.68, "cotiz": "D+1"}, {"rank": 2, "nome": "Bradesco Private 001 RF", "m_cap": 129418026.91, "m_rent": 0.0107358740559397, "m_cdi": 0.9821287127343621, "y_cap": 866634110.9, "y_rent": 0.1434013253157183, "y_cdi": 0.9801443194147516, "ytd_cap": 810295765.91, "ytd_rent": 0.0915106130298586, "ytd_cdi": 0.9814576798186032, "pl": 937894203.67, "resg": 1029817.03, "cotiz": "D+1"}, {"rank": 3, "nome": "Bradesco Tivio HYD60 CP", "m_cap": 95706164.84, "m_rent": 0.0108462875726758, "m_cdi": 0.9922294539032197, "y_cap": 329178539.37, "y_rent": 0.0, "y_cdi": 0.0, "ytd_cap": 329178539.37, "ytd_rent": 0.0, "ytd_cdi": 0.0, "pl": 335961200.85, "resg": 230605.73, "cotiz": "—"}, {"rank": 4, "nome": "Bradesco 206 DI FIF", "m_cap": 88736733.15, "m_rent": 0.0108468556229197, "m_cdi": 0.9922814197191283, "y_cap": 1122821798.64, "y_rent": 0.0, "y_cdi": 0.0, "ytd_cap": 950127898.11, "ytd_rent": 0.0924471142083567, "ytd_cdi": 0.991501719994536, "pl": 1170220474.82, "resg": 23660322.82, "cotiz": "D+1"}, {"rank": 5, "nome": "Bradesco SulAmérica RF CP", "m_cap": 53009158.33, "m_rent": 0.0111272379818299, "m_cdi": 1.01793108399379, "y_cap": 332390543.48, "y_rent": 0.0, "y_cdi": 0.0, "ytd_cap": 280782279.77, "ytd_rent": 0.0913325253339762, "ytd_cdi": 0.9795476769127331, "pl": 355222351.59, "resg": 7882461.75, "cotiz": "D+1"}, {"rank": 6, "nome": "Bradesco Vitia RF CP", "m_cap": 52320683.44, "m_rent": 0.0115436192050568, "m_cdi": 1.05602206313939, "y_cap": 148783503.99, "y_rent": 0.0, "y_cdi": 0.0, "ytd_cap": 123583503.99, "ytd_rent": 0.0985000898693564, "ytd_cdi": 1.056420304315514, "pl": 154947856.02, "resg": 0.0, "cotiz": "D+1"}, {"rank": 7, "nome": "Bradesco RF-A RF", "m_cap": 35089709.05, "m_rent": 0.0105858152521649, "m_cdi": 0.9684011802560666, "y_cap": -86171652.66999999, "y_rent": 0.1415000821291688, "y_cdi": 0.9671493718086556, "ytd_cap": 1107196168.68, "ytd_rent": 0.0903152286918207, "ytd_cdi": 0.9686370997781288, "pl": 25068100467.9, "resg": 48953063.12, "cotiz": "D+1"}, {"rank": 8, "nome": "Bradesco Prev UltraConservador III RF CP", "m_cap": 12447594.99, "m_rent": 0.0109207336352592, "m_cdi": 0.9990398556676409, "y_cap": 35481870.32, "y_rent": 0.0, "y_cdi": 0.0, "ytd_cap": 34270295.74, "ytd_rent": 0.0919328411209245, "ytd_cdi": 0.985986105417463, "pl": 36515495.87, "resg": 14673.0, "cotiz": "D+1"}, {"rank": 9, "nome": "Bradesco Dahlia Total Return PGBL/VGBL FI em Cotas de FIF", "m_cap": 4334617.21, "m_rent": -0.0004653684732763, "m_cdi": -0.04257238276311007, "y_cap": 87994167.72, "y_rent": 0.1176461162332836, "y_cdi": 0.8041081368905681, "ytd_cap": 84363536.67, "ytd_rent": 0.0572842918966425, "ytd_cdi": 0.6143780087735385, "pl": 100267915.39, "resg": 4938603.87, "cotiz": "—"}, {"rank": 10, "nome": "Bradesco Prev Ultra Conservador I MM CP", "m_cap": 489374.64, "m_rent": 0.0109466619631901, "m_cdi": 1.00141180556212, "y_cap": -49202399.32, "y_rent": 0.1400639039407128, "y_cdi": 0.9573331313381902, "ytd_cap": -33150829.3, "ytd_rent": 0.0899786803065272, "ytd_cdi": 0.9650275949738164, "pl": 609811796.89, "resg": 108133.22, "cotiz": "—"}], "total": {"m_cap": 962384359.07, "y_cap": 12767602418.399998, "ytd_cap": 10082939391.76, "pl": 112170976213.86002, "resg": 106650786.22}, "top3": ["Bradesco CP Premium RF CP", "Bradesco Private 001 RF", "Bradesco Tivio HYD60 CP"]}}, "cdi": {"m": 0.010931, "y": 0.146306, "ytd": 0.093239}, "resumo": {"titulo": "RANKING CAPTAÇÃO & RENTABILIDADE — PREVIDÊNCIA", "periodo": "CDI mês: 1.09%   |   CDI 12m: 14.63%   |   CDI YTD: 9.32%", "atualizado": "15/09/2026"}, "vg": {"kpis": [{"label": "Plataforma líder (mês)", "value": "Itau", "sub": "maior captação líquida"}, {"label": "Rentabilidade média do mês", "value": "1.09%", "sub": "média dos fundos no ranking"}, {"label": "Fundos que bateram o CDI", "value": "24/40", "sub": "no mês fechado"}, {"label": "Resgates totais", "value": 2855255742.22, "sub": "volume total saído (mês)"}], "plat_flow": [{"plat": "Itau", "value": 6919919013.169999}, {"plat": "Bradesco", "value": 962384359.07}, {"plat": "BTG", "value": 857381074.8100001}, {"plat": "XP", "value": 713005410.76}]}};
   const CDI = PREV.cdi;
   // mapeia chave da planilha -> data-plat do HTML
   const PLATMAP = {Bradesco:'Bradesco', 'Itaú':'Itau', BTG:'BTG', XP:'XP'};
@@ -3157,4 +3157,664 @@ a.hub-card:active{transform:translateY(-1px) scale(.995)}
 })();
 </script>
 
+
+<!-- tivio-charts -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/echarts/5.6.0/echarts.min.js" onerror="(function(t){t.remove();var s=document.createElement('script');s.src='https://cdn.jsdelivr.net/npm/echarts@5.6.0/dist/echarts.min.js';document.head.appendChild(s);})(this)"></script>
+<script>
+/* ==================================================================
+   tivio_charts.js - graficos dos dashboards da Tivio
+   ------------------------------------------------------------------
+   Extraido do Monitor de Novos Fundos, que foi o primeiro a receber
+   ECharts. Fica aqui para os outros dashboards usarem o mesmo modulo
+   em vez de cada template repetir a implementacao - foi o que motivou
+   o tivio_core no Python, e vale igual no JS.
+
+   Injetado INLINE no HTML por template.injetar_charts(): os dashboards
+   circulam como arquivo solto, entao um <script src> externo quebraria
+   assim que alguem movesse so o .html.
+
+   API:
+     bars(el, items, opt)      barras horizontais
+     renderEvolucao(el, items) colunas por periodo
+     barsCss(el, items, opt)   fallback sem a lib
+
+   items: [{n: rotulo, v: valor, c: cor, k?: chave de clique, sel?: bool}]
+   opt:   {chip, w, h, vw, fmt, filtro}
+   ================================================================== */
+
+/* ==================================================================
+   GRAFICOS EM ECHARTS
+   ------------------------------------------------------------------
+   Todos os paineis de barras do dashboard passam por bars(), entao a
+   troca e feita aqui dentro: quem chama nao muda, e os oito paineis
+   (gestoras, credito privado, top gestoras, novas, ANBIMA, publico,
+   faixas de taxa, taxa por gestora) sobem juntos e consistentes.
+   A evolucao mensal tem forma propria - colunas - e fica em
+   renderEvolucao().
+
+   Cores saem dos tokens do Design System, entao claro e escuro
+   continuam resolvidos por CSS. Canvas nao herda CSS: por isso o
+   MutationObserver no fim redesenha tudo quando o tema vira.
+
+   Degradacao: sem a lib (offline, CDN bloqueado) cai em barsCss(),
+   que e exatamente o render anterior. O painel nunca fica vazio.
+   ================================================================== */
+var _tvCharts = [];          /* [{el, tipo, items, opt}] para redesenhar */
+var _tvEsperas = 0;
+
+function _tok(nome, fallback){
+  var v = getComputedStyle(document.documentElement)
+            .getPropertyValue(nome).trim();
+  return v || fallback;
+}
+
+/* "#C1F4D4" + .32 -> "rgba(193,244,212,.32)" · aceita hex de 3 ou 6 */
+function _alpha(cor, a){
+  var h = String(cor).trim();
+  if(h.charAt(0) !== '#') return h;
+  h = h.slice(1);
+  if(h.length === 3) h = h[0]+h[0]+h[1]+h[1]+h[2]+h[2];
+  if(h.length !== 6) return cor;
+  var n = parseInt(h, 16);
+  return 'rgba('+((n>>16)&255)+','+((n>>8)&255)+','+(n&255)+','+a+')';
+}
+
+/* O canvas do ECharts NAO herda CSS: sem isto os graficos saem na fonte
+   padrao da lib enquanto a pagina inteira usa Versos. Le o mesmo token
+   --ff, entao segue a fonte da marca sem duplicar a lista.            */
+function _ff(){
+  return _tok('--ff', '"Versos","Helvetica Neue",Helvetica,Arial,sans-serif');
+}
+
+/* Mede o rotulo na fonte que esta realmente valendo. Reservar espaco por
+   conta fixa quebra dos dois lados: com a metrica do fallback sobra
+   espaco, com a do Versos falta e o ECharts corta. containLabel tambem
+   nao serve aqui - com o rotulo rich (o chip da gestora) ele reserva
+   menos que o bloco desenhado e joga o texto para fora do canvas.   */
+function _larguraTexto(textos, fonte){
+  var cv = _larguraTexto._cv
+        || (_larguraTexto._cv = document.createElement('canvas'));
+  var ctx = cv.getContext('2d');
+  ctx.font = fonte;
+  var maior = 0;
+  for(var i = 0; i < textos.length; i++){
+    maior = Math.max(maior, ctx.measureText(String(textos[i])).width);
+  }
+  return Math.ceil(maior);
+}
+
+/* axisLabel.width + overflow:'truncate' NAO truncam quando o rotulo usa
+   rich text (o chip da gestora): o bloco cresce ate o conteudo e o texto
+   longo sai pela esquerda do canvas. Entao o corte e feito aqui, antes
+   de montar a marcacao.                                              */
+function _cortar(txt, limite, fonte){
+  txt = String(txt);
+  if(_larguraTexto([txt], fonte) <= limite) return txt;
+  var corte = txt;
+  while(corte.length > 1 &&
+        _larguraTexto([corte + '…'], fonte) > limite){
+    corte = corte.slice(0, -1);
+  }
+  return corte + '…';
+}
+
+function _tvRegistra(el, tipo, items, opt){
+  for(var i = 0; i < _tvCharts.length; i++){
+    if(_tvCharts[i].el === el){
+      _tvCharts[i] = {el:el, tipo:tipo, items:items, opt:opt};
+      return;
+    }
+  }
+  _tvCharts.push({el:el, tipo:tipo, items:items, opt:opt});
+}
+
+/* a lib pode ainda estar a caminho (o onerror do <script> baixa o
+   segundo CDN). Desenha o fallback agora e tenta de novo por 5s.     */
+function _tvAguardaLib(){
+  if(window.echarts || _tvEsperas >= 20) return;
+  _tvEsperas++;
+  setTimeout(function(){
+    if(window.echarts){
+      _tvCharts.slice().forEach(function(c){
+        c.el.innerHTML = "";
+        if(c.tipo === 'evo') renderEvolucao(c.el, c.items);
+        else bars(c.el, c.items, c.opt);
+      });
+    } else {
+      _tvAguardaLib();
+    }
+  }, 250);
+}
+
+/* Paineis de abas inativas estao em display:none, onde o canvas nasce
+   0x0 e ficaria em branco ao trocar de aba. O observador redesenha
+   assim que o elemento ganha tamanho - serve para troca de aba, para
+   o painel lateral e para qualquer mudanca de layout.              */
+var _tvLargura = new WeakMap();
+
+var _tvRO = (typeof ResizeObserver !== 'undefined')
+  ? new ResizeObserver(function(ents){
+      ents.forEach(function(e){
+        var w = Math.round(e.contentRect.width);
+        if(w < 1) return;
+        /* so a largura dispara o resize. A altura quem define e bars(),
+           e reagir a ela realimentaria o proprio observador.          */
+        if(_tvLargura.get(e.target) === w) return;
+        _tvLargura.set(e.target, w);
+        var i = echarts.getInstanceByDom(e.target);
+        if(i) i.resize();
+      });
+    })
+  : null;
+
+function _tvInstancia(el){
+  var inst = echarts.getInstanceByDom(el);
+  if(inst) return inst;
+  el.innerHTML = "";
+  inst = echarts.init(el, null, {renderer:'canvas'});
+  if(_tvRO) _tvRO.observe(el);
+  return inst;
+}
+
+/* ---------------------------------------------- barras horizontais */
+function barsCss(el, items, opt){
+  var max = items.length
+    ? Math.max.apply(null, items.map(function(i){ return i.v; })) || 1 : 1;
+  el.innerHTML = items.length ? items.map(function(i){
+    return '<div class="gbar-row'+(i.k?' gbar-click':'')+'"'+(i.k?' data-gkey="'+esc(i.k)+'" data-gfiltro="'+esc(opt.filtro||'')+'" title="Ver as classes · '+esc(i.n)+'"':'')+'>' +
+      (opt.chip
+        ? '<div class="gbar-logo"><span style="background:'+i.c+';color:var(--text-primary);padding:6px 14px;border-radius:6px;font-weight:700;font-size:13px">'+esc(i.n)+'</span></div>'
+        : '<div style="width:'+(opt.w||170)+'px;font-size:12px;color:color-mix(in srgb,var(--veil) 85%,transparent)" title="'+esc(i.n)+'">'+esc(i.n)+'</div>') +
+      '<div class="gbar-track" style="height:'+(opt.h||26)+'px"><div class="gbar-fill" style="width:'+(i.v/max*100).toFixed(1)+'%;background:linear-gradient(90deg,'+i.c+','+i.c+'88)"></div></div>' +
+      '<div class="gbar-value" style="font-size:14px;width:'+(opt.vw||36)+'px">'+(opt.fmt?opt.fmt(i.v):i.v)+'</div>' +
+    '</div>';
+  }).join('')
+    : '<div style="color:var(--muted);font-size:12px">Sem registros no período.</div>';
+}
+
+/* Rotulo do eixo: com chip usa rich (fundo colorido por gestora), sem
+   chip usa texto simples - rich sem necessidade so traz o problema de
+   medicao de volta.                                                  */
+function _rotuloEixo(ordem, rotulos, opt, muted){
+  var base = {margin: 12, fontFamily: _ff()};
+
+  if(!opt.chip){
+    base.color = muted;
+    base.fontSize = 11;
+    base.formatter = function(v, n){ return rotulos[n]; };
+    return base;
+  }
+
+  var rich = {};
+  ordem.forEach(function(i, n){
+    rich['c' + n] = {
+      backgroundColor: i.c,
+      color: _tok('--text-primary', '#FFF'),
+      fontWeight: 700, fontSize: 12,
+      padding: [4, 9, 4, 9], borderRadius: 5,
+      align: 'left', fontFamily: _ff()
+    };
+  });
+
+  base.rich = rich;
+  base.formatter = function(v, n){ return '{c' + n + '|' + rotulos[n] + '}'; };
+  return base;
+}
+
+function bars(el, items, opt){
+  opt = opt || {};
+  if(!el) return;
+
+  if(!items || !items.length){
+    el.style.height = "";
+    el.innerHTML = '<div style="color:var(--muted);font-size:12px">Sem registros no período.</div>';
+    return;
+  }
+
+  _tvRegistra(el, 'bars', items, opt);
+
+  if(!window.echarts){
+    barsCss(el, items, opt);
+    _tvAguardaLib();
+    return;
+  }
+
+  var muted = _tok('--text-muted', '#8A99A3');
+  var linha = _tok('--line', 'rgba(255,255,255,.10)');
+  var fundo = _tok('--bg-elev-1', '#11181E');
+  var tinta = _tok('--text-primary', '#FFF');
+
+  /* Altura: ocupa a folga do painel em vez de deixar um vazio embaixo
+     (credito privado com 1 gestora ficava com 90px de grafico dentro de
+     um painel de 498px). A folga e medida a partir do PAINEL e dos
+     IRMAOS, nunca do proprio elemento - medir a si mesmo com flex:1
+     realimenta o ResizeObserver e a altura dispara.                   */
+  var alturaLinha = (opt.h || 26) + 14;
+  var natural = Math.max(items.length * alturaLinha + 16, 90);
+
+  el.style.flex = "";
+  el.style.minHeight = "";
+  el.style.gap = "";
+
+  var pane = el.closest ? el.closest('.panel') : null;
+  var alvo = natural;
+
+  if(pane){
+    var cs = getComputedStyle(pane);
+    var livre = pane.clientHeight
+              - parseFloat(cs.paddingTop || 0)
+              - parseFloat(cs.paddingBottom || 0);
+
+    for(var n = 0; n < pane.children.length; n++){
+      var filho = pane.children[n];
+      if(filho === el) continue;
+      var fcs = getComputedStyle(filho);
+      livre -= filho.offsetHeight
+             + parseFloat(fcs.marginTop || 0)
+             + parseFloat(fcs.marginBottom || 0);
+    }
+
+    if(livre > natural) alvo = Math.floor(livre);
+  }
+
+  el.style.height = alvo + "px";
+
+  var chart = _tvInstancia(el);
+
+  /* ECharts desenha a categoria de baixo para cima: inverte para o
+     maior ficar no topo, como na lista de barras anterior          */
+  var ordem = items.slice().reverse();
+
+  var fonteRotulo = (opt.chip ? '700 12px ' : '400 11px ') + _ff();
+  var limite = (opt.w || 150) - (opt.chip ? 20 : 0);
+
+  /* o eixo mostra exatamente estes textos - ja cortados */
+  var rotulos = ordem.map(function(i){
+    return _cortar(i.n, limite, fonteRotulo);
+  });
+
+  var larguraRotulo = _larguraTexto(rotulos, fonteRotulo)
+                    + (opt.chip ? 20 : 2);
+
+  var textosValor = ordem.map(function(i){
+    return String(opt.fmt ? opt.fmt(i.v) : i.v);
+  });
+
+  var larguraValor = Math.max(
+    _larguraTexto(textosValor, '600 13px ' + _ff()),
+    opt.vw || 42
+  );
+
+  chart.setOption({
+    animationDuration: 380,
+    textStyle: {fontFamily: _ff()},
+    grid: {
+      left: larguraRotulo + (opt.chip ? 26 : 16),
+      /* o rotulo de valor tambem precisa caber: com fmt devolvendo
+         "+R$ 4,1 Bi" a margem fixa cortava o texto na borda direita */
+      right: larguraValor + 16,
+      top: 4, bottom: 4
+    },
+    tooltip: {
+      trigger: 'item',
+      backgroundColor: fundo, borderColor: linha,
+      textStyle: {color: tinta, fontSize: 12},
+      formatter: function(p){
+        var it = ordem[p.dataIndex];
+        return '<b>' + it.n + '</b><br>' +
+               (opt.fmt ? opt.fmt(it.v) : it.v) +
+               (it.k ? '<br><span style="color:' + muted +
+                       '">clique para ver as classes</span>' : '');
+      }
+    },
+    xAxis: {type:'value', show:false, max:'dataMax'},
+    yAxis: {
+      type: 'category',
+      data: ordem.map(function(i){ return i.n; }),
+      axisLine: {show:false}, axisTick: {show:false},
+      /* triggerEvent devolve o clique ao nome/chip da gestora: antes do
+         ECharts a linha inteira (.gbar-row) era o alvo, nao so a barra */
+      triggerEvent: true,
+      axisLabel: _rotuloEixo(ordem, rotulos, opt, muted)
+    },
+    series: [{
+      type: 'bar',
+      data: ordem.map(function(i){
+        return {
+          value: i.v,
+          itemStyle: {
+            color: {
+              type: 'linear', x:0, y:0, x2:1, y2:0,
+              colorStops: [{offset:0, color:i.c},
+                           {offset:1, color:_alpha(i.c, .53)}]
+            },
+            borderRadius: [0, 4, 4, 0]
+          }
+        };
+      }),
+      barMaxWidth: opt.h || 22,
+      cursor: items.some(function(i){ return !!i.k; }) ? 'pointer' : 'default',
+      label: {
+        show: true, position: 'right', color: tinta,
+        fontSize: 13, fontWeight: 600,
+        formatter: function(p){
+          var it = ordem[p.dataIndex];
+          return opt.fmt ? opt.fmt(it.v) : it.v;
+        }
+      }
+    }]
+  }, true);
+
+  chart.off('click');
+  chart.on('click', function(p){
+    /* barra -> dataIndex · rotulo do eixo -> p.value tem o nome */
+    var it = (p.componentType === 'yAxis')
+      ? ordem.filter(function(i){ return i.n === p.value; })[0]
+      : ordem[p.dataIndex];
+    if(it && it.k) openGestoraModal(it.k, opt.filtro || "");
+  });
+
+  /* cursor de mao tambem sobre os rotulos clicaveis */
+  chart.getZr().on('mousemove', function(e){
+    var alvo = e.target;
+    var sobreRotulo = alvo && alvo.__hoverStyle !== undefined
+                      && items.some(function(i){ return !!i.k; });
+    chart.getZr().setCursorStyle(sobreRotulo ? 'pointer' : 'default');
+  });
+
+  chart.resize();
+}
+
+/* -------------------------------------------- evolucao: colunas */
+function renderEvolucao(el, items){
+  if(!el) return;
+  _tvRegistra(el, 'evo', items, null);
+
+  if(!window.echarts){
+    var poucas = items.length <= 4;
+    el.style.flex = poucas ? "1" : "";
+    el.style.justifyContent = poucas ? "center" : "";
+    el.style.gap = poucas ? "18px" : "";
+    barsCss(el, items, {w:70, h: poucas ? 30 : 22});
+    _tvAguardaLib();
+    return;
+  }
+
+  el.style.flex = "1";
+  el.style.minHeight = "220px";
+  el.style.gap = "";
+
+  var chart = _tvInstancia(el);
+
+  var accent = _tok('--accent-strong', '#C1F4D4');
+  var muted  = _tok('--text-muted', '#8A99A3');
+  var linha  = _tok('--line', 'rgba(255,255,255,.10)');
+  var fundo  = _tok('--bg-elev-1', '#11181E');
+  var tinta  = _tok('--text-primary', '#FFF');
+
+  var valores = items.map(function(i){ return i.v; });
+  var total   = valores.reduce(function(a,b){ return a+b; }, 0);
+  var comDado = valores.filter(function(v){ return v > 0; });
+  var media   = comDado.length ? total / comDado.length : 0;
+
+  chart.setOption({
+    animationDuration: 420,
+    textStyle: {fontFamily: _ff()},
+    grid: {left:2, right:12, top:26, bottom:2, containLabel:true},
+    tooltip: {
+      trigger: 'axis', axisPointer: {type:'shadow'},
+      backgroundColor: fundo, borderColor: linha,
+      textStyle: {color: tinta, fontSize: 12},
+      formatter: function(ps){
+        var p = ps[0];
+        var pct = total ? (p.value / total * 100).toFixed(1) : '0.0';
+        return '<b>'+p.name+'</b><br>'+p.value+' classe'+(p.value===1?'':'s')+
+               '<br><span style="color:'+muted+'">'+
+               String(pct).replace('.', ',')+'% do periodo</span>';
+      }
+    },
+    xAxis: {
+      type: 'category',
+      data: items.map(function(i){ return i.n; }),
+      axisLine: {lineStyle:{color: linha}}, axisTick: {show:false},
+      axisLabel: {color: muted, fontSize: 11, interval: 0, hideOverlap: true}
+    },
+    yAxis: {
+      type: 'value',
+      splitLine: {lineStyle:{color: linha}},
+      axisLabel: {color: muted, fontSize: 11},
+      minInterval: 1
+    },
+    series: [{
+      type: 'bar',
+      data: items.map(function(i){
+        return {
+          value: i.v,
+          itemStyle: {
+            color: i.sel ? accent : _alpha(accent, .32),
+            borderRadius: [3, 3, 0, 0]
+          }
+        };
+      }),
+      barMaxWidth: 34,
+      cursor: 'pointer',
+      label: {
+        show: true, position: 'top', color: muted,
+        fontSize: 11, fontWeight: 600,
+        formatter: function(p){ return p.value > 0 ? p.value : ''; }
+      },
+      markLine: media > 0 ? {
+        silent: true, symbol: 'none',
+        lineStyle: {color: muted, type: 'dashed', width: 1, opacity: .55},
+        label: {
+          color: muted, fontSize: 10, position: 'insideEndTop',
+          formatter: 'media ' + media.toFixed(1).replace('.', ',')
+        },
+        data: [{yAxis: media}]
+      } : undefined
+    }]
+  }, true);
+
+  chart.off('click');
+  chart.on('click', function(p){
+    var it = items[p.dataIndex];
+    if(!it) return;
+    var alvo = document.querySelector('.month-pill[data-month="'+it.k+'"]');
+    if(alvo) alvo.click();
+  });
+
+  chart.resize();
+}
+
+/* As webfonts chegam depois do primeiro render: sem isto a largura dos
+   rotulos fica medida na fonte de fallback e o eixo sai desalinhado
+   quando o Versos entra. */
+if(document.fonts && document.fonts.ready){
+  document.fonts.ready.then(function(){
+    if(!window.echarts) return;
+    _tvCharts.forEach(function(c){
+      if(c.tipo === 'evo') renderEvolucao(c.el, c.items);
+      else bars(c.el, c.items, c.opt);
+    });
+  });
+}
+
+/* canvas nao herda CSS: redesenha tudo quando o tema vira */
+new MutationObserver(function(){
+  if(!window.echarts) return;
+  _tvCharts.forEach(function(c){
+    if(c.tipo === 'evo') renderEvolucao(c.el, c.items);
+    else bars(c.el, c.items, c.opt);
+  });
+}).observe(document.documentElement,
+           {attributes:true, attributeFilter:['data-theme']});
+
+window.addEventListener('resize', function(){
+  if(!window.echarts) return;
+  _tvCharts.forEach(function(c){
+    var i = echarts.getInstanceByDom(c.el);
+    if(i) i.resize();
+  });
+});
+
+
+/* ==================================================================
+   tvUpgrade - troca barras em CSS ja renderizadas por ECharts
+   ------------------------------------------------------------------
+   Cada dashboard monta suas barras de um jeito: uns por template
+   literal no JS, outros com o HTML escrito direto no arquivo. Reescrever
+   quatro implementacoes diferentes seria arriscado e nao sobreviveria a
+   proxima alteracao de qualquer um deles.
+
+   Aqui a leitura e do DOM ja pronto: pega rotulo, valor e cor de cada
+   linha que o proprio dashboard desenhou e redesenha o conjunto com
+   ECharts. Funciona igual nos quatro, e se a lib nao carregar o painel
+   simplesmente fica como estava.
+   ================================================================== */
+
+/* O canvas nao entende var(--x) nem color-mix(): as barras em CSS usam
+   os dois, e passar direto para o ECharts derruba o gradiente com
+   "could not be parsed as a color". Resolve para um valor concreto. */
+function _corConcreta(el){
+  var bruto = el.style.background || el.style.backgroundColor || "";
+
+  var mv = bruto.match(/var\((--[a-z0-9-]+)/i);
+
+  if(mv){
+    var v = _tok(mv[1], "");
+    /* o token pode apontar para outro token */
+    for(var i = 0; i < 3 && /^var\(/.test(v); i++){
+      var m2 = v.match(/var\((--[a-z0-9-]+)/i);
+      v = m2 ? _tok(m2[1], "") : "";
+    }
+    if(v && !/var\(|color-mix/.test(v)) return v.trim();
+  }
+
+  var mh = bruto.match(/#[0-9a-fA-F]{3,8}|rgba?\([^)]+\)/);
+  if(mh) return mh[0];
+
+  /* ultimo recurso: o que o browser calculou para o elemento */
+  var comp = getComputedStyle(el).backgroundColor;
+  if(comp && comp !== "rgba(0, 0, 0, 0)") return comp;
+
+  return _tok("--accent-strong", "#C1F4D4");
+}
+
+
+function _tvLinhas(cont, selFill){
+  /* cada linha e o ancestral comum entre o preenchimento e o rotulo */
+  var fills = cont.querySelectorAll(selFill);
+  var itens = [];
+
+  for(var i = 0; i < fills.length; i++){
+    var fill = fills[i];
+    var linha = fill.closest('[class*="row"], li, tr') || fill.parentElement;
+
+    if(!linha) continue;
+
+    /* largura ja calculada pelo dashboard = o valor relativo */
+    var largura = parseFloat(fill.style.width) || 0;
+
+    /* graficos divergentes tem eixo zero no meio: o lado esquerdo e
+       negativo. Sem isto "-R$ 2,3 Bi" desenhava barra para a direita,
+       igual a um valor positivo - o grafico dizia o contrario do rotulo. */
+    var metade = fill.closest('[class*="half"]');
+
+    if(metade && /\bleft\b/.test(metade.className)) largura = -largura;
+
+    /* rotulo: o primeiro texto da linha que nao esteja dentro da barra */
+    var texto = "";
+    var valor = "";
+
+    for(var n = 0; n < linha.children.length; n++){
+      var c = linha.children[n];
+      if(c.contains(fill)) continue;
+      var t = (c.textContent || "").trim();
+      if(!t) continue;
+      if(!texto) texto = t; else if(!valor) valor = t;
+    }
+
+    if(!texto) continue;
+
+    itens.push({
+      n: texto.replace(/\s+/g, " ").slice(0, 46),
+      v: largura,
+      c: _corConcreta(fill),
+      rotuloValor: valor,
+    });
+  }
+
+  return itens;
+}
+
+function tvUpgrade(cont, opt){
+  opt = opt || {};
+
+  if(!window.echarts || !cont) return false;
+
+  var itens = _tvLinhas(cont, opt.fill || '[class*="fill"]:not([class*="scroll"])');
+
+  if(itens.length < 2) return false;          /* 1 barra nao e grafico */
+
+  /* o rotulo de valor que o dashboard ja formatou vale mais que o
+     numero cru: mantem "R$ 45,3 Bi" em vez de virar a largura em % */
+  var comRotulo = itens.filter(function(i){ return i.rotuloValor; }).length;
+
+  if(comRotulo === itens.length){
+    opt.fmt = function(v){
+      for(var i = 0; i < itens.length; i++){
+        if(itens[i].v === v) return itens[i].rotuloValor;
+      }
+      return v;
+    };
+  }
+
+  cont.setAttribute("data-tv-upgraded", "1");
+  bars(cont, itens, opt);
+
+  return true;
+}
+
+function tvUpgradeTodos(sel, opt){
+  var alvos = document.querySelectorAll(sel);
+  var n = 0;
+
+  for(var i = 0; i < alvos.length; i++){
+    if(alvos[i].getAttribute("data-tv-upgraded")) continue;
+    if(tvUpgrade(alvos[i], opt)) n++;
+  }
+
+  return n;
+}
+
+</script>
+<!-- tivio-charts -->
+
+<!-- tivio-charts-ativar -->
+<script>
+(function(){
+  var SEL = '.diverging-bars, .pv-bars';
+
+  function subir(){
+    if(!window.echarts || typeof tvUpgradeTodos !== 'function') return;
+    try { tvUpgradeTodos(SEL); } catch(e) { /* painel sem barras */ }
+  }
+
+  function tentar(n){
+    subir();
+    if(n > 0) setTimeout(function(){ tentar(n - 1); }, 300);
+  }
+
+  if(document.readyState === 'loading'){
+    document.addEventListener('DOMContentLoaded', function(){ tentar(12); });
+  } else {
+    tentar(12);
+  }
+
+  /* paineis de abas inativas so aparecem depois; converte quando surgirem */
+  new MutationObserver(function(){ subir(); })
+    .observe(document.body, {childList: true, subtree: true});
+})();
+</script>
+<!-- tivio-charts-ativar -->
 </body></html>

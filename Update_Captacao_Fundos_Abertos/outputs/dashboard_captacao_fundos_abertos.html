@@ -546,7 +546,7 @@ th.sortable.sort-desc::after{content:"↓";opacity:1;color:var(--accent-strong)}
   </div>
   <div class="content">
 <div class="tv-refbar">
-<div class="tv-refbar-item"><span class="l">Competência</span><span class="v"><b>09/2026</b> (30 dias)</span></div><div class="tv-refbar-item"><span class="l">12 meses</span><span class="v">12m móveis até 09/2026</span></div><div class="tv-refbar-item"><span class="l">YTD</span><span class="v">31/12/2025 a 11/09/2026</span></div><div class="tv-refbar-spacer"></div><div class="tv-refbar-src">Fonte: ANBIMA · RCVM 175</div>
+<div class="tv-refbar-item"><span class="l">Competência</span><span class="v"><b>06/2026</b> (30 dias)</span></div><div class="tv-refbar-item"><span class="l">12 meses</span><span class="v">12m móveis até 06/2026</span></div><div class="tv-refbar-item"><span class="l">YTD</span><span class="v">31/12/2025 a 30/06/2026</span></div><div class="tv-refbar-spacer"></div><div class="tv-refbar-src">Fonte: ANBIMA · RCVM 175</div>
 </div>
 
 
@@ -3655,7 +3655,7 @@ th.sortable.sort-desc::after{content:"↓";opacity:1;color:var(--accent-strong)}
 </div>
 
 <script>
-const FUNDS_DATA = [{"rank": 1, "nome": "CLASSE ÚNICA DE COTAS DO BTG PACTUAL CDB PLUS FUNDO DE INVESTIMENTO FINANCEIRO RENDA FIXA - CRÉDITO PRIVADO RESPONSABILIDADE LIMITADA", "cap30": 1555023445.2, "rent30": 1.048937, "cdi30": 96.19, "cap12": 6201311096.07, "rent12": 14.606966, "cdi12": 100.49, "capytd": 3594806188.4, "rentytd": 9.842842, "cdiytd": 100.68, "pl": 29189865253.19, "benchmark": "CDI", "gestor": "N/D", "plat": "BTG", "categoria": "Renda Fixa Ativa", "rank_global": 1}, {"rank": 1, "nome": "ITAÚ CRÉDITO BANCÁRIO RF CRED PRIV FIF CIC RESP LIMITADA", "cap30": 1301036394.68, "rent30": 1.035297, "cdi30": 94.94, "cap12": 14983196362.47, "rent12": 14.454949, "cdi12": 99.44, "capytd": 11004752739.56, "rentytd": 9.716499, "cdiytd": 99.39, "pl": 41401582174.55, "benchmark": "CDI", "gestor": "N/D", "plat": "Itau", "categoria": "Renda Fixa Ativa", "rank_global": 2}, {"rank": 1, "nome": "BRADESCO BANCOS FI FINANCEIRO - CIC RF CRED PRIV - RESP LIMITADA", "cap30": 803385645.27, "rent30": 1.086388, "cdi30": 99.62, "cap12": 1035015459.19, "rent12": 14.968591, "cdi12": 102.98, "capytd": 968417499.86, "rentytd": 10.092196, "cdiytd": 103.23, "pl": 11058118328.48, "benchmark": "CDI", "gestor": "N/D", "plat": "Bradesco", "categoria": "Renda Fixa Ativa", "rank_global": 3}, {"rank": 2, "nome": "BRADESCO BANCOS II FI FINANCEIRO - CIC RF CRED PRIV - RESP LIMITADA", "cap30": 795687722.04, "rent30": 1.072503, "cdi30": 98.35, "cap12": 3923673996.15, "rent12": 14.763749, "cdi12": 101.57, "capytd": 3869700732.01, "rentytd": 9.957311, "cdiytd": 101.85, "pl": 6450478141.43, "benchmark": "CDI", "gestor": "N/D", "plat": "BTG", "categoria": "Renda Fixa Ativa", "rank_global": 4}, {"rank": 1, "nome": "BRADESCO BANCOS II FI FINANCEIRO - CIC RF CRED PRIV - RESP LIMITADA", "cap30": 795687722.04, "rent30": 1.072503, "cdi30": 98.35, "cap12": 3923673996.15, "rent12": 14.763749, "cdi12": 101.57, "capytd": 3869700732.01, "rentytd": 9.957311, "cdiytd": 101.85, "pl": 6450478141.43, "benchmark": "CDI", "gestor": "N/D", "plat": "XP", "categoria": "Renda Fixa Ativa", "rank_global": 5}, {"rank": 3, "nome": "CLASSE ÚNICA DE COTAS DO BTG PACTUAL CRÉDITO BANCÁRIO FUNDO DE INVESTIMENTO FINANCEIRO RENDA FIXA - CRÉDITO PRIVADO RESPONSABILIDADE LIMITADA", "cap30": 610341357.72, "rent30": 1.078498, "cdi30": 98.9, "cap12": 2013691753.19, "rent12": 1.078498, "cdi12": 7.42, "capytd": 2003691753.19, "rentytd": 10.13223, "cdiytd": 103.64, "pl": 2072232859.79, "benchmark": "CDI", "gestor": "N/D", "plat": "BTG", "categoria": "Renda Fixa Ativa", "rank_global": 6}, {"rank": 2, "nome": "MAPFRE CONFIANZA FIF RF REF DI CRED PRIV – RESP LIMITADA", "cap30": 529325542.5, "rent30": 1.081279, "cdi30": 99.16, "cap12": 8633042523.15, "rent12": 14.993691, "cdi12": 103.15, "capytd": 7114881765.39, "rentytd": 10.051342, "cdiytd": 102.81, "pl": 18653725325.48, "benchmark": "CDI", "gestor": "N/D", "plat": "XP", "categoria": "Renda Fixa Ativa", "rank_global": 7}, {"rank": 2, "nome": "MAPFRE CONFIANZA FIF RF REF DI CRED PRIV – RESP LIMITADA", "cap30": 529325542.5, "rent30": 1.081279, "cdi30": 99.16, "cap12": 8633042523.15, "rent12": 14.993691, "cdi12": 103.15, "capytd": 7114881765.39, "rentytd": 10.051342, "cdiytd": 102.81, "pl": 18653725325.48, "benchmark": "CDI", "gestor": "N/D", "plat": "Itau", "categoria": "Renda Fixa Ativa", "rank_global": 8}, {"rank": 1, "nome": "TREND PÓS-FIXADO FC RF SIMPLES RESP LIMITADA", "cap30": 332584537.51, "rent30": 1.079382, "cdi30": 98.98, "cap12": 1711779664.83, "rent12": 14.441315, "cdi12": 99.35, "capytd": 1517217157.18, "rentytd": 9.727419, "cdiytd": 99.5, "pl": 15570335141.35, "benchmark": "CDI", "gestor": "N/D", "plat": "XP", "categoria": "Renda Fixa", "rank_global": 9}, {"rank": 1, "nome": "SAFRA INTELIGÊNCIA ARTIFICIAL CI MULT RESP LIMITADA", "cap30": 329599808.99, "rent30": -0.326981, "cdi30": -29.98, "cap12": 2029121777.65, "rent12": 67.78192, "cdi12": 466.31, "capytd": 1524710000.33, "rentytd": 46.138319, "cdiytd": 471.93, "pl": 2872416234.66, "benchmark": "CDI", "gestor": "N/D", "plat": "BTG", "categoria": "Multimercado", "rank_global": 10}, {"rank": 2, "nome": "Trend Cash Classe de Investimento em Cotas de Classes Renda Fixa Simples - Responsabilidade Limitada", "cap30": 249364412.57, "rent30": 1.023018, "cdi30": 93.81, "cap12": 2110332345.27, "rent12": 14.294538, "cdi12": 98.34, "capytd": 1273017857.69, "rentytd": 9.60966, "cdiytd": 98.29, "pl": 5546437815.51, "benchmark": "CDI", "gestor": "N/D", "plat": "XP", "categoria": "Renda Fixa", "rank_global": 11}, {"rank": 4, "nome": "OCCAM LIQUIDEZ FC FIF RF CRED PRIV – RESP LIMITADA", "cap30": 230211994.1, "rent30": 1.043695, "cdi30": 95.71, "cap12": 7279887.19, "rent12": 14.789588, "cdi12": 101.75, "capytd": 689454547.91, "rentytd": 10.030032, "cdiytd": 102.59, "pl": 4205311541.88, "benchmark": "CDI", "gestor": "N/D", "plat": "BTG", "categoria": "Renda Fixa Ativa", "rank_global": 12}, {"rank": 3, "nome": "OCCAM LIQUIDEZ MASTER FIF RF CRED PRIV - RESP  LIMITADA", "cap30": 227809000.0, "rent30": 1.077145, "cdi30": 98.78, "cap12": -3666000.0, "rent12": 15.266176, "cdi12": 105.03, "capytd": 680197000.0, "rentytd": 10.346295, "cdiytd": 105.83, "pl": 4201081535.52, "benchmark": "CDI", "gestor": "N/D", "plat": "Itau", "categoria": "Renda Fixa Ativa", "rank_global": 13}, {"rank": 5, "nome": "CLASSE ÚNICA DE COTAS DO COMPASS CREDIT SELECTION FUNDO DE INVESTIMENTO FINANCEIRO EM COTAS DE FUNDOS DE INVESTIMENTO RENDA FIXA - CRÉDITO PRIVADO LONGO PRAZO RESPONSABILIDADE LIMITADA", "cap30": 225138537.32, "rent30": 1.020831, "cdi30": 93.61, "cap12": 645170677.72, "rent12": 14.864873, "cdi12": 102.26, "capytd": 633901228.92, "rentytd": 9.974814, "cdiytd": 102.03, "pl": 1742386125.41, "benchmark": "CDI", "gestor": "N/D", "plat": "BTG", "categoria": "Renda Fixa Ativa", "rank_global": 14}, {"rank": 3, "nome": "CLASSE ÚNICA DE COTAS DO COMPASS CREDIT SELECTION FUNDO DE INVESTIMENTO FINANCEIRO EM COTAS DE FUNDOS DE INVESTIMENTO RENDA FIXA - CRÉDITO PRIVADO LONGO PRAZO RESPONSABILIDADE LIMITADA", "cap30": 225138537.32, "rent30": 1.020831, "cdi30": 93.61, "cap12": 645170677.72, "rent12": 14.864873, "cdi12": 102.26, "capytd": 633901228.92, "rentytd": 9.974814, "cdiytd": 102.03, "pl": 1742386125.41, "benchmark": "CDI", "gestor": "N/D", "plat": "XP", "categoria": "Renda Fixa Ativa", "rank_global": 15}, {"rank": 4, "nome": "CLASSE ÚNICA DE COTAS DO COMPASS CREDIT SELECTION FUNDO DE INVESTIMENTO FINANCEIRO RENDA FIXA - CRÉDITO PRIVADO LONGO PRAZO RESPONSABILIDADE LIMITADA", "cap30": 223126704.0, "rent30": 1.051647, "cdi30": 96.44, "cap12": 640027165.57, "rent12": 15.295151, "cdi12": 105.22, "capytd": 629212180.77, "rentytd": 10.254467, "cdiytd": 104.89, "pl": 1740845116.2, "benchmark": "CDI", "gestor": "N/D", "plat": "Itau", "categoria": "Renda Fixa Ativa", "rank_global": 16}, {"rank": 6, "nome": "BRADESCO DEBÊNTURES INCENTIVADAS CDI III FUNDO DE INVESTIMENTO FINANCEIRO – CLASSE DE INVESTIMENTO EM COTAS RENDA FIXA DE INVESTIMENTO EM INFRAESTRUTURA LONGO PRAZO - RESPONSABILDADE LIMITADA", "cap30": 211217633.42, "rent30": 1.158998, "cdi30": 106.28, "cap12": 1335826046.08, "rent12": 1.158998, "cdi12": 7.97, "capytd": 1325826046.08, "rentytd": 10.038528, "cdiytd": 102.68, "pl": 1387614799.08, "benchmark": "CDI", "gestor": "N/D", "plat": "BTG", "categoria": "Renda Fixa Ativa", "rank_global": 17}, {"rank": 2, "nome": "BRADESCO FIF - CIC RENDA FIXA CRÉDITO PRIVADO PLUS - RESP LIMITADA", "cap30": 211197958.68, "rent30": 1.062568, "cdi30": 97.44, "cap12": 168067956.44, "rent12": 14.872081, "cdi12": 102.31, "capytd": 536645859.73, "rentytd": 10.069011, "cdiytd": 102.99, "pl": 31161613210.73, "benchmark": "CDI", "gestor": "N/D", "plat": "Bradesco", "categoria": "Renda Fixa Ativa", "rank_global": 18}, {"rank": 2, "nome": "CLASSE ÚNICA DE COTAS DO AZ QUEST LOW VOL FUNDO DE INVESTIMENTO FINANCEIRO MULTIMERCADO - RESPONSABILIDADE LIMITADA", "cap30": 200638414.94, "rent30": 1.035074, "cdi30": 94.92, "cap12": 558806342.74, "rent12": 14.876181, "cdi12": 102.34, "capytd": 538847562.62, "rentytd": 10.065228, "cdiytd": 102.95, "pl": 3532099914.27, "benchmark": "CDI", "gestor": "N/D", "plat": "BTG", "categoria": "Multimercado", "rank_global": 19}, {"rank": 1, "nome": "CLASSE ÚNICA DE COTAS DO AZ QUEST LOW VOL FUNDO DE INVESTIMENTO FINANCEIRO MULTIMERCADO - RESPONSABILIDADE LIMITADA", "cap30": 200638414.94, "rent30": 1.035074, "cdi30": 94.92, "cap12": 558806342.74, "rent12": 14.876181, "cdi12": 102.34, "capytd": 538847562.62, "rentytd": 10.065228, "cdiytd": 102.95, "pl": 3532099914.27, "benchmark": "CDI", "gestor": "N/D", "plat": "XP", "categoria": "Multimercado", "rank_global": 20}, {"rank": 7, "nome": "CLASSE ÚNICA DE COTAS DO MAG CASH 10 FUNDO DE INVESTIMENTO RENDA FIXA – CRÉDITO PRIVADO RESPONSABILIDADE LIMITADA", "cap30": 182319411.84, "rent30": 1.041989, "cdi30": 95.55, "cap12": 1451524092.9, "rent12": 15.021676, "cdi12": 103.34, "capytd": 1338183749.26, "rentytd": 10.253334, "cdiytd": 104.88, "pl": 2567150943.81, "benchmark": "CDI", "gestor": "N/D", "plat": "BTG", "categoria": "Renda Fixa Ativa", "rank_global": 21}, {"rank": 4, "nome": "CLASSE ÚNICA DE COTAS DO MAG CASH 10 FUNDO DE INVESTIMENTO RENDA FIXA – CRÉDITO PRIVADO RESPONSABILIDADE LIMITADA", "cap30": 182319411.84, "rent30": 1.041989, "cdi30": 95.55, "cap12": 1451524092.9, "rent12": 15.021676, "cdi12": 103.34, "capytd": 1338183749.26, "rentytd": 10.253334, "cdiytd": 104.88, "pl": 2567150943.81, "benchmark": "CDI", "gestor": "N/D", "plat": "XP", "categoria": "Renda Fixa Ativa", "rank_global": 22}, {"rank": 3, "nome": "BRADESCO SOLARO FI FINANCEIRO - CIC RF CRED PRIV LP - RESP LIMITADA", "cap30": 134708905.36, "rent30": 1.055793, "cdi30": 96.82, "cap12": 1135081247.17, "rent12": 14.843372, "cdi12": 102.12, "capytd": 842018832.36, "rentytd": 10.086181, "cdiytd": 103.17, "pl": 11151240189.59, "benchmark": "CDI", "gestor": "N/D", "plat": "Bradesco", "categoria": "Renda Fixa Ativa", "rank_global": 23}, {"rank": 1, "nome": "ITAÚ GLOBAL DINÂMICO BAIXA VOL MULT FIF CIC RESP LIMITADA", "cap30": 120325908.35, "rent30": 1.11275, "cdi30": 102.04, "cap12": 2557298403.44, "rent12": 14.276842, "cdi12": 98.22, "capytd": 1543634677.61, "rentytd": 9.451007, "cdiytd": 96.67, "pl": 3476623076.92, "benchmark": "CDI", "gestor": "N/D", "plat": "Itau", "categoria": "Multimercado", "rank_global": 24}, {"rank": 3, "nome": "ICATU VANGUARDA DINÂMICO CDI FUNDO DE INVESTIMENTO FINANCEIRO CLASSE DE INVESTIMENTO MULTIMERCADO - RESPONSABILIDADE LIMITADA", "cap30": 118454182.54, "rent30": 1.008123, "cdi30": 92.45, "cap12": 1154550362.63, "rent12": 14.930622, "cdi12": 102.72, "capytd": 1066145476.13, "rentytd": 10.085271, "cdiytd": 103.16, "pl": 859186465.34, "benchmark": "CDI", "gestor": "N/D", "plat": "BTG", "categoria": "Multimercado", "rank_global": 25}, {"rank": 2, "nome": "ICATU VANGUARDA DINÂMICO CDI FUNDO DE INVESTIMENTO FINANCEIRO CLASSE DE INVESTIMENTO MULTIMERCADO - RESPONSABILIDADE LIMITADA", "cap30": 118454182.54, "rent30": 1.008123, "cdi30": 92.45, "cap12": 1154550362.63, "rent12": 14.930622, "cdi12": 102.72, "capytd": 1066145476.13, "rentytd": 10.085271, "cdiytd": 103.16, "pl": 859186465.34, "benchmark": "CDI", "gestor": "N/D", "plat": "XP", "categoria": "Multimercado", "rank_global": 26}, {"rank": 2, "nome": "ITAÚ PRECISION ADVANCED FUNDO DE INVESTIMENTO FINANCEIRO MULTIMERCADO CRÉDITO PRIVADO RESPONSABILIDADE LIMITADA", "cap30": 118017939.78, "rent30": 1.111629, "cdi30": 101.94, "cap12": 1031387304.19, "rent12": 15.518115, "cdi12": 106.76, "capytd": 1282573561.27, "rentytd": 10.944796, "cdiytd": 111.95, "pl": 3105463097.35, "benchmark": "CDI", "gestor": "N/D", "plat": "Itau", "categoria": "Multimercado", "rank_global": 27}, {"rank": 5, "nome": "CLASSE ÚNICA DE COTAS DO GIANT CASH FUNDO DE INVESTIMENTO FINANCEIRO RENDA FIXA CRÉDITO PRIVADO LONGO PRAZO", "cap30": 112507505.58, "rent30": 1.04531, "cdi30": 95.86, "cap12": 1097120766.76, "rent12": 14.876883, "cdi12": 102.35, "capytd": 897677279.54, "rentytd": 10.006282, "cdiytd": 102.35, "pl": 1205570029.11, "benchmark": "CDI", "gestor": "N/D", "plat": "XP", "categoria": "Renda Fixa Ativa", "rank_global": 28}, {"rank": 8, "nome": "BNP PARIBAS RUBI CLASSE DE INVESTIMENTO EM COTAS DE CLASSE DE INVESTIMENTO RENDA FIXA CRÉDITO PRIVADO – RESPONSABILIDADE LIMITADA", "cap30": 94944259.22, "rent30": 1.059238, "cdi30": 97.13, "cap12": 794674794.21, "rent12": 14.822701, "cdi12": 101.97, "capytd": 368162086.03, "rentytd": 9.976739, "cdiytd": 102.05, "pl": 3844634372.73, "benchmark": "CDI", "gestor": "N/D", "plat": "BTG", "categoria": "Renda Fixa Ativa", "rank_global": 29}, {"rank": 6, "nome": "BNP PARIBAS RUBI CLASSE DE INVESTIMENTO EM COTAS DE CLASSE DE INVESTIMENTO RENDA FIXA CRÉDITO PRIVADO – RESPONSABILIDADE LIMITADA", "cap30": 94944259.22, "rent30": 1.059238, "cdi30": 97.13, "cap12": 794674794.21, "rent12": 14.822701, "cdi12": 101.97, "capytd": 368162086.03, "rentytd": 9.976739, "cdiytd": 102.05, "pl": 3844634372.73, "benchmark": "CDI", "gestor": "N/D", "plat": "XP", "categoria": "Renda Fixa Ativa", "rank_global": 30}, {"rank": 4, "nome": "BNP PARIBAS RUBI CLASSE DE INVESTIMENTO EM COTAS DE CLASSE DE INVESTIMENTO RENDA FIXA CRÉDITO PRIVADO – RESPONSABILIDADE LIMITADA", "cap30": 94944259.22, "rent30": 1.059238, "cdi30": 97.13, "cap12": 794674794.21, "rent12": 14.822701, "cdi12": 101.97, "capytd": 368162086.03, "rentytd": 9.976739, "cdiytd": 102.05, "pl": 3844634372.73, "benchmark": "CDI", "gestor": "N/D", "plat": "Bradesco", "categoria": "Renda Fixa Ativa", "rank_global": 31}, {"rank": 7, "nome": "24 HORAS FI RF RESP LIMITADA", "cap30": 94461033.84, "rent30": 1.056122, "cdi30": 96.85, "cap12": 1056700861.22, "rent12": 14.128628, "cdi12": 97.2, "capytd": 769722470.84, "rentytd": 9.513278, "cdiytd": 97.31, "pl": 1851600818.86, "benchmark": "CDI", "gestor": "N/D", "plat": "XP", "categoria": "Renda Fixa Ativa", "rank_global": 32}, {"rank": 9, "nome": "CLASSE ÚNICA DE COTAS DO COMPASS YIELD 30 FUNDO DE INVESTIMENTO FINANCEIRO RENDA FIXA - CRÉDITO PRIVADO LONGO PRAZO RESPONSABILIDADE LIMITADA", "cap30": 92596116.59, "rent30": 1.046486, "cdi30": 95.97, "cap12": -454305428.32, "rent12": 15.197727, "cdi12": 104.55, "capytd": -105869673.67, "rentytd": 10.898385, "cdiytd": 111.47, "pl": 1959422154.89, "benchmark": "CDI", "gestor": "N/D", "plat": "BTG", "categoria": "Renda Fixa Ativa", "rank_global": 33}, {"rank": 8, "nome": "CLASSE ÚNICA DE COTAS DO COMPASS YIELD 30 FUNDO DE INVESTIMENTO FINANCEIRO RENDA FIXA - CRÉDITO PRIVADO LONGO PRAZO RESPONSABILIDADE LIMITADA", "cap30": 92596116.59, "rent30": 1.046486, "cdi30": 95.97, "cap12": -454305428.32, "rent12": 15.197727, "cdi12": 104.55, "capytd": -105869673.67, "rentytd": 10.898385, "cdiytd": 111.47, "pl": 1959422154.89, "benchmark": "CDI", "gestor": "N/D", "plat": "XP", "categoria": "Renda Fixa Ativa", "rank_global": 34}, {"rank": 5, "nome": "CLASSE ÚNICA DE COTAS DO COMPASS YIELD 30 FUNDO DE INVESTIMENTO FINANCEIRO RENDA FIXA - CRÉDITO PRIVADO LONGO PRAZO RESPONSABILIDADE LIMITADA", "cap30": 92596116.59, "rent30": 1.046486, "cdi30": 95.97, "cap12": -454305428.32, "rent12": 15.197727, "cdi12": 104.55, "capytd": -105869673.67, "rentytd": 10.898385, "cdiytd": 111.47, "pl": 1959422154.89, "benchmark": "CDI", "gestor": "N/D", "plat": "Itau", "categoria": "Renda Fixa Ativa", "rank_global": 35}, {"rank": 1, "nome": "MAPFRE FIF RF – RESP LIMITADA", "cap30": 73368215.92, "rent30": 1.114299, "cdi30": 102.18, "cap12": 495276243.11, "rent12": 14.62713, "cdi12": 100.63, "capytd": 595534108.35, "rentytd": 9.903178, "cdiytd": 101.29, "pl": 3263318027.39, "benchmark": "CDI", "gestor": "N/D", "plat": "Itau", "categoria": "Renda Fixa", "rank_global": 36}, {"rank": 10, "nome": "CLASSE ÚNICA DE COTAS DO MAG CASH FUNDO DE INVESTIMENTO FINANCEIRO RENDA FIXA - RESPONSABILIDADE LIMITADA LONGO PRAZO", "cap30": 69319269.37, "rent30": 1.022198, "cdi30": 93.74, "cap12": -170749761.54, "rent12": 14.477919, "cdi12": 99.6, "capytd": 287541394.3, "rentytd": 9.865139, "cdiytd": 100.91, "pl": 2149834195.75, "benchmark": "CDI", "gestor": "N/D", "plat": "BTG", "categoria": "Renda Fixa Ativa", "rank_global": 37}, {"rank": 9, "nome": "CLASSE ÚNICA DE COTAS DO MAG CASH FUNDO DE INVESTIMENTO FINANCEIRO RENDA FIXA - RESPONSABILIDADE LIMITADA LONGO PRAZO", "cap30": 69319269.37, "rent30": 1.022198, "cdi30": 93.74, "cap12": -170749761.54, "rent12": 14.477919, "cdi12": 99.6, "capytd": 287541394.3, "rentytd": 9.865139, "cdiytd": 100.91, "pl": 2149834195.75, "benchmark": "CDI", "gestor": "N/D", "plat": "XP", "categoria": "Renda Fixa Ativa", "rank_global": 38}, {"rank": 10, "nome": "TIVIO BANKS CLASSE DE INVESTIMENTO RF CRED PRIV – RESP LIMITADA", "cap30": 69151920.3, "rent30": 1.043402, "cdi30": 95.68, "cap12": 537697154.52, "rent12": 14.537377, "cdi12": 100.01, "capytd": 364787475.85, "rentytd": 9.752293, "cdiytd": 99.75, "pl": 1812652846.74, "benchmark": "CDI", "gestor": "N/D", "plat": "XP", "categoria": "Renda Fixa Ativa", "rank_global": 39}, {"rank": 1, "nome": "BB ASSET RENDA FIXA ATIVA PLUS LONGO PRAZO FUNDO DE INVESTIMENTO EM COTAS DE FUNDOS DE INVESTIMENTO FINANCEIRO RESPONSABILIDADE LIMITADA", "cap30": 53946471.02, "rent30": 1.484363, "cdi30": 136.12, "cap12": 109470684.47, "rent12": 19.690151, "cdi12": 135.46, "capytd": 129743663.84, "rentytd": 13.82494, "cdiytd": 141.41, "pl": 217939644.98, "benchmark": "CDI", "gestor": "N/D", "plat": "BTG", "categoria": "Renda Fixa", "rank_global": 40}, {"rank": 3, "nome": "BB ASSET RENDA FIXA ATIVA PLUS LONGO PRAZO FUNDO DE INVESTIMENTO EM COTAS DE FUNDOS DE INVESTIMENTO FINANCEIRO RESPONSABILIDADE LIMITADA", "cap30": 53946471.02, "rent30": 1.484363, "cdi30": 136.12, "cap12": 109470684.47, "rent12": 19.690151, "cdi12": 135.46, "capytd": 129743663.84, "rentytd": 13.82494, "cdiytd": 141.41, "pl": 217939644.98, "benchmark": "CDI", "gestor": "N/D", "plat": "XP", "categoria": "Renda Fixa", "rank_global": 41}, {"rank": 6, "nome": "CLASSE ÚNICA DE COTAS DO M8 CAPITAL PLUS FUNDO DE INVESTIMENTO FINANCEIRO RENDA FIXA - CRÉDITO PRIVADO RESPONSABILIDADE LIMITADA LONGO PRAZO", "cap30": 44791538.18, "rent30": 1.065592, "cdi30": 97.72, "cap12": 237358565.01, "rent12": 15.194988, "cdi12": 104.54, "capytd": 231596729.15, "rentytd": 10.23726, "cdiytd": 104.71, "pl": 641762672.56, "benchmark": "CDI", "gestor": "N/D", "plat": "Itau", "categoria": "Renda Fixa Ativa", "rank_global": 42}, {"rank": 2, "nome": "ITAÚ INDEX SIMPLES SELIC RF FIF CIC - RESP LIMITADA", "cap30": 38224577.14, "rent30": 1.016886, "cdi30": 93.25, "cap12": 276028376.67, "rent12": 14.204215, "cdi12": 97.72, "capytd": 317116783.15, "rentytd": 9.543735, "cdiytd": 97.62, "pl": 2346382052.64, "benchmark": "CDI", "gestor": "N/D", "plat": "Itau", "categoria": "Renda Fixa", "rank_global": 43}, {"rank": 4, "nome": "CLASSE ÚNICA DE COTAS DO PERSEVERA TRINITY FUNDO DE INVESTIMENTO RENDA FIXA - REFERENCIADA DI RESPONSABILIDADE LIMITADA", "cap30": 37810956.28, "rent30": 1.036171, "cdi30": 95.02, "cap12": 416411462.35, "rent12": 14.542426, "cdi12": 100.05, "capytd": 442918497.1, "rentytd": 9.789743, "cdiytd": 100.13, "pl": 2486600044.38, "benchmark": "CDI", "gestor": "N/D", "plat": "XP", "categoria": "Renda Fixa", "rank_global": 44}, {"rank": 4, "nome": "ITAÚ ARTAX ENDURANCE DISTRIBUIDORES FIF CIC MULT RESP LIMITADA", "cap30": 37688990.7, "rent30": 2.038456, "cdi30": 186.93, "cap12": 472123033.55, "rent12": 24.298511, "cdi12": 167.16, "capytd": 321210470.57, "rentytd": 14.444952, "cdiytd": 147.75, "pl": 585699634.46, "benchmark": "CDI", "gestor": "N/D", "plat": "BTG", "categoria": "Multimercado", "rank_global": 45}, {"rank": 5, "nome": "CLASSE ÚNICA DE COTAS DO RIZA TAVROS LONG BIAS FUNDO DE INVESTIMENTO FINANCEIRO EM COTAS DE FUNDOS DE INVESTIMENTO MULTIMERCADO RESPONSABILIDADE LIMITADA", "cap30": 37486428.92, "rent30": 10.621683, "cdi30": 974.03, "cap12": 43984502.74, "rent12": 12.199004, "cdi12": 83.92, "capytd": 47512496.98, "rentytd": 9.893316, "cdiytd": 101.19, "pl": 98866992.0, "benchmark": "CDI", "gestor": "N/D", "plat": "BTG", "categoria": "Multimercado", "rank_global": 46}, {"rank": 3, "nome": "CLASSE ÚNICA DE COTAS DO RIZA TAVROS LONG BIAS FUNDO DE INVESTIMENTO FINANCEIRO EM COTAS DE FUNDOS DE INVESTIMENTO MULTIMERCADO RESPONSABILIDADE LIMITADA", "cap30": 37486428.92, "rent30": 10.621683, "cdi30": 974.03, "cap12": 43984502.74, "rent12": 12.199004, "cdi12": 83.92, "capytd": 47512496.98, "rentytd": 9.893316, "cdiytd": 101.19, "pl": 98866992.0, "benchmark": "CDI", "gestor": "N/D", "plat": "XP", "categoria": "Multimercado", "rank_global": 47}, {"rank": 6, "nome": "CLASSE ÚNICA DE COTAS DO BTG PACTUAL VOLT FUNDO DE INVESTIMENTO FINANCEIRO MULTIMERCADO - RESPONSABILIDADE LIMITADA", "cap30": 34931495.08, "rent30": 1.933849, "cdi30": 177.34, "cap12": 714504920.74, "rent12": 1.933849, "cdi12": 13.3, "capytd": 363753030.19, "rentytd": 10.459559, "cdiytd": 106.99, "pl": 845171317.63, "benchmark": "CDI", "gestor": "N/D", "plat": "BTG", "categoria": "Multimercado", "rank_global": 48}, {"rank": 5, "nome": "TREND DI FC RF SIMPLES RESP LIMITADA", "cap30": 29472433.29, "rent30": 1.091991, "cdi30": 100.14, "cap12": 306398321.94, "rent12": 14.614175, "cdi12": 100.54, "capytd": 290371863.48, "rentytd": 9.842893, "cdiytd": 100.68, "pl": 4446080708.42, "benchmark": "CDI", "gestor": "N/D", "plat": "XP", "categoria": "Renda Fixa", "rank_global": 49}, {"rank": 7, "nome": "ABSOLUTE ALPHA GLOBAL FC FIF MULT - RESP LIMITADA", "cap30": 25401146.87, "rent30": 0.898164, "cdi30": 82.36, "cap12": 122480242.48, "rent12": 16.912894, "cdi12": 116.35, "capytd": 125297489.86, "rentytd": 10.685875, "cdiytd": 109.3, "pl": 213625403.61, "benchmark": "CDI", "gestor": "N/D", "plat": "BTG", "categoria": "Multimercado", "rank_global": 50}, {"rank": 3, "nome": "ABSOLUTE ALPHA GLOBAL FC FIF MULT - RESP LIMITADA", "cap30": 25401146.87, "rent30": 0.898164, "cdi30": 82.36, "cap12": 122480242.48, "rent12": 16.912894, "cdi12": 116.35, "capytd": 125297489.86, "rentytd": 10.685875, "cdiytd": 109.3, "pl": 213625403.61, "benchmark": "CDI", "gestor": "N/D", "plat": "Itau", "categoria": "Multimercado", "rank_global": 51}, {"rank": 1, "nome": "ABSOLUTE ALPHA GLOBAL FC FIF MULT - RESP LIMITADA", "cap30": 25401146.87, "rent30": 0.898164, "cdi30": 82.36, "cap12": 122480242.48, "rent12": 16.912894, "cdi12": 116.35, "capytd": 125297489.86, "rentytd": 10.685875, "cdiytd": 109.3, "pl": 213625403.61, "benchmark": "CDI", "gestor": "N/D", "plat": "Bradesco", "categoria": "Multimercado", "rank_global": 52}, {"rank": 8, "nome": "CLASSE ÚNICA DE COTAS DO KAPITALO NW3 PLUS FUNDO DE INVESTIMENTO FINANCEIRO EM COTAS DE FUNDOS DE INVESTIMENTO MULTIMERCADO - RESPONSABILIDADE LIMITADA", "cap30": 24526012.1, "rent30": 0.969774, "cdi30": 88.93, "cap12": 69681588.81, "rent12": -55.871278, "cdi12": -384.37, "capytd": 63288968.23, "rentytd": -57.989248, "cdiytd": -593.14, "pl": 3455685.08, "benchmark": "CDI", "gestor": "N/D", "plat": "BTG", "categoria": "Multimercado", "rank_global": 53}, {"rank": 4, "nome": "CLASSE ÚNICA DE COTAS DO KAPITALO NW3 PLUS FUNDO DE INVESTIMENTO FINANCEIRO EM COTAS DE FUNDOS DE INVESTIMENTO MULTIMERCADO - RESPONSABILIDADE LIMITADA", "cap30": 24526012.1, "rent30": 0.969774, "cdi30": 88.93, "cap12": 69681588.81, "rent12": -55.871278, "cdi12": -384.37, "capytd": 63288968.23, "rentytd": -57.989248, "cdiytd": -593.14, "pl": 3455685.08, "benchmark": "CDI", "gestor": "N/D", "plat": "XP", "categoria": "Multimercado", "rank_global": 54}, {"rank": 4, "nome": "ITAÚ KINEA APOLO FIF CIC MULT RESP LIMITADA", "cap30": 24028084.52, "rent30": 1.057138, "cdi30": 96.94, "cap12": 52901541.84, "rent12": 14.241536, "cdi12": 97.98, "capytd": 100826047.56, "rentytd": 9.232649, "cdiytd": 94.44, "pl": 2711685373.84, "benchmark": "CDI", "gestor": "N/D", "plat": "Itau", "categoria": "Multimercado", "rank_global": 55}, {"rank": 9, "nome": "KINEA APOLO FIF MULT RESP LIMITADA", "cap30": 20421077.51, "rent30": 1.443535, "cdi30": 132.38, "cap12": 70639816.99, "rent12": 14.590769, "cdi12": 100.38, "capytd": 88802478.36, "rentytd": 9.456136, "cdiytd": 96.72, "pl": 2686682180.4, "benchmark": "CDI", "gestor": "N/D", "plat": "BTG", "categoria": "Multimercado", "rank_global": 56}, {"rank": 5, "nome": "KINEA APOLO FIF MULT RESP LIMITADA", "cap30": 20421077.51, "rent30": 1.443535, "cdi30": 132.38, "cap12": 70639816.99, "rent12": 14.590769, "cdi12": 100.38, "capytd": 88802478.36, "rentytd": 9.456136, "cdiytd": 96.72, "pl": 2686682180.4, "benchmark": "CDI", "gestor": "N/D", "plat": "XP", "categoria": "Multimercado", "rank_global": 57}, {"rank": 10, "nome": "CLASSE ÚNICA DE COTAS DO KAPITALO STRATA LOW VOL FUNDO DE INVESTIMENTO FINANCEIRO EM COTAS DE FUNDOS DE INVESTIMENTO MULTIMERCADO - RESPONSABILIDADE LIMITADA", "cap30": 19612443.13, "rent30": 5.710459, "cdi30": 523.66, "cap12": 26176015.82, "rent12": 5.710459, "cdi12": 39.29, "capytd": 26176015.82, "rentytd": 5.710459, "cdiytd": 58.41, "pl": 12085176.48, "benchmark": "CDI", "gestor": "N/D", "plat": "BTG", "categoria": "Multimercado", "rank_global": 58}, {"rank": 5, "nome": "JGP CORPORATE PLUS MASTER FIF MULT CRED PRIV– RESP LIMITADA", "cap30": 19031144.09, "rent30": 0.934832, "cdi30": 85.73, "cap12": -306493310.34, "rent12": 15.837769, "cdi12": 108.96, "capytd": -147909792.05, "rentytd": 10.519967, "cdiytd": 107.6, "pl": 869405288.19, "benchmark": "CDI", "gestor": "N/D", "plat": "Itau", "categoria": "Multimercado", "rank_global": 59}, {"rank": 6, "nome": "ITAÚ OMNI FIF CIC MULT RESP LIMITADA", "cap30": 18989736.03, "rent30": 1.151453, "cdi30": 105.59, "cap12": 17529488.92, "rent12": 12.523942, "cdi12": 86.16, "capytd": 26126524.1, "rentytd": 7.491621, "cdiytd": 76.63, "pl": 132571306.01, "benchmark": "CDI", "gestor": "N/D", "plat": "Itau", "categoria": "Multimercado", "rank_global": 60}, {"rank": 7, "nome": "CLASSE ÚNICA DE COTAS DO ATENA YIELD D30 FUNDO DE INVESTIMENTO EM COTAS DE FUNDOS DE INVESTIMENTO FINANCEIRO RENDA FIXA - CRÉDITO PRIVADO RESPONSABILIDADE LIMITADA", "cap30": 18506078.09, "rent30": 1.065059, "cdi30": 97.67, "cap12": 58024111.9, "rent12": 15.119095, "cdi12": 104.01, "capytd": 74721167.3, "rentytd": 10.227977, "cdiytd": 104.62, "pl": 280639824.61, "benchmark": "CDI", "gestor": "N/D", "plat": "Itau", "categoria": "Renda Fixa Ativa", "rank_global": 61}, {"rank": 2, "nome": "BB ASSET RENDA FIXA LONGO PRAZO HIGH FUNDO DE INVESTIMENTO EM COTAS DE FUNDOS DE INVESTIMENTO FINANCEIRO RESPONSABILIDADE LIMITADA", "cap30": 18145649.79, "rent30": 1.041579, "cdi30": 95.52, "cap12": 53747510.77, "rent12": 14.367316, "cdi12": 98.84, "capytd": 40232832.11, "rentytd": 9.761368, "cdiytd": 99.84, "pl": 64033799.83, "benchmark": "CDI", "gestor": "N/D", "plat": "BTG", "categoria": "Renda Fixa", "rank_global": 62}, {"rank": 6, "nome": "BB ASSET RENDA FIXA LONGO PRAZO HIGH FUNDO DE INVESTIMENTO EM COTAS DE FUNDOS DE INVESTIMENTO FINANCEIRO RESPONSABILIDADE LIMITADA", "cap30": 18145649.79, "rent30": 1.041579, "cdi30": 95.52, "cap12": 53747510.77, "rent12": 14.367316, "cdi12": 98.84, "capytd": 40232832.11, "rentytd": 9.761368, "cdiytd": 99.84, "pl": 64033799.83, "benchmark": "CDI", "gestor": "N/D", "plat": "XP", "categoria": "Renda Fixa", "rank_global": 63}, {"rank": 6, "nome": "CLASSE ÚNICA DE COTAS DO POLO CRÉDITO CORPORATIVO PLUS FUNDO DE INVESTIMENTO FINANCEIRO MULTIMERCADO - CRÉDITO PRIVADO RESPONSABILIDADE LIMITADA", "cap30": 18066808.97, "rent30": 0.565195, "cdi30": 51.83, "cap12": -23391117.19, "rent12": 13.756112, "cdi12": 94.64, "capytd": -39621366.76, "rentytd": 8.856878, "cdiytd": 90.59, "pl": 122208389.97, "benchmark": "CDI", "gestor": "N/D", "plat": "XP", "categoria": "Multimercado", "rank_global": 64}, {"rank": 7, "nome": "CLASSE ÚNICA DE COTAS DO POLO CRÉDITO CORPORATIVO PLUS FUNDO DE INVESTIMENTO FINANCEIRO MULTIMERCADO - CRÉDITO PRIVADO RESPONSABILIDADE LIMITADA", "cap30": 18066808.97, "rent30": 0.565195, "cdi30": 51.83, "cap12": -23391117.19, "rent12": 13.756112, "cdi12": 94.64, "capytd": -39621366.76, "rentytd": 8.856878, "cdiytd": 90.59, "pl": 122208389.97, "benchmark": "CDI", "gestor": "N/D", "plat": "Itau", "categoria": "Multimercado", "rank_global": 65}, {"rank": 7, "nome": "WESTERN ASSET US INDEX 500 FUNDO DE INVESTIMENTO FINANCEIRO MULTIMERCADO RESPONSABILIDADE LIMITADA", "cap30": 17674386.41, "rent30": -1.268037, "cdi30": -116.28, "cap12": 7219322.12, "rent12": 25.201995, "cdi12": 173.38, "capytd": 10782983.01, "rentytd": 16.657827, "cdiytd": 170.38, "pl": 1267273919.56, "benchmark": "CDI", "gestor": "N/D", "plat": "XP", "categoria": "Multimercado", "rank_global": 66}, {"rank": 8, "nome": "CLASSE ÚNICA DE COTAS DO ALPHAKEY LONG SHORT FUNDO DE INVESTIMENTO  FINANCEIRO EM COTAS DE FUNDOS DE INVESTIMENTO MULTIMERCADO - RESPONSABILIDADE LIMITADA", "cap30": 15738407.87, "rent30": 1.208802, "cdi30": 110.85, "cap12": 161201686.29, "rent12": 15.287705, "cdi12": 105.17, "capytd": 127327956.31, "rentytd": 10.153313, "cdiytd": 103.85, "pl": 265634641.57, "benchmark": "CDI", "gestor": "N/D", "plat": "XP", "categoria": "Multimercado", "rank_global": 67}, {"rank": 8, "nome": "CLASSE ÚNICA DE COTAS DO ATENA TAPYR FUNDO DE INVESTIMENTO FINANCEIRO EM COTAS DE FUNDOS DE INVESTIMENTO RENDA FIXA CRÉDITO PRIVADO RESPONSABILIDADE LIMITADA", "cap30": 15535677.37, "rent30": 1.031098, "cdi30": 94.55, "cap12": 72861503.21, "rent12": 14.806087, "cdi12": 101.86, "capytd": 84056842.49, "rentytd": 9.918904, "cdiytd": 101.46, "pl": 192909212.08, "benchmark": "CDI", "gestor": "N/D", "plat": "Itau", "categoria": "Renda Fixa Ativa", "rank_global": 68}, {"rank": 8, "nome": "CLASSE ÚNICA DE COTAS DO ALPHAKEY LONG SHORT MASTER FUNDO DE INVESTIMENTO  FINANCEIRO MULTIMERCADO - RESPONSABILIDADE LIMITADA", "cap30": 15342000.0, "rent30": 1.392636, "cdi30": 127.71, "cap12": 158138566.22, "rent12": 17.671751, "cdi12": 121.57, "capytd": 124735566.23, "rentytd": 11.700831, "cdiytd": 119.68, "pl": 265895092.38, "benchmark": "CDI", "gestor": "N/D", "plat": "Itau", "categoria": "Multimercado", "rank_global": 69}, {"rank": 9, "nome": "MAG HIGH GRADE PLUS 30 FIF RF CRED PRIV LP - RESP LIMITADA", "cap30": 13734756.76, "rent30": 0.999304, "cdi30": 91.64, "cap12": 76449695.18, "rent12": 14.692431, "cdi12": 101.08, "capytd": 11413235.2, "rentytd": 9.900085, "cdiytd": 101.26, "pl": 316547374.23, "benchmark": "CDI", "gestor": "N/D", "plat": "Itau", "categoria": "Renda Fixa Ativa", "rank_global": 70}, {"rank": 3, "nome": "CLASSE ÚNICA DE COTAS DO BTG PACTUAL DIGITAL TESOURO SELIC SIMPLES FUNDO DE INVESTIMENTO FINANCEIRO RENDA FIXA RESPONSABILIDADE LIMITADA", "cap30": 13349945.1, "rent30": 1.037807, "cdi30": 95.17, "cap12": 5078566.01, "rent12": 14.531383, "cdi12": 99.97, "capytd": 53283185.86, "rentytd": 9.758766, "cdiytd": 99.82, "pl": 3237711950.64, "benchmark": "CDI", "gestor": "N/D", "plat": "BTG", "categoria": "Renda Fixa", "rank_global": 71}, {"rank": 9, "nome": "ACE CAPITAL MULTICENÁRIOS FC FIF MULT - RESP LIMITADA", "cap30": 13123582.32, "rent30": -1.445542, "cdi30": -132.56, "cap12": 359099563.74, "rent12": 19.206746, "cdi12": 132.14, "capytd": 316942734.95, "rentytd": 7.83957, "cdiytd": 80.19, "pl": 494072289.35, "benchmark": "CDI", "gestor": "N/D", "plat": "XP", "categoria": "Multimercado", "rank_global": 72}, {"rank": 4, "nome": "MAG FUNDO DE INVESTIMENTO FINANCEIRO - CLASSE DE INVESTIMENTO RENDA FIXA – RESPONSABILIDADE LIMITADA", "cap30": 10569939.18, "rent30": 1.07292, "cdi30": 98.39, "cap12": 13731293.78, "rent12": 14.573107, "cdi12": 100.26, "capytd": -75645293.05, "rentytd": 9.856619, "cdiytd": 100.82, "pl": 872707674.75, "benchmark": "CDI", "gestor": "N/D", "plat": "BTG", "categoria": "Renda Fixa", "rank_global": 73}, {"rank": 7, "nome": "MAG FUNDO DE INVESTIMENTO FINANCEIRO - CLASSE DE INVESTIMENTO RENDA FIXA – RESPONSABILIDADE LIMITADA", "cap30": 10569939.18, "rent30": 1.07292, "cdi30": 98.39, "cap12": 13731293.78, "rent12": 14.573107, "cdi12": 100.26, "capytd": -75645293.05, "rentytd": 9.856619, "cdiytd": 100.82, "pl": 872707674.75, "benchmark": "CDI", "gestor": "N/D", "plat": "XP", "categoria": "Renda Fixa", "rank_global": 74}, {"rank": 10, "nome": "TREND COMMODITIES FIF MULT – RESP LIMITADA", "cap30": 9989155.29, "rent30": 11.858984, "cdi30": 1087.5, "cap12": 24516540.55, "rent12": 63.99346, "cdi12": 440.25, "capytd": 25867154.14, "rentytd": 57.03893, "cdiytd": 583.42, "pl": 52395303.33, "benchmark": "CDI", "gestor": "N/D", "plat": "XP", "categoria": "Multimercado", "rank_global": 75}, {"rank": 9, "nome": "ITAÚ OPTIMUS TITAN MULT FIF RESP LIMITADA", "cap30": 9982025.69, "rent30": 1.346934, "cdi30": 123.52, "cap12": 51075032.91, "rent12": 17.464246, "cdi12": 120.15, "capytd": 121549308.68, "rentytd": 11.255631, "cdiytd": 115.13, "pl": 1514532304.1, "benchmark": "CDI", "gestor": "N/D", "plat": "Itau", "categoria": "Multimercado", "rank_global": 76}, {"rank": 10, "nome": "ITAÚ KINEA OPORTUNIDADE RF CRÉD PRIV FIF CIC RESP LIMITADA", "cap30": 9875095.16, "rent30": 0.962524, "cdi30": 88.27, "cap12": 22553014.91, "rent12": 14.729497, "cdi12": 101.33, "capytd": -20457686.43, "rentytd": 9.914211, "cdiytd": 101.41, "pl": 559931248.34, "benchmark": "CDI", "gestor": "N/D", "plat": "Itau", "categoria": "Renda Fixa Ativa", "rank_global": 77}, {"rank": 5, "nome": "CLASSE ÚNICA DE COTAS DO MERAKI HÓRUS FUNDO DE INVESTIMENTO FINANCEIRO RENDA FIXA", "cap30": 7717727.88, "rent30": 1.015273, "cdi30": 93.1, "cap12": -25328351.77, "rent12": 13.208647, "cdi12": 90.87, "capytd": -90339925.58, "rentytd": 8.625806, "cdiytd": 88.23, "pl": 99803333.69, "benchmark": "CDI", "gestor": "N/D", "plat": "BTG", "categoria": "Renda Fixa", "rank_global": 78}, {"rank": 6, "nome": "ITAÚ OPTIMUS DISTRIBUIDORES FIF CIC RF LP - RESP LIMITADA", "cap30": 7696601.59, "rent30": 0.76489, "cdi30": 70.14, "cap12": 45635673.76, "rent12": 13.626464, "cdi12": 93.74, "capytd": 43859073.38, "rentytd": 8.888703, "cdiytd": 90.92, "pl": 72721926.76, "benchmark": "CDI", "gestor": "N/D", "plat": "BTG", "categoria": "Renda Fixa", "rank_global": 79}, {"rank": 8, "nome": "ITAÚ OPTIMUS DISTRIBUIDORES FIF CIC RF LP - RESP LIMITADA", "cap30": 7696601.59, "rent30": 0.76489, "cdi30": 70.14, "cap12": 45635673.76, "rent12": 13.626464, "cdi12": 93.74, "capytd": 43859073.38, "rentytd": 8.888703, "cdiytd": 90.92, "pl": 72721926.76, "benchmark": "CDI", "gestor": "N/D", "plat": "XP", "categoria": "Renda Fixa", "rank_global": 80}, {"rank": 1, "nome": "BRADESCO FUNDO DE INVESTIMENTO FINANCEIRO – CLASSE DE INVESTIMENTO EM COTAS RENDA FIXA REFERENCIADA DI FEDERAL PLUS – RESPONSABILIDADE LIMITADA", "cap30": 7434090.35, "rent30": 0.940172, "cdi30": 86.22, "cap12": -23316546.76, "rent12": 13.16438, "cdi12": 90.57, "capytd": -29623155.31, "rentytd": 8.874844, "cdiytd": 90.78, "pl": 149477836.11, "benchmark": "CDI", "gestor": "N/D", "plat": "Bradesco", "categoria": "Renda Fixa", "rank_global": 81}, {"rank": 2, "nome": "BRADESCO TARGET I FUNDO DE INVESTIMENTO FINANCEIRO - CLASSE DE INVESTIMENTO RENDA FIXA - RESP LIMITADA", "cap30": 7046479.54, "rent30": 1.116479, "cdi30": 102.38, "cap12": 7348503.86, "rent12": 14.242838, "cdi12": 97.99, "capytd": -9273705.1, "rentytd": 9.571578, "cdiytd": 97.9, "pl": 365923759.28, "benchmark": "CDI", "gestor": "N/D", "plat": "Bradesco", "categoria": "Renda Fixa", "rank_global": 82}, {"rank": 10, "nome": "CARTEIRA ITAÚ ASSET DE INVESTIMENTO MODERADO FIF CIC MULT RESP LIMITADA", "cap30": 5597314.01, "rent30": 1.251502, "cdi30": 114.77, "cap12": 8935117.61, "rent12": 14.682875, "cdi12": 101.01, "capytd": 7884327.34, "rentytd": 9.705652, "cdiytd": 99.27, "pl": 76677614.39, "benchmark": "CDI", "gestor": "N/D", "plat": "Itau", "categoria": "Multimercado", "rank_global": 83}, {"rank": 7, "nome": "CLASSE ÚNICA DE COTAS DO EMPIRICUS SELIC FUNDO DE INVESTIMENTO FINANCEIRO  RENDA FIXA - SIMPLES RESPONSABILIDADE LIMITADA", "cap30": 3150292.4, "rent30": 1.045784, "cdi30": 95.9, "cap12": 35846272.67, "rent12": 14.628614, "cdi12": 100.64, "capytd": 52788256.36, "rentytd": 9.824145, "cdiytd": 100.49, "pl": 914540800.68, "benchmark": "CDI", "gestor": "N/D", "plat": "BTG", "categoria": "Renda Fixa", "rank_global": 84}, {"rank": 8, "nome": "SPARTA PREMIUM FC FIF RF – RESP LIMITADA", "cap30": 3145457.71, "rent30": 0.99267, "cdi30": 91.03, "cap12": -38750767.09, "rent12": 13.960472, "cdi12": 96.04, "capytd": -23782975.08, "rentytd": 9.393701, "cdiytd": 96.08, "pl": 118621893.35, "benchmark": "CDI", "gestor": "N/D", "plat": "BTG", "categoria": "Renda Fixa", "rank_global": 85}, {"rank": 9, "nome": "SPARTA PREMIUM FC FIF RF – RESP LIMITADA", "cap30": 3145457.71, "rent30": 0.99267, "cdi30": 91.03, "cap12": -38750767.09, "rent12": 13.960472, "cdi12": 96.04, "capytd": -23782975.08, "rentytd": 9.393701, "cdiytd": 96.08, "pl": 118621893.35, "benchmark": "CDI", "gestor": "N/D", "plat": "XP", "categoria": "Renda Fixa", "rank_global": 86}, {"rank": 2, "nome": "CANVAS VECTOR S FC FIF MULT - RESP LIMITADA", "cap30": 2940442.63, "rent30": -2.100836, "cdi30": -192.65, "cap12": 4485442.63, "rent12": 18.88023, "cdi12": 129.89, "capytd": 5485442.63, "rentytd": 11.957978, "cdiytd": 122.31, "pl": 19090012.72, "benchmark": "CDI", "gestor": "N/D", "plat": "Bradesco", "categoria": "Multimercado", "rank_global": 87}, {"rank": 10, "nome": "AZ QUEST YIELD RF ATIVO FIF CIC RF LP RESP LIMITADA", "cap30": 2536038.68, "rent30": 1.226375, "cdi30": 112.46, "cap12": 171655792.4, "rent12": 14.962601, "cdi12": 102.94, "capytd": 166948828.87, "rentytd": 10.184904, "cdiytd": 104.18, "pl": 216622412.37, "benchmark": "CDI", "gestor": "N/D", "plat": "XP", "categoria": "Renda Fixa", "rank_global": 88}, {"rank": 3, "nome": "AZ QUEST YIELD RF ATIVO FIF CIC RF LP RESP LIMITADA", "cap30": 2536038.68, "rent30": 1.226375, "cdi30": 112.46, "cap12": 171655792.4, "rent12": 14.962601, "cdi12": 102.94, "capytd": 166948828.87, "rentytd": 10.184904, "cdiytd": 104.18, "pl": 216622412.37, "benchmark": "CDI", "gestor": "N/D", "plat": "Bradesco", "categoria": "Renda Fixa", "rank_global": 89}, {"rank": 3, "nome": "BRADESCO GLOBAL SOLUTION MULTICLASSES BRL FUNDO DE INVESTIMENTO FINANCEIRO - CLASSE DE INVESTIMENTO EM COTAS MULTIMERCADO - RESPONSABILIDADE LIMITADA", "cap30": 1617929.03, "rent30": 1.236603, "cdi30": 113.4, "cap12": 3274173.96, "rent12": 19.558536, "cdi12": 134.56, "capytd": 2829234.96, "rentytd": 13.489227, "cdiytd": 137.97, "pl": 35666929.79, "benchmark": "CDI", "gestor": "N/D", "plat": "Bradesco", "categoria": "Multimercado", "rank_global": 90}, {"rank": 3, "nome": "ITAÚ LUMINA PLATINUM FIF RF LP - RESP LIMITADA", "cap30": 1235671.11, "rent30": 1.231356, "cdi30": 112.92, "cap12": -2472507.22, "rent12": 13.49402, "cdi12": 92.83, "capytd": 2163215.45, "rentytd": 8.921766, "cdiytd": 91.26, "pl": 27271155.47, "benchmark": "CDI", "gestor": "N/D", "plat": "Itau", "categoria": "Renda Fixa", "rank_global": 91}, {"rank": 4, "nome": "WESTERN ASSET US INDEX 500 ÁGORA FUNDO DE INVESTIMENTO FINANCEIRO – CLASSE DE INVESTIMENTO EM COTAS MULTIMERCADO – RESPONSABILIDADE LIMITADA", "cap30": 897516.96, "rent30": -1.287276, "cdi30": -118.05, "cap12": 59250.73, "rent12": 24.837724, "cdi12": 170.87, "capytd": -2464149.54, "rentytd": 16.435167, "cdiytd": 168.11, "pl": 26453559.74, "benchmark": "CDI", "gestor": "N/D", "plat": "Bradesco", "categoria": "Multimercado", "rank_global": 92}, {"rank": 4, "nome": "ITAÚ FUSION HARPIA FIF RF RESP LIMITADA", "cap30": 616239.29, "rent30": 2.00445, "cdi30": 183.81, "cap12": 354312.8, "rent12": 12.834672, "cdi12": 88.3, "capytd": 1498654.3, "rentytd": 10.057029, "cdiytd": 102.87, "pl": 6618691.83, "benchmark": "CDI", "gestor": "N/D", "plat": "Itau", "categoria": "Renda Fixa", "rank_global": 93}, {"rank": 5, "nome": "BLACKROCK GLOBAL EVENT DRIVEN CLASSE DE  INVESTIMENTO MULTIMERCADO  RESPONSABILIDADE LIMITADA", "cap30": 380490.49, "rent30": 0.095032, "cdi30": 8.71, "cap12": -5160587.62, "rent12": 13.892572, "cdi12": 95.58, "capytd": -3626600.78, "rentytd": 8.536696, "cdiytd": 87.32, "pl": 23234540.5, "benchmark": "CDI", "gestor": "N/D", "plat": "Bradesco", "categoria": "Multimercado", "rank_global": 94}, {"rank": 6, "nome": "BRADESCO MAN AHL SISTEMÁTICO GLOBAL INVESTIMENTO NO EXTERIOR BRL FUNDO DE INVESTIMENTO FINANCEIRO - CLASSE DE INVESTIMENTO EM COTAS MULTIMERCADO - RESPONSABILIDADE LIMITADA", "cap30": 226926.31, "rent30": 1.386543, "cdi30": 127.15, "cap12": 548468.23, "rent12": 16.896406, "cdi12": 116.24, "capytd": 261043.17, "rentytd": 11.145435, "cdiytd": 114.0, "pl": 6661544.64, "benchmark": "CDI", "gestor": "N/D", "plat": "Bradesco", "categoria": "Multimercado", "rank_global": 95}, {"rank": 5, "nome": "ITAÚ INDEX JUROS REAIS B5+ RF FIF CIC RESP LIMITADA", "cap30": 191837.14, "rent30": 2.988299, "cdi30": 274.03, "cap12": 5731631.18, "rent12": 10.556217, "cdi12": 72.62, "capytd": 8354233.73, "rentytd": 6.472234, "cdiytd": 66.2, "pl": 62095786.01, "benchmark": "Índice", "gestor": "N/D", "plat": "Itau", "categoria": "Renda Fixa", "rank_global": 96}, {"rank": 9, "nome": "CLASSE ÚNICA DE COTAS DO NIKOS CASH FUNDO DE INVESTIMENTO RENDA FIXA SIMPLES LONGO PRAZO - RESPONSABILIDADE LIMITADA", "cap30": 135605.23, "rent30": 0.990375, "cdi30": 90.82, "cap12": -9144847.81, "rent12": 13.877882, "cdi12": 95.47, "capytd": -4955709.05, "rentytd": 9.327106, "cdiytd": 95.4, "pl": 18930289.74, "benchmark": "CDI", "gestor": "N/D", "plat": "BTG", "categoria": "Renda Fixa", "rank_global": 97}, {"rank": 5, "nome": "CONEXÃO KINEA OPORTUNIDADE FUNDO DE INVESTIMENTO FINANCEIRO - CLASSE DE INVESTIMENTO EM COTAS RENDA FIXA CRÉDITO PRIVADO - RESPONSABILIDADE LIMITADA", "cap30": 109500.0, "rent30": 0.929532, "cdi30": 85.24, "cap12": 3581831.55, "rent12": 0.929532, "cdi12": 6.39, "capytd": 1581831.55, "rentytd": 9.561865, "cdiytd": 97.8, "pl": 3844346.14, "benchmark": "CDI", "gestor": "N/D", "plat": "Bradesco", "categoria": "Renda Fixa Ativa", "rank_global": 98}, {"rank": 7, "nome": "BRADESCO ALOCAÇÃO ALPHA FUNDO DE INVESTIMENTO FINANCEIRO - CLASSE DE INVESTIMENTO EM COTAS MULTIMERCADO - RESPONSABILIDADE LIMITADA", "cap30": 82806.39, "rent30": 1.269388, "cdi30": 116.41, "cap12": 268235.18, "rent12": 14.997148, "cdi12": 103.17, "capytd": 291673.61, "rentytd": 9.02317, "cdiytd": 92.29, "pl": 11519357.73, "benchmark": "CDI", "gestor": "N/D", "plat": "Bradesco", "categoria": "Multimercado", "rank_global": 99}, {"rank": 4, "nome": "BRADESCO CRÉDITO SOBERANO FUNDO DE INVESTIMENTO FINANCEIRO - CLASSE DE INVESTIMENTO RENDA FIXA DÍVIDA EXTERNA - RESPONSABILIDADE LIMITADA", "cap30": 74108.27, "rent30": -1.262494, "cdi30": -115.77, "cap12": -2773729.4, "rent12": -4.104512, "cdi12": -28.24, "capytd": -1793278.54, "rentytd": -6.01166, "cdiytd": -61.49, "pl": 3695787.31, "benchmark": "CDI", "gestor": "N/D", "plat": "Bradesco", "categoria": "Renda Fixa", "rank_global": 100}, {"rank": 5, "nome": "CONEXÃO SULAMERICA INCOME FIF - CLASSE DE INVESTIMENTO EM COTAS RENDA FIXA LONGO PRAZO - RESP LIMITADA", "cap30": 7242.75, "rent30": 1.446609, "cdi30": 132.66, "cap12": -176613.28, "rent12": 12.46887, "cdi12": 85.78, "capytd": -197602.22, "rentytd": 9.283778, "cdiytd": 94.96, "pl": 1472265.24, "benchmark": "CDI", "gestor": "N/D", "plat": "Bradesco", "categoria": "Renda Fixa", "rank_global": 101}, {"rank": 8, "nome": "BRADESCO DAHLIA EQUITY HEDGE FUNDO DE INVESTIMENTO FINANCEIRO - CLASSE DE INVESTIMENTO EM COTAS MULTIMERCADO RESPONSABILIDADE LIMITADA", "cap30": 5000.0, "rent30": 0.685525, "cdi30": 62.86, "cap12": 5306000.0, "rent12": 0.685525, "cdi12": 4.72, "capytd": 5306000.0, "rentytd": 0.685525, "cdiytd": 7.01, "pl": 5123676.57, "benchmark": "CDI", "gestor": "N/D", "plat": "Bradesco", "categoria": "Multimercado", "rank_global": 102}, {"rank": 10, "nome": "CLASSE ÚNICA DE COTAS DO REACH INFLAÇÃO ATIVA FUNDO DE INVESTIMENTO FINANCEIRO RENDA FIXA - RESPONSABILIDADE LIMITADA LONGO PRAZO", "cap30": 0.0, "rent30": 2.654651, "cdi30": 243.44, "cap12": -31920444.74, "rent12": 0.867752, "cdi12": 5.97, "capytd": -21072795.45, "rentytd": -1.499786, "cdiytd": -15.34, "pl": 208387618.02, "benchmark": "CDI", "gestor": "N/D", "plat": "BTG", "categoria": "Renda Fixa", "rank_global": 103}, {"rank": 9, "nome": "BRADESCO VINCI ATLAS FIF - CLASSE DE INVESTIMENTO EM COTAS MULTIMERCADO - RESP LIMITADA", "cap30": 0.0, "rent30": 1.612757, "cdi30": 147.89, "cap12": -570296.0, "rent12": 9.477689, "cdi12": 65.2, "capytd": -100282.94, "rentytd": 6.611412, "cdiytd": 67.62, "pl": 1437710.47, "benchmark": "CDI", "gestor": "N/D", "plat": "Bradesco", "categoria": "Multimercado", "rank_global": 104}, {"rank": 10, "nome": "BRADESCO CLASSE  DE COTAS DE INVESTIMENTO EM COTAS DE INVESTIMENTO MULT QUANT 10 - RESP LIMITADA", "cap30": 0.0, "rent30": 1.680403, "cdi30": 154.1, "cap12": -32671550.0, "rent12": 13.576498, "cdi12": 93.4, "capytd": -9970000.0, "rentytd": 10.107401, "cdiytd": 103.38, "pl": 66679915.92, "benchmark": "CDI", "gestor": "N/D", "plat": "Bradesco", "categoria": "Multimercado", "rank_global": 105}, {"rank": 6, "nome": "CLASSE ÚNICA DE COTAS DO ASA ALPHA NOMINAL RATES FUNDO DE INVESTIMENTO EM COTAS DE FUNDOS DE INVESTIMENTO RENDA FIXA LONGO PRAZO – RESPONSABILIDADE LIMITADA", "cap30": -5034.54, "rent30": 2.168653, "cdi30": 198.87, "cap12": -1415492.45, "rent12": 12.866945, "cdi12": 88.52, "capytd": -1061207.46, "rentytd": 9.680639, "cdiytd": 99.02, "pl": 2775369.91, "benchmark": "CDI", "gestor": "N/D", "plat": "Itau", "categoria": "Renda Fixa", "rank_global": 106}, {"rank": 6, "nome": "BV EAGLE ÁGORA FUNDO DE INVESTIMENTO FINANCEIRO - CLASSE DE INVESTIMENTO EM COTAS RENDA FIXA LONGO PRAZO - RESPONSABILIDADE LIMITADA", "cap30": -6606.75, "rent30": 1.360131, "cdi30": 124.73, "cap12": -110037.53, "rent12": 11.910118, "cdi12": 81.94, "capytd": -105594.78, "rentytd": 7.717043, "cdiytd": 78.93, "pl": 3662407.07, "benchmark": "CDI", "gestor": "N/D", "plat": "Bradesco", "categoria": "Renda Fixa", "rank_global": 107}, {"rank": 6, "nome": "BNP PARIBAS BRADESCO TARGUS CLASSE DE  INVESTIMENTO EM COTAS DE CLASSE DE INVESTIMENTO RENDA FIXA CRÉDITO  PRIVADO – RESPONSABILIDADE LIMITADA", "cap30": -7100.0, "rent30": 0.911834, "cdi30": 83.62, "cap12": -1235415.99, "rent12": 13.207621, "cdi12": 90.86, "capytd": -74862.59, "rentytd": 8.746573, "cdiytd": 89.46, "pl": 1473035.24, "benchmark": "CDI", "gestor": "N/D", "plat": "Bradesco", "categoria": "Renda Fixa Ativa", "rank_global": 108}, {"rank": 7, "nome": "SUL AMÉRICA ATIVO ÁGORA FIF - CIC RF LONGO PRAZO - RESPONSABILIDADE LIMITADA", "cap30": -73491.14, "rent30": 1.045446, "cdi30": 95.87, "cap12": -423431.55, "rent12": 13.553474, "cdi12": 93.24, "capytd": -1045821.76, "rentytd": 8.962128, "cdiytd": 91.67, "pl": 6280214.07, "benchmark": "CDI", "gestor": "N/D", "plat": "Bradesco", "categoria": "Renda Fixa", "rank_global": 109}, {"rank": 7, "nome": "BRADESCO 392 FUNDO DE INVESTIMENTO FINANCEIRO - CLASSE DE INVESTIMENTO RENDA FIXA INCENTIVADO DE INVESTIMENTO EM INFRAESTRUTURA", "cap30": -400000.0, "rent30": 0.454696, "cdi30": 41.7, "cap12": -7408700.0, "rent12": 12.699811, "cdi12": 87.37, "capytd": -5608700.0, "rentytd": 8.486739, "cdiytd": 86.81, "pl": 6680696.16, "benchmark": "CDI", "gestor": "N/D", "plat": "Bradesco", "categoria": "Renda Fixa Ativa", "rank_global": 110}, {"rank": 7, "nome": "ITAÚ LUMINA SOBERANO RF LP FIF RESP LIMITADA", "cap30": -432257.06, "rent30": 1.235764, "cdi30": 113.32, "cap12": 31165193.02, "rent12": 13.609951, "cdi12": 93.63, "capytd": 2004481.66, "rentytd": 9.01544, "cdiytd": 92.21, "pl": 104911763.79, "benchmark": "CDI", "gestor": "N/D", "plat": "Itau", "categoria": "Renda Fixa", "rank_global": 111}, {"rank": 8, "nome": "BRADESCO AQUAMARINE INFRA ATIVO FUNDO DE INVESTIMENTO FINANCEIRO - CLASSE DE INVESTIMENTO EM COTAS RENDA FIXA INCENTIVADO DE INVESTIMENTO EM INFRAESTRUTURA LONGO PRAZO - RESPONSABILIDADE LIMITADA", "cap30": -486993.71, "rent30": 0.771616, "cdi30": 70.76, "cap12": 14110578.07, "rent12": 0.771616, "cdi12": 5.31, "capytd": 4077014.93, "rentytd": 8.042222, "cdiytd": 82.26, "pl": 15445806.26, "benchmark": "CDI", "gestor": "N/D", "plat": "Bradesco", "categoria": "Renda Fixa Ativa", "rank_global": 112}, {"rank": 8, "nome": "ABSOLUTE HIKER RF SELEÇÃO FIF CIC LP RESP LIMITADA", "cap30": -1716701.35, "rent30": 0.964602, "cdi30": 88.46, "cap12": -14198145.16, "rent12": 11.145792, "cdi12": 76.68, "capytd": -10224879.12, "rentytd": 7.432844, "cdiytd": 76.03, "pl": 35098817.16, "benchmark": "CDI", "gestor": "N/D", "plat": "Itau", "categoria": "Renda Fixa", "rank_global": 113}, {"rank": 9, "nome": "CLASSE ÚNICA DE COTAS DO GALAPAGOS ALBATROZ FUNDO DE INVESTIMENTO FINANCEIRO RENDA FIXA - RESPONSABILIDADE LIMITADA LONGO PRAZO", "cap30": -2132290.75, "rent30": 0.88137, "cdi30": 80.82, "cap12": 36930795.59, "rent12": 7.184694, "cdi12": 49.43, "capytd": -14742812.36, "rentytd": 2.532891, "cdiytd": 25.91, "pl": 43281456.42, "benchmark": "CDI", "gestor": "N/D", "plat": "Itau", "categoria": "Renda Fixa", "rank_global": 114}, {"rank": 10, "nome": "BTG PACTUAL EXPLORER RF ATIVA SELEÇÃO FIFI CIC LP RESP LIMITADA", "cap30": -2146118.17, "rent30": 1.304679, "cdi30": 119.64, "cap12": 8813064.23, "rent12": 14.235019, "cdi12": 97.93, "capytd": 25745893.91, "rentytd": 9.498883, "cdiytd": 97.16, "pl": 150697150.48, "benchmark": "CDI", "gestor": "N/D", "plat": "Itau", "categoria": "Renda Fixa", "rank_global": 115}, {"rank": 8, "nome": "BRADESCO FIF  - CIC  RENDA FIXA INFLAÇÃO LONGA - RESPONSABILIDADE LIMITADA", "cap30": -4029584.0, "rent30": 2.414871, "cdi30": 221.45, "cap12": -45240008.76, "rent12": 11.644401, "cdi12": 80.11, "capytd": -22465429.73, "rentytd": 7.866858, "cdiytd": 80.47, "pl": 186881218.47, "benchmark": "CDI", "gestor": "N/D", "plat": "Bradesco", "categoria": "Renda Fixa", "rank_global": 116}, {"rank": 9, "nome": "CONEXÃO NOVUS EXCLUSIVE FIF - CIC RENDA FIXA LONGO PRAZO - RESP LIMITADA", "cap30": -4221536.67, "rent30": 0.926754, "cdi30": 84.99, "cap12": -64564406.27, "rent12": 10.407256, "cdi12": 71.6, "capytd": -33994630.08, "rentytd": 6.31387, "cdiytd": 64.58, "pl": 78781393.12, "benchmark": "CDI", "gestor": "N/D", "plat": "Bradesco", "categoria": "Renda Fixa", "rank_global": 117}, {"rank": 9, "nome": "BRADESCO DEBÊNTURES INCENTIVADAS INFLAÇÃO FUNDO DE INVESTIMENTO FINANCEIRO - CLASSE DE INVESTIMENTO EM COTAS INCENTIVADA DE INVESTIMENTO EM INFRAESTRUTURA RENDA FIXA LONGO PRAZO - RESPONSABILIDADE LIM", "cap30": -5785809.19, "rent30": 1.275069, "cdi30": 116.93, "cap12": -144293836.01, "rent12": 11.323184, "cdi12": 77.9, "capytd": -93460533.6, "rentytd": 8.636747, "cdiytd": 88.34, "pl": 356293846.13, "benchmark": "CDI", "gestor": "N/D", "plat": "Bradesco", "categoria": "Renda Fixa Ativa", "rank_global": 118}, {"rank": 10, "nome": "BRADESCO FUNDO DE INVESTIMENTO FINANCEIRO – CLASSE DE  INVESTIMENTO EM COTAS RENDA FIXA PREFIXADO CURTO – RESPONSABILIDADE  LIMITADA", "cap30": -6973748.75, "rent30": 1.858303, "cdi30": 170.41, "cap12": 34281219.14, "rent12": 12.031701, "cdi12": 82.77, "capytd": 22571990.19, "rentytd": 7.859137, "cdiytd": 80.39, "pl": 198915874.16, "benchmark": "CDI", "gestor": "N/D", "plat": "Bradesco", "categoria": "Renda Fixa", "rank_global": 119}, {"rank": 10, "nome": "BRADESCO H FUNDO DE INVESTIMENTO FINANCEIRO - CLASSE DE  INVESTIMENTO RENDA FIXA REFERENCIADA DI CRÉDITO PRIVADO LONGO PRAZO  EXECUTIVO - RESPONSABILIDADE LIMITADA", "cap30": -126544014.28, "rent30": 1.049987, "cdi30": 96.29, "cap12": -1163178807.9, "rent12": 14.559266, "cdi12": 100.16, "capytd": -845653591.14, "rentytd": 9.807726, "cdiytd": 100.32, "pl": 6149153739.19, "benchmark": "CDI", "gestor": "N/D", "plat": "Bradesco", "categoria": "Renda Fixa Ativa", "rank_global": 120}];
+const FUNDS_DATA = [{"rank": 1, "nome": "MOCK Bradesco Multimercado FUNDO 04", "cap30": 1995053642.81, "rent30": 2.74, "cdi30": 242.48, "cap12": 1689009812.08, "rent12": 9.84, "cdi12": 66.4, "capytd": 3504486837.46, "rentytd": 5.55, "cdiytd": 97.03, "pl": 26979010286.05, "benchmark": "CDI", "gestor": "ITAU UNIBANCO ASSET MANAG", "plat": "Bradesco", "categoria": "Multimercado", "rank_global": 1}, {"rank": 1, "nome": "MOCK Bradesco Renda Fixa FUNDO 08", "cap30": 1933247014.13, "rent30": 0.34, "cdi30": 30.09, "cap12": 6918658336.67, "rent12": 18.96, "cdi12": 127.94, "capytd": 114860463.67, "rentytd": 4.21, "cdiytd": 73.6, "pl": 29046524209.33, "benchmark": "CDI", "gestor": "BTG PACTUAL ASSET MANAGEM", "plat": "Bradesco", "categoria": "Renda Fixa", "rank_global": 2}, {"rank": 1, "nome": "MOCK Itau Renda Fixa Ativa FUNDO 09", "cap30": 1931787206.62, "rent30": 2.66, "cdi30": 235.4, "cap12": 258711095.92, "rent12": 14.13, "cdi12": 95.34, "capytd": 1371791461.66, "rentytd": 7.66, "cdiytd": 133.92, "pl": 3806222965.84, "benchmark": "CDI", "gestor": "KINEA INVESTIMENTOS LTDA.", "plat": "Itau", "categoria": "Renda Fixa Ativa", "rank_global": 3}, {"rank": 1, "nome": "MOCK BTG Renda Fixa Ativa FUNDO 05", "cap30": 1916721115.26, "rent30": 2.55, "cdi30": 225.66, "cap12": 6695578251.3, "rent12": 8.42, "cdi12": 56.82, "capytd": 3630135253.13, "rentytd": 4.66, "cdiytd": 81.47, "pl": 27925168422.59, "benchmark": "CDI", "gestor": "XP VISTA ASSET MANAGEMENT", "plat": "BTG", "categoria": "Renda Fixa Ativa", "rank_global": 4}, {"rank": 1, "nome": "MOCK Itau Renda Fixa FUNDO 10", "cap30": 1891693326.23, "rent30": 0.85, "cdi30": 75.22, "cap12": 1491829027.73, "rent12": 13.46, "cdi12": 90.82, "capytd": 343919399.83, "rentytd": 3.29, "cdiytd": 57.52, "pl": 12355236242.74, "benchmark": "CDI", "gestor": "TIVIO CAPITAL DISTRIBUIDO", "plat": "Itau", "categoria": "Renda Fixa", "rank_global": 5}, {"rank": 2, "nome": "MOCK Itau Renda Fixa FUNDO 01", "cap30": 1879241750.98, "rent30": -0.24, "cdi30": -21.24, "cap12": 6478952610.9, "rent12": 9.94, "cdi12": 67.07, "capytd": 139785862.59, "rentytd": 5.93, "cdiytd": 103.67, "pl": 17314864482.56, "benchmark": "IMA-B", "gestor": "XP VISTA ASSET MANAGEMENT", "plat": "Itau", "categoria": "Renda Fixa", "rank_global": 6}, {"rank": 3, "nome": "MOCK Itau Renda Fixa FUNDO 04", "cap30": 1816565701.14, "rent30": -0.46, "cdi30": -40.71, "cap12": -678722851.64, "rent12": 19.23, "cdi12": 129.76, "capytd": 616696885.58, "rentytd": 3.39, "cdiytd": 59.27, "pl": 2261195418.35, "benchmark": "CDI", "gestor": "BTG PACTUAL ASSET MANAGEM", "plat": "Itau", "categoria": "Renda Fixa", "rank_global": 7}, {"rank": 1, "nome": "MOCK Bradesco Renda Fixa Ativa FUNDO 06", "cap30": 1808324722.27, "rent30": 3.44, "cdi30": 304.42, "cap12": 290696740.36, "rent12": 24.35, "cdi12": 164.3, "capytd": 3389630264.79, "rentytd": 5.65, "cdiytd": 98.78, "pl": 9070628899.44, "benchmark": "CDI", "gestor": "TIVIO CAPITAL DISTRIBUIDO", "plat": "Bradesco", "categoria": "Renda Fixa Ativa", "rank_global": 8}, {"rank": 2, "nome": "MOCK Bradesco Renda Fixa Ativa FUNDO 08", "cap30": 1687159338.02, "rent30": 2.23, "cdi30": 197.35, "cap12": 6161227896.41, "rent12": 23.35, "cdi12": 157.56, "capytd": 3833853093.94, "rentytd": 3.84, "cdiytd": 67.13, "pl": 24059939406.78, "benchmark": "CDI", "gestor": "ITAU UNIBANCO ASSET MANAG", "plat": "Bradesco", "categoria": "Renda Fixa Ativa", "rank_global": 9}, {"rank": 2, "nome": "MOCK Bradesco Renda Fixa FUNDO 05", "cap30": 1682856734.5, "rent30": 0.01, "cdi30": 0.88, "cap12": 1491254413.75, "rent12": 10.38, "cdi12": 70.04, "capytd": 4720559970.99, "rentytd": 4.43, "cdiytd": 77.45, "pl": 14783812323.16, "benchmark": "CDI", "gestor": "TIVIO CAPITAL DISTRIBUIDO", "plat": "Bradesco", "categoria": "Renda Fixa", "rank_global": 10}, {"rank": 1, "nome": "MOCK BTG Multimercado FUNDO 05", "cap30": 1674251019.05, "rent30": 1.46, "cdi30": 129.2, "cap12": 4292997325.2, "rent12": 9.43, "cdi12": 63.63, "capytd": 2028786402.24, "rentytd": 8.93, "cdiytd": 156.12, "pl": 5460053505.14, "benchmark": "CDI", "gestor": "ITAU UNIBANCO ASSET MANAG", "plat": "BTG", "categoria": "Multimercado", "rank_global": 11}, {"rank": 2, "nome": "MOCK BTG Multimercado FUNDO 02", "cap30": 1666934674.19, "rent30": 1.42, "cdi30": 125.66, "cap12": 4650752851.48, "rent12": 22.56, "cdi12": 152.23, "capytd": 3781091795.81, "rentytd": 5.04, "cdiytd": 88.11, "pl": 186823546.68, "benchmark": "CDI", "gestor": "KAPITALO INVESTIMENTOS LT", "plat": "BTG", "categoria": "Multimercado", "rank_global": 12}, {"rank": 2, "nome": "MOCK Itau Renda Fixa Ativa FUNDO 05", "cap30": 1581119929.15, "rent30": 2.01, "cdi30": 177.88, "cap12": 38954333.32, "rent12": 8.17, "cdi12": 55.13, "capytd": 4729925404.44, "rentytd": 2.68, "cdiytd": 46.85, "pl": 21605039176.48, "benchmark": "CDI", "gestor": "KINEA INVESTIMENTOS LTDA.", "plat": "Itau", "categoria": "Renda Fixa Ativa", "rank_global": 13}, {"rank": 1, "nome": "MOCK XP Renda Fixa FUNDO 03", "cap30": 1546814994.43, "rent30": -0.01, "cdi30": -0.88, "cap12": 4028444443.53, "rent12": 18.35, "cdi12": 123.82, "capytd": 594764196.46, "rentytd": 8.1, "cdiytd": 141.61, "pl": 16185977113.29, "benchmark": "CDI", "gestor": "BTG PACTUAL ASSET MANAGEM", "plat": "XP", "categoria": "Renda Fixa", "rank_global": 14}, {"rank": 1, "nome": "MOCK Itau Multimercado FUNDO 07", "cap30": 1528412081.45, "rent30": 0.73, "cdi30": 64.6, "cap12": 2327755241.07, "rent12": 13.65, "cdi12": 92.11, "capytd": 3766937923.62, "rentytd": 5.02, "cdiytd": 87.76, "pl": 27986239148.9, "benchmark": "CDI", "gestor": "TIVIO CAPITAL DISTRIBUIDO", "plat": "Itau", "categoria": "Multimercado", "rank_global": 15}, {"rank": 1, "nome": "MOCK XP Multimercado FUNDO 03", "cap30": 1526276379.11, "rent30": 3.01, "cdi30": 266.37, "cap12": -1188991664.58, "rent12": 8.04, "cdi12": 54.25, "capytd": 1830193139.46, "rentytd": 9.41, "cdiytd": 164.51, "pl": 23556029410.26, "benchmark": "CDI", "gestor": "BANCO BRADESCO S.A.", "plat": "XP", "categoria": "Multimercado", "rank_global": 16}, {"rank": 2, "nome": "MOCK Bradesco Multimercado FUNDO 01", "cap30": 1504421442.33, "rent30": -0.78, "cdi30": -69.03, "cap12": -1570086554.12, "rent12": 12.26, "cdi12": 82.73, "capytd": 707385028.69, "rentytd": 7.29, "cdiytd": 127.45, "pl": 783146692.09, "benchmark": "CDI", "gestor": "KINEA INVESTIMENTOS LTDA.", "plat": "Bradesco", "categoria": "Multimercado", "rank_global": 17}, {"rank": 3, "nome": "MOCK BTG Multimercado FUNDO 03", "cap30": 1487067826.99, "rent30": 3.27, "cdi30": 289.38, "cap12": 1609234108.93, "rent12": 20.71, "cdi12": 139.74, "capytd": 2639888010.62, "rentytd": 6.83, "cdiytd": 119.41, "pl": 6623955442.77, "benchmark": "CDI", "gestor": "KAPITALO INVESTIMENTOS LT", "plat": "BTG", "categoria": "Multimercado", "rank_global": 18}, {"rank": 3, "nome": "MOCK Bradesco Renda Fixa Ativa FUNDO 01", "cap30": 1481178523.23, "rent30": 2.76, "cdi30": 244.25, "cap12": 6452764025.85, "rent12": 14.46, "cdi12": 97.57, "capytd": 1446638000.45, "rentytd": 7.75, "cdiytd": 135.49, "pl": 22784460261.94, "benchmark": "CDI", "gestor": "BTG PACTUAL ASSET MANAGEM", "plat": "Bradesco", "categoria": "Renda Fixa Ativa", "rank_global": 19}, {"rank": 1, "nome": "MOCK XP Renda Fixa Ativa FUNDO 04", "cap30": 1466230282.22, "rent30": 1.52, "cdi30": 134.51, "cap12": 5878411006.02, "rent12": 20.41, "cdi12": 137.72, "capytd": 2588386075.56, "rentytd": 9.78, "cdiytd": 170.98, "pl": 11362245972.48, "benchmark": "CDI", "gestor": "ARX INVESTIMENTOS LTDA", "plat": "XP", "categoria": "Renda Fixa Ativa", "rank_global": 20}, {"rank": 4, "nome": "MOCK BTG Multimercado FUNDO 08", "cap30": 1437300962.0, "rent30": 1.61, "cdi30": 142.48, "cap12": -376005639.22, "rent12": 16.05, "cdi12": 108.3, "capytd": 394825119.77, "rentytd": 9.58, "cdiytd": 167.48, "pl": 13956369163.22, "benchmark": "CDI", "gestor": "BANCO BRADESCO S.A.", "plat": "BTG", "categoria": "Multimercado", "rank_global": 21}, {"rank": 2, "nome": "MOCK BTG Renda Fixa Ativa FUNDO 03", "cap30": 1421082569.6, "rent30": 1.41, "cdi30": 124.78, "cap12": -1370968358.76, "rent12": 10.17, "cdi12": 68.62, "capytd": 1402943419.64, "rentytd": 9.19, "cdiytd": 160.66, "pl": 23885707923.59, "benchmark": "CDI", "gestor": "ITAU UNIBANCO ASSET MANAG", "plat": "BTG", "categoria": "Renda Fixa Ativa", "rank_global": 22}, {"rank": 3, "nome": "MOCK Bradesco Renda Fixa FUNDO 07", "cap30": 1417925791.54, "rent30": 1.58, "cdi30": 139.82, "cap12": 7329583722.85, "rent12": 12.76, "cdi12": 86.1, "capytd": 3389459451.49, "rentytd": 3.74, "cdiytd": 65.38, "pl": 13346428834.77, "benchmark": "CDI", "gestor": "BTG PACTUAL ASSET MANAGEM", "plat": "Bradesco", "categoria": "Renda Fixa", "rank_global": 23}, {"rank": 1, "nome": "MOCK BTG Renda Fixa FUNDO 09", "cap30": 1406992094.02, "rent30": 1.24, "cdi30": 109.73, "cap12": 6869289135.57, "rent12": 20.64, "cdi12": 139.27, "capytd": 2268307071.48, "rentytd": 4.07, "cdiytd": 71.15, "pl": 7424719727.91, "benchmark": "CDI", "gestor": "KAPITALO INVESTIMENTOS LT", "plat": "BTG", "categoria": "Renda Fixa", "rank_global": 24}, {"rank": 4, "nome": "MOCK Bradesco Renda Fixa FUNDO 10", "cap30": 1404362430.26, "rent30": 1.27, "cdi30": 112.39, "cap12": 3450213919.4, "rent12": 21.82, "cdi12": 147.23, "capytd": 1011593131.04, "rentytd": 8.19, "cdiytd": 143.18, "pl": 23661426190.79, "benchmark": "CDI", "gestor": "BTG PACTUAL ASSET MANAGEM", "plat": "Bradesco", "categoria": "Renda Fixa", "rank_global": 25}, {"rank": 2, "nome": "MOCK XP Renda Fixa Ativa FUNDO 08", "cap30": 1376309079.02, "rent30": 2.53, "cdi30": 223.89, "cap12": 1412812657.25, "rent12": 9.13, "cdi12": 61.61, "capytd": 4548307845.76, "rentytd": 6.54, "cdiytd": 114.34, "pl": 21540248978.86, "benchmark": "CDI", "gestor": "BANCO BRADESCO S.A.", "plat": "XP", "categoria": "Renda Fixa Ativa", "rank_global": 26}, {"rank": 3, "nome": "MOCK BTG Renda Fixa Ativa FUNDO 07", "cap30": 1371877333.4, "rent30": 2.86, "cdi30": 253.1, "cap12": -547840980.74, "rent12": 19.22, "cdi12": 129.69, "capytd": 1872023088.54, "rentytd": 4.23, "cdiytd": 73.95, "pl": 2091928432.34, "benchmark": "CDI", "gestor": "KINEA INVESTIMENTOS LTDA.", "plat": "BTG", "categoria": "Renda Fixa Ativa", "rank_global": 27}, {"rank": 2, "nome": "MOCK BTG Renda Fixa FUNDO 05", "cap30": 1364482125.88, "rent30": 2.26, "cdi30": 200.0, "cap12": 4400752376.13, "rent12": 11.82, "cdi12": 79.76, "capytd": 835475650.18, "rentytd": 2.2, "cdiytd": 38.46, "pl": 7352827896.91, "benchmark": "CDI", "gestor": "BTG PACTUAL ASSET MANAGEM", "plat": "BTG", "categoria": "Renda Fixa", "rank_global": 28}, {"rank": 2, "nome": "MOCK Itau Multimercado FUNDO 01", "cap30": 1347481121.58, "rent30": 1.25, "cdi30": 110.62, "cap12": 2003084994.62, "rent12": 13.35, "cdi12": 90.08, "capytd": 1481023688.64, "rentytd": 9.76, "cdiytd": 170.63, "pl": 12131209959.45, "benchmark": "CDI", "gestor": "KAPITALO INVESTIMENTOS LT", "plat": "Itau", "categoria": "Multimercado", "rank_global": 29}, {"rank": 3, "nome": "MOCK BTG Renda Fixa FUNDO 08", "cap30": 1304958106.03, "rent30": 1.84, "cdi30": 162.83, "cap12": 7866816983.73, "rent12": 18.12, "cdi12": 122.27, "capytd": 4740205963.9, "rentytd": 9.13, "cdiytd": 159.62, "pl": 18383443159.63, "benchmark": "CDI", "gestor": "XP VISTA ASSET MANAGEMENT", "plat": "BTG", "categoria": "Renda Fixa", "rank_global": 30}, {"rank": 3, "nome": "MOCK Itau Renda Fixa Ativa FUNDO 01", "cap30": 1286795258.1, "rent30": 1.33, "cdi30": 117.7, "cap12": -2548239567.73, "rent12": 17.06, "cdi12": 115.11, "capytd": 3239910971.57, "rentytd": 2.55, "cdiytd": 44.58, "pl": 19429822189.16, "benchmark": "CDI", "gestor": "BTG PACTUAL ASSET MANAGEM", "plat": "Itau", "categoria": "Renda Fixa Ativa", "rank_global": 31}, {"rank": 4, "nome": "MOCK Bradesco Renda Fixa Ativa FUNDO 10", "cap30": 1260136694.04, "rent30": -1.33, "cdi30": -117.7, "cap12": 1013473563.31, "rent12": 10.23, "cdi12": 69.03, "capytd": 4530064624.06, "rentytd": 4.61, "cdiytd": 80.59, "pl": 12470937771.63, "benchmark": "CDI", "gestor": "KINEA INVESTIMENTOS LTDA.", "plat": "Bradesco", "categoria": "Renda Fixa Ativa", "rank_global": 32}, {"rank": 4, "nome": "MOCK BTG Renda Fixa FUNDO 07", "cap30": 1224471423.69, "rent30": -0.41, "cdi30": -36.28, "cap12": 5845208417.9, "rent12": 19.83, "cdi12": 133.81, "capytd": 2215659399.79, "rentytd": 6.46, "cdiytd": 112.94, "pl": 27524925733.52, "benchmark": "CDI", "gestor": "BTG PACTUAL ASSET MANAGEM", "plat": "BTG", "categoria": "Renda Fixa", "rank_global": 33}, {"rank": 4, "nome": "MOCK Itau Renda Fixa FUNDO 03", "cap30": 1214927388.94, "rent30": 0.4, "cdi30": 35.4, "cap12": 6993548153.86, "rent12": 13.06, "cdi12": 88.12, "capytd": 2860330721.35, "rentytd": 5.43, "cdiytd": 94.93, "pl": 17063197824.02, "benchmark": "CDI", "gestor": "BANCO BRADESCO S.A.", "plat": "Itau", "categoria": "Renda Fixa", "rank_global": 34}, {"rank": 2, "nome": "MOCK XP Renda Fixa FUNDO 02", "cap30": 1190095564.3, "rent30": 0.2, "cdi30": 17.7, "cap12": 228501415.12, "rent12": 10.69, "cdi12": 72.13, "capytd": -183124356.27, "rentytd": 7.78, "cdiytd": 136.01, "pl": 21593223259.89, "benchmark": "CDI", "gestor": "KINEA INVESTIMENTOS LTDA.", "plat": "XP", "categoria": "Renda Fixa", "rank_global": 35}, {"rank": 3, "nome": "MOCK XP Renda Fixa Ativa FUNDO 03", "cap30": 1155825784.95, "rent30": -0.7, "cdi30": -61.95, "cap12": 1648758379.69, "rent12": 12.72, "cdi12": 85.83, "capytd": 919631562.96, "rentytd": 8.11, "cdiytd": 141.78, "pl": 3075286192.83, "benchmark": "CDI", "gestor": "ITAU UNIBANCO ASSET MANAG", "plat": "XP", "categoria": "Renda Fixa Ativa", "rank_global": 36}, {"rank": 5, "nome": "MOCK BTG Multimercado FUNDO 07", "cap30": 1121584913.79, "rent30": -1.24, "cdi30": -109.73, "cap12": 7471116616.2, "rent12": 11.81, "cdi12": 79.69, "capytd": 156815526.35, "rentytd": 9.66, "cdiytd": 168.88, "pl": 1217341544.85, "benchmark": "CDI", "gestor": "ITAU UNIBANCO ASSET MANAG", "plat": "BTG", "categoria": "Multimercado", "rank_global": 37}, {"rank": 4, "nome": "MOCK XP Renda Fixa Ativa FUNDO 01", "cap30": 1095426749.16, "rent30": -0.28, "cdi30": -24.78, "cap12": -1465082786.22, "rent12": 9.74, "cdi12": 65.72, "capytd": 3651472272.27, "rentytd": 6.36, "cdiytd": 111.19, "pl": 17718870448.35, "benchmark": "CDI", "gestor": "ITAU UNIBANCO ASSET MANAG", "plat": "XP", "categoria": "Renda Fixa Ativa", "rank_global": 38}, {"rank": 5, "nome": "MOCK Itau Renda Fixa FUNDO 08", "cap30": 1070868731.5, "rent30": 1.52, "cdi30": 134.51, "cap12": -2715486183.73, "rent12": 11.89, "cdi12": 80.23, "capytd": 3306351509.3, "rentytd": 8.88, "cdiytd": 155.24, "pl": 17617816721.98, "benchmark": "CDI", "gestor": "KAPITALO INVESTIMENTOS LT", "plat": "Itau", "categoria": "Renda Fixa", "rank_global": 39}, {"rank": 3, "nome": "MOCK XP Renda Fixa FUNDO 09", "cap30": 1031733980.58, "rent30": 2.91, "cdi30": 257.52, "cap12": 3338328146.93, "rent12": 12.13, "cdi12": 81.85, "capytd": 2259459303.31, "rentytd": 5.26, "cdiytd": 91.96, "pl": 2838830636.79, "benchmark": "CDI", "gestor": "XP VISTA ASSET MANAGEMENT", "plat": "XP", "categoria": "Renda Fixa", "rank_global": 40}, {"rank": 3, "nome": "MOCK Itau Multimercado FUNDO 10", "cap30": 1028553396.5, "rent30": 0.55, "cdi30": 48.67, "cap12": 4202594590.71, "rent12": 10.62, "cdi12": 71.66, "capytd": 2241351125.12, "rentytd": 9.75, "cdiytd": 170.45, "pl": 10163451409.2, "benchmark": "CDI", "gestor": "ITAU UNIBANCO ASSET MANAG", "plat": "Itau", "categoria": "Multimercado", "rank_global": 41}, {"rank": 4, "nome": "MOCK Itau Renda Fixa Ativa FUNDO 08", "cap30": 1024495159.64, "rent30": 0.08, "cdi30": 7.08, "cap12": 5171691700.03, "rent12": 24.16, "cdi12": 163.02, "capytd": 3388850481.53, "rentytd": 3.53, "cdiytd": 61.71, "pl": 22160753558.73, "benchmark": "CDI", "gestor": "BTG PACTUAL ASSET MANAGEM", "plat": "Itau", "categoria": "Renda Fixa Ativa", "rank_global": 42}, {"rank": 4, "nome": "MOCK XP Renda Fixa FUNDO 08", "cap30": 977443312.92, "rent30": -1.21, "cdi30": -107.08, "cap12": -2258596390.79, "rent12": 8.53, "cdi12": 57.56, "capytd": 1518228143.22, "rentytd": 6.11, "cdiytd": 106.82, "pl": 8361533146.3, "benchmark": "CDI", "gestor": "BTG PACTUAL ASSET MANAGEM", "plat": "XP", "categoria": "Renda Fixa", "rank_global": 43}, {"rank": 5, "nome": "MOCK Itau Renda Fixa Ativa FUNDO 10", "cap30": 940960875.19, "rent30": -0.87, "cdi30": -76.99, "cap12": 6553073169.89, "rent12": 16.34, "cdi12": 110.26, "capytd": 4338142621.99, "rentytd": 6.59, "cdiytd": 115.21, "pl": 14087214378.47, "benchmark": "CDI", "gestor": "KINEA INVESTIMENTOS LTDA.", "plat": "Itau", "categoria": "Renda Fixa Ativa", "rank_global": 44}, {"rank": 6, "nome": "MOCK Itau Renda Fixa Ativa FUNDO 06", "cap30": 917132688.06, "rent30": 1.73, "cdi30": 153.1, "cap12": 2399034685.86, "rent12": 21.48, "cdi12": 144.94, "capytd": 283877422.88, "rentytd": 3.77, "cdiytd": 65.91, "pl": 20756696787.3, "benchmark": "CDI", "gestor": "BANCO BRADESCO S.A.", "plat": "Itau", "categoria": "Renda Fixa Ativa", "rank_global": 45}, {"rank": 6, "nome": "MOCK Itau Renda Fixa FUNDO 05", "cap30": 912798975.25, "rent30": 0.85, "cdi30": 75.22, "cap12": -2640961590.81, "rent12": 12.9, "cdi12": 87.04, "capytd": 1270135540.18, "rentytd": 8.88, "cdiytd": 155.24, "pl": 2144681007.0, "benchmark": "CDI", "gestor": "TIVIO CAPITAL DISTRIBUIDO", "plat": "Itau", "categoria": "Renda Fixa", "rank_global": 46}, {"rank": 3, "nome": "MOCK Bradesco Multimercado FUNDO 09", "cap30": 845046426.56, "rent30": 0.55, "cdi30": 48.67, "cap12": 6609681094.58, "rent12": 24.0, "cdi12": 161.94, "capytd": 1999271649.97, "rentytd": 9.33, "cdiytd": 163.11, "pl": 1552867938.37, "benchmark": "CDI", "gestor": "ARX INVESTIMENTOS LTDA", "plat": "Bradesco", "categoria": "Multimercado", "rank_global": 47}, {"rank": 5, "nome": "MOCK Bradesco Renda Fixa FUNDO 09", "cap30": 819690583.22, "rent30": 1.71, "cdi30": 151.33, "cap12": 3568605554.71, "rent12": 8.36, "cdi12": 56.41, "capytd": 3891331870.36, "rentytd": 3.95, "cdiytd": 69.06, "pl": 3786457320.39, "benchmark": "CDI", "gestor": "BTG PACTUAL ASSET MANAGEM", "plat": "Bradesco", "categoria": "Renda Fixa", "rank_global": 48}, {"rank": 4, "nome": "MOCK BTG Renda Fixa Ativa FUNDO 08", "cap30": 745186085.13, "rent30": 0.5, "cdi30": 44.25, "cap12": 7792646559.18, "rent12": 17.12, "cdi12": 115.52, "capytd": 4684033129.69, "rentytd": 2.92, "cdiytd": 51.05, "pl": 29112314324.56, "benchmark": "CDI", "gestor": "ARX INVESTIMENTOS LTDA", "plat": "BTG", "categoria": "Renda Fixa Ativa", "rank_global": 49}, {"rank": 5, "nome": "MOCK BTG Renda Fixa FUNDO 10", "cap30": 693619529.44, "rent30": -0.13, "cdi30": -11.5, "cap12": -2147683107.49, "rent12": 12.86, "cdi12": 86.77, "capytd": 1212918556.83, "rentytd": 4.56, "cdiytd": 79.72, "pl": 16209165153.33, "benchmark": "CDI", "gestor": "TIVIO CAPITAL DISTRIBUIDO", "plat": "BTG", "categoria": "Renda Fixa", "rank_global": 50}, {"rank": 5, "nome": "MOCK Bradesco Renda Fixa Ativa FUNDO 09", "cap30": 673119070.96, "rent30": 1.89, "cdi30": 167.26, "cap12": 4930212143.38, "rent12": 19.21, "cdi12": 129.62, "capytd": 4159353008.21, "rentytd": 7.03, "cdiytd": 122.9, "pl": 27103077085.15, "benchmark": "CDI", "gestor": "BANCO BRADESCO S.A.", "plat": "Bradesco", "categoria": "Renda Fixa Ativa", "rank_global": 51}, {"rank": 2, "nome": "MOCK XP Multimercado FUNDO 06", "cap30": 667835286.16, "rent30": 0.6, "cdi30": 53.1, "cap12": 3420395182.2, "rent12": 16.89, "cdi12": 113.97, "capytd": 4660472540.23, "rentytd": 3.63, "cdiytd": 63.46, "pl": 21488592105.67, "benchmark": "CDI", "gestor": "ITAU UNIBANCO ASSET MANAG", "plat": "XP", "categoria": "Multimercado", "rank_global": 52}, {"rank": 6, "nome": "MOCK Bradesco Renda Fixa Ativa FUNDO 02", "cap30": 661108115.61, "rent30": -0.33, "cdi30": -29.2, "cap12": 4528395318.47, "rent12": 12.89, "cdi12": 86.98, "capytd": 982928659.64, "rentytd": 2.72, "cdiytd": 47.55, "pl": 29350348469.33, "benchmark": "CDI", "gestor": "ITAU UNIBANCO ASSET MANAG", "plat": "Bradesco", "categoria": "Renda Fixa Ativa", "rank_global": 53}, {"rank": 3, "nome": "MOCK XP Multimercado FUNDO 09", "cap30": 640872180.04, "rent30": 3.44, "cdi30": 304.42, "cap12": 4193739494.82, "rent12": 8.13, "cdi12": 54.86, "capytd": 4048941502.6, "rentytd": 4.4, "cdiytd": 76.92, "pl": 19905027561.83, "benchmark": "CDI", "gestor": "KINEA INVESTIMENTOS LTDA.", "plat": "XP", "categoria": "Multimercado", "rank_global": 54}, {"rank": 6, "nome": "MOCK BTG Multimercado FUNDO 09", "cap30": 620624423.96, "rent30": 3.32, "cdi30": 293.81, "cap12": 4901929514.56, "rent12": 21.22, "cdi12": 143.18, "capytd": 651582212.87, "rentytd": 4.49, "cdiytd": 78.5, "pl": 17364755127.95, "benchmark": "CDI", "gestor": "XP VISTA ASSET MANAGEMENT", "plat": "BTG", "categoria": "Multimercado", "rank_global": 55}, {"rank": 5, "nome": "MOCK XP Renda Fixa FUNDO 04", "cap30": 596306045.61, "rent30": 0.94, "cdi30": 83.19, "cap12": -1769455021.47, "rent12": 14.17, "cdi12": 95.61, "capytd": 4923671170.51, "rentytd": 8.45, "cdiytd": 147.73, "pl": 7191174787.04, "benchmark": "CDI", "gestor": "ITAU UNIBANCO ASSET MANAG", "plat": "XP", "categoria": "Renda Fixa", "rank_global": 56}, {"rank": 6, "nome": "MOCK XP Renda Fixa FUNDO 01", "cap30": 587431607.56, "rent30": 0.42, "cdi30": 37.17, "cap12": 3554772711.97, "rent12": 15.96, "cdi12": 107.69, "capytd": 1107353423.91, "rentytd": 6.43, "cdiytd": 112.41, "pl": 28273501532.78, "benchmark": "IMA-B", "gestor": "KAPITALO INVESTIMENTOS LT", "plat": "XP", "categoria": "Renda Fixa", "rank_global": 57}, {"rank": 4, "nome": "MOCK Bradesco Multimercado FUNDO 02", "cap30": 560985227.18, "rent30": -1.42, "cdi30": -125.66, "cap12": -80957408.43, "rent12": 10.15, "cdi12": 68.49, "capytd": 1988994895.93, "rentytd": 2.91, "cdiytd": 50.87, "pl": 1916105564.03, "benchmark": "CDI", "gestor": "BANCO BRADESCO S.A.", "plat": "Bradesco", "categoria": "Multimercado", "rank_global": 58}, {"rank": 5, "nome": "MOCK XP Renda Fixa Ativa FUNDO 05", "cap30": 520732508.4, "rent30": 2.02, "cdi30": 178.76, "cap12": -2495931779.79, "rent12": 11.87, "cdi12": 80.09, "capytd": 1304817410.73, "rentytd": 2.64, "cdiytd": 46.15, "pl": 6991398681.97, "benchmark": "CDI", "gestor": "ARX INVESTIMENTOS LTDA", "plat": "XP", "categoria": "Renda Fixa Ativa", "rank_global": 59}, {"rank": 7, "nome": "MOCK Itau Renda Fixa FUNDO 09", "cap30": 516864446.11, "rent30": 2.32, "cdi30": 205.31, "cap12": -1072901992.68, "rent12": 16.82, "cdi12": 113.5, "capytd": 2099592902.99, "rentytd": 4.23, "cdiytd": 73.95, "pl": 29908394793.23, "benchmark": "CDI", "gestor": "KINEA INVESTIMENTOS LTDA.", "plat": "Itau", "categoria": "Renda Fixa", "rank_global": 60}, {"rank": 4, "nome": "MOCK Itau Multimercado FUNDO 08", "cap30": 501291746.95, "rent30": -0.33, "cdi30": -29.2, "cap12": 5530989226.09, "rent12": 8.74, "cdi12": 58.97, "capytd": 3672466788.14, "rentytd": 7.64, "cdiytd": 133.57, "pl": 24344152987.92, "benchmark": "CDI", "gestor": "BANCO BRADESCO S.A.", "plat": "Itau", "categoria": "Multimercado", "rank_global": 61}, {"rank": 7, "nome": "MOCK Itau Renda Fixa Ativa FUNDO 04", "cap30": 494473756.37, "rent30": 1.84, "cdi30": 162.83, "cap12": 700362818.81, "rent12": 16.4, "cdi12": 110.66, "capytd": 1490073673.02, "rentytd": 5.9, "cdiytd": 103.15, "pl": 10651200735.62, "benchmark": "CDI", "gestor": "TIVIO CAPITAL DISTRIBUIDO", "plat": "Itau", "categoria": "Renda Fixa Ativa", "rank_global": 62}, {"rank": 7, "nome": "MOCK Bradesco Renda Fixa Ativa FUNDO 04", "cap30": 480748216.71, "rent30": 2.46, "cdi30": 217.7, "cap12": -1130179860.25, "rent12": 9.34, "cdi12": 63.02, "capytd": 4328365912.95, "rentytd": 6.96, "cdiytd": 121.68, "pl": 7232485457.77, "benchmark": "CDI", "gestor": "KAPITALO INVESTIMENTOS LT", "plat": "Bradesco", "categoria": "Renda Fixa Ativa", "rank_global": 63}, {"rank": 4, "nome": "MOCK XP Multimercado FUNDO 08", "cap30": 381720414.36, "rent30": 1.03, "cdi30": 91.15, "cap12": -1542977725.97, "rent12": 13.93, "cdi12": 93.99, "capytd": 157714833.11, "rentytd": 3.95, "cdiytd": 69.06, "pl": 8556771862.59, "benchmark": "CDI", "gestor": "BTG PACTUAL ASSET MANAGEM", "plat": "XP", "categoria": "Multimercado", "rank_global": 64}, {"rank": 6, "nome": "MOCK XP Renda Fixa Ativa FUNDO 07", "cap30": 369489569.6, "rent30": -0.28, "cdi30": -24.78, "cap12": 2084862330.36, "rent12": 12.59, "cdi12": 84.95, "capytd": 4612034134.03, "rentytd": 7.51, "cdiytd": 131.29, "pl": 6596259067.37, "benchmark": "CDI", "gestor": "XP VISTA ASSET MANAGEMENT", "plat": "XP", "categoria": "Renda Fixa Ativa", "rank_global": 65}, {"rank": 6, "nome": "MOCK Bradesco Renda Fixa FUNDO 01", "cap30": 357983307.96, "rent30": 3.07, "cdi30": 271.68, "cap12": 6135198815.24, "rent12": 12.37, "cdi12": 83.47, "capytd": 4088387025.22, "rentytd": 5.85, "cdiytd": 102.27, "pl": 24196589928.88, "benchmark": "IMA-B", "gestor": "ARX INVESTIMENTOS LTDA", "plat": "Bradesco", "categoria": "Renda Fixa", "rank_global": 66}, {"rank": 7, "nome": "MOCK XP Renda Fixa FUNDO 06", "cap30": 346858255.96, "rent30": 1.53, "cdi30": 135.4, "cap12": 7607991966.08, "rent12": 23.79, "cdi12": 160.53, "capytd": 3727379022.51, "rentytd": 7.52, "cdiytd": 131.47, "pl": 21391339694.85, "benchmark": "IMA-B", "gestor": "KINEA INVESTIMENTOS LTDA.", "plat": "XP", "categoria": "Renda Fixa", "rank_global": 67}, {"rank": 6, "nome": "MOCK BTG Renda Fixa FUNDO 04", "cap30": 289108989.06, "rent30": 2.47, "cdi30": 218.58, "cap12": 7558152040.51, "rent12": 20.51, "cdi12": 138.39, "capytd": 3226023873.99, "rentytd": 4.27, "cdiytd": 74.65, "pl": 19918976550.79, "benchmark": "CDI", "gestor": "BANCO BRADESCO S.A.", "plat": "BTG", "categoria": "Renda Fixa", "rank_global": 68}, {"rank": 5, "nome": "MOCK Itau Multimercado FUNDO 09", "cap30": 233650273.66, "rent30": -1.31, "cdi30": -115.93, "cap12": 2525202651.46, "rent12": 18.03, "cdi12": 121.66, "capytd": 4322441629.48, "rentytd": 8.99, "cdiytd": 157.17, "pl": 13214783231.02, "benchmark": "CDI", "gestor": "XP VISTA ASSET MANAGEMENT", "plat": "Itau", "categoria": "Multimercado", "rank_global": 69}, {"rank": 7, "nome": "MOCK BTG Multimercado FUNDO 04", "cap30": 199746978.29, "rent30": 0.44, "cdi30": 38.94, "cap12": 4357609826.85, "rent12": 21.57, "cdi12": 145.55, "capytd": 3565743163.66, "rentytd": 8.72, "cdiytd": 152.45, "pl": 27587053203.86, "benchmark": "CDI", "gestor": "KAPITALO INVESTIMENTOS LT", "plat": "BTG", "categoria": "Multimercado", "rank_global": 70}, {"rank": 8, "nome": "MOCK Itau Renda Fixa Ativa FUNDO 07", "cap30": 156411710.66, "rent30": 1.15, "cdi30": 101.77, "cap12": 1680541939.76, "rent12": 20.68, "cdi12": 139.54, "capytd": 1520114745.42, "rentytd": 7.62, "cdiytd": 133.22, "pl": 8134783645.02, "benchmark": "CDI", "gestor": "ARX INVESTIMENTOS LTDA", "plat": "Itau", "categoria": "Renda Fixa Ativa", "rank_global": 71}, {"rank": 7, "nome": "MOCK Bradesco Renda Fixa FUNDO 02", "cap30": 139159860.98, "rent30": -1.12, "cdi30": -99.12, "cap12": 5295666423.67, "rent12": 11.84, "cdi12": 79.89, "capytd": 3316883368.54, "rentytd": 7.4, "cdiytd": 129.37, "pl": 11928370741.15, "benchmark": "CDI", "gestor": "BTG PACTUAL ASSET MANAGEM", "plat": "Bradesco", "categoria": "Renda Fixa", "rank_global": 72}, {"rank": 9, "nome": "MOCK Itau Renda Fixa Ativa FUNDO 03", "cap30": 127058200.72, "rent30": 2.63, "cdi30": 232.74, "cap12": 3517220809.7, "rent12": 13.48, "cdi12": 90.96, "capytd": 1076574879.29, "rentytd": 9.48, "cdiytd": 165.73, "pl": 8375058193.28, "benchmark": "CDI", "gestor": "TIVIO CAPITAL DISTRIBUIDO", "plat": "Itau", "categoria": "Renda Fixa Ativa", "rank_global": 73}, {"rank": 8, "nome": "MOCK Bradesco Renda Fixa Ativa FUNDO 05", "cap30": 114024696.74, "rent30": -0.23, "cdi30": -20.35, "cap12": -191406210.25, "rent12": 8.16, "cdi12": 55.06, "capytd": 3984092000.27, "rentytd": 9.21, "cdiytd": 161.01, "pl": 20331550462.12, "benchmark": "CDI", "gestor": "BANCO BRADESCO S.A.", "plat": "Bradesco", "categoria": "Renda Fixa Ativa", "rank_global": 74}, {"rank": 7, "nome": "MOCK BTG Renda Fixa FUNDO 06", "cap30": 93956589.33, "rent30": 2.93, "cdi30": 259.29, "cap12": 3332379893.5, "rent12": 20.21, "cdi12": 136.37, "capytd": 1796688030.44, "rentytd": 5.2, "cdiytd": 90.91, "pl": 4435664639.29, "benchmark": "IMA-B", "gestor": "BTG PACTUAL ASSET MANAGEM", "plat": "BTG", "categoria": "Renda Fixa", "rank_global": 75}, {"rank": 7, "nome": "MOCK XP Renda Fixa Ativa FUNDO 06", "cap30": 86936058.29, "rent30": 2.67, "cdi30": 236.28, "cap12": -1210804931.28, "rent12": 14.04, "cdi12": 94.74, "capytd": 3284910906.76, "rentytd": 7.61, "cdiytd": 133.04, "pl": 20509594489.44, "benchmark": "CDI", "gestor": "KINEA INVESTIMENTOS LTDA.", "plat": "XP", "categoria": "Renda Fixa Ativa", "rank_global": 76}, {"rank": 5, "nome": "MOCK Bradesco Multimercado FUNDO 03", "cap30": 82018969.68, "rent30": -0.39, "cdi30": -34.51, "cap12": 3766175199.13, "rent12": 20.36, "cdi12": 137.38, "capytd": 4525508777.11, "rentytd": 7.27, "cdiytd": 127.1, "pl": 9055893567.55, "benchmark": "CDI", "gestor": "BTG PACTUAL ASSET MANAGEM", "plat": "Bradesco", "categoria": "Multimercado", "rank_global": 77}, {"rank": 9, "nome": "MOCK Bradesco Renda Fixa Ativa FUNDO 03", "cap30": 52874930.82, "rent30": 1.97, "cdi30": 174.34, "cap12": 6937664682.56, "rent12": 8.78, "cdi12": 59.24, "capytd": 3939946018.84, "rentytd": 4.35, "cdiytd": 76.05, "pl": 11251484282.36, "benchmark": "CDI", "gestor": "BTG PACTUAL ASSET MANAGEM", "plat": "Bradesco", "categoria": "Renda Fixa Ativa", "rank_global": 78}, {"rank": 8, "nome": "MOCK Itau Renda Fixa FUNDO 07", "cap30": 37037070.36, "rent30": 0.84, "cdi30": 74.34, "cap12": 345003095.99, "rent12": 14.84, "cdi12": 100.13, "capytd": 1215680204.35, "rentytd": 6.32, "cdiytd": 110.49, "pl": 13138388318.51, "benchmark": "CDI", "gestor": "KINEA INVESTIMENTOS LTDA.", "plat": "Itau", "categoria": "Renda Fixa", "rank_global": 79}, {"rank": 6, "nome": "MOCK Itau Multimercado FUNDO 03", "cap30": 33406332.75, "rent30": 1.99, "cdi30": 176.11, "cap12": -1664313083.01, "rent12": 24.54, "cdi12": 165.59, "capytd": 2966132668.83, "rentytd": 3.91, "cdiytd": 68.36, "pl": 4759761132.52, "benchmark": "CDI", "gestor": "KINEA INVESTIMENTOS LTDA.", "plat": "Itau", "categoria": "Multimercado", "rank_global": 80}, {"rank": 8, "nome": "MOCK XP Renda Fixa FUNDO 07", "cap30": 33350293.7, "rent30": 1.09, "cdi30": 96.46, "cap12": -1668953845.45, "rent12": 11.82, "cdi12": 79.76, "capytd": 1558044923.17, "rentytd": 6.71, "cdiytd": 117.31, "pl": 6911140830.57, "benchmark": "CDI", "gestor": "ARX INVESTIMENTOS LTDA", "plat": "XP", "categoria": "Renda Fixa", "rank_global": 81}, {"rank": 9, "nome": "MOCK Itau Renda Fixa FUNDO 06", "cap30": -12013618.64, "rent30": 1.22, "cdi30": 107.96, "cap12": 4123981957.43, "rent12": 23.44, "cdi12": 158.16, "capytd": 4098482030.18, "rentytd": 2.57, "cdiytd": 44.93, "pl": 4986024448.73, "benchmark": "IMA-B", "gestor": "BANCO BRADESCO S.A.", "plat": "Itau", "categoria": "Renda Fixa", "rank_global": 82}, {"rank": 9, "nome": "MOCK XP Renda Fixa FUNDO 10", "cap30": -17474819.43, "rent30": 0.84, "cdi30": 74.34, "cap12": 5019834344.06, "rent12": 19.45, "cdi12": 131.24, "capytd": 4917659099.1, "rentytd": 2.79, "cdiytd": 48.78, "pl": 12084612250.25, "benchmark": "CDI", "gestor": "ARX INVESTIMENTOS LTDA", "plat": "XP", "categoria": "Renda Fixa", "rank_global": 83}, {"rank": 7, "nome": "MOCK Itau Multimercado FUNDO 05", "cap30": -45783799.73, "rent30": 0.91, "cdi30": 80.53, "cap12": 2194417600.94, "rent12": 15.77, "cdi12": 106.41, "capytd": 552138236.13, "rentytd": 3.52, "cdiytd": 61.54, "pl": 17985334184.26, "benchmark": "CDI", "gestor": "KINEA INVESTIMENTOS LTDA.", "plat": "Itau", "categoria": "Multimercado", "rank_global": 84}, {"rank": 8, "nome": "MOCK Itau Multimercado FUNDO 02", "cap30": -53633502.2, "rent30": -0.56, "cdi30": -49.56, "cap12": 979572950.67, "rent12": 20.86, "cdi12": 140.76, "capytd": 3052125459.15, "rentytd": 8.08, "cdiytd": 141.26, "pl": 6114711568.12, "benchmark": "CDI", "gestor": "TIVIO CAPITAL DISTRIBUIDO", "plat": "Itau", "categoria": "Multimercado", "rank_global": 85}, {"rank": 8, "nome": "MOCK BTG Renda Fixa FUNDO 03", "cap30": -78736909.35, "rent30": 2.67, "cdi30": 236.28, "cap12": 342624441.95, "rent12": 11.57, "cdi12": 78.07, "capytd": 3885945902.88, "rentytd": 6.85, "cdiytd": 119.76, "pl": 9674254399.8, "benchmark": "CDI", "gestor": "KINEA INVESTIMENTOS LTDA.", "plat": "BTG", "categoria": "Renda Fixa", "rank_global": 86}, {"rank": 8, "nome": "MOCK BTG Multimercado FUNDO 10", "cap30": -111709454.69, "rent30": 2.08, "cdi30": 184.07, "cap12": -2164038743.73, "rent12": 19.74, "cdi12": 133.2, "capytd": 3061660457.13, "rentytd": 2.82, "cdiytd": 49.3, "pl": 23176701739.69, "benchmark": "CDI", "gestor": "KAPITALO INVESTIMENTOS LT", "plat": "BTG", "categoria": "Multimercado", "rank_global": 87}, {"rank": 8, "nome": "MOCK XP Renda Fixa Ativa FUNDO 09", "cap30": -115288346.29, "rent30": 3.07, "cdi30": 271.68, "cap12": 2047370378.46, "rent12": 12.5, "cdi12": 84.35, "capytd": 1082463040.01, "rentytd": 6.49, "cdiytd": 113.46, "pl": 7889620839.6, "benchmark": "CDI", "gestor": "TIVIO CAPITAL DISTRIBUIDO", "plat": "XP", "categoria": "Renda Fixa Ativa", "rank_global": 88}, {"rank": 8, "nome": "MOCK Bradesco Renda Fixa FUNDO 06", "cap30": -139739590.97, "rent30": 0.36, "cdi30": 31.86, "cap12": 7443188452.53, "rent12": 19.84, "cdi12": 133.87, "capytd": 2609000976.23, "rentytd": 6.7, "cdiytd": 117.13, "pl": 21800708525.21, "benchmark": "IMA-B", "gestor": "XP VISTA ASSET MANAGEMENT", "plat": "Bradesco", "categoria": "Renda Fixa", "rank_global": 89}, {"rank": 9, "nome": "MOCK BTG Multimercado FUNDO 01", "cap30": -159376476.49, "rent30": -0.74, "cdi30": -65.49, "cap12": -646518351.83, "rent12": 15.05, "cdi12": 101.55, "capytd": 1520583233.4, "rentytd": 5.73, "cdiytd": 100.17, "pl": 1877348660.4, "benchmark": "CDI", "gestor": "BANCO BRADESCO S.A.", "plat": "BTG", "categoria": "Multimercado", "rank_global": 90}, {"rank": 9, "nome": "MOCK XP Renda Fixa Ativa FUNDO 10", "cap30": -233012447.0, "rent30": 3.49, "cdi30": 308.85, "cap12": -1478350806.2, "rent12": 16.39, "cdi12": 110.59, "capytd": 3730067219.18, "rentytd": 8.89, "cdiytd": 155.42, "pl": 4593711167.25, "benchmark": "CDI", "gestor": "KAPITALO INVESTIMENTOS LT", "plat": "XP", "categoria": "Renda Fixa Ativa", "rank_global": 91}, {"rank": 6, "nome": "MOCK Bradesco Multimercado FUNDO 10", "cap30": -269238350.07, "rent30": 1.39, "cdi30": 123.01, "cap12": -659873137.61, "rent12": 19.16, "cdi12": 129.28, "capytd": 966073319.36, "rentytd": 2.87, "cdiytd": 50.17, "pl": 25362748823.85, "benchmark": "CDI", "gestor": "KINEA INVESTIMENTOS LTDA.", "plat": "Bradesco", "categoria": "Multimercado", "rank_global": 92}, {"rank": 7, "nome": "MOCK Bradesco Multimercado FUNDO 07", "cap30": -313739334.08, "rent30": 0.77, "cdi30": 68.14, "cap12": 1575886152.88, "rent12": 9.62, "cdi12": 64.91, "capytd": 2019172832.56, "rentytd": 7.32, "cdiytd": 127.97, "pl": 11235287692.83, "benchmark": "CDI", "gestor": "KAPITALO INVESTIMENTOS LT", "plat": "Bradesco", "categoria": "Multimercado", "rank_global": 93}, {"rank": 9, "nome": "MOCK BTG Renda Fixa FUNDO 02", "cap30": -358359833.0, "rent30": 1.99, "cdi30": 176.11, "cap12": 3098537254.33, "rent12": 11.26, "cdi12": 75.98, "capytd": 3257633057.91, "rentytd": 5.03, "cdiytd": 87.94, "pl": 22446555459.17, "benchmark": "CDI", "gestor": "KAPITALO INVESTIMENTOS LT", "plat": "BTG", "categoria": "Renda Fixa", "rank_global": 94}, {"rank": 9, "nome": "MOCK Itau Multimercado FUNDO 06", "cap30": -533134090.12, "rent30": 2.45, "cdi30": 216.81, "cap12": 1564366659.06, "rent12": 23.88, "cdi12": 161.13, "capytd": 2440235914.21, "rentytd": 8.56, "cdiytd": 149.65, "pl": 8492341108.65, "benchmark": "CDI", "gestor": "BTG PACTUAL ASSET MANAGEM", "plat": "Itau", "categoria": "Multimercado", "rank_global": 95}, {"rank": 5, "nome": "MOCK BTG Renda Fixa Ativa FUNDO 06", "cap30": -566180016.42, "rent30": 2.44, "cdi30": 215.93, "cap12": -1810948109.57, "rent12": 22.83, "cdi12": 154.05, "capytd": 4264684906.96, "rentytd": 3.78, "cdiytd": 66.08, "pl": 24499432301.85, "benchmark": "CDI", "gestor": "BANCO BRADESCO S.A.", "plat": "BTG", "categoria": "Renda Fixa Ativa", "rank_global": 96}, {"rank": 6, "nome": "MOCK BTG Renda Fixa Ativa FUNDO 01", "cap30": -621075617.76, "rent30": 3.04, "cdi30": 269.03, "cap12": -2441212169.71, "rent12": 18.78, "cdi12": 126.72, "capytd": 4112610064.74, "rentytd": 2.35, "cdiytd": 41.08, "pl": 10013360592.77, "benchmark": "CDI", "gestor": "TIVIO CAPITAL DISTRIBUIDO", "plat": "BTG", "categoria": "Renda Fixa Ativa", "rank_global": 97}, {"rank": 10, "nome": "MOCK Bradesco Renda Fixa Ativa FUNDO 07", "cap30": -669780043.25, "rent30": 1.36, "cdi30": 120.35, "cap12": 3322931231.97, "rent12": 24.88, "cdi12": 167.88, "capytd": 1335199920.19, "rentytd": 9.82, "cdiytd": 171.68, "pl": 19750312179.7, "benchmark": "CDI", "gestor": "BTG PACTUAL ASSET MANAGEM", "plat": "Bradesco", "categoria": "Renda Fixa Ativa", "rank_global": 98}, {"rank": 10, "nome": "MOCK XP Renda Fixa Ativa FUNDO 02", "cap30": -734767088.19, "rent30": 1.03, "cdi30": 91.15, "cap12": -2708104333.48, "rent12": 11.38, "cdi12": 76.79, "capytd": 3179399076.45, "rentytd": 6.36, "cdiytd": 111.19, "pl": 6621014255.0, "benchmark": "CDI", "gestor": "BTG PACTUAL ASSET MANAGEM", "plat": "XP", "categoria": "Renda Fixa Ativa", "rank_global": 99}, {"rank": 10, "nome": "MOCK BTG Multimercado FUNDO 06", "cap30": -759189005.26, "rent30": 0.13, "cdi30": 11.5, "cap12": 5373526786.83, "rent12": 14.45, "cdi12": 97.5, "capytd": 3710451082.48, "rentytd": 8.66, "cdiytd": 151.4, "pl": 7575623238.15, "benchmark": "CDI", "gestor": "ARX INVESTIMENTOS LTDA", "plat": "BTG", "categoria": "Multimercado", "rank_global": 100}, {"rank": 7, "nome": "MOCK BTG Renda Fixa Ativa FUNDO 04", "cap30": -764732115.81, "rent30": -0.25, "cdi30": -22.12, "cap12": -1869270161.61, "rent12": 21.26, "cdi12": 143.45, "capytd": 4397500447.55, "rentytd": 5.25, "cdiytd": 91.78, "pl": 18623638689.42, "benchmark": "CDI", "gestor": "ARX INVESTIMENTOS LTDA", "plat": "BTG", "categoria": "Renda Fixa Ativa", "rank_global": 101}, {"rank": 5, "nome": "MOCK XP Multimercado FUNDO 01", "cap30": -829434747.5, "rent30": 1.18, "cdi30": 104.42, "cap12": -1457994731.96, "rent12": 11.12, "cdi12": 75.03, "capytd": 2205665955.69, "rentytd": 9.0, "cdiytd": 157.34, "pl": 2270792802.34, "benchmark": "CDI", "gestor": "BANCO BRADESCO S.A.", "plat": "XP", "categoria": "Multimercado", "rank_global": 102}, {"rank": 8, "nome": "MOCK BTG Renda Fixa Ativa FUNDO 02", "cap30": -934463083.04, "rent30": 0.71, "cdi30": 62.83, "cap12": 4762341914.36, "rent12": 17.54, "cdi12": 118.35, "capytd": 381744179.06, "rentytd": 9.56, "cdiytd": 167.13, "pl": 20733678516.44, "benchmark": "CDI", "gestor": "KINEA INVESTIMENTOS LTDA.", "plat": "BTG", "categoria": "Renda Fixa Ativa", "rank_global": 103}, {"rank": 6, "nome": "MOCK XP Multimercado FUNDO 04", "cap30": -958211111.54, "rent30": -0.02, "cdi30": -1.77, "cap12": 7655803014.66, "rent12": 17.85, "cdi12": 120.45, "capytd": 2619415047.15, "rentytd": 7.98, "cdiytd": 139.51, "pl": 1724386534.5, "benchmark": "CDI", "gestor": "TIVIO CAPITAL DISTRIBUIDO", "plat": "XP", "categoria": "Multimercado", "rank_global": 104}, {"rank": 10, "nome": "MOCK Itau Renda Fixa FUNDO 02", "cap30": -977808454.34, "rent30": 1.31, "cdi30": 115.93, "cap12": 342190630.26, "rent12": 24.9, "cdi12": 168.02, "capytd": 415948123.5, "rentytd": 8.12, "cdiytd": 141.96, "pl": 18193466360.78, "benchmark": "CDI", "gestor": "XP VISTA ASSET MANAGEMENT", "plat": "Itau", "categoria": "Renda Fixa", "rank_global": 105}, {"rank": 7, "nome": "MOCK XP Multimercado FUNDO 07", "cap30": -1041926012.55, "rent30": 1.73, "cdi30": 153.1, "cap12": 2029470298.27, "rent12": 23.79, "cdi12": 160.53, "capytd": 4665818294.71, "rentytd": 2.07, "cdiytd": 36.19, "pl": 18638566072.24, "benchmark": "CDI", "gestor": "KAPITALO INVESTIMENTOS LT", "plat": "XP", "categoria": "Multimercado", "rank_global": 106}, {"rank": 8, "nome": "MOCK XP Multimercado FUNDO 10", "cap30": -1095999653.53, "rent30": -0.96, "cdi30": -84.96, "cap12": 3085460049.73, "rent12": 12.63, "cdi12": 85.22, "capytd": 2945115100.56, "rentytd": 7.74, "cdiytd": 135.31, "pl": 6115883396.7, "benchmark": "CDI", "gestor": "KINEA INVESTIMENTOS LTDA.", "plat": "XP", "categoria": "Multimercado", "rank_global": 107}, {"rank": 9, "nome": "MOCK Bradesco Renda Fixa FUNDO 04", "cap30": -1120788642.3, "rent30": -0.33, "cdi30": -29.2, "cap12": -2724728853.89, "rent12": 23.03, "cdi12": 155.4, "capytd": 2719318387.7, "rentytd": 9.32, "cdiytd": 162.94, "pl": 6648802330.22, "benchmark": "CDI", "gestor": "ARX INVESTIMENTOS LTDA", "plat": "Bradesco", "categoria": "Renda Fixa", "rank_global": 108}, {"rank": 10, "nome": "MOCK Itau Renda Fixa Ativa FUNDO 02", "cap30": -1130613952.75, "rent30": 3.3, "cdi30": 292.04, "cap12": 3991436167.12, "rent12": 22.09, "cdi12": 149.06, "capytd": 3478004947.27, "rentytd": 5.48, "cdiytd": 95.8, "pl": 22016521167.36, "benchmark": "CDI", "gestor": "TIVIO CAPITAL DISTRIBUIDO", "plat": "Itau", "categoria": "Renda Fixa Ativa", "rank_global": 109}, {"rank": 8, "nome": "MOCK Bradesco Multimercado FUNDO 06", "cap30": -1152875384.12, "rent30": 2.01, "cdi30": 177.88, "cap12": 6380720110.25, "rent12": 19.07, "cdi12": 128.68, "capytd": 3798606196.54, "rentytd": 7.77, "cdiytd": 135.84, "pl": 6458541759.16, "benchmark": "CDI", "gestor": "KAPITALO INVESTIMENTOS LT", "plat": "Bradesco", "categoria": "Multimercado", "rank_global": 110}, {"rank": 10, "nome": "MOCK Itau Multimercado FUNDO 04", "cap30": -1173767795.51, "rent30": 3.46, "cdi30": 306.19, "cap12": 7042228663.33, "rent12": 15.84, "cdi12": 106.88, "capytd": 410823975.27, "rentytd": 8.66, "cdiytd": 151.4, "pl": 14956281386.17, "benchmark": "CDI", "gestor": "KAPITALO INVESTIMENTOS LT", "plat": "Itau", "categoria": "Multimercado", "rank_global": 111}, {"rank": 10, "nome": "MOCK Bradesco Renda Fixa FUNDO 03", "cap30": -1183939935.51, "rent30": 0.47, "cdi30": 41.59, "cap12": -90955638.12, "rent12": 10.1, "cdi12": 68.15, "capytd": 1716645424.8, "rentytd": 7.99, "cdiytd": 139.69, "pl": 7872220633.41, "benchmark": "CDI", "gestor": "ARX INVESTIMENTOS LTDA", "plat": "Bradesco", "categoria": "Renda Fixa", "rank_global": 112}, {"rank": 10, "nome": "MOCK XP Renda Fixa FUNDO 05", "cap30": -1200212917.76, "rent30": 0.93, "cdi30": 82.3, "cap12": -2238662296.85, "rent12": 20.93, "cdi12": 141.23, "capytd": 3782339032.4, "rentytd": 3.03, "cdiytd": 52.97, "pl": 14263718519.18, "benchmark": "CDI", "gestor": "BTG PACTUAL ASSET MANAGEM", "plat": "XP", "categoria": "Renda Fixa", "rank_global": 113}, {"rank": 10, "nome": "MOCK BTG Renda Fixa FUNDO 01", "cap30": -1255091661.06, "rent30": 1.82, "cdi30": 161.06, "cap12": 632200396.47, "rent12": 13.34, "cdi12": 90.01, "capytd": 4209679453.43, "rentytd": 7.76, "cdiytd": 135.66, "pl": 9016664823.66, "benchmark": "IMA-B", "gestor": "KAPITALO INVESTIMENTOS LT", "plat": "BTG", "categoria": "Renda Fixa", "rank_global": 114}, {"rank": 9, "nome": "MOCK Bradesco Multimercado FUNDO 08", "cap30": -1265033421.52, "rent30": 2.66, "cdi30": 235.4, "cap12": -1974468881.26, "rent12": 9.64, "cdi12": 65.05, "capytd": 3641739192.14, "rentytd": 8.49, "cdiytd": 148.43, "pl": 16695558361.1, "benchmark": "CDI", "gestor": "TIVIO CAPITAL DISTRIBUIDO", "plat": "Bradesco", "categoria": "Multimercado", "rank_global": 115}, {"rank": 10, "nome": "MOCK Bradesco Multimercado FUNDO 05", "cap30": -1270112183.38, "rent30": -0.12, "cdi30": -10.62, "cap12": 3963843967.31, "rent12": 17.32, "cdi12": 116.87, "capytd": 1490964305.26, "rentytd": 9.96, "cdiytd": 174.13, "pl": 15921399554.57, "benchmark": "CDI", "gestor": "XP VISTA ASSET MANAGEMENT", "plat": "Bradesco", "categoria": "Multimercado", "rank_global": 116}, {"rank": 9, "nome": "MOCK XP Multimercado FUNDO 05", "cap30": -1300921470.95, "rent30": 1.04, "cdi30": 92.04, "cap12": 6364767998.79, "rent12": 9.16, "cdi12": 61.81, "capytd": 153396489.55, "rentytd": 8.89, "cdiytd": 155.42, "pl": 12119228784.04, "benchmark": "CDI", "gestor": "XP VISTA ASSET MANAGEMENT", "plat": "XP", "categoria": "Multimercado", "rank_global": 117}, {"rank": 10, "nome": "MOCK XP Multimercado FUNDO 02", "cap30": -1322940846.66, "rent30": 3.5, "cdi30": 309.73, "cap12": 6196303435.88, "rent12": 24.47, "cdi12": 165.11, "capytd": 4617108311.64, "rentytd": 8.79, "cdiytd": 153.67, "pl": 4997670207.01, "benchmark": "CDI", "gestor": "BTG PACTUAL ASSET MANAGEM", "plat": "XP", "categoria": "Multimercado", "rank_global": 118}, {"rank": 9, "nome": "MOCK BTG Renda Fixa Ativa FUNDO 10", "cap30": -1344647132.0, "rent30": 0.68, "cdi30": 60.18, "cap12": 2719123834.23, "rent12": 21.71, "cdi12": 146.49, "capytd": 3371657163.96, "rentytd": 9.52, "cdiytd": 166.43, "pl": 22113760427.77, "benchmark": "CDI", "gestor": "KINEA INVESTIMENTOS LTDA.", "plat": "BTG", "categoria": "Renda Fixa Ativa", "rank_global": 119}, {"rank": 10, "nome": "MOCK BTG Renda Fixa Ativa FUNDO 09", "cap30": -1366099809.26, "rent30": 1.48, "cdi30": 130.97, "cap12": 802558228.48, "rent12": 21.37, "cdi12": 144.2, "capytd": 2069248196.13, "rentytd": 9.87, "cdiytd": 172.55, "pl": 3478217063.04, "benchmark": "CDI", "gestor": "KINEA INVESTIMENTOS LTDA.", "plat": "BTG", "categoria": "Renda Fixa Ativa", "rank_global": 120}];
 const PLAT_COLORS = {"XP": "#FFC700", "BTG": "#4A90E2", "Itau": "#EC7000", "Bradesco": "#CC092F"};
 const PLAT_LABELS = {"XP": "XP", "BTG": "BTG Pactual", "Itau": "Ita\u00fa", "Bradesco": "Bradesco"};
 const CAT_COLORS = {"Renda Fixa Ativa": "#C1F4D4", "Renda Fixa": "#4A90E2", "Multimercado": "#9B59B6"};
@@ -5135,4 +5135,664 @@ function lookupCotiz(nome){
 })();
 </script>
 
+
+<!-- tivio-charts -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/echarts/5.6.0/echarts.min.js" onerror="(function(t){t.remove();var s=document.createElement('script');s.src='https://cdn.jsdelivr.net/npm/echarts@5.6.0/dist/echarts.min.js';document.head.appendChild(s);})(this)"></script>
+<script>
+/* ==================================================================
+   tivio_charts.js - graficos dos dashboards da Tivio
+   ------------------------------------------------------------------
+   Extraido do Monitor de Novos Fundos, que foi o primeiro a receber
+   ECharts. Fica aqui para os outros dashboards usarem o mesmo modulo
+   em vez de cada template repetir a implementacao - foi o que motivou
+   o tivio_core no Python, e vale igual no JS.
+
+   Injetado INLINE no HTML por template.injetar_charts(): os dashboards
+   circulam como arquivo solto, entao um <script src> externo quebraria
+   assim que alguem movesse so o .html.
+
+   API:
+     bars(el, items, opt)      barras horizontais
+     renderEvolucao(el, items) colunas por periodo
+     barsCss(el, items, opt)   fallback sem a lib
+
+   items: [{n: rotulo, v: valor, c: cor, k?: chave de clique, sel?: bool}]
+   opt:   {chip, w, h, vw, fmt, filtro}
+   ================================================================== */
+
+/* ==================================================================
+   GRAFICOS EM ECHARTS
+   ------------------------------------------------------------------
+   Todos os paineis de barras do dashboard passam por bars(), entao a
+   troca e feita aqui dentro: quem chama nao muda, e os oito paineis
+   (gestoras, credito privado, top gestoras, novas, ANBIMA, publico,
+   faixas de taxa, taxa por gestora) sobem juntos e consistentes.
+   A evolucao mensal tem forma propria - colunas - e fica em
+   renderEvolucao().
+
+   Cores saem dos tokens do Design System, entao claro e escuro
+   continuam resolvidos por CSS. Canvas nao herda CSS: por isso o
+   MutationObserver no fim redesenha tudo quando o tema vira.
+
+   Degradacao: sem a lib (offline, CDN bloqueado) cai em barsCss(),
+   que e exatamente o render anterior. O painel nunca fica vazio.
+   ================================================================== */
+var _tvCharts = [];          /* [{el, tipo, items, opt}] para redesenhar */
+var _tvEsperas = 0;
+
+function _tok(nome, fallback){
+  var v = getComputedStyle(document.documentElement)
+            .getPropertyValue(nome).trim();
+  return v || fallback;
+}
+
+/* "#C1F4D4" + .32 -> "rgba(193,244,212,.32)" · aceita hex de 3 ou 6 */
+function _alpha(cor, a){
+  var h = String(cor).trim();
+  if(h.charAt(0) !== '#') return h;
+  h = h.slice(1);
+  if(h.length === 3) h = h[0]+h[0]+h[1]+h[1]+h[2]+h[2];
+  if(h.length !== 6) return cor;
+  var n = parseInt(h, 16);
+  return 'rgba('+((n>>16)&255)+','+((n>>8)&255)+','+(n&255)+','+a+')';
+}
+
+/* O canvas do ECharts NAO herda CSS: sem isto os graficos saem na fonte
+   padrao da lib enquanto a pagina inteira usa Versos. Le o mesmo token
+   --ff, entao segue a fonte da marca sem duplicar a lista.            */
+function _ff(){
+  return _tok('--ff', '"Versos","Helvetica Neue",Helvetica,Arial,sans-serif');
+}
+
+/* Mede o rotulo na fonte que esta realmente valendo. Reservar espaco por
+   conta fixa quebra dos dois lados: com a metrica do fallback sobra
+   espaco, com a do Versos falta e o ECharts corta. containLabel tambem
+   nao serve aqui - com o rotulo rich (o chip da gestora) ele reserva
+   menos que o bloco desenhado e joga o texto para fora do canvas.   */
+function _larguraTexto(textos, fonte){
+  var cv = _larguraTexto._cv
+        || (_larguraTexto._cv = document.createElement('canvas'));
+  var ctx = cv.getContext('2d');
+  ctx.font = fonte;
+  var maior = 0;
+  for(var i = 0; i < textos.length; i++){
+    maior = Math.max(maior, ctx.measureText(String(textos[i])).width);
+  }
+  return Math.ceil(maior);
+}
+
+/* axisLabel.width + overflow:'truncate' NAO truncam quando o rotulo usa
+   rich text (o chip da gestora): o bloco cresce ate o conteudo e o texto
+   longo sai pela esquerda do canvas. Entao o corte e feito aqui, antes
+   de montar a marcacao.                                              */
+function _cortar(txt, limite, fonte){
+  txt = String(txt);
+  if(_larguraTexto([txt], fonte) <= limite) return txt;
+  var corte = txt;
+  while(corte.length > 1 &&
+        _larguraTexto([corte + '…'], fonte) > limite){
+    corte = corte.slice(0, -1);
+  }
+  return corte + '…';
+}
+
+function _tvRegistra(el, tipo, items, opt){
+  for(var i = 0; i < _tvCharts.length; i++){
+    if(_tvCharts[i].el === el){
+      _tvCharts[i] = {el:el, tipo:tipo, items:items, opt:opt};
+      return;
+    }
+  }
+  _tvCharts.push({el:el, tipo:tipo, items:items, opt:opt});
+}
+
+/* a lib pode ainda estar a caminho (o onerror do <script> baixa o
+   segundo CDN). Desenha o fallback agora e tenta de novo por 5s.     */
+function _tvAguardaLib(){
+  if(window.echarts || _tvEsperas >= 20) return;
+  _tvEsperas++;
+  setTimeout(function(){
+    if(window.echarts){
+      _tvCharts.slice().forEach(function(c){
+        c.el.innerHTML = "";
+        if(c.tipo === 'evo') renderEvolucao(c.el, c.items);
+        else bars(c.el, c.items, c.opt);
+      });
+    } else {
+      _tvAguardaLib();
+    }
+  }, 250);
+}
+
+/* Paineis de abas inativas estao em display:none, onde o canvas nasce
+   0x0 e ficaria em branco ao trocar de aba. O observador redesenha
+   assim que o elemento ganha tamanho - serve para troca de aba, para
+   o painel lateral e para qualquer mudanca de layout.              */
+var _tvLargura = new WeakMap();
+
+var _tvRO = (typeof ResizeObserver !== 'undefined')
+  ? new ResizeObserver(function(ents){
+      ents.forEach(function(e){
+        var w = Math.round(e.contentRect.width);
+        if(w < 1) return;
+        /* so a largura dispara o resize. A altura quem define e bars(),
+           e reagir a ela realimentaria o proprio observador.          */
+        if(_tvLargura.get(e.target) === w) return;
+        _tvLargura.set(e.target, w);
+        var i = echarts.getInstanceByDom(e.target);
+        if(i) i.resize();
+      });
+    })
+  : null;
+
+function _tvInstancia(el){
+  var inst = echarts.getInstanceByDom(el);
+  if(inst) return inst;
+  el.innerHTML = "";
+  inst = echarts.init(el, null, {renderer:'canvas'});
+  if(_tvRO) _tvRO.observe(el);
+  return inst;
+}
+
+/* ---------------------------------------------- barras horizontais */
+function barsCss(el, items, opt){
+  var max = items.length
+    ? Math.max.apply(null, items.map(function(i){ return i.v; })) || 1 : 1;
+  el.innerHTML = items.length ? items.map(function(i){
+    return '<div class="gbar-row'+(i.k?' gbar-click':'')+'"'+(i.k?' data-gkey="'+esc(i.k)+'" data-gfiltro="'+esc(opt.filtro||'')+'" title="Ver as classes · '+esc(i.n)+'"':'')+'>' +
+      (opt.chip
+        ? '<div class="gbar-logo"><span style="background:'+i.c+';color:var(--text-primary);padding:6px 14px;border-radius:6px;font-weight:700;font-size:13px">'+esc(i.n)+'</span></div>'
+        : '<div style="width:'+(opt.w||170)+'px;font-size:12px;color:color-mix(in srgb,var(--veil) 85%,transparent)" title="'+esc(i.n)+'">'+esc(i.n)+'</div>') +
+      '<div class="gbar-track" style="height:'+(opt.h||26)+'px"><div class="gbar-fill" style="width:'+(i.v/max*100).toFixed(1)+'%;background:linear-gradient(90deg,'+i.c+','+i.c+'88)"></div></div>' +
+      '<div class="gbar-value" style="font-size:14px;width:'+(opt.vw||36)+'px">'+(opt.fmt?opt.fmt(i.v):i.v)+'</div>' +
+    '</div>';
+  }).join('')
+    : '<div style="color:var(--muted);font-size:12px">Sem registros no período.</div>';
+}
+
+/* Rotulo do eixo: com chip usa rich (fundo colorido por gestora), sem
+   chip usa texto simples - rich sem necessidade so traz o problema de
+   medicao de volta.                                                  */
+function _rotuloEixo(ordem, rotulos, opt, muted){
+  var base = {margin: 12, fontFamily: _ff()};
+
+  if(!opt.chip){
+    base.color = muted;
+    base.fontSize = 11;
+    base.formatter = function(v, n){ return rotulos[n]; };
+    return base;
+  }
+
+  var rich = {};
+  ordem.forEach(function(i, n){
+    rich['c' + n] = {
+      backgroundColor: i.c,
+      color: _tok('--text-primary', '#FFF'),
+      fontWeight: 700, fontSize: 12,
+      padding: [4, 9, 4, 9], borderRadius: 5,
+      align: 'left', fontFamily: _ff()
+    };
+  });
+
+  base.rich = rich;
+  base.formatter = function(v, n){ return '{c' + n + '|' + rotulos[n] + '}'; };
+  return base;
+}
+
+function bars(el, items, opt){
+  opt = opt || {};
+  if(!el) return;
+
+  if(!items || !items.length){
+    el.style.height = "";
+    el.innerHTML = '<div style="color:var(--muted);font-size:12px">Sem registros no período.</div>';
+    return;
+  }
+
+  _tvRegistra(el, 'bars', items, opt);
+
+  if(!window.echarts){
+    barsCss(el, items, opt);
+    _tvAguardaLib();
+    return;
+  }
+
+  var muted = _tok('--text-muted', '#8A99A3');
+  var linha = _tok('--line', 'rgba(255,255,255,.10)');
+  var fundo = _tok('--bg-elev-1', '#11181E');
+  var tinta = _tok('--text-primary', '#FFF');
+
+  /* Altura: ocupa a folga do painel em vez de deixar um vazio embaixo
+     (credito privado com 1 gestora ficava com 90px de grafico dentro de
+     um painel de 498px). A folga e medida a partir do PAINEL e dos
+     IRMAOS, nunca do proprio elemento - medir a si mesmo com flex:1
+     realimenta o ResizeObserver e a altura dispara.                   */
+  var alturaLinha = (opt.h || 26) + 14;
+  var natural = Math.max(items.length * alturaLinha + 16, 90);
+
+  el.style.flex = "";
+  el.style.minHeight = "";
+  el.style.gap = "";
+
+  var pane = el.closest ? el.closest('.panel') : null;
+  var alvo = natural;
+
+  if(pane){
+    var cs = getComputedStyle(pane);
+    var livre = pane.clientHeight
+              - parseFloat(cs.paddingTop || 0)
+              - parseFloat(cs.paddingBottom || 0);
+
+    for(var n = 0; n < pane.children.length; n++){
+      var filho = pane.children[n];
+      if(filho === el) continue;
+      var fcs = getComputedStyle(filho);
+      livre -= filho.offsetHeight
+             + parseFloat(fcs.marginTop || 0)
+             + parseFloat(fcs.marginBottom || 0);
+    }
+
+    if(livre > natural) alvo = Math.floor(livre);
+  }
+
+  el.style.height = alvo + "px";
+
+  var chart = _tvInstancia(el);
+
+  /* ECharts desenha a categoria de baixo para cima: inverte para o
+     maior ficar no topo, como na lista de barras anterior          */
+  var ordem = items.slice().reverse();
+
+  var fonteRotulo = (opt.chip ? '700 12px ' : '400 11px ') + _ff();
+  var limite = (opt.w || 150) - (opt.chip ? 20 : 0);
+
+  /* o eixo mostra exatamente estes textos - ja cortados */
+  var rotulos = ordem.map(function(i){
+    return _cortar(i.n, limite, fonteRotulo);
+  });
+
+  var larguraRotulo = _larguraTexto(rotulos, fonteRotulo)
+                    + (opt.chip ? 20 : 2);
+
+  var textosValor = ordem.map(function(i){
+    return String(opt.fmt ? opt.fmt(i.v) : i.v);
+  });
+
+  var larguraValor = Math.max(
+    _larguraTexto(textosValor, '600 13px ' + _ff()),
+    opt.vw || 42
+  );
+
+  chart.setOption({
+    animationDuration: 380,
+    textStyle: {fontFamily: _ff()},
+    grid: {
+      left: larguraRotulo + (opt.chip ? 26 : 16),
+      /* o rotulo de valor tambem precisa caber: com fmt devolvendo
+         "+R$ 4,1 Bi" a margem fixa cortava o texto na borda direita */
+      right: larguraValor + 16,
+      top: 4, bottom: 4
+    },
+    tooltip: {
+      trigger: 'item',
+      backgroundColor: fundo, borderColor: linha,
+      textStyle: {color: tinta, fontSize: 12},
+      formatter: function(p){
+        var it = ordem[p.dataIndex];
+        return '<b>' + it.n + '</b><br>' +
+               (opt.fmt ? opt.fmt(it.v) : it.v) +
+               (it.k ? '<br><span style="color:' + muted +
+                       '">clique para ver as classes</span>' : '');
+      }
+    },
+    xAxis: {type:'value', show:false, max:'dataMax'},
+    yAxis: {
+      type: 'category',
+      data: ordem.map(function(i){ return i.n; }),
+      axisLine: {show:false}, axisTick: {show:false},
+      /* triggerEvent devolve o clique ao nome/chip da gestora: antes do
+         ECharts a linha inteira (.gbar-row) era o alvo, nao so a barra */
+      triggerEvent: true,
+      axisLabel: _rotuloEixo(ordem, rotulos, opt, muted)
+    },
+    series: [{
+      type: 'bar',
+      data: ordem.map(function(i){
+        return {
+          value: i.v,
+          itemStyle: {
+            color: {
+              type: 'linear', x:0, y:0, x2:1, y2:0,
+              colorStops: [{offset:0, color:i.c},
+                           {offset:1, color:_alpha(i.c, .53)}]
+            },
+            borderRadius: [0, 4, 4, 0]
+          }
+        };
+      }),
+      barMaxWidth: opt.h || 22,
+      cursor: items.some(function(i){ return !!i.k; }) ? 'pointer' : 'default',
+      label: {
+        show: true, position: 'right', color: tinta,
+        fontSize: 13, fontWeight: 600,
+        formatter: function(p){
+          var it = ordem[p.dataIndex];
+          return opt.fmt ? opt.fmt(it.v) : it.v;
+        }
+      }
+    }]
+  }, true);
+
+  chart.off('click');
+  chart.on('click', function(p){
+    /* barra -> dataIndex · rotulo do eixo -> p.value tem o nome */
+    var it = (p.componentType === 'yAxis')
+      ? ordem.filter(function(i){ return i.n === p.value; })[0]
+      : ordem[p.dataIndex];
+    if(it && it.k) openGestoraModal(it.k, opt.filtro || "");
+  });
+
+  /* cursor de mao tambem sobre os rotulos clicaveis */
+  chart.getZr().on('mousemove', function(e){
+    var alvo = e.target;
+    var sobreRotulo = alvo && alvo.__hoverStyle !== undefined
+                      && items.some(function(i){ return !!i.k; });
+    chart.getZr().setCursorStyle(sobreRotulo ? 'pointer' : 'default');
+  });
+
+  chart.resize();
+}
+
+/* -------------------------------------------- evolucao: colunas */
+function renderEvolucao(el, items){
+  if(!el) return;
+  _tvRegistra(el, 'evo', items, null);
+
+  if(!window.echarts){
+    var poucas = items.length <= 4;
+    el.style.flex = poucas ? "1" : "";
+    el.style.justifyContent = poucas ? "center" : "";
+    el.style.gap = poucas ? "18px" : "";
+    barsCss(el, items, {w:70, h: poucas ? 30 : 22});
+    _tvAguardaLib();
+    return;
+  }
+
+  el.style.flex = "1";
+  el.style.minHeight = "220px";
+  el.style.gap = "";
+
+  var chart = _tvInstancia(el);
+
+  var accent = _tok('--accent-strong', '#C1F4D4');
+  var muted  = _tok('--text-muted', '#8A99A3');
+  var linha  = _tok('--line', 'rgba(255,255,255,.10)');
+  var fundo  = _tok('--bg-elev-1', '#11181E');
+  var tinta  = _tok('--text-primary', '#FFF');
+
+  var valores = items.map(function(i){ return i.v; });
+  var total   = valores.reduce(function(a,b){ return a+b; }, 0);
+  var comDado = valores.filter(function(v){ return v > 0; });
+  var media   = comDado.length ? total / comDado.length : 0;
+
+  chart.setOption({
+    animationDuration: 420,
+    textStyle: {fontFamily: _ff()},
+    grid: {left:2, right:12, top:26, bottom:2, containLabel:true},
+    tooltip: {
+      trigger: 'axis', axisPointer: {type:'shadow'},
+      backgroundColor: fundo, borderColor: linha,
+      textStyle: {color: tinta, fontSize: 12},
+      formatter: function(ps){
+        var p = ps[0];
+        var pct = total ? (p.value / total * 100).toFixed(1) : '0.0';
+        return '<b>'+p.name+'</b><br>'+p.value+' classe'+(p.value===1?'':'s')+
+               '<br><span style="color:'+muted+'">'+
+               String(pct).replace('.', ',')+'% do periodo</span>';
+      }
+    },
+    xAxis: {
+      type: 'category',
+      data: items.map(function(i){ return i.n; }),
+      axisLine: {lineStyle:{color: linha}}, axisTick: {show:false},
+      axisLabel: {color: muted, fontSize: 11, interval: 0, hideOverlap: true}
+    },
+    yAxis: {
+      type: 'value',
+      splitLine: {lineStyle:{color: linha}},
+      axisLabel: {color: muted, fontSize: 11},
+      minInterval: 1
+    },
+    series: [{
+      type: 'bar',
+      data: items.map(function(i){
+        return {
+          value: i.v,
+          itemStyle: {
+            color: i.sel ? accent : _alpha(accent, .32),
+            borderRadius: [3, 3, 0, 0]
+          }
+        };
+      }),
+      barMaxWidth: 34,
+      cursor: 'pointer',
+      label: {
+        show: true, position: 'top', color: muted,
+        fontSize: 11, fontWeight: 600,
+        formatter: function(p){ return p.value > 0 ? p.value : ''; }
+      },
+      markLine: media > 0 ? {
+        silent: true, symbol: 'none',
+        lineStyle: {color: muted, type: 'dashed', width: 1, opacity: .55},
+        label: {
+          color: muted, fontSize: 10, position: 'insideEndTop',
+          formatter: 'media ' + media.toFixed(1).replace('.', ',')
+        },
+        data: [{yAxis: media}]
+      } : undefined
+    }]
+  }, true);
+
+  chart.off('click');
+  chart.on('click', function(p){
+    var it = items[p.dataIndex];
+    if(!it) return;
+    var alvo = document.querySelector('.month-pill[data-month="'+it.k+'"]');
+    if(alvo) alvo.click();
+  });
+
+  chart.resize();
+}
+
+/* As webfonts chegam depois do primeiro render: sem isto a largura dos
+   rotulos fica medida na fonte de fallback e o eixo sai desalinhado
+   quando o Versos entra. */
+if(document.fonts && document.fonts.ready){
+  document.fonts.ready.then(function(){
+    if(!window.echarts) return;
+    _tvCharts.forEach(function(c){
+      if(c.tipo === 'evo') renderEvolucao(c.el, c.items);
+      else bars(c.el, c.items, c.opt);
+    });
+  });
+}
+
+/* canvas nao herda CSS: redesenha tudo quando o tema vira */
+new MutationObserver(function(){
+  if(!window.echarts) return;
+  _tvCharts.forEach(function(c){
+    if(c.tipo === 'evo') renderEvolucao(c.el, c.items);
+    else bars(c.el, c.items, c.opt);
+  });
+}).observe(document.documentElement,
+           {attributes:true, attributeFilter:['data-theme']});
+
+window.addEventListener('resize', function(){
+  if(!window.echarts) return;
+  _tvCharts.forEach(function(c){
+    var i = echarts.getInstanceByDom(c.el);
+    if(i) i.resize();
+  });
+});
+
+
+/* ==================================================================
+   tvUpgrade - troca barras em CSS ja renderizadas por ECharts
+   ------------------------------------------------------------------
+   Cada dashboard monta suas barras de um jeito: uns por template
+   literal no JS, outros com o HTML escrito direto no arquivo. Reescrever
+   quatro implementacoes diferentes seria arriscado e nao sobreviveria a
+   proxima alteracao de qualquer um deles.
+
+   Aqui a leitura e do DOM ja pronto: pega rotulo, valor e cor de cada
+   linha que o proprio dashboard desenhou e redesenha o conjunto com
+   ECharts. Funciona igual nos quatro, e se a lib nao carregar o painel
+   simplesmente fica como estava.
+   ================================================================== */
+
+/* O canvas nao entende var(--x) nem color-mix(): as barras em CSS usam
+   os dois, e passar direto para o ECharts derruba o gradiente com
+   "could not be parsed as a color". Resolve para um valor concreto. */
+function _corConcreta(el){
+  var bruto = el.style.background || el.style.backgroundColor || "";
+
+  var mv = bruto.match(/var\((--[a-z0-9-]+)/i);
+
+  if(mv){
+    var v = _tok(mv[1], "");
+    /* o token pode apontar para outro token */
+    for(var i = 0; i < 3 && /^var\(/.test(v); i++){
+      var m2 = v.match(/var\((--[a-z0-9-]+)/i);
+      v = m2 ? _tok(m2[1], "") : "";
+    }
+    if(v && !/var\(|color-mix/.test(v)) return v.trim();
+  }
+
+  var mh = bruto.match(/#[0-9a-fA-F]{3,8}|rgba?\([^)]+\)/);
+  if(mh) return mh[0];
+
+  /* ultimo recurso: o que o browser calculou para o elemento */
+  var comp = getComputedStyle(el).backgroundColor;
+  if(comp && comp !== "rgba(0, 0, 0, 0)") return comp;
+
+  return _tok("--accent-strong", "#C1F4D4");
+}
+
+
+function _tvLinhas(cont, selFill){
+  /* cada linha e o ancestral comum entre o preenchimento e o rotulo */
+  var fills = cont.querySelectorAll(selFill);
+  var itens = [];
+
+  for(var i = 0; i < fills.length; i++){
+    var fill = fills[i];
+    var linha = fill.closest('[class*="row"], li, tr') || fill.parentElement;
+
+    if(!linha) continue;
+
+    /* largura ja calculada pelo dashboard = o valor relativo */
+    var largura = parseFloat(fill.style.width) || 0;
+
+    /* graficos divergentes tem eixo zero no meio: o lado esquerdo e
+       negativo. Sem isto "-R$ 2,3 Bi" desenhava barra para a direita,
+       igual a um valor positivo - o grafico dizia o contrario do rotulo. */
+    var metade = fill.closest('[class*="half"]');
+
+    if(metade && /\bleft\b/.test(metade.className)) largura = -largura;
+
+    /* rotulo: o primeiro texto da linha que nao esteja dentro da barra */
+    var texto = "";
+    var valor = "";
+
+    for(var n = 0; n < linha.children.length; n++){
+      var c = linha.children[n];
+      if(c.contains(fill)) continue;
+      var t = (c.textContent || "").trim();
+      if(!t) continue;
+      if(!texto) texto = t; else if(!valor) valor = t;
+    }
+
+    if(!texto) continue;
+
+    itens.push({
+      n: texto.replace(/\s+/g, " ").slice(0, 46),
+      v: largura,
+      c: _corConcreta(fill),
+      rotuloValor: valor,
+    });
+  }
+
+  return itens;
+}
+
+function tvUpgrade(cont, opt){
+  opt = opt || {};
+
+  if(!window.echarts || !cont) return false;
+
+  var itens = _tvLinhas(cont, opt.fill || '[class*="fill"]:not([class*="scroll"])');
+
+  if(itens.length < 2) return false;          /* 1 barra nao e grafico */
+
+  /* o rotulo de valor que o dashboard ja formatou vale mais que o
+     numero cru: mantem "R$ 45,3 Bi" em vez de virar a largura em % */
+  var comRotulo = itens.filter(function(i){ return i.rotuloValor; }).length;
+
+  if(comRotulo === itens.length){
+    opt.fmt = function(v){
+      for(var i = 0; i < itens.length; i++){
+        if(itens[i].v === v) return itens[i].rotuloValor;
+      }
+      return v;
+    };
+  }
+
+  cont.setAttribute("data-tv-upgraded", "1");
+  bars(cont, itens, opt);
+
+  return true;
+}
+
+function tvUpgradeTodos(sel, opt){
+  var alvos = document.querySelectorAll(sel);
+  var n = 0;
+
+  for(var i = 0; i < alvos.length; i++){
+    if(alvos[i].getAttribute("data-tv-upgraded")) continue;
+    if(tvUpgrade(alvos[i], opt)) n++;
+  }
+
+  return n;
+}
+
+</script>
+<!-- tivio-charts -->
+
+<!-- tivio-charts-ativar -->
+<script>
+(function(){
+  var SEL = '.diverging-bars';
+
+  function subir(){
+    if(!window.echarts || typeof tvUpgradeTodos !== 'function') return;
+    try { tvUpgradeTodos(SEL); } catch(e) { /* painel sem barras */ }
+  }
+
+  function tentar(n){
+    subir();
+    if(n > 0) setTimeout(function(){ tentar(n - 1); }, 300);
+  }
+
+  if(document.readyState === 'loading'){
+    document.addEventListener('DOMContentLoaded', function(){ tentar(12); });
+  } else {
+    tentar(12);
+  }
+
+  /* paineis de abas inativas so aparecem depois; converte quando surgirem */
+  new MutationObserver(function(){ subir(); })
+    .observe(document.body, {childList: true, subtree: true});
+})();
+</script>
+<!-- tivio-charts-ativar -->
 </body></html>

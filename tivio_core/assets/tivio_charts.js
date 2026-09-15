@@ -273,12 +273,23 @@ function bars(el, items, opt){
   var larguraRotulo = _larguraTexto(rotulos, fonteRotulo)
                     + (opt.chip ? 20 : 2);
 
+  var textosValor = ordem.map(function(i){
+    return String(opt.fmt ? opt.fmt(i.v) : i.v);
+  });
+
+  var larguraValor = Math.max(
+    _larguraTexto(textosValor, '600 13px ' + _ff()),
+    opt.vw || 42
+  );
+
   chart.setOption({
     animationDuration: 380,
     textStyle: {fontFamily: _ff()},
     grid: {
       left: larguraRotulo + (opt.chip ? 26 : 16),
-      right: (opt.vw || 42) + 18,
+      /* o rotulo de valor tambem precisa caber: com fmt devolvendo
+         "+R$ 4,1 Bi" a margem fixa cortava o texto na borda direita */
+      right: larguraValor + 16,
       top: 4, bottom: 4
     },
     tooltip: {
@@ -482,3 +493,133 @@ window.addEventListener('resize', function(){
     if(i) i.resize();
   });
 });
+
+
+/* ==================================================================
+   tvUpgrade - troca barras em CSS ja renderizadas por ECharts
+   ------------------------------------------------------------------
+   Cada dashboard monta suas barras de um jeito: uns por template
+   literal no JS, outros com o HTML escrito direto no arquivo. Reescrever
+   quatro implementacoes diferentes seria arriscado e nao sobreviveria a
+   proxima alteracao de qualquer um deles.
+
+   Aqui a leitura e do DOM ja pronto: pega rotulo, valor e cor de cada
+   linha que o proprio dashboard desenhou e redesenha o conjunto com
+   ECharts. Funciona igual nos quatro, e se a lib nao carregar o painel
+   simplesmente fica como estava.
+   ================================================================== */
+
+/* O canvas nao entende var(--x) nem color-mix(): as barras em CSS usam
+   os dois, e passar direto para o ECharts derruba o gradiente com
+   "could not be parsed as a color". Resolve para um valor concreto. */
+function _corConcreta(el){
+  var bruto = el.style.background || el.style.backgroundColor || "";
+
+  var mv = bruto.match(/var\((--[a-z0-9-]+)/i);
+
+  if(mv){
+    var v = _tok(mv[1], "");
+    /* o token pode apontar para outro token */
+    for(var i = 0; i < 3 && /^var\(/.test(v); i++){
+      var m2 = v.match(/var\((--[a-z0-9-]+)/i);
+      v = m2 ? _tok(m2[1], "") : "";
+    }
+    if(v && !/var\(|color-mix/.test(v)) return v.trim();
+  }
+
+  var mh = bruto.match(/#[0-9a-fA-F]{3,8}|rgba?\([^)]+\)/);
+  if(mh) return mh[0];
+
+  /* ultimo recurso: o que o browser calculou para o elemento */
+  var comp = getComputedStyle(el).backgroundColor;
+  if(comp && comp !== "rgba(0, 0, 0, 0)") return comp;
+
+  return _tok("--accent-strong", "#C1F4D4");
+}
+
+
+function _tvLinhas(cont, selFill){
+  /* cada linha e o ancestral comum entre o preenchimento e o rotulo */
+  var fills = cont.querySelectorAll(selFill);
+  var itens = [];
+
+  for(var i = 0; i < fills.length; i++){
+    var fill = fills[i];
+    var linha = fill.closest('[class*="row"], li, tr') || fill.parentElement;
+
+    if(!linha) continue;
+
+    /* largura ja calculada pelo dashboard = o valor relativo */
+    var largura = parseFloat(fill.style.width) || 0;
+
+    /* graficos divergentes tem eixo zero no meio: o lado esquerdo e
+       negativo. Sem isto "-R$ 2,3 Bi" desenhava barra para a direita,
+       igual a um valor positivo - o grafico dizia o contrario do rotulo. */
+    var metade = fill.closest('[class*="half"]');
+
+    if(metade && /\bleft\b/.test(metade.className)) largura = -largura;
+
+    /* rotulo: o primeiro texto da linha que nao esteja dentro da barra */
+    var texto = "";
+    var valor = "";
+
+    for(var n = 0; n < linha.children.length; n++){
+      var c = linha.children[n];
+      if(c.contains(fill)) continue;
+      var t = (c.textContent || "").trim();
+      if(!t) continue;
+      if(!texto) texto = t; else if(!valor) valor = t;
+    }
+
+    if(!texto) continue;
+
+    itens.push({
+      n: texto.replace(/\s+/g, " ").slice(0, 46),
+      v: largura,
+      c: _corConcreta(fill),
+      rotuloValor: valor,
+    });
+  }
+
+  return itens;
+}
+
+function tvUpgrade(cont, opt){
+  opt = opt || {};
+
+  if(!window.echarts || !cont) return false;
+
+  var itens = _tvLinhas(cont, opt.fill || '[class*="fill"]:not([class*="scroll"])');
+
+  if(itens.length < 2) return false;          /* 1 barra nao e grafico */
+
+  /* o rotulo de valor que o dashboard ja formatou vale mais que o
+     numero cru: mantem "R$ 45,3 Bi" em vez de virar a largura em % */
+  var comRotulo = itens.filter(function(i){ return i.rotuloValor; }).length;
+
+  if(comRotulo === itens.length){
+    opt.fmt = function(v){
+      for(var i = 0; i < itens.length; i++){
+        if(itens[i].v === v) return itens[i].rotuloValor;
+      }
+      return v;
+    };
+  }
+
+  cont.setAttribute("data-tv-upgraded", "1");
+  bars(cont, itens, opt);
+
+  return true;
+}
+
+function tvUpgradeTodos(sel, opt){
+  var alvos = document.querySelectorAll(sel);
+  var n = 0;
+
+  for(var i = 0; i < alvos.length; i++){
+    if(alvos[i].getAttribute("data-tv-upgraded")) continue;
+    if(tvUpgrade(alvos[i], opt)) n++;
+  }
+
+  return n;
+}

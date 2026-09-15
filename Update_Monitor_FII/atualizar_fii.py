@@ -196,6 +196,13 @@ def main():
     if n:
         print(f"  {n} contador(es) removido(s) do menu")
 
+    # Apache ECharts: o modulo compartilhado troca as barras em CSS
+
+    # ja renderizadas por graficos com animacao, tooltip e clique.
+
+    html = template.ativar_charts(html, '.ipofo-bars, .diverging-bars')
+
+
     saida.gravar(html, OUT_HTML)
 
     print(f"\n     OK  {OUT_HTML.name}  ({len(ofertas)} ofertas)")

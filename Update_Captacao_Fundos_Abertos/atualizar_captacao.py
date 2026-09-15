@@ -32,6 +32,9 @@ import captacao_metrics as cm
 # Config
 # --------------------------------------------------------------------------
 BASE = Path(__file__).resolve().parent
+sys.path.insert(0, str(BASE.parent))
+
+from tivio_core import template as _tvtpl   # noqa: E402
 TEMPLATE = BASE / "templates" / "dashboard_captacao_fundos_abertos.html"
 OUT_DIR = BASE / "outputs"
 OUT_HTML = OUT_DIR / "dashboard_captacao_fundos_abertos.html"
@@ -352,6 +355,13 @@ def main():
     )
 
     OUT_DIR.mkdir(exist_ok=True)
+
+    # Apache ECharts: o modulo compartilhado troca as barras em CSS
+
+    # ja renderizadas por graficos com animacao, tooltip e clique.
+
+    html = _tvtpl.ativar_charts(html, '.diverging-bars')
+
 
     OUT_HTML.write_text(
         html,

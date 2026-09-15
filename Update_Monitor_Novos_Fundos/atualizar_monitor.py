@@ -356,6 +356,13 @@ def gerar(template, escopo, sub, totais, anos, hoje, saida: Path,
     html = pm.aplicar(html, escopo, totais, anos, hoje)
     html = atualizar_badge(html)
 
+    # contador fixo do menu: nao acompanha o dado e obrigava a reescrever
+    # o numero em todos os dashboards a mao
+    import sys as _s
+    _s.path.insert(0, str(BASE.parent))
+    from tivio_core import template as _tvtpl
+    html, _ = _tvtpl.remover_badges_menu(html)
+
     saida.write_text(html, encoding="utf-8")
     return saida
 

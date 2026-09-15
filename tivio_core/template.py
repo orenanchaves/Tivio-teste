@@ -58,8 +58,10 @@ def atualizar_data(html: str, quando: datetime = None) -> str:
 
 
 # ------------------------------------------------------------------ menu
+# aceita atributos extras: o ETF usa <span class="dash-tab-badge"
+# id="etf-nav-badge">, que a versao anterior do padrao deixava passar
 _BADGE = re.compile(
-    r'\s*<span class="dash-tab-badge">[^<]*</span>'
+    r'\s*<span[^>]*class="[^"]*dash-tab-badge[^"]*"[^>]*>[^<]*</span>'
 )
 
 
@@ -139,3 +141,48 @@ def injetar_charts(html: str, assets_dir=None) -> tuple:
         return html.replace("</body>", bloco + "</body>", 1), True
 
     return html + bloco, True
+
+
+def ativar_charts(html: str, seletor: str, espera_ms: int = 300) -> str:
+    """Injeta o modulo e dispara tvUpgradeTodos() sobre um seletor.
+
+    O upgrade roda DEPOIS do render do proprio dashboard - por isso o
+    timeout e o MutationObserver: varios paineis so existem quando a
+    pessoa troca de aba, e ai precisam ser convertidos tambem.
+    """
+    html, _ = injetar_charts(html)
+
+    gatilho = f"""
+<!-- tivio-charts-ativar -->
+<script>
+(function(){{
+  var SEL = {seletor!r};
+
+  function subir(){{
+    if(!window.echarts || typeof tvUpgradeTodos !== 'function') return;
+    try {{ tvUpgradeTodos(SEL); }} catch(e) {{ /* painel sem barras */ }}
+  }}
+
+  function tentar(n){{
+    subir();
+    if(n > 0) setTimeout(function(){{ tentar(n - 1); }}, {espera_ms});
+  }}
+
+  if(document.readyState === 'loading'){{
+    document.addEventListener('DOMContentLoaded', function(){{ tentar(12); }});
+  }} else {{
+    tentar(12);
+  }}
+
+  /* paineis de abas inativas so aparecem depois; converte quando surgirem */
+  new MutationObserver(function(){{ subir(); }})
+    .observe(document.body, {{childList: true, subtree: true}});
+}})();
+</script>
+<!-- tivio-charts-ativar -->
+"""
+
+    if "</body>" in html:
+        return html.replace("</body>", gatilho + "</body>", 1)
+
+    return html + gatilho
