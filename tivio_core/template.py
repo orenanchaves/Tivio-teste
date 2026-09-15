@@ -2,6 +2,7 @@
 """Injecao de dados no template HTML e limpeza do cabecalho."""
 import json
 import re
+from pathlib import Path
 from datetime import datetime
 
 
@@ -94,3 +95,47 @@ def atualizar_contador(html: str, ancora: str, valor, antes: bool = False) -> tu
         novo, n = padrao.subn(lambda m: f"{m.group(1)}{valor}", html)
 
     return novo, n
+
+
+# ---------------------------------------------------------------- graficos
+ECHARTS_VER = "5.6.0"
+
+_LOADER = (
+    '<script src="https://cdnjs.cloudflare.com/ajax/libs/echarts/'
+    + ECHARTS_VER + '/echarts.min.js" '
+    'onerror="(function(t){t.remove();var s=document.createElement(\'script\');'
+    "s.src='https://cdn.jsdelivr.net/npm/echarts@" + ECHARTS_VER
+    + "/dist/echarts.min.js';"
+    'document.head.appendChild(s);})(this)"></script>'
+)
+
+_MARCA = "<!-- tivio-charts -->"
+
+
+def injetar_charts(html: str, assets_dir=None) -> tuple:
+    """Inline o loader do ECharts e o tivio_charts.js no HTML.
+
+    Inline, e nao <script src>, porque os dashboards circulam como
+    arquivo solto: um caminho externo quebraria assim que alguem movesse
+    so o .html. O custo e ~16 KB por arquivo.
+
+    O loader tenta cdnjs e cai para o jsDelivr; sem os dois, o proprio
+    modulo cai para barras em CSS. Devolve (html, injetou).
+    """
+    if _MARCA in html:
+        return html, False
+
+    if assets_dir is None:
+        assets_dir = Path(__file__).resolve().parent / "assets"
+
+    js = (Path(assets_dir) / "tivio_charts.js").read_text(encoding="utf-8")
+
+    bloco = (
+        f"\n{_MARCA}\n{_LOADER}\n"
+        f"<script>\n{js}\n</script>\n{_MARCA}\n"
+    )
+
+    if "</body>" in html:
+        return html.replace("</body>", bloco + "</body>", 1), True
+
+    return html + bloco, True
