@@ -2,3 +2,5 @@
 __pycache__/
 *.pyc
 agosto_peers.xlsx
+peers_*.xlsx
+data/*.zip

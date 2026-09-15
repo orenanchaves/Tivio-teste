@@ -58,6 +58,9 @@ SQL_ARQUIVO = os.getenv("MONITOR_SQL", "").strip() or "monitor_fundos.sql"
 
 SQL_FILE = BASE / "sql" / SQL_ARQUIVO
 
+# origem do universo: "cvm" (cadastro publico) | "anbima" (comportamento antigo)
+ORIGEM = (os.getenv("ORIGEM", "").strip() or "cvm").lower()
+
 # catalogo.schema.tabela do cadastro da CVM; vazio = roda sem ele.
 # Descobrir o nome com: python buscar_cadastro_cvm.py
 CVM_CADASTRO = os.getenv("CVM_CADASTRO", "").strip()
@@ -227,6 +230,43 @@ def atualizar_badge(html: str) -> str:
 
 
 
+def validar_base(df: pd.DataFrame):
+    """As checagens da secao "Validacoes finais" do plano de correcao.
+
+    Roda a cada execucao em vez de virar print temporario: o que quebra
+    em silencio aqui (duplicidade de CNPJ, registro sem gestora) so
+    apareceria como numero errado no dashboard semanas depois.
+    """
+    print("\n  validacao da base")
+
+    dup = int(df["cnpj"].duplicated().sum())
+    sem_cnpj = int((df["cnpj"].fillna("") == "").sum())
+    sem_gest = int(df["gestora"].fillna("").eq("").sum())
+
+    print(f"     duplicidades de CNPJ ... {dup}"
+          f"{'  <- conferir na origem' if dup else ''}")
+    print(f"     sem CNPJ ............... {sem_cnpj}")
+    print(f"     sem gestora ............ {sem_gest}")
+
+    if "situacao" in df:
+        pre = int(df["situacao"].fillna("").str.contains("Pré-Oper|Pre-Oper").sum())
+        print(f"     pre-operacionais ....... {pre}"
+              f"{'  <- ausentes: o LEFT JOIN virou INNER?' if not pre else ''}")
+
+    for coluna, rotulo in (("categoria_anbima", "classificacao"),
+                           ("taxa_adm", "taxa adm")):
+        if coluna in df:
+            ok = int((df[coluna].notna()
+                      & (df[coluna].astype(str).str.strip() != "")).sum())
+            print(f"     com {rotulo:<15} {ok}/{len(df)}")
+
+    anos = pd.to_datetime(df["data_registro"], format="%d/%m/%Y",
+                          errors="coerce").dt.year.value_counts().sort_index()
+
+    print("     por ano ................ "
+          + " · ".join(f"{int(a)}: {int(n)}" for a, n in anos.items()))
+
+
 def diagnosticar_fonte(df: pd.DataFrame):
     """Avisa quando a fonte esta defasada e o ultimo mes ficou truncado.
 
@@ -285,27 +325,68 @@ def main():
 
     template = entrada.read_text(encoding="utf-8")
 
-    bruto = SQL_FILE.read_text(encoding="utf-8")
+    def _query():
+        bruto = SQL_FILE.read_text(encoding="utf-8")
 
-    # v2 traz o bloco opcional do cadastro da CVM entre marcadores;
-    # resolver() escolhe o ramo antes do .format() para nao sobrar chave.
-    if "{{CVM_INI}}" in bruto:
-        import sql_cvm
-        bruto = sql_cvm.montar(bruto, CVM_CADASTRO or None)
+        # v2 traz o bloco opcional do cadastro da CVM entre marcadores;
+        # resolver() escolhe o ramo antes do .format() para nao sobrar chave.
+        if "{{CVM_INI}}" in bruto:
+            import sql_cvm
+            bruto = sql_cvm.montar(bruto, CVM_CADASTRO or None)
 
-    query = bruto.format(
-        catalog=CATALOG,
-        schema=SCHEMA,
-        link_base=LINK_CVM_BASE,
-        data_ini=DATA_INI,
-    )
+        return bruto.format(
+            catalog=CATALOG,
+            schema=SCHEMA,
+            link_base=LINK_CVM_BASE,
+            data_ini=DATA_INI,
+        )
 
-    print(f"  sql: {SQL_ARQUIVO}"
-          f"{' + cadastro CVM' if CVM_CADASTRO else ''}")
+    if ORIGEM == "cvm":
+        # A CVM define o universo e a data. A ANBIMA so enriquece, sempre
+        # por LEFT JOIN - INNER JOIN eliminaria os pre-operacionais, que
+        # sao o motivo da troca de origem.
+        import cvm_source as cvm
 
-    df = consultar(query)
+        df = cvm.converter_cvm_para_dashboard(
+            cvm.carregar_base_cvm(DATA_INI)
+        )
+
+        print(f"\nCVM: {len(df)} classes")
+
+        if not USE_MOCK:
+            try:
+                df = cvm.enriquecer_com_anbima(df, consultar(_query()))
+            except Exception as e:
+                # o dashboard sai sem classificacao/taxas, mas sai - e o
+                # universo da CVM continua completo
+                print(f"  ! enriquecimento ANBIMA falhou ({type(e).__name__}:"
+                      f" {str(e)[:90]}); segue so com a CVM")
+    else:
+        print(f"  sql: {SQL_ARQUIVO}"
+              f"{' + cadastro CVM' if CVM_CADASTRO else ''}")
+        df = consultar(_query())
 
     print(f"Antes filtro: {len(df)}")
+
+    # Recorte final quando a origem e a CVM. PEERS_TODOS inclui os
+    # bancoes e plataformas que a planilha historica acompanha e que o
+    # monitor nao tinha - responsaveis por 89 dos 105 registros de
+    # agosto/2026. PEERS_GESTAO e so o recorte de gestao.
+    PEERS_GESTAO = [
+        "Augme", "Capitania", "Ibiuna", "JGP", "Kinea",
+        "Patria", "Riza", "SPX", "Verde Asset", "Vinci",
+    ]
+
+    PEERS_TODOS = PEERS_GESTAO + [
+        "BTG Pactual", "Bradesco Asset", "Itau Unibanco",
+        "Itau Asset", "XP Asset",
+    ]
+
+    PEERS_FINAL = (
+        PEERS_TODOS
+        if os.getenv("PEERS", "").strip().lower() in ("todos", "planilha")
+        else PEERS_GESTAO
+    )
 
     PEERS = [
         "SPX",
@@ -320,15 +401,23 @@ def main():
         "PATRIA"
     ]
 
-    df = df[
-        df["gestora"]
-            .fillna("")
-            .str.upper()
-            .apply(lambda x: any(peer in x for peer in PEERS))
-    ].copy()
+    if ORIGEM == "cvm":
+        # gestora ja vem padronizada por GESTOR_MAP: correspondencia exata
+        # evita que "XP Asset" case com "SPX" por substring, por exemplo.
+        import cvm_source as cvm
+        alvo = {p.strip().upper() for p in PEERS_FINAL}
+        df = df[df["gestora"].fillna("").str.upper().isin(alvo)].copy()
+    else:
+        df = df[
+            df["gestora"]
+                .fillna("")
+                .str.upper()
+                .apply(lambda x: any(peer in x for peer in PEERS))
+        ].copy()
 
     print(f"Depois filtro: {len(df)}")
 
+    validar_base(df)
     diagnosticar_fonte(df)
 
     try:
