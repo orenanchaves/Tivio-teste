@@ -2,8 +2,8 @@ const { chromium } = require('playwright');
 const path = require('path');
 const DIR = '/home/user/Tivio-teste/curriculo/';
 const JOBS = [
-  ['CV_Renata_Xavier.html', 'Renata-Xavier-Comunicacao-Interna-Endomarketing.pdf'],
-  ['CV_Renata_Xavier_XP.html', 'Renata-Xavier-XP-Analista-Comunicacao-Interna.pdf'],
+  ['CV_Renata_Xavier.html', 'Renata Xavier - Currículo.pdf'],
+  ['CV_Renata_Xavier_XP.html', 'Renata Xavier - Currículo XP.pdf'],
 ];
 (async () => {
   const b = await chromium.launch({ executablePath: '/opt/pw-browsers/chromium-1194/chrome-linux/chrome', args: ['--no-sandbox'] });

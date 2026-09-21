@@ -10,7 +10,7 @@ IDIOMAS = [("Português", "Nativo"), ("Inglês", "Intermediário (leitura e escr
 
 # --------------------------------------------------------------------- MASTER
 MASTER = {
-    "arquivo": "Renata-Xavier-Comunicacao-Interna-Endomarketing",
+    "arquivo": "Renata Xavier - Currículo",
     "html": "CV_Renata_Xavier.html",
     "headline": "Analista de Comunicação Interna | Endomarketing | Employer Branding | Cultura e Engajamento",
     "resumo":
@@ -74,7 +74,7 @@ MASTER = {
 
 # ------------------------------------------------------------------- VERSÃO XP
 XP = {
-    "arquivo": "Renata-Xavier-XP-Analista-Comunicacao-Interna",
+    "arquivo": "Renata Xavier - Currículo XP",
     "html": "CV_Renata_Xavier_XP.html",
     "headline": "Analista de Comunicação Interna | Endomarketing | Cultura e Engajamento | Conteúdo para Canais Corporativos",
     "resumo":
