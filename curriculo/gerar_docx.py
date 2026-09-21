@@ -114,7 +114,7 @@ for rot, txt in COMP:
 # ------------------------------------------------------------------ experiencia
 secao("Experiência Profissional")
 
-cargo("Analista de Recursos Humanos — Comunicação Interna e Endomarketing", "Junho de 2026 – Atual", "Zeentech")
+cargo("Analista de Recursos Humanos Pleno — Comunicação Interna e Endomarketing", "Junho de 2026 – Atual", "Zeentech")
 bullets([
     "Estruturo e executo o plano de comunicação interna da companhia, da integração de novos colaboradores ao engajamento contínuo, definindo pauta, canais e calendário editorial.",
     "Produzo e distribuo comunicados corporativos e faço a gestão dos canais internos de comunicação, garantindo padronização de linguagem e alinhamento à identidade da marca.",
