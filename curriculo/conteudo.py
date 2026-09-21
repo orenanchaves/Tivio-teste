@@ -1,0 +1,137 @@
+# -*- coding: utf-8 -*-
+"""Conteudo dos curriculos. `**texto**` vira negrito no HTML e no DOCX."""
+
+CONTATO = "São Paulo, SP • (11) 96476-9808 • renatadiasx@hotmail.com • linkedin.com/in/renatadxavier"
+NOME = "Renata Xavier"
+
+FORMACAO = ("Bacharelado em Propaganda e Marketing", "Conclusão: Dezembro de 2022",
+            "Universidade Paulista (UNIP) — Santana de Parnaíba, SP")
+IDIOMAS = [("Português", "Nativo"), ("Inglês", "Intermediário (leitura e escrita)")]
+
+# --------------------------------------------------------------------- MASTER
+MASTER = {
+    "arquivo": "Renata-Xavier-Comunicacao-Interna-Endomarketing",
+    "html": "CV_Renata_Xavier.html",
+    "headline": "Analista de Comunicação Interna | Endomarketing | Employer Branding | Cultura e Engajamento",
+    "resumo":
+        "Profissional de Comunicação Interna e Endomarketing com mais de 6 anos de experiência em empresas de grande "
+        "porte, responsável por planos de comunicação, gestão de canais internos, campanhas de cultura organizacional, "
+        "employer branding e eventos corporativos. Conduziu a comunicação de uma operação nacional com mais de 800 "
+        "colaboradores e 26 unidades no Brasil, liderando a frente de Diversidade, Equidade e Inclusão (DE&I) e o censo "
+        "de diversidade da companhia. Experiência em gestão de agências e fornecedores, comunicação de liderança, "
+        "produção de conteúdo e fortalecimento da marca empregadora em canais digitais. Formada em Propaganda e "
+        "Marketing, com perfil estratégico, colaborativo e orientado a engajamento e clima organizacional.",
+    "competencias": [
+        ("Comunicação & Endomarketing",
+         "planejamento e execução de plano de comunicação interna, comunicados corporativos, calendário editorial, "
+         "comunicação de liderança e executiva, comunicação de mudança, storytelling e produção de conteúdo, "
+         "campanhas institucionais e de engajamento."),
+        ("Canais & Marca Empregadora",
+         "gestão de canais internos (rede social corporativa, intranet, e-mail marketing, TV corporativa e murais), "
+         "employer branding, LinkedIn corporativo e redes sociais, presença digital da marca."),
+        ("Cultura, Pessoas & DE&I",
+         "cultura organizacional, clima e engajamento, Diversidade, Equidade e Inclusão (DE&I), comitês e censo de "
+         "diversidade, avaliação de desempenho e calibração, integração e onboarding de colaboradores."),
+        ("Projetos & Stakeholders",
+         "eventos corporativos de pequeno a grande porte, gestão de agências e fornecedores, briefing e acompanhamento "
+         "de entregas, patrocínios e leis de incentivo (Lei Rouanet e Lei de Incentivo ao Esporte), atendimento a "
+         "clientes internos."),
+        ("Ferramentas",
+         "Pacote Office (Word, PowerPoint, Excel), Trello, plataformas de e-mail marketing, redes sociais corporativas, "
+         "Adobe Photoshop e Illustrator (intermediário)."),
+    ],
+    "experiencias": [
+        ("Analista de Recursos Humanos Pleno — Comunicação Interna e Endomarketing", "Junho de 2026 – Atual", "Zeentech", [
+            "Estruturo e executo o plano de comunicação interna da companhia, da integração de novos colaboradores ao engajamento contínuo, definindo pauta, canais e calendário editorial.",
+            "Produzo e distribuo comunicados corporativos e faço a gestão dos canais internos de comunicação, garantindo padronização de linguagem e alinhamento à identidade da marca.",
+            "Gerencio as redes sociais da empresa, com planejamento de conteúdo e produção de posts voltados ao fortalecimento da marca empregadora nos canais digitais.",
+            "Conduzo a gestão da agência de marketing: briefing, direcionamento de demandas, acompanhamento de entregas e alinhamento das ações à estratégia da marca.",
+            "Desenvolvo campanhas institucionais e de endomarketing integradas a estratégias de employer branding.",
+            "Realizo curadoria e gestão de patrocínios via leis de incentivo (Lei Rouanet e Lei de Incentivo ao Esporte), avaliando projetos e conectando as oportunidades aos objetivos de negócio.",
+            "Prospecto e viabilizo patrocínios em eventos do setor e de marketing, ampliando a presença institucional da marca.",
+            "Organizo eventos corporativos e institucionais de pequeno a grande porte, do briefing à execução.",
+        ]),
+        ("Analista de Comunicação Interna e Endomarketing Pleno", "Setembro de 2021 – Abril de 2026", "Total Express", [
+            "Conduzi o plano de comunicação interna de uma operação nacional com mais de **800 colaboradores** e **26 unidades** no Brasil, articulando agentes de comunicação locais e garantindo padronização e efetividade na disseminação de informações.",
+            "Geri o ecossistema de canais internos — rede social corporativa, e-mail, TV corporativa e murais físicos —, definindo formatos, periodicidade e fluxo de comunicados corporativos.",
+            "Criei campanhas de comunicação e endomarketing com potencial de divulgação externa, integrando employer branding e fortalecendo a presença da marca no LinkedIn e demais canais digitais.",
+            "Liderei a frente de **Diversidade e Inclusão**: comitê com reuniões mensais, campanhas de conscientização e sensibilização, workshops e palestras corporativas, consolidando uma cultura inclusiva.",
+            "Liderei o **censo de diversidade de 2025**, da coleta à análise dos dados, transformando os resultados em oportunidades de melhoria e estratégias inclusivas para a empresa.",
+            "Planejei e executei eventos institucionais de pequeno, médio e grande porte — convenções, palestras, coffee breaks e encontros para executivos.",
+            "Conduzi o ciclo de **Avaliação de Desempenho**, com uso da plataforma de avaliação, suporte a gestores e calibrações de mais de 800 colaboradores.",
+            "Estruturei e acompanhei grandes projetos, como lançamentos de programas e iniciativas para colaboradores, assegurando ações estratégicas de endomarketing alinhadas aos objetivos organizacionais.",
+            "Gerenciei agências de comunicação, fornecedores e clientes internos, assegurando qualidade, prazo e aderência ao posicionamento da marca.",
+        ]),
+        ("Estagiária de Marketing", "Junho de 2020 – Agosto de 2021", "Grupo UAI", [
+            "Respondi pelas atividades de Marketing e Endomarketing da empresa, da definição à execução das estratégias de comunicação.",
+            "Planejei e produzi conteúdo para redes sociais: cronograma editorial, posts, vídeos e redação de legendas alinhadas à identidade da marca.",
+            "Criei materiais institucionais, apresentações e conteúdos de apoio.",
+            "Desenvolvi ações de comunicação, campanhas, pesquisas de satisfação e eventos corporativos.",
+            "Apoiei a estruturação e atualização do site institucional, contribuindo para a melhoria da presença digital da empresa.",
+        ]),
+    ],
+}
+
+# ------------------------------------------------------------------- VERSÃO XP
+XP = {
+    "arquivo": "Renata-Xavier-XP-Analista-Comunicacao-Interna",
+    "html": "CV_Renata_Xavier_XP.html",
+    "headline": "Analista de Comunicação Interna | Endomarketing | Cultura e Engajamento | Conteúdo para Canais Corporativos",
+    "resumo":
+        "Profissional de Comunicação Interna e Endomarketing com mais de 6 anos de experiência conectando estratégia e "
+        "execução em empresas de grande porte. Atuei como ponto focal de comunicação para agentes distribuídos em mais "
+        "de 26 unidades no Brasil, em uma operação com mais de 800 colaboradores, conduzindo o calendário de "
+        "comunicações, os rituais da área e a produção de conteúdo para canais corporativos — rede social corporativa, "
+        "e-mail, TV corporativa e murais. Experiência em campanhas de engajamento, reconhecimento e cultura, eventos "
+        "corporativos e gestão de agências e fornecedores, transitando entre diferentes públicos e projetos "
+        "simultâneos. Formada em Propaganda e Marketing, com domínio da língua portuguesa e perfil organizado, "
+        "proativo e orientado ao negócio.",
+    "competencias": [
+        ("Comunicação Interna & Conteúdo",
+         "planejamento e execução de plano de comunicação interna, calendário de comunicações e calendário editorial, "
+         "comunicados corporativos, rituais de comunicação, produção de conteúdo para canais corporativos, redação e "
+         "revisão de textos, storytelling, comunicação de liderança."),
+        ("Canais Corporativos",
+         "rede social corporativa, intranet, e-mail marketing, TV corporativa, murais físicos, LinkedIn corporativo e "
+         "redes sociais, adaptação de linguagem e formato por público e segmento."),
+        ("Engajamento, Cultura & Reconhecimento",
+         "campanhas de engajamento, reconhecimento e valorização de colaboradores, cultura organizacional, clima, "
+         "endomarketing, employer branding, Diversidade, Equidade e Inclusão (DE&I), integração e onboarding."),
+        ("Projetos & Stakeholders",
+         "ponto focal entre times de negócio, suporte e conteúdo; condução de múltiplos projetos simultâneos; eventos "
+         "corporativos de pequeno a grande porte; gestão de agências e fornecedores; briefing e acompanhamento de entregas."),
+        ("Dados & Ferramentas",
+         "coleta e análise de dados, relatórios e planos de ação; Pacote Office (Word, PowerPoint, Excel); Trello; "
+         "plataformas de e-mail marketing; Adobe Photoshop e Illustrator (intermediário)."),
+    ],
+    "experiencias": [
+        ("Analista de Recursos Humanos Pleno — Comunicação Interna e Endomarketing", "Junho de 2026 – Atual", "Zeentech", [
+            "Estruturo e executo o plano de comunicação interna da companhia, da integração de novos colaboradores ao engajamento contínuo, definindo pauta, canais e calendário editorial.",
+            "Produzo e distribuo comunicados corporativos e faço a gestão dos canais internos, garantindo clareza, padronização de linguagem e alinhamento às prioridades da companhia.",
+            "Desenvolvo conteúdo e gerencio as redes sociais da empresa, com planejamento de pauta e produção de posts voltados ao fortalecimento da marca empregadora.",
+            "Conduzo a gestão da agência de marketing: briefing, direcionamento de demandas e acompanhamento de entregas, alinhando as ações à estratégia da marca.",
+            "Desenvolvo campanhas institucionais e de endomarketing integradas a estratégias de employer branding.",
+            "Realizo curadoria e gestão de patrocínios via leis de incentivo (Lei Rouanet e Lei de Incentivo ao Esporte) e viabilizo patrocínios em eventos do setor, ampliando a presença institucional da marca.",
+            "Organizo eventos corporativos e institucionais de pequeno a grande porte, do briefing à execução.",
+        ]),
+        ("Analista de Comunicação Interna e Endomarketing Pleno", "Setembro de 2021 – Abril de 2026", "Total Express", [
+            "Atuei como **ponto focal de comunicação** para agentes distribuídos em mais de **26 unidades** no Brasil, em uma operação com mais de **800 colaboradores**, garantindo padronização e efetividade na disseminação de informações.",
+            "Conduzi o plano e o **calendário de comunicações** da companhia, definindo pauta, formatos, periodicidade e fluxo de aprovação dos comunicados corporativos.",
+            "Produzi conteúdo para os canais internos — rede social corporativa, e-mail, TV corporativa e murais físicos —, adaptando linguagem e formato a cada público.",
+            "Criei campanhas de endomarketing, engajamento e valorização de colaboradores, integrando employer branding e fortalecendo a presença da marca no LinkedIn e demais canais digitais.",
+            "Liderei a frente de **Diversidade e Inclusão**: comitê com rituais mensais, campanhas de conscientização e sensibilização, workshops e palestras corporativas.",
+            "Liderei o **censo de diversidade de 2025**, da coleta à análise dos dados, gerando relatórios que se converteram em plano de ação e estratégias inclusivas.",
+            "Planejei e executei eventos institucionais de pequeno, médio e grande porte — convenções, palestras, coffee breaks e encontros para executivos.",
+            "Conduzi o ciclo de **Avaliação de Desempenho**, com suporte a gestores na plataforma e calibrações de mais de 800 colaboradores.",
+            "Atuei com clientes internos, agências de comunicação e fornecedores, transitando entre diferentes públicos e projetos simultâneos.",
+        ]),
+        ("Estagiária de Marketing", "Junho de 2020 – Agosto de 2021", "Grupo UAI", [
+            "Respondi pelas atividades de Marketing e Endomarketing da empresa, da definição à execução das estratégias de comunicação.",
+            "Planejei e produzi conteúdo para redes sociais: cronograma editorial, posts, vídeos e redação de legendas alinhadas à identidade da marca.",
+            "Criei materiais institucionais, apresentações e conteúdos de apoio.",
+            "Desenvolvi campanhas, pesquisas de satisfação e eventos corporativos, e apoiei a atualização do site institucional.",
+        ]),
+    ],
+}
+
+VERSOES = {"master": MASTER, "xp": XP}
