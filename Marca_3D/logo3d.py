@@ -54,6 +54,41 @@ def importar_svg(caminho: Path):
     return novos
 
 
+def recortar_simbolo(obj, limite_x=0.070, piso_y=0.050):
+    """Mantem so o T da Tivio, descartando o resto do wordmark.
+
+    O T sao tres contornos - braco esquerdo, haste e braco direito da
+    travessa - no canto superior esquerdo. Ha folga limpa entre o fim do
+    T (x 0,064) e o inicio do I (x 0,076), entao o corte por x e seguro;
+    piso_y descarta a linha de CAPITAL, que comeca mais abaixo.
+    """
+    cur = obj.data
+    manter, fora = [], []
+
+    for i, sp in enumerate(cur.splines):
+        pts = [pt.co for pt in (sp.bezier_points if sp.type == "BEZIER"
+                                else sp.points)]
+        if not pts:
+            fora.append(sp)
+            continue
+
+        x_max = max(pt[0] for pt in pts)
+        y_min = min(pt[1] for pt in pts)
+
+        (manter if (x_max <= limite_x and y_min >= piso_y) else fora).append(sp)
+
+    if not manter:
+        sys.exit(f"  ! nenhum contorno dentro do recorte (x<={limite_x})")
+
+    for sp in fora:
+        cur.splines.remove(sp)
+
+    print(f"  recorte do simbolo: {len(manter)} contorno(s) mantido(s), "
+          f"{len(fora)} descartado(s)")
+
+    return obj
+
+
 def juntar(curvas):
     """Une tudo num objeto so, para extrudar e materializar de uma vez."""
     bpy.ops.object.select_all(action="DESELECT")
@@ -84,7 +119,18 @@ def extrudar_e_converter(obj, profundidade=0.12, chanfro=0.012):
     # de largura: 0,12 fixo virava metade da largura do logo (a peca saia
     # mais funda que larga). Escala a profundidade pelo tamanho importado,
     # para o valor ficar relativo a largura final de 2 unidades.
-    largura_svg = max(obj.dimensions.x, obj.dimensions.y, 1e-6)
+    # Mede pelos pontos da curva, nao por obj.dimensions: depois de
+    # recortar o simbolo o dimensions ainda devolve a caixa do wordmark
+    # inteiro ate o depsgraph atualizar, e a profundidade saia metade da
+    # largura do T.
+    xs, ys = [], []
+
+    for sp in obj.data.splines:
+        for pt in (sp.bezier_points if sp.type == "BEZIER" else sp.points):
+            xs.append(pt.co[0])
+            ys.append(pt.co[1])
+
+    largura_svg = max(max(xs) - min(xs), max(ys) - min(ys), 1e-6)
     fator = largura_svg / 2.0
 
     print(f"  largura importada {largura_svg:.3f} -> "
@@ -137,23 +183,95 @@ def normalizar(obj, largura_alvo=2.0):
     return obj
 
 
-def material_metal(obj, cor, rugosidade=0.25, metalico=0.9):
-    """Verde da marca em acabamento metalico escovado."""
-    mat = bpy.data.materials.new("TivioVerde")
+def material_metal(obj, cor, rugosidade=0.14, metalico=1.0, escovado=0.55):
+    """Metal de verdade: Metallic em 1.0 e anisotropia no lugar do verniz.
+
+    Metallic abaixo de 1 mistura difuso e o resultado le como plastico
+    colorido. A anisotropia alonga o reflexo numa direcao, que e o que
+    diferencia metal escovado de metal polido liso.
+    """
+    mat = bpy.data.materials.new("TivioMetal")
     mat.use_nodes = True
-    bsdf = mat.node_tree.nodes["Principled BSDF"]
+    nt = mat.node_tree
+    bsdf = nt.nodes["Principled BSDF"]
 
     bsdf.inputs["Base Color"].default_value = _srgb_linear(cor)
     bsdf.inputs["Metallic"].default_value = metalico
     bsdf.inputs["Roughness"].default_value = rugosidade
 
-    if "Coat Weight" in bsdf.inputs:
-        bsdf.inputs["Coat Weight"].default_value = 0.3
-        bsdf.inputs["Coat Roughness"].default_value = 0.1
+    if "Anisotropic" in bsdf.inputs:
+        bsdf.inputs["Anisotropic"].default_value = escovado
+        bsdf.inputs["Anisotropic Rotation"].default_value = 0.25
+
+    # micro-relevo: sem ele o reflexo fica perfeito demais e artificial
+    if "Roughness" in bsdf.inputs:
+        ruido = nt.nodes.new("ShaderNodeTexNoise")
+        ruido.inputs["Scale"].default_value = 420.0
+        ruido.inputs["Detail"].default_value = 2.0
+        faixa = nt.nodes.new("ShaderNodeMapRange")
+        faixa.inputs["To Min"].default_value = max(rugosidade - 0.04, 0.02)
+        faixa.inputs["To Max"].default_value = rugosidade + 0.05
+        nt.links.new(ruido.outputs["Fac"], faixa.inputs["Value"])
+        nt.links.new(faixa.outputs["Result"], bsdf.inputs["Roughness"])
 
     obj.data.materials.clear()
     obj.data.materials.append(mat)
     return mat
+
+
+def ambiente_estudio(forca=0.45, topo=(0.62, 0.70, 0.78), base=(0.02, 0.03, 0.04)):
+    """Gradiente vertical no mundo.
+
+    Metal nao tem cor propria: ele mostra o que esta em volta. Num mundo
+    uniformemente escuro o material fica chapado, parecendo plastico
+    pintado - foi o que aconteceu na primeira versao. O degrade da ao
+    reflexo um "ceu" claro em cima e um "chao" escuro embaixo, que e o
+    que o olho le como superficie polida.
+    """
+    mundo = bpy.data.worlds.new("Estudio")
+    bpy.context.scene.world = mundo
+    mundo.use_nodes = True
+    nt = mundo.node_tree
+    nt.nodes.clear()
+
+    saida = nt.nodes.new("ShaderNodeOutputWorld")
+    bg = nt.nodes.new("ShaderNodeBackground")
+    bg_cam = nt.nodes.new("ShaderNodeBackground")
+    mistura = nt.nodes.new("ShaderNodeMixShader")
+    caminho = nt.nodes.new("ShaderNodeLightPath")
+    ramp = nt.nodes.new("ShaderNodeValToRGB")
+    sep = nt.nodes.new("ShaderNodeSeparateXYZ")
+    tex = nt.nodes.new("ShaderNodeTexCoord")
+    mapa = nt.nodes.new("ShaderNodeMapRange")
+
+    ramp.color_ramp.elements[0].position = 0.35
+    ramp.color_ramp.elements[0].color = _srgb_linear(base + (1.0,))
+    ramp.color_ramp.elements[1].position = 0.75
+    ramp.color_ramp.elements[1].color = _srgb_linear(topo + (1.0,))
+
+    mapa.inputs["From Min"].default_value = -1.0
+    mapa.inputs["From Max"].default_value = 1.0
+
+    bg.inputs["Strength"].default_value = forca
+
+    nt.links.new(tex.outputs["Generated"], sep.inputs["Vector"])
+    nt.links.new(sep.outputs["Z"], mapa.inputs["Value"])
+    nt.links.new(mapa.outputs["Result"], ramp.inputs["Fac"])
+    nt.links.new(ramp.outputs["Color"], bg.inputs["Color"])
+
+    # O degrade precisa ser claro para o metal ter o que refletir, mas
+    # claro tambem no fundo deixa a imagem lavada. Is Camera Ray separa
+    # os dois: a camera ve o fundo escuro da marca, o reflexo ve o
+    # estudio.
+    bg_cam.inputs["Color"].default_value = _srgb_linear(FUNDO)
+    bg_cam.inputs["Strength"].default_value = 1.0
+
+    nt.links.new(caminho.outputs["Is Camera Ray"], mistura.inputs["Fac"])
+    nt.links.new(bg.outputs["Background"], mistura.inputs[1])
+    nt.links.new(bg_cam.outputs["Background"], mistura.inputs[2])
+    nt.links.new(mistura.outputs["Shader"], saida.inputs["Surface"])
+
+    return mundo
 
 
 def fundo(cor, forca=0.08):
@@ -185,19 +303,63 @@ def _luz(nome, tipo, energia, loc, cor=(1, 1, 1), tamanho=2.0, alvo=None):
     return obj
 
 
+def refletor(nome, loc, rot, tam, forca, cor=(1, 1, 1)):
+    """Placa emissiva: o que o metal de fato mostra.
+
+    Luz de area ilumina, mas o reflexo que o olho le como metal vem de
+    uma SUPERFICIE visivel no espelhamento. Sem estas placas o material
+    reflete so o vazio e fica escuro, por mais energia que se jogue nas
+    lampadas.
+    """
+    bpy.ops.mesh.primitive_plane_add(size=tam, location=loc, rotation=rot)
+    plano = bpy.context.active_object
+    plano.name = nome
+
+    mat = bpy.data.materials.new(nome)
+    mat.use_nodes = True
+    nt = mat.node_tree
+    nt.nodes.clear()
+
+    emis = nt.nodes.new("ShaderNodeEmission")
+    emis.inputs["Color"].default_value = (*cor, 1.0)
+    emis.inputs["Strength"].default_value = forca
+    nt.links.new(emis.outputs["Emission"],
+                 nt.nodes.new("ShaderNodeOutputMaterial").inputs["Surface"])
+
+    plano.data.materials.append(mat)
+
+    # nao aparece para a camera, so no reflexo
+    plano.visible_camera = False
+    plano.visible_shadow = False
+
+    return plano
+
+
+def estudio():
+    """Tres placas: chave acima, preenchimento lateral e faixa atras."""
+    refletor("Softbox", (1.6, -2.6, 3.4), (math.radians(52), 0, math.radians(26)),
+             6.0, 9.0, cor=(1.0, 0.99, 0.97))
+
+    refletor("Lateral", (-3.4, -1.4, 0.4), (0, math.radians(-78), 0),
+             5.5, 3.2, cor=(0.70, 0.95, 0.80))
+
+    refletor("Faixa", (0.4, 2.6, 1.2), (math.radians(-64), 0, 0),
+             5.0, 6.0, cor=(0.80, 1.0, 0.88))
+
+
 def iluminar():
     """Tres pontos: principal quente, preenchimento verde, contorno atras.
 
     O contorno e o que separa o logo do fundo escuro - sem ele a silhueta
     some, que e o erro classico de logo escuro em fundo escuro.
     """
-    _luz("Principal", "AREA", 220, (2.6, -3.4, 2.6),
+    _luz("Principal", "AREA", 90, (2.6, -3.4, 2.6),
          cor=(1.0, 0.99, 0.96), tamanho=3.0, alvo=(0, 0, 0))
 
-    _luz("Preenchimento", "AREA", 45, (-3.8, -2.0, 0.6),
+    _luz("Preenchimento", "AREA", 25, (-3.8, -2.0, 0.6),
          cor=(0.62, 0.92, 0.75), tamanho=5.0, alvo=(0, 0, 0))
 
-    _luz("Contorno", "AREA", 260, (-1.8, 2.8, 1.4),
+    _luz("Contorno", "AREA", 110, (-1.8, 2.8, 1.4),
          cor=(0.72, 1.0, 0.84), tamanho=2.2, alvo=(0, 0, 0))
 
 
@@ -251,12 +413,16 @@ def chao(z=-0.9):
     bpy.ops.mesh.primitive_plane_add(size=40, location=(0, 0, z))
     plano = bpy.context.active_object
 
+    # Piso escuro e levemente espelhado: difuso claro devolvia toda a luz
+    # do estudio e o chao tomava metade do quadro, competindo com a peca.
     mat = bpy.data.materials.new("Chao")
     mat.use_nodes = True
     b = mat.node_tree.nodes["Principled BSDF"]
-    b.inputs["Base Color"].default_value = _srgb_linear(FUNDO)
-    b.inputs["Roughness"].default_value = 0.72
-    b.inputs["Metallic"].default_value = 0.05
+    b.inputs["Base Color"].default_value = _srgb_linear((0.02, 0.028, 0.035, 1))
+    b.inputs["Roughness"].default_value = 0.30
+    b.inputs["Metallic"].default_value = 0.0
+    if "Specular IOR Level" in b.inputs:
+        b.inputs["Specular IOR Level"].default_value = 0.5
 
     plano.data.materials.append(mat)
     return plano
@@ -304,6 +470,10 @@ def main():
     ap.add_argument("--salvar-blend", default="")
     ap.add_argument("--azimute", type=float, default=11.0)
     ap.add_argument("--elevacao", type=float, default=5.0)
+    ap.add_argument("--chao", action="store_true",
+                    help="adiciona piso (fora isso a peca flutua)")
+    ap.add_argument("--so-t", action="store_true",
+                    help="renderiza apenas o T da Tivio")
     ap.add_argument("--transparente", action="store_true",
                     help="fundo alfa e sem chao: para deck e dashboard")
     ap.add_argument("--giro", type=float, default=0.0,
@@ -321,6 +491,9 @@ def main():
     limpar()
 
     curva = juntar(importar_svg(svg))
+
+    if a.so_t:
+        recortar_simbolo(curva)
     logo = extrudar_e_converter(curva, profundidade=a.profundidade)
     normalizar(logo)
     material_metal(logo, VERDE)
@@ -328,12 +501,17 @@ def main():
     # o SVG chega deitado no plano XY; levanta para ficar de frente
     logo.rotation_euler = (math.radians(90), 0, math.radians(a.giro))
 
-    fundo(FUNDO)
+    ambiente_estudio(forca=0.8)
     iluminar()
+    estudio()
 
-    if not a.transparente:
+    # Sem chao por padrao. Com piso espelhado o reflexo do softbox
+    # estourava; com piso difuso claro o chao tomava metade do quadro.
+    # O ambiente do estudio ja da o assentamento. --chao traz de volta.
+    if a.chao and not a.transparente:
         chao(z=-0.70)
-    camera(logo, azimute=a.azimute, elevacao=a.elevacao)
+    camera(logo, azimute=a.azimute, elevacao=a.elevacao,
+           folga=1.18 if a.so_t else 1.32)
     configurar_render(Path(a.out), a.largura, a.altura, a.amostras, a.motor,
                       transparente=a.transparente)
 

@@ -10,9 +10,12 @@ oficial — nada foi redesenhado à mão.
 |---|---|
 | `logo3d.py` | o script que monta a cena e renderiza |
 | `tivio_logo.svg` | o wordmark extraído do dashboard |
-| `tivio_logo_3d.png` | render 1920×1080 com fundo e chão |
-| `tivio_logo_3d_alpha.png` | 1600×700 com fundo transparente, para deck e dashboard |
-| `tivio_logo_3d.blend` | a cena, para abrir no Blender e ajustar à mão |
+| `tivio_T_3d.png` | **o T isolado**, 2000×2000, metálico sobre fundo escuro |
+| `tivio_T_3d_alpha.png` | o T com fundo transparente, 1400×1400 |
+| `tivio_T_3d.blend` | a cena do T |
+| `tivio_logo_3d.png` | wordmark completo, 1920×1080 |
+| `tivio_logo_3d_alpha.png` | wordmark com fundo transparente, 1600×700 |
+| `tivio_logo_3d.blend` | a cena do wordmark |
 
 ## Rodar
 
@@ -27,7 +30,10 @@ e o render roda sem interface.
 ### Opções
 
 ```powershell
-# fundo transparente, sem chão
+# só o T da Tivio
+python logo3d.py --svg tivio_logo.svg --out t.png --so-t
+
+# fundo transparente
 python logo3d.py --svg tivio_logo.svg --out alpha.png --transparente
 
 # mais volume e outro ângulo
@@ -49,7 +55,9 @@ python logo3d.py --svg tivio_logo.svg --out x.png --salvar-blend cena.blend
 | `--elevacao` | 5 | altura da câmera em graus |
 | `--giro` | 0 | rotação do logo no eixo Z |
 | `--amostras` | 96 | qualidade do Cycles (mais = mais limpo e mais lento) |
-| `--transparente` | — | alfa e sem chão |
+| `--so-t` | — | só o T, descartando o resto do wordmark |
+| `--transparente` | — | fundo alfa |
+| `--chao` | — | adiciona piso (o padrão é a peça flutuando) |
 
 ## Cores
 
@@ -61,7 +69,35 @@ Blender trabalha em linear; passar o hex direto deixa a cor lavada):
 | `--tv-verde` | `#C1F4D4` | cor base do metal |
 | `--bg-base` | `#0A0F14` | fundo e chão |
 
-## Três coisas que deram errado no caminho
+## Como o T é isolado
+
+O wordmark tem 19 contornos. O T são três — braço esquerdo, haste e braço
+direito da travessa — no canto superior esquerdo, entre x 0,006 e 0,064.
+Há folga limpa até o "I" começar em 0,076, então o corte por coordenada é
+seguro, e um piso em y descarta a linha de CAPITAL.
+
+Não é recorte de imagem: são os contornos vetoriais originais, extrudados
+do mesmo jeito que o wordmark inteiro.
+
+## O acabamento metálico
+
+Metal não tem cor própria — ele mostra o que está em volta. Três coisas
+fazem a diferença entre metal e plástico pintado:
+
+1. **`Metallic` em 1.0.** Abaixo disso o shader mistura difuso e o
+   resultado lê como plástico colorido.
+2. **Placas emissivas em volta** (`estudio()`). Luz de área ilumina, mas
+   o reflexo que o olho lê como metal vem de uma *superfície* visível no
+   espelhamento. Elas ficam invisíveis para a câmera e aparecem só no
+   reflexo.
+3. **Fundo escuro para a câmera, claro para o reflexo.** Um nó
+   `Is Camera Ray` separa os dois: o estúdio precisa ser claro para o
+   metal ter o que refletir, mas claro no fundo deixa a imagem lavada.
+
+Há ainda um ruído fino modulando a rugosidade — sem ele o reflexo fica
+perfeito demais e artificial.
+
+## Quatro coisas que deram errado no caminho
 
 Ficam registradas porque qualquer ajuste futuro vai esbarrar nelas.
 
@@ -78,3 +114,8 @@ escala a profundidade pelo tamanho importado.
 
 **A elevação da câmera.** Acima de ~10° a espessura de TIVIO cobre o topo
 de CAPITAL e o logo fica ilegível. O default é 5°.
+
+**O chão.** Com piso espelhado o reflexo do softbox estourava e roubava a
+peça; com piso difuso claro o chão tomava metade do quadro. O ambiente do
+estúdio já dá o assentamento, então a peça flutua por padrão e `--chao`
+traz o piso de volta.
