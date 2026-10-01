@@ -458,6 +458,53 @@ def configurar_render(saida: Path, largura, altura, amostras, motor,
     cena.view_settings.look = "None"
 
 
+def animar_giro(obj, frames=90, eixo="Z"):
+    """Uma volta completa em `frames`, com loop sem costura.
+
+    A chave final fica em frames+1, nao em frames: se 0 e 360 caissem
+    dentro do intervalo renderizado, o primeiro e o ultimo quadro seriam
+    identicos e o loop daria um soluco.
+    """
+    cena = bpy.context.scene
+    cena.frame_start = 1
+    cena.frame_end = frames
+
+    idx = {"X": 0, "Y": 1, "Z": 2}[eixo.upper()]
+    base = list(obj.rotation_euler)
+
+    cena.frame_set(1)
+    obj.rotation_euler = base
+    obj.keyframe_insert("rotation_euler", frame=1)
+
+    fim = list(base)
+    fim[idx] = base[idx] + 2 * math.pi
+    cena.frame_set(frames + 1)
+    obj.rotation_euler = fim
+    obj.keyframe_insert("rotation_euler", frame=frames + 1)
+
+    # giro constante: a interpolacao padrao (Bezier) acelera e freia,
+    # o que num loop infinito fica com cara de solavanco
+    for fc in obj.animation_data.action.fcurves:
+        for kp in fc.keyframe_points:
+            kp.interpolation = "LINEAR"
+
+    cena.frame_set(1)
+
+    print(f"  giro: {frames} quadros, volta completa no eixo {eixo}")
+
+
+def configurar_video(saida: Path, fps=30):
+    """Saida em MP4/H.264 direto do Blender, sem passo externo."""
+    cena = bpy.context.scene
+    cena.render.fps = fps
+    cena.render.filepath = str(saida)
+    cena.render.image_settings.file_format = "FFMPEG"
+    cena.render.ffmpeg.format = "MPEG4"
+    cena.render.ffmpeg.codec = "H264"
+    cena.render.ffmpeg.constant_rate_factor = "HIGH"
+    cena.render.ffmpeg.ffmpeg_preset = "GOOD"
+
+
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--svg", required=True)
@@ -470,6 +517,10 @@ def main():
     ap.add_argument("--salvar-blend", default="")
     ap.add_argument("--azimute", type=float, default=11.0)
     ap.add_argument("--elevacao", type=float, default=5.0)
+    ap.add_argument("--animar", type=int, default=0,
+                    help="quadros de uma volta completa (0 = imagem parada)")
+    ap.add_argument("--fps", type=int, default=30)
+    ap.add_argument("--eixo", default="Z", help="eixo do giro: X, Y ou Z")
     ap.add_argument("--chao", action="store_true",
                     help="adiciona piso (fora isso a peca flutua)")
     ap.add_argument("--so-t", action="store_true",
@@ -515,12 +566,28 @@ def main():
     configurar_render(Path(a.out), a.largura, a.altura, a.amostras, a.motor,
                       transparente=a.transparente)
 
+    if a.animar:
+        animar_giro(logo, frames=a.animar, eixo=a.eixo)
+
+        # out terminando em / ou sem extensao de video = sequencia PNG,
+        # que e o que da para virar GIF depois
+        if Path(a.out).suffix.lower() in (".mp4", ".mkv", ".mov"):
+            configurar_video(Path(a.out), fps=a.fps)
+        else:
+            bpy.context.scene.render.fps = a.fps
+
     if a.salvar_blend:
         bpy.ops.wm.save_as_mainfile(filepath=str(Path(a.salvar_blend).resolve()))
         print(f"  cena salva em {a.salvar_blend}")
 
-    print(f"  renderizando {a.largura}x{a.altura} ({a.amostras} amostras)...")
-    bpy.ops.render.render(write_still=True)
+    if a.animar:
+        print(f"  renderizando {a.animar} quadros a {a.largura}x{a.altura} "
+              f"({a.amostras} amostras)...")
+        bpy.ops.render.render(animation=True)
+    else:
+        print(f"  renderizando {a.largura}x{a.altura} ({a.amostras} amostras)...")
+        bpy.ops.render.render(write_still=True)
+
     print(f"  OK  {a.out}\n")
 
 

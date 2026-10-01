@@ -13,6 +13,8 @@ oficial — nada foi redesenhado à mão.
 | `tivio_T_3d.png` | **o T isolado**, 2000×2000, metálico sobre fundo escuro |
 | `tivio_T_3d_alpha.png` | o T com fundo transparente, 1400×1400 |
 | `tivio_T_3d.blend` | a cena do T |
+| `tivio_T_girando.mp4` | **o T girando**, 72 frames · 900×900 · 30 fps · loop |
+| `tivio_T_girando.gif` | o mesmo giro em GIF, 420×420 · 24 fps (para onde MP4 não entra) |
 | `tivio_logo_3d.png` | wordmark completo, 1920×1080 |
 | `tivio_logo_3d_alpha.png` | wordmark com fundo transparente, 1600×700 |
 | `tivio_logo_3d.blend` | a cena do wordmark |
@@ -46,6 +48,14 @@ python logo3d.py --svg tivio_logo.svg --out final.png `
 
 # salvar a cena para mexer no Blender
 python logo3d.py --svg tivio_logo.svg --out x.png --salvar-blend cena.blend
+
+# o T girando, em MP4
+python logo3d.py --svg tivio_logo.svg --out tivio_T_girando.mp4 `
+    --so-t --animar 72 --fps 30 --largura 900 --altura 900 --amostras 32
+
+# o giro como sequência de PNG (extensão sem vídeo = PNGs numerados)
+python logo3d.py --svg tivio_logo.svg --out seq/giro_ `
+    --so-t --animar 48 --transparente
 ```
 
 | Flag | Default | O que faz |
@@ -58,6 +68,9 @@ python logo3d.py --svg tivio_logo.svg --out x.png --salvar-blend cena.blend
 | `--so-t` | — | só o T, descartando o resto do wordmark |
 | `--transparente` | — | fundo alfa |
 | `--chao` | — | adiciona piso (o padrão é a peça flutuando) |
+| `--animar` | 0 | nº de frames de um giro completo (0 = imagem parada) |
+| `--fps` | 30 | quadros por segundo do vídeo |
+| `--eixo` | Z | eixo do giro — `Z` é mesa girante, `Y` é cambalhota |
 
 ## Cores
 
@@ -96,6 +109,30 @@ fazem a diferença entre metal e plástico pintado:
 
 Há ainda um ruído fino modulando a rugosidade — sem ele o reflexo fica
 perfeito demais e artificial.
+
+## O giro
+
+`--animar N` keyframa uma volta completa de 2π em N frames. Dois detalhes
+que não são óbvios:
+
+**A última chave vai no frame N+1, não em N.** 0° e 360° são a mesma pose.
+Fechando o range em N o loop repete um quadro e dá um tranco visível a cada
+volta.
+
+**A interpolação tem que ser linear.** O default do Blender é Bézier, que
+acelera no começo e freia no fim — ótimo para um movimento que termina,
+péssimo para um loop infinito, onde fica com cara de solavanco. O script
+força `LINEAR` em todas as fcurves.
+
+Sobre o GIF: ele não sai do Blender. GIF tem 1 bit de alfa, então borda
+recortada fica serrilhada. O caminho é renderizar PNG transparente e
+compor sobre o fundo da marca (`#0A0F14`) antes de montar o GIF — foi
+assim que `tivio_T_girando.gif` foi feito.
+
+O render roda em **Cycles em CPU** (~3 s/frame a 900×900 e 32 amostras).
+EEVEE seria muito mais rápido, mas precisa de `libEGL`, que não existe
+neste container — se você rodar numa máquina com GPU e EEVEE disponível,
+vale trocar o engine.
 
 ## Quatro coisas que deram errado no caminho
 
