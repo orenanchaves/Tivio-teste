@@ -1,0 +1,255 @@
+# ============================================================================
+# Cadastro de fundos
+# ----------------------------------------------------------------------------
+# CNPJ, nome Quantum, benchmark, cota inicial e data de início vêm da aba
+# DePara da dados_mensais.xlsx — não se repetem aqui. Este arquivo guarda só o
+# que a planilha não tem: a chave usada nos materiais, o vínculo com a DePara,
+# o logo, e as regras de exibição.
+#
+# `carteira`  = valor exato da coluna Carteira na DePara.
+# `busca`     = palavras-chave usadas quando `carteira` não casa (a planilha
+#               muda o sufixo "- Expandida" de um mês para o outro). O resolvedor
+#               tenta `carteira` primeiro e cai para `busca`; o que não resolver
+#               aparece na aba "Fundos sem atualização" da conferência.
+# `retorno`   = "pct_bench" (padrão, mostra % do benchmark) ou "absoluto"
+#               (mostra o retorno do fundo + Alfa).
+# ============================================================================
+
+verticais:
+  credito_privado:
+    rotulo: Crédito Privado
+    acento: azul
+  credito_estruturado:
+    rotulo: Crédito Estruturado
+    acento: verde
+  investment_solutions:
+    rotulo: Investment Solutions
+    acento: azul
+
+fundos:
+
+  # ----------------------------------------------------- Crédito Privado (HG)
+  banks:
+    nome: Tivio Banks
+    vertical: credito_privado
+    carteira: TIVIO BANKS RF CP RL
+    busca: [BANKS]
+    logo: Banks
+    relatorio: true
+    objetivo: >-
+      O fundo tem como objetivo identificar oportunidades em ativos de crédito
+      high grade (Bancário e Corporativo). Ele busca superar a variação do CDI
+      no longo prazo.
+    operacional:
+      aplicacao: D+0
+      resgate: D+0
+      aplicacao_minima: R$ 1.000,00
+      movimentacao_minima: R$ 1.000,00
+    publico: Investidores em geral
+
+  institucional:
+    nome: Tivio Institucional
+    vertical: credito_privado
+    carteira: TIVIO INSTITUCIONAL RF CRPR FIF RL
+    busca: [INSTITUCIONAL, CRPR]
+    logo: Institucional
+    relatorio: true
+    objetivo: >-
+      O fundo tem como objetivo identificar oportunidades em ativos de crédito
+      high grade (Bancário, Corporativo e FIDC). Ele busca superar a variação do
+      CDI no longo prazo.
+    operacional:
+      aplicacao: D+0
+      resgate: D+0 Abertura
+      pagamento_resgate: D+0*
+      aplicacao_minima: R$ 1.000,00
+      movimentacao_minima: R$ 1.000,00
+    publico: Investidores em geral
+
+  inst15:
+    nome: Tivio Institucional 15
+    vertical: credito_privado
+    carteira: TIVIO INSTITUCIONAL 15 FIF CI RF CP LP RL - Expandida
+    busca: [INSTITUCIONAL 15]
+    logo: Institucional 15
+    relatorio: true
+    objetivo: >-
+      O fundo tem como objetivo identificar oportunidades em ativos de crédito
+      high grade/mid grade (Bancário, Corporativo e FIDC). Ele busca superar a
+      variação do CDI no longo prazo.
+    operacional:
+      aplicacao: D+0
+      resgate: D+0 Abertura
+      pagamento_resgate: D+0*
+      aplicacao_minima: R$ 1.000,00
+      movimentacao_minima: R$ 1.000,00
+    publico: Investidores em geral
+
+  inst30:
+    nome: Tivio Institucional 30
+    vertical: credito_privado
+    carteira: TIVIO INSTITUCIONAL 30 FIF CI RF CP LP RL - Expandida
+    busca: [INSTITUCIONAL 30]
+    logo: Institucional 30
+    relatorio: true
+    objetivo: >-
+      O fundo tem como objetivo identificar oportunidades em ativos de crédito
+      high grade/mid grade (Bancário, Corporativo e FIDC). Ele busca superar a
+      variação do CDI no longo prazo.
+    operacional:
+      aplicacao: D+0
+      resgate: D+30
+      aplicacao_minima: R$ 1.000,00
+      movimentacao_minima: Não há
+    publico: Investidores em geral
+
+  infraplus:
+    nome: Tivio Infra Plus
+    vertical: credito_privado
+    carteira: TIVIO INFRA PLUS IPCA RF FIF RL
+    busca: [INFRA PLUS, IPCA]
+    logo: Infra Plus
+    relatorio: true
+    retorno: absoluto          # IMA-B 5: mostra retorno + Alfa, não % do bench
+    objetivo: >-
+      O fundo busca promover o investimento em debêntures de infraestrutura
+      (Lei 12.431/11) que oferece benefício fiscal para o cotista pessoa física.
+      O fundo busca superar o retorno de ativos indexados à inflação.
+    operacional:
+      aplicacao: D+0
+      resgate: D+31
+      aplicacao_minima: R$ 1.000,00
+      movimentacao_minima: R$ 1.000,00
+    publico: Investidores em geral
+
+  infrapluscdi:
+    nome: Tivio Infra Plus CDI
+    vertical: credito_privado
+    busca: [INFRA PLUS, CDI]
+    logo: Infra Plus CDI
+    relatorio: true
+    objetivo: >-
+      O fundo tem como objetivo entregar retornos acima do CDI, buscando
+      oportunidades em debêntures incentivadas de diversos setores de
+      infraestrutura por meio de uma gestão ativa e diversificada. A estratégia
+      combina o benefício da isenção de Imposto de Renda para pessoas físicas
+      com a busca por retorno superior ao CDI.
+    operacional:
+      aplicacao: D+0
+      resgate: D+30
+      aplicacao_minima: R$ 100,00
+      movimentacao_minima: Não há
+    publico: Investidores em geral
+
+  esplanada:
+    nome: Tivio Esplanada
+    vertical: credito_privado
+    busca: [ESPLANADA]
+    logo: Esplanada
+    relatorio: true
+    retorno: absoluto          # IMA-B 5
+    objetivo: >-
+      O fundo tem como objetivo identificar oportunidades em ativos de crédito
+      high grade (Bancário e Corporativo). Ele busca superar a variação do
+      IMA-B 5 no longo prazo.
+    operacional:
+      aplicacao: D+0
+      resgate: D+9 DU
+      pagamento_resgate: D+10 DU
+      aplicacao_minima: R$ 1.000,00
+      movimentacao_minima: R$ 1.000,00
+    publico: Investidor profissional
+
+  legacy:
+    nome: Tivio Legacy
+    vertical: credito_privado
+    busca: [LEGACY]
+    logo: Legacy
+    relatorio: true
+    objetivo: >-
+      O fundo tem como objetivo identificar oportunidades em ativos de crédito
+      high grade (Bancário, Corporativo e FIDC). Ele busca superar a variação do
+      CDI no longo prazo.
+    operacional:
+      aplicacao: D+0
+      resgate: D+2
+      aplicacao_minima: R$ 0,00
+      movimentacao_minima: R$ 0,00
+    publico: Investidores em geral
+
+  rfcp:
+    nome: Tivio RF CP
+    vertical: credito_privado
+    busca: [RF CP]
+    logo: RF CP
+    relatorio: true
+    objetivo: >-
+      O fundo tem como objetivo identificar oportunidades em ativos de crédito
+      high grade (Bancário e Corporativo). Ele busca superar a variação do CDI
+      no longo prazo.
+    operacional:
+      aplicacao: D+0
+      resgate: D+0
+      aplicacao_minima: R$ 1.000,00
+      movimentacao_minima: R$ 1.000,00
+    publico: Investidores em geral
+
+  # ----------------------------------------------- Crédito Estruturado (HY)
+  alt180:
+    nome: Tivio ALT 180
+    vertical: credito_estruturado
+    carteira: TIVIO ALT HY 180 FIDC RL - Expandida
+    busca: [ALT HY 180]
+    logo: ALT_180
+    relatorio: true
+    performance_fixa: true     # não vem da taxas_global.xlsx
+
+  alt90:
+    nome: Tivio ALT 90
+    vertical: credito_estruturado
+    carteira: TIVIO ALT HY 90 FIDC RL
+    busca: [ALT HY 90]
+    logo: ALT_90
+    relatorio: true
+    performance_fixa: true
+
+  altlight:
+    nome: Tivio ALT Light
+    vertical: credito_estruturado
+    carteira: TIVIO ALT LIGHT XP SEG PREV FC MULT CP RL - Expandida
+    busca: [ALT LIGHT]
+    logo: ALT_LIGHT
+    relatorio: true
+
+  # ------------------------------------------------- Investment Solutions
+  topgestor:         {nome: BV Top Gestor Crédito Privado,  vertical: investment_solutions, carteira: BV TOP GESTOR CRED PRIV FC FIM}
+  topgestorhy:       {nome: Tivio Top Gestor HY,            vertical: investment_solutions, carteira: TIVIO TOP GESTOR HY FIF RL}
+  topgestorativo:    {nome: BV Top Gestor RF Ativo,         vertical: investment_solutions, carteira: BV TOP GESTOR RF ATIVO FC FI LP}
+  topgestormacro:    {nome: BV Top Gestor Macro,            vertical: investment_solutions, carteira: BV TOP GESTOR MACRO FC FIM}
+  topgestorlongonly: {nome: Top Gestor Ações Long Only,     vertical: investment_solutions, carteira: TOP GESTOR AÇÕES LONG ONLY FC}
+  topmanagerglobal:  {nome: Tivio Top Manager Global,       vertical: investment_solutions, carteira: TIVIO TOP MANAG GLOBAL ALLOC FIF AÇÕES, retorno: absoluto}
+  ativorf:           {nome: Tivio RF Ativo Longo Prazo,     vertical: investment_solutions, carteira: TIVIO RF ATIVO LONGO PRAZO FI}
+  prevlowvol:        {nome: Tivio Prev Low Vol Itaú,        vertical: investment_solutions, carteira: "TIVIO PREV LOW VOL ITAÚ I FIF CIC MULT RL - Expandida"}
+
+# chaves com nome diferente em algum HTML legado
+alias:
+  infra: infraplus
+
+# rótulo exibido no lugar de "Taxa de administração"
+rotulo_taxa: Taxa global
+
+# nome amigável das classes do treemap de Crédito Estruturado (coluna 'Tipo aj.')
+tipo_label:
+  FIDC Sr: FIDCs Cotas Sênior
+  FIDC Mez/Sub: FIDCs Cotas Mezanino
+  Caixa: Liquidez
+  Debênture: Crédito Privado
+  LF: Bancário
+  LFSC: Bancário
+  LFSN: Bancário
+  CDB: Bancário
+  DPGE: Bancário
+  Precatório: Precatório
+  CRA: Fiagro
+  Outros fundos: Crédito Estruturado
+  ordinária: Ações

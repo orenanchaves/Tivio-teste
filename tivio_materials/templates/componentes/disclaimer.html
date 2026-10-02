@@ -1,0 +1,12 @@
+{# Faixa escura do rodapé: posicionada no fim da folha pelo CSS (.discwrap).
+   Não leva número de página: o .pgnum é azul-escuro e sobre esta faixa some. #}
+<div class="discwrap">
+  <div class="dh">{{ titulo }}</div>
+  {% for p in disclaimer %}<p>{{ p|safe }}</p>{% endfor %}
+  <div class="contacts">
+    <div class="ci"><div><b>SAC: 0800 704 8383</b><br>Atendimento 24 horas</div></div>
+    <div class="ci"><div><b>Ouvidoria: 0800 727 9933</b><br>Das 9h às 18h, de segunda a
+      sexta, exceto feriados nacionais</div></div>
+    <div class="ci"><div><b>tivio.com/fundos</b><br>Rating S&amp;P: AMP-1</div></div>
+  </div>
+</div>

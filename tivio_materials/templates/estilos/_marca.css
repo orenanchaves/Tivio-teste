@@ -1,0 +1,24 @@
+/* Design system Tivio — extraído do gerador HTML oficial.
+   Fonte Versos via CDN da marca; tokens de cor idênticos aos materiais. */
+@font-face{font-family:Versos;src:local("Versos ExtraLight"),local("Versos-ExtraLight"),url(https://cdn-sites-assets.mziq.com/wp-content/themes/mziq_tivio_capital/assets/fonts/Versos-ExtraLight.woff2) format("woff2");font-weight:200;font-display:swap}@font-face{font-family:Versos;src:local("Versos ExtraLight"),local("Versos-ExtraLight"),url(https://cdn-sites-assets.mziq.com/wp-content/themes/mziq_tivio_capital/assets/fonts/Versos-ExtraLight.woff2) format("woff2");font-weight:300;font-display:swap}@font-face{font-family:Versos;src:local("Versos Regular"),local("Versos-Regular"),url(https://cdn-sites-assets.mziq.com/wp-content/themes/mziq_tivio_capital/assets/fonts/Versos-Regular.woff2) format("woff2");font-weight:400;font-display:swap}@font-face{font-family:Versos;src:local("Versos SemiBold"),local("Versos-SemiBold"),url(https://cdn-sites-assets.mziq.com/wp-content/themes/mziq_tivio_capital/assets/fonts/Versos-SemiBold.woff2) format("woff2");font-weight:600;font-display:swap}@font-face{font-family:Versos;src:local("Versos Bold"),local("Versos-Bold"),url(https://cdn-sites-assets.mziq.com/wp-content/themes/mziq_tivio_capital/assets/fonts/Versos-Bold.woff2) format("woff2");font-weight:700;font-display:swap}
+:root{
+  --tv-verde:#C1F4D4;--tv-verde-escuro:#92D3AB;--tv-verde-light-accent:#337F51;
+  --tv-preto:#000;--tv-branco:#FFF;--tv-offwhite:#E6EDF1;
+  --tv-azul-escuro:#3C4A60;--tv-azul:#759DB4;--tv-cinza:#637881;--tv-cinza-claro:#ABC6CD;
+  --tv-azul-imob:#C8D7E0;--tv-bradesco:#CC092F;--tv-agro:#52B97A;--tv-line:#D4E0E6;
+  --bg-base:#0A0F14;--bg-elev-1:#12181F;
+  --bg-glass:linear-gradient(135deg,rgba(255,255,255,.06),rgba(255,255,255,.015));
+  --bg-glass-strong:linear-gradient(135deg,rgba(255,255,255,.09),rgba(255,255,255,.02));
+  --bg-radial:radial-gradient(1200px 800px at 15% -10%,rgba(117,157,180,.14),transparent 60%),radial-gradient(900px 700px at 110% 10%,rgba(200,215,224,.08),transparent 60%);
+  --text-primary:#FFF;--text-secondary:#E6EDF1;--text-muted:#8A99A3;
+  --line:rgba(255,255,255,.10);--line-strong:rgba(255,255,255,.18);
+  --header-bg:rgba(10,15,20,.65);--input-bg:rgba(255,255,255,.03);--overlay:rgba(6,10,14,.86);
+  --accent-strong:var(--tv-azul);--pill-bg:rgba(117,157,180,.14);--pill-border:rgba(200,215,224,.38);
+  --glow:0 0 60px rgba(117,157,180,.22);
+  --ff:"Versos","Helvetica Neue",Helvetica,Arial,sans-serif;
+  --r-sm:8px;--r-md:12px;--r-lg:20px;--r-xl:28px;--r-full:999px;--container:1400px;
+  --ease:cubic-bezier(.22,.9,.32,1);--ease-soft:cubic-bezier(.16,.84,.28,1);
+  --btn-radius:var(--r-full);--btn-gap:10px;--btn-weight:600;
+  --btn-focus-ring:0 0 0 3px color-mix(in srgb,var(--accent-strong) 45%,transparent);
+  --safe-b:env(safe-area-inset-bottom,0px);
+}

@@ -1,0 +1,13 @@
+# Planilhas de dados: grandes e trocadas todo mês — não versionar.
+# A taxas_global e o preenchimento_manual são pequenos e ficam, como exemplo.
+entrada/dados_mensais.xlsx
+
+# Cache da leitura da planilha (invalida sozinho por tamanho+mtime)
+.cache/
+
+# Saída: regenerável a partir das entradas
+reports/
+logs/
+
+__pycache__/
+*.pyc

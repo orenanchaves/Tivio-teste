@@ -1,0 +1,28 @@
+# ============================================================================
+# Relatório de Gestão — composição por seções
+# ----------------------------------------------------------------------------
+# Cada seção pode ser ligada/desligada sem alterar código. A ordem desta lista
+# é a ordem no relatório; `pagina` controla a quebra de página do PDF.
+# `por_fundo` sobrescreve a composição padrão para um fundo específico.
+# ============================================================================
+
+secoes:
+  - {id: objetivo,        pagina: 1, titulo: OBJETIVO DA CARTEIRA}
+  - {id: rentabilidade,   pagina: 1, titulo: RENTABILIDADE}
+  - {id: emissores,       pagina: 1, titulo: PRINCIPAIS EMISSORES}
+  - {id: setores,         pagina: 1, titulo: ALOCAÇÃO DA CARTEIRA DE CRÉDITO POR SETOR}
+  - {id: rating,          pagina: 1, titulo: DISTRIBUIÇÃO DE RATING DA CARTEIRA DE CRÉDITO}
+  - {id: historico,       pagina: 2, titulo: RENTABILIDADE HISTÓRICA}
+  - {id: comentario,      pagina: 2, titulo: "Comentário do Gestor e Análise de Mercado"}
+  - {id: mercado_credito, pagina: 3, titulo: MERCADO DE CRÉDITO}
+  - {id: caracteristicas, pagina: 4, titulo: CARACTERÍSTICAS GERAIS DO FUNDO}
+  - {id: disclaimer,      pagina: 4, titulo: Disclaimer}
+
+# ajustes por fundo (só o que difere do padrão)
+por_fundo:
+  altlight:
+    desligar: [mercado_credito]     # fundo previdenciário, sem a tabela ANBIMA
+  alt90:
+    desligar: [rating]
+  alt180:
+    desligar: [rating]

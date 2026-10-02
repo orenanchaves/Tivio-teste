@@ -1,0 +1,15 @@
+{# Grid de duas colunas: rótulo com fio embaixo, valor abaixo.
+   As classes .fk/.fv são as do CSS do relatório — não inventar nomes aqui. #}
+<h2 class="sh" style="margin-top:28px">{{ titulo|title }}</h2>
+<div class="featgrid">
+  {% for rotulo, valor in caracteristicas %}
+  <div><div class="fk">{{ rotulo }}</div><div class="fv">{{ valor }}</div></div>
+  {% endfor %}
+  {% if operacional %}
+  <div><div class="fk">Informações operacionais</div>
+    <div class="fv">
+      {%- for rotulo, valor in operacional %}{{ rotulo }}: <b>{{ valor }}</b>{% if not loop.last %} · {% endif %}{% endfor -%}
+    </div>
+  </div>
+  {% endif %}
+</div>

@@ -1,0 +1,14 @@
+{# Tabela setorial ANBIMA — vem de entrada/preenchimento_manual.xlsx,
+   aba Mercado_Credito. É o único bloco do relatório que não sai das cotas. #}
+<h3 class="chart-h">{{ titulo }}<sup>1</sup></h3>
+<table class="mkt">
+  <thead><tr>{% for h in mercado.cabecalho %}<th>{{ h }}</th>{% endfor %}</tr></thead>
+  <tbody>
+    {% for linha in mercado.linhas %}
+    <tr{% if linha.total %} class="total"{% endif %}>
+      {% for cel in linha.celulas %}<td>{{ cel }}</td>{% endfor %}
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+<div class="mktnote">{{ mercado.nota }}</div>

@@ -1,0 +1,23 @@
+{# Tabela de rentabilidade · 6 períodos.
+   A tabela do relatório publicado hoje vem com as linhas "Fundo" e o benchmark
+   inteiras em "—": só a linha de % do CDI está preenchida. Aqui as três linhas
+   saem do mesmo contexto, então não existe o estado "meia tabela". #}
+<table class="perf">
+  <thead>
+    <tr><th></th>{% for p in periodos %}<th>{{ p }}</th>{% endfor %}</tr>
+  </thead>
+  <tbody>
+    <tr class="fundo"><td>Fundo</td>
+      {% for v in linhas.fundo %}<td>{{ v }}</td>{% endfor %}</tr>
+    <tr><td>{{ c.benchmark }}</td>
+      {% for v in linhas.bench %}<td>{{ v }}</td>{% endfor %}</tr>
+    {% if linhas.pct %}
+    <tr><td>% do {{ c.benchmark }}</td>
+      {% for v in linhas.pct %}<td>{{ v }}</td>{% endfor %}</tr>
+    {% else %}
+    <tr><td>Alfa</td>
+      {% for v in linhas.alfa %}<td>{{ v }}</td>{% endfor %}</tr>
+    {% endif %}
+  </tbody>
+</table>
+<div class="databox">Data base: {{ edicao.br }}</div>

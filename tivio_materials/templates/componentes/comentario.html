@@ -1,0 +1,8 @@
+<div class="commentbox">
+  <h3 class="chart-h">{{ titulo }}</h3>
+  {% for p in c.comentario_preenchido %}<p>{{ p|safe }}</p>{% endfor %}
+  {% if not c.comentario %}
+  <p class="histvazio">Comentário não preenchido em
+    <code>{{ arquivo_comentarios }}</code> para <b>{{ c.nome }}</b>.</p>
+  {% endif %}
+</div>

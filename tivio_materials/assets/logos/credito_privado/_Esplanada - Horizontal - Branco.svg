@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 548 120">
+  <defs>
+    <style>
+      .cls-1 {
+        letter-spacing: 0em;
+      }
+
+      .cls-2, .cls-3 {
+        fill: #fff;
+      }
+
+      .cls-3 {
+        font-family: VersosVariable-Bold, 'Versos Variable';
+        font-size: 48.02px;
+        font-variation-settings: 'wght' 700, 'ital' 0;
+        font-weight: 700;
+      }
+
+      .cls-4 {
+        fill: #7a8c91;
+      }
+
+      .cls-5 {
+        letter-spacing: -.04em;
+      }
+    </style>
+  </defs>
+  <g id="Background">
+    <rect width="548" height="120"/>
+  </g>
+  <g id="INFRA_PLUS" data-name="INFRA PLUS">
+    <g>
+      <g>
+        <path class="cls-2" d="M53.62,48.74h-10.27v-3.62h24.39v3.62h-10.27v26.22h-3.84v-26.22Z"/>
+        <path class="cls-2" d="M71.35,71.34h6.91v-22.6h-6.91v-3.62h17.65v3.62h-6.91v22.6h6.91v3.62h-17.65v-3.62Z"/>
+        <path class="cls-2" d="M92.2,45.12h4.26l8.74,26.65h1.11l8.7-26.65h4.26l-10.1,29.84h-6.86l-10.1-29.84Z"/>
+        <path class="cls-2" d="M122.47,71.34h6.91v-22.6h-6.91v-3.62h17.65v3.62h-6.91v22.6h6.91v3.62h-17.65v-3.62Z"/>
+        <path class="cls-2" d="M149.94,73.79c-2.06-1.07-3.65-2.61-4.75-4.63s-1.66-4.41-1.66-7.16v-3.88c0-2.73.55-5.1,1.66-7.12s2.69-3.57,4.75-4.67c2.06-1.09,4.48-1.64,7.27-1.64s5.21.53,7.27,1.6c2.06,1.07,3.64,2.61,4.75,4.63,1.11,2.02,1.66,4.41,1.66,7.16v3.88c0,2.73-.55,5.1-1.66,7.12-1.11,2.02-2.69,3.57-4.75,4.67-2.06,1.09-4.48,1.64-7.27,1.64s-5.21-.53-7.27-1.6ZM150.11,69.1c1.69,1.69,4.06,2.54,7.1,2.54s5.44-.84,7.12-2.52c1.68-1.68,2.51-4.06,2.51-7.16v-3.88c0-3.04-.85-5.41-2.54-7.1-1.69-1.69-4.06-2.54-7.1-2.54s-5.44.84-7.12,2.52c-1.68,1.68-2.52,4.06-2.52,7.16v3.88c0,3.04.85,5.41,2.54,7.1Z"/>
+      </g>
+      <rect class="cls-4" x="183.34" y="32.63" width="321.32" height="52.56"/>
+      <text class="cls-3" transform="translate(193.98 75.61)"><tspan class="cls-1" x="0" y="0">E</tspan><tspan x="29.77" y="0">SPLANA</tspan><tspan class="cls-5" x="230.41" y="0">D</tspan><tspan x="264.17" y="0">A</tspan></text>
+    </g>
+  </g>
+</svg>

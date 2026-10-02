@@ -1,0 +1,86 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>{{ f.nome }} · Relatório de Gestão · {{ edicao.mes_ano }}</title>
+<meta name="description" content="Relatório de gestão mensal — {{ f.nome }}, data base {{ edicao.br }}.">
+<style>
+{{ css_marca|safe }}
+{{ css_relatorio|safe }}
+
+/* ---- folha solta: o relatório gerado é só as páginas, sem a UI do gerador --- */
+html,body{margin:0;padding:0;background:#f2f5f7}
+body{font-family:var(--ff);-webkit-font-smoothing:antialiased}
+.folhas{display:flex;flex-direction:column;align-items:center;gap:24px;padding:24px}
+.rcard{box-shadow:0 10px 40px rgba(16,28,40,.14);border-radius:2px}
+
+/* ---- PDF: uma folha por página, sem margem do navegador ------------------
+   É isto que separa "PDF institucional" de "impressão de navegador": a
+   página do PDF tem exatamente o tamanho da folha, a folha não ganha
+   sombra nem fundo cinza, e nada quebra no meio. */
+@page{size:210mm 297mm;margin:0}
+@media print{
+  html,body{background:#fff}
+  .folhas{display:block;gap:0;padding:0}
+  .rcard{box-shadow:none;border-radius:0;break-after:page;page-break-after:always;
+         width:210mm;height:297mm}
+  .rcard:last-child{break-after:auto;page-break-after:auto}
+}
+.histvazio{color:#8A99A3;font-size:13px;padding:10px 0}
+/* a caixa da marca é preta no gerador interativo; aqui a faixa já é escura,
+   e o retângulo preto sobre o degradê lê como erro de render */
+.rc-head .rbox{background:transparent}
+.feat.op .fv{line-height:1.55}
+</style>
+</head>
+<body>
+<div class="folhas">
+
+{% for pagina in paginas %}
+  <section class="rcard" data-pagina="{{ pagina.numero }}">
+
+    {# cabeçalho: alto na página 1 (com logo e CNPJ), fino nas demais #}
+    <header class="rc-head {{ 'big' if pagina.numero == 1 else 'slim' }}">
+      <div class="bgband"></div>
+      <div class="hl">
+        {% if logo_svg %}
+        <div class="fund-logo">{{ logo_svg|safe }}</div>
+        {% else %}
+        <div class="heye">Relatório de Gestão</div>
+        <div class="hname">{{ f.nome }}</div>
+        {% endif %}
+        {% if pagina.numero == 1 and c.f.cnpj %}
+        <div class="hcnpj">CNPJ: {{ c.f.cnpj }}{% if c.f.benchmark %} · Benchmark: {{ c.benchmark }}{% endif %}</div>
+        {% endif %}
+        <div class="hdate">{{ edicao.mes_ano }}</div>
+      </div>
+      {% if marca_svg %}<div class="rbox">{{ marca_svg|safe }}</div>{% endif %}
+    </header>
+
+    <div class="rc-body">
+      {% for secao in pagina.secoes %}
+        {% if secao.id in ('emissores', 'setores') and secao.primeiro_do_par %}
+        <div class="twocol">
+        {% endif %}
+
+        {# cada componente recebe o seu título da composição, não escrito nele #}
+        {% with titulo = titulos[secao.id] %}
+          {% include 'componentes/' + secao.id + '.html' with context %}
+        {% endwith %}
+
+        {% if secao.id in ('emissores', 'setores') and secao.ultimo_do_par %}
+        </div>
+        {% endif %}
+      {% endfor %}
+    </div>
+
+    {% if 'disclaimer' not in pagina.secoes|map(attribute='id')|list %}
+    <div class="pgnum"><b>{{ pagina.numero }}</b> / {{ paginas|length }}</div>
+    {% endif %}
+  </section>
+{% endfor %}
+
+</div>
+</body>
+</html>

@@ -1,0 +1,39 @@
+# ============================================================================
+# Edição mensal · Central de Materiais Tivio Capital
+# ----------------------------------------------------------------------------
+# Esta é a ÚNICA data do sistema. Tudo o que aparece nos materiais — "Agosto de
+# 2026", "ago/26", "Data base: 31/08/2026", o nome dos PDFs, os cards da
+# Central, a aba de edição ativa — é derivado daqui.
+#
+# data_base vazia = usa o último mês fechado disponível na planilha.
+# ============================================================================
+
+data_base:            # ex.: 2026-08-31   (vazio = último mês fechado)
+
+# ---------------------------------------------------------------- o que gerar
+saidas:
+  html: true
+  pdf: true
+  pptx: true
+
+# materiais desta edição; false desliga sem mexer em código
+materiais:
+  relatorio_gestao: true          # produto principal — um relatório por fundo
+  post_credito_estruturado: true
+  post_credito_privado: true
+  post_investment_solutions: true
+  email_fundos_credito: true
+  central: true
+  email_nordea: false             # não é mensal
+  one_pager: false                # schema próprio, fora da base mensal
+
+# ------------------------------------------------------------------- entradas
+entradas:
+  dados: entrada/dados_mensais.xlsx
+  taxas: entrada/taxas_global.xlsx
+  comentarios: entrada/comentarios.md        # .md ou .xlsx; o loader aceita os dois
+  manual: entrada/preenchimento_manual.xlsx  # mercado de crédito + overrides
+
+# ------------------------------------------------------------------ governança
+# para em vez de publicar quando a conferência acha problema grave
+parar_em_erro: true
