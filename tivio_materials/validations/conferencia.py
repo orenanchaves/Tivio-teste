@@ -29,11 +29,28 @@ PERIODOS = ['mes', 'ano', '12m', '24m', '36m', 'inicio']
 
 
 class Conferencia:
-    def __init__(self, edicao, log):
+    def __init__(self, edicao, log, spreads=None):
         self.edicao = edicao
         self.log = log
         self.divergencias = []
         self.faltantes = []
+        # Percentuais da tabela de Mercado de Crédito. O comentário do gestor
+        # cita os spreads do mercado ("passando de CDI + 1,19% para CDI +
+        # 1,22%"), que não são valores do fundo — sem esta lista eles viravam
+        # divergência toda edição, e um aviso que sempre aparece é um aviso que
+        # ninguém lê.
+        self.do_mercado = self._percentuais_do_mercado(spreads)
+
+    @staticmethod
+    def _percentuais_do_mercado(spreads):
+        valores = set()
+        for tabela in (spreads or {}).values():
+            for linha in tabela.get('linhas', []):
+                for celula in linha.get('celulas', []):
+                    m = re.fullmatch(r'-?(\d{1,3}(?:,\d{1,2})?)%', str(celula).strip())
+                    if m:
+                        valores.add(round(float(m.group(1).replace(',', '.')), 2))
+        return valores
 
     # ------------------------------------------------------------- checagens
     def checar(self, ctx):
@@ -164,6 +181,7 @@ class Conferencia:
             for serie in ('setores', 'rating'):
                 for x in ctx.cart[serie]:
                     plausiveis.add(round(abs(x) * 100, 2))
+        plausiveis |= self.do_mercado
 
         # Tolerância relativa, não absoluta — e a diferença importa. Uma folga
         # fixa de 1 p.p. aceitaria 1,01% no lugar de 1,10%, que é exatamente o

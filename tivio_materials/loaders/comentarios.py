@@ -1,5 +1,8 @@
 # -*- coding: utf-8 -*-
-"""Comentários do gestor — em Markdown ou Excel.
+"""Comentários do gestor — em Markdown, Word ou Excel.
+
+Três formatos porque o texto chega em três formatos, e obrigar a converter é
+criar mais um passo manual no processo que este ambiente existe para encurtar.
 
 O formato pedido é Markdown, que é o que um gestor consegue editar sem abrir
 planilha:
@@ -21,15 +24,22 @@ sem distinguir caixa nem acento — "# Infra Plus CDI", "# infrapluscdi" e
 Também aceita a planilha antiga (abas Comentarios_Relatorio / Comentarios_Email
 com colunas chave, p1..p4) para não obrigar a migrar tudo de uma vez.
 """
+import html as _html
 import os
 import re
 import unicodedata
+import zipfile
 
 import pandas as pd
 
+# "Fundo Tivio Institucional" e "Tivio Institucional" são o mesmo título; o
+# prefixo varia de um fundo para outro no mesmo documento
+PREFIXOS = re.compile(r'^(?:o\s+)?fundo\s+', re.I)
+
 
 def _norm(s):
-    s = unicodedata.normalize('NFKD', str(s)).encode('ascii', 'ignore').decode()
+    s = PREFIXOS.sub('', str(s).strip())
+    s = unicodedata.normalize('NFKD', s).encode('ascii', 'ignore').decode()
     return re.sub(r'[^a-z0-9]', '', s.lower())
 
 
@@ -85,6 +95,48 @@ def _do_markdown(texto):
     return out
 
 
+def _do_docx(path):
+    """Word: parágrafo inteiramente em negrito é título de fundo.
+
+    É a convenção que o documento do gestor já usa — não foi preciso pedir
+    nada. O resto do parágrafo segue como está, inclusive a pontuação.
+
+    O documento começa com uma seção "Cenário" (o texto de mercado comum a
+    todos). Ela vira uma entrada como qualquer outra; como não existe fundo com
+    esse nome, simplesmente não é usada — e fica disponível caso um dia se
+    queira montar o comentário juntando cenário + parágrafo do fundo.
+    """
+    with zipfile.ZipFile(path) as z:
+        xml = z.read('word/document.xml').decode('utf-8')
+
+    def texto(trecho):
+        # <w:br/> e <w:tab/> viram espaço, senão palavras colam
+        trecho = re.sub(r'<w:(?:br|tab)\b[^>]*/?>', ' ', trecho)
+        return re.sub(r'\s+', ' ', _html.unescape(re.sub(r'<[^>]+>', '', trecho))).strip()
+
+    out, atual, buf = {}, None, []
+    for p in re.findall(r'<w:p\b.*?</w:p>', xml, re.S):
+        t = texto(p)
+        if not t:
+            continue
+        runs = [r for r in re.findall(r'<w:r\b.*?</w:r>', p, re.S) if texto(r)]
+        # <w:b/> e <w:b w:val="1"/> contam; <w:bCs/> (negrito de script
+        # complexo) não — por isso o lookahead negativo
+        negrito = bool(runs) and all(re.search(r'<w:b\b(?![a-zA-Z])', r) for r in runs)
+        if negrito and len(t) < 80 and not t.endswith('.'):
+            if atual:
+                out[atual] = buf
+            atual, buf = _norm(t), []
+        elif atual is not None:
+            buf.append(t)
+        else:
+            # texto antes do primeiro título em negrito: a seção de abertura
+            atual, buf = _norm(t), []
+    if atual:
+        out[atual] = buf
+    return out
+
+
 def _do_excel(path):
     xl = pd.read_excel(path, sheet_name=None, dtype=str)
     rel, eml = {}, {}
@@ -106,17 +158,41 @@ def _do_excel(path):
 
 
 def carregar(caminho):
-    """Aceita .md, .xlsx ou caminho inexistente (devolve vazio)."""
+    """Aceita um caminho ou uma lista deles (.md, .docx, .xlsx).
+
+    Com vários, o primeiro que define um fundo vence. É o que permite manter o
+    documento do gestor como fonte principal e um .md ao lado só com o que ele
+    não cobre — hoje, os textos do ALT 90 e do ALT 180, que chegaram por outro
+    canal.
+    """
+    if isinstance(caminho, (list, tuple)):
+        rel, eml, origens = {}, {}, []
+        for c in caminho:
+            parte = carregar(c)
+            if not len(parte) and not parte._email:
+                continue
+            origens.append(parte.origem)
+            for k, v in parte._rel.items():
+                rel.setdefault(k, v)
+            for k, v in parte._email.items():
+                eml.setdefault(k, v)
+        return Comentarios(rel, eml, ' + '.join(origens) or '(nenhum arquivo de comentários)')
+
     if not caminho or not os.path.exists(caminho):
-        # tenta o par: comentarios.md <-> comentarios.xlsx
+        # tenta os irmãos: comentarios.md <-> .docx <-> .xlsx
         if caminho:
-            alt = os.path.splitext(caminho)[0] + ('.xlsx' if caminho.endswith('.md') else '.md')
-            if os.path.exists(alt):
-                caminho = alt
+            raiz = os.path.splitext(caminho)[0]
+            for ext in ('.docx', '.md', '.xlsx'):
+                if os.path.exists(raiz + ext):
+                    caminho = raiz + ext
+                    break
             else:
                 return Comentarios(origem='(nenhum arquivo de comentários)')
         else:
             return Comentarios(origem='(nenhum arquivo de comentários)')
+
+    if caminho.lower().endswith('.docx'):
+        return Comentarios(_do_docx(caminho), {}, os.path.basename(caminho))
 
     if caminho.lower().endswith(('.xlsx', '.xlsm')):
         rel, eml = _do_excel(caminho)

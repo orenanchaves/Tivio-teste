@@ -132,8 +132,29 @@ class RenderizadorRelatorio:
         3. classes genéricas (`.cls-1`, `.cls-2`) num `<style>` global — dois logos
            na mesma página disputam a mesma regra e um pinta o outro.
         """
-        # 1: fora o retângulo de fundo
+        # 1: fora a chapa de fundo.
+        # O exportador do Illustrator põe um retângulo do tamanho do quadro,
+        # sem `fill` — e SVG sem fill pinta de preto. Sobre a faixa azul do
+        # cabeçalho isso vira um bloco preto cobrindo o logo. O marcador varia:
+        # às vezes é `<g id="Background">`, às vezes o id está no próprio <svg>
+        # e o retângulo é filho direto. Então o critério não é o nome do grupo,
+        # é a forma: retângulo do tamanho do viewBox e sem cor própria.
         svg = re.sub(r'<g id="Background">.*?</g>', '', svg, flags=re.S)
+        vb = re.search(r'viewBox="\s*[\d.+-]+\s+[\d.+-]+\s+([\d.]+)\s+([\d.]+)', svg)
+        if vb:
+            larg, alt = vb.group(1), vb.group(2)
+
+            def chapa(m):
+                tag = m.group(0)
+                if re.search(r'\b(fill|class|style)\s*=', tag):
+                    return tag
+                w = re.search(r'\bwidth="([\d.]+)"', tag)
+                h = re.search(r'\bheight="([\d.]+)"', tag)
+                if w and h and w.group(1) == larg and h.group(1) == alt:
+                    return ''
+                return tag
+
+            svg = re.sub(r'<rect\b[^>]*/?>', chapa, svg)
         # 2: altura do contêiner. Por CSS, não por atributo: o atributo `width`
         # do SVG é um comprimento, não aceita "auto" — o navegador rejeita e
         # loga um erro por página.
@@ -147,20 +168,41 @@ class RenderizadorRelatorio:
             svg = re.sub(rf'class="{re.escape(c)}"', f'class="{prefixo}-{c}"', svg)
         return svg.replace('<?xml version="1.0" encoding="UTF-8"?>', '').strip()
 
-    def logo(self, fundo):
-        """SVG do fundo, preferindo horizontal branco (a faixa é escura)."""
-        alvo = _slug_logo(fundo.cfg.get('logo') or fundo.nome)
-        ordem = ['horizontal_branco', 'horizontal_branco_01', 'vertical_branco',
+    # variantes, em ordem de preferência (a faixa do cabeçalho é escura)
+    VARIANTES = ['horizontal_branco', 'vertical_branco',
                  'horizontal_preto', 'vertical_preto']
-        for suf in ordem:
-            for chave, caminho in sorted(self._logos.items()):
-                if chave.strip('_').startswith(alvo) and suf in chave:
-                    return self._preparar_svg(open(caminho, encoding='utf-8').read(),
-                                              fundo.key)
+
+    @staticmethod
+    def _casa_logo(chave, alvo):
+        """O arquivo é deste fundo, e não de um fundo de nome mais longo?
+
+        "Infra Plus" é prefixo de "Infra Plus CDI": casar por prefixo simples
+        põe a marca do Infra Plus CDI no relatório do Infra Plus. O que
+        distingue é o que vem logo depois do nome — num arquivo deste fundo,
+        só a variante.
+        """
+        chave = chave.strip('_')
+        if not chave.startswith(alvo):
+            return None
+        resto = chave[len(alvo):].strip('_')
+        for i, variante in enumerate(RenderizadorRelatorio.VARIANTES):
+            # aceita o sufixo numerado do Crédito Estruturado (…_branco_01)
+            if resto == variante or re.fullmatch(rf'{variante}_\d+', resto):
+                return i
+        return None
+
+    def logo(self, fundo):
+        """SVG do fundo, na variante que melhor assenta sobre a faixa escura."""
+        alvo = _slug_logo(fundo.cfg.get('logo') or fundo.nome)
+        candidatos = []
         for chave, caminho in sorted(self._logos.items()):
-            if chave.strip('_').startswith(alvo):
-                return self._preparar_svg(open(caminho, encoding='utf-8').read(),
-                                          fundo.key)
+            ordem = self._casa_logo(chave, alvo)
+            if ordem is not None:
+                candidatos.append((ordem, chave, caminho))
+        if candidatos:
+            candidatos.sort()
+            return self._preparar_svg(
+                open(candidatos[0][2], encoding='utf-8').read(), fundo.key)
         self.log.aviso(fundo.key, f'logo não encontrado em assets/logos (procurei "{alvo}")')
         return ''
 
@@ -182,7 +224,7 @@ class RenderizadorRelatorio:
             vazias.add('rating')
         if not ctx.hist12:
             vazias.add('historico')
-        if not self.mercado():
+        if not self.mercado(ctx):
             vazias.add('mercado_credito')
         secoes = [s for s in secoes if s['id'] not in vazias]
         if vazias:
@@ -234,16 +276,21 @@ class RenderizadorRelatorio:
         return round(tam, 2)
 
     # ----------------------------------------------------------------- blocos
-    def mercado(self):
-        """Tabela setorial ANBIMA.
+    def mercado(self, ctx=None):
+        """Tabela setorial ANBIMA — a do mercado em que o fundo opera.
 
-        Duas origens, nesta ordem: `entrada/tabela_spreads.xlsx`, que é a
-        planilha que a área já produz todo mês; e, se ela não existir, a aba
-        Mercado_Credito do preenchimento manual, que é a mesma tabela digitada à
-        mão. A segunda existe só para a transição — são 150 células por edição.
+        A planilha traz duas: CDI+ e IPCA+. Não são formatações diferentes do
+        mesmo dado, são mercados diferentes, com colunas diferentes. O fundo de
+        CDI mostra a primeira; o indexado à inflação, a segunda. Escolher pela
+        primeira aba poria no relatório do Infra Plus a tabela do mercado de CDI.
+
+        Se a planilha não existir, cai na aba Mercado_Credito do preenchimento
+        manual — a mesma tabela digitada à mão, que existe só para a transição.
         """
         if self.spreads:
-            return self.spreads
+            from loaders.spreads import para_fundo
+            bench = ctx.benchmark if ctx is not None else 'CDI'
+            return para_fundo(self.spreads, bench)
         df = self.manual.get('Mercado_Credito')
         if df is None or not len(df):
             return None
@@ -327,7 +374,7 @@ class RenderizadorRelatorio:
             'barras': grafico.barras_horizontais,
             'rating_cols': grafico.colunas_rating,
             'grafico': grafico.linha_historica(ctx.hist12, ctx.benchmark),
-            'mercado': self.mercado(),
+            'mercado': self.mercado(ctx),
             'caracteristicas': self.caracteristicas(ctx),
             'operacional': self.operacional(f),
             'disclaimer': DISCLAIMER_PADRAO,

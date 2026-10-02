@@ -227,7 +227,7 @@ class ExportadorPPTX:
         self._rodape(s, 2)
 
         # ---------------- slide 3: mercado de crédito
-        mercado = renderizador.mercado()
+        mercado = renderizador.mercado(ctx)
         secoes_do_fundo = {x['id'] for x in renderizador.secoes_do_fundo(f.key)}
         if mercado and 'mercado_credito' in secoes_do_fundo:
             s = self._slide(prs)

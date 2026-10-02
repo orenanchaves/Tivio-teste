@@ -1,179 +1,207 @@
 # -*- coding: utf-8 -*-
 """Tabela de spreads por setor (Mercado de Crédito) — entrada mensal própria.
 
-Hoje essa tabela é digitada na aba Mercado_Credito do preenchimento_manual.xlsx.
-São ~25 setores × 6 colunas, 150 células por mês, copiadas de outra planilha —
-é o tipo de passo onde um número entra errado e ninguém confere, porque conferir
+Antes essa tabela era digitada na aba Mercado_Credito do preenchimento manual:
+~25 setores × 6 colunas, 150 células por edição copiadas de outra planilha. É o
+tipo de passo onde um número entra errado e ninguém confere, porque conferir
 custa tanto quanto redigitar.
 
-Com `entrada/tabela_spreads.xlsx` o bloco passa a ser lido direto da planilha que
-já existe. A leitura é tolerante de propósito:
+A planilha real (`tabela_spreads.xlsx`) tem três características que o loader
+precisa respeitar, e nenhuma delas é "uma tabela começando em A1":
 
-* o cabeçalho não precisa estar na linha 1 — é procurado pela palavra "Setor";
-* as colunas são casadas por nome aproximado, não por posição, porque "Spread
-  mês anterior" vira "Spread Mês Anterior" ou "Spread anterior" entre uma versão
-  e outra da planilha;
-* número e texto são aceitos: 0,0114 e "1,14%" chegam no mesmo lugar.
+1. **Duas abas, dois indexadores.** "spread mensal CDI+" e "spread mensal
+   IPCA+". Não são variações de formatação: são mercados diferentes. O fundo de
+   CDI mostra a primeira, o indexado a inflação mostra a segunda. Usar a errada
+   põe no relatório do Infra Plus a tabela do mercado de CDI.
 
-O que não é tolerante: se a planilha existir e a tabela não for reconhecida, o
-loader devolve None e o relatório sai **sem** o bloco, com aviso. Preencher um
-bloco de mercado com dados meio lidos é pior do que não ter o bloco.
+2. **Colunas diferentes em cada aba.** A de CDI+ tem Spread Atual/anterior; a de
+   IPCA+ tem Taxa Atual/anterior *e* Spread Atual/anterior, com duas colunas
+   "Variação". Por isso as colunas não são um esquema fixo no código: são lidas
+   do cabeçalho da aba, na ordem em que estão.
+
+3. **O total fica num bloco separado, acima do cabeçalho**, sem a coluna Setor.
+   Lido à parte e devolvido como última linha, que é onde o relatório o mostra.
+
+Percentual é decidido pelo **formato da célula**. A primeira versão deste loader
+adivinhava ("valor menor que 1 é fração") e errava em dois casos de toda edição:
+100% guardado como 1,0 virava "1,00%", e uma coluna de spreads inteira abaixo de
+1% seria multiplicada por 100. O Excel guarda a resposta no number_format.
 """
 import os
 import re
 import unicodedata
 
 import openpyxl
-import pandas as pd
-
-# nome exibido -> palavras que identificam a coluna na planilha
-COLUNAS = [
-    ('Setor',               ['setor']),
-    ('Volume (R$ MM)',      ['volume']),
-    ('%',                   ['%', 'part', 'peso']),
-    ('Spread Atual',        ['spreadatual', 'atual']),
-    ('Spread mês anterior', ['anterior']),
-    ('Variação',            ['variacao', 'var']),
-    ('Duration',            ['duration', 'duracao']),
-]
 
 NOTA = ('Debêntures precificadas pela ANBIMA corrigidas por CDI + spread. '
         'Desconsideramos as debêntures que começaram a ser precificadas ou que '
         'venceram ao longo do mês, para que a comparação com o mês anterior seja '
         'feita com a mesma base de ativos.')
 
+NOTA_IPCA = ('Debêntures incentivadas precificadas pela ANBIMA. Desconsideramos as '
+             'debêntures que começaram a ser precificadas ou que venceram ao longo '
+             'do mês, para que a comparação com o mês anterior seja feita com a '
+             'mesma base de ativos.')
+
+# nome da aba -> indexador do mercado
+INDEXADORES = [('ipca', 'IPCA'), ('ima-b', 'IPCA'), ('inflac', 'IPCA'), ('cdi', 'CDI')]
+
+# colunas que são quantidade, não percentual (decidido pelo nome)
+NAO_PERCENTUAL = ('volume', 'duration', 'duracao', 'setor')
+
 
 def _norm(s):
-    s = unicodedata.normalize('NFKD', str(s)).encode('ascii', 'ignore').decode()
-    return re.sub(r'[^a-z0-9%]', '', s.lower())
+    s = unicodedata.normalize('NFKD', str(s or '')).encode('ascii', 'ignore').decode()
+    return re.sub(r'[^a-z0-9%+]', '', s.lower())
 
 
 def _br(v, casas):
+    # -0,00% é ruído de arredondamento: a variação de -7,5e-06 do setor de
+    # energia vira "menos zero", que lê como erro. Zero arredondado é zero.
+    if round(v, casas) == 0:
+        v = abs(v)
     return f'{v:,.{casas}f}'.replace(',', 'X').replace('.', ',').replace('X', '.')
 
 
-def _fmt(valor, coluna, eh_fracao):
-    """Formata o valor. `eh_fracao` vem do formato da célula, não de palpite.
+def _indexador_da_aba(titulo):
+    t = _norm(titulo)
+    for pista, nome in INDEXADORES:
+        if _norm(pista) in t:
+            return nome
+    return None
 
-    A primeira versão adivinhava: "valor menor que 1 é fração". Isso erra em
-    dois casos que aparecem toda edição — 100% guardado como 1,0 virava "1,00%",
-    e uma coluna de spreads inteira abaixo de 1% (0,52%, 0,75%) seria
-    multiplicada por 100. O Excel guarda a resposta no formato da célula: se o
-    formato tem "%", o número está em fração. É isso que lemos.
-    """
-    if valor is None or (isinstance(valor, float) and pd.isna(valor)):
+
+def _fmt(valor, coluna, formato):
+    """Formata uma célula. `formato` é o number_format do Excel."""
+    if valor is None:
         return ''
     if isinstance(valor, str):
         return valor.strip()
+    try:
+        v = float(valor)
+    except (TypeError, ValueError):
+        return str(valor).strip()
 
-    v = float(valor)
-    if coluna == 'Volume (R$ MM)':
-        return _br(v, 0)
-    if coluna == 'Duration':
-        return _br(v, 2)
-    if eh_fracao:
+    nome = _norm(coluna)
+    if any(p in nome for p in NAO_PERCENTUAL):
+        return _br(v, 0) if 'volume' in nome else _br(v, 2)
+    if '%' in str(formato or ''):
         v *= 100
     return _br(v, 2) + '%'
 
 
-def _achar_cabecalho(df):
-    """Linha que contém "Setor" e alguma coluna de spread."""
-    for i in range(min(25, len(df))):
-        celulas = [_norm(x) for x in df.iloc[i].tolist()]
-        if any(c == 'setor' for c in celulas) and any('spread' in c for c in celulas):
-            return i
-    return None
+def _ler_aba(ws):
+    """(cabecalho, linhas de setor, linha de total) ou None."""
+    grade = []
+    for linha in ws.iter_rows():
+        grade.append([(c.value, c.number_format) for c in linha])
 
+    # cabeçalho = linha que tem "Setor" e alguma coluna de spread, taxa ou volume
+    i_cab = None
+    for i, linha in enumerate(grade[:40]):
+        nomes = [_norm(v) for v, _ in linha]
+        if 'setor' in nomes and any(p in n for n in nomes for p in ('spread', 'taxa', 'volume')):
+            i_cab = i
+            break
+    if i_cab is None:
+        return None
 
-def _mapear(cabecalho):
-    """{nome exibido: índice da coluna}, pelo nome aproximado."""
-    normalizados = [_norm(c) for c in cabecalho]
-    usados, mapa = set(), {}
-    for nome, pistas in COLUNAS:
-        for j, c in enumerate(normalizados):
-            if j in usados or not c:
+    cab_bruto = [(j, v) for j, (v, _) in enumerate(grade[i_cab]) if v is not None]
+    if not cab_bruto:
+        return None
+    colunas = [(j, str(v).strip()) for j, v in cab_bruto]
+    j_setor = next((j for j, n in colunas if _norm(n) == 'setor'), None)
+
+    linhas = []
+    for linha in grade[i_cab + 1:]:
+        setor = linha[j_setor][0] if j_setor is not None and j_setor < len(linha) else None
+        if setor is None or not str(setor).strip():
+            continue
+        celulas = []
+        for j, nome in colunas:
+            v, f = linha[j] if j < len(linha) else (None, None)
+            celulas.append(str(setor).strip() if j == j_setor else _fmt(v, nome, f))
+        linhas.append({'celulas': celulas, 'total': False})
+
+    # O total vive num bloco acima, com o mesmo cabeçalho menos a coluna Setor.
+    # Procuramos de trás para frente a partir do cabeçalho principal.
+    total = None
+    for i in range(i_cab - 1, max(-1, i_cab - 8), -1):
+        nomes = [_norm(v) for v, _ in grade[i]]
+        if not any('volume' in n for n in nomes):
+            continue
+        valores = grade[i + 1] if i + 1 < len(grade) else []
+        if not any(v is not None and not isinstance(v, str) for v, _ in valores):
+            continue
+        por_nome = {_norm(v): j for j, (v, _) in enumerate(grade[i]) if v is not None}
+        celulas = []
+        for j, nome in colunas:
+            if j == j_setor:
+                celulas.append('Total')
                 continue
-            if any(p in c for p in pistas):
-                mapa[nome] = j
-                usados.add(j)
-                break
-    return mapa
+            k = por_nome.get(_norm(nome))
+            v, f = valores[k] if k is not None and k < len(valores) else (None, None)
+            celulas.append(_fmt(v, nome, f))
+        if any(c for c in celulas if c and c != 'Total'):
+            total = {'celulas': celulas, 'total': True}
+        break
+
+    return [n for _, n in colunas], linhas, total
 
 
 def carregar(caminho, log=None):
-    """Devolve o bloco pronto para o componente, ou None."""
+    """{'CDI': tabela, 'IPCA': tabela} — ou None se nada for reconhecido."""
     def avisar(msg):
         if log:
             log.aviso('mercado de crédito', msg)
 
     if not caminho or not os.path.exists(caminho):
         return None
-
     try:
         wb = openpyxl.load_workbook(caminho, read_only=True, data_only=True)
     except Exception as e:
         avisar(f'não consegui abrir {os.path.basename(caminho)}: {e!r}')
         return None
 
+    tabelas = {}
     try:
-        abas = {}
-        formatos = {}
         for ws in wb.worksheets:
-            valores, fmts = [], []
-            for linha in ws.iter_rows():
-                valores.append([c.value for c in linha])
-                fmts.append(['%' in str(c.number_format or '') for c in linha])
-            if valores:
-                abas[ws.title] = pd.DataFrame(valores)
-                formatos[ws.title] = fmts
+            lido = _ler_aba(ws)
+            if not lido:
+                continue
+            cabecalho, linhas, total = lido
+            if not linhas:
+                avisar(f'aba "{ws.title}": cabeçalho encontrado, nenhuma linha de setor')
+                continue
+            if total:
+                linhas.append(total)
+            else:
+                avisar(f'aba "{ws.title}": não achei a linha de total')
+            idx = _indexador_da_aba(ws.title) or ('CDI' if 'CDI' not in tabelas else ws.title)
+            tabelas[idx] = {
+                'cabecalho': cabecalho,
+                'linhas': linhas,
+                'nota': NOTA_IPCA if idx == 'IPCA' else NOTA,
+                'origem': f'{os.path.basename(caminho)} · {ws.title}',
+                'indexador': idx,
+            }
+            if log:
+                log.info(f'  mercado de crédito {idx}: {len(linhas)} linhas, '
+                         f'{len(cabecalho)} colunas (aba "{ws.title}")')
     finally:
         wb.close()
 
-    for nome_aba, df in abas.items():
-        if df.empty:
-            continue
-        i = _achar_cabecalho(df)
-        if i is None:
-            continue
-        mapa = _mapear(df.iloc[i].tolist())
-        faltam = [n for n, _ in COLUNAS if n not in mapa]
-        if faltam:
-            avisar(f'aba "{nome_aba}": não achei as colunas {faltam} — '
-                   f'cabeçalho lido: {[str(x) for x in df.iloc[i].tolist()][:8]}')
-            continue
+    if not tabelas:
+        avisar(f'{os.path.basename(caminho)}: nenhuma aba tem uma tabela com "Setor" '
+               f'e colunas de spread, taxa ou volume')
+        return None
+    return tabelas
 
-        linhas = []
-        for idx, r in df.iloc[i + 1:].iterrows():
-            setor = r.iloc[mapa['Setor']]
-            if setor is None or (isinstance(setor, float) and pd.isna(setor)):
-                continue
-            setor = str(setor).strip()
-            if not setor:
-                continue
-            fmts = formatos[nome_aba]
-            linha_fmt = fmts[idx] if idx < len(fmts) else []
 
-            def pct_na_celula(j):
-                return linha_fmt[j] if j < len(linha_fmt) else False
-
-            celulas = [setor if n == 'Setor'
-                       else _fmt(r.iloc[mapa[n]], n, pct_na_celula(mapa[n]))
-                       for n, _ in COLUNAS]
-            linhas.append({'celulas': celulas,
-                           'total': setor.lower() in ('total', 'total geral')})
-
-        if not linhas:
-            avisar(f'aba "{nome_aba}": cabeçalho encontrado, mas nenhuma linha de setor')
-            continue
-
-        # a linha de total costuma vir em cima na planilha e embaixo no relatório
-        linhas.sort(key=lambda l: l['total'])
-        if log:
-            log.info(f'  mercado de crédito: {len(linhas)} setores de '
-                     f'{os.path.basename(caminho)} (aba "{nome_aba}")')
-        return {'cabecalho': [n for n, _ in COLUNAS], 'linhas': linhas, 'nota': NOTA,
-                'origem': f'{os.path.basename(caminho)} · {nome_aba}'}
-
-    avisar(f'{os.path.basename(caminho)}: nenhuma aba tem uma tabela com "Setor" '
-           f'e uma coluna de spread')
-    return None
+def para_fundo(tabelas, benchmark):
+    """A tabela do mercado em que o fundo opera, escolhida pelo benchmark."""
+    if not tabelas:
+        return None
+    b = _norm(benchmark)
+    alvo = 'IPCA' if ('ima' in b or 'ipca' in b or 'inflac' in b) else 'CDI'
+    return tabelas.get(alvo) or next(iter(tabelas.values()))

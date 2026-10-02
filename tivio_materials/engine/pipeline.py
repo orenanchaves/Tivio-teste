@@ -72,7 +72,12 @@ class Pipeline:
         self.taxas = Taxas(ler_taxas(_caminho(ent['taxas'])),
                            performance_fixa=self.cadastro.performance_fixa,
                            overrides=overrides)
-        self.comentarios = loader_comentarios.carregar(_caminho(ent.get('comentarios', '')))
+        fontes = ent.get('comentarios', '')
+        if isinstance(fontes, (list, tuple)):
+            fontes = [_caminho(f) for f in fontes]
+        else:
+            fontes = _caminho(fontes)
+        self.comentarios = loader_comentarios.carregar(fontes)
         self.log.contexto('mercado de crédito')
         self.spreads = loader_spreads.carregar(_caminho(ent.get('spreads', '')), self.log)
         self.log.contexto('—')
@@ -99,7 +104,7 @@ class Pipeline:
     # ------------------------------------------------------------------ etapas
     def _validar(self, contextos):
         self.log.etapa('3/6 Validando')
-        self.conf = Conferencia(self.edicao, self.log)
+        self.conf = Conferencia(self.edicao, self.log, self.spreads)
         for ctx in contextos:
             self.conf.checar(ctx)
         self.log.info(self.conf.resumo)

@@ -83,7 +83,23 @@ a divergência voltaria pela formatação. Por isso a `Edicao` (em
 
 ## Comentários do gestor
 
-`entrada/comentarios.md` — Markdown, um título por fundo:
+Três formatos aceitos, porque o texto chega em três formatos e converter seria
+mais um passo manual: **`.docx`** (o documento do gestor, onde o título do fundo
+é um parágrafo em negrito — a convenção que ele já usa), **`.md`** e **`.xlsx`**.
+
+Mais de um arquivo pode ser lido junto; o primeiro que define um fundo vence.
+É o que permite manter o documento do gestor como fonte principal e um `.md` ao
+lado só com o que ele não cobre — hoje, os textos do ALT 90 e do ALT 180, que
+chegaram por outro canal:
+
+```yaml
+# configs/edicao.yml
+comentarios:
+  - entrada/comentarios.docx
+  - entrada/comentarios.md
+```
+
+Em Markdown, um título por fundo:
 
 ```markdown
 # Relatório
@@ -154,12 +170,23 @@ aba *Mercado_Credito*: 150 células por edição, copiadas de outra planilha, on
 um número entra errado e ninguém confere porque conferir custa o mesmo que
 redigitar.
 
-A leitura é tolerante de propósito:
+A planilha tem três características que o loader respeita, e nenhuma delas é
+"uma tabela começando em A1":
 
-- o cabeçalho **não precisa estar na linha 1** — é procurado pela palavra "Setor";
-- as colunas são casadas **por nome aproximado**, não por posição ("Spread mês
-  anterior", "Spread Mês Anterior" e "Spread anterior" chegam no mesmo lugar);
-- a aba pode ter qualquer nome; o loader varre todas até achar a tabela.
+1. **Duas abas, dois indexadores** — *spread mensal CDI+* e *spread mensal
+   IPCA+*. Não são formatações do mesmo dado: são mercados diferentes. O fundo
+   de CDI mostra a primeira; o indexado à inflação, a segunda. A escolha é pelo
+   benchmark do fundo. Usar sempre a primeira aba poria no relatório do Infra
+   Plus a tabela do mercado de CDI.
+2. **Colunas diferentes em cada aba** — a de CDI+ tem 7 colunas; a de IPCA+ tem
+   10 (Taxa Atual/anterior *e* Spread Atual/anterior, com duas colunas
+   "Variação"). Por isso as colunas não são um esquema fixo no código: são
+   lidas do cabeçalho da aba, na ordem em que estão.
+3. **O total fica num bloco separado, acima do cabeçalho**, sem a coluna Setor.
+   É lido à parte e devolvido como última linha, que é onde o relatório o mostra.
+
+O cabeçalho é procurado pela palavra "Setor" em vez de ficar preso à linha 1, e
+a aba pode ter qualquer nome.
 
 Percentual é lido pelo **formato da célula**, não por palpite. Uma versão
 anterior deste loader adivinhava ("valor menor que 1 é fração") e errava em dois

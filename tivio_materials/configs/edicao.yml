@@ -31,7 +31,12 @@ materiais:
 entradas:
   dados: entrada/dados_mensais.xlsx
   taxas: entrada/taxas_global.xlsx
-  comentarios: entrada/comentarios.md        # .md ou .xlsx; o loader aceita os dois
+  # .docx, .md ou .xlsx — e mais de um: o primeiro que define um fundo vence.
+  # O documento do gestor é a fonte principal; o .md ao lado cobre o que ele
+  # não traz (hoje, os textos do ALT 90 e do ALT 180).
+  comentarios:
+    - entrada/comentarios.docx
+    - entrada/comentarios.md
   spreads: entrada/tabela_spreads.xlsx       # Mercado de Crédito (tabela setorial)
   manual: entrada/preenchimento_manual.xlsx  # overrides e, se não houver spreads,
                                              # a aba Mercado_Credito digitada
