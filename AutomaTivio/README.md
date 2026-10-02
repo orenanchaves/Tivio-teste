@@ -42,9 +42,9 @@ materiais. Para divergirem, alguém precisaria escrever código que divirja.
 ## Fluxo mensal
 
 ```powershell
-# 1ª vez
+# 1ª vez — sem isto o run.py para e diz o que falta
 python -m pip install -r requirements.txt
-python -m playwright install chromium     # só para exportar PDF
+python -m playwright install chromium     # só para exportar PDF e PPTX
 
 # todo mês
 # 1) substituir entrada\dados_mensais.xlsx, entrada\taxas_global.xlsx
