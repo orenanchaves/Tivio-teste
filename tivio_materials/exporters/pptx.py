@@ -264,10 +264,12 @@ class ExportadorPPTX:
                          [[k, v] for k, v in op], larguras=[2.2, 1.6], cabecalho=False)
             y += Cm(0.55) + Cm(0.52) * len(op) + Cm(0.8)
         from renderers.relatorio import DISCLAIMER_PADRAO
+        nota = (f.cfg.get('nota_rodape') or '').strip()
+        blocos = ([nota] if nota else []) + list(DISCLAIMER_PADRAO)
         self._txt(s, MARGEM, y, A4_L - 2 * MARGEM, Cm(0.5), 'DISCLAIMER',
                   tam=9, bold=True, cor=AZUL)
         self._txt(s, MARGEM, y + Cm(0.55), A4_L - 2 * MARGEM, A4_A - y - Cm(2.2),
-                  '\n\n'.join(DISCLAIMER_PADRAO), tam=6.8, cor=CINZA)
+                  '\n\n'.join(blocos), tam=5.4, cor=CINZA)
         self._rodape(s, len(prs.slides._sldIdLst))
 
         os.makedirs(os.path.dirname(destino) or '.', exist_ok=True)

@@ -172,6 +172,26 @@ Marcador desconhecido fica **visível no texto** (`{foo}`) e entra na conferênc
 
 ---
 
+## Disclaimer
+
+Em `configs/disclaimer.md`, fora do código. É texto jurídico: muda por decisão
+de quem responde por ele, não por release, e quem precisa alterá-lo não deveria
+ter de abrir um `.py`.
+
+O conteúdo foi **extraído dos relatórios publicados** de agosto/2026, onde é
+idêntico nos 12 fundos — 4 parágrafos, ~3.700 caracteres. Conferido: os 13
+relatórios gerados saem com o texto igual ao publicado, caractere por caractere.
+
+Três fundos publicam ainda uma nota de rodapé própria (a regra de resgate acima
+de 95% do PL): Banks, Institucional e Institucional 15. Ela vem de
+`nota_rodape` em `configs/fundos.yml` e aparece antes do disclaimer.
+
+Como o texto é longo e a faixa do rodapé é fixa, o corpo da letra é dimensionado
+para caber — mesma lógica do comentário do gestor. Cortar o disclaimer de um
+material distribuído a investidor não é um defeito de layout.
+
+---
+
 ## Mercado de Crédito
 
 A tabela setorial da ANBIMA vem de **`entrada/tabela_spreads.xlsx`** — a planilha

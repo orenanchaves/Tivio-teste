@@ -23,18 +23,25 @@ from calculators import grafico
 
 RAIZ = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
-DISCLAIMER_PADRAO = [
-    'Este material é de caráter exclusivamente informativo e não deve ser '
-    'considerado como oferta de venda de cotas de fundos de investimento ou de '
-    'qualquer ativo. A Tivio Capital não comercializa nem distribui cotas de '
-    'fundos de investimento.',
-    'Fundos de investimento não contam com garantia do administrador, do gestor, '
-    'de qualquer mecanismo de seguro ou do Fundo Garantidor de Créditos — FGC. '
-    'A rentabilidade obtida no passado não representa garantia de rentabilidade '
-    'futura. A rentabilidade divulgada não é líquida de impostos.',
-    'Leia a lâmina de informações essenciais e o regulamento antes de investir. '
-    'Para avaliação da performance do fundo de investimento, é recomendável uma '
-    'análise de período de, no mínimo, 12 (doze) meses.']
+def carregar_disclaimer(caminho=None):
+    """Texto jurídico do rodapé, de configs/disclaimer.md.
+
+    Fora do código de propósito: é texto aprovado por quem responde por ele, e
+    muda por decisão jurídica, não por release. Quem precisa alterá-lo não
+    deveria ter de abrir um .py.
+
+    O conteúdo atual foi extraído dos relatórios publicados de agosto/2026, onde
+    é idêntico nos 12 fundos.
+    """
+    caminho = caminho or os.path.join(RAIZ, 'configs', 'disclaimer.md')
+    if not os.path.exists(caminho):
+        return []
+    texto = open(caminho, encoding='utf-8').read()
+    texto = re.sub(r'<!--.*?-->', '', texto, flags=re.S)   # fora o cabeçalho
+    return [p.strip() for p in re.split(r'\n\s*\n', texto) if p.strip()]
+
+
+DISCLAIMER_PADRAO = carregar_disclaimer()
 
 
 def _slug_logo(s):
@@ -101,6 +108,10 @@ class RenderizadorRelatorio:
         mod = open(modulo, encoding='utf-8').read() if os.path.exists(modulo) else ''
         exp = os.path.join(RAIZ, 'assets', 'relatorio_export.js')
         self.export_js = open(exp, encoding='utf-8').read() if os.path.exists(exp) else ''
+        self.disclaimer = carregar_disclaimer()
+        if not self.disclaimer:
+            self.log.aviso('—', 'configs/disclaimer.md não encontrado — o relatório '
+                                'sai sem o texto jurídico do rodapé')
         if not ec:
             self.log.aviso('—', 'assets/vendor/echarts.min.js não encontrado — os '
                                 'gráficos ficam na versão SVG do servidor '
@@ -278,6 +289,29 @@ class RenderizadorRelatorio:
             tam -= 0.25
         return round(tam, 2)
 
+    # O disclaimer tem ~3.700 caracteres e a faixa do rodapé é fixa. Mesmo
+    # problema do comentário, e mesma solução: dimensionar em vez de cortar.
+    # Aqui o espaço é menor e o texto é jurídico — truncar o disclaimer de um
+    # material distribuído a investidor não é um defeito de layout.
+    DISCLAIMER_LARGURA = 886
+    DISCLAIMER_ALTURA = 404      # faixa de 664px menos título, contatos e folgas
+
+    @classmethod
+    def tamanho_disclaimer(cls, paragrafos, nota=''):
+        chars = sum(len(p) for p in paragrafos) + len(nota or '')
+        n = len(paragrafos) + (1 if nota else 0)
+        if not chars:
+            return 11.7
+        altura_livre = cls.DISCLAIMER_ALTURA
+        tam = 11.7
+        while tam > 6.4:
+            por_linha = max(30, cls.DISCLAIMER_LARGURA / (tam * 0.47))
+            linhas = chars / por_linha + n
+            if linhas * tam * 1.35 + n * tam * 0.4 <= altura_livre:
+                break
+            tam -= 0.1
+        return round(tam, 2)
+
     # ----------------------------------------------------------------- blocos
     def mercado(self, ctx=None):
         """Tabela setorial ANBIMA — a do mercado em que o fundo opera.
@@ -386,7 +420,10 @@ class RenderizadorRelatorio:
             'mercado': self.mercado(ctx),
             'caracteristicas': self.caracteristicas(ctx),
             'operacional': self.operacional(f),
-            'disclaimer': DISCLAIMER_PADRAO,
+            'disclaimer': self.disclaimer,
+            'nota_rodape': (f.cfg.get('nota_rodape') or '').strip(),
+            'tamanho_disclaimer': self.tamanho_disclaimer(
+                self.disclaimer, (f.cfg.get('nota_rodape') or '').strip()),
             'arquivo_comentarios': 'entrada/comentarios.md',
             'setores_barras': setores_barras,
         }

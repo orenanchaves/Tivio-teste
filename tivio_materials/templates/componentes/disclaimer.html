@@ -1,8 +1,14 @@
-{# Faixa escura do rodapé: posicionada no fim da folha pelo CSS (.discwrap).
-   Não leva número de página: o .pgnum é azul-escuro e sobre esta faixa some. #}
-<div class="discwrap">
+{# Texto jurídico de configs/disclaimer.md — extraído dos relatórios
+   publicados, idêntico nos 12 fundos. O corpo é dimensionado para caber na
+   faixa: cortar o disclaimer de um material distribuído a investidor não é
+   um defeito de layout. #}
+<div class="discwrap" style="font-size:{{ tamanho_disclaimer }}px">
   <div class="dh">{{ titulo }}</div>
-  {% for p in disclaimer %}<p>{{ p|safe }}</p>{% endfor %}
+  {% if nota_rodape %}<p class="disc-nota">{{ nota_rodape }}</p>{% endif %}
+  {% for p in disclaimer %}<p>{{ p }}</p>{% endfor %}
+  {% if not disclaimer %}
+  <p>Disclaimer não configurado — preencher <code>configs/disclaimer.md</code>.</p>
+  {% endif %}
   <div class="contacts">
     <div class="ci"><div><b>SAC: 0800 704 8383</b><br>Atendimento 24 horas</div></div>
     <div class="ci"><div><b>Ouvidoria: 0800 727 9933</b><br>Das 9h às 18h, de segunda a
