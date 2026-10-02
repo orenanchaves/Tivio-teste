@@ -20,6 +20,13 @@ o caso de a pessoa ajustar um texto na tela e querer reexportar aquele.
 Saída em **`saida/AAAA-MM/`** — uma pasta por mês, ao lado de `entrada/`:
 HTML, PDF, PPTX, a `conferencia_AAAA-MM.xlsx` e o log.
 
+### Os outros dois documentos
+
+| Arquivo | Para quem |
+|---|---|
+| **[`CONTEXTO_AUTOMATIVIO.md`](CONTEXTO_AUTOMATIVIO.md)** | Handoff: por que o ambiente é assim, o que já foi conferido contra os PPTX publicados e o que falta. Comece por aqui se for assumir o projeto. |
+| **[`CLAUDE.md`](CLAUDE.md)** | Guia de quem mexe no código (ou da IA que mexe): comandos, arquitetura, invariantes e as armadilhas já pagas. |
+
 ---
 
 ## O problema que isto resolve

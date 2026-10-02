@@ -1,91 +1,91 @@
-21:37:19       === Central de Materiais · edição edicao · 02/10/2026 21:37:19 ===
-21:37:19
-21:37:19       1/6 Lendo entradas
-21:37:19         usando cache de dados_mensais.xlsx
-21:37:19         mercado de crédito CDI: 24 linhas, 7 colunas (aba "spread mensal CDI+")
-21:37:19         mercado de crédito IPCA: 12 linhas, 10 colunas (aba "spread mensal IPCA+")
-21:37:19       data base: 31/08/2026 (Agosto de 2026)
-21:37:19       cadastro: 22 fundos, 21 resolvidos na DePara
-21:37:19       comentários: 23 fundos em comentarios.docx + comentarios.md
-21:37:19 AVISO [atuarial] não encontrado na DePara (procurei por 'ATUARIAL'). Candidatos: nenhum
-21:37:19
-21:37:19       2/6 Calculando
-21:37:20 AVISO [infraplus] carteira sem data na Base Carteira — os números saem, mas não há como confirmar que a posição é a do mês
-21:37:21 AVISO [esplanada] carteira sem data na Base Carteira — os números saem, mas não há como confirmar que a posição é a do mês
-21:37:21       20 de 22 fundos com dados nesta edição
-21:37:21
-21:37:21       3/6 Validando
-21:37:21       5 divergências · 10 dados faltantes
-21:37:21
-21:37:21       4/6 Relatórios de Gestão
-21:37:21 AVISO [—] selos sem arquivo local em assets/selos (qr) — saem pela URL do site, e podem não aparecer nas exportações. Ver assets/selos/LEIA-ME.md
-21:37:21 AVISO [bvp] logo não encontrado em assets/logos (procurei "tivio_bvp")
-21:37:21 AVISO [atuarial] relatório não gerado: sem dados nesta edição
-21:37:21         4 bibliotecas copiadas para central/vendor/
-21:37:21         5 bibliotecas copiadas para relatorios/vendor/
-21:37:21         1 bibliotecas copiadas para relatorios/_fundos/vendor/
-21:37:22       Chromium: /opt/pw-browsers/chromium-1194/chrome-linux/chrome
-21:37:23 AVISO [Tivio Banks - Relatório de Gestão - Agosto 2026.pdf] fonte Versos não carregou (CDN inacessível?) — o PDF sai com a fonte de fallback e a métrica do texto muda
-21:37:24       PDF  Tivio Banks - Relatório de Gestão - Agosto 2026.pdf (709 KB)
-21:37:24       PPTX Tivio Banks - Relatório de Gestão - Agosto 2026.pptx (47 KB)
-21:37:25 AVISO [Tivio Institucional - Relatório de Gestão - Agosto 2026.pdf] fonte Versos não carregou (CDN inacessível?) — o PDF sai com a fonte de fallback e a métrica do texto muda
-21:37:26       PDF  Tivio Institucional - Relatório de Gestão - Agosto 2026.pdf (718 KB)
-21:37:26       PPTX Tivio Institucional - Relatório de Gestão - Agosto 2026.pptx (47 KB)
-21:37:27 AVISO [Tivio Institucional 15 - Relatório de Gestão - Agosto 2026.pdf] fonte Versos não carregou (CDN inacessível?) — o PDF sai com a fonte de fallback e a métrica do texto muda
-21:37:28       PDF  Tivio Institucional 15 - Relatório de Gestão - Agosto 2026.pdf (721 KB)
-21:37:28       PPTX Tivio Institucional 15 - Relatório de Gestão - Agosto 2026.pptx (47 KB)
-21:37:29 AVISO [Tivio Institucional 30 - Relatório de Gestão - Agosto 2026.pdf] fonte Versos não carregou (CDN inacessível?) — o PDF sai com a fonte de fallback e a métrica do texto muda
-21:37:30       PDF  Tivio Institucional 30 - Relatório de Gestão - Agosto 2026.pdf (719 KB)
-21:37:31       PPTX Tivio Institucional 30 - Relatório de Gestão - Agosto 2026.pptx (47 KB)
-21:37:31 AVISO [Tivio Infra Plus - Relatório de Gestão - Agosto 2026.pdf] fonte Versos não carregou (CDN inacessível?) — o PDF sai com a fonte de fallback e a métrica do texto muda
-21:37:32       PDF  Tivio Infra Plus - Relatório de Gestão - Agosto 2026.pdf (706 KB)
-21:37:33       PPTX Tivio Infra Plus - Relatório de Gestão - Agosto 2026.pptx (46 KB)
-21:37:33 AVISO [Tivio BVP - Relatório de Gestão - Agosto 2026.pdf] fonte Versos não carregou (CDN inacessível?) — o PDF sai com a fonte de fallback e a métrica do texto muda
-21:37:35       PDF  Tivio BVP - Relatório de Gestão - Agosto 2026.pdf (708 KB)
-21:37:35       PPTX Tivio BVP - Relatório de Gestão - Agosto 2026.pptx (47 KB)
-21:37:36 AVISO [Tivio RF CP - Relatório de Gestão - Agosto 2026.pdf] fonte Versos não carregou (CDN inacessível?) — o PDF sai com a fonte de fallback e a métrica do texto muda
-21:37:37       PDF  Tivio RF CP - Relatório de Gestão - Agosto 2026.pdf (709 KB)
-21:37:37       PPTX Tivio RF CP - Relatório de Gestão - Agosto 2026.pptx (47 KB)
-21:37:38 AVISO [Tivio ALT 180 - Relatório de Gestão - Agosto 2026.pdf] fonte Versos não carregou (CDN inacessível?) — o PDF sai com a fonte de fallback e a métrica do texto muda
-21:37:39       PDF  Tivio ALT 180 - Relatório de Gestão - Agosto 2026.pdf (639 KB)
-21:37:39       PPTX Tivio ALT 180 - Relatório de Gestão - Agosto 2026.pptx (42 KB)
-21:37:40 AVISO [Tivio ALT 90 - Relatório de Gestão - Agosto 2026.pdf] fonte Versos não carregou (CDN inacessível?) — o PDF sai com a fonte de fallback e a métrica do texto muda
-21:37:41       PDF  Tivio ALT 90 - Relatório de Gestão - Agosto 2026.pdf (631 KB)
-21:37:41       PPTX Tivio ALT 90 - Relatório de Gestão - Agosto 2026.pptx (42 KB)
-21:37:42 AVISO [Tivio ALT Light - Relatório de Gestão - Agosto 2026.pdf] fonte Versos não carregou (CDN inacessível?) — o PDF sai com a fonte de fallback e a métrica do texto muda
-21:37:43       PDF  Tivio ALT Light - Relatório de Gestão - Agosto 2026.pdf (643 KB)
-21:37:43       PPTX Tivio ALT Light - Relatório de Gestão - Agosto 2026.pptx (41 KB)
-21:37:43 AVISO [Tivio Infra Plus CDI - Relatório de Gestão - Agosto 2026.pdf] fonte Versos não carregou (CDN inacessível?) — o PDF sai com a fonte de fallback e a métrica do texto muda
-21:37:45       PDF  Tivio Infra Plus CDI - Relatório de Gestão - Agosto 2026.pdf (712 KB)
-21:37:45       PPTX Tivio Infra Plus CDI - Relatório de Gestão - Agosto 2026.pptx (46 KB)
-21:37:46 AVISO [Tivio Esplanada - Relatório de Gestão - Agosto 2026.pdf] fonte Versos não carregou (CDN inacessível?) — o PDF sai com a fonte de fallback e a métrica do texto muda
-21:37:47       PDF  Tivio Esplanada - Relatório de Gestão - Agosto 2026.pdf (705 KB)
-21:37:47       PPTX Tivio Esplanada - Relatório de Gestão - Agosto 2026.pptx (46 KB)
-21:37:48 AVISO [Tivio Legacy Prev - Relatório de Gestão - Agosto 2026.pdf] fonte Versos não carregou (CDN inacessível?) — o PDF sai com a fonte de fallback e a métrica do texto muda
-21:37:49       PDF  Tivio Legacy Prev - Relatório de Gestão - Agosto 2026.pdf (709 KB)
-21:37:49       PPTX Tivio Legacy Prev - Relatório de Gestão - Agosto 2026.pptx (47 KB)
-21:37:50 AVISO [bvp] logo não encontrado em assets/logos (procurei "tivio_bvp")
-21:37:50       HTML Relatório de Gestão - Crédito Privado - Agosto 2026.html (3013 KB)
-21:37:50       HTML Relatório de Gestão - Crédito Estruturado - Agosto 2026.html (995 KB)
-21:37:50
-21:37:50       5/6 Materiais da Central
-21:37:50         tivio-construtor-one-pager.html copiado sem atualizar (desligado em configs/edicao.yml)
-21:37:50       HTML tivio-construtor-one-pager.html (85 KB)
-21:37:50 AVISO [alt180] o texto se refere a "julho" como o mês corrente — a data base é agosto
-21:37:50       HTML tivio-email-fundos-credito.html (128 KB)
-21:37:50         tivio-email-nordea-studio.html copiado sem atualizar (desligado em configs/edicao.yml)
-21:37:50       HTML tivio-email-nordea-studio.html (49 KB)
-21:37:50       HTML tivio-post-credito-estruturado.html (111 KB)
-21:37:50       HTML tivio-post-credito-privado.html (123 KB)
-21:37:50 AVISO [topgestormacro] sem dados — rentabilidade e PL mantidos
-21:37:50       HTML tivio-post-investment-solutions.html (101 KB)
-21:37:50       HTML tivio-relatorio-gestao-credito-privado.html (119 KB)
-21:37:50 AVISO [tivio-central.html] card "Gerador de Relatório de Gestão · Incentivado CDI 30" removido: aponta para "Tivio Incentivado CDI 30 - Relatório de Gestão Mensal.html", que não existe nesta edição
-21:37:50       HTML tivio-central.html (65 KB)
-21:37:50         4 bibliotecas copiadas para central/vendor/
-21:37:50         5 bibliotecas copiadas para relatorios/vendor/
-21:37:50
-21:37:50       6/6 Conferência e log
-21:37:50       XLSX conferencia_2026-08.xlsx (40 KB)
-21:37:50
-21:37:50       === 37 arquivos · 233 alterações · 23 avisos · 0 erros · 31s ===
+21:53:55       === Central de Materiais · edição edicao · 02/10/2026 21:53:55 ===
+21:53:55
+21:53:55       1/6 Lendo entradas
+21:53:55         usando cache de dados_mensais.xlsx
+21:53:55         mercado de crédito CDI: 24 linhas, 7 colunas (aba "spread mensal CDI+")
+21:53:55         mercado de crédito IPCA: 12 linhas, 10 colunas (aba "spread mensal IPCA+")
+21:53:55       data base: 31/08/2026 (Agosto de 2026)
+21:53:55       cadastro: 22 fundos, 21 resolvidos na DePara
+21:53:55       comentários: 23 fundos em comentarios.docx + comentarios.md
+21:53:55 AVISO [atuarial] não encontrado na DePara (procurei por 'ATUARIAL'). Candidatos: nenhum
+21:53:55
+21:53:55       2/6 Calculando
+21:53:56 AVISO [infraplus] carteira sem data na Base Carteira — os números saem, mas não há como confirmar que a posição é a do mês
+21:53:57 AVISO [esplanada] carteira sem data na Base Carteira — os números saem, mas não há como confirmar que a posição é a do mês
+21:53:57       20 de 22 fundos com dados nesta edição
+21:53:57
+21:53:57       3/6 Validando
+21:53:57       5 divergências · 10 dados faltantes
+21:53:57
+21:53:57       4/6 Relatórios de Gestão
+21:53:57 AVISO [—] selos sem arquivo local em assets/selos (qr) — saem pela URL do site, e podem não aparecer nas exportações. Ver assets/selos/LEIA-ME.md
+21:53:57 AVISO [bvp] logo não encontrado em assets/logos (procurei "tivio_bvp")
+21:53:57 AVISO [atuarial] relatório não gerado: sem dados nesta edição
+21:53:57         4 bibliotecas copiadas para central/vendor/
+21:53:57         5 bibliotecas copiadas para relatorios/vendor/
+21:53:57         1 bibliotecas copiadas para relatorios/_fundos/vendor/
+21:54:01       Chromium: /opt/pw-browsers/chromium-1194/chrome-linux/chrome
+21:54:04 AVISO [Tivio Banks - Relatório de Gestão - Agosto 2026.pdf] fonte Versos não carregou (CDN inacessível?) — o PDF sai com a fonte de fallback e a métrica do texto muda
+21:54:06       PDF  Tivio Banks - Relatório de Gestão - Agosto 2026.pdf (709 KB)
+21:54:06       PPTX Tivio Banks - Relatório de Gestão - Agosto 2026.pptx (47 KB)
+21:54:07 AVISO [Tivio Institucional - Relatório de Gestão - Agosto 2026.pdf] fonte Versos não carregou (CDN inacessível?) — o PDF sai com a fonte de fallback e a métrica do texto muda
+21:54:08       PDF  Tivio Institucional - Relatório de Gestão - Agosto 2026.pdf (718 KB)
+21:54:09       PPTX Tivio Institucional - Relatório de Gestão - Agosto 2026.pptx (47 KB)
+21:54:09 AVISO [Tivio Institucional 15 - Relatório de Gestão - Agosto 2026.pdf] fonte Versos não carregou (CDN inacessível?) — o PDF sai com a fonte de fallback e a métrica do texto muda
+21:54:11       PDF  Tivio Institucional 15 - Relatório de Gestão - Agosto 2026.pdf (721 KB)
+21:54:11       PPTX Tivio Institucional 15 - Relatório de Gestão - Agosto 2026.pptx (47 KB)
+21:54:12 AVISO [Tivio Institucional 30 - Relatório de Gestão - Agosto 2026.pdf] fonte Versos não carregou (CDN inacessível?) — o PDF sai com a fonte de fallback e a métrica do texto muda
+21:54:13       PDF  Tivio Institucional 30 - Relatório de Gestão - Agosto 2026.pdf (719 KB)
+21:54:13       PPTX Tivio Institucional 30 - Relatório de Gestão - Agosto 2026.pptx (47 KB)
+21:54:14 AVISO [Tivio Infra Plus - Relatório de Gestão - Agosto 2026.pdf] fonte Versos não carregou (CDN inacessível?) — o PDF sai com a fonte de fallback e a métrica do texto muda
+21:54:15       PDF  Tivio Infra Plus - Relatório de Gestão - Agosto 2026.pdf (706 KB)
+21:54:15       PPTX Tivio Infra Plus - Relatório de Gestão - Agosto 2026.pptx (46 KB)
+21:54:16 AVISO [Tivio BVP - Relatório de Gestão - Agosto 2026.pdf] fonte Versos não carregou (CDN inacessível?) — o PDF sai com a fonte de fallback e a métrica do texto muda
+21:54:17       PDF  Tivio BVP - Relatório de Gestão - Agosto 2026.pdf (708 KB)
+21:54:18       PPTX Tivio BVP - Relatório de Gestão - Agosto 2026.pptx (47 KB)
+21:54:18 AVISO [Tivio RF CP - Relatório de Gestão - Agosto 2026.pdf] fonte Versos não carregou (CDN inacessível?) — o PDF sai com a fonte de fallback e a métrica do texto muda
+21:54:20       PDF  Tivio RF CP - Relatório de Gestão - Agosto 2026.pdf (709 KB)
+21:54:20       PPTX Tivio RF CP - Relatório de Gestão - Agosto 2026.pptx (47 KB)
+21:54:21 AVISO [Tivio ALT 180 - Relatório de Gestão - Agosto 2026.pdf] fonte Versos não carregou (CDN inacessível?) — o PDF sai com a fonte de fallback e a métrica do texto muda
+21:54:21       PDF  Tivio ALT 180 - Relatório de Gestão - Agosto 2026.pdf (639 KB)
+21:54:22       PPTX Tivio ALT 180 - Relatório de Gestão - Agosto 2026.pptx (42 KB)
+21:54:22 AVISO [Tivio ALT 90 - Relatório de Gestão - Agosto 2026.pdf] fonte Versos não carregou (CDN inacessível?) — o PDF sai com a fonte de fallback e a métrica do texto muda
+21:54:23       PDF  Tivio ALT 90 - Relatório de Gestão - Agosto 2026.pdf (631 KB)
+21:54:23       PPTX Tivio ALT 90 - Relatório de Gestão - Agosto 2026.pptx (42 KB)
+21:54:24 AVISO [Tivio ALT Light - Relatório de Gestão - Agosto 2026.pdf] fonte Versos não carregou (CDN inacessível?) — o PDF sai com a fonte de fallback e a métrica do texto muda
+21:54:25       PDF  Tivio ALT Light - Relatório de Gestão - Agosto 2026.pdf (643 KB)
+21:54:25       PPTX Tivio ALT Light - Relatório de Gestão - Agosto 2026.pptx (41 KB)
+21:54:26 AVISO [Tivio Infra Plus CDI - Relatório de Gestão - Agosto 2026.pdf] fonte Versos não carregou (CDN inacessível?) — o PDF sai com a fonte de fallback e a métrica do texto muda
+21:54:27       PDF  Tivio Infra Plus CDI - Relatório de Gestão - Agosto 2026.pdf (712 KB)
+21:54:27       PPTX Tivio Infra Plus CDI - Relatório de Gestão - Agosto 2026.pptx (46 KB)
+21:54:28 AVISO [Tivio Esplanada - Relatório de Gestão - Agosto 2026.pdf] fonte Versos não carregou (CDN inacessível?) — o PDF sai com a fonte de fallback e a métrica do texto muda
+21:54:29       PDF  Tivio Esplanada - Relatório de Gestão - Agosto 2026.pdf (705 KB)
+21:54:29       PPTX Tivio Esplanada - Relatório de Gestão - Agosto 2026.pptx (46 KB)
+21:54:30 AVISO [Tivio Legacy Prev - Relatório de Gestão - Agosto 2026.pdf] fonte Versos não carregou (CDN inacessível?) — o PDF sai com a fonte de fallback e a métrica do texto muda
+21:54:31       PDF  Tivio Legacy Prev - Relatório de Gestão - Agosto 2026.pdf (709 KB)
+21:54:32       PPTX Tivio Legacy Prev - Relatório de Gestão - Agosto 2026.pptx (47 KB)
+21:54:32 AVISO [bvp] logo não encontrado em assets/logos (procurei "tivio_bvp")
+21:54:32       HTML Relatório de Gestão - Crédito Privado - Agosto 2026.html (3013 KB)
+21:54:32       HTML Relatório de Gestão - Crédito Estruturado - Agosto 2026.html (995 KB)
+21:54:32
+21:54:32       5/6 Materiais da Central
+21:54:32         tivio-construtor-one-pager.html copiado sem atualizar (desligado em configs/edicao.yml)
+21:54:32       HTML tivio-construtor-one-pager.html (85 KB)
+21:54:32 AVISO [alt180] o texto se refere a "julho" como o mês corrente — a data base é agosto
+21:54:32       HTML tivio-email-fundos-credito.html (128 KB)
+21:54:32         tivio-email-nordea-studio.html copiado sem atualizar (desligado em configs/edicao.yml)
+21:54:32       HTML tivio-email-nordea-studio.html (49 KB)
+21:54:32       HTML tivio-post-credito-estruturado.html (111 KB)
+21:54:32       HTML tivio-post-credito-privado.html (123 KB)
+21:54:32 AVISO [topgestormacro] sem dados — rentabilidade e PL mantidos
+21:54:32       HTML tivio-post-investment-solutions.html (101 KB)
+21:54:32       HTML tivio-relatorio-gestao-credito-privado.html (119 KB)
+21:54:32 AVISO [tivio-central.html] card "Gerador de Relatório de Gestão · Incentivado CDI 30" removido: aponta para "Tivio Incentivado CDI 30 - Relatório de Gestão Mensal.html", que não existe nesta edição
+21:54:32       HTML tivio-central.html (65 KB)
+21:54:32         4 bibliotecas copiadas para central/vendor/
+21:54:32         5 bibliotecas copiadas para relatorios/vendor/
+21:54:32
+21:54:32       6/6 Conferência e log
+21:54:32       XLSX conferencia_2026-08.xlsx (40 KB)
+21:54:32
+21:54:32       === 37 arquivos · 233 alterações · 23 avisos · 0 erros · 37s ===
