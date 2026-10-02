@@ -43,6 +43,57 @@ def carregar_disclaimer(caminho=None):
 
 DISCLAIMER_PADRAO = carregar_disclaimer()
 
+# Os quatro selos da faixa do rodapé, com a URL oficial como reserva. Ordem e
+# textos conferidos contra o relatório publicado.
+SELOS = [
+    ('qr', 'QR Code Tivio',
+     'https://www.tivio.com/wp-content/uploads/sites/1532/2026/08/QR-Code-scaled.png'),
+    ('anbima1', 'Selo ANBIMA — Distribuição de Produtos de Investimento',
+     'https://www.tivio.com/wp-content/uploads/sites/1532/2026/07/selo-distribuicao.png'),
+    ('anbima2', 'Selo ANBIMA — Gestão de Recursos de Terceiros',
+     'https://www.tivio.com/wp-content/uploads/sites/1532/2026/07/selo-02-scaled.png'),
+    ('pri', 'Signatory of PRI',
+     'https://www.tivio.com/wp-content/uploads/sites/1532/2026/08/PRI.png'),
+]
+
+MIME = {'.png': 'image/png', '.jpg': 'image/jpeg', '.jpeg': 'image/jpeg',
+        '.svg': 'image/svg+xml', '.webp': 'image/webp'}
+
+
+def carregar_selos(pasta=None, log=None):
+    """{chave: {'src', 'alt', 'local'}} — base64 quando o arquivo existe.
+
+    Base64 e não a URL porque o selo precisa sobreviver à *exportação*: o
+    html2canvas só desenha imagem de outro domínio se o servidor mandar
+    cabeçalho CORS, e o WordPress não manda. O material original contorna isso
+    passando por proxies públicos; se um cair, o selo vira um quadrado vazio no
+    JPG e ninguém vê antes de publicar.
+    """
+    import base64
+    pasta = pasta or os.path.join(RAIZ, 'assets', 'selos')
+    out, faltando = {}, []
+    for chave, alt, url in SELOS:
+        achou = None
+        if os.path.isdir(pasta):
+            for arq in sorted(os.listdir(pasta)):
+                base, ext = os.path.splitext(arq.lower())
+                if base == chave and ext in MIME:
+                    achou = os.path.join(pasta, arq)
+                    break
+        if achou:
+            with open(achou, 'rb') as f:
+                b64 = base64.b64encode(f.read()).decode('ascii')
+            mime = MIME[os.path.splitext(achou)[1].lower()]
+            out[chave] = {'src': f'data:{mime};base64,{b64}', 'alt': alt, 'local': True}
+        else:
+            out[chave] = {'src': url, 'alt': alt, 'local': False}
+            faltando.append(chave)
+    if faltando and log:
+        log.aviso('—', f'selos sem arquivo local em assets/selos ({", ".join(faltando)}) — '
+                       f'saem pela URL do site, e podem não aparecer nas exportações. '
+                       f'Ver assets/selos/LEIA-ME.md')
+    return out
+
 
 def _slug_logo(s):
     s = unicodedata.normalize('NFKD', str(s)).encode('ascii', 'ignore').decode()
@@ -64,6 +115,7 @@ class RenderizadorRelatorio:
             autoescape=jinja2.select_autoescape(['html']),
             trim_blocks=True, lstrip_blocks=True)
         self.env.filters['mes_label'] = self._mes_label
+        self.selos = carregar_selos(log=log)
         self.css_marca = self._ler_css('_marca.css')
         local = css_fontes_locais()
         if local:
@@ -164,9 +216,17 @@ class RenderizadorRelatorio:
                     return tag
                 w = re.search(r'\bwidth="([\d.]+)"', tag)
                 h = re.search(r'\bheight="([\d.]+)"', tag)
-                if w and h and w.group(1) == larg and h.group(1) == alt:
-                    return ''
-                return tag
+                if not (w and h):
+                    return tag
+                # tolerância em vez de igualdade: o retângulo de fundo do ALT 180
+                # mede 447,59 num quadro de 448,46 — cobre 99,8% e some por
+                # 0,87 de diferença se a comparação for exata
+                try:
+                    cobre = (float(w.group(1)) / float(larg) >= 0.98
+                             and float(h.group(1)) / float(alt) >= 0.98)
+                except (ValueError, ZeroDivisionError):
+                    return tag
+                return '' if cobre else tag
 
             svg = re.sub(r'<rect\b[^>]*/?>', chapa, svg)
         # 2: altura do contêiner. Por CSS, não por atributo: o atributo `width`
@@ -222,8 +282,21 @@ class RenderizadorRelatorio:
 
     # ------------------------------------------------------------- composição
     def secoes_do_fundo(self, key):
-        desligar = set((self.cfg.get('por_fundo', {}).get(key) or {}).get('desligar', []))
-        return [s for s in self.cfg['secoes'] if s['id'] not in desligar]
+        """Composição do fundo: a da vertical, ajustada pelo que for do fundo.
+
+        A vertical importa porque os relatórios de Crédito Estruturado
+        publicados são outro produto, não uma variação — 3 páginas, com
+        Alocação por Estratégia, sem emissores, sem rating e sem a tabela de
+        Mercado de Crédito.
+        """
+        fundo = self.cad.get(key)
+        vertical = fundo.vertical if fundo else None
+        por_vert = (self.cfg.get('por_vertical') or {}).get(vertical) or {}
+        secoes = por_vert.get('secoes') or self.cfg['secoes']
+
+        ajuste = (self.cfg.get('por_fundo') or {}).get(key) or {}
+        desligar = set(ajuste.get('desligar', [])) | set(por_vert.get('desligar', []))
+        return [s for s in secoes if s['id'] not in desligar]
 
     def paginas(self, key, ctx):
         """Agrupa as seções em páginas e resolve o par de duas colunas."""
@@ -236,6 +309,8 @@ class RenderizadorRelatorio:
             vazias.add('setores')
         if not ctx.rating:
             vazias.add('rating')
+        if not ctx.estrategia:
+            vazias.add('estrategia')
         if not ctx.hist12:
             vazias.add('historico')
         if not self.mercado(ctx):
@@ -388,7 +463,11 @@ class RenderizadorRelatorio:
     # ------------------------------------------------------------- renderiza
     def html(self, ctx):
         f = ctx.f
-        titulos = {s['id']: s.get('titulo', s['id']) for s in self.cfg['secoes']}
+        # os títulos vêm da composição DESTE fundo, não da lista padrão: o
+        # Crédito Estruturado chama o mesmo bloco de "Alocação Real da Carteira
+        # de Crédito", e tem seções que a lista do high grade nem possui
+        titulos = {s['id']: s.get('titulo', s['id'])
+                   for s in self.secoes_do_fundo(f.key)}
         paginas = self.paginas(f.key, ctx)
 
         # setores: o contexto devolve (nome, '12,3%', valor) — a barra usa o valor
@@ -397,6 +476,10 @@ class RenderizadorRelatorio:
         st = ctx.setores
         mx = max((v for _, _, v in st), default=1) or 1
         setores_barras = [(n, txt, round(v / mx * 100)) for n, txt, v in st]
+
+        est = ctx.estrategia
+        mxe = max((v for _, _, v in est), default=1) or 1
+        estrategia_barras = [(n, txt, round(v / mxe * 100)) for n, txt, v in est]
 
         dados = {
             'f': f, 'c': ctx, 'edicao': self.edicao,
@@ -421,11 +504,13 @@ class RenderizadorRelatorio:
             'caracteristicas': self.caracteristicas(ctx),
             'operacional': self.operacional(f),
             'disclaimer': self.disclaimer,
+            'selos': self.selos,
             'nota_rodape': (f.cfg.get('nota_rodape') or '').strip(),
             'tamanho_disclaimer': self.tamanho_disclaimer(
                 self.disclaimer, (f.cfg.get('nota_rodape') or '').strip()),
             'arquivo_comentarios': 'entrada/comentarios.md',
             'setores_barras': setores_barras,
+            'estrategia_barras': estrategia_barras,
         }
 
         # espaço livre na página do comentário: a folha, menos o cabeçalho fino,
@@ -439,11 +524,10 @@ class RenderizadorRelatorio:
             ctx.comentario_preenchido, livre)
         # o componente de setores lê c.setores_barras; injeta sem mexer no contexto
         ctx.setores_barras = setores_barras
+        ctx.estrategia_barras = estrategia_barras
 
-        titulos_por_secao = {}
-        for pagina in paginas:
-            for s in pagina['secoes']:
-                titulos_por_secao[s['id']] = titulos.get(s['id'], s['id'])
+        titulos_por_secao = {s['id']: titulos.get(s['id'], s['id'])
+                             for pagina in paginas for s in pagina['secoes']}
 
         # cada componente recebe seu próprio `titulo`; o include herda o contexto,
         # então o título é resolvido na hora pelo id da seção corrente

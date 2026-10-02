@@ -253,6 +253,36 @@ Apagar uma linha remove a seção; a página se refaz e a numeração "1 / 4" se
 porque é contada depois da composição. Uma seção sem dado nesta edição é omitida
 em vez de desenhar um bloco vazio — e o log diz qual foi omitida.
 
+### A composição é por vertical
+
+Não é refinamento: os relatórios de **Crédito Estruturado** publicados são outro
+produto, não uma variação do high grade.
+
+| | Crédito Privado | Crédito Estruturado |
+|---|---|---|
+| Páginas | 4 | **3** |
+| Carteira | Principais Emissores · Setor · Rating | **Alocação Real** · **Alocação por Estratégia** |
+| Mercado de Crédito | sim | **não** |
+
+"Alocação por Estratégia" vem da coluna `Book` da Base Carteira (FIDC Sênior,
+FIDC Mezanino, Caixa…) — um corte que o relatório de high grade não usa.
+
+**Não implementado:** o bloco **Subordinação**, que aparece só no relatório do
+ALT 90. A Base Carteira não tem essa coluna; o dado teria de vir de outra fonte.
+
+### Selos
+
+A faixa do rodapé leva QR Code, dois selos ANBIMA, o Rating S&P brAMP-1 e o selo
+PRI — conferidos contra o relatório publicado.
+
+Os arquivos vão em `assets/selos/` e são embutidos em base64. Base64, e não a
+URL do site, porque o selo precisa sobreviver à **exportação**: o `html2canvas`
+só desenha imagem de outro domínio se o servidor mandar cabeçalho CORS, e o
+WordPress não manda. O material original contorna isso por proxies públicos — se
+um cair, o selo vira um quadrado vazio no JPG e ninguém vê antes de publicar.
+
+Pasta vazia: o relatório usa as URLs oficiais e a conferência avisa.
+
 Cada seção é um arquivo em `templates/componentes/`. O CSS em
 `templates/estilos/relatorio.css` foi **extraído do gerador HTML oficial**, para o
 template reproduzir o layout publicado e não um layout parecido.

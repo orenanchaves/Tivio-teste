@@ -1,11 +1,19 @@
 # ============================================================================
 # Relatório de Gestão — composição por seções
 # ----------------------------------------------------------------------------
-# Cada seção pode ser ligada/desligada sem alterar código. A ordem desta lista
-# é a ordem no relatório; `pagina` controla a quebra de página do PDF.
-# `por_fundo` sobrescreve a composição padrão para um fundo específico.
+# Cada seção liga e desliga sem alterar código. A ordem desta lista é a ordem no
+# relatório; `pagina` controla a quebra de página.
+#
+# A composição é POR VERTICAL, e isso não é refinamento: os relatórios de
+# Crédito Estruturado publicados são outro produto — 3 páginas, com Alocação
+# por Estratégia, sem Principais Emissores, sem Distribuição de Rating e sem a
+# tabela de Mercado de Crédito. Aplicar a composição do high grade neles produz
+# um relatório que não existe.
+#
+# `por_fundo` sobrescreve a vertical, para o caso de um fundo só.
 # ============================================================================
 
+# ------------------------------------------------- Crédito Privado (padrão)
 secoes:
   - {id: objetivo,        pagina: 1, titulo: OBJETIVO DA CARTEIRA}
   - {id: rentabilidade,   pagina: 1, titulo: RENTABILIDADE}
@@ -18,11 +26,27 @@ secoes:
   - {id: caracteristicas, pagina: 4, titulo: CARACTERÍSTICAS GERAIS DO FUNDO}
   - {id: disclaimer,      pagina: 4, titulo: Disclaimer}
 
-# ajustes por fundo (só o que difere do padrão)
-por_fundo:
-  altlight:
-    desligar: [mercado_credito]     # fundo previdenciário, sem a tabela ANBIMA
-  alt90:
-    desligar: [rating]
-  alt180:
-    desligar: [rating]
+por_vertical:
+  # ------------------------------------------- Crédito Estruturado (3 páginas)
+  # Espelha os relatórios publicados de ALT 90, ALT 180 e ALT Light.
+  credito_estruturado:
+    secoes:
+      - {id: objetivo,        pagina: 1, titulo: OBJETIVO DA CARTEIRA}
+      - {id: rentabilidade,   pagina: 1, titulo: RENTABILIDADE}
+      - {id: setores,         pagina: 1, titulo: ALOCAÇÃO REAL DA CARTEIRA DE CRÉDITO}
+      - {id: estrategia,      pagina: 1, titulo: ALOCAÇÃO POR ESTRATÉGIA}
+      - {id: historico,       pagina: 2, titulo: RENTABILIDADE HISTÓRICA}
+      - {id: comentario,      pagina: 2, titulo: "Comentário do Gestor e Análise de Mercado"}
+      - {id: caracteristicas, pagina: 3, titulo: CARACTERÍSTICAS GERAIS DO FUNDO}
+      - {id: disclaimer,      pagina: 3, titulo: Disclaimer}
+
+# ajustes de um fundo só (vencem sobre a vertical)
+por_fundo: {}
+
+# ----------------------------------------------------------------------------
+# Não implementado, por falta de dado na base:
+#
+#   SUBORDINAÇÃO — aparece só no relatório do ALT 90. Mostraria o nível de
+#   subordinação das cotas sênior. A Base Carteira não tem essa coluna; o dado
+#   teria de vir de outra fonte.
+# ----------------------------------------------------------------------------

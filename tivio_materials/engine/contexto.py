@@ -146,6 +146,14 @@ class ContextoFundo:
         return [(n, fmt.pct(v, 1), max(1, round(v / mx * 100))) for n, v in rt.items()]
 
     @property
+    def estrategia(self):
+        """Alocação por estratégia (coluna Book) — usada no Crédito Estruturado."""
+        if not self.cart or self.cart.get('estrategia') is None:
+            return []
+        e = self.cart['estrategia']
+        return [(n, fmt.pct(v, 1), round(v * 100, 2)) for n, v in e.head(8).items()]
+
+    @property
     def carrego(self):
         return self.cart['carrego'] if self.cart else None
 

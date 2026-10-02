@@ -9,10 +9,23 @@
   {% if not disclaimer %}
   <p>Disclaimer não configurado — preencher <code>configs/disclaimer.md</code>.</p>
   {% endif %}
+
   <div class="contacts">
     <div class="ci"><div><b>SAC: 0800 704 8383</b><br>Atendimento 24 horas</div></div>
     <div class="ci"><div><b>Ouvidoria: 0800 727 9933</b><br>Das 9h às 18h, de segunda a
       sexta, exceto feriados nacionais</div></div>
-    <div class="ci"><div><b>tivio.com/fundos</b><br>Rating S&amp;P: AMP-1</div></div>
+    <div class="ci"><div><b>tivio.com/fundos</b><br>Material de divulgação</div></div>
+  </div>
+
+  {# selos: QR · ANBIMA Distribuição · ANBIMA Gestão · Rating · PRI #}
+  <div class="sealrow">
+    <div class="qrb">
+      <img class="qr" src="{{ selos.qr.src }}" alt="{{ selos.qr.alt }}">
+      <span class="qt">Leia o QR Code e acesse os fundos da Tivio Capital</span>
+    </div>
+    <img class="selo" src="{{ selos.anbima1.src }}" alt="{{ selos.anbima1.alt }}">
+    <img class="selo" src="{{ selos.anbima2.src }}" alt="{{ selos.anbima2.alt }}">
+    <div class="rt"><div class="k">Rating S&amp;P</div><div class="v">brAMP-1</div></div>
+    <img class="selo" src="{{ selos.pri.src }}" alt="{{ selos.pri.alt }}">
   </div>
 </div>

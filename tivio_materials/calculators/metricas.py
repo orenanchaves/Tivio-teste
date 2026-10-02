@@ -156,9 +156,14 @@ class Calc:
             setores = grupo('Setor Aj.', c)
             tipos = grupo('Tipo aj.', c)
         rating = (c.groupby('Rating Externo')['Exposição'].sum() / pl).reindex(RATINGS).fillna(0)
+        # 'Book' é a estratégia da posição (FIDC Sênior, FIDC Mezanino, Caixa…).
+        # É o que os relatórios de Crédito Estruturado chamam de "Alocação por
+        # Estratégia" — um corte que o relatório de high grade não usa.
+        estrategia = grupo('Book', c) if 'Book' in c.columns else None
         credito = c[~c['Setor'].isin(['Caixa', 'DAP'])]['Exposição'].sum() / pl
         return {
             'emissores': emissores, 'setores': setores, 'tipos': tipos, 'rating': rating,
+            'estrategia': estrategia,
             'carrego': float((c['Taxa'] * exp).sum() / pl),
             'duration': float((c['duration'] * exp).sum() / pl / 252),
             'credito': float(credito),

@@ -247,6 +247,11 @@ fundos:
     busca: [ALT HY 180]
     logo: ALT_180
     relatorio: true
+    objetivo: >-
+      O Tivio ALT 180 se destaca por buscar créditos high yield com ênfase em
+      garantias reais, avais e recebíveis. O fundo oferece uma alternativa de
+      investimento de alto valor agregado, descorrelacionado das classes de
+      ativos tradicionais.
     performance_fixa: true     # não vem da taxas_global.xlsx
 
   alt90:
@@ -256,6 +261,10 @@ fundos:
     busca: [ALT HY 90]
     logo: ALT_90
     relatorio: true
+    objetivo: >-
+      O Tivio ALT 90 busca retorno superior ao CDI com baixa volatilidade, por
+      meio de FIDCs em cotas sênior, garantindo diversificação, segurança e
+      relação risco-retorno atrativa.
     performance_fixa: true
 
   altlight:
@@ -265,6 +274,9 @@ fundos:
     busca: [ALT LIGHT]
     logo: ALT_LIGHT
     relatorio: true
+    objetivo: >-
+      Fundo de previdência de crédito com parcela máxima permitida em crédito
+      estruturado. Além disso aloca em crédito privado e bancários.
 
   # ------------------------------------------------- Investment Solutions
   topgestor:         {nome: BV Top Gestor Crédito Privado,  vertical: investment_solutions, carteira: BV TOP GESTOR CRED PRIV FC FIM}

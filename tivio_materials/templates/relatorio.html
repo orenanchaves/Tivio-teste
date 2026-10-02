@@ -62,6 +62,9 @@ body.tv-exportando .tv-bar,body.tv-exportando .tv-toast{display:none}
 .commentbox p{font-size:inherit;line-height:1.45}
 .discwrap p{font-size:inherit;line-height:1.35}
 .discwrap .disc-nota{color:var(--tv-cinza-claro);margin-bottom:9px}
+.pgnum.sobre-faixa{color:rgba(255,255,255,.6)}
+.pgnum.sobre-faixa b{color:#fff}
+.sealrow img.selo,.sealrow .qr{image-rendering:auto}
 .chart-h sup{font-size:.62em;vertical-align:super;line-height:0;margin-left:1px}
 .tv-chart>svg.histsvg{width:100%;height:auto;display:block}
 /* a caixa da marca é preta no gerador interativo; aqui a faixa já é escura,
@@ -111,9 +114,11 @@ body.tv-exportando .tv-bar,body.tv-exportando .tv-toast{display:none}
       {% endfor %}
     </div>
 
-    {% if 'disclaimer' not in pagina.secoes|map(attribute='id')|list %}
-    <div class="pgnum"><b>{{ pagina.numero }}</b> / {{ paginas|length }}</div>
-    {% endif %}
+    {% set na_faixa = 'disclaimer' in pagina.secoes|map(attribute='id')|list %}
+    {# na folha do disclaimer o número fica sobre a faixa escura, então inverte
+       a cor — era por isso que ele sumia #}
+    <div class="pgnum{{ ' sobre-faixa' if na_faixa }}">
+      <b>{{ pagina.numero }}</b> / {{ paginas|length }}</div>
   </section>
 {% endfor %}
 
