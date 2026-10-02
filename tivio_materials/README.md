@@ -1,11 +1,21 @@
 # Central de Materiais · plataforma de atualização mensal
 
 Ambiente Python que atualiza **todos os materiais recorrentes** da Tivio a partir
-das planilhas do mês. Troca as planilhas, escreve os comentários, roda um comando:
+das planilhas do mês.
 
-```powershell
-python run.py
+O fluxo tem **dois passos**:
+
 ```
+    1. python run.py          →  as telas em HTML, com os dados do mês
+    2. botões na tela         →  PDF, PPTX, JPG, PNG, ZIP
+```
+
+O Python não tenta adivinhar o formato final: ele entrega a tela certa. Quem sabe
+qual formato precisa é quem vai usar — e clica.
+
+Os relatórios saem **também** em PDF e PPTX direto do `run.py`, porque são 13 por
+edição e abrir 13 páginas para clicar 13 vezes não é fluxo. O botão existe para
+o caso de a pessoa ajustar um texto na tela e querer reexportar aquele.
 
 Saída em `reports/AAAA-MM/`: HTML, PDF, PPTX, a `conferencia_AAAA-MM.xlsx` e o log.
 
@@ -251,10 +261,26 @@ interpola uma reta do zero até o valor final, com um ruído para parecer orgân
 
 ---
 
-## Os botões dos materiais da Central
+## Os botões
 
-Os posts, o e-mail e o relatório interativo exportam JPG, PDF, PNG e ZIP por
-botões no próprio material. O `run.py` entrega o HTML pronto; o resto é clicar.
+Toda tela gerada tem a sua barra de exportação.
+
+| Tela | Botões |
+|---|---|
+| Relatório de Gestão (13) | PDF (vetor) · PDF (imagem) · JPG · PNG · PPTX · Editar textos |
+| Posts (Estruturado, Privado, IS) | Baixar JPG · Pacote JPG · Pacote PDF · Editar textos |
+| E-mail de Crédito | Baixar PNG · Por partes · Baixar tudo · E-mail (HTML) |
+| Relatório interativo | JPG do fundo · Pacote JPG · Pacote PDF |
+
+**PDF (vetor)** usa a impressão do navegador: como o `@page` do template já
+define A4 sem margem, sai idêntico ao PDF do `run.py`, com texto selecionável.
+**PDF (imagem)** captura as folhas em bitmap — serve quando o destino não lida
+bem com vetor. Por isso o vetor vem primeiro na barra.
+
+As folhas são capturadas **uma por vez**: as quatro em paralelo multiplicam o
+pico de memória por quatro e travam a aba em máquina modesta. A escala é 3×
+(3000×4242 px numa A4) — acima disso o html2canvas estoura a memória sem ganho
+visível.
 
 Para que o clique funcione, as bibliotecas (`html2canvas`, `jszip`, `jspdf`,
 `echarts`) são servidas de `central/vendor/`, copiadas junto com os HTMLs. Nos

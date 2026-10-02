@@ -181,30 +181,45 @@ class Pipeline:
                         except Exception as e2:
                             self.log.erro(key, f'PPTX não gerado: {e2!r}')
 
-    def _copiar_libs(self):
-        """Leva html2canvas/jszip/jspdf para junto dos materiais.
+    # bibliotecas que cada pasta de saída precisa ter ao lado dos HTMLs
+    LIBS_POR_PASTA = {
+        'central': ('html2canvas.min.js', 'jszip.min.js', 'jspdf.umd.min.js',
+                    'echarts.min.js'),
+        'relatorios': ('html2canvas.min.js', 'jszip.min.js', 'jspdf.umd.min.js',
+                       'pptxgen.min.js'),
+    }
 
-        Sem isso o `vendor/…` que o renderizador escreveu daria 404 e todo
-        material cairia no CDN — ou seja, a correção não valeria nada.
+    def _copiar_libs(self):
+        """Leva as bibliotecas dos botões para junto dos HTMLs.
+
+        Sem isso o `vendor/…` que o HTML referencia daria 404 e tudo cairia no
+        CDN — ou seja, a correção não valeria nada. São duas pastas porque os
+        relatórios e os materiais da Central ficam separados, e cada um precisa
+        do `vendor/` ao seu lado.
         """
         origem = os.path.join(RAIZ, 'assets', 'vendor')
-        destino = self._destino('central', 'vendor')
         if not os.path.isdir(origem):
+            self.log.aviso('—', 'assets/vendor não existe — os botões dependerão do CDN')
             return
-        os.makedirs(destino, exist_ok=True)
-        copiados = 0
-        for arq in ('html2canvas.min.js', 'jszip.min.js', 'jspdf.umd.min.js',
-                    'echarts.min.js'):
-            caminho = os.path.join(origem, arq)
-            if os.path.exists(caminho):
-                shutil.copy2(caminho, os.path.join(destino, arq))
-                copiados += 1
-        if copiados:
-            self.log.info(f'  {copiados} bibliotecas de exportação copiadas para '
-                          f'central/vendor/')
-        else:
-            self.log.aviso('—', 'assets/vendor não tem as libs de exportação — os '
-                                'botões dos materiais dependerão do CDN')
+        for pasta, arquivos in self.LIBS_POR_PASTA.items():
+            alvo = self._destino(pasta)
+            if not os.path.isdir(alvo):
+                continue     # material desligado nesta edição
+            destino = os.path.join(alvo, 'vendor')
+            os.makedirs(destino, exist_ok=True)
+            copiados = 0
+            for arq in arquivos:
+                caminho = os.path.join(origem, arq)
+                if os.path.exists(caminho):
+                    shutil.copy2(caminho, os.path.join(destino, arq))
+                    copiados += 1
+            faltam = [a for a in arquivos
+                      if not os.path.exists(os.path.join(origem, a))]
+            if faltam:
+                self.log.aviso('—', f'{pasta}/: faltam em assets/vendor {faltam} — '
+                                    f'esses botões dependerão do CDN')
+            if copiados:
+                self.log.info(f'  {copiados} bibliotecas copiadas para {pasta}/vendor/')
 
     def _materiais_legados(self):
         self.log.etapa('5/6 Materiais da Central')
@@ -243,7 +258,6 @@ class Pipeline:
             if novo == original and chave:
                 self.log.aviso(nome, 'nenhuma alteração aplicada — conferir se as '
                                      'chaves do material batem com configs/fundos.yml')
-        self._copiar_libs()
 
     # ------------------------------------------------------------------ rodada
     def rodar(self):
@@ -267,6 +281,7 @@ class Pipeline:
         if self.cfg.get('materiais', {}).get('relatorio_gestao', True):
             self._relatorios(contextos)
         self._materiais_legados()
+        self._copiar_libs()
         self._fechar(contextos)
         return self.log.ok
 

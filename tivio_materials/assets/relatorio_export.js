@@ -1,0 +1,283 @@
+/* ===========================================================================
+   Barra de exportação do Relatório de Gestão
+   ---------------------------------------------------------------------------
+   O modelo do ambiente é de dois passos: o Python gera a tela em HTML, e os
+   botões exportam. Os materiais da Central já funcionavam assim; os relatórios
+   gerados não tinham botão nenhum — saíam só pelo `run.py`. Esta barra fecha
+   isso: o mesmo HTML que o Python entrega vira PDF, JPG, PNG ou PPTX no clique.
+
+   Por que continuar gerando PDF e PPTX também no servidor: são 13 fundos. O
+   `run.py` entrega os 13 de uma vez, sem ninguém abrir nada, e o PDF de lá é
+   vetorial. O botão serve ao caso em que a pessoa editou um texto na tela e
+   quer reexportar aquele relatório — algo que o servidor não tem como saber.
+
+   As bibliotecas carregam sob demanda (local primeiro, CDN como reserva):
+   quem só abre para ler não paga 1,8 MB de download.
+   ======================================================================== */
+(function () {
+  'use strict';
+
+  var LIBS = {
+    html2canvas: ['vendor/html2canvas.min.js',
+                  'https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js'],
+    jszip: ['vendor/jszip.min.js',
+            'https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js'],
+    jspdf: ['vendor/jspdf.umd.min.js',
+            'https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js'],
+    pptxgen: ['vendor/pptxgen.min.js',
+              'https://cdnjs.cloudflare.com/ajax/libs/pptxgenjs/3.12.0/pptxgen.min.js'],
+  };
+  var PRONTO = {
+    html2canvas: function () { return typeof html2canvas !== 'undefined'; },
+    jszip: function () { return typeof JSZip !== 'undefined'; },
+    jspdf: function () { return typeof window.jspdf !== 'undefined'; },
+    pptxgen: function () { return typeof PptxGenJS !== 'undefined'; },
+  };
+
+  function carregarUm(src) {
+    return new Promise(function (ok, erro) {
+      var s = document.createElement('script');
+      s.src = src;
+      // crossOrigin só faz sentido em URL absoluta: numa página aberta por
+      // file:// ele transforma o arquivo local numa requisição CORS de origem
+      // opaca, que o navegador recusa com o arquivo ali do lado
+      if (/^https?:/i.test(src)) { s.crossOrigin = 'anonymous'; }
+      s.onload = function () { ok(true); };
+      s.onerror = function () { erro(new Error(src)); };
+      document.head.appendChild(s);
+    });
+  }
+
+  function garantir(nome) {
+    if (PRONTO[nome]()) { return Promise.resolve(true); }
+    var fontes = LIBS[nome].slice();
+    return (function tenta() {
+      if (!fontes.length) {
+        return Promise.reject(new Error('não consegui carregar ' + nome));
+      }
+      return carregarUm(fontes.shift()).then(function () {
+        return PRONTO[nome]() ? true : tenta();
+      }, tenta);
+    })();
+  }
+
+  // ------------------------------------------------------------------ apoio
+  var META = (window.TV_RELATORIO || {});
+  var folhas = function () {
+    return [].slice.call(document.querySelectorAll('.rcard'));
+  };
+
+  function nomeArquivo(sufixo, ext) {
+    var base = (META.arquivo || document.title || 'relatorio')
+      .replace(/[\\/:*?"<>|]+/g, '-');
+    return base + (sufixo ? ' - ' + sufixo : '') + '.' + ext;
+  }
+
+  function baixar(blob, nome) {
+    var a = document.createElement('a');
+    a.href = URL.createObjectURL(blob);
+    a.download = nome;
+    document.body.appendChild(a);
+    a.click();
+    setTimeout(function () { URL.revokeObjectURL(a.href); a.remove(); }, 4000);
+  }
+
+  function aviso(txt, erro) {
+    var t = document.getElementById('tv-toast');
+    if (!t) {
+      t = document.createElement('div');
+      t.id = 'tv-toast';
+      document.body.appendChild(t);
+    }
+    t.textContent = txt;
+    t.className = 'tv-toast mostra' + (erro ? ' erro' : '');
+    clearTimeout(t._t);
+    t._t = setTimeout(function () { t.className = 'tv-toast'; }, erro ? 7000 : 2600);
+  }
+
+  /* Captura uma folha em bitmap.
+
+     escala 3 dá ~3000x4242 px numa folha A4 — suficiente para impressão e para
+     slide em tela cheia. Acima disso o html2canvas começa a estourar memória em
+     máquina modesta, e o ganho não aparece. */
+  function capturar(folha, escala) {
+    return html2canvas(folha, {
+      scale: escala || 3,
+      backgroundColor: '#ffffff',
+      useCORS: true,
+      allowTaint: false,
+      logging: false,
+      windowWidth: 1000,
+      windowHeight: 1414,
+    });
+  }
+
+  function comBarraEscondida(fn) {
+    // a própria barra não pode aparecer no que for exportado
+    document.body.classList.add('tv-exportando');
+    return Promise.resolve()
+      .then(fn)
+      .then(function (r) { document.body.classList.remove('tv-exportando'); return r; },
+            function (e) { document.body.classList.remove('tv-exportando'); throw e; });
+  }
+
+  function emSerie(itens, fn) {
+    // uma folha por vez: capturar as quatro em paralelo multiplica o pico de
+    // memória por quatro e trava a aba em máquina modesta
+    return itens.reduce(function (fila, item, i) {
+      return fila.then(function (acc) {
+        return Promise.resolve(fn(item, i)).then(function (r) {
+          acc.push(r);
+          return acc;
+        });
+      });
+    }, Promise.resolve([]));
+  }
+
+  // --------------------------------------------------------------- formatos
+  function exportarImagem(tipo) {
+    var ext = tipo === 'png' ? 'png' : 'jpg';
+    var mime = tipo === 'png' ? 'image/png' : 'image/jpeg';
+    return garantir('html2canvas').then(function () {
+      return garantir('jszip');
+    }).then(function () {
+      aviso('Gerando ' + ext.toUpperCase() + '…');
+      return comBarraEscondida(function () {
+        return emSerie(folhas(), function (folha, i) {
+          return capturar(folha).then(function (cv) {
+            return new Promise(function (ok) {
+              cv.toBlob(function (b) { ok({ i: i + 1, blob: b }); }, mime, 0.95);
+            });
+          });
+        });
+      });
+    }).then(function (paginas) {
+      if (paginas.length === 1) {
+        baixar(paginas[0].blob, nomeArquivo('', ext));
+        return;
+      }
+      var zip = new JSZip();
+      paginas.forEach(function (p) {
+        zip.file(nomeArquivo('p' + p.i, ext), p.blob);
+      });
+      return zip.generateAsync({ type: 'blob' }).then(function (b) {
+        baixar(b, nomeArquivo(ext.toUpperCase(), 'zip'));
+      });
+    });
+  }
+
+  function exportarPDF() {
+    return garantir('html2canvas').then(function () {
+      return garantir('jspdf');
+    }).then(function () {
+      aviso('Gerando PDF…');
+      return comBarraEscondida(function () {
+        return emSerie(folhas(), function (folha) { return capturar(folha); });
+      });
+    }).then(function (canvases) {
+      var jsPDF = window.jspdf.jsPDF;
+      var pdf = new jsPDF({ orientation: 'portrait', unit: 'mm', format: 'a4',
+                            compress: true });
+      canvases.forEach(function (cv, i) {
+        if (i) { pdf.addPage(); }
+        pdf.addImage(cv.toDataURL('image/jpeg', 0.95), 'JPEG', 0, 0, 210, 297);
+      });
+      pdf.save(nomeArquivo('', 'pdf'));
+    });
+  }
+
+  function exportarPPTX() {
+    return garantir('html2canvas').then(function () {
+      return garantir('pptxgen');
+    }).then(function () {
+      aviso('Gerando PPTX…');
+      return comBarraEscondida(function () {
+        return emSerie(folhas(), function (folha) { return capturar(folha); });
+      });
+    }).then(function (canvases) {
+      var pptx = new PptxGenJS();
+      // A4 retrato, igual à folha — o slide não reescala no PowerPoint
+      pptx.defineLayout({ name: 'A4', width: 8.27, height: 11.69 });
+      pptx.layout = 'A4';
+      canvases.forEach(function (cv) {
+        var s = pptx.addSlide();
+        s.addImage({ data: cv.toDataURL('image/jpeg', 0.95),
+                     x: 0, y: 0, w: 8.27, h: 11.69 });
+      });
+      return pptx.write({ outputType: 'blob' }).then(function (b) {
+        baixar(b, nomeArquivo('', 'pptx'));
+      });
+    });
+  }
+
+  function imprimir() {
+    // O caminho vetorial: o @page do template já define A4 sem margem, então a
+    // impressão do navegador sai idêntica ao PDF do run.py, com texto
+    // selecionável. É melhor que o PDF por imagem — por isso vem primeiro.
+    window.print();
+  }
+
+  function editar(botao) {
+    var ligado = document.body.classList.toggle('tv-editando');
+    folhas().forEach(function (f) {
+      f.querySelectorAll('p, h2, h3, td, th, .fv, .fk, .bk, .bv, .rk, .rv')
+        .forEach(function (e) { e.contentEditable = ligado ? 'true' : 'false'; });
+    });
+    botao.classList.toggle('ativo', ligado);
+    botao.textContent = ligado ? 'Terminar edição' : 'Editar textos';
+    aviso(ligado ? 'Edição ligada — clique no texto para alterar'
+                 : 'Edição desligada');
+  }
+
+  // ----------------------------------------------------------------- barra
+  var BOTOES = [
+    ['PDF (vetor)', imprimir, 'principal'],
+    ['PDF (imagem)', exportarPDF],
+    ['JPG', function () { return exportarImagem('jpg'); }],
+    ['PNG', function () { return exportarImagem('png'); }],
+    ['PPTX', exportarPPTX],
+  ];
+
+  function montar() {
+    if (!folhas().length) { return; }
+    var barra = document.createElement('div');
+    barra.className = 'tv-bar';
+
+    var titulo = document.createElement('span');
+    titulo.className = 'tv-bar-tit';
+    titulo.textContent = META.fundo || 'Relatório de Gestão';
+    barra.appendChild(titulo);
+
+    BOTOES.forEach(function (b) {
+      var el = document.createElement('button');
+      el.type = 'button';
+      el.className = 'tv-btn' + (b[2] ? ' ' + b[2] : '');
+      el.textContent = b[0];
+      el.addEventListener('click', function () {
+        el.disabled = true;
+        Promise.resolve()
+          .then(b[1])
+          .catch(function (e) {
+            aviso('Não consegui exportar: ' + (e && e.message ? e.message : e), true);
+          })
+          .then(function () { el.disabled = false; });
+      });
+      barra.appendChild(el);
+    });
+
+    var ed = document.createElement('button');
+    ed.type = 'button';
+    ed.className = 'tv-btn fantasma';
+    ed.textContent = 'Editar textos';
+    ed.addEventListener('click', function () { editar(ed); });
+    barra.appendChild(ed);
+
+    document.body.insertBefore(barra, document.body.firstChild);
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', montar);
+  } else {
+    montar();
+  }
+})();

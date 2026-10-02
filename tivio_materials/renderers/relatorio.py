@@ -10,6 +10,7 @@ na ordem do YAML. Desligar uma seção é apagar uma linha do YAML (ou listá-la
 `por_fundo.<fundo>.desligar`) — a página se refaz sozinha, e a numeração
 "1 / 4" acompanha, porque é contada depois da composição, não escrita à mão.
 """
+import json
 import os
 import re
 import unicodedata
@@ -98,6 +99,8 @@ class RenderizadorRelatorio:
         modulo = os.path.join(RAIZ, 'assets', 'relatorio_charts.js')
         ec = open(vendor, encoding='utf-8').read() if os.path.exists(vendor) else ''
         mod = open(modulo, encoding='utf-8').read() if os.path.exists(modulo) else ''
+        exp = os.path.join(RAIZ, 'assets', 'relatorio_export.js')
+        self.export_js = open(exp, encoding='utf-8').read() if os.path.exists(exp) else ''
         if not ec:
             self.log.aviso('—', 'assets/vendor/echarts.min.js não encontrado — os '
                                 'gráficos ficam na versão SVG do servidor '
@@ -371,6 +374,12 @@ class RenderizadorRelatorio:
             'marca_svg': self.marca_svg,
             'echarts_js': self.echarts_js,
             'charts_js': self.charts_js,
+            'export_js': self.export_js,
+            'meta_json': json.dumps({
+                'fundo': f.nome,
+                'arquivo': self.edicao.nome_arquivo(
+                    f'{f.nome} - Relatório de Gestão', '').rstrip('.'),
+            }, ensure_ascii=False),
             'barras': grafico.barras_horizontais,
             'rating_cols': grafico.colunas_rating,
             'grafico': grafico.linha_historica(ctx.hist12, ctx.benchmark),
