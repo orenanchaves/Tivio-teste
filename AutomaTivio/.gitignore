@@ -5,8 +5,18 @@ entrada/dados_mensais.xlsx
 # Cache da leitura da planilha (invalida sozinho por tamanho+mtime)
 .cache/
 
-# Saída: regenerável a partir das entradas
-reports/
+# A saída VAI para o repositório. Ela é regenerável, e por isso a primeira
+# versão a deixava de fora — mas quem abre o repositório quer ver a edição,
+# não só o código que a produz, e nem todo mundo vai rodar o Python para
+# olhar um relatório. São ~14 MB por edição.
+#
+# Se o repositório crescer demais (12 edições = ~170 MB), descomente a linha
+# abaixo: a saída volta a sair do versionamento e segue sendo gerada por
+# `python run.py`.
+# reports/
+
+# O log é da execução, não do material: muda a cada rodada e não ajuda ninguém
+# a ler o relatório.
 logs/
 
 __pycache__/
