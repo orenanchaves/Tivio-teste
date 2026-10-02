@@ -122,3 +122,38 @@ body.edit .rcard [contenteditable]:hover{background:rgba(117,157,180,.15);box-sh
 .footer .logo-mark{height:24px;width:69px;color:var(--text-primary);margin:0 auto 14px;display:block;overflow:visible}
 .toast{position:fixed;left:50%;bottom:calc(28px + var(--safe-b));transform:translateX(-50%) translateY(20px);opacity:0;pointer-events:none;padding:12px 22px;border-radius:var(--r-full);background:var(--tv-azul);color:#000;font-size:13px;font-weight:700;transition:.25s var(--ease);z-index:100;max-width:90vw;text-align:center}
 .toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+
+/* ================= ENQUADRAMENTO: A FOLHA CABE NA TELA =================
+   A folha é um A4 desenhado em 1000x1414 px fixos. Em tela mais estreita que
+   isso ela transbordava pela direita e o que sobrava ficava fora do alcance:
+   no celular o título aparecia cortado no meio da palavra e o disclaimer
+   corria para fora da borda. Encolher a folha inteira resolve sem mexer em
+   uma linha do layout.
+
+   `zoom` e não `transform:scale` porque o zoom afeta o LAYOUT: a folha passa
+   a ocupar o tamanho reduzido, então não sobra faixa cinza embaixo nem
+   rolagem horizontal. É o mesmo recurso que acerta o PDF.
+
+   O valor exato vem do JS em --folha-zoom (largura disponível / 1000). Os
+   degraus abaixo enquadram antes do script rodar — e se ele não rodar. */
+:root{--folha-zoom:1}
+.folhas .rcard{zoom:var(--folha-zoom)}
+@media(max-width:1060px){:root{--folha-zoom:.95}}
+@media(max-width:1000px){:root{--folha-zoom:.90}}
+@media(max-width:940px){:root{--folha-zoom:.85}}
+@media(max-width:880px){:root{--folha-zoom:.79}}
+@media(max-width:820px){:root{--folha-zoom:.73}}
+@media(max-width:760px){:root{--folha-zoom:.67}}
+@media(max-width:700px){:root{--folha-zoom:.62}}
+@media(max-width:640px){:root{--folha-zoom:.57}}
+@media(max-width:580px){:root{--folha-zoom:.52}}
+@media(max-width:520px){:root{--folha-zoom:.47}}
+@media(max-width:460px){:root{--folha-zoom:.42}}
+@media(max-width:420px){:root{--folha-zoom:.38}}
+@media(max-width:380px){:root{--folha-zoom:.34}}
+@media(max-width:340px){:root{--folha-zoom:.30}}
+
+/* A exportação é independente da tela: o html2canvas captura a folha em
+   1000x1414, o tamanho em que ela foi desenhada, mesmo que na hora do clique
+   ela esteja encolhida no celular. Sem isto o PNG saía na resolução da tela. */
+body.tv-exportando .folhas .rcard{zoom:1}

@@ -63,13 +63,54 @@
 
   // ------------------------------------------------------------------ apoio
   var META = (window.TV_RELATORIO || {});
+
+  /* O documento pode conter vários fundos (a página por vertical). Exportar
+     tem de pegar SÓ o que está na tela — senão o PDF do Banks sai com as 40
+     folhas dos dez fundos. Quando não há abas, o documento inteiro é o deck. */
+  function deckAtivo() {
+    return document.querySelector('.deck.ativo') || document;
+  }
+
   var folhas = function () {
-    return [].slice.call(document.querySelectorAll('.rcard'));
+    return [].slice.call(deckAtivo().querySelectorAll('.rcard'));
   };
 
+  /* ------------------------------------------------- enquadramento da folha
+     A folha tem 1000 px de largura fixa — é um A4. Em tela menor que isso ela
+     transbordava pela direita, e no celular isso aparecia como título cortado
+     no meio da palavra e disclaimer saindo da borda.
+
+     O CSS já traz degraus de --folha-zoom para o primeiro quadro; aqui o valor
+     fica exato, medido na largura que a página realmente tem. `zoom` não muda
+     clientWidth, então medir não entra em laço com o que a medida provoca. */
+  var LARGURA_FOLHA = 1000;
+
+  function enquadrar() {
+    var host = deckAtivo().querySelector('.folhas') ||
+               document.querySelector('.folhas');
+    if (!host) { return; }
+    var cs = getComputedStyle(host);
+    var disp = host.clientWidth -
+               (parseFloat(cs.paddingLeft) || 0) - (parseFloat(cs.paddingRight) || 0);
+    if (!(disp > 0)) { return; }
+    var z = Math.min(1, disp / LARGURA_FOLHA);
+    document.documentElement.style.setProperty(
+      '--folha-zoom', String(Math.floor(z * 1e4) / 1e4));
+  }
+
+  function ligarEnquadramento() {
+    enquadrar();
+    var t;
+    var refaz = function () { clearTimeout(t); t = setTimeout(enquadrar, 120); };
+    window.addEventListener('resize', refaz);
+    window.addEventListener('orientationchange', refaz);
+  }
+
   function nomeArquivo(sufixo, ext) {
-    var base = (META.arquivo || document.title || 'relatorio')
-      .replace(/[\\/:*?"<>|]+/g, '-');
+    var d = document.querySelector('.deck.ativo');
+    var base = (d && d.getAttribute('data-arquivo')) ||
+               META.arquivo || document.title || 'relatorio';
+    base = base.replace(/[\\/:*?"<>|]+/g, '-');
     return base + (sufixo ? ' - ' + sufixo : '') + '.' + ext;
   }
 
@@ -211,6 +252,15 @@
   }
 
   function imprimir() {
+    // o navegador imprime o documento inteiro; sem isto, o PDF do fundo
+    // ativo sairia seguido das folhas de todos os outros
+    var estilo = document.getElementById('tv-print-escopo');
+    if (!estilo) {
+      estilo = document.createElement('style');
+      estilo.id = 'tv-print-escopo';
+      estilo.textContent = '@media print{.deck:not(.ativo){display:none!important}}';
+      document.head.appendChild(estilo);
+    }
     // O caminho vetorial: o @page do template já define A4 sem margem, então a
     // impressão do navegador sai idêntica ao PDF do run.py, com texto
     // selecionável. É melhor que o PDF por imagem — por isso vem primeiro.
@@ -238,15 +288,47 @@
     ['PPTX', exportarPPTX],
   ];
 
+  /* ------------------------------------------------------------- abas */
+  function ligarAbas(titulo) {
+    var abas = [].slice.call(document.querySelectorAll('.ftab[data-deck]'));
+    if (!abas.length) { return; }
+    abas.forEach(function (aba) {
+      aba.addEventListener('click', function () {
+        var alvo = aba.getAttribute('data-deck');
+        abas.forEach(function (o) {
+          o.setAttribute('aria-selected', String(o === aba));
+        });
+        [].slice.call(document.querySelectorAll('.deck')).forEach(function (d) {
+          d.classList.toggle('ativo', d.getAttribute('data-deck') === alvo);
+        });
+        var d = document.querySelector('.deck.ativo');
+        if (titulo && d) { titulo.textContent = d.getAttribute('data-nome') || ''; }
+        // o ECharts não desenha em elemento com display:none — o gráfico do
+        // fundo que estava escondido sai com 0x0 até alguém redimensionar
+        if (typeof echarts !== 'undefined' && d) {
+          [].slice.call(d.querySelectorAll('.tv-chart')).forEach(function (el) {
+            var g = echarts.getInstanceByDom(el);
+            if (g) { g.resize(); }
+          });
+        }
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      });
+    });
+  }
+
   function montar() {
-    if (!folhas().length) { return; }
+    if (!document.querySelectorAll('.rcard').length) { return; }
     var barra = document.createElement('div');
     barra.className = 'tv-bar';
 
     var titulo = document.createElement('span');
     titulo.className = 'tv-bar-tit';
-    titulo.textContent = META.fundo || 'Relatório de Gestão';
+    var ativo = document.querySelector('.deck.ativo');
+    titulo.textContent = (ativo && ativo.getAttribute('data-nome')) ||
+                         META.fundo || 'Relatório de Gestão';
     barra.appendChild(titulo);
+    ligarAbas(titulo);
+    ligarEnquadramento();
 
     BOTOES.forEach(function (b) {
       var el = document.createElement('button');

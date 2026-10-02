@@ -451,6 +451,22 @@ const RECORRENTES=%REC%;
                         if it.get('kind') == 'relatorios'), len(seed))
             seed[pos:pos] = novos
 
+            # ...e passa a se chamar pelo que é. Com o título antigo ficavam
+            # dois cards "Relatórios de Gestão · Crédito Privado" lado a lado,
+            # um indo para o relatório pronto e outro para o construtor.
+            for it in seed:
+                if (it.get('kind') != 'relatorios'
+                        or str(it.get('id', '')).startswith('rg-')
+                        or str(it.get('title', '')).startswith('Gerador')):
+                    continue
+                cauda = str(it.get('title', '')).split('·')[-1].strip()
+                self.set(it.get('id', '?'), it, 'title',
+                         f'Gerador de Relatório de Gestão · {cauda}')
+                self.set(it.get('id', '?'), it, 'desc',
+                         'Construtor interativo, folha a folha. Os relatórios '
+                         'prontos do mês estão no card acima. '
+                         + str(it.get('desc', '')))
+
             # card apontando para HTML que não existe é link morto no índice —
             # alguém clica e não acontece nada
             mortos = [it for it in seed if not existe(it.get('link'))]
@@ -558,17 +574,23 @@ const RECORRENTES=%REC%;
         return html
 
     def _cards_de_relatorio(self):
-        """Um card por relatório gerado, apontando para o arquivo."""
+        """Um card por VERTICAL, não por fundo.
+
+        Treze cards de relatório afogavam a aba. O material que o time já usa é
+        um gerador por vertical com abas de fundo dentro, e é esse o card: um
+        link para a página, com os fundos nomeados na descrição.
+        """
         cards = []
-        for ctx, arquivo in self.relatorios:
-            vert = ctx.f.vertical
+        for rotulo, ctxs, arquivo in self.relatorios:
+            vert = ctxs[0].f.vertical if ctxs else 'credito_privado'
+            nomes = ', '.join(c.nome.replace('Tivio ', '') for c in ctxs)
             cards.append({
-                'id': f'rg-{ctx.key}',
+                'id': f'rg-{vert}',
                 'kind': 'relatorios',
                 'vert': self.VERT_CENTRAL.get(vert, 'credito-privado'),
-                'title': f'Relatório de Gestão · {ctx.nome}',
-                'desc': self.DESC_RELATORIO.get(
-                    vert, self.DESC_RELATORIO['credito_privado']),
+                'title': f'Relatórios de Gestão · {rotulo}',
+                'desc': f'{len(ctxs)} fundos em abas — {nomes}. '
+                        + self.DESC_RELATORIO.get(vert, self.DESC_RELATORIO['credito_privado']),
                 'date': self.edicao.mes_ano_curto,
                 'status': 'pronto',
                 # a Central fica em central/ e os relatórios em relatorios/

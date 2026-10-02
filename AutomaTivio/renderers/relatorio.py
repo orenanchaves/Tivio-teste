@@ -116,6 +116,7 @@ class RenderizadorRelatorio:
             trim_blocks=True, lstrip_blocks=True)
         self.env.filters['mes_label'] = self._mes_label
         self.selos = carregar_selos(log=log)
+        self.css_abas = self._ler_css('abas.css')
         self.css_marca = self._ler_css('_marca.css')
         local = css_fontes_locais()
         if local:
@@ -131,6 +132,8 @@ class RenderizadorRelatorio:
         else:
             self.fontes_locais = False
         self.css_relatorio = self._ler_css('relatorio.css')
+        # bloco comum da entrega (barra, folha solta, impressão)
+        self.css_entrega = self._ler_css('entrega.css')
         self._logos = self._indexar_logos()
         marca = os.path.join(RAIZ, 'assets', 'marca', 'tivio.svg')
         self.marca_svg = open(marca, encoding='utf-8').read() if os.path.exists(marca) else ''
@@ -492,6 +495,7 @@ class RenderizadorRelatorio:
             'periodos': ['Mês', 'Ano', '12M', '24M', '36M', 'Desde o início'],
             'linhas': ctx.linhas_rentabilidade,
             'css_marca': self.css_marca, 'css_relatorio': self.css_relatorio,
+            'css_entrega': self.css_entrega,
             'logo_svg': self.logo(f),
             'marca_svg': self.marca_svg,
             'echarts_src': self.ECHARTS,
@@ -537,9 +541,49 @@ class RenderizadorRelatorio:
         # cada componente recebe seu próprio `titulo`; o include herda o contexto,
         # então o título é resolvido na hora pelo id da seção corrente
         self.env.globals['TITULOS'] = titulos_por_secao
-        tpl = self.env.get_template('relatorio.html')
+        dados['css_abas'] = self.css_abas
+        tpl = self.env.get_template(dados.pop('_template', 'relatorio.html'))
         return tpl.render(**dados, titulos=titulos_por_secao,
                           titulo_de=lambda sid: titulos_por_secao.get(sid, sid))
+
+    # --------------------------------------------------- página por vertical
+    def html_vertical(self, contextos, vertical):
+        """Um documento com todos os fundos da vertical, em abas.
+
+        Treze arquivos avulsos era o errado: quem abre quer "os relatórios de
+        Crédito Privado", não caçar treze links. O material que o time já usa
+        funciona assim — um gerador com abas de fundo —, e esta página repete
+        esse controle.
+
+        Os fundos ficam todos no documento, só um visível. Trocar de aba não
+        recarrega nada, e exportar pega só o que está na tela.
+        """
+        rotulo = (self.cad.verticais.get(vertical) or {}).get('rotulo', vertical)
+        decks = []
+        for ctx in contextos:
+            corpo = self.html(ctx)
+            # aproveita o corpo já montado: só as folhas, sem <head> nem scripts
+            ini = corpo.index('<div class="folhas">')
+            fim = corpo.index('</div>', corpo.rindex('</section>')) + len('</div>')
+            decks.append({
+                'key': ctx.key,
+                'nome': ctx.nome,
+                'arquivo': self.edicao.nome_arquivo(
+                    f'{ctx.nome} - Relatório de Gestão', '').rstrip('.'),
+                'paginas': len(self.paginas(ctx.f.key, ctx)),
+                'html': corpo[ini:fim],
+            })
+
+        tpl = self.env.get_template('relatorio_vertical.html')
+        return tpl.render(
+            decks=decks, vertical_rotulo=rotulo, edicao=self.edicao,
+            css_marca=self.css_marca, css_relatorio=self.css_relatorio,
+            css_entrega=self.css_entrega,
+            css_abas=self.css_abas, charts_js=self.charts_js,
+            export_js=self.export_js, echarts_src=self.ECHARTS,
+            meta_json=json.dumps({'fundo': rotulo,
+                                  'arquivo': f'Relatório de Gestão - {rotulo}'},
+                                 ensure_ascii=False))
 
 
 # ---------------------------------------------------------------------------

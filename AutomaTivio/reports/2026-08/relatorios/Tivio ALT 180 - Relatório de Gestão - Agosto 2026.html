@@ -200,8 +200,17 @@ body.tv-exportando .tv-bar,body.tv-exportando .tv-toast{display:none}
   html,body{background:#fff}
   .tv-bar,.tv-toast{display:none!important}
   .folhas{display:block;gap:0;padding:0}
-  .rcard{box-shadow:none;border-radius:0;break-after:page;page-break-after:always;
-         width:210mm;height:297mm}
+
+  /* A folha é desenhada em 1000x1414 px. Uma página A4 tem 210 mm = 793,7 px
+     a 96 dpi. Declarar `width:210mm` no .rcard não encolhe o conteúdo — só
+     aperta a caixa, e os 206 px que sobram são CORTADOS: some a coluna da
+     direita e o pé do gráfico de rating. Era isso que deixava o PDF quebrado.
+
+     `zoom` resolve porque, diferente de `transform:scale`, ele afeta o
+     layout: a folha passa a ocupar 793,7 x 1122,3 px, que é exatamente A4.
+     A proporção fecha sem distorcer — 1414/1000 = 1,414 = 297/210. */
+  .rcard{zoom:0.79365;
+         box-shadow:none;border-radius:0;break-after:page;page-break-after:always}
   .rcard:last-child{break-after:auto;page-break-after:auto}
 }
 .histvazio{color:#8A99A3;font-size:13px;padding:10px 0}
@@ -290,7 +299,9 @@ body.tv-exportando .tv-bar,body.tv-exportando .tv-toast{display:none}
     <tr><td>CDI</td>
 <td>1,09%</td><td>9,33%</td><td>14,57%</td><td>−</td><td>−</td><td>25,43%</td></tr>
     <tr><td>% do CDI</td>
-<td>119%</td><td>120%</td><td>124%</td><td>−</td><td>−</td><td>130%</td></tr>
+<td>118,88%</td><td>119,92%</td><td>124,27%</td><td>−</td><td>−</td><td>130,33%</td></tr>
+    <tr><td>CDI+</td>
+<td>2,48%</td><td>2,59%</td><td>3,10%</td><td>−</td><td>−</td><td>3,60%</td></tr>
   </tbody>
 </table>
 <div class="databox">Data base: 31/08/2026</div>
@@ -366,7 +377,7 @@ body.tv-exportando .tv-bar,body.tv-exportando .tv-toast{display:none}
 
 <div class="commentbox" style="font-size:15.5px">
   <h3 class="chart-h">Comentário do Gestor e Análise de Mercado</h3>
-<p>O Tivio ALT 180 registrou rentabilidade de 1,30% no mês, equivalente a 119% do CDI no período. Desde o início da estratégia, o fundo acumula retorno de 33,14%, frente a 25,43% do CDI, o que corresponde a um desempenho anualizado de 129% do CDI.</p><p>Em setembro, iniciamos posição em uma cota sênior de FIDC com exposição ao setor de telecomunicações. A tese de investimento está fundamentada na atuação consolidada do originador, que possui mais de 23 anos de experiência no segmento, bem como nas características estruturais do mercado em que atua, marcado por elevada pulverização, baixa bancarização, receitas recorrentes e oferta restrita de crédito. Adicionalmente, a operação apresenta carteira de recebíveis amplamente diversificada entre cedentes e sacados, além de mecanismos de proteção que incluem overcollateral mínimo de 25% sobre os ativos cedidos ao fundo.</p><p>A nova alocação reforça nossa estratégia de buscar operações com perfil defensivo, adequada relação entre risco e retorno e estruturas robustas de mitigação de risco. Seguimos priorizando ativos com forte alinhamento de interesses entre as partes envolvidas, qualidade na originação dos créditos e mecanismos de proteção compatíveis com o cenário de mercado. Mantemos uma postura seletiva na alocação de capital, avaliando continuamente oportunidades que possam contribuir para a geração consistente de retornos ajustados ao risco para os cotistas.</p></div>
+<p>O Tivio ALT 180 registrou rentabilidade de 1,30% no mês, equivalente a 118,88% do CDI no período. Desde o início da estratégia, o fundo acumula retorno de 33,14%, frente a 25,43% do CDI, o que corresponde a um desempenho anualizado de 129% do CDI.</p><p>Em setembro, iniciamos posição em uma cota sênior de FIDC com exposição ao setor de telecomunicações. A tese de investimento está fundamentada na atuação consolidada do originador, que possui mais de 23 anos de experiência no segmento, bem como nas características estruturais do mercado em que atua, marcado por elevada pulverização, baixa bancarização, receitas recorrentes e oferta restrita de crédito. Adicionalmente, a operação apresenta carteira de recebíveis amplamente diversificada entre cedentes e sacados, além de mecanismos de proteção que incluem overcollateral mínimo de 25% sobre os ativos cedidos ao fundo.</p><p>A nova alocação reforça nossa estratégia de buscar operações com perfil defensivo, adequada relação entre risco e retorno e estruturas robustas de mitigação de risco. Seguimos priorizando ativos com forte alinhamento de interesses entre as partes envolvidas, qualidade na originação dos créditos e mecanismos de proteção compatíveis com o cenário de mercado. Mantemos uma postura seletiva na alocação de capital, avaliando continuamente oportunidades que possam contribuir para a geração consistente de retornos ajustados ao risco para os cotistas.</p></div>
     </div>
 
     <div class="pgnum">

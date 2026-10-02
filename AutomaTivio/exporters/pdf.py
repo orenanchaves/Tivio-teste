@@ -107,6 +107,7 @@ class ExportadorPDF:
             self._esperar_graficos(pagina, destino)
             self._conferir_estouro(pagina, destino)
             pagina.emulate_media(media='print')
+            self._conferir_enquadramento(pagina, destino)
             pagina.pdf(path=destino, prefer_css_page_size=True,
                        print_background=True, display_header_footer=False,
                        margin={'top': '0', 'right': '0', 'bottom': '0', 'left': '0'})
@@ -167,6 +168,42 @@ class ExportadorPDF:
                        f'conteúdo passa do fim da folha {pior["pagina"]} em '
                        f'{pior["sobra"]}px ({pior["onde"]}) — o PDF corta o excedente; '
                        f'reduzir o texto ou mover a seção de página')
+
+    # A4 a 96 dpi: 210 x 297 mm. É a caixa que o Chromium tem para imprimir.
+    A4_LARGURA = 210 / 25.4 * 96      # 793,70 px
+    A4_ALTURA = 297 / 25.4 * 96       # 1122,52 px
+
+    def _conferir_enquadramento(self, pagina, destino):
+        """Confere, já em modo impressão, que a folha cabe numa página A4.
+
+        A folha é desenhada em 1000x1414 px e o CSS a reduz com `zoom`. Se essa
+        regra deixar de valer — por um seletor de tela com especificidade maior,
+        por exemplo — a folha volta ao tamanho cheio e cada uma estoura numa
+        página em branco, ou perde a coluna da direita. O PDF continua sendo
+        gerado sem erro nenhum: o defeito só aparece abrindo o arquivo. Medir
+        aqui custa um `evaluate` e fecha esse buraco.
+        """
+        try:
+            m = pagina.evaluate("""() => {
+              const c = document.querySelector('.rcard');
+              if (!c) { return null; }
+              const r = c.getBoundingClientRect();
+              return {l: r.width, a: r.height,
+                      zoom: getComputedStyle(c).zoom,
+                      n: document.querySelectorAll('.rcard').length};
+            }""")
+        except Exception:
+            return
+        if not m:
+            return
+        folga = 1.0
+        if m['a'] > self.A4_ALTURA + folga or m['l'] > self.A4_LARGURA + folga:
+            self.log.aviso(os.path.basename(destino),
+                           f'a folha não cabe em A4 na impressão: '
+                           f'{m["l"]:.0f}x{m["a"]:.0f}px contra '
+                           f'{self.A4_LARGURA:.0f}x{self.A4_ALTURA:.0f}px '
+                           f'(zoom {m["zoom"]}) — o PDF sai com página em branco '
+                           f'entre as folhas, ou com a direita cortada')
 
     def _conferir_fonte(self, pagina, destino):
         """Espera a Versos e avisa se ela não chegou.

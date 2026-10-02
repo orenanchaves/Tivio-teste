@@ -136,27 +136,46 @@ class Pipeline:
             except Exception as e:
                 self.log.erro(ctx.key, f'falha ao montar o relatório: {e!r}')
                 continue
-            # O HTML é sempre gravado, mesmo com `saidas.html` desligado: o PDF
-            # e o PPTX são tirados do arquivo, para os caminhos relativos
-            # (vendor/) resolverem. Com a saída desligada ele é apagado no fim.
-            destino = self._destino('relatorios',
+            # O HTML de um fundo é gravado numa pasta de apoio: o PDF e o PPTX
+            # saem dele (por file://, para o vendor/ resolver), mas o que é
+            # entregue são as páginas por vertical, logo abaixo.
+            destino = self._destino('relatorios', '_fundos',
                                     self.edicao.nome_arquivo(
                                         f'{ctx.nome} - Relatório de Gestão', 'html'))
-            quer_html = bool(self.cfg['saidas'].get('html'))
-            exp_html.gravar(html, destino, self.log if quer_html else None)
-            htmls[ctx.key] = (ctx, html, destino, quer_html)
+            exp_html.gravar(html, destino, None)
+            htmls[ctx.key] = (ctx, html, destino, False)
 
         self._pdf_e_pptx(htmls, rend)
+        self._paginas_por_vertical(htmls, rend)
 
-        # a Central precisa listar o que foi gerado; guarda antes de apagar
-        self.relatorios_gerados = [(ctx, os.path.basename(arquivo))
-                                   for ctx, _, arquivo, quer in htmls.values() if quer]
-
-        # saída html desligada: o arquivo existiu só para o PDF sair dele
-        for _, _, arquivo, quer in htmls.values():
-            if not quer and os.path.exists(arquivo):
-                os.remove(arquivo)
+        # a pasta de apoio existiu só para o PDF sair de um arquivo
+        apoio = self._destino('relatorios', '_fundos')
+        if os.path.isdir(apoio):
+            shutil.rmtree(apoio, ignore_errors=True)
         return htmls
+
+    def _paginas_por_vertical(self, htmls, rend):
+        """Uma página por vertical, com os fundos em abas — o que é entregue."""
+        self.relatorios_gerados = []
+        if not self.cfg['saidas'].get('html'):
+            return
+
+        por_vert = {}
+        for ctx, _, _, _ in htmls.values():
+            por_vert.setdefault(ctx.f.vertical, []).append(ctx)
+
+        for vertical, ctxs in por_vert.items():
+            rotulo = (self.cadastro.verticais.get(vertical) or {}).get('rotulo', vertical)
+            self.log.contexto(f'relatorio/{vertical}')
+            try:
+                html = rend.html_vertical(ctxs, vertical)
+            except Exception as e:
+                self.log.erro(vertical, f'falha ao montar a página da vertical: {e!r}')
+                continue
+            nome = self.edicao.nome_arquivo(f'Relatório de Gestão - {rotulo}', 'html')
+            destino = self._destino('relatorios', nome)
+            exp_html.gravar(html, destino, self.log)
+            self.relatorios_gerados.append((rotulo, ctxs, nome))
 
     def _pdf_e_pptx(self, htmls, rend):
         if not htmls:
@@ -204,13 +223,18 @@ class Pipeline:
 
     # bibliotecas que cada pasta de saída precisa ter ao lado dos HTMLs
     LIBS_POR_PASTA = {
-        'central': ('html2canvas.min.js', 'jszip.min.js', 'jspdf.umd.min.js',
-                    'echarts.min.js'),
+        ('central',): ('html2canvas.min.js', 'jszip.min.js', 'jspdf.umd.min.js',
+                       'echarts.min.js'),
         # echarts entra aqui desde que o relatório deixou de embuti-lo: sem ele
         # na pasta, o <script src="vendor/echarts.min.js"> do HTML dá 404 e o
         # gráfico cai na versão SVG do servidor
-        'relatorios': ('echarts.min.js', 'html2canvas.min.js', 'jszip.min.js',
-                       'jspdf.umd.min.js', 'pptxgen.min.js'),
+        ('relatorios',): ('echarts.min.js', 'html2canvas.min.js', 'jszip.min.js',
+                          'jspdf.umd.min.js', 'pptxgen.min.js'),
+        # o HTML de apoio de cada fundo (de onde saem o PDF e o PPTX) fica um
+        # nível abaixo, e `vendor/…` é relativo ao arquivo: sem um vendor/ ao
+        # lado dele o Chromium não acha o echarts e o PDF sai com a versão SVG
+        # do servidor em vez do gráfico desenhado
+        ('relatorios', '_fundos'): ('echarts.min.js',),
     }
 
     def _copiar_libs(self):
@@ -225,8 +249,9 @@ class Pipeline:
         if not os.path.isdir(origem):
             self.log.aviso('—', 'assets/vendor não existe — os botões dependerão do CDN')
             return
-        for pasta, arquivos in self.LIBS_POR_PASTA.items():
-            alvo = self._destino(pasta)
+        for partes, arquivos in self.LIBS_POR_PASTA.items():
+            pasta = '/'.join(partes)
+            alvo = self._destino(*partes)
             if not os.path.isdir(alvo):
                 continue     # material desligado nesta edição
             destino = os.path.join(alvo, 'vendor')

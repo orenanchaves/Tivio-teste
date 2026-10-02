@@ -1,0 +1,25 @@
+/* Abas de fundo — extraídas do gerador de relatórios oficial, para as
+   páginas por vertical usarem o mesmo controle que o time já conhece. */
+.fundtabs{padding:26px 0 4px;display:flex;gap:10px;flex-wrap:wrap;align-items:stretch}
+.fundtabs{gap:8px;padding:20px 0 2px}
+.ftab{display:inline-flex;flex-direction:column;justify-content:center;gap:3px;padding:12px 22px;border-radius:var(--r-md);border:1px solid var(--line-strong);background:var(--input-bg);color:var(--text-muted);cursor:pointer;font-family:var(--ff);transition:.2s var(--ease);text-align:left;min-width:132px}
+.ftab .ft-n{font-size:15px;font-weight:700;letter-spacing:-.01em;line-height:1.12}
+.ftab .ft-s{font-size:10px;letter-spacing:.14em;text-transform:uppercase;font-weight:600;opacity:.7;line-height:1.1;margin-top:2px}
+.ftab:hover{color:var(--text-primary);border-color:var(--accent-strong);background:var(--bg-glass)}
+.ftab[aria-selected="true"]{color:var(--tv-preto);background:var(--accent-strong);border-color:transparent;box-shadow:var(--glow)}
+.ftab[aria-selected="true"] .ft-s{opacity:.78}
+.ftab[aria-selected="true"]{color:#fff}
+.ftab{padding:10px 14px;min-width:0;flex:1 1 42%}
+.ftab .ft-n{font-size:14px}
+
+
+/* Ajustes da barra de abas no gerador por vertical */
+.fundtabs{padding:14px 18px 12px;background:rgba(10,15,20,.92);
+  border-bottom:1px solid rgba(255,255,255,.12);position:sticky;top:60px;z-index:45}
+.ftab{flex:0 0 auto;min-width:138px}
+@media print{.fundtabs{display:none!important}}
+
+/* um fundo por vez: todos os decks ficam no documento, só muda qual aparece —
+   é o que permite trocar de aba e exportar sem recarregar nada */
+.deck{display:none}
+.deck.ativo{display:block}

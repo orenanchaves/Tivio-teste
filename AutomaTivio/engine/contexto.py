@@ -78,11 +78,20 @@ class ContextoFundo:
         return p.get(campo) if p else None
 
     def texto(self, periodo, campo):
-        """String pt-BR. '−' quando não há valor."""
+        """String pt-BR. '−' quando não há valor.
+
+        O % do benchmark sai com 0 casas no Crédito Privado ("101% do CDI") e
+        com 2 no Crédito Estruturado ("118,88%"), porque é assim nos relatórios
+        publicados de cada vertical. Não é preferência de formatação: é o
+        material que o investidor já recebeu.
+        """
         v = self.valor(periodo, campo)
         if v is None:
             return fmt.MINUS
-        return fmt.pct_cdi(v) if campo == 'pct' else fmt.pct(v)
+        if campo == 'pct':
+            casas = int(self.f.cfg.get('casas_pct', 0))
+            return fmt.num(v * 100, casas) + '%'
+        return fmt.pct(v)
 
     @property
     def linhas_rentabilidade(self):
@@ -97,8 +106,15 @@ class ContextoFundo:
         if self.f.retorno_absoluto:
             return {'fundo': fundo, 'bench': bench, 'abs': fundo,
                     'alfa': [self.texto(p, 'alfa') for p in PERIODOS]}
-        return {'fundo': fundo, 'bench': bench,
-                'pct': [self.texto(p, 'pct') for p in PERIODOS]}
+        linhas = {'fundo': fundo, 'bench': bench,
+                  'pct': [self.texto(p, 'pct') for p in PERIODOS]}
+        # O relatório de Crédito Estruturado publicado traz uma quarta linha,
+        # "CDI+": o excesso sobre o benchmark anualizado em 252 d.u. É o número
+        # que o gestor cita no comentário ("representando um desempenho de
+        # CDI + 3,60%"), e sem ele a tabela do ALT não é a tabela do ALT.
+        if self.f.cfg.get('linha_bench_mais'):
+            linhas['bench_mais'] = [self.texto(p, 'bench_mais') for p in PERIODOS]
+        return linhas
 
     # ------------------------------------------------------------------- PL
     @property

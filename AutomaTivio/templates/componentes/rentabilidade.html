@@ -1,7 +1,10 @@
 {# Tabela de rentabilidade · 6 períodos.
    A tabela do relatório publicado hoje vem com as linhas "Fundo" e o benchmark
-   inteiras em "—": só a linha de % do CDI está preenchida. Aqui as três linhas
-   saem do mesmo contexto, então não existe o estado "meia tabela". #}
+   inteiras em "—": só a linha de % do CDI está preenchida. Aqui as linhas saem
+   do mesmo contexto, então não existe o estado "meia tabela".
+
+   A quarta linha (CDI+) só aparece nos fundos marcados com `linha_bench_mais`
+   em configs/fundos.yml — hoje, os de Crédito Estruturado, como no original. #}
 <table class="perf">
   <thead>
     <tr><th></th>{% for p in periodos %}<th>{{ p }}</th>{% endfor %}</tr>
@@ -17,6 +20,10 @@
     {% else %}
     <tr><td>Alfa</td>
       {% for v in linhas.alfa %}<td>{{ v }}</td>{% endfor %}</tr>
+    {% endif %}
+    {% if linhas.bench_mais %}
+    <tr><td>{{ c.benchmark }}+</td>
+      {% for v in linhas.bench_mais %}<td>{{ v }}</td>{% endfor %}</tr>
     {% endif %}
   </tbody>
 </table>

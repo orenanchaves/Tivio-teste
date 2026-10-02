@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Relatório de Gestão · {{ vertical_rotulo }} · {{ edicao.mes_ano }}</title>
+<meta name="description" content="Relatórios de gestão mensais de {{ vertical_rotulo }} — {{ decks|length }} fundos, data base {{ edicao.br }}.">
+<style>
+{{ css_marca|safe }}
+{{ css_relatorio|safe }}
+{{ css_abas|safe }}
+
+{{ css_entrega|safe }}
+</style>
+</head>
+<body>
+
+{# Abas de fundo — o mesmo controle do gerador oficial. #}
+<nav class="fundtabs" id="fundtabs" role="tablist">
+  {% for b in decks %}
+  <button type="button" class="ftab" role="tab" data-deck="{{ b.key }}"
+          aria-selected="{{ 'true' if loop.first else 'false' }}">
+    <span class="ft-n">{{ b.nome }}</span>
+    <span class="ft-s">{{ b.paginas }} págs · A4</span>
+  </button>
+  {% endfor %}
+</nav>
+
+{% for b in decks %}
+<div class="deck{{ ' ativo' if loop.first }}" data-deck="{{ b.key }}"
+     data-nome="{{ b.nome }}" data-arquivo="{{ b.arquivo }}">
+{{ b.html|safe }}
+</div>
+{% endfor %}
+
+{# ECharts da pasta vendor/ ao lado deste arquivo; se ela não vier junto (o
+   HTML mandado solto por e-mail, por exemplo), cai no CDN #}
+<script src="{{ echarts_src[0] }}"
+        onerror="var s=document.createElement('script');s.src='{{ echarts_src[1] }}';
+                 s.crossOrigin='anonymous';document.head.appendChild(s)"></script>
+{% if charts_js %}
+<script>{{ charts_js|safe }}</script>
+{% endif %}
+<script>
+/* nome do arquivo e do fundo para os botões — vem do Python, não do título */
+window.TV_RELATORIO = {{ meta_json|safe }};
+</script>
+{% if export_js %}
+<script>{{ export_js|safe }}</script>
+{% endif %}
+</body>
+</html>

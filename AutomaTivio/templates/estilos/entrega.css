@@ -1,0 +1,100 @@
+/* CSS da entrega: o HTML do relatório pronto (uma folha por fundo, ou um
+   deck por aba) — barra de exportação, folha solta e regras de impressão.
+   Vale para relatorio.html e relatorio_vertical.html: era o mesmo bloco
+   copiado nos dois, e toda correção de PDF tinha de ser feita duas vezes. */
+html,body{margin:0;padding:0;background:#f2f5f7}
+body{font-family:var(--ff);-webkit-font-smoothing:antialiased}
+.folhas{display:flex;flex-direction:column;align-items:center;gap:24px;padding:24px}
+.rcard{box-shadow:0 10px 40px rgba(16,28,40,.14);border-radius:2px}
+
+/* ---- barra de exportação --------------------------------------------------
+   Fica fora de tudo que é exportado: `.tv-exportando` a esconde durante a
+   captura, e @media print a tira da impressão. Sem isso ela apareceria no
+   topo do PDF. */
+.tv-bar{position:sticky;top:0;z-index:50;display:flex;flex-wrap:wrap;gap:8px;
+  align-items:center;padding:12px 18px;background:rgba(10,15,20,.92);
+  backdrop-filter:blur(10px);border-bottom:1px solid rgba(255,255,255,.12)}
+.tv-bar-tit{color:#E6EDF1;font-size:12px;font-weight:600;letter-spacing:.08em;
+  text-transform:uppercase;margin-right:auto}
+.tv-btn{font-family:var(--ff);font-size:12.5px;font-weight:600;color:#0A0F14;
+  background:var(--tv-verde);border:0;border-radius:999px;padding:8px 16px;
+  cursor:pointer;transition:.18s var(--ease);letter-spacing:.01em}
+.tv-btn:hover:not(:disabled){filter:brightness(1.06);transform:translateY(-1px)}
+.tv-btn:disabled{opacity:.5;cursor:progress}
+.tv-btn.principal{background:#fff}
+.tv-btn.fantasma{background:transparent;color:#E6EDF1;
+  border:1px solid rgba(255,255,255,.28)}
+.tv-btn.fantasma.ativo{background:var(--tv-verde);color:#0A0F14;border-color:transparent}
+.tv-toast{position:fixed;left:50%;bottom:28px;transform:translate(-50%,14px);
+  z-index:60;padding:11px 20px;border-radius:999px;background:rgba(10,15,20,.94);
+  color:#fff;font-size:13px;opacity:0;pointer-events:none;transition:.22s var(--ease);
+  max-width:min(620px,88vw);text-align:center}
+.tv-toast.mostra{opacity:1;transform:translate(-50%,0)}
+.tv-toast.erro{background:#8C2F39}
+body.tv-editando .rcard [contenteditable="true"]:hover{outline:1px dashed var(--tv-azul)}
+body.tv-editando .rcard [contenteditable="true"]:focus{outline:2px solid var(--tv-verde)}
+body.tv-exportando .tv-bar,body.tv-exportando .tv-toast{display:none}
+
+/* ---- PDF: uma folha por página, sem margem do navegador ------------------
+   É isto que separa "PDF institucional" de "impressão de navegador": a
+   página do PDF tem exatamente o tamanho da folha, a folha não ganha
+   sombra nem fundo cinza, e nada quebra no meio. */
+@page{size:210mm 297mm;margin:0}
+@media print{
+  html,body{background:#fff}
+  .tv-bar,.tv-toast{display:none!important}
+  .folhas{display:block;gap:0;padding:0}
+
+  /* A folha é desenhada em 1000x1414 px. Uma página A4 tem 210 mm = 793,7 px
+     a 96 dpi. Declarar `width:210mm` no .rcard não encolhe o conteúdo — só
+     aperta a caixa, e os 206 px que sobram são CORTADOS: some a coluna da
+     direita e o pé do gráfico de rating. Era isso que deixava o PDF quebrado.
+
+     `zoom` resolve porque, diferente de `transform:scale`, ele afeta o
+     layout: a folha passa a ocupar 793,7 x 1122,3 px, que é exatamente A4.
+     A proporção fecha sem distorcer — 1414/1000 = 1,414 = 297/210.
+
+     O seletor é `.folhas .rcard` e não `.rcard` de propósito: o enquadramento
+     de tela (relatorio.css) usa `.folhas .rcard{zoom:var(--folha-zoom)}`, que
+     tem especificidade maior. Escrito como `.rcard` aqui, o zoom da tela
+     vencia o da impressão e cada folha estourava numa página em branco. */
+  .folhas .rcard{zoom:0.79365}
+  .rcard{box-shadow:none;border-radius:0;break-after:page;page-break-after:always}
+  .rcard:last-child{break-after:auto;page-break-after:auto}
+}
+.histvazio{color:#8A99A3;font-size:13px;padding:10px 0}
+/* o contêiner do gráfico guarda o desenho do servidor até o ECharts assumir */
+.tv-chart{width:100%}
+.commentbox p{font-size:inherit;line-height:1.45}
+.discwrap p{font-size:inherit;line-height:1.35}
+.discwrap .disc-nota{color:var(--tv-cinza-claro);margin-bottom:9px}
+.pgnum.sobre-faixa{color:rgba(255,255,255,.6)}
+.pgnum.sobre-faixa b{color:#fff}
+.sealrow img.selo,.sealrow .qr{image-rendering:auto}
+.chart-h sup{font-size:.62em;vertical-align:super;line-height:0;margin-left:1px}
+.tv-chart>svg.histsvg{width:100%;height:auto;display:block}
+/* a caixa da marca é preta no gerador interativo; aqui a faixa já é escura,
+   e o retângulo preto sobre o degradê lê como erro de render */
+.rc-head .rbox{background:transparent}
+.feat.op .fv{line-height:1.55}
+
+/* ---- tela estreita --------------------------------------------------------
+   O enquadramento da folha está em relatorio.css (--folha-zoom). Aqui fica a
+   moldura: sem as margens de 24px a folha já encolhida perderia largura útil
+   à toa, e a barra de abas presa em `top:60px` cobria o topo do relatório
+   depois que a barra de exportação passa a ocupar duas linhas. */
+@media(max-width:760px){
+  .folhas{gap:14px;padding:14px 10px}
+  .tv-bar{padding:9px 12px;gap:6px}
+  .tv-bar-tit{flex:1 0 100%;margin-right:0;font-size:11px}
+  .tv-btn{font-size:12px;padding:7px 13px}
+  .fundtabs{position:static;padding:10px 10px 8px;gap:6px;
+    overflow-x:auto;flex-wrap:nowrap;-webkit-overflow-scrolling:touch}
+  .ftab{min-width:0;padding:8px 12px}
+  .ftab .ft-n{font-size:13px}
+  .ftab .ft-s{font-size:9px;letter-spacing:.1em}
+}
+@media(max-width:460px){
+  .folhas{padding:10px 6px}
+  .tv-btn{font-size:11.5px;padding:6px 11px}
+}

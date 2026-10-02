@@ -247,6 +247,8 @@ fundos:
     busca: [ALT HY 180]
     logo: ALT_180
     relatorio: true
+    linha_bench_mais: true    # 4ª linha da tabela, como no original
+    casas_pct: 2              # "118,88%" e não "119%", como no original
     objetivo: >-
       O Tivio ALT 180 se destaca por buscar créditos high yield com ênfase em
       garantias reais, avais e recebíveis. O fundo oferece uma alternativa de
@@ -261,6 +263,8 @@ fundos:
     busca: [ALT HY 90]
     logo: ALT_90
     relatorio: true
+    linha_bench_mais: true    # 4ª linha da tabela, como no original
+    casas_pct: 2              # "118,88%" e não "119%", como no original
     objetivo: >-
       O Tivio ALT 90 busca retorno superior ao CDI com baixa volatilidade, por
       meio de FIDCs em cotas sênior, garantindo diversificação, segurança e
@@ -274,6 +278,8 @@ fundos:
     busca: [ALT LIGHT]
     logo: ALT_LIGHT
     relatorio: true
+    linha_bench_mais: true    # 4ª linha da tabela, como no original
+    casas_pct: 2              # "118,88%" e não "119%", como no original
     objetivo: >-
       Fundo de previdência de crédito com parcela máxima permitida em crédito
       estruturado. Além disso aloca em crédito privado e bancários.
