@@ -86,21 +86,115 @@ class Conferencia:
             if valor is None:
                 self.faltantes.append([k, nome, campo, 'não calculado nesta edição'])
 
-        # 5) comentário: existe? cita o mês certo?
+        # 5) números digitados no comentário × números calculados
+        self._conferir_numeros_do_comentario(ctx)
+
+        # 6) comentário: existe? cita o mês certo?
         if not ctx.comentario:
             self.faltantes.append([k, nome, 'comentário do gestor',
                                    'não preenchido no arquivo de comentários'])
         else:
-            texto = ' '.join(ctx.comentario).lower()
             atual = MESES[self.edicao.db.month - 1].lower()
-            for mes in MESES:
-                if mes.lower() != atual and re.search(rf'\b{mes.lower()}\b', texto):
-                    self.divergencias.append(
-                        [k, nome, 'comentário',
-                         f'cita "{mes}" — a data base é {atual}/{self.edicao.db.year}'])
-                    break
+            citado = self._mes_de_referencia(' '.join(ctx.comentario))
+            if citado and citado != atual:
+                self.divergencias.append(
+                    [k, nome, 'comentário',
+                     f'o texto se refere a "{citado}" como o mês corrente — a data '
+                     f'base é {atual}/{self.edicao.db.year}. Conferir se o comentário '
+                     f'é o desta edição.'])
 
         return len(self.divergencias) + len(self.faltantes) - antes
+
+    def _mes_de_referencia(self, texto):
+        """Mês que o texto trata como o mês da edição, ou None.
+
+        Distinção que evita avisar à toa: um comentário de agosto diz
+        legitimamente "os spreads abriram 5 bps **em relação a julho**" — citar
+        outro mês como comparação é normal. O que não é normal é abrir o
+        parágrafo com "**Em setembro**, iniciamos posição" num relatório de
+        agosto: aí o texto é de outra edição.
+
+        Então procuramos a construção que marca o mês corrente ("Em <mês>,",
+        "No mês de <mês>"), e não qualquer aparição do nome do mês.
+        """
+        nomes = '|'.join(m.lower() for m in MESES)
+        padrao = (rf'(?:^|[.!?]\s+|\n)\s*(?:em|no mês de|durante|ao longo de)\s+'
+                  rf'({nomes})\b')
+        for m in re.finditer(padrao, (texto or '').lower()):
+            # "em relação a julho" / "em comparação com julho" não contam
+            antes = texto.lower()[max(0, m.start() - 40):m.start(1)]
+            if re.search(r'rela[çc][ãa]o|compara|frente|versus|ante\b|contra\b', antes):
+                continue
+            return m.group(1)
+        return None
+
+    # ----------------------------------------------- números dentro do texto
+    # O texto do gestor é intocável — nem uma vírgula muda. Mas um percentual
+    # digitado ali é uma afirmação sobre o fundo, e foi assim que o relatório
+    # saiu dizendo 1,01% enquanto o e-mail dizia 1,23%. Então o texto não é
+    # reescrito: é conferido. O que não bater vira linha na aba Divergencias.
+    #
+    # A comparação é por conjunto, não por posição: procuramos cada percentual
+    # escrito entre os valores que o fundo tem nesta edição (retorno, benchmark,
+    # % do benchmark, carrego, alocação em crédito, nos períodos todos). Um
+    # número que não aparece em lugar nenhum é o suspeito.
+    def _conferir_numeros_do_comentario(self, ctx):
+        if not ctx.comentario or not ctx.tem_dados:
+            return
+        texto = ' '.join(ctx.comentario)
+        escritos = re.findall(r'(?<![\w,.])(\d{1,3}(?:,\d{1,2})?)%', texto)
+        if not escritos:
+            return
+
+        plausiveis = set()
+        for per in PERIODOS:
+            for campo in ('fundo', 'bench', 'alfa', 'pct', 'bench_mais'):
+                v = ctx.valor(per, campo)
+                if v is None or (isinstance(v, float) and pd.isna(v)):
+                    continue
+                plausiveis.add(round(abs(v) * 100, 2))
+            a = ctx.pct_anualizado(per)
+            if a:
+                plausiveis.add(round(a * 100, 2))
+        for v in (ctx.carrego, ctx.duration):
+            if v is not None:
+                plausiveis.add(round(abs(v) * 100, 2))
+        if ctx.cart:
+            plausiveis.add(round(ctx.cart['credito'] * 100, 2))
+            for serie in ('setores', 'rating'):
+                for x in ctx.cart[serie]:
+                    plausiveis.add(round(abs(x) * 100, 2))
+
+        # Tolerância relativa, não absoluta — e a diferença importa. Uma folga
+        # fixa de 1 p.p. aceitaria 1,01% no lugar de 1,10%, que é exatamente o
+        # erro que esta checagem existe para pegar. Com folga relativa de 0,5%,
+        # 101% passa por 100,59% (arredondamento legítimo) e 1,01% não passa por
+        # 1,10%. Também aceitamos o valor truncado, porque escrever "75%" para
+        # 75,7% é escolha editorial corrente, não erro.
+        def perto(n):
+            for p in plausiveis:
+                if abs(n - p) <= max(0.005 * p, 0.051):
+                    return True
+                if round(p) == n or int(p) == n:
+                    return True
+            return False
+
+        suspeitos = []
+        for s in set(escritos):
+            n = float(s.replace(',', '.'))
+            # números pequenos e redondos são do texto de mercado (spreads de
+            # 0,03%, overcollateral de 25%, alocação mínima de 15%), não do fundo
+            if n in (0.0, 1.0, 5.0, 15.0, 25.0) or n > 2000:
+                continue
+            if not perto(n):
+                suspeitos.append(s + '%')
+
+        if suspeitos:
+            self.divergencias.append(
+                [ctx.key, ctx.nome, 'números no comentário',
+                 'o texto cita ' + ', '.join(sorted(suspeitos)) +
+                 ' — nenhum bate com um valor calculado deste fundo nesta edição. '
+                 'Conferir se o texto é do mês certo (o sistema não altera o texto).'])
 
     # ---------------------------------------------------------------- planilha
     def gravar(self, contextos, cadastro, taxas, destino):

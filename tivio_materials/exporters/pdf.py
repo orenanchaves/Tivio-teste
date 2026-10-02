@@ -90,6 +90,8 @@ class ExportadorPDF:
             pagina.set_content(html, wait_until='load')
             if self.esperar_fonte:
                 self._conferir_fonte(pagina, destino)
+            self._esperar_graficos(pagina, destino)
+            self._conferir_estouro(pagina, destino)
             pagina.emulate_media(media='print')
             pagina.pdf(path=destino, prefer_css_page_size=True,
                        print_background=True, display_header_footer=False,
@@ -97,6 +99,60 @@ class ExportadorPDF:
         finally:
             pagina.close()
         return destino
+
+    def _esperar_graficos(self, pagina, destino):
+        """Só imprime depois que os gráficos desenharam.
+
+        Sem isso o PDF pode sair com o gráfico pela metade — o Chromium imprime
+        o DOM do instante, e o ECharts desenha depois do `load`.
+        """
+        try:
+            pagina.wait_for_function('window.__tvCharts !== undefined', timeout=10000)
+            estado = pagina.evaluate('window.__tvCharts')
+        except Exception:
+            return   # relatório sem gráfico nenhum
+        if estado and not estado.get('ok'):
+            self.log.aviso(os.path.basename(destino),
+                           f'gráficos não renderizados ({estado.get("motivo")}) — '
+                           f'o PDF sai com a versão SVG do servidor')
+        elif estado and estado.get('desenhados', 0) < estado.get('total', 0):
+            self.log.aviso(os.path.basename(destino),
+                           f'{estado["total"] - estado["desenhados"]} de '
+                           f'{estado["total"]} gráficos não desenharam')
+
+    def _conferir_estouro(self, pagina, destino):
+        """Avisa quando algum conteúdo passa do limite da folha.
+
+        A folha tem `overflow:hidden`: o que passa some. É a pior falha
+        possível num relatório — o texto do gestor truncado no meio, sem erro,
+        sem aviso, e descoberto só depois de publicado. Então medimos.
+        """
+        try:
+            sobras = pagina.evaluate("""() => {
+              const out = [];
+              document.querySelectorAll('.rcard').forEach((folha, i) => {
+                const lim = folha.getBoundingClientRect();
+                folha.querySelectorAll('.rc-body, .commentbox, .mkt, .featgrid, p')
+                  .forEach(el => {
+                    const r = el.getBoundingClientRect();
+                    if (r.height > 0 && r.bottom > lim.bottom + 2) {
+                      out.push({pagina: i + 1,
+                                onde: (el.className || el.tagName).toString().slice(0, 40),
+                                sobra: Math.round(r.bottom - lim.bottom)});
+                    }
+                  });
+              });
+              return out;
+            }""")
+        except Exception:
+            return
+        if not sobras:
+            return
+        pior = max(sobras, key=lambda s: s['sobra'])
+        self.log.aviso(os.path.basename(destino),
+                       f'conteúdo passa do fim da folha {pior["pagina"]} em '
+                       f'{pior["sobra"]}px ({pior["onde"]}) — o PDF corta o excedente; '
+                       f'reduzir o texto ou mover a seção de página')
 
     def _conferir_fonte(self, pagina, destino):
         """Espera a Versos e avisa se ela não chegou.

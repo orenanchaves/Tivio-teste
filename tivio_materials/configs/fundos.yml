@@ -123,7 +123,11 @@ fundos:
     publico: Investidores em geral
 
   infrapluscdi:
+    # dois nomes em uso: "Tivio Infra Plus CDI" no relatório publicado e
+    # "Institucional Incentivado CDI" nos comentários do gestor. O apelido
+    # abaixo faz o título do comentário casar com qualquer um dos dois.
     nome: Tivio Infra Plus CDI
+    apelidos: [Institucional Incentivado CDI, Infra Plus CDI]
     vertical: credito_privado
     busca: [INFRA PLUS, CDI]
     logo: Infra Plus CDI
@@ -161,7 +165,7 @@ fundos:
     publico: Investidor profissional
 
   legacy:
-    nome: Tivio Legacy
+    nome: Tivio Legacy Prev
     vertical: credito_privado
     busca: [LEGACY]
     logo: Legacy
@@ -177,9 +181,41 @@ fundos:
       movimentacao_minima: R$ 0,00
     publico: Investidores em geral
 
+  bvp:
+    nome: Tivio BVP
+    vertical: credito_privado
+    carteira: TIVIO BVP RF CP FIFE RL
+    busca: [BVP]
+    relatorio: true
+    objetivo: >-
+      O fundo tem como objetivo identificar oportunidades em ativos de crédito
+      high grade (Bancário, Corporativo e FIDC). Ele busca superar a variação do
+      CDI no longo prazo.
+    operacional:
+      aplicacao: D+0
+      resgate: D+0
+      aplicacao_minima: R$ 1.000,00
+      movimentacao_minima: R$ 1.000,00
+    publico: Investidores em geral
+
+  atuarial:
+    # Aparece nos comentários do gestor, mas não está entre as 29 carteiras da
+    # DePara de agosto/2026. Fica cadastrado para a conferência cobrar: sai na
+    # aba "Fundos sem atualizacao" até a planilha trazê-lo, em vez de
+    # desaparecer sem ninguém notar.
+    nome: Tivio Atuarial
+    vertical: credito_privado
+    busca: [ATUARIAL]
+    relatorio: true
+    retorno: absoluto
+    publico: Investidores em geral
+
   rfcp:
     nome: Tivio RF CP
     vertical: credito_privado
+    # fixada depois da conciliação com o relatório publicado: a busca por
+    # "RF CP" casava com cinco carteiras, inclusive a do Banks
+    carteira: TIVIO FI CI RF CP RL
     busca: [RF CP]
     logo: RF CP
     relatorio: true
@@ -234,6 +270,7 @@ fundos:
 # chaves com nome diferente em algum HTML legado
 alias:
   infra: infraplus
+  legacyprev: legacy
 
 # rótulo exibido no lugar de "Taxa de administração"
 rotulo_taxa: Taxa global

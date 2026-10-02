@@ -1,7 +1,10 @@
-<div class="commentbox">
+{# O corpo é dimensionado para caber na folha — ver
+   RenderizadorRelatorio.tamanho_comentario. A alternativa seria o CSS cortar o
+   excedente, que é perder texto do gestor sem avisar. #}
+<div class="commentbox" style="font-size:{{ tamanho_comentario }}px">
   <h3 class="chart-h">{{ titulo }}</h3>
   {% for p in c.comentario_preenchido %}<p>{{ p|safe }}</p>{% endfor %}
-  {% if not c.comentario %}
+  {% if not c.comentario_preenchido %}
   <p class="histvazio">Comentário não preenchido em
     <code>{{ arquivo_comentarios }}</code> para <b>{{ c.nome }}</b>.</p>
   {% endif %}

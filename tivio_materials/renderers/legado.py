@@ -295,12 +295,15 @@ class RenderizadorLegado:
                 f'{ctx.texto("ano", "fundo")} no ano.')
 
     def checar_mes(self, k, texto):
+        """Mesma regra da conferência: só avisa quando o texto trata outro mês
+        como o mês corrente, não quando cita outro mês como comparação."""
+        from validations.conferencia import Conferencia
         from engine.edicao import MESES
         atual = MESES[self.edicao.db.month - 1].lower()
-        for mes in MESES:
-            if mes.lower() != atual and re.search(rf'\b{mes.lower()}\b', (texto or '').lower()):
-                self.log.aviso(k, f'texto cita "{mes}" — a data base é {atual}')
-                return
+        citado = Conferencia._mes_de_referencia(self, texto)
+        if citado and citado != atual:
+            self.log.aviso(k, f'o texto se refere a "{citado}" como o mês corrente '
+                              f'— a data base é {atual}')
 
     # ========================================================== RELATÓRIO
     def relatorio_legado(self, html):

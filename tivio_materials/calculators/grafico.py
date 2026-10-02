@@ -24,6 +24,22 @@ def _esc(s):
     return (str(s).replace('&', '&amp;').replace('<', '&lt;').replace('>', '&gt;'))
 
 
+def _envelope(dados, miolo, altura=None):
+    """Contêiner que o ECharts assume, com o desenho do servidor dentro.
+
+    Aprimoramento progressivo, e não por elegância: o PDF é gerado sem ninguém
+    olhando. Se o ECharts falhar e o bloco for um `<div>` vazio esperando JS, os
+    12 PDFs saem com um retângulo branco no meio e isso só aparece depois de
+    publicado. Com o desenho do servidor dentro, o pior caso é o gráfico de
+    antes — correto, só sem tooltip.
+    """
+    import json as _json
+    if altura:
+        dados = dict(dados, altura=altura)
+    attr = _json.dumps(dados, ensure_ascii=False).replace("'", '&#39;')
+    return f"<div class=\"tv-chart\" data-tv='{attr}'>{miolo}</div>"
+
+
 def linha_historica(hist, nome_bench, largura=900, altura=430):
     """Duas séries acumuladas (fundo e benchmark) a partir de `Calc.historico`.
 
@@ -108,7 +124,14 @@ def linha_historica(hist, nome_bench, largura=900, altura=430):
              f'font-weight="600">{fmt.num(bench[-1], 1)}%</text>')
 
     s.append('</svg>')
-    return ''.join(s)
+
+    return _envelope({
+        'tipo': 'historico',
+        'labels': labels,
+        'fundo': [round(v, 4) for v in fundo],
+        'bench_serie': [round(v, 4) for v in bench],
+        'bench': nome_bench,
+    }, ''.join(s), altura=altura)
 
 
 # O markup abaixo não é escolha de estilo: é o que o CSS do relatório (extraído
@@ -130,7 +153,15 @@ def barras_horizontais(itens, cor=None):
             f'<div class="bar"><span class="bk">{_esc(nome)}</span>'
             f'<span class="bt"><span class="bf" style="width:{larg}%"></span></span>'
             f'<span class="bv">{_esc(valor)}</span></div>')
-    return ''.join(linhas) or '<div class="histvazio">sem carteira nesta edição</div>'
+    if not linhas:
+        return '<div class="histvazio">sem carteira nesta edição</div>'
+
+    return _envelope({
+        'tipo': 'barras',
+        'itens': [[n, round(float(larg), 2)] for n, _, larg in itens],
+        'rotulos': [v for _, v, _ in itens],
+        'cor': cor or AZUL,
+    }, ''.join(linhas), altura=max(120, 34 * len(itens)))
 
 
 def colunas_rating(itens, colunas=6):
@@ -151,5 +182,9 @@ def colunas_rating(itens, colunas=6):
         for _, v, h in itens) + '<div class="rbar"></div>' * vazias
     rotulos = ''.join(f'<span class="rk">{_esc(k)}</span>' for k, _, _ in itens) \
         + '<span class="rk"></span>' * vazias
-    return (f'<div class="ratebars">{barras}</div>'
-            f'<div class="ratelabels">{rotulos}</div>')
+    return _envelope({
+        'tipo': 'colunas',
+        'itens': [[k, round(float(h), 2)] for k, _, h in itens],
+        'rotulos': [v for _, v, _ in itens],
+    }, f'<div class="ratebars">{barras}</div>'
+       f'<div class="ratelabels">{rotulos}</div>', altura=232)

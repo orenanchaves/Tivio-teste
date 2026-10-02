@@ -29,7 +29,7 @@ class ContextoFundo:
     """Tudo sobre um fundo nesta edição. Só leitura."""
 
     def __init__(self, fundo, edicao, rent, cart, hist, hist12, taxa, perf,
-                 comentario, avisos):
+                 comentario, avisos, calc=None):
         self.f = fundo
         self.edicao = edicao
         self.rent = rent or {}
@@ -40,6 +40,7 @@ class ContextoFundo:
         self.perf = perf
         self.comentario = comentario or []
         self.avisos = avisos
+        self._calc = calc
 
     # ------------------------------------------------------------- identidade
     @property
@@ -189,8 +190,48 @@ class ContextoFundo:
         'alfa_mes': ('mes', 'alfa'), 'alfa_ano': ('ano', 'alfa'),
         'alfa_12m': ('12m', 'alfa'),
         'bench_mes': ('mes', 'bench'), 'bench_ano': ('ano', 'bench'),
+        'bench_12m': ('12m', 'bench'), 'bench_24m': ('24m', 'bench'),
+        'bench_36m': ('36m', 'bench'), 'bench_inicio': ('inicio', 'bench'),
         'bench_mais_inicio': ('inicio', 'bench_mais'),
+        'bench_mais_12m': ('12m', 'bench_mais'),
     }
+
+    def pct_anualizado(self, periodo='inicio'):
+        """% do benchmark em base anualizada.
+
+        Não é o mesmo que `pct`. `pct` divide os retornos acumulados; sobre vários
+        anos isso não é o número que o gestor chama de "desempenho anualizado de
+        122% do CDI" — esse divide os retornos *anualizados*. Em período longo os
+        dois divergem bastante, e usar um pelo outro põe no relatório um número
+        que não se reproduz.
+        """
+        p = self.rent.get(periodo)
+        refs = self.rent.get('refs') or {}
+        if not p or periodo not in refs:
+            return None
+        f, b = p.get('fundo'), p.get('bench')
+        if f is None or b is None:
+            return None
+        import numpy as _np
+        if _np.isnan(f) or _np.isnan(b):
+            return None
+        n = self._du_do_periodo(periodo)
+        if not n or n <= 0:
+            return None
+        fa = (1 + f) ** (252 / n) - 1
+        ba = (1 + b) ** (252 / n) - 1
+        return (fa / ba) if ba else None
+
+    def _du_do_periodo(self, periodo):
+        """Dias úteis entre a referência do período e a data base."""
+        refs = self.rent.get('refs') or {}
+        ref = refs.get(periodo)
+        if ref is None or self._calc is None:
+            return None
+        try:
+            return self._calc.du(ref, self.edicao.db)
+        except Exception:
+            return None
 
     def preencher(self, texto):
         """Resolve {marcadores} de um texto do gestor. Devolve (texto, faltando)."""
@@ -202,6 +243,10 @@ class ContextoFundo:
             if chave in self.MARCADORES:
                 per, campo = self.MARCADORES[chave]
                 return self.texto(per, campo)
+            if chave.startswith('pct_anual'):
+                per = chave.replace('pct_anual_', '') or 'inicio'
+                v = self.pct_anualizado(per if per != 'pct_anual' else 'inicio')
+                return fmt.pct_cdi(v) if v is not None else fmt.MINUS
             fixos = {
                 'bench': self.benchmark,
                 'nome': self.nome,
@@ -264,14 +309,14 @@ class Contexto:
         avisos = []
         if not f.resolvido:
             avisos.append('fundo não encontrado na DePara — material mantido como estava')
-            ctx = ContextoFundo(f, self.edicao, None, None, None, None, None, None, [], avisos)
+            ctx = ContextoFundo(f, self.edicao, None, None, None, None, None, None, [], avisos, self.calc)
             self._cache[key] = ctx
             return ctx
 
         rent = self.calc.rentabilidade(f.quantum, f.benchmark)
         if not rent:
             avisos.append(f'sem cotas para "{f.quantum}" na dados_mensais — material mantido')
-            ctx = ContextoFundo(f, self.edicao, None, None, None, None, None, None, [], avisos)
+            ctx = ContextoFundo(f, self.edicao, None, None, None, None, None, None, [], avisos, self.calc)
             self._cache[key] = ctx
             return ctx
 
@@ -298,9 +343,13 @@ class Contexto:
             avisos.append('taxa global não encontrada na taxas_global.xlsx')
 
         coment = self.com.relatorio(key, f.nome)
+        for apelido in f.apelidos:
+            if coment:
+                break
+            coment = self.com.relatorio(key, apelido)
 
         ctx = ContextoFundo(f, self.edicao, rent, cart, hist, hist12, taxa, perf,
-                            coment, avisos)
+                            coment, avisos, self.calc)
         if self.log:
             for a in avisos:
                 self.log.aviso(f.key, a)

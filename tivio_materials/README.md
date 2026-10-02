@@ -98,12 +98,21 @@ está em {bench} +{carrego}, com duration de {duration}.
 
 O título casa pela chave **ou** pelo nome do fundo, ignorando acento e caixa.
 
+**O texto não é alterado.** Nem pontuação, nem espaçamento, nem um número já
+digitado. O sistema injeta valor onde há `{marcador}` e não toca em mais nada.
+Os 13 comentários de agosto/2026 foram conferidos: saem do sistema byte a byte
+iguais ao que entrou.
+
 ### Marcadores
 
-O gestor escreve `{mes}`; o sistema põe o número. Isso existe porque a
-alternativa — digitar o número no texto — é a origem da divergência do Banks
-acima; e porque o método do gerador antigo (trocar o conteúdo de cada `<b>` por
-posição) quebra quando o parágrafo ganha um negrito a mais, sem avisar.
+O gestor escreve `{mes}`; o sistema põe o número. Isso serve para a lacuna que
+ele deixaria em branco — o `X%` de "rentabilidade de X% no mês". E evita a
+origem da divergência do Banks acima, sem obrigar ninguém a mudar o jeito de
+escrever: número digitado à mão continua valendo.
+
+O método do gerador antigo trocava o conteúdo de cada `<b>` por posição, e
+errava calado quando o parágrafo ganhava um negrito a mais — o próprio código
+avisava "revisar à mão" quando a contagem não batia.
 
 | Marcador | Dá |
 |---|---|
@@ -114,7 +123,22 @@ posição) quebra quando o parágrafo ganha um negrito a mais, sem avisar.
 | `{bench}` `{nome}` | nome do benchmark / do fundo |
 | `{carrego}` `{duration}` `{credito}` | carteira |
 | `{pl}` `{pl_medio}` | patrimônio |
+| `{pct_anual_inicio}` | % do benchmark **anualizado** (≠ `{pct_inicio}`) |
+| `{bench_mes}` `{bench_ano}` `{bench_inicio}` | retorno do benchmark |
 | `{data_base}` `{mes_ano}` `{mes_nome}` | data da edição |
+
+### O que a conferência faz com o texto que não muda
+
+Não reescreve — confere. Cada percentual escrito é procurado entre os valores
+que o fundo tem nesta edição; o que não aparece em lugar nenhum vira linha na aba
+**Divergencias**. A tolerância é relativa (0,5%), não absoluta: uma folga fixa de
+1 p.p. aceitaria 1,01% no lugar de 1,10%, que é exatamente o erro que a checagem
+existe para pegar.
+
+Também avisa quando o texto trata **outro mês como o mês corrente** — "Em
+setembro, iniciamos posição" num relatório de agosto. Citar outro mês como
+comparação ("os spreads abriram 5 bps em relação a julho") é normal e não gera
+aviso.
 
 Marcador desconhecido fica **visível no texto** (`{foo}`) e entra na conferência
 — o oposto de um número errado que passa.
@@ -145,12 +169,27 @@ Cada seção é um arquivo em `templates/componentes/`. O CSS em
 `templates/estilos/relatorio.css` foi **extraído do gerador HTML oficial**, para o
 template reproduzir o layout publicado e não um layout parecido.
 
-### O gráfico histórico
+### Os gráficos — Apache ECharts
 
-O relatório publicado hoje mostra uma curva que **não é o histórico do fundo**:
-`histSVG()` interpola uma reta do zero até o valor final, com um ruído para
-parecer orgânico. Aqui a série é a real, apurada pelas cotas de fechamento de cada
-mês (`calculators/grafico.py`), em SVG — que no PDF sai vetor.
+Os três blocos (linha do histórico, barras de emissores e setores, colunas de
+rating) são desenhados com **Apache ECharts 5.6.0**, em `renderer: 'svg'`. SVG não
+é preferência: em canvas o gráfico vira imagem rasterizada dentro de um PDF
+vetorial, que é o que faz um PDF parecer impressão de tela.
+
+O ECharts fica **versionado** em `assets/vendor/`, não buscado num CDN em tempo
+de execução, e é embutido no HTML. Razão prática: o PDF é gerado sem ninguém
+olhando, e um CDN fora do ar produziria 12 relatórios com o gráfico faltando,
+descobertos depois de publicados.
+
+**Aprimoramento progressivo.** O Python desenha o gráfico em SVG e o entrega
+dentro do contêiner; o ECharts o substitui ao carregar. Se o ECharts falhar, o
+que estava lá continua lá — o relatório nunca sai com um retângulo vazio. Antes
+de imprimir, o exportador espera `window.__tvCharts` e avisa se algum gráfico
+não desenhou.
+
+A série é a real, apurada pelas cotas de fechamento de cada mês. O relatório
+publicado hoje mostra uma curva que **não é o histórico do fundo**: `histSVG()`
+interpola uma reta do zero até o valor final, com um ruído para parecer orgânico.
 
 ---
 
@@ -213,7 +252,7 @@ tivio_materials/
 ├─ run.py                     ← o comando
 ├─ configs/
 │   ├─ edicao.yml             ← DATA_BASE e o que gerar
-│   ├─ fundos.yml             ← 20 fundos; 12 com relatório
+│   ├─ fundos.yml             ← 22 fundos; 14 com relatório
 │   └─ relatorio.yml          ← composição por seções
 ├─ entrada/                   ← planilhas do mês + comentarios.md
 ├─ engine/
@@ -234,7 +273,11 @@ tivio_materials/
 │   └─ legado.py              ← injeta dados nos HTMLs desenhados à mão
 ├─ exporters/                 ← html · pdf · pptx
 ├─ validations/               ← conferência
-├─ assets/logos/              ← 53 SVGs dos fundos
+├─ assets/
+│   ├─ logos/                 ← 53 SVGs dos fundos
+│   ├─ vendor/                ← Apache ECharts 5.6.0 (versionado)
+│   ├─ fontes/                ← Versos local, opcional (PDF sem rede)
+│   └─ relatorio_charts.js    ← monta os gráficos ECharts
 ├─ reports/AAAA-MM/           ← saída
 └─ logs/
 ```

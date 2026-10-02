@@ -73,6 +73,7 @@ class RenderizadorRelatorio:
         self._logos = self._indexar_logos()
         marca = os.path.join(RAIZ, 'assets', 'marca', 'tivio.svg')
         self.marca_svg = open(marca, encoding='utf-8').read() if os.path.exists(marca) else ''
+        self.echarts_js, self.charts_js = self._ler_js()
 
     # ------------------------------------------------------------------ apoio
     @staticmethod
@@ -83,6 +84,24 @@ class RenderizadorRelatorio:
     def _ler_css(self, nome):
         p = os.path.join(RAIZ, 'templates', 'estilos', nome)
         return open(p, encoding='utf-8').read() if os.path.exists(p) else ''
+
+    def _ler_js(self):
+        """ECharts e o módulo de gráficos, embutidos no HTML.
+
+        Embutido, e não via <script src> para o CDN: o PDF é gerado sem ninguém
+        olhando, e um CDN fora do ar produziria 12 relatórios com o gráfico
+        faltando, descobertos depois de publicados. Embutido, o HTML abre e
+        desenha sem rede.
+        """
+        vendor = os.path.join(RAIZ, 'assets', 'vendor', 'echarts.min.js')
+        modulo = os.path.join(RAIZ, 'assets', 'relatorio_charts.js')
+        ec = open(vendor, encoding='utf-8').read() if os.path.exists(vendor) else ''
+        mod = open(modulo, encoding='utf-8').read() if os.path.exists(modulo) else ''
+        if not ec:
+            self.log.aviso('—', 'assets/vendor/echarts.min.js não encontrado — os '
+                                'gráficos ficam na versão SVG do servidor '
+                                '(corretos, sem interação). Ver assets/vendor/LEIA-ME.md')
+        return ec, mod
 
     def _indexar_logos(self):
         """Mapa slug -> caminho do SVG, nas duas pastas de logo."""
@@ -114,9 +133,12 @@ class RenderizadorRelatorio:
         """
         # 1: fora o retângulo de fundo
         svg = re.sub(r'<g id="Background">.*?</g>', '', svg, flags=re.S)
-        # 2: altura do contêiner
-        svg = re.sub(r'<svg\b', '<svg height="100%" width="auto" '
-                                'preserveAspectRatio="xMinYMid meet"', svg, count=1)
+        # 2: altura do contêiner. Por CSS, não por atributo: o atributo `width`
+        # do SVG é um comprimento, não aceita "auto" — o navegador rejeita e
+        # loga um erro por página.
+        svg = re.sub(r'<svg\b',
+                     '<svg style="height:100%;width:auto;display:block" '
+                     'preserveAspectRatio="xMinYMid meet"', svg, count=1)
         # 3: classes com escopo
         classes = set(re.findall(r'\.(cls-[\w-]+)', svg))
         for c in classes:
@@ -179,6 +201,36 @@ class RenderizadorRelatorio:
                 s['ultimo_do_par'] = bool(par) and s is par[-1]
             paginas.append({'numero': len(paginas) + 1, 'secoes': lista})
         return paginas
+
+    # --------------------------------------------------- ajuste do comentário
+    # O comentário do gestor varia muito de tamanho: o do Infra Plus tem 4
+    # parágrafos, o do Banks tem 7 e passa de 4.000 caracteres. A folha é fixa
+    # (1000x1414) e o CSS corta o que sobra — ou seja, o texto excedente some do
+    # relatório sem erro, sem aviso e sem ninguém perceber.
+    #
+    # Em vez de cortar, o corpo do comentário é dimensionado para caber. A conta
+    # é uma estimativa (o navegador é quem decide de verdade), por isso o
+    # exportador de PDF confere depois e avisa se ainda assim estourou.
+    COMENTARIO_LARGURA = 886     # px úteis dentro da caixa
+    COMENTARIO_MIN = 10.5
+    COMENTARIO_MAX = 15.5
+
+    @classmethod
+    def tamanho_comentario(cls, paragrafos, altura_livre):
+        if not paragrafos:
+            return cls.COMENTARIO_MAX
+        chars = sum(len(p) for p in paragrafos)
+        n = len(paragrafos)
+        tam = cls.COMENTARIO_MAX
+        while tam > cls.COMENTARIO_MIN:
+            # ~0,5 em de largura média por caractere nesta fonte
+            por_linha = max(20, cls.COMENTARIO_LARGURA / (tam * 0.5))
+            linhas = chars / por_linha + n          # +1 linha órfã por parágrafo
+            altura = linhas * tam * 1.45 + n * tam * 0.55   # + espaço entre eles
+            if altura <= altura_livre:
+                break
+            tam -= 0.25
+        return round(tam, 2)
 
     # ----------------------------------------------------------------- blocos
     def mercado(self):
@@ -261,6 +313,8 @@ class RenderizadorRelatorio:
             'css_marca': self.css_marca, 'css_relatorio': self.css_relatorio,
             'logo_svg': self.logo(f),
             'marca_svg': self.marca_svg,
+            'echarts_js': self.echarts_js,
+            'charts_js': self.charts_js,
             'barras': grafico.barras_horizontais,
             'rating_cols': grafico.colunas_rating,
             'grafico': grafico.linha_historica(ctx.hist12, ctx.benchmark),
@@ -271,6 +325,16 @@ class RenderizadorRelatorio:
             'arquivo_comentarios': 'entrada/comentarios.md',
             'setores_barras': setores_barras,
         }
+
+        # espaço livre na página do comentário: a folha, menos o cabeçalho fino,
+        # menos o gráfico quando ele divide a página, menos as margens
+        ids_pagina = {s['id'] for pg in paginas for s in pg['secoes']
+                      if any(x['id'] == 'comentario' for x in pg['secoes'])}
+        livre = 1414 - 118 - 150
+        if 'historico' in ids_pagina:
+            livre -= 560
+        dados['tamanho_comentario'] = self.tamanho_comentario(
+            ctx.comentario_preenchido, livre)
         # o componente de setores lê c.setores_barras; injeta sem mexer no contexto
         ctx.setores_barras = setores_barras
 

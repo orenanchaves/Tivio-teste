@@ -28,6 +28,10 @@ body{font-family:var(--ff);-webkit-font-smoothing:antialiased}
   .rcard:last-child{break-after:auto;page-break-after:auto}
 }
 .histvazio{color:#8A99A3;font-size:13px;padding:10px 0}
+/* o contêiner do gráfico guarda o desenho do servidor até o ECharts assumir */
+.tv-chart{width:100%}
+.commentbox p{font-size:inherit;line-height:1.45}
+.tv-chart>svg.histsvg{width:100%;height:auto;display:block}
 /* a caixa da marca é preta no gerador interativo; aqui a faixa já é escura,
    e o retângulo preto sobre o degradê lê como erro de render */
 .rc-head .rbox{background:transparent}
@@ -82,5 +86,12 @@ body{font-family:var(--ff);-webkit-font-smoothing:antialiased}
 {% endfor %}
 
 </div>
+
+{% if echarts_js %}
+<script>{{ echarts_js|safe }}</script>
+{% endif %}
+{% if charts_js %}
+<script>{{ charts_js|safe }}</script>
+{% endif %}
 </body>
 </html>

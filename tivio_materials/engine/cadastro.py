@@ -46,6 +46,11 @@ class Fundo:
         return self.cfg.get('vertical', 'credito_privado')
 
     @property
+    def apelidos(self):
+        """Outros nomes pelos quais o fundo aparece (comentários, planilhas)."""
+        return list(self.cfg.get('apelidos') or [])
+
+    @property
     def objetivo(self):
         return (self.cfg.get('objetivo') or '').strip()
 
