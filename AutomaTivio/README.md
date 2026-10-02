@@ -233,6 +233,32 @@ material distribuído a investidor não é um defeito de layout.
 
 ---
 
+## A Central indexa a edição
+
+A `tivio-central.html` é o índice. A cada rodada ela ganha **um card por
+relatório gerado** — 13 nesta edição —, apontando para
+`../relatorios/<arquivo>.html`, com a data da edição.
+
+Sem isso a Central mostrava um único card de relatório (o gerador interativo de
+5 fundos) enquanto o `run.py` produzia 13 arquivos que ninguém encontrava por
+ela. Um índice que não lista o que existe não é índice.
+
+Os cards gerados têm id `rg-<fundo>` e são refeitos a cada rodada, então não
+acumulam duplicata. Card apontando para um `.html` que a edição não produziu é
+removido, com aviso dizendo qual era — foi assim que o "Incentivado CDI 30",
+link morto desde antes deste ambiente, saiu do índice.
+
+Dois detalhes de ordem que custaram uma rodada cada:
+
+- a Central é processada **por último**. Em ordem alfabética ela viria primeiro,
+  olharia uma pasta de saída vazia e julgaria todos os links mortos.
+- material desligado em `configs/edicao.yml` (Nordea, One Pager) é **copiado sem
+  atualizar**, não pulado. "Desligado" quer dizer "não recebe os dados do mês" —
+  eles têm schema próprio —, não "some da pasta". Pulado, o card da Central
+  apontava para um arquivo ausente.
+
+---
+
 ## Mercado de Crédito
 
 A tabela setorial da ANBIMA vem de **`entrada/tabela_spreads.xlsx`** — a planilha

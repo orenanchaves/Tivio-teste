@@ -148,6 +148,10 @@ class Pipeline:
 
         self._pdf_e_pptx(htmls, rend)
 
+        # a Central precisa listar o que foi gerado; guarda antes de apagar
+        self.relatorios_gerados = [(ctx, os.path.basename(arquivo))
+                                   for ctx, _, arquivo, quer in htmls.values() if quer]
+
         # saída html desligada: o arquivo existiu só para o PDF sair dele
         for _, _, arquivo, quer in htmls.values():
             if not quer and os.path.exists(arquivo):
@@ -255,27 +259,41 @@ class Pipeline:
             'tivio-construtor-one-pager.html': 'one_pager',
         }
         rend = RenderizadorLegado(self.contexto, self.cadastro, self.edicao,
-                                  self.comentarios, self.manual, self.log)
+                                  self.comentarios, self.manual, self.log,
+                                  relatorios=getattr(self, 'relatorios_gerados', []),
+                                  pasta_saida=self.pasta_saida)
         pasta = os.path.join(RAIZ, 'templates', 'materiais')
         if not os.path.isdir(pasta):
             self.log.aviso('—', f'templates/materiais não existe — nada a atualizar')
             return
-        for nome in sorted(os.listdir(pasta)):
-            if not nome.endswith('.html'):
-                continue
+        # A Central é processada POR ÚLTIMO: ela confere quais arquivos a
+        # edição produziu para montar o índice, e em ordem alfabética viria
+        # primeiro — olharia uma pasta vazia e julgaria todos os links mortos.
+        arquivos = sorted(n for n in os.listdir(pasta) if n.endswith('.html'))
+        arquivos.sort(key=lambda n: n == 'tivio-central.html')
+
+        for nome in arquivos:
             chave = mapa.get(nome)
-            if chave and not quais.get(chave, True):
-                continue
+            # Material desligado nesta edição é COPIADO sem atualizar, não
+            # pulado: a Central aponta para ele, e um arquivo ausente vira link
+            # morto no índice. "Desligado" quer dizer "não recebe os dados do
+            # mês" (o Nordea e o One Pager têm schema próprio), não "some".
+            atualiza = not (chave and not quais.get(chave, True))
             self.log.contexto(nome)
             original = open(os.path.join(pasta, nome), encoding='utf-8').read()
-            try:
-                novo = rend.processar(nome, original)
-            except Exception as e:
-                self.log.erro(nome, f'{e!r} — copiado sem alteração')
+            if not atualiza:
                 novo = original
+                self.log.info(f'  {nome} copiado sem atualizar (desligado em '
+                              f'configs/edicao.yml)')
+            else:
+                try:
+                    novo = rend.processar(nome, original)
+                except Exception as e:
+                    self.log.erro(nome, f'{e!r} — copiado sem alteração')
+                    novo = original
             destino = self._destino('central', nome)
             exp_html.gravar(novo, destino, self.log)
-            if novo == original and chave:
+            if atualiza and novo == original and chave:
                 self.log.aviso(nome, 'nenhuma alteração aplicada — conferir se as '
                                      'chaves do material batem com configs/fundos.yml')
 

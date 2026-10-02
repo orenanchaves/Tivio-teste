@@ -11,6 +11,7 @@ A diferença em relação ao atualizador anterior é de onde vem o número: ante
 cada função recalculava o seu; agora todas leem o mesmo `Contexto`. É o que
 impede o post e o e-mail de discordarem sobre o mesmo fundo.
 """
+import os
 import re
 
 import pandas as pd
@@ -38,13 +39,18 @@ class RenderizadorLegado:
         'tivio-relatorio-gestao-credito-privado.html': 'relatorio_legado',
     }
 
-    def __init__(self, contexto, cadastro, edicao, comentarios, manual, log):
+    def __init__(self, contexto, cadastro, edicao, comentarios, manual, log,
+                 relatorios=None, pasta_saida=None):
         self.ctx = contexto
         self.cad = cadastro
         self.edicao = edicao
         self.com = comentarios
         self.manual = manual or {}
         self.log = log
+        # [(contexto, nome do arquivo)] dos relatórios gerados nesta edição —
+        # é o que a Central precisa listar
+        self.relatorios = relatorios or []
+        self.pasta_saida = pasta_saida or ''
         self.rotulo_taxa = cadastro.rotulo_taxa
         self.ov = {}
         for _, r in self.manual.get('Overrides', pd.DataFrame()).iterrows():
@@ -388,13 +394,75 @@ const RECORRENTES=%REC%;
     ANCORA = ("items=items.filter(i=>!(i.kind==='emails'&&!i.link&&"
               "(i.id==='s4'||i.id==='s5'||i.id==='s7')));")
 
+    # Descrição dos cards de relatório, por vertical. Fica aqui e não no YAML
+    # porque é texto de vitrine da Central, não configuração do fundo.
+    DESC_RELATORIO = {
+        'credito_privado':
+            'Relatório de gestão mensal, 4 páginas (A4): objetivo e rentabilidade '
+            'em 6 períodos; principais emissores, alocação por setor e distribuição '
+            'de rating; rentabilidade histórica e comentário do gestor; mercado de '
+            'crédito; características e disclaimer. Exporta em PDF, JPG, PNG e PPTX.',
+        'credito_estruturado':
+            'Relatório de gestão mensal, 3 páginas (A4): objetivo e rentabilidade '
+            'em 6 períodos; alocação real da carteira de crédito e alocação por '
+            'estratégia; rentabilidade histórica e comentário do gestor; '
+            'características e disclaimer. Exporta em PDF, JPG, PNG e PPTX.',
+    }
+    VERT_CENTRAL = {'credito_privado': 'credito-privado',
+                    'credito_estruturado': 'credito-estruturado',
+                    'investment_solutions': 'solutions'}
+
     def central(self, html):
+        """Atualiza a data dos cards e registra os relatórios desta edição.
+
+        Sem isto a Central continua mostrando um único card de relatório — o do
+        gerador interativo de 5 fundos — enquanto o `run.py` produz 13 arquivos
+        que ninguém encontra pela Central. O índice tem de listar o que existe.
+        """
         rotulo = self.edicao.mes_ano_curto
+        novos = self._cards_de_relatorio()
+
+        def existe(link):
+            """O card aponta para um arquivo que saiu desta edição?
+
+            Só vale para link local terminado em .html — URL externa, PDF no
+            SharePoint e landing no ar não dá para conferir daqui, e some do
+            índice se eu tentar.
+            """
+            if not link or '://' in link or not link.lower().endswith('.html'):
+                return True
+            return os.path.exists(os.path.join(self.pasta_saida, 'central', link))
 
         def fn(seed):
             for it in seed:
                 if it.get('link') in MENSAIS and it.get('kind') in ('destaques', 'relatorios', 'emails'):
                     self.set(it.get('id', '?'), it, 'date', rotulo)
+
+            if not novos:
+                return seed
+
+            # fora os cards de relatório gerados numa edição anterior (os ids
+            # começam com 'rg-'), para não acumular duplicata a cada rodada
+            seed = [it for it in seed if not str(it.get('id', '')).startswith('rg-')]
+
+            # o card do gerador interativo continua, mas depois dos relatórios
+            # prontos: hoje ele cobre 5 fundos, e os prontos cobrem 13
+            pos = next((i for i, it in enumerate(seed)
+                        if it.get('kind') == 'relatorios'), len(seed))
+            seed[pos:pos] = novos
+
+            # card apontando para HTML que não existe é link morto no índice —
+            # alguém clica e não acontece nada
+            mortos = [it for it in seed if not existe(it.get('link'))]
+            for it in mortos:
+                self.log.aviso('tivio-central.html',
+                               f'card "{it.get("title", it.get("id"))}" removido: '
+                               f'aponta para "{it.get("link")}", que não existe '
+                               f'nesta edição')
+            seed = [it for it in seed if it not in mortos]
+
+            self.log.mudanca('—', 'Central', 'cards de relatório',
+                             f'{len(novos)} registrados para {rotulo}')
             return seed
         html = replace_literal(html, 'const SEED=', fn)
 
@@ -488,6 +556,25 @@ const RECORRENTES=%REC%;
             self.log.mudanca('—', 'libs de exportação', 'CDN',
                              f'{trocas} referências → vendor/ local (CDN como reserva)')
         return html
+
+    def _cards_de_relatorio(self):
+        """Um card por relatório gerado, apontando para o arquivo."""
+        cards = []
+        for ctx, arquivo in self.relatorios:
+            vert = ctx.f.vertical
+            cards.append({
+                'id': f'rg-{ctx.key}',
+                'kind': 'relatorios',
+                'vert': self.VERT_CENTRAL.get(vert, 'credito-privado'),
+                'title': f'Relatório de Gestão · {ctx.nome}',
+                'desc': self.DESC_RELATORIO.get(
+                    vert, self.DESC_RELATORIO['credito_privado']),
+                'date': self.edicao.mes_ano_curto,
+                'status': 'pronto',
+                # a Central fica em central/ e os relatórios em relatorios/
+                'link': f'../relatorios/{arquivo}',
+            })
+        return cards
 
     # ========================================================== orquestração
     def processar(self, nome, html):
