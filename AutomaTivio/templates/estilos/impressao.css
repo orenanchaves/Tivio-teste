@@ -1,0 +1,29 @@
+/* Impressão: uma folha por página A4, sem margem do navegador.
+   Vale para o relatório solto e para a página por vertical. */
+/* ---- PDF: uma folha por página, sem margem do navegador ------------------
+   É isto que separa "PDF institucional" de "impressão de navegador": a
+   página do PDF tem exatamente o tamanho da folha, a folha não ganha
+   sombra nem fundo cinza, e nada quebra no meio. */
+@page{size:210mm 297mm;margin:0}
+@media print{
+  html,body{background:#fff}
+  .tv-bar,.tv-toast{display:none!important}
+  .folhas{display:block;gap:0;padding:0}
+
+  /* A folha é desenhada em 1000x1414 px. Uma página A4 tem 210 mm = 793,7 px
+     a 96 dpi. Declarar `width:210mm` no .rcard não encolhe o conteúdo — só
+     aperta a caixa, e os 206 px que sobram são CORTADOS: some a coluna da
+     direita e o pé do gráfico de rating. Era isso que deixava o PDF quebrado.
+
+     `zoom` resolve porque, diferente de `transform:scale`, ele afeta o
+     layout: a folha passa a ocupar 793,7 x 1122,3 px, que é exatamente A4.
+     A proporção fecha sem distorcer — 1414/1000 = 1,414 = 297/210.
+
+     O seletor é `.folhas .rcard` e não `.rcard` de propósito: o enquadramento
+     de tela (relatorio.css) usa `.folhas .rcard{zoom:var(--folha-zoom)}`, que
+     tem especificidade maior. Escrito como `.rcard` aqui, o zoom da tela
+     vencia o da impressão e cada folha estourava numa página em branco. */
+  .folhas .rcard{zoom:0.79365}
+  .rcard{box-shadow:none;border-radius:0;break-after:page;page-break-after:always}
+  .rcard:last-child{break-after:auto;page-break-after:auto}
+}

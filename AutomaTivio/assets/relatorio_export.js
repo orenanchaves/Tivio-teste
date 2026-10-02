@@ -123,8 +123,19 @@
     setTimeout(function () { URL.revokeObjectURL(a.href); a.remove(); }, 4000);
   }
 
+  /* A página por vertical veste a casca do gerador oficial e já traz o seu
+     `#toast`; o relatório solto não tem casca nenhuma, e aí a bolha é criada
+     aqui. Um aviso só, duas molduras. */
   function aviso(txt, erro) {
-    var t = document.getElementById('tv-toast');
+    var t = document.getElementById('toast');
+    if (t) {
+      t.textContent = txt;
+      t.classList.add('show');
+      clearTimeout(t._x);
+      t._x = setTimeout(function () { t.classList.remove('show'); }, erro ? 7000 : 3000);
+      return;
+    }
+    t = document.getElementById('tv-toast');
     if (!t) {
       t = document.createElement('div');
       t.id = 'tv-toast';
@@ -273,8 +284,16 @@
       f.querySelectorAll('p, h2, h3, td, th, .fv, .fk, .bk, .bv, .rk, .rv')
         .forEach(function (e) { e.contentEditable = ligado ? 'true' : 'false'; });
     });
+    // na casca o botão tem ícone + <span>; trocar o textContent inteiro
+    // apagaria o ícone, então só o rótulo muda
+    var rotulo = botao.querySelector('span') || botao;
+    rotulo.textContent = ligado ? 'Terminar edição' : 'Editar textos';
+    botao.setAttribute('aria-pressed', String(ligado));
     botao.classList.toggle('ativo', ligado);
-    botao.textContent = ligado ? 'Terminar edição' : 'Editar textos';
+    if (botao.classList.contains('btn')) {
+      botao.classList.toggle('btn-primary', ligado);
+      botao.classList.toggle('btn-glass', !ligado);
+    }
     aviso(ligado ? 'Edição ligada — clique no texto para alterar'
                  : 'Edição desligada');
   }
@@ -316,37 +335,117 @@
     });
   }
 
-  function montar() {
-    if (!document.querySelectorAll('.rcard').length) { return; }
+  /* ------------------------------------------------------------- ícones
+     Os mesmos traços do gerador oficial — é o que faz o botão parecer da casa
+     e não um <button> cru. */
+  var ICONE = {
+    baixar: '<path d="M12 3v12M7 12l5 5 5-5M5 21h14"/>',
+    arquivo: '<path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/>'
+           + '<path d="M14 3v5h5"/>',
+    lapis: '<path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4z"/>',
+  };
+
+  function svg(d) {
+    return '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" '
+         + 'stroke-width="2" stroke-linecap="round" stroke-linejoin="round">'
+         + d + '</svg>';
+  }
+
+  /* ------------------------------------------------------------- tema
+     Claro/escuro, guardado no navegador de quem usa. Só liga se a página
+     tiver os botões — o relatório solto não tem. */
+  function ligarTema() {
+    var botoes = [].slice.call(document.querySelectorAll('[data-theme-set]'));
+    if (!botoes.length) { return; }
+    var raiz = document.documentElement, CHAVE = 'tivio-relgestao-theme';
+    function aplicar(t) {
+      raiz.setAttribute('data-theme', t);
+      botoes.forEach(function (b) {
+        b.setAttribute('aria-pressed', String(b.dataset.themeSet === t));
+      });
+      try { localStorage.setItem(CHAVE, t); } catch (e) {}
+    }
+    var salvo = null;
+    try { salvo = localStorage.getItem(CHAVE); } catch (e) {}
+    aplicar(salvo || 'dark');
+    botoes.forEach(function (b) {
+      b.addEventListener('click', function () { aplicar(b.dataset.themeSet); });
+    });
+  }
+
+  function ligarVoltarAoTopo() {
+    var b = document.getElementById('backtop');
+    if (!b) { return; }
+    window.addEventListener('scroll', function () {
+      b.classList.toggle('show', window.scrollY > 420);
+    }, { passive: true });
+    b.addEventListener('click', function () {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+  }
+
+  function aoClicar(el, fn) {
+    el.addEventListener('click', function () {
+      el.disabled = true;
+      el.classList.add('is-loading');
+      Promise.resolve()
+        .then(fn)
+        .catch(function (e) {
+          aviso('Não consegui exportar: ' + (e && e.message ? e.message : e), true);
+        })
+        .then(function () { el.disabled = false; el.classList.remove('is-loading'); });
+    });
+  }
+
+  /* ------------------------------------------------------------- montagem
+     Dois destinos possíveis:
+
+     - `#tv-acoes` existe → a página já tem a casca do gerador oficial
+       (cabeçalho, hero, abas, rodapé). Os botões entram nela com as classes
+       da casa e nada mais é criado.
+     - não existe → é o relatório solto, que não tem casca nenhuma. Aí sim a
+       barra escura é montada no topo.
+
+     Era isso que faltava: a página por vertical nascia com a barra crua em
+     cima de um layout que já tinha cabeçalho desenhado. */
+  function montarNaCasca(destino) {
+    BOTOES.forEach(function (b) {
+      var el = document.createElement('button');
+      el.type = 'button';
+      el.className = 'btn btn-sm ' + (b[2] === 'principal' ? 'btn-primary' : 'btn-glass');
+      el.innerHTML = svg(b[0].indexOf('PDF') === 0 ? ICONE.arquivo : ICONE.baixar)
+                   + '<span>' + b[0] + '</span>';
+      el.title = 'Exporta só o fundo que está na tela';
+      aoClicar(el, b[1]);
+      destino.appendChild(el);
+    });
+    var ed = document.createElement('button');
+    ed.type = 'button';
+    ed.className = 'btn btn-glass btn-sm';
+    ed.setAttribute('aria-pressed', 'false');
+    ed.innerHTML = svg(ICONE.lapis) + '<span>Editar textos</span>';
+    ed.addEventListener('click', function () { editar(ed); });
+    destino.appendChild(ed);
+  }
+
+  function montarBarra() {
     var barra = document.createElement('div');
     barra.className = 'tv-bar';
-
     var titulo = document.createElement('span');
     titulo.className = 'tv-bar-tit';
     var ativo = document.querySelector('.deck.ativo');
     titulo.textContent = (ativo && ativo.getAttribute('data-nome')) ||
                          META.fundo || 'Relatório de Gestão';
     barra.appendChild(titulo);
-    ligarAbas(titulo);
-    ligarEnquadramento();
 
     BOTOES.forEach(function (b) {
       var el = document.createElement('button');
       el.type = 'button';
       el.className = 'tv-btn' + (b[2] ? ' ' + b[2] : '');
       el.textContent = b[0];
-      el.addEventListener('click', function () {
-        el.disabled = true;
-        Promise.resolve()
-          .then(b[1])
-          .catch(function (e) {
-            aviso('Não consegui exportar: ' + (e && e.message ? e.message : e), true);
-          })
-          .then(function () { el.disabled = false; });
-      });
+      aoClicar(el, b[1]);
       barra.appendChild(el);
     });
-
     var ed = document.createElement('button');
     ed.type = 'button';
     ed.className = 'tv-btn fantasma';
@@ -355,6 +454,22 @@
     barra.appendChild(ed);
 
     document.body.insertBefore(barra, document.body.firstChild);
+    return titulo;
+  }
+
+  function montar() {
+    if (!document.querySelectorAll('.rcard').length) { return; }
+    var casca = document.getElementById('tv-acoes');
+    var titulo = null;
+    if (casca) {
+      montarNaCasca(casca);
+      ligarTema();
+      ligarVoltarAoTopo();
+    } else {
+      titulo = montarBarra();
+    }
+    ligarAbas(titulo);
+    ligarEnquadramento();
   }
 
   if (document.readyState === 'loading') {

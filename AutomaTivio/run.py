@@ -8,7 +8,7 @@ Fluxo do mês:
     1. trocar entrada/dados_mensais.xlsx, taxas_global.xlsx e tabela_spreads.xlsx
     2. escrever os comentários em entrada/comentarios.docx
     3. python run.py
-    4. conferir reports/AAAA-MM/conferencia_AAAA-MM.xlsx
+    4. conferir saida/AAAA-MM/conferencia_AAAA-MM.xlsx
 """
 import os
 import sys

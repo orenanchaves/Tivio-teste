@@ -33,7 +33,7 @@ def main(argv=None):
     ok = p.rodar()
     print()
     print('  ' + p.log.resumo())
-    print(f'  saída: reports/{p.edicao.competencia}/')
+    print(f'  saída: saida/{p.edicao.competencia}/')
     if not ok:
         print('  ! houve erros — ver a aba Avisos da conferência e o log')
     print()

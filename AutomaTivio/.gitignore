@@ -13,7 +13,7 @@ entrada/dados_mensais.xlsx
 # Se o repositório crescer demais (12 edições = ~170 MB), descomente a linha
 # abaixo: a saída volta a sair do versionamento e segue sendo gerada por
 # `python run.py`.
-# reports/
+# saida/
 
 # O log é da execução, não do material: muda a cada rodada e não ajuda ninguém
 # a ler o relatório.

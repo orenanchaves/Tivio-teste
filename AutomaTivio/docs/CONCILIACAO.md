@@ -66,7 +66,7 @@ próxima edição.
 ## Como repetir
 
 ```powershell
-python docs\conciliar_com_pptx.py reports\2026-08\conferencia_2026-08.xlsx
+python docs\conciliar_com_pptx.py saida\2026-08\conferencia_2026-08.xlsx
 ```
 
 O script lê a aba *Rentabilidades* da conferência e os PPTX de referência. Ele

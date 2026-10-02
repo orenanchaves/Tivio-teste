@@ -134,6 +134,10 @@ class RenderizadorRelatorio:
         self.css_relatorio = self._ler_css('relatorio.css')
         # bloco comum da entrega (barra, folha solta, impressão)
         self.css_entrega = self._ler_css('entrega.css')
+        # a casca da página por vertical (cabeçalho, hero, rodapé) e as
+        # regras de impressão, que os dois formatos compartilham
+        self.css_pagina = self._ler_css('pagina.css')
+        self.css_impressao = self._ler_css('impressao.css')
         self._logos = self._indexar_logos()
         marca = os.path.join(RAIZ, 'assets', 'marca', 'tivio.svg')
         self.marca_svg = open(marca, encoding='utf-8').read() if os.path.exists(marca) else ''
@@ -496,6 +500,7 @@ class RenderizadorRelatorio:
             'linhas': ctx.linhas_rentabilidade,
             'css_marca': self.css_marca, 'css_relatorio': self.css_relatorio,
             'css_entrega': self.css_entrega,
+            'css_impressao': self.css_impressao,
             'logo_svg': self.logo(f),
             'marca_svg': self.marca_svg,
             'echarts_src': self.ECHARTS,
@@ -575,15 +580,40 @@ class RenderizadorRelatorio:
             })
 
         tpl = self.env.get_template('relatorio_vertical.html')
+        paginas = max((b['paginas'] for b in decks), default=4)
         return tpl.render(
             decks=decks, vertical_rotulo=rotulo, edicao=self.edicao,
+            paginas_por_fundo=paginas,
+            descricao_secoes=self.SECOES_HERO.get(
+                vertical, self.SECOES_HERO['credito_privado']),
+            marca_path=self._marca_path(),
             css_marca=self.css_marca, css_relatorio=self.css_relatorio,
-            css_entrega=self.css_entrega,
+            css_pagina=self.css_pagina, css_impressao=self.css_impressao,
             css_abas=self.css_abas, charts_js=self.charts_js,
             export_js=self.export_js, echarts_src=self.ECHARTS,
             meta_json=json.dumps({'fundo': rotulo,
                                   'arquivo': f'Relatório de Gestão - {rotulo}'},
                                  ensure_ascii=False))
+
+    # O <symbol id="tv-logo"> da casca quer só o desenho, sem o <svg> em volta:
+    # o viewBox do símbolo é o do gerador oficial, e repetir o de fora
+    # desalinharia a marca no cabeçalho.
+    def _marca_path(self):
+        m = re.search(r'<svg[^>]*>(.*)</svg>', self.marca_svg, re.S)
+        return m.group(1) if m else ''
+
+    # O parágrafo do hero: o que cada vertical traz, na ordem em que aparece.
+    SECOES_HERO = {
+        'credito_privado':
+            'São objetivo e rentabilidade em 6 períodos; principais emissores, '
+            'alocação por setor e distribuição de rating; rentabilidade histórica '
+            'e comentário do gestor; mercado de crédito; e características '
+            'gerais + disclaimer.',
+        'credito_estruturado':
+            'São objetivo e rentabilidade em 6 períodos; alocação real da carteira '
+            'de crédito e alocação por estratégia; rentabilidade histórica e '
+            'comentário do gestor; e características gerais + disclaimer.',
+    }
 
 
 # ---------------------------------------------------------------------------

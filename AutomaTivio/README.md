@@ -17,7 +17,8 @@ Os relatórios saem **também** em PDF e PPTX direto do `run.py`, porque são 13
 edição e abrir 13 páginas para clicar 13 vezes não é fluxo. O botão existe para
 o caso de a pessoa ajustar um texto na tela e querer reexportar aquele.
 
-Saída em `reports/AAAA-MM/`: HTML, PDF, PPTX, a `conferencia_AAAA-MM.xlsx` e o log.
+Saída em **`saida/AAAA-MM/`** — uma pasta por mês, ao lado de `entrada/`:
+HTML, PDF, PPTX, a `conferencia_AAAA-MM.xlsx` e o log.
 
 ---
 
@@ -52,7 +53,7 @@ python -m playwright install chromium     # só para exportar PDF e PPTX
 # 2) escrever os comentários em entrada\comentarios.md
 # 3) gerar
 python run.py
-# 4) conferir reports\AAAA-MM\conferencia_AAAA-MM.xlsx (abas Divergencias e Dados faltantes)
+# 4) conferir saida\AAAA-MM\conferencia_AAAA-MM.xlsx (abas Divergencias e Dados faltantes)
 ```
 
 Opções:
@@ -362,7 +363,7 @@ rating) são desenhados com **Apache ECharts 5.6.0**, em `renderer: 'svg'`. SVG 
 vetorial, que é o que faz um PDF parecer impressão de tela.
 
 O ECharts fica **versionado** em `assets/vendor/` e é copiado para
-`reports/AAAA-MM/relatorios/vendor/`, ao lado dos HTMLs — com o CDN só como
+`saida/AAAA-MM/relatorios/vendor/`, ao lado dos HTMLs — com o CDN só como
 reserva. Razão prática: o PDF é gerado sem ninguém olhando, e um CDN fora do ar
 produziria 13 relatórios com o gráfico faltando, descobertos depois de
 publicados.
@@ -460,7 +461,7 @@ e **o log diz qual caiu**, para ninguém receber um arquivo meio-editável sem s
 
 ## Conferência
 
-`reports/AAAA-MM/conferencia_AAAA-MM.xlsx`:
+`saida/AAAA-MM/conferencia_AAAA-MM.xlsx`:
 
 | Aba | Conteúdo |
 |---|---|
@@ -491,7 +492,8 @@ AutomaTivio/
 │   ├─ edicao.yml             ← DATA_BASE e o que gerar
 │   ├─ fundos.yml             ← 22 fundos; 14 com relatório
 │   └─ relatorio.yml          ← composição por seções
-├─ entrada/                   ← planilhas do mês + comentarios.md
+├─ entrada/                   ← o que VOCÊ coloca: planilhas do mês
+│   └─ imagens/               ← imagens para os materiais
 ├─ engine/
 │   ├─ edicao.py              ← a data única e suas formas
 │   ├─ cadastro.py            ← config ↔ DePara
@@ -515,7 +517,14 @@ AutomaTivio/
 │   ├─ vendor/                ← Apache ECharts 5.6.0 (versionado)
 │   ├─ fontes/                ← Versos local, opcional (PDF sem rede)
 │   └─ relatorio_charts.js    ← monta os gráficos ECharts
-├─ reports/AAAA-MM/           ← saída
+├─ saida/                     ← o que SAI; uma pasta por mês
+│   └─ AAAA-MM/
+│       ├─ relatorios/        ← as duas páginas por vertical (abra estas)
+│       ├─ pdf/               ← um PDF A4 por fundo
+│       ├─ pptx/              ← um PPTX por fundo
+│       ├─ central/           ← Central de Materiais, posts e e-mails
+│       ├─ conferencia_AAAA-MM.xlsx
+│       └─ AAAA-MM-processamento.log
 └─ logs/
 ```
 

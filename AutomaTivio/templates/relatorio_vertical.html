@@ -1,37 +1,135 @@
 <!doctype html>
-<html lang="pt-BR">
+<html lang="pt-BR" data-theme="dark">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Relatório de Gestão · {{ vertical_rotulo }} · {{ edicao.mes_ano }}</title>
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Relatórios de Gestão · {{ vertical_rotulo }} · {{ edicao.mes_ano }}</title>
 <meta name="description" content="Relatórios de gestão mensais de {{ vertical_rotulo }} — {{ decks|length }} fundos, data base {{ edicao.br }}.">
 <style>
 {{ css_marca|safe }}
+{{ css_pagina|safe }}
 {{ css_relatorio|safe }}
 {{ css_abas|safe }}
+{{ css_impressao|safe }}
 
-{{ css_entrega|safe }}
+/* ---- o cabeçalho com seis ações ------------------------------------------
+   O gerador oficial tinha três botões de download; aqui são cinco formatos
+   mais a edição. Numa linha só eles empurravam a página 33px para fora da
+   tela (e 293px no celular), o que aparece como rolagem horizontal no
+   documento inteiro. Quebrando em linhas, o cabeçalho cresce e a página
+   continua do tamanho da tela. */
+.header .inner{height:auto;min-height:72px;padding-top:12px;padding-bottom:12px;
+  flex-wrap:wrap;row-gap:10px}
+.head-actions{height:auto;flex-wrap:wrap;row-gap:8px}
+.dl-split{flex-wrap:wrap;row-gap:8px}
+@media(max-width:640px){
+  .head-actions{width:100%;margin-left:0;gap:8px}
+  .dl-split{width:100%;gap:8px}
+  .dl-split .btn{flex:1 1 calc(33.333% - 6px)}
+}
+
+/* No celular a linha do eyebrow quebra em duas, e o ponto, centralizado no
+   bloco inteiro, flutuava no meio da segunda linha. */
+@media(max-width:640px){
+  .intro .eyebrow{align-items:flex-start;font-size:10px;letter-spacing:.18em}
+  .intro .eyebrow .dot{margin-top:4px;flex:0 0 auto}
+}
+
+/* ---- a folha dentro da casca ---------------------------------------------
+   Na página por vertical a folha não flutua num fundo cinza: ela fica dentro
+   do .container, sobre o fundo da marca. Por isso a pilha perde o respiro de
+   24px em cima (as abas já dão) e ganha sombra mais funda, que é o que separa
+   o branco do papel do escuro da página. */
+.folhas{padding:18px 0 40px;gap:28px}
+.folhas .rcard{box-shadow:0 24px 70px rgba(0,0,0,.45)}
+:root[data-theme="light"] .folhas .rcard{box-shadow:0 18px 50px rgba(16,28,40,.18)}
+.deck{scroll-margin-top:96px}
+
+/* a caixa da marca é preta no gerador interativo; aqui a faixa já é escura,
+   e o retângulo preto sobre o degradê lê como erro de render */
+.rc-head .rbox{background:transparent}
+body.tv-editando .rcard [contenteditable="true"]:hover{outline:1px dashed var(--tv-azul)}
+body.tv-editando .rcard [contenteditable="true"]:focus{outline:2px solid var(--tv-verde)}
+body.tv-exportando .header,body.tv-exportando .toast,
+body.tv-exportando .backtop{display:none}
+.histvazio{color:#8A99A3;font-size:13px;padding:10px 0}
+.tv-chart{width:100%}
+.tv-chart>svg.histsvg{width:100%;height:auto;display:block}
+.commentbox p{font-size:inherit;line-height:1.45}
+.discwrap p{font-size:inherit;line-height:1.35}
+.discwrap .disc-nota{color:var(--tv-cinza-claro);margin-bottom:9px}
+.pgnum.sobre-faixa{color:rgba(255,255,255,.6)}
+.pgnum.sobre-faixa b{color:#fff}
+.sealrow img.selo,.sealrow .qr{image-rendering:auto}
+.chart-h sup{font-size:.62em;vertical-align:super;line-height:0;margin-left:1px}
+.feat.op .fv{line-height:1.55}
+@media print{.header,.intro,.footer,.backtop,.toast{display:none!important}
+  .container{max-width:none;padding:0}.folhas{padding:0;gap:0}}
 </style>
 </head>
 <body>
 
-{# Abas de fundo — o mesmo controle do gerador oficial. #}
-<nav class="fundtabs" id="fundtabs" role="tablist">
-  {% for b in decks %}
-  <button type="button" class="ftab" role="tab" data-deck="{{ b.key }}"
-          aria-selected="{{ 'true' if loop.first else 'false' }}">
-    <span class="ft-n">{{ b.nome }}</span>
-    <span class="ft-s">{{ b.paginas }} págs · A4</span>
-  </button>
-  {% endfor %}
-</nav>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs>
+<symbol id="tv-logo" viewBox="118 104 844 294">{{ marca_path|safe }}</symbol>
+</defs></svg>
 
-{% for b in decks %}
-<div class="deck{{ ' ativo' if loop.first }}" data-deck="{{ b.key }}"
-     data-nome="{{ b.nome }}" data-arquivo="{{ b.arquivo }}">
-{{ b.html|safe }}
-</div>
-{% endfor %}
+<header class="header">
+  <div class="inner">
+    <a href="#top" class="brand">
+      <svg class="logo-mark anim-brand" viewBox="0 0 844 294"><use href="#tv-logo"/></svg>
+      <span class="brand-tag">Relatórios de Gestão <i>|</i> {{ vertical_rotulo }}</span>
+    </a>
+    <div class="head-actions">
+      <a class="btn btn-glass btn-sm" href="../central/tivio-central.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M11 18l-6-6 6-6"/></svg>Central de Materiais</a>
+      <div class="btn-group" role="group" aria-label="Alternar tema da interface">
+        <button type="button" class="btn btn-ghost btn-xs" data-theme-set="light" aria-label="Modo claro"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></svg></button>
+        <button type="button" class="btn btn-ghost btn-xs" data-theme-set="dark" aria-label="Modo escuro"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg></button>
+      </div>
+      {# os botões de exportação entram aqui, montados pelo relatorio_export.js #}
+      <div class="dl-split" id="tv-acoes"></div>
+    </div>
+  </div>
+</header>
+
+<main class="container" id="top">
+  <section class="intro hero-stagger">
+    <div class="eyebrow"><span class="dot news-pulse"></span>{{ edicao.mes_ano }} · Data base {{ edicao.br }} · A4 · {{ paginas_por_fundo }} páginas por fundo</div>
+    <h1>Relatórios de Gestão <span class="sep">|</span> <strong>{{ vertical_rotulo }}</strong></h1>
+    <p>Escolha o <b>fundo</b> nas abas abaixo — cada aba abre o relatório completo de
+      <b>{{ paginas_por_fundo }} páginas A4</b> daquele fundo. {{ descricao_secoes }}
+      Ative <b>Editar textos</b> para ajustar qualquer conteúdo antes de exportar em
+      <b>PDF</b>, <b>JPG</b>, <b>PNG</b> ou <b>PPTX</b> — a exportação leva só o fundo que está na tela.</p>
+  </section>
+
+  <nav class="fundtabs" id="fundtabs" role="tablist" aria-label="Fundos de {{ vertical_rotulo }}">
+    {% for b in decks %}
+    <button type="button" class="ftab" role="tab" data-deck="{{ b.key }}"
+            aria-selected="{{ 'true' if loop.first else 'false' }}">
+      <span class="ft-n">{{ b.nome }}</span>
+      <span class="ft-s">{{ b.paginas }} págs · A4</span>
+    </button>
+    {% endfor %}
+  </nav>
+
+  {% for b in decks %}
+  <div class="deck{{ ' ativo' if loop.first }}" data-deck="{{ b.key }}"
+       data-nome="{{ b.nome }}" data-arquivo="{{ b.arquivo }}">
+  {{ b.html|safe }}
+  </div>
+  {% endfor %}
+</main>
+
+<footer class="footer">
+  <div class="container">
+    <svg class="logo-mark" viewBox="0 0 844 294"><use href="#tv-logo"/></svg>
+    <div>Material de divulgação · Rentabilidade passada não é garantia de resultados
+      futuros · Data base {{ edicao.br }} · SAC 0800 704 8383 · Ouvidoria 0800 727 9933 ·
+      tivio.com/fundos</div>
+  </div>
+</footer>
+
+<button class="btn btn-icon backtop" id="backtop" aria-label="Voltar ao topo"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19V5M5 12l7-7 7 7"/></svg></button>
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
 
 {# ECharts da pasta vendor/ ao lado deste arquivo; se ela não vier junto (o
    HTML mandado solto por e-mail, por exemplo), cai no CDN #}

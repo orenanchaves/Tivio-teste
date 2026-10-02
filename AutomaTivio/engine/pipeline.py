@@ -102,7 +102,7 @@ class Pipeline:
     # ------------------------------------------------------------------ saída
     @property
     def pasta_saida(self):
-        return os.path.join(RAIZ, 'reports', self.edicao.competencia)
+        return os.path.join(RAIZ, 'saida', self.edicao.competencia)
 
     def _destino(self, *partes):
         return os.path.join(self.pasta_saida, *partes)

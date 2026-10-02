@@ -123,6 +123,10 @@ body.edit .rcard [contenteditable]:hover{background:rgba(117,157,180,.15);box-sh
 .toast{position:fixed;left:50%;bottom:calc(28px + var(--safe-b));transform:translateX(-50%) translateY(20px);opacity:0;pointer-events:none;padding:12px 22px;border-radius:var(--r-full);background:var(--tv-azul);color:#000;font-size:13px;font-weight:700;transition:.25s var(--ease);z-index:100;max-width:90vw;text-align:center}
 .toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
 
+/* a pilha de folhas na tela */
+.folhas{display:flex;flex-direction:column;align-items:center;gap:24px;padding:24px}
+.folhas .rcard{box-shadow:0 10px 40px rgba(16,28,40,.14);border-radius:2px}
+
 /* ================= ENQUADRAMENTO: A FOLHA CABE NA TELA =================
    A folha é um A4 desenhado em 1000x1414 px fixos. Em tela mais estreita que
    isso ela transbordava pela direita e o que sobrava ficava fora do alcance:
@@ -157,3 +161,9 @@ body.edit .rcard [contenteditable]:hover{background:rgba(117,157,180,.15);box-sh
    1000x1414, o tamanho em que ela foi desenhada, mesmo que na hora do clique
    ela esteja encolhida no celular. Sem isto o PNG saía na resolução da tela. */
 body.tv-exportando .folhas .rcard{zoom:1}
+
+/* ---- tela estreita: a moldura da pilha ------------------------------------
+   Sem reduzir as margens de 24px a folha já encolhida perderia largura útil
+   à toa — no celular são 36px de 390, quase 10%. */
+@media(max-width:760px){.folhas{gap:14px;padding:14px 10px}}
+@media(max-width:460px){.folhas{padding:10px 6px}}

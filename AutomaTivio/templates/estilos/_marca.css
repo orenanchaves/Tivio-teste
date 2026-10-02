@@ -22,3 +22,16 @@
   --btn-focus-ring:0 0 0 3px color-mix(in srgb,var(--accent-strong) 45%,transparent);
   --safe-b:env(safe-area-inset-bottom,0px);
 }
+
+/* Modo claro — mesmos tokens do gerador oficial. Sem este bloco o botão
+   de tema trocava o `data-theme` e nada mudava na tela. */
+:root[data-theme="light"]{
+  --bg-base:#EEF3F6;--bg-elev-1:#FFF;
+  --bg-glass:linear-gradient(135deg,rgba(255,255,255,.75),rgba(255,255,255,.45));
+  --bg-glass-strong:linear-gradient(135deg,rgba(255,255,255,.92),rgba(255,255,255,.70));
+  --bg-radial:radial-gradient(1200px 800px at 15% -10%,rgba(60,74,96,.14),transparent 60%),radial-gradient(900px 700px at 110% 10%,rgba(117,157,180,.12),transparent 60%);
+  --text-primary:#0A0F14;--text-secondary:#12181F;--text-muted:#4a5a66;
+  --line:rgba(10,15,20,.08);--line-strong:rgba(10,15,20,.18);
+  --header-bg:rgba(255,255,255,.75);--input-bg:rgba(10,15,20,.02);--overlay:rgba(226,234,239,.90);
+  --accent-strong:var(--tv-azul-escuro);--pill-bg:rgba(60,74,96,.10);--pill-border:rgba(60,74,96,.32);
+}
