@@ -20,6 +20,7 @@ import yaml
 
 from calculators import formatos as fmt
 from calculators import grafico
+from engine.contexto import agrupar_tipos
 
 RAIZ = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
@@ -95,6 +96,71 @@ def carregar_selos(pasta=None, log=None):
     return out
 
 
+# ---------------------------------------------------------------------------
+# COLATERAIS — bloco fixo dos relatórios de Crédito Estruturado: as garantias
+# que a estratégia aceita. Igual nos três ALT publicados, na mesma ordem (as
+# quatro primeiras em grade 2x2, a última na linha inteira).
+COLATERAIS = [
+    ('imoveis', 'AF de imóveis'),
+    ('automoveis', 'AF de automóveis'),
+    ('maquinario', 'AF de maquinário'),
+    ('recebiveis', 'CF de recebíveis'),
+    ('coobrigacao', 'Coobrigação do cedente/Avais'),
+]
+
+
+def _icone_limpo(svg):
+    """SVG do PowerPoint -> SVG que acompanha a cor e o tamanho do bloco.
+
+    O PowerPoint prende as cores numa <style> com classes `MsftOfcThm_…` e
+    fixa `width`/`height` em pixel. Sem tratar, o ícone sai cinza #595959 num
+    cartão que pode ser claro ou escuro, e com o tamanho do arquivo em vez do
+    tamanho do cartão. A classe diz o papel no próprio nome — `…_Fill_v2` ou
+    `…_Stroke_v2` —, então dá para traduzir cada uma no atributo certo.
+    """
+    svg = re.sub(r'<style>.*?</style>', '', svg, flags=re.S)
+
+    def troca(m):
+        classes = m.group(1)
+        attrs = []
+        if 'Fill' in classes:
+            attrs.append('fill="currentColor"')
+        if 'Stroke' in classes:
+            attrs.append('stroke="currentColor"')
+        return ' ' + ' '.join(attrs) if attrs else ''
+
+    svg = re.sub(r'\sclass="((?:Msft[^"]*))"', troca, svg)
+    # o viewBox é que manda; width/height fixos impediriam o CSS de dimensionar
+    svg = re.sub(r'<svg\b([^>]*)>',
+                 lambda m: '<svg' + re.sub(r'\s(?:width|height)="[^"]*"', '',
+                                           m.group(1)) + ' aria-hidden="true">',
+                 svg, count=1)
+    return svg
+
+
+def carregar_icones(pasta=None, log=None):
+    """{chave: '<svg…>'} — os ícones de COLATERAIS, embutidos no HTML.
+
+    SVG inline e não <img src>: assim o ícone herda a cor do bloco por
+    `currentColor`, sobrevive à exportação em JPG (que não busca arquivo
+    externo) e entra no PDF como vetor. Os arquivos saíram do próprio PPTX
+    publicado — em assets/icones/colateral-<chave>.svg.
+    """
+    pasta = pasta or os.path.join(RAIZ, 'assets', 'icones')
+    out, faltando = {}, []
+    for chave, _ in COLATERAIS:
+        caminho = os.path.join(pasta, f'colateral-{chave}.svg')
+        if not os.path.exists(caminho):
+            out[chave] = ''
+            faltando.append(chave)
+            continue
+        out[chave] = _icone_limpo(open(caminho, encoding='utf-8').read())
+    if faltando and log:
+        log.aviso('—', f'ícones de colaterais sem arquivo em assets/icones '
+                       f'({", ".join(faltando)}) — os cartões saem só com o texto')
+    return out
+
+
 def _slug_logo(s):
     s = unicodedata.normalize('NFKD', str(s)).encode('ascii', 'ignore').decode()
     return re.sub(r'[^a-z0-9]+', '_', s.lower()).strip('_')
@@ -116,6 +182,7 @@ class RenderizadorRelatorio:
             trim_blocks=True, lstrip_blocks=True)
         self.env.filters['mes_label'] = self._mes_label
         self.selos = carregar_selos(log=log)
+        self.icones = carregar_icones(log=log)
         self.css_abas = self._ler_css('abas.css')
         self.css_marca = self._ler_css('_marca.css')
         local = css_fontes_locais()
@@ -339,12 +406,24 @@ class RenderizadorRelatorio:
         paginas = []
         for numero in sorted(por_pag):
             lista = por_pag[numero]
-            par = [s for s in lista if s['id'] in ('emissores', 'setores')]
+            # a dupla que divide a folha em duas colunas depende da vertical:
+            # emissores|setores no high grade, setores|colaterais no ALT. Quem
+            # decide é qual par está nesta folha.
+            par = []
+            for dupla in self.DUPLAS:
+                achados = [s for s in lista if s['id'] in dupla]
+                if len(achados) == 2:
+                    par = achados
+                    break
             for s in lista:
                 s['primeiro_do_par'] = bool(par) and s is par[0]
                 s['ultimo_do_par'] = bool(par) and s is par[-1]
+                s['em_dupla'] = s in par
             paginas.append({'numero': len(paginas) + 1, 'secoes': lista})
         return paginas
+
+    # Pares que ocupam meia folha cada, na ordem em que são procurados.
+    DUPLAS = (('emissores', 'setores'), ('setores', 'colaterais'))
 
     # --------------------------------------------------- ajuste do comentário
     # O comentário do gestor varia muito de tamanho: o do Infra Plus tem 4
@@ -493,6 +572,15 @@ class RenderizadorRelatorio:
         mxe = max((v for _, _, v in est), default=1) or 1
         estrategia_barras = [(n, txt, round(v / mxe * 100)) for n, txt, v in est]
 
+        # "Alocação real da carteira de crédito": no PPTX do ALT é um TREEMAP
+        # da coluna 'Tipo aj.' com os nomes do tipo_label — é por isso que ali
+        # aparece "Liquidez" e não existe linha "LFSN". Retângulos proporcionais
+        # e não barras: é assim que o relatório mostra de relance que metade da
+        # carteira é cota sênior de FIDC.
+        tipos = agrupar_tipos(ctx.cart['tipos'] if ctx.cart else None,
+                              self.cad.tipo_label)
+        estrategia_treemap = grafico.treemap(tipos)
+
         dados = {
             'f': f, 'c': ctx, 'edicao': self.edicao,
             'paginas': paginas,
@@ -519,12 +607,14 @@ class RenderizadorRelatorio:
             'operacional': self.operacional(f),
             'disclaimer': self.disclaimer,
             'selos': self.selos,
+            'icones': self.icones, 'colaterais': COLATERAIS,
             'nota_rodape': (f.cfg.get('nota_rodape') or '').strip(),
             'tamanho_disclaimer': self.tamanho_disclaimer(
                 self.disclaimer, (f.cfg.get('nota_rodape') or '').strip()),
             'arquivo_comentarios': 'entrada/comentarios.md',
             'setores_barras': setores_barras,
             'estrategia_barras': estrategia_barras,
+            'estrategia_treemap': estrategia_treemap,
         }
 
         # espaço livre na página do comentário: a folha, menos o cabeçalho fino,
@@ -539,6 +629,7 @@ class RenderizadorRelatorio:
         # o componente de setores lê c.setores_barras; injeta sem mexer no contexto
         ctx.setores_barras = setores_barras
         ctx.estrategia_barras = estrategia_barras
+        ctx.estrategia_treemap = estrategia_treemap
 
         titulos_por_secao = {s['id']: titulos.get(s['id'], s['id'])
                              for pagina in paginas for s in pagina['secoes']}

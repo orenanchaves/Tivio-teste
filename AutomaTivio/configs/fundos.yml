@@ -30,6 +30,7 @@ fundos:
 
   # ----------------------------------------------------- Crédito Privado (HG)
   banks:
+    casas_pct: 2              # "100,59%" e não "101%", como no publicado
     nome: Tivio Banks
     vertical: credito_privado
     carteira: TIVIO BANKS RF CP RL
@@ -113,6 +114,7 @@ fundos:
     publico: Investidores em geral
 
   infraplus:
+    casas_pct: 2              # "99,01%" e não "99%", como no publicado
     nome: Tivio Infra Plus
     vertical: credito_privado
     carteira: TIVIO INFRA PLUS IPCA RF FIF RL
@@ -132,6 +134,7 @@ fundos:
     publico: Investidores em geral
 
   infrapluscdi:
+    sem_alfa: true            # o publicado do Infra Plus CDI não traz Alfa
     # dois nomes em uso: "Tivio Infra Plus CDI" no relatório publicado e
     # "Institucional Incentivado CDI" nos comentários do gestor. O apelido
     # abaixo faz o título do comentário casar com qualquer um dos dois.
@@ -174,6 +177,7 @@ fundos:
     publico: Investidor profissional
 
   legacy:
+    casas_pct: 2              # "97,36%" e não "97%", como no publicado
     nome: Tivio Legacy Prev
     vertical: credito_privado
     busca: [LEGACY]
@@ -248,6 +252,8 @@ fundos:
     logo: ALT_180
     relatorio: true
     linha_bench_mais: true    # 4ª linha da tabela, como no original
+    sem_alfa: true            # a tabela do ALT publicado não traz Alfa
+    setores_max: 12           # o publicado lista doze setores, não cinco
     casas_pct: 2              # "118,88%" e não "119%", como no original
     objetivo: >-
       O Tivio ALT 180 se destaca por buscar créditos high yield com ênfase em
@@ -264,6 +270,8 @@ fundos:
     logo: ALT_90
     relatorio: true
     linha_bench_mais: true    # 4ª linha da tabela, como no original
+    sem_alfa: true            # a tabela do ALT publicado não traz Alfa
+    setores_max: 12           # o publicado lista doze setores, não cinco
     casas_pct: 2              # "118,88%" e não "119%", como no original
     objetivo: >-
       O Tivio ALT 90 busca retorno superior ao CDI com baixa volatilidade, por
@@ -279,6 +287,8 @@ fundos:
     logo: ALT_LIGHT
     relatorio: true
     linha_bench_mais: true    # 4ª linha da tabela, como no original
+    sem_alfa: true            # a tabela do ALT publicado não traz Alfa
+    setores_max: 12           # o publicado lista doze setores, não cinco
     casas_pct: 2              # "118,88%" e não "119%", como no original
     objetivo: >-
       Fundo de previdência de crédito com parcela máxima permitida em crédito

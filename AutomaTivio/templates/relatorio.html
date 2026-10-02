@@ -39,7 +39,7 @@
 
     <div class="rc-body">
       {% for secao in pagina.secoes %}
-        {% if secao.id in ('emissores', 'setores') and secao.primeiro_do_par %}
+        {% if secao.primeiro_do_par %}
         <div class="twocol">
         {% endif %}
 
@@ -48,7 +48,7 @@
           {% include 'componentes/' + secao.id + '.html' with context %}
         {% endwith %}
 
-        {% if secao.id in ('emissores', 'setores') and secao.ultimo_do_par %}
+        {% if secao.ultimo_do_par %}
         </div>
         {% endif %}
       {% endfor %}

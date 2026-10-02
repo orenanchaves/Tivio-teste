@@ -515,6 +515,8 @@ AutomaTivio/
 ├─ assets/
 │   ├─ logos/                 ← 53 SVGs dos fundos
 │   ├─ vendor/                ← Apache ECharts 5.6.0 (versionado)
+│   ├─ selos/                 ← ANBIMA, PRI, rating (extraídos dos PPTX)
+│   ├─ icones/                ← ícones de COLATERAIS (extraídos dos PPTX)
 │   ├─ fontes/                ← Versos local, opcional (PDF sem rede)
 │   └─ relatorio_charts.js    ← monta os gráficos ECharts
 ├─ saida/                     ← o que SAI; uma pasta por mês

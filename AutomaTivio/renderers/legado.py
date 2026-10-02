@@ -17,6 +17,7 @@ import re
 import pandas as pd
 
 from calculators import formatos as fmt
+from engine.contexto import agrupar_tipos
 from renderers.jsobj import replace_literal
 
 P6 = ['mes', 'ano', '12m', '24m', '36m', 'inicio']
@@ -179,13 +180,11 @@ class RenderizadorLegado:
                 for i, per in ((1, p1), (2, 'ano'), (3, 'mes')):
                     self.set(k, f, f'v{i}', ctx.texto(per, 'pct'))
                 if ctx.cart:
-                    g = {}
-                    for t, v in ctx.cart['tipos'].items():
-                        lb = self.cad.tipo_label.get(t, t)
-                        g[lb] = g.get(lb, 0) + v
-                    self.set(k, f, 'alloc', [{'n': n, 'p': round(v * 100, 1)}
-                                             for n, v in sorted(g.items(), key=lambda x: -x[1])
-                                             if v > 0.0005])
+                    # o mesmo agrupamento do treemap do relatório — uma
+                    # implementação só, em engine/contexto.py
+                    self.set(k, f, 'alloc',
+                             [{'n': n, 'p': round(v, 1)} for n, _, v in
+                              agrupar_tipos(ctx.cart['tipos'], self.cad.tipo_label)])
                     faltam = [t for t in ctx.cart['tipos'].index
                               if t not in self.cad.tipo_label]
                     if faltam:

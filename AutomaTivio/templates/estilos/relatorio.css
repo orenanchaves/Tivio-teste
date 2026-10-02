@@ -36,7 +36,13 @@ table.perf td{border-bottom:1px solid var(--tv-line);padding:11px 9px;text-align
 table.perf td:first-child{text-align:left;font-weight:700;color:var(--tv-azul-escuro)}
 table.perf tr.fundo td{font-weight:700;color:var(--tv-cinza)}
 .databox{margin-top:6px;font-size:11.5px;color:#8a949c;text-align:right}
-.twocol{margin-top:28px;display:grid;grid-template-columns:1fr 1fr;gap:38px}
+.twocol{margin-top:28px;display:grid;grid-template-columns:1fr 1fr;gap:38px;align-items:start}
+/* na meia folha o rótulo do setor tem 150px e "Comércio atacadista e
+   varejista" virava "Comércio atacadis…". Com a barra um pouco mais
+   curta o nome inteiro cabe. */
+.twocol .bar{grid-template-columns:minmax(0,1.35fr) 1fr 54px;column-gap:9px;
+  font-size:12.6px;padding:6px 0}
+.twocol .bar .bk{white-space:normal;line-height:1.1}
 .chart-h{margin-bottom:10px;display:flex;min-height:36px;align-items:flex-end;border-bottom:1.5px solid var(--tv-azul-escuro);padding-bottom:7px;font-size:13.4px;line-height:1.25;font-weight:600;letter-spacing:.1em;color:var(--tv-azul-escuro);text-transform:uppercase}
 .bar{display:grid;grid-template-columns:150px 1fr 62px;align-items:center;column-gap:12px;border-bottom:1px solid rgba(212,224,230,.6);padding:8px 0;font-size:13.4px}
 .bar:last-child{border-bottom:0}
@@ -122,6 +128,55 @@ body.edit .rcard [contenteditable]:hover{background:rgba(117,157,180,.15);box-sh
 .footer .logo-mark{height:24px;width:69px;color:var(--text-primary);margin:0 auto 14px;display:block;overflow:visible}
 .toast{position:fixed;left:50%;bottom:calc(28px + var(--safe-b));transform:translateX(-50%) translateY(20px);opacity:0;pointer-events:none;padding:12px 22px;border-radius:var(--r-full);background:var(--tv-azul);color:#000;font-size:13px;font-weight:700;transition:.25s var(--ease);z-index:100;max-width:90vw;text-align:center}
 .toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+
+/* ===== TREEMAP · "Alocação real da carteira de crédito" (ALT) =============
+   Retângulos proporcionais, como no PPTX publicado. O Python entrega cada
+   bloco já posicionado em porcentagem (calculators/grafico.treemap), então o
+   bloco acompanha a largura da folha — e do PDF — sem recalcular nada. */
+.tmblock{margin-top:26px}
+.twocol>.tmblock,.twocol>.colblock{margin-top:0}
+.tmwrap{position:relative;width:100%;margin-top:14px;border-radius:6px;
+  overflow:hidden;background:var(--tv-line)}
+/* a cor da caixa, a do texto, o corpo da fonte e o respiro saem do Python,
+   calculados por caixa: o que vale para o bloco de 49% não serve para o de
+   2,2%. Aqui fica só o que não depende do tamanho. */
+.tmbox{position:absolute;display:flex;flex-direction:column;justify-content:center;
+  overflow:hidden;box-shadow:inset 0 0 0 1.5px #fff}
+.tmbox .tmn{line-height:1.12;font-weight:600;text-transform:uppercase;
+  letter-spacing:.03em;opacity:.93;display:-webkit-box;-webkit-line-clamp:2;
+  -webkit-box-orient:vertical;overflow:hidden;word-break:break-word}
+.tmbox .tmv{line-height:1.05;font-weight:700;margin-top:3px;
+  font-variant-numeric:tabular-nums}
+.tmlegs{display:flex;flex-wrap:wrap;gap:5px 16px;margin-top:10px;
+  font-size:11px;color:#51616B}
+.tmleg{display:inline-flex;align-items:center;gap:5px;white-space:nowrap}
+.tmleg i{width:8px;height:8px;border-radius:2px;flex:0 0 auto}
+.tmleg b{color:var(--tv-azul-escuro);font-weight:700}
+
+/* ===== COLATERAIS · bloco fixo dos relatórios de Crédito Estruturado =====
+   Quatro cartões em grade 2x2 e o quinto na linha inteira, como no original.
+   Os ícones são os SVGs que vieram embutidos no PPTX. */
+.colblock{margin-top:26px}
+.colgrid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:14px}
+.colcard{display:flex;flex-direction:column;align-items:flex-start;gap:10px;
+  padding:18px 16px;border-radius:8px;background:#F2F4F5;
+  border:1px solid #E1E7EA;color:#6B7A83;min-height:104px;justify-content:center}
+.colcard.largo{grid-column:1 / -1;flex-direction:row;align-items:center;gap:14px}
+.colico{display:block;width:34px;height:34px;flex:0 0 auto;color:#5A6970}
+.colico svg{width:100%;height:100%;display:block}
+.colrot{font-size:13.4px;font-weight:700;line-height:1.2;color:#6B7A83}
+
+/* ===== CDI+ por período · caixa sobre a rentabilidade histórica (ALT) ===== */
+.bmbox{margin-top:14px;display:grid;grid-template-columns:repeat(3,1fr);
+  border:1px solid var(--tv-line);border-radius:10px;overflow:hidden;
+  background:linear-gradient(180deg,#fff,#F7FAFB)}
+.bmbox .bmcel{padding:12px 18px;border-left:1px solid var(--tv-line)}
+.bmbox .bmcel:first-child{border-left:0}
+.bmbox .bmp{font-size:11px;letter-spacing:.14em;text-transform:uppercase;
+  font-weight:700;color:#8595A0}
+.bmbox .bmk{font-size:12.4px;color:#51616B;margin-top:5px}
+.bmbox .bmv{font-size:21px;font-weight:700;line-height:1.05;margin-top:2px;
+  color:var(--tv-azul-escuro);font-variant-numeric:tabular-nums}
 
 /* a pilha de folhas na tela */
 .folhas{display:flex;flex-direction:column;align-items:center;gap:24px;padding:24px}

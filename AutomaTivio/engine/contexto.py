@@ -25,6 +25,31 @@ ROTULO_PERIODO = {'mes': 'Mês', 'ano': 'Ano', '12m': '12M', '24m': '24M',
                   '36m': '36M', 'inicio': 'Desde o início'}
 
 
+def agrupar_tipos(serie, rotulos):
+    """'Tipo aj.' -> [(rótulo, '11,4%', 11.4)], do maior para o menor.
+
+    É a "alocação real da carteira de crédito" dos relatórios de Crédito
+    Estruturado, e NÃO é o mesmo corte que a coluna Book, apesar de os dois
+    parecerem a mesma coisa num relance. A diferença aparece nos rótulos do
+    PPTX publicado: ali consta "Liquidez" e não existe linha "LFSN" — porque
+    `tipo_label` chama Caixa de Liquidez e junta LF, LFSC, LFSN, CDB e DPGE em
+    "Bancário". O corte por Book separa os dois e não reconcilia com o material.
+
+    Mora aqui, e não dentro de cada renderizador, porque o relatório e o post
+    de Crédito Estruturado mostram exatamente este mesmo agrupamento: duas
+    cópias dele divergiriam no primeiro tipo novo que aparecesse na base.
+    """
+    if serie is None:
+        return []
+    junto = {}
+    for t, v in serie.items():
+        lb = (rotulos or {}).get(t, t)
+        junto[lb] = junto.get(lb, 0) + v
+    itens = sorted(((n, v) for n, v in junto.items() if v > 0.0005),
+                   key=lambda x: -x[1])
+    return [(n, fmt.pct(v, 1), round(v * 100, 2)) for n, v in itens]
+
+
 class ContextoFundo:
     """Tudo sobre um fundo nesta edição. Só leitura."""
 
@@ -97,9 +122,10 @@ class ContextoFundo:
     def linhas_rentabilidade(self):
         """A tabela do relatório e do e-mail, nas 6 colunas de período.
 
-        Ordem das linhas igual à dos materiais: fundo, benchmark e, embaixo,
-        % do benchmark — ou Alfa, nos fundos de retorno absoluto. É a mesma
-        estrutura nos dois materiais porque sai daqui.
+        Ordem das linhas igual à dos relatórios publicados: Fundo, benchmark,
+        Alfa e % do benchmark — e, no Crédito Estruturado, Fundo, CDI, % e CDI+
+        (sem Alfa). Nos fundos de retorno absoluto só Fundo, benchmark e Alfa.
+        É a mesma estrutura no relatório e no e-mail porque sai daqui.
         """
         fundo = [self.texto(p, 'fundo') for p in PERIODOS]
         bench = [self.texto(p, 'bench') for p in PERIODOS]
@@ -108,6 +134,12 @@ class ContextoFundo:
                     'alfa': [self.texto(p, 'alfa') for p in PERIODOS]}
         linhas = {'fundo': fundo, 'bench': bench,
                   'pct': [self.texto(p, 'pct') for p in PERIODOS]}
+        # Alfa entra ACIMA do % do benchmark, não no lugar dele: oito dos nove
+        # relatórios de Crédito Privado publicados trazem as quatro linhas
+        # (Fundo, CDI, Alfa, %). A exceção é o Infra Plus CDI, que marca
+        # `sem_alfa` em configs/fundos.yml.
+        if not self.f.cfg.get('sem_alfa'):
+            linhas['alfa'] = [self.texto(p, 'alfa') for p in PERIODOS]
         # O relatório de Crédito Estruturado publicado traz uma quarta linha,
         # "CDI+": o excesso sobre o benchmark anualizado em 252 d.u. É o número
         # que o gestor cita no comentário ("representando um desempenho de
@@ -145,12 +177,18 @@ class ContextoFundo:
 
     @property
     def setores(self):
-        """Top 5 + Caixa no fim, como nos relatórios."""
+        """Top N + Caixa no fim, como nos relatórios publicados.
+
+        N é 5 no Crédito Privado — o relatório do Banks mostra duas linhas,
+        Financeiro e Caixa, e nada mais. No Crédito Estruturado o publicado
+        lista doze setores, então os fundos ALT marcam `setores_max: 12`.
+        """
         if not self.cart:
             return []
         st = self.cart['setores']
-        st = pd.concat([st[st.index != 'Caixa'].head(5), st[st.index == 'Caixa']])
-        return [(n, fmt.pct(v, 1), round(v * 100, 2)) for n, v in st.items()]
+        n = int(self.f.cfg.get('setores_max', 5))
+        st = pd.concat([st[st.index != 'Caixa'].head(n), st[st.index == 'Caixa']])
+        return [(n_, fmt.pct(v, 1), round(v * 100, 2)) for n_, v in st.items()]
 
     @property
     def rating(self):

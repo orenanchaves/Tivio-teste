@@ -1,0 +1,15 @@
+{# CDI+ por período — a caixa que, no PPTX do ALT, fica sobre o gráfico de
+   rentabilidade histórica: "Desde o início · CDI + 3,60%", "12M · CDI + 3,10%",
+   "Mês · CDI + 2,48%". Três períodos, nessa ordem, e só nos fundos que têm a
+   linha CDI+ na tabela. #}
+{% if linhas.bench_mais %}
+<div class="bmbox">
+  {% for rotulo, idx in [('Desde o início', 5), ('12M', 2), ('Mês', 0)] %}
+  <div class="bmcel">
+    <div class="bmp">{{ rotulo }}</div>
+    <div class="bmk">{{ c.benchmark }} +</div>
+    <div class="bmv">{{ linhas.bench_mais[idx] }}</div>
+  </div>
+  {% endfor %}
+</div>
+{% endif %}

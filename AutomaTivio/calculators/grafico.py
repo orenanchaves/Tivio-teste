@@ -188,3 +188,122 @@ def colunas_rating(itens, colunas=6):
         'rotulos': [v for _, v, _ in itens],
     }, f'<div class="ratebars">{barras}</div>'
        f'<div class="ratelabels">{rotulos}</div>', altura=232)
+
+
+# ---------------------------------------------------------------------------
+# Treemap — o bloco "Alocação real da carteira de crédito" dos relatórios de
+# Crédito Estruturado. No PPTX publicado ele é um conjunto de retângulos
+# proporcionais com o nome e o percentual dentro, não barras: é assim que o ALT
+# mostra que metade da carteira é cota sênior de FIDC. Barras horizontais dizem
+# a mesma coisa com outro desenho, e o relatório deixa de parecer o original.
+#
+# O algoritmo é o "squarified" (Bruls, Huizing & van Wijk, 2000): vai
+# empilhando itens numa faixa enquanto a pior proporção largura/altura melhora,
+# e fecha a faixa quando ela começa a piorar. É o que evita as tiras compridas
+# que um treemap ingênuo produz — e tira comprida não cabe o rótulo dentro.
+# ---------------------------------------------------------------------------
+TREEMAP_CORES = ['#3C4A60', '#4A5A72', '#587086', '#6B8AA0', '#86A4B6',
+                 '#A3BECB', '#BDD2DB', '#D3E0E7']
+
+
+def _pior(fila, lado, escala):
+    """Pior razão de aspecto de uma faixa — o critério de parada do squarified."""
+    soma = sum(fila) * escala
+    if soma <= 0 or lado <= 0:
+        return float('inf')
+    mx, mn = max(fila) * escala, min(fila) * escala
+    return max(lado * lado * mx / (soma * soma), soma * soma / (lado * lado * mn))
+
+
+def _squarify(valores, x, y, larg, alt, escala, saida):
+    if not valores:
+        return
+    fila, resto = [], list(valores)
+    lado = min(larg, alt)
+    while resto:
+        atual = _pior(fila, lado, escala) if fila else float('inf')
+        if fila and _pior(fila + [resto[0]], lado, escala) > atual:
+            break
+        fila.append(resto.pop(0))
+
+    soma = sum(fila) * escala
+    espesso = soma / lado if lado else 0
+    desloc = 0.0
+    for v in fila:
+        passo = (v * escala) / espesso if espesso else 0
+        if larg >= alt:
+            saida.append((x, y + desloc, espesso, passo))
+        else:
+            saida.append((x + desloc, y, passo, espesso))
+        desloc += passo
+
+    if larg >= alt:
+        _squarify(resto, x + espesso, y, larg - espesso, alt, escala, saida)
+    else:
+        _squarify(resto, x, y + espesso, larg, alt - espesso, escala, saida)
+
+
+def _claro(hexcor):
+    """Luminância relativa > 0,55 -> o texto branco some em cima."""
+    r, g, b = (int(hexcor[i:i + 2], 16) / 255 for i in (1, 3, 5))
+    return (0.2126 * r + 0.7152 * g + 0.0722 * b) > 0.55
+
+
+def treemap(itens, largura=1000, altura=190):
+    """[(nome, '49,1%', valor)] -> blocos proporcionais, do maior para o menor.
+
+    A proporção (1000x190) é a do PPTX publicado, onde o bloco tem 712x137 px
+    numa folha de 794 — uma faixa larga e baixa, não um quadrado. Em quadrado
+    ele empurraria o comentário do gestor para fora da folha 1.
+
+    Os retângulos saem posicionados em porcentagem, então o bloco acompanha a
+    largura da folha (e do PDF) sem recalcular nada. O corpo do texto, porém,
+    é dimensionado em pixel a partir do tamanho de CADA caixa: num bloco de
+    2,2% da carteira o rótulo de 13px não cabe, e um rótulo que não cabe vira
+    um borrão cortado — foi o que aconteceu com "Crédito Estruturado".
+    """
+    itens = [i for i in itens if i[2] and i[2] > 0]
+    itens.sort(key=lambda i: -i[2])
+    if not itens:
+        return '<div class="histvazio">sem carteira nesta edição</div>'
+
+    valores = [i[2] for i in itens]
+    escala = (largura * altura) / sum(valores)
+    caixas = []
+    _squarify(valores, 0.0, 0.0, float(largura), float(altura), escala, caixas)
+
+    def limites(v, lo, hi):
+        return max(lo, min(hi, v))
+
+    blocos = []
+    for i, ((nome, rotulo, _), (bx, by, bl, ba)) in enumerate(zip(itens, caixas)):
+        cor = TREEMAP_CORES[min(i, len(TREEMAP_CORES) - 1)]
+        tinta = '#2B3744' if _claro(cor) else '#fff'
+
+        fv = limites(min(bl / 5.6, ba / 3.4), 9.0, 19.0)
+        fn = limites(min(bl / 9.0, ba / 5.6), 7.0, 12.6)
+        # o nome só entra se couber em duas linhas de verdade: largura para uns
+        # 9 caracteres por linha, e altura para as duas linhas mais o valor
+        cabe = bl >= fn * 7 and ba >= fn * 2.4 + fv * 1.2 + 10
+        pad = limites(bl / 14, 5.0, 13.0)
+
+        blocos.append(
+            f'<div class="tmbox" style="left:{bx / largura * 100:.4f}%;'
+            f'top:{by / altura * 100:.4f}%;width:{bl / largura * 100:.4f}%;'
+            f'height:{ba / altura * 100:.4f}%;background:{cor};color:{tinta};'
+            f'padding:{pad:.1f}px" '
+            f'title="{_esc(nome)} · {_esc(rotulo)}">'
+            + (f'<span class="tmn" style="font-size:{fn:.1f}px">{_esc(nome)}</span>'
+               if cabe else '')
+            + f'<span class="tmv" style="font-size:{fv:.1f}px">{_esc(rotulo)}</span>'
+            + '</div>')
+
+    legenda = ''.join(
+        f'<span class="tmleg"><i style="background:'
+        f'{TREEMAP_CORES[min(i, len(TREEMAP_CORES) - 1)]}"></i>{_esc(n)} '
+        f'<b>{_esc(r)}</b></span>'
+        for i, (n, r, _) in enumerate(itens))
+
+    return (f'<div class="tmwrap" style="aspect-ratio:{largura}/{altura}">'
+            + ''.join(blocos) + '</div>'
+            + f'<div class="tmlegs">{legenda}</div>')

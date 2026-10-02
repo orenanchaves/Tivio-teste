@@ -28,15 +28,32 @@ secoes:
 
 por_vertical:
   # ------------------------------------------- Crédito Estruturado (3 páginas)
-  # Espelha os relatórios publicados de ALT 90, ALT 180 e ALT Light.
+  # Conferido folha a folha contra os PPTX publicados de ALT 180, ALT 90 e
+  # ALT Light. Dois pontos que estavam trocados aqui:
+  #
+  #   - "ALOCAÇÃO REAL DA CARTEIRA DE CRÉDITO" é o corte por CLASSE (FIDC
+  #     Sênior, FIDC Mezanino, Liquidez…) — `estrategia` no código. Estava
+  #     apontando para `setores`.
+  #   - "ALOCAÇÃO POR ESTRATÉGIA" é o corte por SETOR (Indústria e Comércio,
+  #     Consignados, Financeiro…) — `setores`. Estava apontando para
+  #     `estrategia`.
+  #
+  # Os dois títulos trocados davam um relatório com os números certos nos
+  # lugares errados, que é pior do que um número faltando: não aparece.
+  #
+  # A ordem das folhas também é a do original: o comentário do gestor fecha a
+  # folha 1 (na faixa escura), e a folha 2 abre com estratégia e colaterais
+  # lado a lado, com a rentabilidade histórica embaixo.
   credito_estruturado:
     secoes:
       - {id: objetivo,        pagina: 1, titulo: OBJETIVO DA CARTEIRA}
       - {id: rentabilidade,   pagina: 1, titulo: RENTABILIDADE}
-      - {id: setores,         pagina: 1, titulo: ALOCAÇÃO REAL DA CARTEIRA DE CRÉDITO}
-      - {id: estrategia,      pagina: 1, titulo: ALOCAÇÃO POR ESTRATÉGIA}
+      - {id: estrategia,      pagina: 1, titulo: ALOCAÇÃO REAL DA CARTEIRA DE CRÉDITO}
+      - {id: comentario,      pagina: 1, titulo: "Comentário do Gestor e Análise de Mercado"}
+      - {id: setores,         pagina: 2, titulo: ALOCAÇÃO POR ESTRATÉGIA}
+      - {id: colaterais,      pagina: 2, titulo: COLATERAIS}
       - {id: historico,       pagina: 2, titulo: RENTABILIDADE HISTÓRICA}
-      - {id: comentario,      pagina: 2, titulo: "Comentário do Gestor e Análise de Mercado"}
+      - {id: bench_mais,      pagina: 2, titulo: ""}
       - {id: caracteristicas, pagina: 3, titulo: CARACTERÍSTICAS GERAIS DO FUNDO}
       - {id: disclaimer,      pagina: 3, titulo: Disclaimer}
 

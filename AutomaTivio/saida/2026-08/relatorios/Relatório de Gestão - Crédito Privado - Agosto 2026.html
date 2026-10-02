@@ -159,7 +159,13 @@ table.perf td{border-bottom:1px solid var(--tv-line);padding:11px 9px;text-align
 table.perf td:first-child{text-align:left;font-weight:700;color:var(--tv-azul-escuro)}
 table.perf tr.fundo td{font-weight:700;color:var(--tv-cinza)}
 .databox{margin-top:6px;font-size:11.5px;color:#8a949c;text-align:right}
-.twocol{margin-top:28px;display:grid;grid-template-columns:1fr 1fr;gap:38px}
+.twocol{margin-top:28px;display:grid;grid-template-columns:1fr 1fr;gap:38px;align-items:start}
+/* na meia folha o rótulo do setor tem 150px e "Comércio atacadista e
+   varejista" virava "Comércio atacadis…". Com a barra um pouco mais
+   curta o nome inteiro cabe. */
+.twocol .bar{grid-template-columns:minmax(0,1.35fr) 1fr 54px;column-gap:9px;
+  font-size:12.6px;padding:6px 0}
+.twocol .bar .bk{white-space:normal;line-height:1.1}
 .chart-h{margin-bottom:10px;display:flex;min-height:36px;align-items:flex-end;border-bottom:1.5px solid var(--tv-azul-escuro);padding-bottom:7px;font-size:13.4px;line-height:1.25;font-weight:600;letter-spacing:.1em;color:var(--tv-azul-escuro);text-transform:uppercase}
 .bar{display:grid;grid-template-columns:150px 1fr 62px;align-items:center;column-gap:12px;border-bottom:1px solid rgba(212,224,230,.6);padding:8px 0;font-size:13.4px}
 .bar:last-child{border-bottom:0}
@@ -245,6 +251,55 @@ body.edit .rcard [contenteditable]:hover{background:rgba(117,157,180,.15);box-sh
 .footer .logo-mark{height:24px;width:69px;color:var(--text-primary);margin:0 auto 14px;display:block;overflow:visible}
 .toast{position:fixed;left:50%;bottom:calc(28px + var(--safe-b));transform:translateX(-50%) translateY(20px);opacity:0;pointer-events:none;padding:12px 22px;border-radius:var(--r-full);background:var(--tv-azul);color:#000;font-size:13px;font-weight:700;transition:.25s var(--ease);z-index:100;max-width:90vw;text-align:center}
 .toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+
+/* ===== TREEMAP · "Alocação real da carteira de crédito" (ALT) =============
+   Retângulos proporcionais, como no PPTX publicado. O Python entrega cada
+   bloco já posicionado em porcentagem (calculators/grafico.treemap), então o
+   bloco acompanha a largura da folha — e do PDF — sem recalcular nada. */
+.tmblock{margin-top:26px}
+.twocol>.tmblock,.twocol>.colblock{margin-top:0}
+.tmwrap{position:relative;width:100%;margin-top:14px;border-radius:6px;
+  overflow:hidden;background:var(--tv-line)}
+/* a cor da caixa, a do texto, o corpo da fonte e o respiro saem do Python,
+   calculados por caixa: o que vale para o bloco de 49% não serve para o de
+   2,2%. Aqui fica só o que não depende do tamanho. */
+.tmbox{position:absolute;display:flex;flex-direction:column;justify-content:center;
+  overflow:hidden;box-shadow:inset 0 0 0 1.5px #fff}
+.tmbox .tmn{line-height:1.12;font-weight:600;text-transform:uppercase;
+  letter-spacing:.03em;opacity:.93;display:-webkit-box;-webkit-line-clamp:2;
+  -webkit-box-orient:vertical;overflow:hidden;word-break:break-word}
+.tmbox .tmv{line-height:1.05;font-weight:700;margin-top:3px;
+  font-variant-numeric:tabular-nums}
+.tmlegs{display:flex;flex-wrap:wrap;gap:5px 16px;margin-top:10px;
+  font-size:11px;color:#51616B}
+.tmleg{display:inline-flex;align-items:center;gap:5px;white-space:nowrap}
+.tmleg i{width:8px;height:8px;border-radius:2px;flex:0 0 auto}
+.tmleg b{color:var(--tv-azul-escuro);font-weight:700}
+
+/* ===== COLATERAIS · bloco fixo dos relatórios de Crédito Estruturado =====
+   Quatro cartões em grade 2x2 e o quinto na linha inteira, como no original.
+   Os ícones são os SVGs que vieram embutidos no PPTX. */
+.colblock{margin-top:26px}
+.colgrid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:14px}
+.colcard{display:flex;flex-direction:column;align-items:flex-start;gap:10px;
+  padding:18px 16px;border-radius:8px;background:#F2F4F5;
+  border:1px solid #E1E7EA;color:#6B7A83;min-height:104px;justify-content:center}
+.colcard.largo{grid-column:1 / -1;flex-direction:row;align-items:center;gap:14px}
+.colico{display:block;width:34px;height:34px;flex:0 0 auto;color:#5A6970}
+.colico svg{width:100%;height:100%;display:block}
+.colrot{font-size:13.4px;font-weight:700;line-height:1.2;color:#6B7A83}
+
+/* ===== CDI+ por período · caixa sobre a rentabilidade histórica (ALT) ===== */
+.bmbox{margin-top:14px;display:grid;grid-template-columns:repeat(3,1fr);
+  border:1px solid var(--tv-line);border-radius:10px;overflow:hidden;
+  background:linear-gradient(180deg,#fff,#F7FAFB)}
+.bmbox .bmcel{padding:12px 18px;border-left:1px solid var(--tv-line)}
+.bmbox .bmcel:first-child{border-left:0}
+.bmbox .bmp{font-size:11px;letter-spacing:.14em;text-transform:uppercase;
+  font-weight:700;color:#8595A0}
+.bmbox .bmk{font-size:12.4px;color:#51616B;margin-top:5px}
+.bmbox .bmv{font-size:21px;font-weight:700;line-height:1.05;margin-top:2px;
+  color:var(--tv-azul-escuro);font-variant-numeric:tabular-nums}
 
 /* a pilha de folhas na tela */
 .folhas{display:flex;flex-direction:column;align-items:center;gap:24px;padding:24px}
@@ -558,8 +613,10 @@ body.tv-exportando .backtop{display:none}
 <td>1,10%</td><td>9,36%</td><td>14,63%</td><td>29,82%</td><td>45,41%</td><td>444,67%</td></tr>
     <tr><td>CDI</td>
 <td>1,09%</td><td>9,33%</td><td>14,57%</td><td>29,49%</td><td>44,17%</td><td>408,92%</td></tr>
-    <tr><td>% do CDI</td>
-<td>101%</td><td>100%</td><td>100%</td><td>101%</td><td>103%</td><td>109%</td></tr>
+    <tr><td>Alfa</td>
+<td>0,01%</td><td>0,03%</td><td>0,06%</td><td>0,33%</td><td>1,24%</td><td>35,75%</td></tr>
+    <tr><td>%</td>
+<td>100,59%</td><td>100,31%</td><td>100,43%</td><td>101,12%</td><td>102,80%</td><td>108,74%</td></tr>
   </tbody>
 </table>
 <div class="databox">Data base: 31/08/2026</div>
@@ -899,7 +956,9 @@ body.tv-exportando .backtop{display:none}
 <td>1,09%</td><td>9,31%</td><td>14,58%</td><td>29,93%</td><td>47,60%</td><td>825,45%</td></tr>
     <tr><td>CDI</td>
 <td>1,09%</td><td>9,33%</td><td>14,57%</td><td>29,49%</td><td>44,17%</td><td>753,88%</td></tr>
-    <tr><td>% do CDI</td>
+    <tr><td>Alfa</td>
+<td>−0,01%</td><td>−0,02%</td><td>0,01%</td><td>0,44%</td><td>3,43%</td><td>71,57%</td></tr>
+    <tr><td>%</td>
 <td>100%</td><td>100%</td><td>100%</td><td>102%</td><td>108%</td><td>109%</td></tr>
   </tbody>
 </table>
@@ -1275,7 +1334,9 @@ body.tv-exportando .backtop{display:none}
 <td>1,11%</td><td>9,53%</td><td>14,94%</td><td>30,92%</td><td>51,22%</td><td>1.644,37%</td></tr>
     <tr><td>CDI</td>
 <td>1,09%</td><td>9,33%</td><td>14,57%</td><td>29,49%</td><td>44,17%</td><td>1.408,13%</td></tr>
-    <tr><td>% do CDI</td>
+    <tr><td>Alfa</td>
+<td>0,02%</td><td>0,20%</td><td>0,36%</td><td>1,43%</td><td>7,05%</td><td>236,24%</td></tr>
+    <tr><td>%</td>
 <td>102%</td><td>102%</td><td>103%</td><td>105%</td><td>116%</td><td>117%</td></tr>
   </tbody>
 </table>
@@ -1662,7 +1723,9 @@ body.tv-exportando .backtop{display:none}
 <td>1,12%</td><td>9,45%</td><td>14,68%</td><td>−</td><td>−</td><td>25,93%</td></tr>
     <tr><td>CDI</td>
 <td>1,09%</td><td>9,33%</td><td>14,57%</td><td>−</td><td>−</td><td>25,71%</td></tr>
-    <tr><td>% do CDI</td>
+    <tr><td>Alfa</td>
+<td>0,03%</td><td>0,12%</td><td>0,11%</td><td>−</td><td>−</td><td>0,21%</td></tr>
+    <tr><td>%</td>
 <td>102%</td><td>101%</td><td>101%</td><td>−</td><td>−</td><td>101%</td></tr>
   </tbody>
 </table>
@@ -2308,7 +2371,9 @@ body.tv-exportando .backtop{display:none}
 <td>1,10%</td><td>9,39%</td><td>14,70%</td><td>30,21%</td><td>−</td><td>32,10%</td></tr>
     <tr><td>CDI</td>
 <td>1,09%</td><td>9,33%</td><td>14,57%</td><td>29,49%</td><td>−</td><td>31,33%</td></tr>
-    <tr><td>% do CDI</td>
+    <tr><td>Alfa</td>
+<td>0,00%</td><td>0,06%</td><td>0,13%</td><td>0,73%</td><td>−</td><td>0,77%</td></tr>
+    <tr><td>%</td>
 <td>100%</td><td>101%</td><td>101%</td><td>102%</td><td>−</td><td>102%</td></tr>
   </tbody>
 </table>
@@ -2558,7 +2623,9 @@ body.tv-exportando .backtop{display:none}
 <td>1,12%</td><td>8,59%</td><td>13,99%</td><td>28,43%</td><td>46,57%</td><td>154,64%</td></tr>
     <tr><td>CDI</td>
 <td>1,09%</td><td>9,33%</td><td>14,57%</td><td>29,49%</td><td>44,17%</td><td>155,05%</td></tr>
-    <tr><td>% do CDI</td>
+    <tr><td>Alfa</td>
+<td>0,02%</td><td>−0,74%</td><td>−0,58%</td><td>−1,05%</td><td>2,40%</td><td>−0,41%</td></tr>
+    <tr><td>%</td>
 <td>102%</td><td>92%</td><td>96%</td><td>96%</td><td>105%</td><td>100%</td></tr>
   </tbody>
 </table>
@@ -2926,7 +2993,7 @@ body.tv-exportando .backtop{display:none}
 <td>0,97%</td><td>8,80%</td><td>−</td><td>−</td><td>−</td><td>12,11%</td></tr>
     <tr><td>CDI</td>
 <td>1,09%</td><td>9,33%</td><td>−</td><td>−</td><td>−</td><td>12,38%</td></tr>
-    <tr><td>% do CDI</td>
+    <tr><td>%</td>
 <td>89%</td><td>94%</td><td>−</td><td>−</td><td>−</td><td>98%</td></tr>
   </tbody>
 </table>
@@ -3678,8 +3745,10 @@ body.tv-exportando .backtop{display:none}
 <td>1,07%</td><td>8,91%</td><td>14,07%</td><td>28,79%</td><td>46,53%</td><td>435,43%</td></tr>
     <tr><td>CDI</td>
 <td>1,09%</td><td>9,33%</td><td>14,57%</td><td>29,49%</td><td>44,17%</td><td>454,48%</td></tr>
-    <tr><td>% do CDI</td>
-<td>97%</td><td>96%</td><td>97%</td><td>98%</td><td>105%</td><td>96%</td></tr>
+    <tr><td>Alfa</td>
+<td>−0,03%</td><td>−0,42%</td><td>−0,50%</td><td>−0,69%</td><td>2,36%</td><td>−19,04%</td></tr>
+    <tr><td>%</td>
+<td>97,36%</td><td>95,53%</td><td>96,57%</td><td>97,66%</td><td>105,34%</td><td>95,81%</td></tr>
   </tbody>
 </table>
 <div class="databox">Data base: 31/08/2026</div>
@@ -4110,13 +4179,25 @@ body.tv-exportando .backtop{display:none}
   }
 
   /* ------------------------------------------- barras horizontais (emissores) */
-  function barras(d) {
+  function barras(d, larg) {
     var o = base();
     // ECharts desenha a categoria de baixo para cima; a lista chega do maior
     // para o menor, então inverte para o maior ficar no topo
     var nomes = d.itens.map(function (x) { return x[0]; }).reverse();
     var vals = d.itens.map(function (x) { return x[1]; }).reverse();
-    o.grid = { left: 150, right: 66, top: 4, bottom: 4, containLabel: false };
+
+    /* A coluna do rótulo era 150px fixos. Numa folha inteira isso é folgado;
+       na meia folha do ALT, não: "Comércio atacadista e varejista" saía como
+       "Comércio atacadis…". O ECharts trunca em silêncio, então o nome some do
+       relatório sem nenhum aviso. Agora a coluna, o corpo da fonte e o espaço
+       do valor saem da largura real do bloco. */
+    larg = larg || 886;
+    var estreito = larg < 520;
+    var colRot = Math.round(Math.max(96, Math.min(186, larg * 0.42)));
+    var colVal = estreito ? 48 : 66;
+    var corpo = estreito ? 12.2 : 13.4;
+    o.grid = { left: colRot + 8, right: colVal, top: 4, bottom: 4,
+               containLabel: false };
     o.xAxis = { type: 'value', show: true, axisLabel: { show: false },
                 axisLine: { show: false }, axisTick: { show: false },
                 splitLine: { show: false }, max: Math.max.apply(null, vals) * 1.02 };
@@ -4124,8 +4205,8 @@ body.tv-exportando .backtop{display:none}
       type: 'category', data: nomes,
       axisLine: { show: false }, axisTick: { show: false },
       axisLabel: {
-        fontSize: 13.4, color: CORES.texto, fontFamily: FF, width: 142,
-        overflow: 'truncate', align: 'left', margin: 150
+        fontSize: corpo, color: CORES.texto, fontFamily: FF, width: colRot,
+        overflow: 'truncate', align: 'left', margin: colRot + 8
       }
     };
     // Atenção: o valor da série é a LARGURA relativa (0-100), não o
@@ -4150,7 +4231,7 @@ body.tv-exportando .backtop{display:none}
       backgroundStyle: { color: 'rgba(212,224,230,.45)', borderRadius: 2 },
       label: {
         show: true, position: 'right', distance: 10, fontFamily: FF,
-        fontSize: 13.4, fontWeight: 700, color: CORES.azul,
+        fontSize: corpo, fontWeight: 700, color: CORES.azul,
         formatter: function (p) { return d.rotulos[vals.length - 1 - p.dataIndex]; }
       }
     }];
@@ -4212,7 +4293,7 @@ body.tv-exportando .backtop{display:none}
         el.innerHTML = '';
         el.style.height = (d.altura || 430) + 'px';
         var g = echarts.init(el, null, { renderer: 'svg' });
-        g.setOption(monta(d));
+        g.setOption(monta(d, el.clientWidth || 0));
         feitos++;
       } catch (e) {
         // um gráfico com problema não derruba os outros nem apaga o fallback

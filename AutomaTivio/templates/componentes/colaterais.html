@@ -1,0 +1,19 @@
+{# COLATERAIS — bloco fixo dos relatórios de Crédito Estruturado.
+
+   Não é dado da carteira: é a lista das garantias que a estratégia aceita, e
+   vem igual nos três ALT publicados (180, 90 e Light). Os ícones são os SVGs
+   que estavam embutidos no próprio PPTX, extraídos para assets/icones/ —
+   redesenhá-los "parecido" seria justamente descaracterizar o material.
+
+   Cinco cartões: quatro em grade 2x2 e o último ocupando a linha inteira,
+   como no original. #}
+<div class="colblock"><h3 class="chart-h">{{ titulo }}</h3>
+  <div class="colgrid">
+    {% for ic, rotulo in colaterais %}
+    <div class="colcard{{ ' largo' if loop.last }}">
+      <span class="colico">{{ icones[ic]|safe }}</span>
+      <span class="colrot">{{ rotulo }}</span>
+    </div>
+    {% endfor %}
+  </div>
+</div>

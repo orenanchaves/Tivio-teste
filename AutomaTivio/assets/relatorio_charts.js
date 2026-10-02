@@ -104,13 +104,25 @@
   }
 
   /* ------------------------------------------- barras horizontais (emissores) */
-  function barras(d) {
+  function barras(d, larg) {
     var o = base();
     // ECharts desenha a categoria de baixo para cima; a lista chega do maior
     // para o menor, então inverte para o maior ficar no topo
     var nomes = d.itens.map(function (x) { return x[0]; }).reverse();
     var vals = d.itens.map(function (x) { return x[1]; }).reverse();
-    o.grid = { left: 150, right: 66, top: 4, bottom: 4, containLabel: false };
+
+    /* A coluna do rótulo era 150px fixos. Numa folha inteira isso é folgado;
+       na meia folha do ALT, não: "Comércio atacadista e varejista" saía como
+       "Comércio atacadis…". O ECharts trunca em silêncio, então o nome some do
+       relatório sem nenhum aviso. Agora a coluna, o corpo da fonte e o espaço
+       do valor saem da largura real do bloco. */
+    larg = larg || 886;
+    var estreito = larg < 520;
+    var colRot = Math.round(Math.max(96, Math.min(186, larg * 0.42)));
+    var colVal = estreito ? 48 : 66;
+    var corpo = estreito ? 12.2 : 13.4;
+    o.grid = { left: colRot + 8, right: colVal, top: 4, bottom: 4,
+               containLabel: false };
     o.xAxis = { type: 'value', show: true, axisLabel: { show: false },
                 axisLine: { show: false }, axisTick: { show: false },
                 splitLine: { show: false }, max: Math.max.apply(null, vals) * 1.02 };
@@ -118,8 +130,8 @@
       type: 'category', data: nomes,
       axisLine: { show: false }, axisTick: { show: false },
       axisLabel: {
-        fontSize: 13.4, color: CORES.texto, fontFamily: FF, width: 142,
-        overflow: 'truncate', align: 'left', margin: 150
+        fontSize: corpo, color: CORES.texto, fontFamily: FF, width: colRot,
+        overflow: 'truncate', align: 'left', margin: colRot + 8
       }
     };
     // Atenção: o valor da série é a LARGURA relativa (0-100), não o
@@ -144,7 +156,7 @@
       backgroundStyle: { color: 'rgba(212,224,230,.45)', borderRadius: 2 },
       label: {
         show: true, position: 'right', distance: 10, fontFamily: FF,
-        fontSize: 13.4, fontWeight: 700, color: CORES.azul,
+        fontSize: corpo, fontWeight: 700, color: CORES.azul,
         formatter: function (p) { return d.rotulos[vals.length - 1 - p.dataIndex]; }
       }
     }];
@@ -206,7 +218,7 @@
         el.innerHTML = '';
         el.style.height = (d.altura || 430) + 'px';
         var g = echarts.init(el, null, { renderer: 'svg' });
-        g.setOption(monta(d));
+        g.setOption(monta(d, el.clientWidth || 0));
         feitos++;
       } catch (e) {
         // um gráfico com problema não derruba os outros nem apaga o fallback
