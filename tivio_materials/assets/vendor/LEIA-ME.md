@@ -27,3 +27,33 @@ copy package\dist\echarts.min.js assets\vendor\
 ```
 
 Trocar a versão é uma decisão consciente: confira os relatórios depois.
+
+
+---
+
+## html2canvas · jszip · jspdf
+
+As bibliotecas que os **botões de exportação** dos materiais da Central usam
+(Pacote JPG, Pacote PDF, Baixar PNG, E-mail HTML).
+
+Nos materiais originais elas vêm do `cdnjs.cloudflare.com`, **sem alternativa**:
+se o CDN estiver fora, bloqueado pela rede da empresa ou simplesmente lento, os
+botões não fazem nada — sem erro na tela, porque o `onclick` chama uma função que
+não existe.
+
+Isso importa mais agora do que antes: o fluxo é *o HTML sai pronto do `run.py` e
+a pessoa clica no botão*. O botão virou parte do processo, e um processo não pode
+depender de um CDN que ninguém controla.
+
+O `run.py` reescreve as tags `<script>` dos materiais para **tentar a cópia local
+primeiro e cair no CDN se ela não estiver lá**, e copia estes arquivos para
+`reports/AAAA-MM/central/vendor/`. Assim:
+
+| Situação | O que acontece |
+|---|---|
+| Pasta da edição inteira | carrega local, funciona sem rede |
+| Só o HTML, por e-mail | local dá 404, cai no CDN, funciona |
+| Só o HTML e sem rede | botões não funcionam (como hoje) |
+
+Versões: html2canvas 1.4.1 · jszip 3.10.1 · jspdf 2.5.1 — as mesmas que os
+materiais já pediam ao CDN, obtidas com `npm pack`.

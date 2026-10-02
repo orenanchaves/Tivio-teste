@@ -410,6 +410,82 @@ const RECORRENTES=%REC%;
                                 'cards só muda para quem limpar o cache do navegador')
         return html
 
+    # ===================================================== libs de exportação
+    # Os botões (Pacote JPG, Pacote PDF, Baixar PNG, E-mail HTML) dependem de
+    # html2canvas, jszip e jspdf, que os materiais buscam no cdnjs — sem
+    # alternativa. CDN fora, bloqueado pela rede da empresa ou lento e o botão
+    # não faz nada: o onclick chama uma função que não existe, e não aparece
+    # erro na tela.
+    #
+    # Como o fluxo é "o HTML sai pronto e a pessoa clica no botão", o botão é
+    # parte do processo. Aqui a ordem é invertida: tenta a cópia local, cai no
+    # CDN se ela não estiver lá. Mandar só o HTML por e-mail continua
+    # funcionando (o local dá 404 e o CDN assume); a pasta inteira funciona sem
+    # rede nenhuma.
+    LIBS = {
+        'html2canvas': 'html2canvas.min.js',
+        'jszip': 'jszip.min.js',
+        'jspdf': 'jspdf.umd.min.js',
+        'echarts': 'echarts.min.js',
+    }
+
+    def libs_locais(self, html):
+        trocas = 0
+        for chave, arquivo in self.LIBS.items():
+            padrao = re.compile(
+                r'<script\s+src="(https://[^"]*' + chave + r'[^"]*)"([^>]*)></script>',
+                re.I)
+
+            def troca(m):
+                nonlocal trocas
+                trocas += 1
+                cdn, resto = m.group(1), m.group(2)
+                # `crossorigin` e `integrity` são do CDN e atrapalham no local:
+                # numa página aberta por file://, crossorigin="anonymous" faz o
+                # navegador tratar o script como requisição CORS de origem
+                # opaca e recusá-lo — o arquivo está lá e não carrega.
+                resto = re.sub(r'\s*(crossorigin|integrity)="[^"]*"', '', resto)
+                # o onerror roda só quando o arquivo local não existe; aí
+                # injeta a tag do CDN no lugar, de forma síncrona o bastante
+                # para o resto da página ainda encontrar a biblioteca
+                return (f'<script src="vendor/{arquivo}"{resto} '
+                        f'onerror="this.onerror=null;'
+                        f'document.write(\'&lt;script src=&quot;{cdn}&quot;&gt;'
+                        f'&lt;/script&gt;\'.replace(/&lt;/g,String.fromCharCode(60))'
+                        f'.replace(/&gt;/g,String.fromCharCode(62))'
+                        f'.replace(/&quot;/g,String.fromCharCode(34)))"></script>')
+            html = padrao.sub(troca, html)
+
+            # O e-mail não usa <script src>: carrega em JS, percorrendo uma
+            # lista de CDNs até um responder. Aí não há tag para reescrever —
+            # basta o caminho local entrar como primeiro candidato da lista, e a
+            # cascata de CDNs que já existe continua valendo como reserva.
+            lista = re.compile(
+                r"\['(https://cdnjs[^']*" + chave + r"[^']*)'", re.I)
+
+            def primeiro(m):
+                nonlocal trocas
+                trocas += 1
+                return f"['vendor/{arquivo}','{m.group(1)}'"
+            html = lista.sub(primeiro, html)
+
+        # O carregador dinâmico marca `crossOrigin='anonymous'` em toda URL.
+        # Para o CDN é correto; para o arquivo local é fatal: numa página aberta
+        # por file:// o navegador trata o script como requisição CORS de origem
+        # opaca e recusa — o arquivo está ali e não carrega. Passa a marcar só
+        # quando a URL é absoluta.
+        antes = html
+        html = html.replace(
+            "s.src=src;s.crossOrigin='anonymous';",
+            "s.src=src;if(/^https?:/i.test(src))s.crossOrigin='anonymous';")
+        if html != antes:
+            trocas += 1
+
+        if trocas:
+            self.log.mudanca('—', 'libs de exportação', 'CDN',
+                             f'{trocas} referências → vendor/ local (CDN como reserva)')
+        return html
+
     # ========================================================== orquestração
     def processar(self, nome, html):
         metodo = self.ARQUIVOS.get(nome)
@@ -419,4 +495,4 @@ const RECORRENTES=%REC%;
         html = getattr(self, metodo)(html)
         if nome in MENSAIS:
             html = self.trocar_datas(html, antiga)
-        return html
+        return self.libs_locais(html)

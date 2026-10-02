@@ -251,6 +251,33 @@ interpola uma reta do zero até o valor final, com um ruído para parecer orgân
 
 ---
 
+## Os botões dos materiais da Central
+
+Os posts, o e-mail e o relatório interativo exportam JPG, PDF, PNG e ZIP por
+botões no próprio material. O `run.py` entrega o HTML pronto; o resto é clicar.
+
+Para que o clique funcione, as bibliotecas (`html2canvas`, `jszip`, `jspdf`,
+`echarts`) são servidas de `central/vendor/`, copiadas junto com os HTMLs. Nos
+materiais originais elas vêm do cdnjs **sem alternativa**: CDN fora, bloqueado
+pela rede da empresa ou lento e o botão não faz nada — sem erro na tela, porque
+o `onclick` chama uma função que não existe.
+
+A ordem agora é local primeiro, CDN como reserva:
+
+| Situação | O que acontece |
+|---|---|
+| Pasta da edição inteira | carrega local, funciona sem rede |
+| Só o HTML, por e-mail | local dá 404, cai no CDN, funciona |
+
+Duas armadilhas resolvidas no caminho, as duas pelo mesmo motivo — `crossorigin`
+em arquivo local: numa página aberta por `file://` o navegador trata o script
+como requisição CORS de origem opaca e o recusa, com o arquivo ali do lado. O
+atributo é removido das tags reescritas, e o carregador dinâmico do e-mail passa
+a marcá-lo só quando a URL é absoluta.
+
+Verificado com a rede bloqueada: os cinco materiais com export carregam as
+bibliotecas, e o botão "Baixar JPG" produz o arquivo de 2160×2880.
+
 ## Exportação
 
 ### PDF

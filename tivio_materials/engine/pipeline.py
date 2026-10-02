@@ -181,6 +181,31 @@ class Pipeline:
                         except Exception as e2:
                             self.log.erro(key, f'PPTX não gerado: {e2!r}')
 
+    def _copiar_libs(self):
+        """Leva html2canvas/jszip/jspdf para junto dos materiais.
+
+        Sem isso o `vendor/…` que o renderizador escreveu daria 404 e todo
+        material cairia no CDN — ou seja, a correção não valeria nada.
+        """
+        origem = os.path.join(RAIZ, 'assets', 'vendor')
+        destino = self._destino('central', 'vendor')
+        if not os.path.isdir(origem):
+            return
+        os.makedirs(destino, exist_ok=True)
+        copiados = 0
+        for arq in ('html2canvas.min.js', 'jszip.min.js', 'jspdf.umd.min.js',
+                    'echarts.min.js'):
+            caminho = os.path.join(origem, arq)
+            if os.path.exists(caminho):
+                shutil.copy2(caminho, os.path.join(destino, arq))
+                copiados += 1
+        if copiados:
+            self.log.info(f'  {copiados} bibliotecas de exportação copiadas para '
+                          f'central/vendor/')
+        else:
+            self.log.aviso('—', 'assets/vendor não tem as libs de exportação — os '
+                                'botões dos materiais dependerão do CDN')
+
     def _materiais_legados(self):
         self.log.etapa('5/6 Materiais da Central')
         quais = self.cfg.get('materiais', {})
@@ -218,6 +243,7 @@ class Pipeline:
             if novo == original and chave:
                 self.log.aviso(nome, 'nenhuma alteração aplicada — conferir se as '
                                      'chaves do material batem com configs/fundos.yml')
+        self._copiar_libs()
 
     # ------------------------------------------------------------------ rodada
     def rodar(self):
