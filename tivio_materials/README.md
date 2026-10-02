@@ -37,7 +37,8 @@ python -m pip install -r requirements.txt
 python -m playwright install chromium     # só para exportar PDF
 
 # todo mês
-# 1) substituir entrada\dados_mensais.xlsx e entrada\taxas_global.xlsx
+# 1) substituir entrada\dados_mensais.xlsx, entrada\taxas_global.xlsx
+#    e entrada\tabela_spreads.xlsx
 # 2) escrever os comentários em entrada\comentarios.md
 # 3) gerar
 python run.py
@@ -142,6 +143,36 @@ aviso.
 
 Marcador desconhecido fica **visível no texto** (`{foo}`) e entra na conferência
 — o oposto de um número errado que passa.
+
+---
+
+## Mercado de Crédito
+
+A tabela setorial da ANBIMA vem de **`entrada/tabela_spreads.xlsx`** — a planilha
+que a área já produz todo mês. Antes eram ~25 setores × 6 colunas digitados na
+aba *Mercado_Credito*: 150 células por edição, copiadas de outra planilha, onde
+um número entra errado e ninguém confere porque conferir custa o mesmo que
+redigitar.
+
+A leitura é tolerante de propósito:
+
+- o cabeçalho **não precisa estar na linha 1** — é procurado pela palavra "Setor";
+- as colunas são casadas **por nome aproximado**, não por posição ("Spread mês
+  anterior", "Spread Mês Anterior" e "Spread anterior" chegam no mesmo lugar);
+- a aba pode ter qualquer nome; o loader varre todas até achar a tabela.
+
+Percentual é lido pelo **formato da célula**, não por palpite. Uma versão
+anterior deste loader adivinhava ("valor menor que 1 é fração") e errava em dois
+casos de toda edição: 100% guardado como `1,0` virava "1,00%", e uma coluna de
+spreads inteira abaixo de 1% seria multiplicada por 100. O Excel guarda a
+resposta no formato da célula — basta lê-la.
+
+Se a planilha existir mas a tabela não for reconhecida, o relatório sai **sem** o
+bloco, com aviso dizendo qual cabeçalho foi lido. Preencher um bloco de mercado
+com dados meio lidos é pior do que não ter o bloco.
+
+Enquanto a planilha não chega, a aba *Mercado_Credito* do preenchimento manual
+continua funcionando como alternativa.
 
 ---
 

@@ -32,7 +32,9 @@ entradas:
   dados: entrada/dados_mensais.xlsx
   taxas: entrada/taxas_global.xlsx
   comentarios: entrada/comentarios.md        # .md ou .xlsx; o loader aceita os dois
-  manual: entrada/preenchimento_manual.xlsx  # mercado de crédito + overrides
+  spreads: entrada/tabela_spreads.xlsx       # Mercado de Crédito (tabela setorial)
+  manual: entrada/preenchimento_manual.xlsx  # overrides e, se não houver spreads,
+                                             # a aba Mercado_Credito digitada
 
 # ------------------------------------------------------------------ governança
 # para em vez de publicar quando a conferência acha problema grave

@@ -42,11 +42,12 @@ def _slug_logo(s):
 
 
 class RenderizadorRelatorio:
-    def __init__(self, edicao, cadastro, manual, log, config=None):
+    def __init__(self, edicao, cadastro, manual, log, config=None, spreads=None):
         self.edicao = edicao
         self.cad = cadastro
         self.manual = manual or {}
         self.log = log
+        self.spreads = spreads
         cfg_path = config or os.path.join(RAIZ, 'configs', 'relatorio.yml')
         with open(cfg_path, encoding='utf-8') as f:
             self.cfg = yaml.safe_load(f)
@@ -234,7 +235,15 @@ class RenderizadorRelatorio:
 
     # ----------------------------------------------------------------- blocos
     def mercado(self):
-        """Tabela ANBIMA da planilha manual, já no formato do componente."""
+        """Tabela setorial ANBIMA.
+
+        Duas origens, nesta ordem: `entrada/tabela_spreads.xlsx`, que é a
+        planilha que a área já produz todo mês; e, se ela não existir, a aba
+        Mercado_Credito do preenchimento manual, que é a mesma tabela digitada à
+        mão. A segunda existe só para a transição — são 150 células por edição.
+        """
+        if self.spreads:
+            return self.spreads
         df = self.manual.get('Mercado_Credito')
         if df is None or not len(df):
             return None

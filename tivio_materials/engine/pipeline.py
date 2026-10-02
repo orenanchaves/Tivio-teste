@@ -28,6 +28,7 @@ from engine.edicao import Edicao
 from engine.governanca import Log
 from exporters import html as exp_html
 from loaders import comentarios as loader_comentarios
+from loaders import spreads as loader_spreads
 from loaders.planilha import ler_dados_mensais, ler_manual, ler_taxas
 from loaders.taxas import Taxas
 from renderers.legado import RenderizadorLegado
@@ -72,6 +73,9 @@ class Pipeline:
                            performance_fixa=self.cadastro.performance_fixa,
                            overrides=overrides)
         self.comentarios = loader_comentarios.carregar(_caminho(ent.get('comentarios', '')))
+        self.log.contexto('mercado de crédito')
+        self.spreads = loader_spreads.carregar(_caminho(ent.get('spreads', '')), self.log)
+        self.log.contexto('—')
 
         self.log.info(f'data base: {self.edicao.br} ({self.edicao.mes_ano})')
         self.log.info(f'cadastro: {len(self.cadastro.fundos)} fundos, '
@@ -104,7 +108,8 @@ class Pipeline:
     def _relatorios(self, contextos):
         """O produto principal: um relatório por fundo, nos três formatos."""
         self.log.etapa('4/6 Relatórios de Gestão')
-        rend = RenderizadorRelatorio(self.edicao, self.cadastro, self.manual, self.log)
+        rend = RenderizadorRelatorio(self.edicao, self.cadastro, self.manual, self.log,
+                                     spreads=self.spreads)
         alvo = [c for c in contextos if c.f.tem_relatorio]
         if self.so_fundos:
             alvo = [c for c in alvo if c.key in self.so_fundos]
