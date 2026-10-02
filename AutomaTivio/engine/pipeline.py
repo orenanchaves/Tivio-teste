@@ -136,14 +136,22 @@ class Pipeline:
             except Exception as e:
                 self.log.erro(ctx.key, f'falha ao montar o relatório: {e!r}')
                 continue
-            htmls[ctx.key] = (ctx, html)
-            if self.cfg['saidas'].get('html'):
-                destino = self._destino('relatorios',
-                                        self.edicao.nome_arquivo(
-                                            f'{ctx.nome} - Relatório de Gestão', 'html'))
-                exp_html.gravar(html, destino, self.log)
+            # O HTML é sempre gravado, mesmo com `saidas.html` desligado: o PDF
+            # e o PPTX são tirados do arquivo, para os caminhos relativos
+            # (vendor/) resolverem. Com a saída desligada ele é apagado no fim.
+            destino = self._destino('relatorios',
+                                    self.edicao.nome_arquivo(
+                                        f'{ctx.nome} - Relatório de Gestão', 'html'))
+            quer_html = bool(self.cfg['saidas'].get('html'))
+            exp_html.gravar(html, destino, self.log if quer_html else None)
+            htmls[ctx.key] = (ctx, html, destino, quer_html)
 
         self._pdf_e_pptx(htmls, rend)
+
+        # saída html desligada: o arquivo existiu só para o PDF sair dele
+        for _, _, arquivo, quer in htmls.values():
+            if not quer and os.path.exists(arquivo):
+                os.remove(arquivo)
         return htmls
 
     def _pdf_e_pptx(self, htmls, rend):
@@ -157,15 +165,18 @@ class Pipeline:
         from exporters.pdf import ExportadorPDF
         from exporters.pptx import ExportadorPPTX
 
+        # o vendor/ precisa existir antes de abrir o HTML por file://
+        self._copiar_libs()
+
         pptx = ExportadorPPTX(self.log)
         with ExportadorPDF(self.log) as pdf:
-            for key, (ctx, html) in htmls.items():
+            for key, (ctx, html, arquivo, _) in htmls.items():
                 self.log.contexto(f'relatorio/{key}')
                 base = f'{ctx.nome} - Relatório de Gestão'
                 if quer_pdf:
                     try:
                         destino = self._destino('pdf', self.edicao.nome_arquivo(base, 'pdf'))
-                        pdf.exportar(html, destino)
+                        pdf.exportar(html, destino, origem=arquivo)
                         self.log.gerado(destino, 'pdf')
                     except Exception as e:
                         self.log.erro(key, f'PDF não gerado: {e!r}')
@@ -182,7 +193,7 @@ class Pipeline:
                         try:
                             destino = self._destino('pptx',
                                                     self.edicao.nome_arquivo(base, 'pptx'))
-                            pptx.imagem(html, destino, pdf._browser)
+                            pptx.imagem(html, destino, pdf._browser, origem=arquivo)
                             self.log.gerado(destino, 'pptx')
                         except Exception as e2:
                             self.log.erro(key, f'PPTX não gerado: {e2!r}')
@@ -191,8 +202,11 @@ class Pipeline:
     LIBS_POR_PASTA = {
         'central': ('html2canvas.min.js', 'jszip.min.js', 'jspdf.umd.min.js',
                     'echarts.min.js'),
-        'relatorios': ('html2canvas.min.js', 'jszip.min.js', 'jspdf.umd.min.js',
-                       'pptxgen.min.js'),
+        # echarts entra aqui desde que o relatório deixou de embuti-lo: sem ele
+        # na pasta, o <script src="vendor/echarts.min.js"> do HTML dá 404 e o
+        # gráfico cai na versão SVG do servidor
+        'relatorios': ('echarts.min.js', 'html2canvas.min.js', 'jszip.min.js',
+                       'jspdf.umd.min.js', 'pptxgen.min.js'),
     }
 
     def _copiar_libs(self):

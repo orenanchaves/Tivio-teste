@@ -335,10 +335,19 @@ rating) são desenhados com **Apache ECharts 5.6.0**, em `renderer: 'svg'`. SVG 
 é preferência: em canvas o gráfico vira imagem rasterizada dentro de um PDF
 vetorial, que é o que faz um PDF parecer impressão de tela.
 
-O ECharts fica **versionado** em `assets/vendor/`, não buscado num CDN em tempo
-de execução, e é embutido no HTML. Razão prática: o PDF é gerado sem ninguém
-olhando, e um CDN fora do ar produziria 12 relatórios com o gráfico faltando,
-descobertos depois de publicados.
+O ECharts fica **versionado** em `assets/vendor/` e é copiado para
+`reports/AAAA-MM/relatorios/vendor/`, ao lado dos HTMLs — com o CDN só como
+reserva. Razão prática: o PDF é gerado sem ninguém olhando, e um CDN fora do ar
+produziria 13 relatórios com o gráfico faltando, descobertos depois de
+publicados.
+
+A primeira versão **embutia** o arquivo em cada relatório. Funcionava, mas eram
+13 cópias idênticas de 1 MB: cada relatório pesava 2,3 MB e a saída do mês somava
+50 MB. Referenciar a pasta ao lado resolve o mesmo problema — desde que o PDF
+seja tirado do **arquivo gravado**, aberto por `file://`, e não de uma cópia em
+memória: com `set_content` a página não tem URL base e nenhum caminho relativo
+resolve. Hoje a saída inteira dá **14 MB**, e o PDF sai do mesmo artefato que a
+pessoa abre no navegador.
 
 **Aprimoramento progressivo.** O Python desenha o gráfico em SVG e o entrega
 dentro do contêiner; o ECharts o substitui ao carregar. Se o ECharts falhar, o

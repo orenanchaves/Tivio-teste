@@ -146,17 +146,22 @@ class RenderizadorRelatorio:
         p = os.path.join(RAIZ, 'templates', 'estilos', nome)
         return open(p, encoding='utf-8').read() if os.path.exists(p) else ''
 
-    def _ler_js(self):
-        """ECharts e o módulo de gráficos, embutidos no HTML.
+    # ECharts vem da pasta vendor/ ao lado do HTML, com o CDN como reserva — o
+    # mesmo arranjo dos materiais da Central.
+    #
+    # A primeira versão embutia o arquivo inteiro em cada relatório, para o PDF
+    # não depender de rede. Funcionava, mas cada relatório pesava 2,3 MB e os 13
+    # somavam 31 MB de saída: treze cópias idênticas de 1 MB de JavaScript. O
+    # problema que a embutida resolvia — o PDF é gerado sem ninguém olhando —
+    # resolve-se melhor abrindo o arquivo gravado por `file://` na hora de
+    # imprimir: aí o `vendor/` ao lado resolve sozinho, e o PDF sai do mesmo
+    # artefato que a pessoa abre, não de uma cópia em memória.
+    ECHARTS = ('vendor/echarts.min.js',
+               'https://cdnjs.cloudflare.com/ajax/libs/echarts/5.6.0/echarts.min.js')
 
-        Embutido, e não via <script src> para o CDN: o PDF é gerado sem ninguém
-        olhando, e um CDN fora do ar produziria 12 relatórios com o gráfico
-        faltando, descobertos depois de publicados. Embutido, o HTML abre e
-        desenha sem rede.
-        """
-        vendor = os.path.join(RAIZ, 'assets', 'vendor', 'echarts.min.js')
+    def _ler_js(self):
+        """Só o módulo de gráficos é embutido; o ECharts vem de vendor/."""
         modulo = os.path.join(RAIZ, 'assets', 'relatorio_charts.js')
-        ec = open(vendor, encoding='utf-8').read() if os.path.exists(vendor) else ''
         mod = open(modulo, encoding='utf-8').read() if os.path.exists(modulo) else ''
         exp = os.path.join(RAIZ, 'assets', 'relatorio_export.js')
         self.export_js = open(exp, encoding='utf-8').read() if os.path.exists(exp) else ''
@@ -164,11 +169,11 @@ class RenderizadorRelatorio:
         if not self.disclaimer:
             self.log.aviso('—', 'configs/disclaimer.md não encontrado — o relatório '
                                 'sai sem o texto jurídico do rodapé')
-        if not ec:
+        if not os.path.exists(os.path.join(RAIZ, 'assets', 'vendor', 'echarts.min.js')):
             self.log.aviso('—', 'assets/vendor/echarts.min.js não encontrado — os '
                                 'gráficos ficam na versão SVG do servidor '
                                 '(corretos, sem interação). Ver assets/vendor/LEIA-ME.md')
-        return ec, mod
+        return '', mod
 
     def _indexar_logos(self):
         """Mapa slug -> caminho do SVG, nas duas pastas de logo."""
@@ -489,7 +494,7 @@ class RenderizadorRelatorio:
             'css_marca': self.css_marca, 'css_relatorio': self.css_relatorio,
             'logo_svg': self.logo(f),
             'marca_svg': self.marca_svg,
-            'echarts_js': self.echarts_js,
+            'echarts_src': self.ECHARTS,
             'charts_js': self.charts_js,
             'export_js': self.export_js,
             'meta_json': json.dumps({

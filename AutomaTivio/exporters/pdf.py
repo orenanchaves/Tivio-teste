@@ -82,12 +82,26 @@ class ExportadorPDF:
             self._pw.stop()
 
     # -------------------------------------------------------------- exportação
-    def exportar(self, html, destino, largura=1000, altura=1414):
-        """Grava o PDF e devolve o caminho. `html` é a string, não um arquivo."""
+    def exportar(self, html, destino, largura=1000, altura=1414, origem=None):
+        """Grava o PDF e devolve o caminho.
+
+        `origem` é o HTML já gravado em disco. Quando existe, a página é aberta
+        por `file://` em vez de `set_content`: só assim os caminhos relativos do
+        documento (`vendor/echarts.min.js`) resolvem. Com `set_content` a página
+        não tem URL base, e qualquer referência relativa falha — foi o que
+        obrigou a embutir 1 MB de ECharts em cada relatório na primeira versão.
+
+        Abrir o arquivo tem outra vantagem: o PDF sai do mesmo artefato que a
+        pessoa abre no navegador, não de uma cópia em memória que poderia
+        divergir dele.
+        """
         os.makedirs(os.path.dirname(destino) or '.', exist_ok=True)
         pagina = self._browser.new_page(viewport={'width': largura, 'height': altura})
         try:
-            pagina.set_content(html, wait_until='load')
+            if origem and os.path.exists(origem):
+                pagina.goto('file://' + os.path.abspath(origem), wait_until='load')
+            else:
+                pagina.set_content(html, wait_until='load')
             if self.esperar_fonte:
                 self._conferir_fonte(pagina, destino)
             self._esperar_graficos(pagina, destino)

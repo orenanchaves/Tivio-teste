@@ -124,9 +124,11 @@ body.tv-exportando .tv-bar,body.tv-exportando .tv-toast{display:none}
 
 </div>
 
-{% if echarts_js %}
-<script>{{ echarts_js|safe }}</script>
-{% endif %}
+{# ECharts da pasta vendor/ ao lado deste arquivo; se ela não vier junto (o
+   HTML mandado solto por e-mail, por exemplo), cai no CDN #}
+<script src="{{ echarts_src[0] }}"
+        onerror="var s=document.createElement('script');s.src='{{ echarts_src[1] }}';
+                 s.crossOrigin='anonymous';document.head.appendChild(s)"></script>
 {% if charts_js %}
 <script>{{ charts_js|safe }}</script>
 {% endif %}

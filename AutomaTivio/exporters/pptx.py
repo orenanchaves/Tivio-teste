@@ -283,14 +283,22 @@ class ExportadorPPTX:
                   tam=8, cor=CINZA)
 
     # --------------------------------------------------------------- imagem
-    def imagem(self, html, destino, navegador, escala=2):
-        """Fallback: cada folha do HTML vira um slide-imagem de alta resolução."""
+    def imagem(self, html, destino, navegador, escala=2, origem=None):
+        """Fallback: cada folha do HTML vira um slide-imagem de alta resolução.
+
+        Abre o arquivo gravado quando ele existe, pelo mesmo motivo do PDF: com
+        `set_content` a página não tem URL base e o `vendor/` ao lado não
+        resolve.
+        """
         prs = Presentation()
         prs.slide_width, prs.slide_height = A4_L, A4_A
         pagina = navegador.new_page(viewport={'width': 1000, 'height': 1414},
                                     device_scale_factor=escala)
         try:
-            pagina.set_content(html, wait_until='load')
+            if origem and os.path.exists(origem):
+                pagina.goto('file://' + os.path.abspath(origem), wait_until='load')
+            else:
+                pagina.set_content(html, wait_until='load')
             try:
                 pagina.wait_for_function('document.fonts.ready.then(()=>true)', timeout=15000)
             except Exception:
