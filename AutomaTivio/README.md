@@ -409,7 +409,7 @@ prontos e com número errado, já na pasta de onde alguém vai publicar. Com
 ## Estrutura
 
 ```
-tivio_materials/
+AutomaTivio/
 ├─ run.py                     ← o comando
 ├─ configs/
 │   ├─ edicao.yml             ← DATA_BASE e o que gerar

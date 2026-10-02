@@ -1,16 +1,24 @@
 # Selos do rodapé dos relatórios
 
-Coloque aqui os quatro arquivos que aparecem na faixa do disclaimer:
-
 ```
 assets/selos/
-├─ qr.png          QR Code dos fundos
 ├─ anbima1.png     Selo ANBIMA — Distribuição de Produtos de Investimento
 ├─ anbima2.png     Selo ANBIMA — Gestão de Recursos de Terceiros
-└─ pri.png         Signatory of PRI
+├─ pri.png         Signatory of PRI
+└─ qr.png          QR Code dos fundos        (FALTANDO — ver abaixo)
 ```
 
-Aceita `.png`, `.jpg` e `.svg`.
+Os três primeiros foram **extraídos dos relatórios PPTX publicados**, onde vêm
+embutidos no arquivo. Aceita `.png`, `.jpg` e `.svg`.
+
+## O QR Code
+
+É o único que não veio dos PPTX: ali ele entra por link externo, não embutido.
+Enquanto o arquivo não estiver nesta pasta, o relatório usa a URL do site
+(`tivio.com/wp-content/uploads/sites/1532/2026/08/QR-Code-scaled.png`) e a
+conferência avisa.
+
+Para resolver: salve o QR Code do site como `qr.png` aqui.
 
 ## Por que local, e não a URL
 
@@ -25,10 +33,16 @@ Com os arquivos nesta pasta, o `run.py` os embute no HTML em base64. O selo vai
 dentro do documento: aparece na tela, no PDF, no JPG e no PPTX, sem rede e sem
 proxy de terceiro.
 
-Pasta vazia: o relatório usa as URLs oficiais como reserva (abaixo), e a
-conferência avisa que os selos podem não sair nas exportações.
+## Uma armadilha na extração
 
-| Selo | URL oficial |
+No PPTX, o **nome do shape não corresponde ao conteúdo da imagem**: o shape
+chamado `anbima-distribuicao-de-produtos-de-investimento` contém o selo de
+*Gestão de Recursos*, e vice-versa. Os arquivos aqui foram nomeados pelo que a
+imagem mostra, não pelo nome do shape. Se for reextrair, confira olhando.
+
+## URLs oficiais (reserva)
+
+| Selo | URL |
 |---|---|
 | qr | `https://www.tivio.com/wp-content/uploads/sites/1532/2026/08/QR-Code-scaled.png` |
 | anbima1 | `https://www.tivio.com/wp-content/uploads/sites/1532/2026/07/selo-distribuicao.png` |
@@ -36,5 +50,5 @@ conferência avisa que os selos podem não sair nas exportações.
 | pri | `https://www.tivio.com/wp-content/uploads/sites/1532/2026/08/PRI.png` |
 
 As URLs têm a data no caminho (`/2026/07/`) porque o WordPress organiza assim —
-quando a área de marketing substituir um selo, a URL muda e esta tabela precisa
-acompanhar. É mais um motivo para manter os arquivos aqui.
+quando marketing substituir um selo, a URL muda. É mais um motivo para manter os
+arquivos aqui.
