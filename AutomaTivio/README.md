@@ -172,6 +172,47 @@ Marcador desconhecido fica **visível no texto** (`{foo}`) e entra na conferênc
 
 ---
 
+## Ajustes manuais (`entrada/preenchimento_manual.xlsx`)
+
+É a **exceção, não a rotina** — na rodada normal do mês você não abre este
+arquivo. Ele tem três abas e só uma faz alguma coisa:
+
+| Aba | Estado |
+|---|---|
+| **Overrides** | **viva.** Força um valor que o cálculo não acerta, sem mexer em código |
+| Mercado_Credito | reserva. Só lida se `entrada/tabela_spreads.xlsx` não existir |
+| ~~Comentarios_Relatorio~~ · ~~Comentarios_Email~~ | removidas. Os comentários vêm do `.docx` |
+
+### Overrides
+
+Seis campos, mais `casas_taxa`:
+
+| campo | o quê |
+|---|---|
+| `taxa` · `perf` | texto da taxa global e da performance |
+| `carrego` · `duration` | carrego em fração (0,0823 = CDI +8,23%) e duration em anos |
+| `pl` · `pl_medio` | patrimônio líquido e PL médio 12m, em reais |
+| `casas_taxa` | nº de casas decimais da taxa daquele fundo |
+
+A lista é **fechada de propósito**. Um override é uma exceção pontual — "o número
+saiu errado e eu preciso publicar hoje" —, não uma segunda forma de configurar o
+fundo. Abrir para qualquer campo transformaria a planilha numa config paralela,
+que é exatamente o que este ambiente veio desfazer. Público-alvo, objetivo e
+informações operacionais são cadastro, e ficam em `configs/fundos.yml`.
+
+Linha que começa com `#` é exemplo e não tem efeito.
+
+Os overrides são aplicados **no contexto**, então valem igual no relatório, no
+post e no e-mail. Antes só chegavam nos materiais da Central: um override mudava
+o post sem mudar o relatório — a divergência que o projeto combate, criada pela
+própria ferramenta de correção.
+
+Todo override vira linha de aviso na conferência, **com o valor que ele
+substituiu**. Sem isso, no mês seguinte ninguém lembra por que aquele carrego
+estava diferente do calculado.
+
+---
+
 ## Disclaimer
 
 Em `configs/disclaimer.md`, fora do código. É texto jurídico: muda por decisão

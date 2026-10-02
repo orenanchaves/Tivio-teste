@@ -296,13 +296,31 @@ class ContextoFundo:
 class Contexto:
     """Fábrica de contextos. Calcula uma vez por fundo e guarda."""
 
-    def __init__(self, calc, cadastro, taxas, comentarios, edicao, log=None):
+    # Campos que a aba Overrides pode forçar. A lista é fechada de propósito:
+    # um override é uma exceção pontual ("o número saiu errado e eu preciso
+    # publicar hoje"), não uma segunda forma de configurar o fundo. Abrir para
+    # qualquer campo transformaria a planilha numa config paralela, que é
+    # exatamente o que este ambiente veio desfazer.
+    #
+    # Aplicados no CONTEXTO, não no material: assim valem igual no relatório, no
+    # post e no e-mail. Antes só chegavam nos materiais da Central, e um override
+    # mudava o post sem mudar o relatório — a divergência que o projeto combate,
+    # criada pela própria ferramenta de correção.
+    OVERRIDES = {
+        'taxa': str, 'perf': str,
+        'carrego': float, 'duration': float,
+        'pl': float, 'pl_medio': float,
+    }
+
+    def __init__(self, calc, cadastro, taxas, comentarios, edicao, log=None,
+                 overrides=None):
         self.calc = calc
         self.cad = cadastro
         self.tx = taxas
         self.com = comentarios
         self.edicao = edicao
         self.log = log
+        self.ov = overrides or {}
         self._cache = {}
 
     def de(self, key):
@@ -358,11 +376,52 @@ class Contexto:
 
         ctx = ContextoFundo(f, self.edicao, rent, cart, hist, hist12, taxa, perf,
                             coment, avisos, self.calc)
+        self._aplicar_overrides(key, ctx)
         if self.log:
             for a in avisos:
                 self.log.aviso(f.key, a)
         self._cache[key] = ctx
         return ctx
+
+    def _aplicar_overrides(self, key, ctx):
+        """Força os valores da aba Overrides, com registro no log.
+
+        Um valor forçado some do rastro se ninguém anotar: no mês seguinte
+        ninguém lembra por que aquele carrego estava diferente do calculado.
+        Por isso cada override vira linha de aviso, com o valor que ele
+        substituiu.
+        """
+        for campo, valor in (self.ov.get(key) or {}).items():
+            if campo == 'casas_taxa':
+                continue      # tratado em loaders/taxas.py
+            tipo = self.OVERRIDES.get(campo)
+            if tipo is None:
+                ctx.avisos.append(f'override de "{campo}" ignorado — campos aceitos: '
+                                  + ', '.join(sorted(self.OVERRIDES)))
+                continue
+            try:
+                novo = tipo(str(valor).replace('%', '').replace(',', '.')
+                            if tipo is float else valor)
+            except (TypeError, ValueError):
+                ctx.avisos.append(f'override de "{campo}": não consegui ler {valor!r} '
+                                  f'como {tipo.__name__}')
+                continue
+            if campo in ('taxa', 'perf'):
+                antes = getattr(ctx, campo)
+                setattr(ctx, campo, novo)
+            elif campo in ('carrego', 'duration'):
+                if not ctx.cart:
+                    ctx.avisos.append(f'override de "{campo}" ignorado — o fundo não '
+                                      f'tem carteira nesta edição')
+                    continue
+                antes = ctx.cart.get(campo)
+                ctx.cart[campo] = novo
+            else:
+                chave = {'pl': 'pl', 'pl_medio': 'pl_medio_12m'}[campo]
+                antes = ctx.rent.get(chave)
+                ctx.rent[chave] = novo
+            ctx.avisos.append(f'override: {campo} forçado para {novo!r} '
+                              f'(calculado: {antes!r})')
 
     def todos(self, keys=None):
         keys = keys or [f.key for f in self.cad]

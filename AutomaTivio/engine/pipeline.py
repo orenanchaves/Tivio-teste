@@ -67,8 +67,14 @@ class Pipeline:
         self.manual = ler_manual(_caminho(ent.get('manual', '')))
         overrides = {}
         for _, r in self.manual.get('Overrides', pd.DataFrame()).iterrows():
-            if r.get('chave') and r.get('campo'):
-                overrides.setdefault(str(r['chave']).strip(), {})[str(r['campo']).strip()] = r['valor']
+            chave = str(r.get('chave') or '').strip()
+            campo = str(r.get('campo') or '').strip()
+            # linha começando com '#' é exemplo/comentário, não override. Sem
+            # isso os exemplos da planilha entram como ajuste de verdade — e o
+            # relatório sai com o carrego do exemplo.
+            if not chave or not campo or chave.startswith('#'):
+                continue
+            overrides.setdefault(chave, {})[campo] = r['valor']
         self.taxas = Taxas(ler_taxas(_caminho(ent['taxas'])),
                            performance_fixa=self.cadastro.performance_fixa,
                            overrides=overrides)
@@ -91,7 +97,7 @@ class Pipeline:
             self.log.aviso(key, msg)
 
         self.contexto = Contexto(calc, self.cadastro, self.taxas, self.comentarios,
-                                 self.edicao, self.log)
+                                 self.edicao, self.log, overrides)
 
     # ------------------------------------------------------------------ saída
     @property

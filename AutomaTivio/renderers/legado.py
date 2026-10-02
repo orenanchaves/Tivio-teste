@@ -48,8 +48,11 @@ class RenderizadorLegado:
         self.rotulo_taxa = cadastro.rotulo_taxa
         self.ov = {}
         for _, r in self.manual.get('Overrides', pd.DataFrame()).iterrows():
-            if r.get('chave') and r.get('campo'):
-                self.ov.setdefault(str(r['chave']).strip(), {})[str(r['campo']).strip()] = r['valor']
+            chave = str(r.get('chave') or '').strip()
+            campo = str(r.get('campo') or '').strip()
+            if not chave or not campo or chave.startswith('#'):
+                continue   # '#' marca linha de exemplo
+            self.ov.setdefault(chave, {})[campo] = r['valor']
 
     # ------------------------------------------------------------------- util
     def set(self, fundo, obj, campo, novo):
