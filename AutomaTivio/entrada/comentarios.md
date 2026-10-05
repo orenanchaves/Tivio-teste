@@ -159,7 +159,7 @@ Nesse cenário, o Infra Plus CDI apresentou rentabilidade, isenta de imposto de 
 
 ## Tivio ALT Light
 
-O Tivio ALT Light registrou rentabilidade de 1,17% no mês, equivalente a 1.08% do CDI no período. Desde o início da estratégia, o fundo acumula retorno de 22,67%, frente a 19,70% do CDI, o que corresponde a um desempenho anualizado de 111,24% do CDI.
+O Tivio ALT Light registrou rentabilidade de 1,17% no mês, equivalente a 1,08% do CDI no período. Desde o início da estratégia, o fundo acumula retorno de 22,67%, frente a 19,70% do CDI, o que corresponde a um desempenho anualizado de 111,24% do CDI.
 
 Em setembro, o mercado de crédito apresentou reabertura dos spreads e liquidez reduzida no mercado secundário. Os spreads médios dos títulos corporativos indexados ao CDI avançaram cerca de 5 bps, passando de CDI + 1,23% para CDI + 1,28% ao ano, interrompendo parcialmente o movimento de compressão observado nos últimos meses.
 
