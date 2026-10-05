@@ -131,7 +131,10 @@ class Calc:
             # confirmar de que mês é a posição
             c, ultima = todas, None
         else:
-            c = todas[todas['Data'] == ultima]
+            # posição sem data na Base Carteira também é da carteira atual
+            # (setembro/2026: no ALT 90, duas cotas sênior e um caixa vinham
+            # sem data e o FIDC Sênior saía 66,7% em vez de 76,7%)
+            c = todas[(todas['Data'] == ultima) | todas['Data'].isna()]
         if c.empty or not pl:
             return None
         hg = str(mesa).upper() == 'HG'

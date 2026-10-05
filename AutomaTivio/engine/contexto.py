@@ -81,16 +81,10 @@ class ContextoFundo:
             if fora:
                 self.avisos.append('alocação real: book sem de-para, saiu com o próprio nome: '
                                    + ', '.join(fora))
-            # composição: cada grupo sobre o TOTAL da carteira, para fechar
-            # 100% (sobre o PL não fecha quando o PL do mês difere da soma das
-            # posições — setembro/2026: 81% no ALT 180, 126% no ALT Light)
-            tot = float(serie[serie > 0].sum()) or 1.0
-            return agrupar_tipos(serie / tot, tabela)
-        tipos = self.cart.get('tipos')
-        if tipos is not None:
-            tot = float(tipos[tipos > 0].sum()) or 1.0
-            tipos = tipos / tot
-        return agrupar_tipos(tipos, cadastro.tipo_label)
+            # sobre o PL, como a planilha da gestão: fundo alavancado soma mais
+            # de 100% (ALT Light em setembro/2026: 126%, por um resgate grande)
+            return agrupar_tipos(serie, tabela)
+        return agrupar_tipos(self.cart.get('tipos'), cadastro.tipo_label)
 
     def __init__(self, fundo, edicao, rent, cart, hist, hist12, taxa, perf,
                  comentario, avisos, calc=None):
