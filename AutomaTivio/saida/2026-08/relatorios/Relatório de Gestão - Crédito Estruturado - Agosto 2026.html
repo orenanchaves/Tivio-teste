@@ -161,15 +161,12 @@ body.edit .edit-flag{display:inline-flex}
 .v-ce .rc-head.slim .hdate{margin-top:0}
 /* 1px além da folha em cima e à direita: no html2canvas o arredondamento
    deixava um fio escuro na borda (a folha corta o excedente) */
-.rc-head .rbox{position:absolute;right:-1px;top:-1px;width:127px;height:125px;
+.rc-head .rbox{position:absolute;right:-1px;top:-1px;width:125px;height:125px;
   background:linear-gradient(135deg,#1A1A1A 0%,#262626 100%);
   display:flex;align-items:center;justify-content:center}
-/* o chanfro do canto é um triângulo de borda, não clip-path: o html2canvas
-   (PNG/JPG/PDF baixado) ignora clip-path e a ponta saía cortada/quadrada */
-.rc-head .rbox::before{content:"";position:absolute;left:0;top:0;width:0;height:0;
-  border-style:solid;border-width:47px 25px 0 0;border-color:#000 transparent transparent transparent}
+/* caixa do T quadrada, 124x124 visíveis (pedido de 05/10/2026: sem chanfro) */
 .rc-head .rbox .tv-t{width:43.5px;height:auto;color:#fff;display:block;margin-top:2px}
-.rc-head .gstrip{position:absolute;right:-1px;top:124px;bottom:0;width:127px;
+.rc-head .gstrip{position:absolute;right:-1px;top:124px;bottom:0;width:125px;
   background:linear-gradient(90deg,#C4F2D5,#A2DFBA)}
 
 /* ---- corpo -------------------------------------------------------------- */
