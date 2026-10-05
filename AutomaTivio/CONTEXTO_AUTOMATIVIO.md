@@ -49,7 +49,7 @@ Ele lê as planilhas do mês e o documento de comentários do gestor, calcula tu
 
 | O que sai | Onde |
 |---|---|
-| **2 páginas por vertical** — fundos em abas, com botões de exportação | `saida/AAAA-MM/relatorios/` ← **é o que você abre** |
+| **2 páginas por vertical** — fundos em abas, com botões de exportação | `saida/AAAA-MM/central/` ← **é o que você abre** (todos os HTML ficam aqui) |
 | **13 relatórios em PDF A4** vetorial, um por fundo | `saida/AAAA-MM/pdf/` |
 | **13 relatórios em PPTX**, um por fundo — idênticos à folha, texto editável (`exporters/pptx_fiel.py`) | `saida/AAAA-MM/pptx/` |
 | Posts, e-mail e a **Central de Materiais** | `saida/AAAA-MM/central/` |
@@ -159,7 +159,7 @@ Há também `atualizar.bat` para quem prefere dar dois cliques.
 3. `python run.py`
 4. Conferir **`saida/AAAA-MM/conferencia_AAAA-MM.xlsx`** — abas *Mudanças*,
    *Dados faltantes*, *Fundos sem atualização*, *Rentabilidades*, *Taxas*.
-5. Abrir **`saida/AAAA-MM/relatorios/`** e exportar o que precisar pelos botões.
+5. Abrir **`saida/AAAA-MM/index.html`** (abre a Central; todos os HTML ficam em `central/`) e exportar o que precisar pelos botões.
 
 **A data base não é digitada em lugar nenhum**: sai do último mês fechado da
 planilha. Para forçar, `configs/edicao.yml` → `data_base: 2026-08-31`.

@@ -51,11 +51,11 @@ planilha. Para forçar: `python run.py --data-base 2026-09-30`.
 ```
 AutomaTivio/saida/AAAA-MM/
 ├── index.html                    ← COMECE AQUI: abre a Central
-├── central/                      a Central de Materiais e os materiais interativos
+├── central/                      TODOS os HTML da edição, numa pasta só
 │   ├── tivio-central.html        índice com todos os cards
+│   ├── Relatório de Gestão - <vertical> - <mês>.html   relatórios, fundos em abas
 │   ├── tivio-post-*.html         carrosséis de Destaques (editáveis na tela)
 │   └── tivio-email-*.html        construtores de e-mail
-├── relatorios/                   relatórios de gestão, um arquivo por vertical, fundos em abas
 ├── pdf/                          13 relatórios em PDF A4, texto selecionável
 ├── pptx/                         13 relatórios em PPTX, texto editável
 ├── destaques/                    carrosséis prontos para postar
@@ -145,7 +145,7 @@ para e não publica.
 - **Alocação real (treemap dos ALT):** o nome aparece em todo bloco onde dá
   para ler; item abaixo de 2% vira uma faixa no pé do último bloco
   ("FIP 1,9%").
-- **Saídas:** página por vertical em `relatorios/`, com botões PDF/JPG/PNG/PPTX
+- **Saídas:** página por vertical em `central/`, com botões PDF/JPG/PNG/PPTX
   para reexportar depois de editar um texto na tela. Também gera direto em
   `pdf/`, com texto selecionável, e `pptx/`, com fundo fiel e texto editável.
 - Todo PDF é **reaberto e conferido**: número de páginas, tamanho A4 e texto

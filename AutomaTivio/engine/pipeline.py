@@ -139,7 +139,7 @@ class Pipeline:
             # O HTML de um fundo é gravado numa pasta de apoio: o PDF e o PPTX
             # saem dele (por file://, para o vendor/ resolver), mas o que é
             # entregue são as páginas por vertical, logo abaixo.
-            destino = self._destino('relatorios', '_fundos',
+            destino = self._destino('central', '_fundos',
                                     self.edicao.nome_arquivo(
                                         f'{ctx.nome} - Relatório de Gestão', 'html'))
             exp_html.gravar(html, destino, None)
@@ -148,8 +148,14 @@ class Pipeline:
         self._pdf_e_pptx(htmls, rend)
         self._paginas_por_vertical(htmls, rend)
 
+        # antes as páginas de relatório iam para relatorios/; agora tudo fica
+        # em central/, e a pasta antiga sai para não ficar cópia desatualizada
+        antiga = self._destino('relatorios')
+        if os.path.isdir(antiga):
+            shutil.rmtree(antiga, ignore_errors=True)
+
         # a pasta de apoio existiu só para o PDF sair de um arquivo
-        apoio = self._destino('relatorios', '_fundos')
+        apoio = self._destino('central', '_fundos')
         if os.path.isdir(apoio):
             shutil.rmtree(apoio, ignore_errors=True)
         return htmls
@@ -181,7 +187,7 @@ class Pipeline:
                 self.log.erro(vertical, f'falha ao montar a página da vertical: {e!r}')
                 continue
             nome = self.edicao.nome_arquivo(f'Relatório de Gestão - {rotulo}', 'html')
-            destino = self._destino('relatorios', nome)
+            destino = self._destino('central', nome)
             exp_html.gravar(html, destino, self.log)
             self.relatorios_gerados.append((rotulo, ctxs, nome))
 
@@ -239,18 +245,14 @@ class Pipeline:
 
     # bibliotecas que cada pasta de saída precisa ter ao lado dos HTMLs
     LIBS_POR_PASTA = {
+        # todos os HTML da edição ficam em central/ (Central, posts, e-mails e
+        # as páginas de relatório por vertical): uma pasta só para navegar
         ('central',): ('html2canvas.min.js', 'jszip.min.js', 'jspdf.umd.min.js',
-                       'echarts.min.js'),
-        # echarts entra aqui desde que o relatório deixou de embuti-lo: sem ele
-        # na pasta, o <script src="vendor/echarts.min.js"> do HTML dá 404 e o
-        # gráfico cai na versão SVG do servidor
-        ('relatorios',): ('echarts.min.js', 'html2canvas.min.js', 'jszip.min.js',
-                          'jspdf.umd.min.js', 'pptxgen.min.js'),
+                       'echarts.min.js', 'pptxgen.min.js'),
         # o HTML de apoio de cada fundo (de onde saem o PDF e o PPTX) fica um
         # nível abaixo, e `vendor/…` é relativo ao arquivo: sem um vendor/ ao
-        # lado dele o Chromium não acha o echarts e o PDF sai com a versão SVG
-        # do servidor em vez do gráfico desenhado
-        ('relatorios', '_fundos'): ('echarts.min.js',),
+        # lado dele o Chromium não acha o echarts
+        ('central', '_fundos'): ('echarts.min.js',),
     }
 
     def _copiar_libs(self):
@@ -393,9 +395,8 @@ class Pipeline:
     def _porta_de_entrada(self):
         """saida/AAAA-MM/index.html: abre a Central, de onde se chega a tudo.
 
-        A edição tem duas pastas (central/ e relatorios/) que se apontam com
-        caminho relativo; este arquivo na raiz é a única porta de entrada, para
-        ninguém ter de saber em qual delas começar.
+        Todos os HTML da edição ficam em central/; este arquivo na raiz é a
+        porta de entrada.
         """
         alvo = 'central/tivio-central.html'
         if not os.path.exists(os.path.join(self.pasta_saida, alvo)):

@@ -660,8 +660,8 @@ const RECORRENTES=%REC%;
                         + self.DESC_RELATORIO.get(vert, self.DESC_RELATORIO['credito_privado']),
                 'date': self.edicao.mes_ano_curto,
                 'status': 'pronto',
-                # a Central fica em central/ e os relatórios em relatorios/
-                'link': f'../relatorios/{arquivo}',
+                # todos os HTML ficam em central/, ao lado da Central
+                'link': arquivo,
             })
         return cards
 
