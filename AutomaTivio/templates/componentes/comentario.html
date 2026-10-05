@@ -1,11 +1,11 @@
 {# Comentário do gestor. O corpo começa no tamanho do publicado e o script da
-   página (relatorio_charts.js · ajustarTextos) reduz até caber na caixa: a
+   página (relatorio_charts.js · ajustarTextos) ajusta à caixa: texto curto cresce até o teto, longo diminui até caber. A
    folha é fixa e o que passa some sem aviso. #}
 {% set corpo = 15 if ve == 'cp' else 14.6 %}
 <div class="cmt">
   <h3 class="cmt-h">{{ titulo }}</h3>
   <div class="cmt-card">
-    <div class="cmt-txt tv-ajusta" data-max="{{ corpo }}" style="font-size:{{ corpo }}px">
+    <div class="cmt-txt tv-ajusta" data-max="{{ corpo }}" data-teto="{{ 21 if ve == 'cp' else 19 }}" data-centro style="font-size:{{ corpo }}px">
       {% for p in c.comentario_preenchido %}<p>{{ p|safe }}</p>{% endfor %}
       {% if not c.comentario_preenchido %}
       <p class="histvazio">Comentário não preenchido em

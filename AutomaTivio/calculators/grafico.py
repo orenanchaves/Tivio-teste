@@ -24,7 +24,7 @@ def _esc(s):
     return (str(s).replace('&', '&amp;').replace('<', '&lt;').replace('>', '&gt;'))
 
 
-def _envelope(dados, miolo, altura=None):
+def _envelope(dados, miolo, altura=None, interativo=False):
     """Contêiner que o ECharts assume, com o desenho do servidor dentro.
 
     Aprimoramento progressivo, e não por elegância: o PDF é gerado sem ninguém
@@ -40,7 +40,10 @@ def _envelope(dados, miolo, altura=None):
     # ECharts redesenhava por cima com outro visual (cores, eixos, rótulos).
     # Os dados ficam em `data-dados` para quem quiser religar a interação.
     attr = _json.dumps(dados, ensure_ascii=False).replace("'", '&#39;')
-    return f"<div class=\"tv-chart\" data-dados='{attr}'>{miolo}</div>"
+    # `interativo`: o ECharts assume o contêiner (data-tv) com a MESMA
+    # especificação do desenho do servidor — hoje, o histórico de rentabilidade
+    alvo = 'data-tv' if interativo else 'data-dados'
+    return f"<div class=\"tv-chart\" {alvo}='{attr}'>{miolo}</div>"
 
 
 def linha_historica(hist, nome_bench, largura=900, altura=430):
@@ -396,7 +399,7 @@ def historico_modelo(hist, nome_bench, estilo, data_inicio=None,
     altura = altura or (360 if estilo == 'cp' else 470)
     if estilo == 'cp':
         cf, cb, wf, wb, casas = '#5B8299', '#A9EBC4', 2.6, 2.6, 2
-        padL, padR, padT, padB, rot = 78, 44, 46, 62, -45
+        padL, padR, padT, padB, rot = 78, 112, 46, 62, -45
     else:
         cf, cb, wf, wb, casas = '#26B663', '#1F1F1F', 3.6, 3.6, 1
         padL, padR, padT, padB, rot = 84, 112, 26, 82, -90
@@ -442,12 +445,17 @@ def historico_modelo(hist, nome_bench, estilo, data_inicio=None,
     # Um rótulo por mês, como no publicado, enquanto couber (~24 meses). O
     # Institucional tem série desde 2005: mês a mês vira uma mancha no eixo,
     # então rareia mantendo o último mês.
+    passo_eixo = passo
     passo = max(1, -(-n // 24)) if n <= 30 else max(2, -(-n // 18))
+    visiveis = []
     for i, lb in enumerate(labels):
-        if (n - 1 - i) % passo:
-            continue
+        mostra = not ((n - 1 - i) % passo)
         # no Estruturado o mês de início (parcial) não leva rótulo
         if estilo == 'ce' and inserido and (i == 0 or (inserido == 'parcial' and i == 1)):
+            mostra = False
+        visiveis.append(lb if mostra else '')
+    for i, lb in enumerate(visiveis):
+        if not lb:
             continue
         x, y = X(i), altura - padB + 14
         anc = 'end'
@@ -460,17 +468,25 @@ def historico_modelo(hist, nome_bench, estilo, data_inicio=None,
              f'stroke-linejoin="round" stroke-linecap="round"/>')
     s.append(f'<polyline points="{pts(fundo)}" fill="none" stroke="{cf}" stroke-width="{wf}" '
              f'stroke-linejoin="round" stroke-linecap="round"/>')
-    if estilo == 'ce':
-        lx = X(n - 1)
-        yf, yb = Y(fundo[-1]), Y(bench[-1])
-        if abs(yf - yb) < 30:
-            m = (yf + yb) / 2
-            yf, yb = (m - 15, m + 15) if fundo[-1] >= bench[-1] else (m + 15, m - 15)
-        for yy, cor, val in ((yf, cf, fundo[-1]), (yb, cb, bench[-1])):
-            s.append(f'<rect x="{lx + 2:.1f}" y="{yy - 14:.1f}" width="62" height="28" '
-                     f'fill="{cor}"/><text x="{lx + 33:.1f}" y="{yy + 5:.1f}" fill="#fff" '
-                     f'font-size="15" font-weight="700" text-anchor="middle">'
-                     f'{fmt.num(val, 2)}%</text>')
+    # o acumulado no fim de cada linha, numa etiqueta da cor dela (as duas
+    # verticais); quando as linhas terminam juntas, as etiquetas se afastam
+    lx = X(n - 1)
+    yf, yb = Y(fundo[-1]), Y(bench[-1])
+    if abs(yf - yb) < 30:
+        m = (yf + yb) / 2
+        yf, yb = (m - 15, m + 15) if fundo[-1] >= bench[-1] else (m + 15, m - 15)
+    tinta_b = '#fff' if not _claro(cb) else '#1F1F1F'
+    larg_et = 74 if max(abs(fundo[-1]), abs(bench[-1])) >= 100 else 64
+    for yy, cor, tinta, val in ((yf, cf, '#fff', fundo[-1]), (yb, cb, tinta_b, bench[-1])):
+        s.append(f'<rect x="{lx + 4:.1f}" y="{yy - 14:.1f}" width="{larg_et}" height="28" '
+                 f'rx="3" fill="{cor}"/><text x="{lx + 4 + larg_et / 2:.1f}" y="{yy + 5:.1f}" '
+                 f'fill="{tinta}" font-size="15" font-weight="700" text-anchor="middle">'
+                 f'{fmt.num(val, 2)}%</text>')
     s.append('</svg>')
-    return _envelope({'tipo': 'historico', 'labels': labels, 'fundo': fundo,
-                      'bench_serie': bench, 'bench': nome_bench}, ''.join(s))
+    return _envelope({
+        'tipo': 'historico', 'estilo': estilo, 'labels': labels, 'rotulos': visiveis,
+        'fundo': fundo, 'bench_serie': bench, 'bench': nome_bench,
+        'cf': cf, 'cb': cb, 'tinta_b': tinta_b, 'wf': wf, 'wb': wb, 'casas': casas,
+        'pad': [padL, padR, padT, padB], 'rot': rot, 'largura': largura,
+        'base': base, 'topo': topo, 'escala_topo': escala_topo, 'passo': passo_eixo,
+    }, ''.join(s), altura=altura, interativo=True)

@@ -598,9 +598,8 @@ class RenderizadorRelatorio:
                ('Público Alvo', f.cfg.get('publico', 'Investidores em geral'))]
         if inicio is not None:
             esq.append(('Data de início', f'{inicio:%d/%m/%Y}'))
-        # o Estruturado publicado chama de "Taxa de administração e gestão"
-        rot_taxa = 'Taxa de administração e gestão' if ve == 'ce' else self.cad.rotulo_taxa
-        esq += [(rot_taxa, ctx.taxa or fmt.MINUS),
+        # "Taxa global" em todos os fundos, inclusive nos ALT (pedido de 05/10/2026)
+        esq += [(self.cad.rotulo_taxa, ctx.taxa or fmt.MINUS),
                 ('Patrimônio líquido', ctx.pl_fmt)]
         dir_ = [('Taxa de performance', ctx.perf or fmt.MINUS)]
         # sem `operacional` no fundos.yml o bloco sairia só com o título

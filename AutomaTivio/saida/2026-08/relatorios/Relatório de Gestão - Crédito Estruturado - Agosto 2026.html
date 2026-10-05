@@ -159,12 +159,17 @@ body.edit .edit-flag{display:inline-flex}
 .rc-head .hdate{font-size:21px;font-weight:400;margin-top:12px;white-space:nowrap}
 .rc-head.slim .hdate{margin-top:8px}
 .v-ce .rc-head.slim .hdate{margin-top:0}
-.rc-head .rbox{position:absolute;right:0;top:0;width:126px;height:124px;
+/* 1px além da folha em cima e à direita: no html2canvas o arredondamento
+   deixava um fio escuro na borda (a folha corta o excedente) */
+.rc-head .rbox{position:absolute;right:-1px;top:-1px;width:127px;height:125px;
   background:linear-gradient(135deg,#1A1A1A 0%,#262626 100%);
-  clip-path:polygon(24px 0,100% 0,100% 100%,0 100%,0 46px);
   display:flex;align-items:center;justify-content:center}
+/* o chanfro do canto é um triângulo de borda, não clip-path: o html2canvas
+   (PNG/JPG/PDF baixado) ignora clip-path e a ponta saía cortada/quadrada */
+.rc-head .rbox::before{content:"";position:absolute;left:0;top:0;width:0;height:0;
+  border-style:solid;border-width:47px 25px 0 0;border-color:#000 transparent transparent transparent}
 .rc-head .rbox .tv-t{width:43.5px;height:auto;color:#fff;display:block;margin-top:2px}
-.rc-head .gstrip{position:absolute;right:0;top:124px;bottom:0;width:126px;
+.rc-head .gstrip{position:absolute;right:-1px;top:124px;bottom:0;width:127px;
   background:linear-gradient(90deg,#C4F2D5,#A2DFBA)}
 
 /* ---- corpo -------------------------------------------------------------- */
@@ -297,24 +302,24 @@ table.mkt-resumo + table.mkt{margin-top:40px}
    O PPTX é montado à parte (exporters/pptx.py) e continua no desenho antigo. */
 .mkt-vidro{position:relative;margin:4px 0 0;padding:16px 15px 14px;border-radius:24px;overflow:hidden;
   background:
-    radial-gradient(520px 300px at 8% 0%,rgba(193,244,212,.42),transparent 70%),
-    radial-gradient(560px 360px at 100% 18%,rgba(117,157,180,.60),transparent 70%),
-    radial-gradient(480px 320px at 26% 100%,rgba(146,211,171,.30),transparent 70%),
-    radial-gradient(420px 280px at 92% 96%,rgba(171,198,205,.35),transparent 70%),
-    linear-gradient(160deg,#16202b 0%,#2b3a4d 48%,#1b2733 100%);
+    radial-gradient(520px 300px at 8% 0%,rgba(140,185,214,.45),transparent 70%),
+    radial-gradient(560px 360px at 100% 18%,rgba(91,130,153,.65),transparent 70%),
+    radial-gradient(480px 320px at 26% 100%,rgba(117,157,180,.38),transparent 70%),
+    radial-gradient(420px 280px at 92% 96%,rgba(171,198,215,.32),transparent 70%),
+    linear-gradient(160deg,#13233a 0%,#2a4664 48%,#182c45 100%);
   box-shadow:0 18px 44px rgba(16,28,40,.28),inset 0 1px 0 rgba(255,255,255,.18)}
 .mkt-vidro table.mkt{width:100%;margin-left:0;border-collapse:separate;border-spacing:0 3px}
-.mkt-vidro table.mkt th{height:36px;background:rgba(255,255,255,.16);color:#fff;font-weight:600;
+.mkt-vidro table.mkt th{height:36px;background:rgba(150,190,218,.22);color:#fff;font-weight:600;
   border:0;border-top:1px solid rgba(255,255,255,.34);border-bottom:1px solid rgba(255,255,255,.10)}
 .mkt-vidro table.mkt th:first-child{border-radius:12px 0 0 12px;border-left:1px solid rgba(255,255,255,.26)}
 .mkt-vidro table.mkt th:last-child{border-radius:0 12px 12px 0;border-right:1px solid rgba(255,255,255,.18)}
 .mkt-vidro table.mkt th.vazio{background:none;border:0}
-.mkt-vidro table.mkt td{height:36px;background:rgba(255,255,255,.06);color:rgba(255,255,255,.94);
+.mkt-vidro table.mkt td{height:36px;background:rgba(171,205,228,.07);color:rgba(255,255,255,.94);
   border-top:1px solid rgba(255,255,255,.10)}
 .mkt-vidro table.mkt td:first-child{border-radius:10px 0 0 10px;padding-left:12px;color:#fff;font-weight:400}
 .mkt-vidro table.mkt td:last-child{border-radius:0 10px 10px 0}
-.mkt-vidro table.mkt tbody tr:nth-child(even) td{background:rgba(255,255,255,.12)}
-.mkt-vidro table.mkt td.vol{color:#C1F4D4;font-weight:500}
+.mkt-vidro table.mkt tbody tr:nth-child(even) td{background:rgba(171,205,228,.14)}
+.mkt-vidro table.mkt td.vol{color:#BFDAEA;font-weight:500}
 /* o total vira uma placa de vidro só, alinhada às colunas da tabela de baixo:
    o rótulo na faixa clara de cima, o número grande embaixo */
 .mkt-vidro table.mkt-resumo{margin-top:0;border-spacing:0}
@@ -438,7 +443,7 @@ body.edit .rcard [contenteditable]:hover{background:rgba(117,157,180,.15);box-sh
 
 /* a pilha de folhas na tela */
 .folhas{display:flex;flex-direction:column;align-items:center;gap:24px;padding:24px}
-.folhas .rcard{box-shadow:0 10px 40px rgba(16,28,40,.14);border-radius:2px}
+.folhas .rcard{box-shadow:0 10px 40px rgba(16,28,40,.14);border-radius:0}
 
 /* ================= ENQUADRAMENTO: A FOLHA CABE NA TELA =================
    A folha é um A4 desenhado em 1000x1414 px fixos. Em tela mais estreita que
@@ -778,7 +783,7 @@ body.tv-exportando .backtop{display:none}
           <div class="cmt">
   <h3 class="cmt-h">Comentário do Gestor e Análise de Mercado</h3>
   <div class="cmt-card">
-    <div class="cmt-txt tv-ajusta" data-max="14.6" style="font-size:14.6px">
+    <div class="cmt-txt tv-ajusta" data-max="14.6" data-teto="19" data-centro style="font-size:14.6px">
 <p>O Tivio ALT 180 registrou rentabilidade de 1,30% no mês, equivalente a 118,88% do CDI no período. Desde o início da estratégia, o fundo acumula retorno de 33,14%, frente a 25,43% do CDI, o que corresponde a um desempenho anualizado de 129% do CDI.</p><p>Em setembro, iniciamos posição em uma cota sênior de FIDC com exposição ao setor de telecomunicações. A tese de investimento está fundamentada na atuação consolidada do originador, que possui mais de 23 anos de experiência no segmento, bem como nas características estruturais do mercado em que atua, marcado por elevada pulverização, baixa bancarização, receitas recorrentes e oferta restrita de crédito. Adicionalmente, a operação apresenta carteira de recebíveis amplamente diversificada entre cedentes e sacados, além de mecanismos de proteção que incluem overcollateral mínimo de 25% sobre os ativos cedidos ao fundo.</p><p>A nova alocação reforça nossa estratégia de buscar operações com perfil defensivo, adequada relação entre risco e retorno e estruturas robustas de mitigação de risco. Seguimos priorizando ativos com forte alinhamento de interesses entre as partes envolvidas, qualidade na originação dos créditos e mecanismos de proteção compatíveis com o cenário de mercado. Mantemos uma postura seletiva na alocação de capital, avaliando continuamente oportunidades que possam contribuir para a geração consistente de retornos ajustados ao risco para os cotistas.</p>    </div>
   </div>
 </div>
@@ -913,7 +918,7 @@ body.tv-exportando .backtop{display:none}
   </div>
 </div>
     <div class="hleg"><span>Fundo <i class="hl-f"></i></span><span><i class="hl-b"></i> CDI</span></div>
-  <div class="tv-chart" data-dados='{"tipo": "historico", "labels": ["dez/24", "dez/24", "jan/25", "fev/25", "mar/25", "abr/25", "mai/25", "jun/25", "jul/25", "ago/25", "set/25", "out/25", "nov/25", "dez/25", "jan/26", "fev/26", "mar/26", "abr/26", "mai/26", "jun/26", "jul/26", "ago/26"], "fundo": [0.0, 0.57, 1.98, 3.29, 4.57, 5.99, 7.51, 9.0, 10.78, 12.65, 14.44, 16.1, 17.67, 19.75, 21.54, 22.97, 24.69, 26.27, 27.85, 29.56, 31.44, 33.14], "bench_serie": [0.0, 0.36, 1.38, 2.38, 3.36, 4.45, 5.64, 6.8, 8.16, 9.42, 10.75, 12.17, 13.35, 14.73, 16.07, 17.22, 18.64, 19.94, 21.23, 22.58, 24.07, 25.43], "bench": "CDI"}'><svg viewBox="0 0 1000 470" xmlns="http://www.w3.org/2000/svg" font-family="Versos,Arial,sans-serif" class="histsvg hs-ce"><line x1="84" y1="388.0" x2="888" y2="388.0" stroke="#D6D6D6" stroke-width="1"/><text x="72" y="392.5" fill="#333" font-size="15.5" font-weight="600" text-anchor="end">0,0%</text><line x1="84" y1="336.5" x2="888" y2="336.5" stroke="#D6D6D6" stroke-width="1"/><text x="72" y="341.0" fill="#333" font-size="15.5" font-weight="600" text-anchor="end">5,0%</text><line x1="84" y1="284.9" x2="888" y2="284.9" stroke="#D6D6D6" stroke-width="1"/><text x="72" y="289.4" fill="#333" font-size="15.5" font-weight="600" text-anchor="end">10,0%</text><line x1="84" y1="233.4" x2="888" y2="233.4" stroke="#D6D6D6" stroke-width="1"/><text x="72" y="237.9" fill="#333" font-size="15.5" font-weight="600" text-anchor="end">15,0%</text><line x1="84" y1="181.9" x2="888" y2="181.9" stroke="#D6D6D6" stroke-width="1"/><text x="72" y="186.4" fill="#333" font-size="15.5" font-weight="600" text-anchor="end">20,0%</text><line x1="84" y1="130.4" x2="888" y2="130.4" stroke="#D6D6D6" stroke-width="1"/><text x="72" y="134.9" fill="#333" font-size="15.5" font-weight="600" text-anchor="end">25,0%</text><line x1="84" y1="78.8" x2="888" y2="78.8" stroke="#D6D6D6" stroke-width="1"/><text x="72" y="83.3" fill="#333" font-size="15.5" font-weight="600" text-anchor="end">30,0%</text><text x="160.6" y="402.0" fill="#333" font-size="14.5" font-weight="600" text-anchor="end" transform="rotate(-90 160.6 402.0)" dominant-baseline="middle">jan/25</text><text x="198.9" y="402.0" fill="#333" font-size="14.5" font-weight="600" text-anchor="end" transform="rotate(-90 198.9 402.0)" dominant-baseline="middle">fev/25</text><text x="237.1" y="402.0" fill="#333" font-size="14.5" font-weight="600" text-anchor="end" transform="rotate(-90 237.1 402.0)" dominant-baseline="middle">mar/25</text><text x="275.4" y="402.0" fill="#333" font-size="14.5" font-weight="600" text-anchor="end" transform="rotate(-90 275.4 402.0)" dominant-baseline="middle">abr/25</text><text x="313.7" y="402.0" fill="#333" font-size="14.5" font-weight="600" text-anchor="end" transform="rotate(-90 313.7 402.0)" dominant-baseline="middle">mai/25</text><text x="352.0" y="402.0" fill="#333" font-size="14.5" font-weight="600" text-anchor="end" transform="rotate(-90 352.0 402.0)" dominant-baseline="middle">jun/25</text><text x="390.3" y="402.0" fill="#333" font-size="14.5" font-weight="600" text-anchor="end" transform="rotate(-90 390.3 402.0)" dominant-baseline="middle">jul/25</text><text x="428.6" y="402.0" fill="#333" font-size="14.5" font-weight="600" text-anchor="end" transform="rotate(-90 428.6 402.0)" dominant-baseline="middle">ago/25</text><text x="466.9" y="402.0" fill="#333" font-size="14.5" font-weight="600" text-anchor="end" transform="rotate(-90 466.9 402.0)" dominant-baseline="middle">set/25</text><text x="505.1" y="402.0" fill="#333" font-size="14.5" font-weight="600" text-anchor="end" transform="rotate(-90 505.1 402.0)" dominant-baseline="middle">out/25</text><text x="543.4" y="402.0" fill="#333" font-size="14.5" font-weight="600" text-anchor="end" transform="rotate(-90 543.4 402.0)" dominant-baseline="middle">nov/25</text><text x="581.7" y="402.0" fill="#333" font-size="14.5" font-weight="600" text-anchor="end" transform="rotate(-90 581.7 402.0)" dominant-baseline="middle">dez/25</text><text x="620.0" y="402.0" fill="#333" font-size="14.5" font-weight="600" text-anchor="end" transform="rotate(-90 620.0 402.0)" dominant-baseline="middle">jan/26</text><text x="658.3" y="402.0" fill="#333" font-size="14.5" font-weight="600" text-anchor="end" transform="rotate(-90 658.3 402.0)" dominant-baseline="middle">fev/26</text><text x="696.6" y="402.0" fill="#333" font-size="14.5" font-weight="600" text-anchor="end" transform="rotate(-90 696.6 402.0)" dominant-baseline="middle">mar/26</text><text x="734.9" y="402.0" fill="#333" font-size="14.5" font-weight="600" text-anchor="end" transform="rotate(-90 734.9 402.0)" dominant-baseline="middle">abr/26</text><text x="773.1" y="402.0" fill="#333" font-size="14.5" font-weight="600" text-anchor="end" transform="rotate(-90 773.1 402.0)" dominant-baseline="middle">mai/26</text><text x="811.4" y="402.0" fill="#333" font-size="14.5" font-weight="600" text-anchor="end" transform="rotate(-90 811.4 402.0)" dominant-baseline="middle">jun/26</text><text x="849.7" y="402.0" fill="#333" font-size="14.5" font-weight="600" text-anchor="end" transform="rotate(-90 849.7 402.0)" dominant-baseline="middle">jul/26</text><text x="888.0" y="402.0" fill="#333" font-size="14.5" font-weight="600" text-anchor="end" transform="rotate(-90 888.0 402.0)" dominant-baseline="middle">ago/26</text><polyline points="84.0,388.0 122.3,384.3 160.6,373.8 198.9,363.5 237.1,353.4 275.4,342.1 313.7,329.9 352.0,317.9 390.3,303.9 428.6,290.9 466.9,277.2 505.1,262.6 543.4,250.4 581.7,236.2 620.0,222.4 658.3,210.5 696.6,195.9 734.9,182.5 773.1,169.2 811.4,155.3 849.7,140.0 888.0,125.9" fill="none" stroke="#1F1F1F" stroke-width="3.6" stroke-linejoin="round" stroke-linecap="round"/><polyline points="84.0,388.0 122.3,382.1 160.6,367.6 198.9,354.1 237.1,340.9 275.4,326.3 313.7,310.6 352.0,295.3 390.3,276.9 428.6,257.6 466.9,239.2 505.1,222.1 543.4,205.9 581.7,184.5 620.0,166.0 658.3,151.3 696.6,133.6 734.9,117.3 773.1,101.0 811.4,83.4 849.7,64.0 888.0,46.5" fill="none" stroke="#26B663" stroke-width="3.6" stroke-linejoin="round" stroke-linecap="round"/><rect x="890.0" y="32.5" width="62" height="28" fill="#26B663"/><text x="921.0" y="51.5" fill="#fff" font-size="15" font-weight="700" text-anchor="middle">33,14%</text><rect x="890.0" y="111.9" width="62" height="28" fill="#1F1F1F"/><text x="921.0" y="130.9" fill="#fff" font-size="15" font-weight="700" text-anchor="middle">25,43%</text></svg></div>
+  <div class="tv-chart" data-tv='{"tipo": "historico", "estilo": "ce", "labels": ["dez/24", "dez/24", "jan/25", "fev/25", "mar/25", "abr/25", "mai/25", "jun/25", "jul/25", "ago/25", "set/25", "out/25", "nov/25", "dez/25", "jan/26", "fev/26", "mar/26", "abr/26", "mai/26", "jun/26", "jul/26", "ago/26"], "rotulos": ["", "", "jan/25", "fev/25", "mar/25", "abr/25", "mai/25", "jun/25", "jul/25", "ago/25", "set/25", "out/25", "nov/25", "dez/25", "jan/26", "fev/26", "mar/26", "abr/26", "mai/26", "jun/26", "jul/26", "ago/26"], "fundo": [0.0, 0.57, 1.98, 3.29, 4.57, 5.99, 7.51, 9.0, 10.78, 12.65, 14.44, 16.1, 17.67, 19.75, 21.54, 22.97, 24.69, 26.27, 27.85, 29.56, 31.44, 33.14], "bench_serie": [0.0, 0.36, 1.38, 2.38, 3.36, 4.45, 5.64, 6.8, 8.16, 9.42, 10.75, 12.17, 13.35, 14.73, 16.07, 17.22, 18.64, 19.94, 21.23, 22.58, 24.07, 25.43], "bench": "CDI", "cf": "#26B663", "cb": "#1F1F1F", "tinta_b": "#fff", "wf": 3.6, "wb": 3.6, "casas": 1, "pad": [84, 112, 26, 82], "rot": -90, "largura": 1000, "base": 0, "topo": 30, "escala_topo": 35.1284, "passo": 5, "altura": 470}'><svg viewBox="0 0 1000 470" xmlns="http://www.w3.org/2000/svg" font-family="Versos,Arial,sans-serif" class="histsvg hs-ce"><line x1="84" y1="388.0" x2="888" y2="388.0" stroke="#D6D6D6" stroke-width="1"/><text x="72" y="392.5" fill="#333" font-size="15.5" font-weight="600" text-anchor="end">0,0%</text><line x1="84" y1="336.5" x2="888" y2="336.5" stroke="#D6D6D6" stroke-width="1"/><text x="72" y="341.0" fill="#333" font-size="15.5" font-weight="600" text-anchor="end">5,0%</text><line x1="84" y1="284.9" x2="888" y2="284.9" stroke="#D6D6D6" stroke-width="1"/><text x="72" y="289.4" fill="#333" font-size="15.5" font-weight="600" text-anchor="end">10,0%</text><line x1="84" y1="233.4" x2="888" y2="233.4" stroke="#D6D6D6" stroke-width="1"/><text x="72" y="237.9" fill="#333" font-size="15.5" font-weight="600" text-anchor="end">15,0%</text><line x1="84" y1="181.9" x2="888" y2="181.9" stroke="#D6D6D6" stroke-width="1"/><text x="72" y="186.4" fill="#333" font-size="15.5" font-weight="600" text-anchor="end">20,0%</text><line x1="84" y1="130.4" x2="888" y2="130.4" stroke="#D6D6D6" stroke-width="1"/><text x="72" y="134.9" fill="#333" font-size="15.5" font-weight="600" text-anchor="end">25,0%</text><line x1="84" y1="78.8" x2="888" y2="78.8" stroke="#D6D6D6" stroke-width="1"/><text x="72" y="83.3" fill="#333" font-size="15.5" font-weight="600" text-anchor="end">30,0%</text><text x="160.6" y="402.0" fill="#333" font-size="14.5" font-weight="600" text-anchor="end" transform="rotate(-90 160.6 402.0)" dominant-baseline="middle">jan/25</text><text x="198.9" y="402.0" fill="#333" font-size="14.5" font-weight="600" text-anchor="end" transform="rotate(-90 198.9 402.0)" dominant-baseline="middle">fev/25</text><text x="237.1" y="402.0" fill="#333" font-size="14.5" font-weight="600" text-anchor="end" transform="rotate(-90 237.1 402.0)" dominant-baseline="middle">mar/25</text><text x="275.4" y="402.0" fill="#333" font-size="14.5" font-weight="600" text-anchor="end" transform="rotate(-90 275.4 402.0)" dominant-baseline="middle">abr/25</text><text x="313.7" y="402.0" fill="#333" font-size="14.5" font-weight="600" text-anchor="end" transform="rotate(-90 313.7 402.0)" dominant-baseline="middle">mai/25</text><text x="352.0" y="402.0" fill="#333" font-size="14.5" font-weight="600" text-anchor="end" transform="rotate(-90 352.0 402.0)" dominant-baseline="middle">jun/25</text><text x="390.3" y="402.0" fill="#333" font-size="14.5" font-weight="600" text-anchor="end" transform="rotate(-90 390.3 402.0)" dominant-baseline="middle">jul/25</text><text x="428.6" y="402.0" fill="#333" font-size="14.5" font-weight="600" text-anchor="end" transform="rotate(-90 428.6 402.0)" dominant-baseline="middle">ago/25</text><text x="466.9" y="402.0" fill="#333" font-size="14.5" font-weight="600" text-anchor="end" transform="rotate(-90 466.9 402.0)" dominant-baseline="middle">set/25</text><text x="505.1" y="402.0" fill="#333" font-size="14.5" font-weight="600" text-anchor="end" transform="rotate(-90 505.1 402.0)" dominant-baseline="middle">out/25</text><text x="543.4" y="402.0" fill="#333" font-size="14.5" font-weight="600" text-anchor="end" transform="rotate(-90 543.4 402.0)" dominant-baseline="middle">nov/25</text><text x="581.7" y="402.0" fill="#333" font-size="14.5" font-weight="600" text-anchor="end" transform="rotate(-90 581.7 402.0)" dominant-baseline="middle">dez/25</text><text x="620.0" y="402.0" fill="#333" font-size="14.5" font-weight="600" text-anchor="end" transform="rotate(-90 620.0 402.0)" dominant-baseline="middle">jan/26</text><text x="658.3" y="402.0" fill="#333" font-size="14.5" font-weight="600" text-anchor="end" transform="rotate(-90 658.3 402.0)" dominant-baseline="middle">fev/26</text><text x="696.6" y="402.0" fill="#333" font-size="14.5" font-weight="600" text-anchor="end" transform="rotate(-90 696.6 402.0)" dominant-baseline="middle">mar/26</text><text x="734.9" y="402.0" fill="#333" font-size="14.5" font-weight="600" text-anchor="end" transform="rotate(-90 734.9 402.0)" dominant-baseline="middle">abr/26</text><text x="773.1" y="402.0" fill="#333" font-size="14.5" font-weight="600" text-anchor="end" transform="rotate(-90 773.1 402.0)" dominant-baseline="middle">mai/26</text><text x="811.4" y="402.0" fill="#333" font-size="14.5" font-weight="600" text-anchor="end" transform="rotate(-90 811.4 402.0)" dominant-baseline="middle">jun/26</text><text x="849.7" y="402.0" fill="#333" font-size="14.5" font-weight="600" text-anchor="end" transform="rotate(-90 849.7 402.0)" dominant-baseline="middle">jul/26</text><text x="888.0" y="402.0" fill="#333" font-size="14.5" font-weight="600" text-anchor="end" transform="rotate(-90 888.0 402.0)" dominant-baseline="middle">ago/26</text><polyline points="84.0,388.0 122.3,384.3 160.6,373.8 198.9,363.5 237.1,353.4 275.4,342.1 313.7,329.9 352.0,317.9 390.3,303.9 428.6,290.9 466.9,277.2 505.1,262.6 543.4,250.4 581.7,236.2 620.0,222.4 658.3,210.5 696.6,195.9 734.9,182.5 773.1,169.2 811.4,155.3 849.7,140.0 888.0,125.9" fill="none" stroke="#1F1F1F" stroke-width="3.6" stroke-linejoin="round" stroke-linecap="round"/><polyline points="84.0,388.0 122.3,382.1 160.6,367.6 198.9,354.1 237.1,340.9 275.4,326.3 313.7,310.6 352.0,295.3 390.3,276.9 428.6,257.6 466.9,239.2 505.1,222.1 543.4,205.9 581.7,184.5 620.0,166.0 658.3,151.3 696.6,133.6 734.9,117.3 773.1,101.0 811.4,83.4 849.7,64.0 888.0,46.5" fill="none" stroke="#26B663" stroke-width="3.6" stroke-linejoin="round" stroke-linecap="round"/><rect x="892.0" y="32.5" width="64" height="28" rx="3" fill="#26B663"/><text x="924.0" y="51.5" fill="#fff" font-size="15" font-weight="700" text-anchor="middle">33,14%</text><rect x="892.0" y="111.9" width="64" height="28" rx="3" fill="#1F1F1F"/><text x="924.0" y="130.9" fill="#fff" font-size="15" font-weight="700" text-anchor="middle">25,43%</text></svg></div>
 </div>
 
     </div>
@@ -993,7 +998,7 @@ body.tv-exportando .backtop{display:none}
     <div class="ci"><div class="ck">Gestor</div><div class="cv">Tivio Capital</div></div>
     <div class="ci"><div class="ck">Público Alvo</div><div class="cv">Investidores qualificados, Family Offices e Multi Family</div></div>
     <div class="ci"><div class="ck">Data de início</div><div class="cv">18/12/2024</div></div>
-    <div class="ci"><div class="ck">Taxa de administração e gestão</div><div class="cv">1,15% a.a.</div></div>
+    <div class="ci"><div class="ck">Taxa global</div><div class="cv">1,15% a.a.</div></div>
     <div class="ci"><div class="ck">Patrimônio líquido</div><div class="cv">R$ 151.939.343,55</div></div>
   </div>
   <div class="ccol">
@@ -1147,7 +1152,7 @@ body.tv-exportando .backtop{display:none}
           <div class="cmt">
   <h3 class="cmt-h">Comentário do Gestor e Análise de Mercado</h3>
   <div class="cmt-card">
-    <div class="cmt-txt tv-ajusta" data-max="14.6" style="font-size:14.6px">
+    <div class="cmt-txt tv-ajusta" data-max="14.6" data-teto="19" data-centro style="font-size:14.6px">
 <p>O Tivio ALT 90 registrou rentabilidade de 1,22% no mês, equivalente a 111,86% do CDI no período. Desde o início da estratégia, o fundo acumula retorno de 21,25%, frente a 18,41% do CDI, o que corresponde a um desempenho anualizado de 115% do CDI.</p><p>Em setembro, iniciamos posição em uma cota sênior de FIDC com exposição ao setor de telecomunicações. A tese de investimento está fundamentada na atuação consolidada do originador, que possui mais de 23 anos de experiência no segmento, bem como nas características estruturais do mercado em que atua, marcado por elevada pulverização, baixa bancarização, receitas recorrentes e oferta restrita de crédito. Adicionalmente, a operação apresenta carteira de recebíveis amplamente diversificada entre cedentes e sacados, além de mecanismos de proteção que incluem overcollateral mínimo de 25% sobre os ativos cedidos ao fundo.</p><p>A nova alocação reforça nossa estratégia de buscar operações com perfil defensivo, adequada relação entre risco e retorno e estruturas robustas de mitigação de risco. Seguimos priorizando ativos com forte alinhamento de interesses entre as partes envolvidas, qualidade na originação dos créditos e mecanismos de proteção compatíveis com o cenário de mercado. Mantemos uma postura seletiva na alocação de capital, avaliando continuamente oportunidades que possam contribuir para a geração consistente de retornos ajustados ao risco para os cotistas.</p>    </div>
   </div>
 </div>
@@ -1281,7 +1286,7 @@ body.tv-exportando .backtop{display:none}
   </div>
 </div>
     <div class="hleg"><span>Fundo <i class="hl-f"></i></span><span><i class="hl-b"></i> CDI</span></div>
-  <div class="tv-chart" data-dados='{"tipo": "historico", "labels": ["jun/25", "jun/25", "jul/25", "ago/25", "set/25", "out/25", "nov/25", "dez/25", "jan/26", "fev/26", "mar/26", "abr/26", "mai/26", "jun/26", "jul/26", "ago/26"], "fundo": [0.0, 0.99, 2.55, 4.02, 5.53, 7.0, 8.35, 9.83, 11.36, 12.58, 14.05, 15.38, 16.74, 18.18, 19.79, 21.25], "bench_serie": [0.0, 0.82, 2.11, 3.3, 4.56, 5.89, 7.01, 8.31, 9.57, 10.66, 12.01, 13.23, 14.44, 15.73, 17.13, 18.41], "bench": "CDI"}'><svg viewBox="0 0 1000 470" xmlns="http://www.w3.org/2000/svg" font-family="Versos,Arial,sans-serif" class="histsvg hs-ce"><line x1="84" y1="388.0" x2="888" y2="388.0" stroke="#D6D6D6" stroke-width="1"/><text x="72" y="392.5" fill="#333" font-size="15.5" font-weight="600" text-anchor="end">0,0%</text><line x1="84" y1="307.6" x2="888" y2="307.6" stroke="#D6D6D6" stroke-width="1"/><text x="72" y="312.1" fill="#333" font-size="15.5" font-weight="600" text-anchor="end">5,0%</text><line x1="84" y1="227.3" x2="888" y2="227.3" stroke="#D6D6D6" stroke-width="1"/><text x="72" y="231.8" fill="#333" font-size="15.5" font-weight="600" text-anchor="end">10,0%</text><line x1="84" y1="146.9" x2="888" y2="146.9" stroke="#D6D6D6" stroke-width="1"/><text x="72" y="151.4" fill="#333" font-size="15.5" font-weight="600" text-anchor="end">15,0%</text><line x1="84" y1="66.6" x2="888" y2="66.6" stroke="#D6D6D6" stroke-width="1"/><text x="72" y="71.1" fill="#333" font-size="15.5" font-weight="600" text-anchor="end">20,0%</text><text x="191.2" y="402.0" fill="#333" font-size="14.5" font-weight="600" text-anchor="end" transform="rotate(-90 191.2 402.0)" dominant-baseline="middle">jul/25</text><text x="244.8" y="402.0" fill="#333" font-size="14.5" font-weight="600" text-anchor="end" transform="rotate(-90 244.8 402.0)" dominant-baseline="middle">ago/25</text><text x="298.4" y="402.0" fill="#333" font-size="14.5" font-weight="600" text-anchor="end" transform="rotate(-90 298.4 402.0)" dominant-baseline="middle">set/25</text><text x="352.0" y="402.0" fill="#333" font-size="14.5" font-weight="600" text-anchor="end" transform="rotate(-90 352.0 402.0)" dominant-baseline="middle">out/25</text><text x="405.6" y="402.0" fill="#333" font-size="14.5" font-weight="600" text-anchor="end" transform="rotate(-90 405.6 402.0)" dominant-baseline="middle">nov/25</text><text x="459.2" y="402.0" fill="#333" font-size="14.5" font-weight="600" text-anchor="end" transform="rotate(-90 459.2 402.0)" dominant-baseline="middle">dez/25</text><text x="512.8" y="402.0" fill="#333" font-size="14.5" font-weight="600" text-anchor="end" transform="rotate(-90 512.8 402.0)" dominant-baseline="middle">jan/26</text><text x="566.4" y="402.0" fill="#333" font-size="14.5" font-weight="600" text-anchor="end" transform="rotate(-90 566.4 402.0)" dominant-baseline="middle">fev/26</text><text x="620.0" y="402.0" fill="#333" font-size="14.5" font-weight="600" text-anchor="end" transform="rotate(-90 620.0 402.0)" dominant-baseline="middle">mar/26</text><text x="673.6" y="402.0" fill="#333" font-size="14.5" font-weight="600" text-anchor="end" transform="rotate(-90 673.6 402.0)" dominant-baseline="middle">abr/26</text><text x="727.2" y="402.0" fill="#333" font-size="14.5" font-weight="600" text-anchor="end" transform="rotate(-90 727.2 402.0)" dominant-baseline="middle">mai/26</text><text x="780.8" y="402.0" fill="#333" font-size="14.5" font-weight="600" text-anchor="end" transform="rotate(-90 780.8 402.0)" dominant-baseline="middle">jun/26</text><text x="834.4" y="402.0" fill="#333" font-size="14.5" font-weight="600" text-anchor="end" transform="rotate(-90 834.4 402.0)" dominant-baseline="middle">jul/26</text><text x="888.0" y="402.0" fill="#333" font-size="14.5" font-weight="600" text-anchor="end" transform="rotate(-90 888.0 402.0)" dominant-baseline="middle">ago/26</text><polyline points="84.0,388.0 137.6,374.8 191.2,354.1 244.8,335.0 298.4,314.7 352.0,293.3 405.6,275.3 459.2,254.4 512.8,234.2 566.4,216.7 620.0,195.0 673.6,175.4 727.2,155.9 780.8,135.2 834.4,112.7 888.0,92.1" fill="none" stroke="#1F1F1F" stroke-width="3.6" stroke-linejoin="round" stroke-linecap="round"/><polyline points="84.0,388.0 137.6,372.1 191.2,347.0 244.8,323.4 298.4,299.1 352.0,275.5 405.6,253.8 459.2,230.0 512.8,205.4 566.4,185.8 620.0,162.2 673.6,140.8 727.2,119.0 780.8,95.8 834.4,70.0 888.0,46.5" fill="none" stroke="#26B663" stroke-width="3.6" stroke-linejoin="round" stroke-linecap="round"/><rect x="890.0" y="32.5" width="62" height="28" fill="#26B663"/><text x="921.0" y="51.5" fill="#fff" font-size="15" font-weight="700" text-anchor="middle">21,25%</text><rect x="890.0" y="78.1" width="62" height="28" fill="#1F1F1F"/><text x="921.0" y="97.1" fill="#fff" font-size="15" font-weight="700" text-anchor="middle">18,41%</text></svg></div>
+  <div class="tv-chart" data-tv='{"tipo": "historico", "estilo": "ce", "labels": ["jun/25", "jun/25", "jul/25", "ago/25", "set/25", "out/25", "nov/25", "dez/25", "jan/26", "fev/26", "mar/26", "abr/26", "mai/26", "jun/26", "jul/26", "ago/26"], "rotulos": ["", "", "jul/25", "ago/25", "set/25", "out/25", "nov/25", "dez/25", "jan/26", "fev/26", "mar/26", "abr/26", "mai/26", "jun/26", "jul/26", "ago/26"], "fundo": [0.0, 0.99, 2.55, 4.02, 5.53, 7.0, 8.35, 9.83, 11.36, 12.58, 14.05, 15.38, 16.74, 18.18, 19.79, 21.25], "bench_serie": [0.0, 0.82, 2.11, 3.3, 4.56, 5.89, 7.01, 8.31, 9.57, 10.66, 12.01, 13.23, 14.44, 15.73, 17.13, 18.41], "bench": "CDI", "cf": "#26B663", "cb": "#1F1F1F", "tinta_b": "#fff", "wf": 3.6, "wb": 3.6, "casas": 1, "pad": [84, 112, 26, 82], "rot": -90, "largura": 1000, "base": 0, "topo": 20, "escala_topo": 22.525000000000002, "passo": 5, "altura": 470}'><svg viewBox="0 0 1000 470" xmlns="http://www.w3.org/2000/svg" font-family="Versos,Arial,sans-serif" class="histsvg hs-ce"><line x1="84" y1="388.0" x2="888" y2="388.0" stroke="#D6D6D6" stroke-width="1"/><text x="72" y="392.5" fill="#333" font-size="15.5" font-weight="600" text-anchor="end">0,0%</text><line x1="84" y1="307.6" x2="888" y2="307.6" stroke="#D6D6D6" stroke-width="1"/><text x="72" y="312.1" fill="#333" font-size="15.5" font-weight="600" text-anchor="end">5,0%</text><line x1="84" y1="227.3" x2="888" y2="227.3" stroke="#D6D6D6" stroke-width="1"/><text x="72" y="231.8" fill="#333" font-size="15.5" font-weight="600" text-anchor="end">10,0%</text><line x1="84" y1="146.9" x2="888" y2="146.9" stroke="#D6D6D6" stroke-width="1"/><text x="72" y="151.4" fill="#333" font-size="15.5" font-weight="600" text-anchor="end">15,0%</text><line x1="84" y1="66.6" x2="888" y2="66.6" stroke="#D6D6D6" stroke-width="1"/><text x="72" y="71.1" fill="#333" font-size="15.5" font-weight="600" text-anchor="end">20,0%</text><text x="191.2" y="402.0" fill="#333" font-size="14.5" font-weight="600" text-anchor="end" transform="rotate(-90 191.2 402.0)" dominant-baseline="middle">jul/25</text><text x="244.8" y="402.0" fill="#333" font-size="14.5" font-weight="600" text-anchor="end" transform="rotate(-90 244.8 402.0)" dominant-baseline="middle">ago/25</text><text x="298.4" y="402.0" fill="#333" font-size="14.5" font-weight="600" text-anchor="end" transform="rotate(-90 298.4 402.0)" dominant-baseline="middle">set/25</text><text x="352.0" y="402.0" fill="#333" font-size="14.5" font-weight="600" text-anchor="end" transform="rotate(-90 352.0 402.0)" dominant-baseline="middle">out/25</text><text x="405.6" y="402.0" fill="#333" font-size="14.5" font-weight="600" text-anchor="end" transform="rotate(-90 405.6 402.0)" dominant-baseline="middle">nov/25</text><text x="459.2" y="402.0" fill="#333" font-size="14.5" font-weight="600" text-anchor="end" transform="rotate(-90 459.2 402.0)" dominant-baseline="middle">dez/25</text><text x="512.8" y="402.0" fill="#333" font-size="14.5" font-weight="600" text-anchor="end" transform="rotate(-90 512.8 402.0)" dominant-baseline="middle">jan/26</text><text x="566.4" y="402.0" fill="#333" font-size="14.5" font-weight="600" text-anchor="end" transform="rotate(-90 566.4 402.0)" dominant-baseline="middle">fev/26</text><text x="620.0" y="402.0" fill="#333" font-size="14.5" font-weight="600" text-anchor="end" transform="rotate(-90 620.0 402.0)" dominant-baseline="middle">mar/26</text><text x="673.6" y="402.0" fill="#333" font-size="14.5" font-weight="600" text-anchor="end" transform="rotate(-90 673.6 402.0)" dominant-baseline="middle">abr/26</text><text x="727.2" y="402.0" fill="#333" font-size="14.5" font-weight="600" text-anchor="end" transform="rotate(-90 727.2 402.0)" dominant-baseline="middle">mai/26</text><text x="780.8" y="402.0" fill="#333" font-size="14.5" font-weight="600" text-anchor="end" transform="rotate(-90 780.8 402.0)" dominant-baseline="middle">jun/26</text><text x="834.4" y="402.0" fill="#333" font-size="14.5" font-weight="600" text-anchor="end" transform="rotate(-90 834.4 402.0)" dominant-baseline="middle">jul/26</text><text x="888.0" y="402.0" fill="#333" font-size="14.5" font-weight="600" text-anchor="end" transform="rotate(-90 888.0 402.0)" dominant-baseline="middle">ago/26</text><polyline points="84.0,388.0 137.6,374.8 191.2,354.1 244.8,335.0 298.4,314.7 352.0,293.3 405.6,275.3 459.2,254.4 512.8,234.2 566.4,216.7 620.0,195.0 673.6,175.4 727.2,155.9 780.8,135.2 834.4,112.7 888.0,92.1" fill="none" stroke="#1F1F1F" stroke-width="3.6" stroke-linejoin="round" stroke-linecap="round"/><polyline points="84.0,388.0 137.6,372.1 191.2,347.0 244.8,323.4 298.4,299.1 352.0,275.5 405.6,253.8 459.2,230.0 512.8,205.4 566.4,185.8 620.0,162.2 673.6,140.8 727.2,119.0 780.8,95.8 834.4,70.0 888.0,46.5" fill="none" stroke="#26B663" stroke-width="3.6" stroke-linejoin="round" stroke-linecap="round"/><rect x="892.0" y="32.5" width="64" height="28" rx="3" fill="#26B663"/><text x="924.0" y="51.5" fill="#fff" font-size="15" font-weight="700" text-anchor="middle">21,25%</text><rect x="892.0" y="78.1" width="64" height="28" rx="3" fill="#1F1F1F"/><text x="924.0" y="97.1" fill="#fff" font-size="15" font-weight="700" text-anchor="middle">18,41%</text></svg></div>
 </div>
 
     </div>
@@ -1360,7 +1365,7 @@ body.tv-exportando .backtop{display:none}
     <div class="ci"><div class="ck">Gestor</div><div class="cv">Tivio Capital</div></div>
     <div class="ci"><div class="ck">Público Alvo</div><div class="cv">Investidor qualificado</div></div>
     <div class="ci"><div class="ck">Data de início</div><div class="cv">06/06/2025</div></div>
-    <div class="ci"><div class="ck">Taxa de administração e gestão</div><div class="cv">1,25% a.a.</div></div>
+    <div class="ci"><div class="ck">Taxa global</div><div class="cv">1,25% a.a.</div></div>
     <div class="ci"><div class="ck">Patrimônio líquido</div><div class="cv">R$ 19.959.710,82</div></div>
   </div>
   <div class="ccol">
@@ -1499,7 +1504,7 @@ body.tv-exportando .backtop{display:none}
           <div class="cmt">
   <h3 class="cmt-h">Comentário do Gestor e Análise de Mercado</h3>
   <div class="cmt-card">
-    <div class="cmt-txt tv-ajusta" data-max="14.6" style="font-size:14.6px">
+    <div class="cmt-txt tv-ajusta" data-max="14.6" data-teto="19" data-centro style="font-size:14.6px">
       <p class="histvazio">Comentário não preenchido em
         <code>entrada/comentarios.md</code> para <b>Tivio ALT Light</b>.</p>
     </div>
@@ -1615,7 +1620,7 @@ body.tv-exportando .backtop{display:none}
   </div>
 </div>
     <div class="hleg"><span>Fundo <i class="hl-f"></i></span><span><i class="hl-b"></i> CDI</span></div>
-  <div class="tv-chart" data-dados='{"tipo": "historico", "labels": ["nov/25", "nov/25", "dez/25", "jan/26", "fev/26", "mar/26", "abr/26", "mai/26", "jun/26", "jul/26", "ago/26"], "fundo": [0.0, 0.95, 2.82, 4.39, 5.29, 6.61, 7.78, 9.04, 10.44, 11.79, 12.6], "bench_serie": [0.0, 0.66, 1.89, 3.08, 4.11, 5.37, 6.52, 7.66, 8.87, 10.19, 11.4], "bench": "CDI"}'><svg viewBox="0 0 1000 470" xmlns="http://www.w3.org/2000/svg" font-family="Versos,Arial,sans-serif" class="histsvg hs-ce"><line x1="84" y1="388.0" x2="888" y2="388.0" stroke="#D6D6D6" stroke-width="1"/><text x="72" y="392.5" fill="#333" font-size="15.5" font-weight="600" text-anchor="end">0,0%</text><line x1="84" y1="333.8" x2="888" y2="333.8" stroke="#D6D6D6" stroke-width="1"/><text x="72" y="338.3" fill="#333" font-size="15.5" font-weight="600" text-anchor="end">2,0%</text><line x1="84" y1="279.6" x2="888" y2="279.6" stroke="#D6D6D6" stroke-width="1"/><text x="72" y="284.1" fill="#333" font-size="15.5" font-weight="600" text-anchor="end">4,0%</text><line x1="84" y1="225.4" x2="888" y2="225.4" stroke="#D6D6D6" stroke-width="1"/><text x="72" y="229.9" fill="#333" font-size="15.5" font-weight="600" text-anchor="end">6,0%</text><line x1="84" y1="171.2" x2="888" y2="171.2" stroke="#D6D6D6" stroke-width="1"/><text x="72" y="175.7" fill="#333" font-size="15.5" font-weight="600" text-anchor="end">8,0%</text><line x1="84" y1="117.0" x2="888" y2="117.0" stroke="#D6D6D6" stroke-width="1"/><text x="72" y="121.5" fill="#333" font-size="15.5" font-weight="600" text-anchor="end">10,0%</text><line x1="84" y1="62.8" x2="888" y2="62.8" stroke="#D6D6D6" stroke-width="1"/><text x="72" y="67.3" fill="#333" font-size="15.5" font-weight="600" text-anchor="end">12,0%</text><text x="244.8" y="402.0" fill="#333" font-size="14.5" font-weight="600" text-anchor="end" transform="rotate(-90 244.8 402.0)" dominant-baseline="middle">dez/25</text><text x="325.2" y="402.0" fill="#333" font-size="14.5" font-weight="600" text-anchor="end" transform="rotate(-90 325.2 402.0)" dominant-baseline="middle">jan/26</text><text x="405.6" y="402.0" fill="#333" font-size="14.5" font-weight="600" text-anchor="end" transform="rotate(-90 405.6 402.0)" dominant-baseline="middle">fev/26</text><text x="486.0" y="402.0" fill="#333" font-size="14.5" font-weight="600" text-anchor="end" transform="rotate(-90 486.0 402.0)" dominant-baseline="middle">mar/26</text><text x="566.4" y="402.0" fill="#333" font-size="14.5" font-weight="600" text-anchor="end" transform="rotate(-90 566.4 402.0)" dominant-baseline="middle">abr/26</text><text x="646.8" y="402.0" fill="#333" font-size="14.5" font-weight="600" text-anchor="end" transform="rotate(-90 646.8 402.0)" dominant-baseline="middle">mai/26</text><text x="727.2" y="402.0" fill="#333" font-size="14.5" font-weight="600" text-anchor="end" transform="rotate(-90 727.2 402.0)" dominant-baseline="middle">jun/26</text><text x="807.6" y="402.0" fill="#333" font-size="14.5" font-weight="600" text-anchor="end" transform="rotate(-90 807.6 402.0)" dominant-baseline="middle">jul/26</text><text x="888.0" y="402.0" fill="#333" font-size="14.5" font-weight="600" text-anchor="end" transform="rotate(-90 888.0 402.0)" dominant-baseline="middle">ago/26</text><polyline points="84.0,388.0 164.4,370.1 244.8,336.8 325.2,304.5 405.6,276.6 486.0,242.5 566.4,211.3 646.8,180.4 727.2,147.6 807.6,111.8 888.0,79.0" fill="none" stroke="#1F1F1F" stroke-width="3.6" stroke-linejoin="round" stroke-linecap="round"/><polyline points="84.0,388.0 164.4,362.3 244.8,311.6 325.2,269.0 405.6,244.6 486.0,208.8 566.4,177.1 646.8,143.0 727.2,105.0 807.6,68.4 888.0,46.5" fill="none" stroke="#26B663" stroke-width="3.6" stroke-linejoin="round" stroke-linecap="round"/><rect x="890.0" y="32.5" width="62" height="28" fill="#26B663"/><text x="921.0" y="51.5" fill="#fff" font-size="15" font-weight="700" text-anchor="middle">12,60%</text><rect x="890.0" y="65.0" width="62" height="28" fill="#1F1F1F"/><text x="921.0" y="84.0" fill="#fff" font-size="15" font-weight="700" text-anchor="middle">11,40%</text></svg></div>
+  <div class="tv-chart" data-tv='{"tipo": "historico", "estilo": "ce", "labels": ["nov/25", "nov/25", "dez/25", "jan/26", "fev/26", "mar/26", "abr/26", "mai/26", "jun/26", "jul/26", "ago/26"], "rotulos": ["", "", "dez/25", "jan/26", "fev/26", "mar/26", "abr/26", "mai/26", "jun/26", "jul/26", "ago/26"], "fundo": [0.0, 0.95, 2.82, 4.39, 5.29, 6.61, 7.78, 9.04, 10.44, 11.79, 12.6], "bench_serie": [0.0, 0.66, 1.89, 3.08, 4.11, 5.37, 6.52, 7.66, 8.87, 10.19, 11.4], "bench": "CDI", "cf": "#26B663", "cb": "#1F1F1F", "tinta_b": "#fff", "wf": 3.6, "wb": 3.6, "casas": 1, "pad": [84, 112, 26, 82], "rot": -90, "largura": 1000, "base": 0, "topo": 12, "escala_topo": 13.356, "passo": 2, "altura": 470}'><svg viewBox="0 0 1000 470" xmlns="http://www.w3.org/2000/svg" font-family="Versos,Arial,sans-serif" class="histsvg hs-ce"><line x1="84" y1="388.0" x2="888" y2="388.0" stroke="#D6D6D6" stroke-width="1"/><text x="72" y="392.5" fill="#333" font-size="15.5" font-weight="600" text-anchor="end">0,0%</text><line x1="84" y1="333.8" x2="888" y2="333.8" stroke="#D6D6D6" stroke-width="1"/><text x="72" y="338.3" fill="#333" font-size="15.5" font-weight="600" text-anchor="end">2,0%</text><line x1="84" y1="279.6" x2="888" y2="279.6" stroke="#D6D6D6" stroke-width="1"/><text x="72" y="284.1" fill="#333" font-size="15.5" font-weight="600" text-anchor="end">4,0%</text><line x1="84" y1="225.4" x2="888" y2="225.4" stroke="#D6D6D6" stroke-width="1"/><text x="72" y="229.9" fill="#333" font-size="15.5" font-weight="600" text-anchor="end">6,0%</text><line x1="84" y1="171.2" x2="888" y2="171.2" stroke="#D6D6D6" stroke-width="1"/><text x="72" y="175.7" fill="#333" font-size="15.5" font-weight="600" text-anchor="end">8,0%</text><line x1="84" y1="117.0" x2="888" y2="117.0" stroke="#D6D6D6" stroke-width="1"/><text x="72" y="121.5" fill="#333" font-size="15.5" font-weight="600" text-anchor="end">10,0%</text><line x1="84" y1="62.8" x2="888" y2="62.8" stroke="#D6D6D6" stroke-width="1"/><text x="72" y="67.3" fill="#333" font-size="15.5" font-weight="600" text-anchor="end">12,0%</text><text x="244.8" y="402.0" fill="#333" font-size="14.5" font-weight="600" text-anchor="end" transform="rotate(-90 244.8 402.0)" dominant-baseline="middle">dez/25</text><text x="325.2" y="402.0" fill="#333" font-size="14.5" font-weight="600" text-anchor="end" transform="rotate(-90 325.2 402.0)" dominant-baseline="middle">jan/26</text><text x="405.6" y="402.0" fill="#333" font-size="14.5" font-weight="600" text-anchor="end" transform="rotate(-90 405.6 402.0)" dominant-baseline="middle">fev/26</text><text x="486.0" y="402.0" fill="#333" font-size="14.5" font-weight="600" text-anchor="end" transform="rotate(-90 486.0 402.0)" dominant-baseline="middle">mar/26</text><text x="566.4" y="402.0" fill="#333" font-size="14.5" font-weight="600" text-anchor="end" transform="rotate(-90 566.4 402.0)" dominant-baseline="middle">abr/26</text><text x="646.8" y="402.0" fill="#333" font-size="14.5" font-weight="600" text-anchor="end" transform="rotate(-90 646.8 402.0)" dominant-baseline="middle">mai/26</text><text x="727.2" y="402.0" fill="#333" font-size="14.5" font-weight="600" text-anchor="end" transform="rotate(-90 727.2 402.0)" dominant-baseline="middle">jun/26</text><text x="807.6" y="402.0" fill="#333" font-size="14.5" font-weight="600" text-anchor="end" transform="rotate(-90 807.6 402.0)" dominant-baseline="middle">jul/26</text><text x="888.0" y="402.0" fill="#333" font-size="14.5" font-weight="600" text-anchor="end" transform="rotate(-90 888.0 402.0)" dominant-baseline="middle">ago/26</text><polyline points="84.0,388.0 164.4,370.1 244.8,336.8 325.2,304.5 405.6,276.6 486.0,242.5 566.4,211.3 646.8,180.4 727.2,147.6 807.6,111.8 888.0,79.0" fill="none" stroke="#1F1F1F" stroke-width="3.6" stroke-linejoin="round" stroke-linecap="round"/><polyline points="84.0,388.0 164.4,362.3 244.8,311.6 325.2,269.0 405.6,244.6 486.0,208.8 566.4,177.1 646.8,143.0 727.2,105.0 807.6,68.4 888.0,46.5" fill="none" stroke="#26B663" stroke-width="3.6" stroke-linejoin="round" stroke-linecap="round"/><rect x="892.0" y="32.5" width="64" height="28" rx="3" fill="#26B663"/><text x="924.0" y="51.5" fill="#fff" font-size="15" font-weight="700" text-anchor="middle">12,60%</text><rect x="892.0" y="65.0" width="64" height="28" rx="3" fill="#1F1F1F"/><text x="924.0" y="84.0" fill="#fff" font-size="15" font-weight="700" text-anchor="middle">11,40%</text></svg></div>
 </div>
 
     </div>
@@ -1679,7 +1684,7 @@ body.tv-exportando .backtop{display:none}
     <div class="ci"><div class="ck">Gestor</div><div class="cv">Tivio Capital</div></div>
     <div class="ci"><div class="ck">Público Alvo</div><div class="cv">Investidor qualificado</div></div>
     <div class="ci"><div class="ck">Data de início</div><div class="cv">11/11/2025</div></div>
-    <div class="ci"><div class="ck">Taxa de administração e gestão</div><div class="cv">1,15% a.a.</div></div>
+    <div class="ci"><div class="ck">Taxa global</div><div class="cv">1,15% a.a.</div></div>
     <div class="ci"><div class="ck">Patrimônio líquido</div><div class="cv">R$ 26.829.258,71</div></div>
   </div>
   <div class="ccol">
@@ -1789,67 +1794,73 @@ body.tv-exportando .backtop{display:none}
     return s.replace('.', ',') + '%';
   }
 
-  /* ---------------------------------------------------- linha do histórico */
-  function historico(d) {
+  /* ---------------------------------------------------- linha do histórico
+     Mesma especificação do SVG do servidor (calculators/grafico.py,
+     historico_modelo): cores, espessuras, margens, degrau e topo da grade,
+     rótulos visíveis do eixo X. Tudo em unidades da folha (largura 1000) e
+     escalado pela largura real do gráfico, para tela, PDF e PNG baterem. */
+  function historico(d, larg) {
+    var k = (larg || d.largura) / d.largura;
+    var px = function (v) { return v * k; };
     var o = base();
-    o.color = [CORES.azul, CORES.cinzaClaro];
-    o.legend = {
-      top: 2, left: 46, itemWidth: 26, itemHeight: 3, itemGap: 26,
-      textStyle: { fontSize: 15, fontWeight: 700, color: CORES.azul, fontFamily: FF },
-      data: [{ name: 'Fundo' }, { name: d.bench }]
-    };
-    o.grid = { left: 56, right: 76, top: 46, bottom: 46, containLabel: false };
+    var pad = d.pad;
+    o.grid = { left: px(pad[0]), right: px(pad[1]), top: px(pad[2]), bottom: px(pad[3]),
+               containLabel: false };
+    if (d.estilo === 'cp') {
+      o.legend = {
+        top: px(pad[2] - 30), left: 'center', itemWidth: px(34), itemHeight: px(3),
+        itemGap: px(40), icon: 'rect',
+        textStyle: { fontSize: px(12.5), fontWeight: 600, color: '#333', fontFamily: FF },
+        data: [{ name: 'Fundo' }, { name: d.bench }]
+      };
+    }
     o.xAxis = {
       type: 'category', data: d.labels, boundaryGap: false,
-      axisLine: { lineStyle: { color: CORES.grade } },
-      axisTick: { show: false },
+      axisLine: { show: false }, axisTick: { show: false },
       axisLabel: {
-        fontSize: 13, color: CORES.cinza, fontFamily: FF,
-        // com 13+ meses os rótulos se tocam; o ECharts esconde sozinho, mas
-        // escondendo do fim para o começo — e o último mês é o que importa
-        interval: function (i) {
-          var n = d.labels.length, passo = n <= 13 ? 1 : Math.ceil(n / 13);
-          return i === n - 1 || i % passo === 0;
-        }
+        interval: 0, rotate: -d.rot, margin: px(14),
+        fontSize: px(d.estilo === 'cp' ? 12.5 : 14.5), fontWeight: 600, color: '#333',
+        fontFamily: FF,
+        formatter: function (_, i) { return d.rotulos[i] || ''; }
       }
     };
     o.yAxis = {
-      type: 'value', splitNumber: 4,
+      type: 'value', min: d.base, max: d.escala_topo, interval: d.passo,
       axisLine: { show: false }, axisTick: { show: false },
-      splitLine: { lineStyle: { color: CORES.grade } },
+      splitLine: { lineStyle: { color: '#D6D6D6', width: 1 } },
       axisLabel: {
-        fontSize: 14, fontWeight: 600, color: CORES.cinza, fontFamily: FF,
-        formatter: function (v) { return Math.round(v) + '%'; }
+        margin: px(12), fontSize: px(d.estilo === 'cp' ? 13 : 15.5), fontWeight: 600,
+        color: '#333', fontFamily: FF,
+        // a grade vai até o topo; acima dele só a linha e a etiqueta
+        formatter: function (v) { return v > d.topo + 1e-9 ? '' : pct(v, d.casas); }
       }
     };
     o.tooltip = {
-      trigger: 'axis',
-      valueFormatter: function (v) { return pct(v, 2); },
+      trigger: 'axis', valueFormatter: function (v) { return pct(v, 2); },
       textStyle: { fontFamily: FF, fontSize: 13 }
     };
-    var ultimo = {
-      show: true, position: 'right', distance: 8, fontFamily: FF,
-      formatter: function (p) {
-        return p.dataIndex === d.fundo.length - 1 ? pct(p.value) : '';
-      }
+    // o acumulado no fim de cada linha, numa etiqueta da cor dela; quando as
+    // duas terminam juntas, o ECharts afasta uma da outra (moveOverlap)
+    var etiqueta = function (fundo, cor, tinta) {
+      return {
+        show: true, distance: px(6), fontFamily: FF, fontSize: px(15), fontWeight: 700,
+        color: tinta, backgroundColor: cor, borderRadius: px(3),
+        padding: [px(5), px(7)],
+        formatter: function (p) { return pct(p.value, 2); }
+      };
+    };
+    var linha = function (nome, dados, cor, larg, tinta, z) {
+      return {
+        name: nome, type: 'line', data: dados, smooth: false, symbol: 'none', z: z,
+        lineStyle: { width: px(larg), color: cor, cap: 'round', join: 'round' },
+        itemStyle: { color: cor },
+        endLabel: etiqueta(nome === 'Fundo', cor, tinta),
+        labelLayout: { moveOverlap: 'shiftY' }
+      };
     };
     o.series = [
-      {
-        name: 'Fundo', type: 'line', data: d.fundo, smooth: false,
-        symbol: 'circle', symbolSize: function (_, p) {
-          return p.dataIndex === d.fundo.length - 1 ? 10 : 0;
-        },
-        lineStyle: { width: 3.4 }, z: 3,
-        label: Object.assign({ fontSize: 15, fontWeight: 700, color: CORES.azul }, ultimo)
-      },
-      {
-        name: d.bench, type: 'line', data: d.bench_serie, smooth: false,
-        symbol: 'circle', symbolSize: function (_, p) {
-          return p.dataIndex === d.bench_serie.length - 1 ? 8 : 0;
-        },
-        lineStyle: { width: 3, type: [7, 5] }, z: 2,
-        label: Object.assign({ fontSize: 14, fontWeight: 600, color: CORES.cinza }, ultimo)
-      }
+      linha(d.bench, d.bench_serie, d.cb, d.wb, d.tinta_b, 2),
+      linha('Fundo', d.fundo, d.cf, d.wf, '#fff', 3)
     ];
     return o;
   }
@@ -1972,8 +1983,11 @@ body.tv-exportando .backtop{display:none}
         var d = JSON.parse(el.getAttribute('data-tv'));
         var monta = MONTAGEM[d.tipo];
         if (!monta) { continue; }
+        // a altura acompanha a largura (o desenho é feito em 1000 de largura)
+        var largura = el.clientWidth || 0;
         el.innerHTML = '';
-        el.style.height = (d.altura || 430) + 'px';
+        el.style.height = (d.largura && largura ? largura * d.altura / d.largura
+                                                : (d.altura || 430)) + 'px';
         var g = echarts.init(el, null, { renderer: 'svg' });
         g.setOption(monta(d, el.clientWidth || 0));
         feitos++;
@@ -2001,12 +2015,30 @@ body.tv-exportando .backtop{display:none}
 (function () {
   function ajustar(el) {
     if (!el.clientHeight) { return; }
+    // texto curto CRESCE até o teto (data-teto) para não sobrar vão na caixa;
+    // texto longo diminui até caber. Sem data-teto, só diminui (disclaimer).
     var max = parseFloat(el.getAttribute('data-max')) || 15;
-    var t = max;
-    el.style.fontSize = t + 'px';
-    while (el.scrollHeight > el.clientHeight + 1 && t > 8) {
-      t -= 0.25;
+    var teto = parseFloat(el.getAttribute('data-teto')) || max;
+    var cabe = function (t) {
       el.style.fontSize = t + 'px';
+      return el.scrollHeight <= el.clientHeight + 1;
+    };
+    el.style.paddingTop = '0px';
+    var lo = 8, hi = teto;
+    if (cabe(hi)) {
+      lo = hi;
+    } else {
+      while (hi - lo > 0.2) {
+        var meio = (lo + hi) / 2;
+        if (cabe(meio)) { lo = meio; } else { hi = meio; }
+      }
+    }
+    el.style.fontSize = (Math.floor(lo * 4) / 4) + 'px';
+    // data-centro: o que sobrar de altura vai metade em cima, metade embaixo
+    // (o texto fica no meio da caixa, sem um vão grande só no pé)
+    if (el.hasAttribute('data-centro')) {
+      var sobra = el.clientHeight - el.scrollHeight;
+      if (sobra > 4) { el.style.paddingTop = (sobra / 2) + 'px'; }
     }
   }
   function ajustarTextos() {

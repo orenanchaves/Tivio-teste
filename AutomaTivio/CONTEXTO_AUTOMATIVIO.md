@@ -234,6 +234,7 @@ AutomaTivio/
 │
 └── saida/                    # ← O QUE SAI, uma pasta por mês
     └── AAAA-MM/
+        ├── index.html        #   porta de entrada: abre a Central, que liga tudo
         ├── relatorios/       #   as duas páginas por vertical ← ABRA ESTAS
         ├── pdf/ pptx/ central/
         ├── conferencia_AAAA-MM.xlsx
@@ -358,14 +359,19 @@ controlada. Não é impressão de navegador.
 
 SVG e HTML desenhados no Python (`calculators/grafico.py`: `barras_modelo`,
 `historico_modelo`, `treemap`) no desenho do relatório publicado de
-agosto/2026, e **esse é o desenho final**: o ECharts não redesenha mais por
-cima (redesenhava com outras cores, eixos e rótulos). Os dados continuam no
-atributo `data-dados` do contêiner, caso alguém queira religar a interação.
+agosto/2026. A **rentabilidade histórica** é desenhada pelo ECharts
+(`renderer: 'svg'`, texto selecionável no PDF) a partir da MESMA especificação
+do SVG do servidor — cores, espessuras, margens, degrau e topo da grade,
+rótulos do eixo X — e com o acumulado no fim de cada linha numa etiqueta da
+cor dela. Se o ECharts não carregar, fica o SVG do servidor, igual. Barras e
+treemap são só do servidor (atributo `data-dados`).
 
 O `assets/relatorio_charts.js` agora faz duas coisas na abertura da página (e
 de novo ao trocar de aba): recorta o `viewBox` dos logos dos fundos pelo
 contorno do desenho (os SVGs vêm com muita margem interna) e reduz o corpo do
-comentário do gestor e do disclaimer até caber na caixa (`.tv-ajusta`).
+comentário do gestor e do disclaimer até caber na caixa (`.tv-ajusta`). No
+comentário, o texto curto também cresce até o teto (`data-teto`) e fica
+centralizado na caixa (`data-centro`), para não sobrar vão no pé.
 
 ---
 

@@ -137,7 +137,8 @@ como Jinja trocaria material desenhado por uniformidade de código.
 
 SVG/HTML desenhado no Python (`calculators/grafico.py`: `barras_modelo`,
 `historico_modelo`, `treemap`) no desenho do relatório publicado, e esse é o
-desenho final: o ECharts não assume mais o contêiner. `assets/relatorio_charts.js`
+desenho do servidor; só o histórico é redesenhado pelo ECharts, com a mesma
+especificação (`data-tv`) e o acumulado no fim das linhas. `assets/relatorio_charts.js`
 recorta o viewBox dos logos dos fundos e encolhe o texto `.tv-ajusta`
 (comentário, disclaimer) até caber. A referência visual está em
 `../_revisao/modelo/` (PDFs de agosto/2026 do Institucional 30 e do ALT 180).

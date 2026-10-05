@@ -38,67 +38,73 @@
     return s.replace('.', ',') + '%';
   }
 
-  /* ---------------------------------------------------- linha do histórico */
-  function historico(d) {
+  /* ---------------------------------------------------- linha do histórico
+     Mesma especificação do SVG do servidor (calculators/grafico.py,
+     historico_modelo): cores, espessuras, margens, degrau e topo da grade,
+     rótulos visíveis do eixo X. Tudo em unidades da folha (largura 1000) e
+     escalado pela largura real do gráfico, para tela, PDF e PNG baterem. */
+  function historico(d, larg) {
+    var k = (larg || d.largura) / d.largura;
+    var px = function (v) { return v * k; };
     var o = base();
-    o.color = [CORES.azul, CORES.cinzaClaro];
-    o.legend = {
-      top: 2, left: 46, itemWidth: 26, itemHeight: 3, itemGap: 26,
-      textStyle: { fontSize: 15, fontWeight: 700, color: CORES.azul, fontFamily: FF },
-      data: [{ name: 'Fundo' }, { name: d.bench }]
-    };
-    o.grid = { left: 56, right: 76, top: 46, bottom: 46, containLabel: false };
+    var pad = d.pad;
+    o.grid = { left: px(pad[0]), right: px(pad[1]), top: px(pad[2]), bottom: px(pad[3]),
+               containLabel: false };
+    if (d.estilo === 'cp') {
+      o.legend = {
+        top: px(pad[2] - 30), left: 'center', itemWidth: px(34), itemHeight: px(3),
+        itemGap: px(40), icon: 'rect',
+        textStyle: { fontSize: px(12.5), fontWeight: 600, color: '#333', fontFamily: FF },
+        data: [{ name: 'Fundo' }, { name: d.bench }]
+      };
+    }
     o.xAxis = {
       type: 'category', data: d.labels, boundaryGap: false,
-      axisLine: { lineStyle: { color: CORES.grade } },
-      axisTick: { show: false },
+      axisLine: { show: false }, axisTick: { show: false },
       axisLabel: {
-        fontSize: 13, color: CORES.cinza, fontFamily: FF,
-        // com 13+ meses os rótulos se tocam; o ECharts esconde sozinho, mas
-        // escondendo do fim para o começo — e o último mês é o que importa
-        interval: function (i) {
-          var n = d.labels.length, passo = n <= 13 ? 1 : Math.ceil(n / 13);
-          return i === n - 1 || i % passo === 0;
-        }
+        interval: 0, rotate: -d.rot, margin: px(14),
+        fontSize: px(d.estilo === 'cp' ? 12.5 : 14.5), fontWeight: 600, color: '#333',
+        fontFamily: FF,
+        formatter: function (_, i) { return d.rotulos[i] || ''; }
       }
     };
     o.yAxis = {
-      type: 'value', splitNumber: 4,
+      type: 'value', min: d.base, max: d.escala_topo, interval: d.passo,
       axisLine: { show: false }, axisTick: { show: false },
-      splitLine: { lineStyle: { color: CORES.grade } },
+      splitLine: { lineStyle: { color: '#D6D6D6', width: 1 } },
       axisLabel: {
-        fontSize: 14, fontWeight: 600, color: CORES.cinza, fontFamily: FF,
-        formatter: function (v) { return Math.round(v) + '%'; }
+        margin: px(12), fontSize: px(d.estilo === 'cp' ? 13 : 15.5), fontWeight: 600,
+        color: '#333', fontFamily: FF,
+        // a grade vai até o topo; acima dele só a linha e a etiqueta
+        formatter: function (v) { return v > d.topo + 1e-9 ? '' : pct(v, d.casas); }
       }
     };
     o.tooltip = {
-      trigger: 'axis',
-      valueFormatter: function (v) { return pct(v, 2); },
+      trigger: 'axis', valueFormatter: function (v) { return pct(v, 2); },
       textStyle: { fontFamily: FF, fontSize: 13 }
     };
-    var ultimo = {
-      show: true, position: 'right', distance: 8, fontFamily: FF,
-      formatter: function (p) {
-        return p.dataIndex === d.fundo.length - 1 ? pct(p.value) : '';
-      }
+    // o acumulado no fim de cada linha, numa etiqueta da cor dela; quando as
+    // duas terminam juntas, o ECharts afasta uma da outra (moveOverlap)
+    var etiqueta = function (fundo, cor, tinta) {
+      return {
+        show: true, distance: px(6), fontFamily: FF, fontSize: px(15), fontWeight: 700,
+        color: tinta, backgroundColor: cor, borderRadius: px(3),
+        padding: [px(5), px(7)],
+        formatter: function (p) { return pct(p.value, 2); }
+      };
+    };
+    var linha = function (nome, dados, cor, larg, tinta, z) {
+      return {
+        name: nome, type: 'line', data: dados, smooth: false, symbol: 'none', z: z,
+        lineStyle: { width: px(larg), color: cor, cap: 'round', join: 'round' },
+        itemStyle: { color: cor },
+        endLabel: etiqueta(nome === 'Fundo', cor, tinta),
+        labelLayout: { moveOverlap: 'shiftY' }
+      };
     };
     o.series = [
-      {
-        name: 'Fundo', type: 'line', data: d.fundo, smooth: false,
-        symbol: 'circle', symbolSize: function (_, p) {
-          return p.dataIndex === d.fundo.length - 1 ? 10 : 0;
-        },
-        lineStyle: { width: 3.4 }, z: 3,
-        label: Object.assign({ fontSize: 15, fontWeight: 700, color: CORES.azul }, ultimo)
-      },
-      {
-        name: d.bench, type: 'line', data: d.bench_serie, smooth: false,
-        symbol: 'circle', symbolSize: function (_, p) {
-          return p.dataIndex === d.bench_serie.length - 1 ? 8 : 0;
-        },
-        lineStyle: { width: 3, type: [7, 5] }, z: 2,
-        label: Object.assign({ fontSize: 14, fontWeight: 600, color: CORES.cinza }, ultimo)
-      }
+      linha(d.bench, d.bench_serie, d.cb, d.wb, d.tinta_b, 2),
+      linha('Fundo', d.fundo, d.cf, d.wf, '#fff', 3)
     ];
     return o;
   }
@@ -221,8 +227,11 @@
         var d = JSON.parse(el.getAttribute('data-tv'));
         var monta = MONTAGEM[d.tipo];
         if (!monta) { continue; }
+        // a altura acompanha a largura (o desenho é feito em 1000 de largura)
+        var largura = el.clientWidth || 0;
         el.innerHTML = '';
-        el.style.height = (d.altura || 430) + 'px';
+        el.style.height = (d.largura && largura ? largura * d.altura / d.largura
+                                                : (d.altura || 430)) + 'px';
         var g = echarts.init(el, null, { renderer: 'svg' });
         g.setOption(monta(d, el.clientWidth || 0));
         feitos++;
@@ -250,12 +259,30 @@
 (function () {
   function ajustar(el) {
     if (!el.clientHeight) { return; }
+    // texto curto CRESCE até o teto (data-teto) para não sobrar vão na caixa;
+    // texto longo diminui até caber. Sem data-teto, só diminui (disclaimer).
     var max = parseFloat(el.getAttribute('data-max')) || 15;
-    var t = max;
-    el.style.fontSize = t + 'px';
-    while (el.scrollHeight > el.clientHeight + 1 && t > 8) {
-      t -= 0.25;
+    var teto = parseFloat(el.getAttribute('data-teto')) || max;
+    var cabe = function (t) {
       el.style.fontSize = t + 'px';
+      return el.scrollHeight <= el.clientHeight + 1;
+    };
+    el.style.paddingTop = '0px';
+    var lo = 8, hi = teto;
+    if (cabe(hi)) {
+      lo = hi;
+    } else {
+      while (hi - lo > 0.2) {
+        var meio = (lo + hi) / 2;
+        if (cabe(meio)) { lo = meio; } else { hi = meio; }
+      }
+    }
+    el.style.fontSize = (Math.floor(lo * 4) / 4) + 'px';
+    // data-centro: o que sobrar de altura vai metade em cima, metade embaixo
+    // (o texto fica no meio da caixa, sem um vão grande só no pé)
+    if (el.hasAttribute('data-centro')) {
+      var sobra = el.clientHeight - el.scrollHeight;
+      if (sobra > 4) { el.style.paddingTop = (sobra / 2) + 'px'; }
     }
   }
   function ajustarTextos() {

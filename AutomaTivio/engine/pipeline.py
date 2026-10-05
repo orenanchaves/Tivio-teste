@@ -360,8 +360,30 @@ class Pipeline:
             self._relatorios(contextos)
         self._materiais_legados()
         self._copiar_libs()
+        self._porta_de_entrada()
         self._fechar(contextos)
         return self.log.ok
+
+    def _porta_de_entrada(self):
+        """saida/AAAA-MM/index.html: abre a Central, de onde se chega a tudo.
+
+        A edição tem duas pastas (central/ e relatorios/) que se apontam com
+        caminho relativo; este arquivo na raiz é a única porta de entrada, para
+        ninguém ter de saber em qual delas começar.
+        """
+        alvo = 'central/tivio-central.html'
+        if not os.path.exists(os.path.join(self.pasta_saida, alvo)):
+            return
+        html = ('<!doctype html><html lang="pt-BR"><head><meta charset="utf-8">'
+                f'<meta http-equiv="refresh" content="0; url={alvo}">'
+                f'<title>Central de Materiais · {self.edicao.mes_ano}</title></head>'
+                f'<body style="font-family:sans-serif;background:#0A0F14;color:#fff">'
+                f'<p><a style="color:#C1F4D4" href="{alvo}">Abrir a Central de Materiais'
+                f' · {self.edicao.mes_ano}</a></p></body></html>')
+        destino = os.path.join(self.pasta_saida, 'index.html')
+        with open(destino, 'w', encoding='utf-8') as f:
+            f.write(html)
+        self.log.gerado(destino, 'html')
 
     def _fechar(self, contextos):
         self.log.etapa('6/6 Conferência e log')
