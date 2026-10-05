@@ -100,6 +100,10 @@ table.perf tr.fundo td:first-child{color:#111}
 .hb-estrat{--hb-lab:206px;--hb-h:17px;--hb-c:#52BE7E}
 .hb-estrat .hbt{padding-right:18px}
 .hb-estrat .hbv{font-weight:600;font-size:15.5px}
+/* ALT Light publicado: linhas compactas, valor em azul e peso normal */
+.hb-estrat.compacta{--hb-h:15px}
+.hb-estrat.compacta .hbk{font-size:12.6px}
+.hb-estrat.compacta .hbv{font-weight:400;font-size:13.6px;color:#4F7A93}
 
 /* página 1 do high grade: emissores + rating | setores */
 .grade-hg{display:grid;grid-template-columns:434px 1fr;column-gap:16px;margin-top:38px}
@@ -114,7 +118,7 @@ table.perf tr.fundo td:first-child{color:#111}
 .v-ce .histbox .sh-fino{margin-top:44px}
 .bmbox{width:460px;margin-top:6px;background:#1F1F1F;border-radius:10px;color:#fff;padding:14px 20px 13px}
 .bmh{font-size:16.5px;font-weight:600;padding-bottom:9px;border-bottom:1.5px solid #A8F0C6;margin-bottom:12px}
-.bmcels{display:grid;grid-template-columns:repeat(3,1fr)}
+.bmcels{display:grid;grid-auto-flow:column;grid-auto-columns:minmax(130px,auto)}
 .bmcel{padding:0 16px;border-left:1px solid rgba(255,255,255,.55)}
 .bmcel:first-child{border-left:0;padding-left:0}
 .bmp{font-size:14.5px;font-weight:400}

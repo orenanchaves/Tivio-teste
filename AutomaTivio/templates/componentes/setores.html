@@ -2,7 +2,8 @@
    maiores, em verde. Caixa entra na posição do seu peso. #}
 <div class="blk"><h3 class="sh">{{ titulo }}</h3>
   {% if ve == 'ce' %}
-  {{ barras_modelo(c.setores_relatorio, 'estrat', 34 * (c.setores_relatorio|length))|safe }}
+  {% set passo = f.cfg.get('estrategia_linha', 34) %}
+  {{ barras_modelo(c.setores_relatorio, 'estrat' ~ (' compacta' if passo < 30 else ''), passo * (c.setores_relatorio|length))|safe }}
   {% else %}
   {{ barras_modelo(c.setores_relatorio, 'setor', [600, 30 * (c.setores_relatorio|length)]|min)|safe }}
   {% endif %}

@@ -693,7 +693,7 @@ class RenderizadorRelatorio:
         # carteira é cota sênior de FIDC.
         tipos = agrupar_tipos(ctx.cart['tipos'] if ctx.cart else None,
                               self.cad.tipo_label)
-        estrategia_treemap = grafico.treemap(tipos)
+        estrategia_treemap = grafico.treemap(tipos, cores=f.cfg.get('treemap_cores'))
 
         dados = {
             'f': f, 'c': ctx, 'edicao': self.edicao,

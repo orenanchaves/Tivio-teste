@@ -313,6 +313,11 @@ fundos:
     objetivo: >-
       Fundo de previdência de crédito com parcela máxima permitida em crédito
       estruturado. Além disso aloca em crédito privado e bancários.
+    # desenho do relatório publicado do ALT Light (agosto/2026)
+    razao_social: TIVIO ALT LIGHT XP PREV
+    setores_max_relatorio: 15       # o publicado lista 15 setores, em linhas compactas
+    estrategia_linha: 25
+    treemap_cores: ['#7FA2B6', '#2A3A47', '#92D3AB', '#C2C2C2', '#6F8FA3']
     # do relatório publicado de agosto/2026 (vencem a taxas_global.xlsx)
     taxa: 1,15% a.a.
     performance: 15% do retorno que exceder CDI+0,65%

@@ -203,7 +203,7 @@ class ContextoFundo:
         st = self.cart['setores']
         st = st[st > 0].sort_values(ascending=False)
         # o Institucional 30 publicado para nos 20 maiores (Têxtil e Calçados)
-        n = self.f.cfg.get('setores_max') or 20
+        n = self.f.cfg.get('setores_max_relatorio') or self.f.cfg.get('setores_max') or 20
         st = st.head(int(n))
         return [(n_, fmt.pct(v, 2), round(v * 100, 4)) for n_, v in st.items()]
 

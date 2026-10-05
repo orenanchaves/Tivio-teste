@@ -262,7 +262,7 @@ def _rotulo_tm(nome):
     return f'{_esc(partes[0])}<br><b>{_esc(partes[1])}</b>'
 
 
-def treemap(itens, largura=1000, altura=192):
+def treemap(itens, largura=1000, altura=192, cores=None):
     """[(nome, '49,1%', valor)] -> blocos proporcionais, do maior para o menor.
 
     A proporção (1000x190) é a do PPTX publicado, onde o bloco tem 712x137 px
@@ -275,6 +275,9 @@ def treemap(itens, largura=1000, altura=192):
     2,2% da carteira o rótulo de 13px não cabe, e um rótulo que não cabe vira
     um borrão cortado — foi o que aconteceu com "Crédito Estruturado".
     """
+    # a paleta segue a ordem do maior para o menor; o ALT Light publicado usa
+    # outra (configs/fundos.yml -> treemap_cores)
+    paleta = list(cores) if cores else TREEMAP_CORES
     itens = [i for i in itens if i[2] and i[2] > 0]
     itens.sort(key=lambda i: -i[2])
     if not itens:
@@ -290,7 +293,7 @@ def treemap(itens, largura=1000, altura=192):
 
     blocos = []
     for i, ((nome, rotulo, _), (bx, by, bl, ba)) in enumerate(zip(itens, caixas)):
-        cor = TREEMAP_CORES[min(i, len(TREEMAP_CORES) - 1)]
+        cor = paleta[min(i, len(paleta) - 1)]
         tinta = '#2B3744' if _claro(cor) else '#fff'
 
         fv = limites(min(bl / 5.2, ba / 3.2), 9.5, 21.0)
@@ -317,7 +320,7 @@ def treemap(itens, largura=1000, altura=192):
     # cabe, e sem ela o leitor fica com um "2,6%" sem dizer de quê.
     legenda = ''.join(
         f'<span class="tmleg"><i style="background:'
-        f'{TREEMAP_CORES[min(i, len(TREEMAP_CORES) - 1)]}"></i>{_esc(n)} '
+        f'{paleta[min(i, len(paleta) - 1)]}"></i>{_esc(n)} '
         f'<b>{_esc(r)}</b></span>'
         for i, (n, r, _) in enumerate(itens))
     return (f'<div class="tmwrap" style="aspect-ratio:{largura}/{altura}">'
@@ -374,10 +377,17 @@ def historico_modelo(hist, nome_bench, estilo, data_inicio=None,
         return '<div class="histvazio">sem série histórica</div>'
     meses, fundo, bench = list(hist['l']), list(hist['f']), list(hist['c'])
     # a curva publicada nasce em 0% no mês de início do fundo
+    inserido = False
     if fundo[0] != 0 and data_inicio is not None and str(data_inicio) != 'NaT':
         ini = f'{data_inicio:%Y-%m}'
         if ini < meses[0]:
             meses.insert(0, ini); fundo.insert(0, 0.0); bench.insert(0, 0.0)
+            inserido = True
+        elif estilo == 'ce' and ini == meses[0]:
+            # começou no meio do mês: a linha nasce em 0 e o mês parcial fica
+            # sem rótulo — o primeiro rótulo é o mês seguinte, como no publicado
+            meses.insert(0, ini); fundo.insert(0, 0.0); bench.insert(0, 0.0)
+            inserido = 'parcial'
     sep = '-' if estilo == 'cp' else '/'
     labels = [f'{fmt.MES_ABR[int(m[5:7]) - 1]}{sep}{m[2:4]}' for m in meses]
     n = len(labels)
@@ -394,6 +404,12 @@ def historico_modelo(hist, nome_bench, estilo, data_inicio=None,
     maxv = max(fundo + bench + [0])
     passo = _passo_eixo(maxv)
     topo = passo * (int(maxv / passo) + 1)
+    if estilo == 'ce':
+        # o Estruturado publicado para a grade no degrau ABAIXO do valor final
+        # (30% para um acumulado de 33%; 12% para 12,6%) e a linha passa dela
+        topo = max(passo, passo * int(maxv / passo))
+    # a escala vai até o valor final (com folga para a etiqueta); a grade, só até o topo
+    escala_topo = max(topo, maxv * 1.06)
     minv = min(fundo + bench + [0])
     base = 0 if minv >= 0 else -passo * (int(-minv / passo) + 1)
 
@@ -401,7 +417,7 @@ def historico_modelo(hist, nome_bench, estilo, data_inicio=None,
         return padL + (largura - padL - padR) * i / (n - 1)
 
     def Y(v):
-        return padT + (altura - padT - padB) * (1 - (v - base) / (topo - base))
+        return padT + (altura - padT - padB) * (1 - (v - base) / (escala_topo - base))
 
     s = [f'<svg viewBox="0 0 {largura} {altura}" xmlns="http://www.w3.org/2000/svg" '
          f'font-family="Versos,Arial,sans-serif" class="histsvg hs-{estilo}">']
@@ -429,6 +445,9 @@ def historico_modelo(hist, nome_bench, estilo, data_inicio=None,
     passo = max(1, -(-n // 24)) if n <= 30 else max(2, -(-n // 18))
     for i, lb in enumerate(labels):
         if (n - 1 - i) % passo:
+            continue
+        # no Estruturado o mês de início (parcial) não leva rótulo
+        if estilo == 'ce' and inserido and (i == 0 or (inserido == 'parcial' and i == 1)):
             continue
         x, y = X(i), altura - padB + 14
         anc = 'end'
