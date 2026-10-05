@@ -81,8 +81,15 @@ class ContextoFundo:
             if fora:
                 self.avisos.append('alocação real: book sem de-para, saiu com o próprio nome: '
                                    + ', '.join(fora))
-            # sobre o PL, como a planilha da gestão: fundo alavancado soma mais
-            # de 100% (ALT Light em setembro/2026: 126%, por um resgate grande)
+            # sobre o PL, como a planilha da gestão. Com `alocacao_100` no fundo,
+            # o que passa de 100% sai SÓ da linha do Caixa: fundo alavancado
+            # (ALT Light em setembro/2026, 126% do PL por um resgate grande)
+            # fecha em 100% sem mexer nos outros grupos
+            if self.f.cfg.get('alocacao_100') and 'Caixa' in serie.index:
+                excesso = float(serie.sum()) - 1.0
+                if excesso > 0:
+                    serie = serie.copy()
+                    serie['Caixa'] = max(0.0, serie['Caixa'] - excesso)
             return agrupar_tipos(serie, tabela)
         return agrupar_tipos(self.cart.get('tipos'), cadastro.tipo_label)
 

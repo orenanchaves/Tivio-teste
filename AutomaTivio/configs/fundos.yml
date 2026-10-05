@@ -316,6 +316,7 @@ fundos:
   altlight:
     nome: Tivio ALT Light
     book_depara: alt_light          # alocação real = Book Maravi pelo de-para
+    alocacao_100: true              # o que passar de 100% do PL sai só da linha do Caixa
     vertical: credito_estruturado
     carteira: TIVIO ALT LIGHT XP SEG PREV FC MULT CP RL - Expandida
     busca: [ALT LIGHT]
