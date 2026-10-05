@@ -191,6 +191,41 @@ class ContextoFundo:
         return [(n_, fmt.pct(v, 1), round(v * 100, 2)) for n_, v in st.items()]
 
     @property
+    def setores_relatorio(self):
+        """Setores como no relatório publicado: do maior para o menor, com o
+        Caixa na posição do seu peso (no Institucional 30 ele é o 2º), duas
+        casas. O Crédito Privado lista os 20 maiores; o ALT, `setores_max` (12).
+
+        Corte separado de `setores` porque posts e e-mail usam o top 5 + Caixa.
+        """
+        if not self.cart:
+            return []
+        st = self.cart['setores']
+        st = st[st > 0].sort_values(ascending=False)
+        # o Institucional 30 publicado para nos 20 maiores (Têxtil e Calçados)
+        n = self.f.cfg.get('setores_max') or 20
+        st = st.head(int(n))
+        return [(n_, fmt.pct(v, 2), round(v * 100, 4)) for n_, v in st.items()]
+
+    @property
+    def rating_relatorio(self):
+        """Rating do maior para o menor peso, todas as notas, duas casas."""
+        if not self.cart:
+            return []
+        rt = self.cart['rating']
+        rt = rt[rt > 0].sort_values(ascending=False)
+        return [(n, fmt.pct(v, 2), round(v * 100, 4)) for n, v in rt.items()]
+
+    @property
+    def emissores_relatorio(self):
+        """Top 5 emissores; '6,00%' sai '6%', como no publicado."""
+        if not self.cart:
+            return []
+        em = self.cart['emissores'].head(5)
+        return [(n, fmt.pct(v, 2).replace(',00%', '%'), round(v * 100, 4))
+                for n, v in em.items()]
+
+    @property
     def rating(self):
         if not self.cart:
             return []
@@ -419,6 +454,13 @@ class Contexto:
 
         taxa = self.tx.global_(key, f.cnpj, f.quantum)
         perf = self.tx.performance(key, f.cnpj, None, f.quantum)
+        # O texto publicado em configs/fundos.yml (`taxa`, `performance`) vence
+        # a taxas_global.xlsx: nos ALT a planilha diverge do relatório
+        # publicado (ALT 90 2,43% x 1,25%; ALT Light 0,65% x 1,15%).
+        if f.cfg.get('taxa'):
+            taxa = str(f.cfg['taxa'])
+        if f.cfg.get('performance'):
+            perf = str(f.cfg['performance'])
         if taxa is None:
             avisos.append('taxa global não encontrada na taxas_global.xlsx')
 

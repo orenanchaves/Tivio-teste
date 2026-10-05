@@ -218,21 +218,84 @@
     });
   }
 
+  /* Camada de texto do PDF baixado.
+
+     O PDF do botão é a foto da folha (html2canvas), e foto não tem texto: não
+     dá para selecionar, copiar nem buscar. Por cima da foto vai cada palavra
+     da folha, invisível, na posição e na largura exatas em que aparece — o
+     mesmo truque de um PDF escaneado com OCR. O visual não muda; a seleção, a
+     cópia e o Ctrl+F passam a funcionar.
+
+     Medido com a folha em zoom 1 (durante a exportação), em mm de A4. Rótulos
+     girados dos gráficos ficam de fora: a caixa deles é horizontal e a
+     seleção sairia torta. */
+  function camadaTexto(folha) {
+    var base = folha.getBoundingClientRect();
+    var k = 210 / base.width;
+    var out = [];
+    var andar = document.createTreeWalker(folha, NodeFilter.SHOW_TEXT, null);
+    var faixa = document.createRange();
+    var palavra = /\S+/g;
+    var no, m, r;
+    while ((no = andar.nextNode())) {
+      var txt = no.nodeValue;
+      if (!txt || !txt.trim() || !no.parentElement) { continue; }
+      if (no.parentElement.closest('[transform*="rotate"], script, style')) { continue; }
+      palavra.lastIndex = 0;
+      while ((m = palavra.exec(txt))) {
+        faixa.setStart(no, m.index);
+        faixa.setEnd(no, m.index + m[0].length);
+        r = faixa.getBoundingClientRect();
+        if (r.width < 0.5 || r.height < 0.5) { continue; }
+        if (r.bottom < base.top || r.top > base.bottom ||
+            r.right < base.left || r.left > base.right) { continue; }
+        out.push({ t: m[0], x: (r.left - base.left) * k, y: (r.top - base.top) * k,
+                   w: r.width * k, h: r.height * k });
+      }
+    }
+    return out;
+  }
+
+  function escreverCamada(pdf, palavras) {
+    pdf.setFont('helvetica', 'normal');
+    palavras.forEach(function (p) {
+      // a caixa da linha inclui o entrelinha; o corpo é ~78% dela
+      var corpo = p.h * 0.78;
+      pdf.setFontSize(corpo * 72 / 25.4);
+      var natural = pdf.getTextWidth(p.t.replace(/[−‒–—]/g, '-')) || p.w;
+      var opc = { renderingMode: 'invisible', baseline: 'alphabetic',
+                  horizontalScale: p.w / natural };
+      // o sinal de menos tipográfico não existe na fonte padrão do PDF; o
+      // espaço no fim separa palavras que vêm de elementos diferentes na cópia
+      var t = p.t.replace(/[−‒–—]/g, '-') + ' ';
+      try {
+        pdf.text(t, p.x, p.y + p.h * 0.8, opc);
+      } catch (e) {
+        // caractere fora da fonte padrão do PDF: a palavra fica só na imagem
+      }
+    });
+  }
+
   function exportarPDF() {
     return garantir('html2canvas').then(function () {
       return garantir('jspdf');
     }).then(function () {
       aviso('Gerando PDF…');
       return comBarraEscondida(function () {
-        return emSerie(folhas(), function (folha) { return capturar(folha); });
+        return emSerie(folhas(), function (folha) {
+          return capturar(folha).then(function (cv) {
+            return { cv: cv, texto: camadaTexto(folha) };
+          });
+        });
       });
-    }).then(function (canvases) {
+    }).then(function (paginas) {
       var jsPDF = window.jspdf.jsPDF;
       var pdf = new jsPDF({ orientation: 'portrait', unit: 'mm', format: 'a4',
                             compress: true });
-      canvases.forEach(function (cv, i) {
+      paginas.forEach(function (pg, i) {
         if (i) { pdf.addPage(); }
-        pdf.addImage(cv.toDataURL('image/jpeg', 0.95), 'JPEG', 0, 0, 210, 297);
+        pdf.addImage(pg.cv.toDataURL('image/jpeg', 0.95), 'JPEG', 0, 0, 210, 297);
+        escreverCamada(pdf, pg.texto);
       });
       pdf.save(nomeArquivo('', 'pdf'));
     });
@@ -301,7 +364,7 @@
   // ----------------------------------------------------------------- barra
   var BOTOES = [
     ['PDF (vetor)', imprimir, 'principal'],
-    ['PDF (imagem)', exportarPDF],
+    ['PDF (baixar)', exportarPDF],
     ['JPG', function () { return exportarImagem('jpg'); }],
     ['PNG', function () { return exportarImagem('png'); }],
     ['PPTX', exportarPPTX],

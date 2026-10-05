@@ -1,3 +1,9 @@
-<div><h3 class="chart-h">{{ titulo }}</h3>
-  <div>{{ barras(c.setores_barras, cor='#759DB4')|safe }}</div>
+{# Crédito Privado: todos os setores, descendo até o rodapé. ALT: os doze
+   maiores, em verde. Caixa entra na posição do seu peso. #}
+<div class="blk"><h3 class="sh">{{ titulo }}</h3>
+  {% if ve == 'ce' %}
+  {{ barras_modelo(c.setores_relatorio, 'estrat', 34 * (c.setores_relatorio|length))|safe }}
+  {% else %}
+  {{ barras_modelo(c.setores_relatorio, 'setor', [600, 30 * (c.setores_relatorio|length)]|min)|safe }}
+  {% endif %}
 </div>

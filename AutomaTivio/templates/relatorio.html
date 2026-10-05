@@ -16,49 +16,71 @@
 <body>
 <div class="folhas">
 
+{# Desenho do relatório publicado (PDF de agosto/2026): cabeçalho preto com o
+   logo horizontal do fundo, o T numa caixa à direita e, na página 1, a faixa
+   verde embaixo dela; rodapé com o logo Tivio, o número e a faixa da vertical
+   (azul no Crédito Privado, verde no Estruturado). #}
+{% macro secao(sid) %}{% set titulo = titulos[sid] %}{% include 'componentes/' ~ sid ~ '.html' %}{% endmacro %}
 {% for pagina in paginas %}
-  <section class="rcard" data-pagina="{{ pagina.numero }}">
+  {% set ids = pagina.secoes|map(attribute='id')|list %}
+  {% set tem_disc = 'disclaimer' in ids %}
+  {# High grade: emissores e rating dividem a coluna da esquerda, setores
+     desce pela da direita até o rodapé #}
+  {% set grade_hg = 'emissores' in ids and 'setores' in ids %}
+  {% set rodape_escuro = tem_disc or (ve == 'cp' and 'comentario' in ids) %}
+  <section class="rcard v-{{ ve }}" data-pagina="{{ pagina.numero }}">
 
-    {# cabeçalho: alto na página 1 (com logo e CNPJ), fino nas demais #}
     <header class="rc-head {{ 'big' if pagina.numero == 1 else 'slim' }}">
-      <div class="bgband"></div>
       <div class="hl">
-        {% if logo_svg %}
-        <div class="fund-logo">{{ logo_svg|safe }}</div>
-        {% else %}
-        <div class="heye">Relatório de Gestão</div>
-        <div class="hname">{{ f.nome }}</div>
-        {% endif %}
-        {% if pagina.numero == 1 and c.f.cnpj %}
-        <div class="hcnpj">CNPJ: {{ c.f.cnpj }}{% if c.f.benchmark %} · Benchmark: {{ c.benchmark }}{% endif %}</div>
-        {% endif %}
+        <div class="hlinha">
+          {% if logo_svg %}
+          <div class="fund-logo">{{ logo_svg|safe }}</div>
+          {% else %}
+          <div class="hname">{{ f.nome }}</div>
+          {% endif %}
+          {% if pagina.numero != 1 %}<div class="hdate">{{ edicao.mes_ano }}</div>{% endif %}
+        </div>
+        {% if pagina.numero == 1 %}
+        <div class="hrazao">{{ razao_social }}{% if c.f.cnpj %} <span class="hcnpj">/ CNPJ <span>{{ c.f.cnpj }}</span></span>{% endif %}</div>
+        <div class="hrule"></div>
         <div class="hdate">{{ edicao.mes_ano }}</div>
+        {% endif %}
       </div>
-      {% if marca_svg %}<div class="rbox">{{ marca_svg|safe }}</div>{% endif %}
+      <div class="rbox">{{ t_svg|safe }}</div>
+      {% if pagina.numero == 1 %}<div class="gstrip"></div>{% endif %}
     </header>
 
     <div class="rc-body">
-      {% for secao in pagina.secoes %}
-        {% if secao.primeiro_do_par %}
-        <div class="twocol">
-        {% endif %}
+      {% for s in pagina.secoes %}
+        {% set sid = s.id %}
+        {% if sid == 'objetivo' %}<div class="toppanel">{% endif %}
 
-        {# cada componente recebe o seu título da composição, não escrito nele #}
-        {% with titulo = titulos[secao.id] %}
-          {% include 'componentes/' + secao.id + '.html' with context %}
-        {% endwith %}
-
-        {% if secao.ultimo_do_par %}
+        {% if grade_hg and sid == 'emissores' %}
+        <div class="grade-hg">
+          <div class="gcol">
+            {{ secao('emissores') }}
+            {% if 'rating' in ids %}{{ secao('rating') }}{% endif %}
+          </div>
+          <div class="gcol">{{ secao('setores') }}</div>
         </div>
+        {% elif grade_hg and sid in ('setores', 'rating') %}
+        {% else %}
+          {% if s.primeiro_do_par %}<div class="twocol">{% endif %}
+          {{ secao(sid) }}
+          {% if s.ultimo_do_par %}</div>{% endif %}
         {% endif %}
+
+        {% if sid == 'rentabilidade' %}</div>{% endif %}
       {% endfor %}
     </div>
 
-    {% set na_faixa = 'disclaimer' in pagina.secoes|map(attribute='id')|list %}
-    {# na folha do disclaimer o número fica sobre a faixa escura, então inverte
-       a cor — era por isso que ele sumia #}
-    <div class="pgnum{{ ' sobre-faixa' if na_faixa }}">
-      <b>{{ pagina.numero }}</b> / {{ paginas|length }}</div>
+    {% if not tem_disc %}
+    <div class="rc-foot{{ ' escuro' if rodape_escuro }}">
+      <span class="flogo">{{ marca_svg|safe }}</span>
+      <span class="pgnum">{{ pagina.numero }}</span>
+    </div>
+    {% endif %}
+    <div class="rc-faixa"></div>
   </section>
 {% endfor %}
 

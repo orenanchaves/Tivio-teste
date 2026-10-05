@@ -208,6 +208,9 @@ class RenderizadorRelatorio:
         self._logos = self._indexar_logos()
         marca = os.path.join(RAIZ, 'assets', 'marca', 'tivio.svg')
         self.marca_svg = open(marca, encoding='utf-8').read() if os.path.exists(marca) else ''
+        # o T sozinho, da caixa preta à direita do cabeçalho (subpaths do tivio.svg)
+        simbolo = os.path.join(RAIZ, 'assets', 'marca', 'tivio_t.svg')
+        self.t_svg = open(simbolo, encoding='utf-8').read() if os.path.exists(simbolo) else ''
         self.echarts_js, self.charts_js = self._ler_js()
 
     # ------------------------------------------------------------------ apoio
@@ -322,8 +325,10 @@ class RenderizadorRelatorio:
         return svg.replace('<?xml version="1.0" encoding="UTF-8"?>', '').strip()
 
     # variantes, em ordem de preferência (a faixa do cabeçalho é escura)
-    VARIANTES = ['horizontal_branco', 'vertical_branco',
-                 'horizontal_preto', 'vertical_preto']
+    # Logo sempre horizontal, como nos relatórios publicados: a horizontal
+    # preta vem antes de qualquer vertical (o Tivio Institucional só tem essa).
+    VARIANTES = ['horizontal_branco', 'horizontal_preto',
+                 'vertical_branco', 'vertical_preto']
 
     @staticmethod
     def _casa_logo(chave, alvo):
@@ -351,11 +356,19 @@ class RenderizadorRelatorio:
         for chave, caminho in sorted(self._logos.items()):
             ordem = self._casa_logo(chave, alvo)
             if ordem is not None:
-                candidatos.append((ordem, chave, caminho))
+                # entre as numeradas, a de maior número: no ALT a _03 é a
+                # "TIVIO ALT CRÉDITO 180" numa linha só, a do relatório publicado
+                num = re.search(r'_(\d+)$', chave)
+                candidatos.append((ordem, -int(num.group(1)) if num else 0, chave, caminho))
         if candidatos:
             candidatos.sort()
-            return self._preparar_svg(
-                open(candidatos[0][2], encoding='utf-8').read(), fundo.key)
+            svg = self._preparar_svg(
+                open(candidatos[0][3], encoding='utf-8').read(), fundo.key)
+            if self.VARIANTES[candidatos[0][0]].endswith('preto'):
+                # na versão preta o "TIVIO" vem sem cor (= preto) e some no
+                # cabeçalho escuro; o que não tem classe herda branco da raiz
+                svg = re.sub(r'<svg\b', '<svg fill="#fff"', svg, count=1)
+            return svg
         self.log.aviso(fundo.key, f'logo não encontrado em assets/logos (procurei "{alvo}")')
         return ''
 
@@ -423,7 +436,9 @@ class RenderizadorRelatorio:
         return paginas
 
     # Pares que ocupam meia folha cada, na ordem em que são procurados.
-    DUPLAS = (('emissores', 'setores'), ('setores', 'colaterais'))
+    # O high grade (emissores + rating | setores) é montado no template, porque
+    # a coluna da esquerda leva dois blocos.
+    DUPLAS = (('setores', 'colaterais'),)
 
     # --------------------------------------------------- ajuste do comentário
     # O comentário do gestor varia muito de tamanho: o do Infra Plus tem 4
@@ -542,6 +557,104 @@ class RenderizadorRelatorio:
             itens.append(('Duration média', ctx.duration_fmt))
         return itens
 
+    # ------------------------------------------------ desenho do publicado
+    @staticmethod
+    def ve(fundo):
+        """'ce' no Crédito Estruturado (acento verde), 'cp' no resto (azul)."""
+        return 'ce' if fundo.cfg.get('vertical') == 'credito_estruturado' else 'cp'
+
+    @staticmethod
+    def razao_social(fundo):
+        """A linha em caixa alta sob o logo: "TIVIO INSTITUCIONAL 30 FIF CLASSE…".
+
+        `razao_social` em configs/fundos.yml manda. Sem ela, sai do nome da
+        carteira na DePara, que é a mesma denominação abreviada.
+        """
+        if fundo.cfg.get('razao_social'):
+            return fundo.cfg['razao_social']
+        base = re.sub(r'\s*-\s*Expandida\s*$', '', str(fundo.cfg.get('carteira') or fundo.nome),
+                      flags=re.I)
+        return re.sub(r'\bCI\b', 'CLASSE INVESTIMENTO', base).upper()
+
+    @staticmethod
+    def _inicio(ctx):
+        f = ctx.f
+        if f.resolvido and f.data_inicial is not None and str(f.data_inicial) != 'NaT':
+            return f.data_inicial
+        return ctx.data_inicio
+
+    def caracteristicas_modelo(self, ctx):
+        """As duas colunas de "Características gerais do fundo" do publicado.
+
+        Esquerda: gestor, público, início, taxa, PL. Direita: performance,
+        informações operacionais, PL médio. Sem benchmark, carrego e duration,
+        que o relatório publicado não traz.
+        """
+        f = ctx.f
+        ve = self.ve(f)
+        inicio = self._inicio(ctx)
+        esq = [('Gestor', 'Tivio Capital'),
+               ('Público Alvo', f.cfg.get('publico', 'Investidores em geral'))]
+        if inicio is not None:
+            esq.append(('Data de início', f'{inicio:%d/%m/%Y}'))
+        # o Estruturado publicado chama de "Taxa de administração e gestão"
+        rot_taxa = 'Taxa de administração e gestão' if ve == 'ce' else self.cad.rotulo_taxa
+        esq += [(rot_taxa, ctx.taxa or fmt.MINUS),
+                ('Patrimônio líquido', ctx.pl_fmt)]
+        dir_ = [('Taxa de performance', ctx.perf or fmt.MINUS)]
+        # sem `operacional` no fundos.yml o bloco sairia só com o título
+        if f.cfg.get('operacional'):
+            dir_.append(('Informações Operacionais', None))
+        dir_.append(('Patrimônio líquido médio ' + ('(12M)' if ve == 'ce' else '(12 meses)'),
+                     ctx.pl_medio_fmt))
+        return esq, dir_
+
+    @staticmethod
+    def mercado_modelo(m):
+        """A tabela de Mercado de Crédito como no publicado: o total numa
+        tabelinha própria em cima, e no corpo o % e a duration com uma casa."""
+        if not m:
+            return m
+
+        def num(txt):
+            try:
+                return float(str(txt).replace('.', '').replace('%', '').replace(',', '.'))
+            except ValueError:
+                return None
+
+        def uma_casa(txt, pct):
+            v = num(txt)
+            if v is None:
+                return txt
+            return fmt.num(v, 1) + ('%' if pct else '')
+
+        cab = list(m['cabecalho'])
+        i_pct = next((i for i, h in enumerate(cab) if h.strip() == '%'), None)
+        i_dur = next((i for i, h in enumerate(cab) if h.lower().startswith('duration')), None)
+        linhas, resumo = [], None
+        for ln in m['linhas']:
+            cel = list(ln['celulas'])
+            if ln.get('total'):
+                if i_pct is not None:
+                    v = num(cel[i_pct])
+                    if v is not None:
+                        cel[i_pct] = fmt.num(v, 0) + '%'
+                resumo = cel[1:]
+                continue
+            if i_pct is not None:
+                cel[i_pct] = uma_casa(cel[i_pct], True)
+            if i_dur is not None:
+                cel[i_dur] = uma_casa(cel[i_dur], False)
+            linhas.append(cel)
+        # larguras do publicado (tabela CDI, 7 colunas); a do IPCA tem 10 e
+        # divide o que sobra do setor em partes iguais
+        if len(cab) == 7:
+            larg = [270, 150, 60, 92, 155, 68, 68]
+        else:
+            resto = (863 - 196) / max(1, len(cab) - 1)
+            larg = [196] + [round(resto, 1)] * (len(cab) - 1)
+        return dict(m, cabecalho=cab, linhas=linhas, resumo=resumo, larguras=larg)
+
     @staticmethod
     def operacional(fundo):
         rot = {'aplicacao': 'Aplicação', 'resgate': 'Resgate',
@@ -584,13 +697,14 @@ class RenderizadorRelatorio:
         dados = {
             'f': f, 'c': ctx, 'edicao': self.edicao,
             'paginas': paginas,
-            'periodos': ['Mês', 'Ano', '12M', '24M', '36M', 'Desde o início'],
+            'periodos': ['Mês', 'Ano', '12M', '24M', '36M', 'Desde o Início'],
             'linhas': ctx.linhas_rentabilidade,
             'css_marca': self.css_marca, 'css_relatorio': self.css_relatorio,
             'css_entrega': self.css_entrega,
             'css_impressao': self.css_impressao,
             'logo_svg': self.logo(f),
             'marca_svg': self.marca_svg,
+            't_svg': self.t_svg,
             'echarts_src': self.ECHARTS,
             'charts_js': self.charts_js,
             'export_js': self.export_js,
@@ -601,9 +715,16 @@ class RenderizadorRelatorio:
             }, ensure_ascii=False),
             'barras': grafico.barras_horizontais,
             'rating_cols': grafico.colunas_rating,
-            'grafico': grafico.linha_historica(ctx.hist12, ctx.benchmark),
-            'mercado': self.mercado(ctx),
+            'barras_modelo': grafico.barras_modelo,
+            've': self.ve(f),
+            'razao_social': self.razao_social(f),
+            # desde o início, como no publicado — não a janela de 12 meses
+            'grafico': grafico.historico_modelo(
+                ctx.hist or ctx.hist12, ctx.benchmark, self.ve(f),
+                data_inicio=self._inicio(ctx)),
+            'mercado': self.mercado_modelo(self.mercado(ctx)),
             'caracteristicas': self.caracteristicas(ctx),
+            'carac_colunas': self.caracteristicas_modelo(ctx),
             'operacional': self.operacional(f),
             'disclaimer': self.disclaimer,
             'selos': self.selos,

@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>Relatórios de Gestão · {{ vertical_rotulo }} · {{ edicao.mes_ano }}</title>
-<meta name="description" content="Relatórios de gestão mensais de {{ vertical_rotulo }} — {{ decks|length }} fundos, data base {{ edicao.br }}.">
+<meta name="description" content="Relatórios de gestão mensais de {{ vertical_rotulo }}: {{ decks|length }} fundos, data base {{ edicao.br }}.">
 <style>
 {{ css_marca|safe }}
 {{ css_pagina|safe }}
@@ -95,10 +95,10 @@ body.tv-exportando .backtop{display:none}
   <section class="intro hero-stagger">
     <div class="eyebrow"><span class="dot news-pulse"></span>{{ edicao.mes_ano }} · Data base {{ edicao.br }} · A4 · {{ paginas_por_fundo }} páginas por fundo</div>
     <h1>Relatórios de Gestão <span class="sep">|</span> <strong>{{ vertical_rotulo }}</strong></h1>
-    <p>Escolha o <b>fundo</b> nas abas abaixo — cada aba abre o relatório completo de
+    <p>Escolha o <b>fundo</b> nas abas abaixo. Cada aba abre o relatório completo de
       <b>{{ paginas_por_fundo }} páginas A4</b> daquele fundo. {{ descricao_secoes }}
       Ative <b>Editar textos</b> para ajustar qualquer conteúdo antes de exportar em
-      <b>PDF</b>, <b>JPG</b>, <b>PNG</b> ou <b>PPTX</b> — a exportação leva só o fundo que está na tela.</p>
+      <b>PDF</b>, <b>JPG</b>, <b>PNG</b> ou <b>PPTX</b>. A exportação leva só o fundo que está na tela.</p>
   </section>
 
   <nav class="fundtabs" id="fundtabs" role="tablist" aria-label="Fundos de {{ vertical_rotulo }}">

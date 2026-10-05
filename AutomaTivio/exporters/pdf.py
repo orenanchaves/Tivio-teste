@@ -17,6 +17,13 @@ Com isso o PDF sai com texto selecionável, Versos embutida, vetor nas linhas do
 gráfico e uma folha A4 por página — que é o que "qualidade institucional"
 significa na prática.
 
+O fluxo segue a skill html-to-pdf (github.com/aviz85/claude-skills-library):
+Chrome headless, página A4 exata com escala 1 (quem encolhe a folha de
+1000x1414 é o `zoom` do CSS, não o `scale` do PDF), fundo impresso, espera das
+fontes, texto ajustado para caber, e o PDF gerado é CONFERIDO depois de
+gravado: número de páginas esperado e texto selecionável. O comando avulso
+no fim do arquivo converte qualquer HTML do mesmo jeito.
+
 A fonte vem de CDN. Sem rede, o Chromium cai para a fallback e o PDF sai com a
 métrica errada — então esperamos a fonte carregar e avisamos quando ela não vem,
 em vez de publicar um PDF com a tipografia trocada sem ninguém notar.
@@ -82,7 +89,8 @@ class ExportadorPDF:
             self._pw.stop()
 
     # -------------------------------------------------------------- exportação
-    def exportar(self, html, destino, largura=1000, altura=1414, origem=None):
+    def exportar(self, html, destino, largura=1000, altura=1414, origem=None,
+                 esperadas=None, espera_ms=600):
         """Grava o PDF e devolve o caminho.
 
         `origem` é o HTML já gravado em disco. Quando existe, a página é aberta
@@ -107,13 +115,55 @@ class ExportadorPDF:
             self._esperar_graficos(pagina, destino)
             self._conferir_estouro(pagina, destino)
             pagina.emulate_media(media='print')
+            # no modo impressão o texto que se ajusta à caixa (comentário,
+            # disclaimer) é medido de novo, e só então imprime
+            pagina.evaluate('window.tvAjustarTextos && window.tvAjustarTextos()')
+            pagina.wait_for_timeout(espera_ms)
             self._conferir_enquadramento(pagina, destino)
-            pagina.pdf(path=destino, prefer_css_page_size=True,
+            if esperadas is None:
+                esperadas = pagina.evaluate("document.querySelectorAll('.rcard').length") or None
+            pagina.pdf(path=destino, prefer_css_page_size=True, scale=1,
                        print_background=True, display_header_footer=False,
                        margin={'top': '0', 'right': '0', 'bottom': '0', 'left': '0'})
         finally:
             pagina.close()
+        self._conferir_pdf(destino, esperadas)
         return destino
+
+    def _conferir_pdf(self, destino, esperadas):
+        """Abre o PDF gravado e confere o que a skill html-to-pdf manda conferir.
+
+        - número de páginas: uma folha a mais é página em branco, uma a menos é
+          folha engolida — os dois saem sem erro nenhum do Chromium;
+        - tamanho A4 (210 x 297 mm);
+        - texto selecionável em todas as páginas: se uma página não tem texto,
+          ela virou imagem (ou saiu em branco).
+        """
+        try:
+            from pypdf import PdfReader
+        except ImportError:
+            return   # sem pypdf a conferência fica para o olho
+        nome = os.path.basename(destino)
+        try:
+            pdf = PdfReader(destino)
+        except Exception as e:
+            self.log.aviso(nome, f'não deu para reabrir o PDF gerado: {e!r}')
+            return
+        n = len(pdf.pages)
+        if esperadas and n != esperadas:
+            self.log.aviso(nome, f'{n} páginas no PDF, esperadas {esperadas} — '
+                                 f'folha estourando (página a mais) ou sumindo')
+        for i, pg in enumerate(pdf.pages, 1):
+            w = float(pg.mediabox.width) / 72 * 25.4
+            h = float(pg.mediabox.height) / 72 * 25.4
+            if abs(w - 210) > 1 or abs(h - 297) > 1:
+                self.log.aviso(nome, f'página {i} com {w:.0f} x {h:.0f} mm, não A4')
+                break
+        sem_texto = [i for i, pg in enumerate(pdf.pages, 1)
+                     if len((pg.extract_text() or '').strip()) < 20]
+        if sem_texto:
+            self.log.aviso(nome, f'página(s) {sem_texto} sem texto selecionável — '
+                                 f'saiu imagem ou em branco')
 
     def _esperar_graficos(self, pagina, destino):
         """Só imprime depois que os gráficos desenharam.
@@ -214,7 +264,8 @@ class ExportadorPDF:
         """
         try:
             pagina.wait_for_function('document.fonts.ready.then(()=>true)', timeout=15000)
-            ok = pagina.evaluate('document.fonts.check(\'300 16px Versos\')')
+            # 400 é o peso do corpo da folha; o 300 não é usado e nunca baixa
+            ok = pagina.evaluate('document.fonts.check(\'400 16px Versos\')')
         except Exception as e:
             self.log.aviso(os.path.basename(destino), f'não deu para conferir a fonte: {e!r}')
             return
@@ -222,3 +273,41 @@ class ExportadorPDF:
             self.log.aviso(os.path.basename(destino),
                            'fonte Versos não carregou (CDN inacessível?) — o PDF sai '
                            'com a fonte de fallback e a métrica do texto muda')
+
+
+# --------------------------------------------------------------------------
+# Comando avulso — o equivalente do `html-to-pdf.js` da skill, para converter
+# qualquer HTML no mesmo padrão (A4, sem margem, fundo, texto selecionável):
+#
+#   python -m exporters.pdf "relatorio.html" "relatorio.pdf"
+#   python -m exporters.pdf "relatorio.html" "relatorio.pdf" --paginas=4
+#
+# Serve, por exemplo, para a página salva no navegador (Ctrl+S) depois de
+# ajustar textos com "Editar textos".
+# --------------------------------------------------------------------------
+class _LogTerminal:
+    def info(self, msg):
+        print(msg)
+
+    def aviso(self, onde, msg):
+        print(f'AVISO [{onde}] {msg}')
+
+
+def main(argv=None):
+    import argparse
+    ap = argparse.ArgumentParser(description='HTML -> PDF A4 vetorial (Chromium headless)')
+    ap.add_argument('entrada', help='arquivo .html')
+    ap.add_argument('saida', nargs='?', help='arquivo .pdf (padrão: mesmo nome)')
+    ap.add_argument('--paginas', type=int, default=None,
+                    help='páginas esperadas (padrão: uma por folha .rcard)')
+    ap.add_argument('--espera', type=int, default=600, help='ms de espera antes de imprimir')
+    a = ap.parse_args(argv)
+    saida = a.saida or os.path.splitext(a.entrada)[0] + '.pdf'
+    log = _LogTerminal()
+    with ExportadorPDF(log) as exp:
+        exp.exportar(None, saida, origem=a.entrada, esperadas=a.paginas, espera_ms=a.espera)
+    print(f'PDF: {saida}')
+
+
+if __name__ == '__main__':
+    main()

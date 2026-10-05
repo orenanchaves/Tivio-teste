@@ -1,14 +1,20 @@
-{# Tabela setorial ANBIMA — vem de entrada/preenchimento_manual.xlsx,
-   aba Mercado_Credito. É o único bloco do relatório que não sai das cotas. #}
-<h3 class="chart-h">{{ titulo }}<sup>1</sup></h3>
-<table class="mkt">
+{# Tabela setorial ANBIMA, como no publicado: o total numa tabela própria em
+   cima e o corpo em linhas zebradas. #}
+<h3 class="sh sh-fino">{{ titulo }}<sup>1</sup></h3>
+{% if mercado.resumo %}
+<table class="mkt mkt-resumo{{ ' largo' if mercado.larguras|length > 7 }}">
+  <colgroup>{% for w in mercado.larguras %}<col style="width:{{ w }}px">{% endfor %}</colgroup>
+  <thead><tr><th class="vazio"></th>{% for h in mercado.cabecalho[1:] %}<th>{{ h }}</th>{% endfor %}</tr></thead>
+  <tbody><tr><td></td>{% for cel in mercado.resumo %}<td>{{ cel }}</td>{% endfor %}</tr></tbody>
+</table>
+{% endif %}
+<table class="mkt{{ ' largo' if mercado.larguras|length > 7 }}">
+  <colgroup>{% for w in mercado.larguras %}<col style="width:{{ w }}px">{% endfor %}</colgroup>
   <thead><tr>{% for h in mercado.cabecalho %}<th>{{ h }}</th>{% endfor %}</tr></thead>
   <tbody>
     {% for linha in mercado.linhas %}
-    <tr{% if linha.total %} class="total"{% endif %}>
-      {% for cel in linha.celulas %}<td>{{ cel }}</td>{% endfor %}
-    </tr>
+    <tr>{% for cel in linha %}<td{% if loop.index == 2 %} class="vol"{% endif %}>{{ cel }}</td>{% endfor %}</tr>
     {% endfor %}
   </tbody>
 </table>
-<div class="mktnote">{{ mercado.nota }}</div>
+<div class="mktnote"><sup>1</sup>{{ mercado.nota }}</div>

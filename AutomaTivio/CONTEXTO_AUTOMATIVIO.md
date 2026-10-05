@@ -126,7 +126,14 @@ python run.py --saidas html         # pula PDF e PPTX (mais rápido ao iterar)
 python run.py --conferir            # calcula e valida, não escreve nada
 python run.py --data-base 2026-08-31  # força a data base
 python run.py --silencioso          # não imprime; só grava o log
+
+# qualquer HTML -> PDF A4 vetorial, texto selecionável (padrão da skill html-to-pdf)
+python -m exporters.pdf "pagina.html" "pagina.pdf"
+python -m exporters.pdf "pagina.html" "pagina.pdf" --paginas=4   # avisa se der outro número
 ```
+
+Todo PDF gerado é reaberto e conferido: número de páginas, tamanho A4 e texto
+selecionável em todas as páginas. O que não bater vira aviso no log.
 
 E o teste que importa:
 
@@ -349,15 +356,16 @@ controlada. Não é impressão de navegador.
 
 ### Os gráficos
 
-SVG desenhado no Python (`calculators/grafico.py`) **dentro** de um contêiner
-que o Apache ECharts assume depois (`assets/relatorio_charts.js`).
+SVG e HTML desenhados no Python (`calculators/grafico.py`: `barras_modelo`,
+`historico_modelo`, `treemap`) no desenho do relatório publicado de
+agosto/2026, e **esse é o desenho final**: o ECharts não redesenha mais por
+cima (redesenhava com outras cores, eixos e rótulos). Os dados continuam no
+atributo `data-dados` do contêiner, caso alguém queira religar a interação.
 
-Isso é aprimoramento progressivo, não elegância: o PDF é gerado sem ninguém
-olhando, e um `<div>` vazio esperando JS vira **retângulo branco no meio da
-folha**. Com o desenho do servidor dentro, o pior caso é o gráfico sem tooltip.
-
-`renderer: 'svg'` é obrigatório — em canvas o gráfico vira bitmap dentro de um
-PDF vetorial, que é o que faz um PDF parecer impressão de tela.
+O `assets/relatorio_charts.js` agora faz duas coisas na abertura da página (e
+de novo ao trocar de aba): recorta o `viewBox` dos logos dos fundos pelo
+contorno do desenho (os SVGs vêm com muita margem interna) e reduz o corpo do
+comentário do gestor e do disclaimer até caber na caixa (`.tv-ajusta`).
 
 ---
 
@@ -376,7 +384,10 @@ foram abertos e comparados **shape a shape**.
 | Alocação por **estratégia** (CE) | Barras dos **setores** (12 + Caixa) |
 | COLATERAIS (CE) | 5 cartões fixos, com os SVGs **extraídos do próprio PPTX** |
 | CDI+ por período (CE) | Caixa sob a rentabilidade histórica: Desde o início · 12M · Mês |
-| Setores (CP) | Top 5 + Caixa (o Banks publicado mostra só Financeiro e Caixa) |
+| Setores (CP) | Os 20 maiores, do maior para o menor, com o Caixa na posição do seu peso (como no Institucional 30 publicado) |
+| Rating (CP) | Barras horizontais, todas as notas, ordenadas por peso |
+| Rentabilidade histórica | Desde o início do fundo, não 12 meses |
+| Cabeçalho | Preto, logo **sempre horizontal** (no ALT a variante `_03`), razão social / CNPJ, o T à direita e a faixa verde na página 1 |
 | Disclaimer | Os 4 parágrafos reais, extraídos do PPTX (3.689 caracteres) |
 | Selos | ANBIMA ×2, Rating S&P, PRI — extraídos do PPTX, embutidos em base64 |
 | Comentário do gestor | Texto preservado vírgula por vírgula; só os `X%` preenchidos |

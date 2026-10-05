@@ -6,7 +6,9 @@
    sombra nem fundo cinza, e nada quebra no meio. */
 @page{size:210mm 297mm;margin:0}
 @media print{
-  html,body{background:#fff}
+  /* sem fundo em html/body: na impressão do Chromium ele pode abrir uma
+     página a mais (skill html-to-pdf). Cada folha já tem o seu fundo. */
+  html,body{background:none}
   .tv-bar,.tv-toast{display:none!important}
   .folhas{display:block;gap:0;padding:0}
 

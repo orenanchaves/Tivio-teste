@@ -135,14 +135,12 @@ como Jinja trocaria material desenhado por uniformidade de código.
 
 ### Gráficos
 
-SVG desenhado no Python (`calculators/grafico.py`) **dentro** de um contêiner que
-o ECharts assume depois (`assets/relatorio_charts.js`). Aprimoramento
-progressivo e não elegância: o PDF é gerado sem ninguém olhando, e um `<div>`
-vazio esperando JS vira retângulo branco no meio da folha. `renderer: 'svg'` é
-obrigatório — em canvas o gráfico vira bitmap dentro de um PDF vetorial.
-
-O ECharts **trunca rótulo em silêncio**. Qualquer largura fixa em `axisLabel`
-some com o nome do setor sem erro nenhum; dimensione pela largura real do bloco.
+SVG/HTML desenhado no Python (`calculators/grafico.py`: `barras_modelo`,
+`historico_modelo`, `treemap`) no desenho do relatório publicado, e esse é o
+desenho final: o ECharts não assume mais o contêiner. `assets/relatorio_charts.js`
+recorta o viewBox dos logos dos fundos e encolhe o texto `.tv-ajusta`
+(comentário, disclaimer) até caber. A referência visual está em
+`../_revisao/modelo/` (PDFs de agosto/2026 do Institucional 30 e do ALT 180).
 
 ---
 

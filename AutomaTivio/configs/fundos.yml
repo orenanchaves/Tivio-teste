@@ -102,6 +102,7 @@ fundos:
     busca: [INSTITUCIONAL 30]
     logo: Institucional 30
     relatorio: true
+    razao_social: TIVIO INSTITUCIONAL 30 FIF CLASSE INVESTIMENTO RF CP LP RL
     objetivo: >-
       O fundo tem como objetivo identificar oportunidades em ativos de crédito
       high grade/mid grade (Bancário, Corporativo e FIDC). Ele busca superar a
@@ -251,6 +252,16 @@ fundos:
     busca: [ALT HY 180]
     logo: ALT_180
     relatorio: true
+    razao_social: TIVIO ALT CRÉDITO HIGH YIELD 180 FIDC – RL
+    # do relatório publicado de agosto/2026 (vencem a taxas_global.xlsx)
+    taxa: 1,15% a.a.
+    performance: 20% do que exceder do CDI
+    publico: Investidores qualificados, Family Offices e Multi Family
+    operacional:
+      aplicacao: D+1
+      resgate: D+180
+      aplicacao_minima: R$ 1.000,00
+      movimentacao_minima: R$ 1.000,00
     linha_bench_mais: true    # 4ª linha da tabela, como no original
     sem_alfa: true            # a tabela do ALT publicado não traz Alfa
     setores_max: 12           # o publicado lista doze setores, não cinco
@@ -278,6 +289,15 @@ fundos:
       meio de FIDCs em cotas sênior, garantindo diversificação, segurança e
       relação risco-retorno atrativa.
     performance_fixa: true
+    # do relatório publicado de agosto/2026 (vencem a taxas_global.xlsx)
+    taxa: 1,25% a.a.
+    performance: 10% do que exceder do CDI
+    publico: Investidor qualificado
+    operacional:
+      aplicacao: D+1
+      resgate: D+90
+      aplicacao_minima: R$ 1.000,00
+      movimentacao_minima: R$ 1.000,00
 
   altlight:
     nome: Tivio ALT Light
@@ -293,6 +313,15 @@ fundos:
     objetivo: >-
       Fundo de previdência de crédito com parcela máxima permitida em crédito
       estruturado. Além disso aloca em crédito privado e bancários.
+    # do relatório publicado de agosto/2026 (vencem a taxas_global.xlsx)
+    taxa: 1,15% a.a.
+    performance: 15% do retorno que exceder CDI+0,65%
+    publico: Investidor qualificado
+    operacional:
+      aplicacao: D+1
+      resgate: D+50
+      aplicacao_minima: R$ 1.000,00
+      movimentacao_minima: R$ 1.000,00
 
   # ------------------------------------------------- Investment Solutions
   topgestor:         {nome: BV Top Gestor Crédito Privado,  vertical: investment_solutions, carteira: BV TOP GESTOR CRED PRIV FC FIM}

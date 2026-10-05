@@ -1,109 +1,240 @@
-/* Folha A4 do Relatório de Gestão (1000x1414) — extraída do gerador
-   oficial para o template Jinja reproduzir o layout publicado, não um
-   layout parecido. Qualquer ajuste de design entra aqui. */
+/* Folha A4 do Relatório de Gestão (1000x1414) — desenhada sobre os PDFs
+   publicados de agosto/2026 (Institucional 30 e ALT 180). Medidas tiradas do
+   original na escala da folha; qualquer ajuste de design entra aqui.
+   Crédito Privado (.v-cp) tem acento azul; Crédito Estruturado (.v-ce), verde. */
 /* ================= REPORT A4 CARD (1000 x 1414) ================= */
-.rcard{width:1000px;height:1414px;position:relative;overflow:hidden;background:#fff;color:#1a1a1a;font-family:var(--ff);font-weight:300}
-.rc-head{position:relative;width:100%;overflow:hidden;color:#fff}
-.rc-head.big{height:212px}.rc-head.slim{height:118px}
-.rc-head .bgband{position:absolute;inset:0;background:linear-gradient(105deg,#2a3542 0%,#3C4A60 55%,#46586f 100%)}
-.rc-head .hl{position:absolute;top:0;bottom:0;left:57px;right:200px;display:flex;flex-direction:column;justify-content:center;z-index:2}
-.rc-head .heye{font-size:12px;letter-spacing:.24em;text-transform:uppercase;font-weight:700;color:var(--tv-cinza-claro)}
-.rc-head.big .hname{font-size:44px;line-height:1.02;font-weight:700;letter-spacing:-.02em;margin-top:6px}
-.rc-head.slim .hname{font-size:26px;line-height:1.05;font-weight:700;letter-spacing:-.01em;margin-top:3px}
-/* logo do fundo no cabeçalho (usa os SVGs oficiais dos fundos) · alinhado à esquerda */
-.rc-head .fund-logo{display:block;width:auto;color:#fff;align-self:flex-start;margin-left:-2px}
-.rc-head.big .fund-logo{height:66px;margin:0 0 2px -2px}
-.rc-head.slim .fund-logo{height:42px;margin:0 0 0 -2px}
-.rc-head .hcnpj{font-size:12px;color:rgba(255,255,255,.8);margin-top:9px;font-weight:400}
-.rc-head .hrule{height:1px;background:rgba(255,255,255,.3);margin:12px 0 9px}
-.rc-head .hdate{font-size:14px;color:#fff;font-weight:400}
-.rc-head.slim .hdate{font-size:12px;margin-top:6px}
-.rc-head .rbox{position:absolute;right:0;top:0;bottom:0;width:181px;background:#000;display:flex;align-items:flex-start;justify-content:center}
-.rc-head.big .rbox{padding-top:34px}.rc-head.slim .rbox{align-items:center;padding-top:0}
-.rc-head .rbox .tv-brand{width:118px;height:auto;color:#fff;display:block}
-.rc-head.slim .rbox .tv-brand{width:104px}
-.rc-head.big .gstrip{position:absolute;right:0;bottom:0;width:181px;height:19px;background:var(--tv-verde)}
-.rc-body{padding:0 57px}
-.sh{margin:0 0 14px;font-size:15px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:var(--tv-azul-escuro)}
-.objcard{margin-top:28px;background:var(--tv-offwhite);border-radius:14px;padding:26px 33px}
-.objcard .sh{margin-bottom:10px}
-.objcard p{margin:0;font-size:14.3px;line-height:1.5;color:#222;font-weight:300}
-.objcard i{font-style:italic}
-table.perf{margin-top:20px;width:100%;border-collapse:collapse;font-size:15px}
-table.perf th{border-bottom:2px solid var(--tv-azul-escuro);padding:11px 9px;text-align:right;font-weight:700;color:var(--tv-azul-escuro)}
-table.perf th:first-child{text-align:left}
-table.perf td{border-bottom:1px solid var(--tv-line);padding:11px 9px;text-align:right;color:var(--tv-cinza);font-size:14.5px}
-table.perf td:first-child{text-align:left;font-weight:700;color:var(--tv-azul-escuro)}
-table.perf tr.fundo td{font-weight:700;color:var(--tv-cinza)}
-.databox{margin-top:6px;font-size:11.5px;color:#8a949c;text-align:right}
-.twocol{margin-top:28px;display:grid;grid-template-columns:1fr 1fr;gap:38px;align-items:start}
-/* na meia folha o rótulo do setor tem 150px e "Comércio atacadista e
-   varejista" virava "Comércio atacadis…". Com a barra um pouco mais
-   curta o nome inteiro cabe. */
-.twocol .bar{grid-template-columns:minmax(0,1.35fr) 1fr 54px;column-gap:9px;
-  font-size:12.6px;padding:6px 0}
-.twocol .bar .bk{white-space:normal;line-height:1.1}
-.chart-h{margin-bottom:10px;display:flex;min-height:36px;align-items:flex-end;border-bottom:1.5px solid var(--tv-azul-escuro);padding-bottom:7px;font-size:13.4px;line-height:1.25;font-weight:600;letter-spacing:.1em;color:var(--tv-azul-escuro);text-transform:uppercase}
-.bar{display:grid;grid-template-columns:150px 1fr 62px;align-items:center;column-gap:12px;border-bottom:1px solid rgba(212,224,230,.6);padding:8px 0;font-size:13.4px}
-.bar:last-child{border-bottom:0}
-.bar .bk{line-height:1.15;color:#333;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;text-transform:capitalize}
-.bar .bt{height:17px;border-radius:2px;background:rgba(212,224,230,.45);overflow:hidden}
-.bar .bf{display:block;height:100%;border-radius:2px;background:linear-gradient(90deg,var(--tv-azul-escuro),var(--tv-cinza))}
-.bar .bv{text-align:right;font-weight:700;color:var(--tv-azul-escuro);font-variant-numeric:tabular-nums}
-/* ===== RATING · barras verticais com eixo (linha) e labels alinhados ===== */
-.ratingblk{margin-top:30px}
-.ratebars{display:grid;grid-template-columns:repeat(6,1fr);align-items:end;column-gap:30px;height:186px;border-bottom:1.6px solid var(--tv-azul-escuro);padding:0 8px}
-.rbar{height:100%;display:flex;flex-direction:column;justify-content:flex-end;align-items:center}
-.rbar .rv{font-size:14.5px;font-weight:700;color:var(--tv-azul-escuro);line-height:1;margin-bottom:8px;font-variant-numeric:tabular-nums}
-.rbar .rfill{width:100%;max-width:86px;min-height:3px;border-top-left-radius:3px;border-top-right-radius:3px;background:linear-gradient(180deg,#9FB6C7 0%,#7E9DB1 55%,#6C8CA1 100%)}
-.ratelabels{display:grid;grid-template-columns:repeat(6,1fr);column-gap:30px;padding:10px 8px 0}
-.ratelabels .rk{text-align:center;font-size:14px;font-weight:400;color:#333;letter-spacing:.02em}
-.histbox{margin-top:8px;height:478px;border-radius:14px;border:1px solid var(--tv-line);background:linear-gradient(180deg,#fff,#F7FAFB);padding:24px}
-.histbox svg{width:100%;height:100%;display:block}
-.commentbox{margin-top:22px;background:var(--tv-azul-escuro);color:#fff;border-radius:14px;padding:33px 38px}
-.commentbox h3{margin:0 0 20px;text-align:center;font-size:18.5px;font-weight:300;letter-spacing:.05em}
-.commentbox p{margin:0 0 14px;text-align:justify;font-size:15px;line-height:1.55;font-weight:300}
-.commentbox p:last-child{margin-bottom:0}
-.commentbox b{font-weight:700}
-/* ===== MERCADO DE CRÉDITO · tabela alinhada à esquerda ===== */
-table.mkt{margin-top:16px;width:100%;border-collapse:collapse;table-layout:fixed;font-size:12.6px}
-table.mkt th{background:var(--tv-azul-escuro);padding:11px 12px;text-align:left;font-weight:600;color:#fff}
-table.mkt td{border-bottom:1px solid var(--tv-line);padding:9.5px 12px;text-align:left;color:#333}
-table.mkt td:first-child{font-weight:500;color:var(--tv-azul-escuro)}
-table.mkt td.vol{font-weight:700;color:var(--tv-azul)}
-table.mkt tr.total{background:#F2F5F6}
-table.mkt tr.total td{font-weight:700;color:var(--tv-azul-escuro)}
-table.mkt col.c1{width:33%}table.mkt col.c2{width:13%}table.mkt col.c3{width:8%}table.mkt col.c4{width:12%}table.mkt col.c5{width:14%}table.mkt col.c6{width:10%}table.mkt col.c7{width:10%}
-.mktnote{margin-top:10px;font-size:11.5px;line-height:1.35;color:var(--tv-cinza)}
-.mktnote i{font-style:italic}
-.featgrid{margin-top:22px;display:grid;grid-template-columns:1fr 1fr;column-gap:48px;row-gap:26px}
-.featgrid .fk{font-size:14.3px;font-weight:700;color:var(--tv-azul-escuro)}
-.featgrid .fk::after{content:"";display:block;width:38px;height:1.5px;background:var(--tv-cinza);margin-top:7px}
-.featgrid .fv{margin-top:9px;line-height:1.4;font-weight:300;color:#333;font-size:14.3px}
-.featgrid .fv b{font-weight:600}
-.featobs{margin-top:20px;font-size:12.5px;color:#6a7681}
-.discwrap{position:absolute;left:0;right:0;bottom:0;height:664px;overflow:hidden;background:var(--tv-azul-escuro);color:#fff;padding:30px 57px 24px}
-.discwrap .dh{display:inline-block;border-bottom:1px solid rgba(255,255,255,.25);padding-bottom:5px;margin-bottom:11px;font-size:14px;font-weight:600;letter-spacing:.06em}
-.discwrap p{margin:0 0 7px;text-align:justify;font-size:11.7px;line-height:1.35;color:var(--tv-offwhite);font-weight:300}
-.discwrap p .lk{color:#fff;text-decoration:underline;text-underline-offset:2px}
-.contacts{margin-top:14px;display:grid;grid-template-columns:1fr 1fr 1fr;gap:38px;border-top:1px solid rgba(255,255,255,.2);padding-top:14px;font-size:13.9px;color:var(--tv-offwhite);font-weight:300}
-.contacts .ci{display:flex;align-items:flex-start;gap:9px}
-.contacts .ci svg{width:17px;height:17px;flex:0 0 auto;margin-top:2px;color:#fff}
-.contacts .ci b{font-weight:600;color:#fff}
-.sealrow{margin-top:18px;border-top:1px solid rgba(255,255,255,.2);padding-top:18px;display:flex;align-items:center;justify-content:space-between;gap:18px}
-.sealrow .qrb{display:flex;align-items:center;gap:14px}
-.sealrow .qrb .qr{width:66px;height:66px;border-radius:6px;background:#fff;padding:5px;object-fit:contain;flex:0 0 auto}
-.sealrow .qrb .qt{max-width:140px;font-size:12.5px;line-height:1.3;color:var(--tv-cinza-claro)}
-.sealrow img.selo{height:66px;width:auto;object-fit:contain;flex:0 0 auto}
-.sealrow .rt{text-align:center}
-.sealrow .rt .k{font-size:13.9px;color:var(--tv-offwhite)}
-.sealrow .rt .v{font-size:15.1px;font-weight:700;color:#fff}
-.seal-ph{display:flex;align-items:center;justify-content:center;height:66px;min-width:90px;border:2px dashed rgba(200,215,224,.5);border-radius:6px;background:rgba(255,255,255,.06);color:var(--tv-cinza-claro);font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:0 10px;text-align:center}
-.pgnum{position:absolute;right:57px;bottom:24px;font-size:11.5px;color:var(--tv-cinza)}
-.pgnum b{color:var(--tv-azul-escuro);font-weight:600}
+.rcard,.rcard *{box-sizing:border-box}
+/* peso 400: o 300 cai na Versos ExtraLight, bem mais fina que o publicado */
+.rcard{width:1000px;height:1414px;position:relative;overflow:hidden;background:#fff;
+  color:#141414;font-family:var(--ff);font-weight:400;display:flex;flex-direction:column;
+  --ac:#5B8299;--ac-barra:#A9BFCC;--ac-traco:#5B8299;--ac-faixa:#5B8299}
+.rcard.v-ce{--ac:#26B663;--ac-barra:#52BE7E;--ac-traco:#A6E6BF;
+  --ac-faixa:linear-gradient(90deg,#C6F3D6,#9EDDB7)}
+
+/* ---- cabeçalho ---------------------------------------------------------- */
+.rc-head{position:relative;flex:0 0 auto;width:100%;background:#000;color:#fff;overflow:hidden}
+.rc-head.big{height:210px}.v-ce .rc-head.big{height:244px}
+.rc-head.slim{height:124px}
+.rc-head .hl{position:absolute;left:53px;right:150px;top:0;bottom:0;display:flex;
+  flex-direction:column;justify-content:flex-start;padding-top:40px;z-index:2}
+.v-ce .rc-head.big .hl{padding-top:36px}
+.rc-head .hlinha{display:flex;flex-direction:column;align-items:flex-start}
+.rc-head .fund-logo{height:37px;display:flex;align-items:center;color:#fff}
+.rc-head .fund-logo svg{height:100%;width:auto;display:block}
+.v-ce .rc-head.big .fund-logo{height:77px}
+.v-ce .rc-head.slim .hl{padding-top:0;justify-content:center}
+.v-ce .rc-head.slim .hlinha{flex-direction:row;align-items:center;gap:30px}
+.v-ce .rc-head.slim .fund-logo{height:57px}
+.rc-head .hname{font-size:34px;font-weight:600}
+.rc-head .hrazao{margin-top:22px;font-size:17px;font-weight:400;text-transform:uppercase;
+  white-space:nowrap;letter-spacing:.004em}
+.v-ce .rc-head .hrazao{margin-top:20px;font-size:18.5px}
+.rc-head .hcnpj{font-size:14px}
+.rc-head .hcnpj span{font-size:17px;font-weight:400;color:rgba(255,255,255,.82)}
+.rc-head .hrule{width:722px;height:1px;background:rgba(255,255,255,.4);margin-top:17px}
+.v-ce .rc-head .hrule{background:#A6E6BF;opacity:.8}
+.rc-head .hdate{font-size:21px;font-weight:400;margin-top:12px;white-space:nowrap}
+.rc-head.slim .hdate{margin-top:8px}
+.v-ce .rc-head.slim .hdate{margin-top:0}
+.rc-head .rbox{position:absolute;right:0;top:0;width:126px;height:124px;
+  background:linear-gradient(135deg,#1A1A1A 0%,#262626 100%);
+  clip-path:polygon(24px 0,100% 0,100% 100%,0 100%,0 46px);
+  display:flex;align-items:center;justify-content:center}
+.rc-head .rbox .tv-t{width:42px;height:auto;color:#fff;display:block;margin-top:-4px}
+.rc-head .gstrip{position:absolute;right:0;top:124px;bottom:0;width:126px;
+  background:linear-gradient(90deg,#C4F2D5,#A2DFBA)}
+
+/* ---- corpo -------------------------------------------------------------- */
+.rc-body{flex:1 1 auto;min-height:0;display:flex;flex-direction:column;padding:0 53px}
+.sh{margin:0 0 16px;padding-bottom:9px;border-bottom:1px solid #4A4A4A;font-size:16px;
+  font-weight:400;letter-spacing:0;text-transform:uppercase;color:#111;line-height:1.2}
+.sh sup{font-size:.6em;vertical-align:super;line-height:0}
+.sh-fino{border-bottom-color:#E0E6E9;margin-top:40px}
+.v-ce .sh-fino{border-bottom-color:#D7EEE0}
+
+/* painel do topo da página 1: objetivo + rentabilidade */
+.toppanel{position:relative;margin:0 -53px;padding:36px 53px 34px 47px;
+  background:linear-gradient(180deg,#E7EDF1 0%,#F3F6F8 100%);border-bottom-right-radius:46px}
+.v-cp .toppanel::after{content:"";position:absolute;left:0;right:30px;bottom:0;height:16px;
+  background:linear-gradient(90deg,#C3D3DC 0%,#DCE6EC 60%,rgba(220,230,236,0) 100%)}
+.v-ce .toppanel{background:#1F1F1F;color:#fff;padding:18px 53px 22px 51px;border-bottom-right-radius:40px}
+.obj-h{margin:0 0 3px;font-size:17px;font-weight:400;letter-spacing:.01em;text-transform:uppercase}
+.obj p{margin:0;font-size:18.5px;line-height:1.18;font-weight:400;color:#1E1E1E;max-width:840px}
+.v-ce .obj p{font-size:20.5px;line-height:1.2;color:#fff;max-width:none}
+.obj p b{font-weight:600}.obj p i{font-style:italic}
+
+table.perf{margin:30px 0 0 -6px;width:calc(100% + 6px);border-collapse:collapse;table-layout:fixed}
+table.perf th{padding:0 4px 13px;font-size:16px;font-weight:600;color:#111;text-align:center;
+  border-bottom:2px solid #5E6F79}
+table.perf th:first-child{width:104px;text-align:left}
+table.perf td{height:52px;padding:0 4px;text-align:center;font-size:17px;color:#444;
+  border-bottom:1.5px solid #A9B6BE;font-variant-numeric:tabular-nums}
+table.perf td:first-child{text-align:left;font-weight:600;font-size:16px;color:#111;padding-left:4px}
+table.perf tr.fundo td{color:var(--ac);font-weight:600}
+table.perf tr.fundo td:first-child{color:#111}
+.v-ce table.perf{margin-top:18px}
+.v-ce table.perf th{color:#fff;border-bottom:1px solid rgba(255,255,255,.55);padding-bottom:12px}
+.v-ce table.perf td{color:#fff;border-bottom:1px solid rgba(255,255,255,.55);height:51px}
+.v-ce table.perf td:first-child{color:#fff}
+.v-ce table.perf tr.fundo td{color:#A8F0C6}
+.v-ce table.perf tr.fundo td:first-child{color:#fff}
+.databox{margin-top:8px;text-align:right;font-size:12.5px;color:#444}
+.v-ce .databox{color:#fff;margin-top:10px}.databox b{font-weight:600}
+
+/* ---- barras horizontais (grafico.barras_modelo) ------------------------- */
+.hbars{display:flex;flex-direction:column}
+.hb{flex:1 1 0;min-height:0;display:grid;grid-template-columns:var(--hb-lab) 1fr;align-items:center}
+.hbk{text-align:right;padding-right:10px;font-size:13.6px;line-height:1.1;color:#222;font-weight:400}
+.hbt{height:100%;display:flex;align-items:center;border-left:1px solid #3A3A3A;min-width:0}
+.hbf{display:block;flex:0 0 auto;height:var(--hb-h);background:var(--hb-c)}
+.hbv{margin-left:8px;font-size:16px;color:#111;white-space:nowrap;font-variant-numeric:tabular-nums}
+.hb-emissor{--hb-lab:96px;--hb-h:34px;--hb-c:#5A82A0}
+.hb-emissor .hbt{border-left:0;padding-right:66px}
+.hb-emissor .hbk{font-size:15px}
+.hb-emissor .hbv{color:#5A82A0;font-size:15.5px}
+.hb-setor{--hb-lab:214px;--hb-h:17px;--hb-c:var(--ac-barra)}
+.hb-setor .hbt{padding-right:20px}
+.hb-rating{--hb-lab:76px;--hb-h:20px;--hb-c:var(--ac-barra)}
+.hb-rating .hbk{font-size:15px}
+.hb-rating .hbt{padding-right:40px}
+.hb-estrat{--hb-lab:206px;--hb-h:17px;--hb-c:#52BE7E}
+.hb-estrat .hbt{padding-right:18px}
+.hb-estrat .hbv{font-weight:600;font-size:15.5px}
+
+/* página 1 do high grade: emissores + rating | setores */
+.grade-hg{display:grid;grid-template-columns:434px 1fr;column-gap:16px;margin-top:38px}
+.grade-hg .gcol{min-width:0}
+.blk-rating{margin-top:28px}
+.twocol{margin-top:38px;display:grid;grid-template-columns:1fr 1fr;gap:50px;align-items:start}
+
+/* ---- rentabilidade histórica -------------------------------------------- */
+.histbox{flex:0 0 auto}
+.histbox .sh-fino{margin-top:40px}
+.histbox svg.histsvg{width:100%;height:auto;display:block;margin-top:4px}
+.v-ce .histbox .sh-fino{margin-top:44px}
+.bmbox{width:460px;margin-top:6px;background:#1F1F1F;border-radius:10px;color:#fff;padding:14px 20px 13px}
+.bmh{font-size:16.5px;font-weight:600;padding-bottom:9px;border-bottom:1.5px solid #A8F0C6;margin-bottom:12px}
+.bmcels{display:grid;grid-template-columns:repeat(3,1fr)}
+.bmcel{padding:0 16px;border-left:1px solid rgba(255,255,255,.55)}
+.bmcel:first-child{border-left:0;padding-left:0}
+.bmp{font-size:14.5px;font-weight:400}
+.bmk{font-size:16.5px;font-weight:600;margin-top:6px}
+.bmv{font-size:22px;font-weight:600;line-height:1.1}
+.hleg{display:flex;justify-content:center;gap:110px;margin-top:12px;font-size:16px;font-weight:600;color:#111}
+.hleg span{display:inline-flex;align-items:center;gap:8px}
+.hleg i{display:inline-block;width:26px;height:3px}
+.hleg .hl-f{background:#26B663}.hleg .hl-b{background:#1F1F1F}
+
+/* ---- comentário do gestor ----------------------------------------------- */
+.cmt{flex:1 1 auto;min-height:0;display:flex;flex-direction:column;margin:36px -53px 0;
+  padding:42px 53px 92px;background:linear-gradient(180deg,#0A0A0A 0%,#1C1C1C 100%);color:#fff}
+.cmt-h{margin:0 0 24px;text-align:center;font-size:30px;font-weight:600;letter-spacing:-.005em}
+.cmt-card{flex:1 1 auto;min-height:0;display:flex;flex-direction:column;background:#2A2A2A;
+  border-radius:22px;padding:20px 17px 18px}
+.cmt-txt{flex:1 1 auto;min-height:0;overflow:hidden;line-height:1.24;text-align:justify;color:#F1F1F1}
+.cmt-txt p{margin:0 0 .72em}
+.cmt-txt p:last-child{margin-bottom:0}
+.cmt-txt b,.cmt-txt strong{font-weight:600}
+.v-ce .cmt{margin-top:24px;padding:40px 55px 96px;background:#F1F1F1;color:#222}
+.v-ce .cmt-h{font-size:22px;font-weight:500;color:#707070;margin-bottom:40px}
+.v-ce .cmt-card{background:none;border-radius:0;padding:0}
+.v-ce .cmt-txt{color:#222;line-height:1.18}
+.v-ce .cmt-txt p{margin-bottom:.6em}
+
+/* ---- mercado de crédito ------------------------------------------------- */
+table.mkt{width:863px;margin-left:15px;border-collapse:collapse;table-layout:fixed}
+table.mkt th{height:37px;padding:3px 3px;background:#5B8299;color:#fff;font-size:13px;font-weight:600;
+  text-align:center;line-height:1.1;border-right:1px solid #fff}
+table.mkt th:last-child{border-right:0}
+table.mkt th.vazio{background:none}
+table.mkt td{height:39px;padding:0 3px;text-align:center;font-size:17px;color:#111;font-weight:400;
+  font-variant-numeric:tabular-nums}
+table.mkt td:first-child{text-align:left;padding-left:2px;font-weight:400;line-height:1.05}
+table.mkt td.vol{color:#5B8299}
+table.mkt.largo td{font-size:15px}table.mkt.largo td:first-child{font-size:15.5px}
+table.mkt.largo th{font-size:12px}
+table.mkt tbody tr:nth-child(even) td{background:#DCDCDC}
+table.mkt-resumo{margin-top:22px}
+table.mkt-resumo td{height:46px;background:none!important}
+table.mkt-resumo + table.mkt{margin-top:40px}
+.mktnote{margin-top:auto;padding-bottom:104px;font-size:12.6px;line-height:1.3;color:#222}
+.mktnote sup{font-size:.7em}
+
+/* ---- características gerais --------------------------------------------- */
+.carac{margin-top:16px;display:grid;grid-template-columns:402px 1fr}
+.ccol{display:flex;flex-direction:column}
+.ccol:first-child{border-right:1px solid #D2DADE;padding-right:20px}
+.ccol:last-child{padding-left:58px}
+.ccol .ci:last-child{margin-top:auto}
+.ci{margin-bottom:22px}
+.ck{font-size:20px;font-weight:600;color:#111;line-height:1.15}
+.cv{font-size:20px;font-weight:400;color:#222;line-height:1.12;margin-top:2px}
+.cv b{font-weight:600}
+.ci::after{content:"";display:block;width:22px;height:2px;background:var(--ac-traco);margin-top:20px}
+
+/* ---- disclaimer --------------------------------------------------------- */
+.disc{flex:0 0 auto;margin:auto -53px 0;height:628px;display:flex;flex-direction:column;
+  background:linear-gradient(180deg,#000 0%,#0E0E0E 100%);color:#fff;padding:38px 53px 54px}
+.disc .dh{font-size:17px;font-weight:600;margin-bottom:12px}
+.disc-txt{flex:1 1 auto;min-height:0;overflow:hidden;line-height:1.22;text-align:justify;color:#E9E9E9}
+.disc-txt p{margin:0 0 .35em}
+.contatos{display:flex;gap:16px;margin-top:12px;font-size:10.8px;line-height:1.25;color:#E9E9E9}
+.selos{display:flex;align-items:flex-end;justify-content:space-between;margin-top:26px}
+.selos .site{display:flex;align-items:center;gap:12px;width:250px;height:92px;padding:0 18px;
+  border:1.5px solid var(--ac);border-radius:12px;font-size:20px;font-weight:500}
+.v-ce .selos .site{border-color:#A8F0C6}
+.selos .site svg{width:32px;height:32px;flex:0 0 auto}
+.selos .qrb{display:flex;align-items:center;gap:10px;width:222px}
+.selos .qrb .qr{width:92px;height:92px;background:#fff;padding:4px;object-fit:contain;flex:0 0 auto}
+.selos .qrb span{font-size:12.5px;line-height:1.25}
+.selos .selo-col{display:flex;flex-direction:column;align-items:flex-start;gap:8px;width:84px}
+.selos img.selo{width:82px;height:auto;display:block}
+.selos .rt{display:flex;flex-direction:column;font-size:10px;line-height:1.2}
+.selos .rt b{font-size:18px;font-weight:600}
+.selos img.pri{width:96px;height:auto;display:block;filter:brightness(0) invert(1)}
+.selos .dlogo{width:106px;color:#fff;padding-bottom:4px}
+.selos .dlogo svg{width:100%;height:auto;display:block}
+
+/* ---- rodapé ------------------------------------------------------------- */
+.rc-foot{position:absolute;left:53px;right:55px;bottom:39px;display:flex;align-items:flex-end;
+  justify-content:space-between;z-index:3;color:#111}
+.rc-foot .flogo{width:84px;display:block}
+.rc-foot .flogo svg{width:100%;height:auto;display:block;color:currentColor}
+.rc-foot .pgnum{font-size:15px;font-weight:400;line-height:1}
+.rc-foot.escuro{color:#fff}
+.rc-faixa{position:absolute;left:0;bottom:0;width:967px;height:24px;z-index:3;
+  background:var(--ac-faixa);border-top-right-radius:16px}
+
+/* ---- treemap · alocação real (ALT) -------------------------------------- */
+.tmblock{margin-top:30px}
+.tmwrap{position:relative;width:100%;overflow:hidden}
+.tmbox{position:absolute;display:flex;flex-direction:column;justify-content:flex-end;
+  overflow:hidden;box-shadow:inset 0 0 0 .75px rgba(255,255,255,.7)}
+.tmbox .tmn{line-height:1.1;font-weight:400;flex:0 0 auto}
+.tmbox .tmv{flex:0 0 auto}
+.tmlegs{display:flex;flex-wrap:wrap;gap:6px 18px;margin-top:10px;font-size:12.5px;color:#333}
+.tmleg{display:inline-flex;align-items:center;gap:6px;white-space:nowrap}
+.tmleg i{width:11px;height:11px;flex:0 0 auto;box-shadow:inset 0 0 0 1px rgba(0,0,0,.12)}
+.tmleg b{font-weight:600;color:#111}
+.tmbox .tmn b{font-weight:600}
+.tmbox .tmv{line-height:1.1;font-weight:600;margin-top:2px;font-variant-numeric:tabular-nums}
+
+/* ---- colaterais (ALT) --------------------------------------------------- */
+.colblock{min-width:0}
+.colgrid{display:grid;grid-template-columns:1fr 1fr;gap:6px}
+.colcard{display:flex;align-items:center;gap:14px;height:132px;padding:0 16px;background:#F1F1F1;
+  border:2px solid #DADADA}
+.colcard.largo{grid-column:1 / -1}
+.colico{display:block;width:46px;height:46px;flex:0 0 auto;color:#777}
+.colico svg{width:100%;height:100%;display:block}
+.colrot{font-size:18px;font-weight:600;line-height:1.1;color:#7A7A7A;max-width:120px}
+.colcard.largo .colrot{max-width:none}
+.histvazio{font-size:13px;color:#888;padding:20px 0}
+
 [contenteditable="true"]:focus{outline:2px solid var(--tv-azul);outline-offset:2px;border-radius:4px}
 body.edit .rcard [contenteditable]{cursor:text;border-radius:4px;box-shadow:inset 0 0 0 1.5px rgba(117,157,180,.4);background:rgba(117,157,180,.07)}
 body.edit .rcard [contenteditable]:hover{background:rgba(117,157,180,.15);box-shadow:inset 0 0 0 1.5px rgba(117,157,180,.85)}
+
 .lb{position:fixed;inset:0;z-index:80;display:none;flex-direction:column;background:var(--overlay);backdrop-filter:blur(22px) saturate(140%);opacity:0;transition:opacity .25s var(--ease)}
 .lb.open{display:flex}.lb.visible{opacity:1}
 .lb-bar{flex:0 0 auto;display:flex;align-items:center;justify-content:space-between;gap:12px;padding:14px 20px;border-bottom:1px solid var(--line)}
@@ -128,55 +259,6 @@ body.edit .rcard [contenteditable]:hover{background:rgba(117,157,180,.15);box-sh
 .footer .logo-mark{height:24px;width:69px;color:var(--text-primary);margin:0 auto 14px;display:block;overflow:visible}
 .toast{position:fixed;left:50%;bottom:calc(28px + var(--safe-b));transform:translateX(-50%) translateY(20px);opacity:0;pointer-events:none;padding:12px 22px;border-radius:var(--r-full);background:var(--tv-azul);color:#000;font-size:13px;font-weight:700;transition:.25s var(--ease);z-index:100;max-width:90vw;text-align:center}
 .toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
-
-/* ===== TREEMAP · "Alocação real da carteira de crédito" (ALT) =============
-   Retângulos proporcionais, como no PPTX publicado. O Python entrega cada
-   bloco já posicionado em porcentagem (calculators/grafico.treemap), então o
-   bloco acompanha a largura da folha — e do PDF — sem recalcular nada. */
-.tmblock{margin-top:26px}
-.twocol>.tmblock,.twocol>.colblock{margin-top:0}
-.tmwrap{position:relative;width:100%;margin-top:14px;border-radius:6px;
-  overflow:hidden;background:var(--tv-line)}
-/* a cor da caixa, a do texto, o corpo da fonte e o respiro saem do Python,
-   calculados por caixa: o que vale para o bloco de 49% não serve para o de
-   2,2%. Aqui fica só o que não depende do tamanho. */
-.tmbox{position:absolute;display:flex;flex-direction:column;justify-content:center;
-  overflow:hidden;box-shadow:inset 0 0 0 1.5px #fff}
-.tmbox .tmn{line-height:1.12;font-weight:600;text-transform:uppercase;
-  letter-spacing:.03em;opacity:.93;display:-webkit-box;-webkit-line-clamp:2;
-  -webkit-box-orient:vertical;overflow:hidden;word-break:break-word}
-.tmbox .tmv{line-height:1.05;font-weight:700;margin-top:3px;
-  font-variant-numeric:tabular-nums}
-.tmlegs{display:flex;flex-wrap:wrap;gap:5px 16px;margin-top:10px;
-  font-size:11px;color:#51616B}
-.tmleg{display:inline-flex;align-items:center;gap:5px;white-space:nowrap}
-.tmleg i{width:8px;height:8px;border-radius:2px;flex:0 0 auto}
-.tmleg b{color:var(--tv-azul-escuro);font-weight:700}
-
-/* ===== COLATERAIS · bloco fixo dos relatórios de Crédito Estruturado =====
-   Quatro cartões em grade 2x2 e o quinto na linha inteira, como no original.
-   Os ícones são os SVGs que vieram embutidos no PPTX. */
-.colblock{margin-top:26px}
-.colgrid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:14px}
-.colcard{display:flex;flex-direction:column;align-items:flex-start;gap:10px;
-  padding:18px 16px;border-radius:8px;background:#F2F4F5;
-  border:1px solid #E1E7EA;color:#6B7A83;min-height:104px;justify-content:center}
-.colcard.largo{grid-column:1 / -1;flex-direction:row;align-items:center;gap:14px}
-.colico{display:block;width:34px;height:34px;flex:0 0 auto;color:#5A6970}
-.colico svg{width:100%;height:100%;display:block}
-.colrot{font-size:13.4px;font-weight:700;line-height:1.2;color:#6B7A83}
-
-/* ===== CDI+ por período · caixa sobre a rentabilidade histórica (ALT) ===== */
-.bmbox{margin-top:14px;display:grid;grid-template-columns:repeat(3,1fr);
-  border:1px solid var(--tv-line);border-radius:10px;overflow:hidden;
-  background:linear-gradient(180deg,#fff,#F7FAFB)}
-.bmbox .bmcel{padding:12px 18px;border-left:1px solid var(--tv-line)}
-.bmbox .bmcel:first-child{border-left:0}
-.bmbox .bmp{font-size:11px;letter-spacing:.14em;text-transform:uppercase;
-  font-weight:700;color:#8595A0}
-.bmbox .bmk{font-size:12.4px;color:#51616B;margin-top:5px}
-.bmbox .bmv{font-size:21px;font-weight:700;line-height:1.05;margin-top:2px;
-  color:var(--tv-azul-escuro);font-variant-numeric:tabular-nums}
 
 /* a pilha de folhas na tela */
 .folhas{display:flex;flex-direction:column;align-items:center;gap:24px;padding:24px}
@@ -216,6 +298,9 @@ body.edit .rcard [contenteditable]:hover{background:rgba(117,157,180,.15);box-sh
    1000x1414, o tamanho em que ela foi desenhada, mesmo que na hora do clique
    ela esteja encolhida no celular. Sem isto o PNG saía na resolução da tela. */
 body.tv-exportando .folhas .rcard{zoom:1}
+/* o html2canvas mede errado os algarismos tabulares e abre um vão antes do
+   "%" ("1,10 %") na imagem exportada */
+body.tv-exportando .rcard *{font-variant-numeric:normal!important}
 
 /* ---- tela estreita: a moldura da pilha ------------------------------------
    Sem reduzir as margens de 24px a folha já encolhida perderia largura útil

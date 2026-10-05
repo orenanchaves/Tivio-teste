@@ -235,3 +235,59 @@
     desenhar();
   }
 })();
+
+/* Texto que precisa caber numa caixa fixa da folha: o comentário do gestor
+   (4 parágrafos num fundo, 7 noutro) e o disclaimer. Começa no corpo do
+   relatório publicado (`data-max`) e desce de 0,25 px até não sobrar nada —
+   a folha tem overflow:hidden e o excedente sumiria sem aviso. Roda ao abrir
+   e de novo ao trocar de aba, porque aba escondida não tem altura. */
+(function () {
+  function ajustar(el) {
+    if (!el.clientHeight) { return; }
+    var max = parseFloat(el.getAttribute('data-max')) || 15;
+    var t = max;
+    el.style.fontSize = t + 'px';
+    while (el.scrollHeight > el.clientHeight + 1 && t > 8) {
+      t -= 0.25;
+      el.style.fontSize = t + 'px';
+    }
+  }
+  function ajustarTextos() {
+    var els = document.querySelectorAll('.tv-ajusta');
+    for (var i = 0; i < els.length; i++) { ajustar(els[i]); }
+  }
+  window.tvAjustarTextos = ajustarTextos;
+  /* Os SVGs dos logos dos fundos vêm com muita margem interna (no
+     Institucional o desenho ocupa um quarto da altura). Recorta o viewBox
+     pelo contorno real do desenho, para a altura do CSS ser a do logo. */
+  function recortarLogos() {
+    var svgs = document.querySelectorAll('.fund-logo svg');
+    for (var i = 0; i < svgs.length; i++) {
+      var s = svgs[i];
+      if (s.getAttribute('data-recortado')) { continue; }
+      try {
+        var b = s.getBBox();
+        if (b.width > 0 && b.height > 0) {
+          s.setAttribute('viewBox', [b.x, b.y, b.width, b.height].join(' '));
+          s.setAttribute('preserveAspectRatio', 'xMinYMid meet');
+          s.setAttribute('data-recortado', '1');
+        }
+      } catch (e) { /* aba escondida: tenta de novo ao trocar */ }
+    }
+  }
+  function iniciar() {
+    recortarLogos();
+    ajustarTextos();
+    if (document.fonts && document.fonts.ready) { document.fonts.ready.then(ajustarTextos); }
+    document.addEventListener('click', function (e) {
+      if (e.target.closest && e.target.closest('.ftab')) {
+        setTimeout(function () { recortarLogos(); ajustarTextos(); }, 30);
+      }
+    });
+  }
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', iniciar);
+  } else {
+    iniciar();
+  }
+})();

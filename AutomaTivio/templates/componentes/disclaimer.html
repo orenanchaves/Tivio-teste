@@ -1,31 +1,38 @@
-{# Texto jurídico de configs/disclaimer.md — extraído dos relatórios
-   publicados, idêntico nos 12 fundos. O corpo é dimensionado para caber na
-   faixa: cortar o disclaimer de um material distribuído a investidor não é
-   um defeito de layout. #}
-<div class="discwrap" style="font-size:{{ tamanho_disclaimer }}px">
+{# Texto jurídico de configs/disclaimer.md, na faixa preta do publicado, com
+   os contatos e a fileira de selos. O corpo é reduzido pelo script da página
+   até caber: cortar disclaimer não é defeito de layout. #}
+<div class="disc">
   <div class="dh">{{ titulo }}</div>
-  {% if nota_rodape %}<p class="disc-nota">{{ nota_rodape }}</p>{% endif %}
-  {% for p in disclaimer %}<p>{{ p }}</p>{% endfor %}
-  {% if not disclaimer %}
-  <p>Disclaimer não configurado — preencher <code>configs/disclaimer.md</code>.</p>
-  {% endif %}
-
-  <div class="contacts">
-    <div class="ci"><div><b>SAC: 0800 704 8383</b><br>Atendimento 24 horas</div></div>
-    <div class="ci"><div><b>Ouvidoria: 0800 727 9933</b><br>Das 9h às 18h, de segunda a
-      sexta, exceto feriados nacionais</div></div>
-    <div class="ci"><div><b>tivio.com/fundos</b><br>Material de divulgação</div></div>
+  <div class="disc-txt tv-ajusta" data-max="11.4" style="font-size:11.4px">
+    {% if nota_rodape %}<p class="disc-nota">{{ nota_rodape }}</p>{% endif %}
+    {% for p in disclaimer %}<p>{{ p }}</p>{% endfor %}
+    {% if not disclaimer %}
+    <p>Disclaimer não configurado: preencher <code>configs/disclaimer.md</code>.</p>
+    {% endif %}
   </div>
-
-  {# selos: QR · ANBIMA Distribuição · ANBIMA Gestão · Rating · PRI #}
-  <div class="sealrow">
+  <div class="contatos">
+    <div>SAC: 0800 704 8383<br>Atendimento 24 horas</div>
+    <div>Ouvidoria: 0800 727 9933<br>Atendimento das 9h às 18h, de segunda a sexta-feira, exceto feriados nacionais</div>
+  </div>
+  <div class="selos">
+    <div class="site">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" aria-hidden="true">
+        <circle cx="12" cy="12" r="9.5"/><ellipse cx="12" cy="12" rx="4.2" ry="9.5"/>
+        <path d="M2.5 12h19M4 7h16M4 17h16"/></svg>
+      <span>tivio.com/fundos</span>
+    </div>
     <div class="qrb">
       <img class="qr" src="{{ selos.qr.src }}" alt="{{ selos.qr.alt }}">
-      <span class="qt">Leia o QR Code e acesse os fundos da Tivio Capital</span>
+      <span>Leia o QR Code e acesse as redes da Tivio Capital</span>
     </div>
-    <img class="selo" src="{{ selos.anbima1.src }}" alt="{{ selos.anbima1.alt }}">
-    <img class="selo" src="{{ selos.anbima2.src }}" alt="{{ selos.anbima2.alt }}">
-    <div class="rt"><div class="k">Rating S&amp;P</div><div class="v">brAMP-1</div></div>
-    <img class="selo" src="{{ selos.pri.src }}" alt="{{ selos.pri.alt }}">
+    <div class="selo-col">
+      <img class="selo" src="{{ selos.anbima1.src }}" alt="{{ selos.anbima1.alt }}">
+      <div class="rt"><span>RATING S&amp;P:</span><b>AMP-1</b></div>
+    </div>
+    <div class="selo-col">
+      <img class="selo" src="{{ selos.anbima2.src }}" alt="{{ selos.anbima2.alt }}">
+      <img class="pri" src="{{ selos.pri.src }}" alt="{{ selos.pri.alt }}">
+    </div>
+    <div class="dlogo">{{ marca_svg|safe }}</div>
   </div>
 </div>

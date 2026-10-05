@@ -36,8 +36,11 @@ def _envelope(dados, miolo, altura=None):
     import json as _json
     if altura:
         dados = dict(dados, altura=altura)
+    # Sem `data-tv`: o desenho do servidor é o do relatório publicado, e o
+    # ECharts redesenhava por cima com outro visual (cores, eixos, rótulos).
+    # Os dados ficam em `data-dados` para quem quiser religar a interação.
     attr = _json.dumps(dados, ensure_ascii=False).replace("'", '&#39;')
-    return f"<div class=\"tv-chart\" data-tv='{attr}'>{miolo}</div>"
+    return f"<div class=\"tv-chart\" data-dados='{attr}'>{miolo}</div>"
 
 
 def linha_historica(hist, nome_bench, largura=900, altura=430):
@@ -202,8 +205,10 @@ def colunas_rating(itens, colunas=6):
 # e fecha a faixa quando ela começa a piorar. É o que evita as tiras compridas
 # que um treemap ingênuo produz — e tira comprida não cabe o rótulo dentro.
 # ---------------------------------------------------------------------------
-TREEMAP_CORES = ['#3C4A60', '#4A5A72', '#587086', '#6B8AA0', '#86A4B6',
-                 '#A3BECB', '#BDD2DB', '#D3E0E7']
+# Na ordem do maior para o menor, como no ALT publicado: preto, gelo, azul
+# escuro, verde claro, azul, cinza, verde escuro.
+TREEMAP_CORES = ['#232323', '#E9EEF1', '#3C4A60', '#C6F3D6', '#7FA3B9',
+                 '#9AA8B1', '#17602F', '#52B97A']
 
 
 def _pior(fila, lado, escala):
@@ -249,7 +254,15 @@ def _claro(hexcor):
     return (0.2126 * r + 0.7152 * g + 0.0722 * b) > 0.55
 
 
-def treemap(itens, largura=1000, altura=190):
+def _rotulo_tm(nome):
+    """'FIDCs Cotas Sênior' -> 'FIDCs' leve + 'Cotas Sênior' em negrito, como no ALT."""
+    partes = str(nome).split(' ', 1)
+    if len(partes) == 1:
+        return _esc(nome)
+    return f'{_esc(partes[0])}<br><b>{_esc(partes[1])}</b>'
+
+
+def treemap(itens, largura=1000, altura=192):
     """[(nome, '49,1%', valor)] -> blocos proporcionais, do maior para o menor.
 
     A proporção (1000x190) é a do PPTX publicado, onde o bloco tem 712x137 px
@@ -280,11 +293,13 @@ def treemap(itens, largura=1000, altura=190):
         cor = TREEMAP_CORES[min(i, len(TREEMAP_CORES) - 1)]
         tinta = '#2B3744' if _claro(cor) else '#fff'
 
-        fv = limites(min(bl / 5.6, ba / 3.4), 9.0, 19.0)
-        fn = limites(min(bl / 9.0, ba / 5.6), 7.0, 12.6)
+        fv = limites(min(bl / 5.2, ba / 3.2), 9.5, 21.0)
+        fn = limites(min(bl / 8.0, ba / 5.2), 8.0, 17.0)
         # o nome só entra se couber em duas linhas de verdade: largura para uns
         # 9 caracteres por linha, e altura para as duas linhas mais o valor
-        cabe = bl >= fn * 7 and ba >= fn * 2.4 + fv * 1.2 + 10
+        pad = limites(bl / 14, 5.0, 13.0)
+        # nome em duas linhas + valor + respiro, senão o nome sobe por cima do valor
+        cabe = bl >= fn * 7 and ba >= fn * 2.3 + fv * 1.15 + 2 * pad + 4
         pad = limites(bl / 14, 5.0, 13.0)
 
         blocos.append(
@@ -293,17 +308,150 @@ def treemap(itens, largura=1000, altura=190):
             f'height:{ba / altura * 100:.4f}%;background:{cor};color:{tinta};'
             f'padding:{pad:.1f}px" '
             f'title="{_esc(nome)} · {_esc(rotulo)}">'
-            + (f'<span class="tmn" style="font-size:{fn:.1f}px">{_esc(nome)}</span>'
+            + (f'<span class="tmn" style="font-size:{fn:.1f}px">{_rotulo_tm(nome)}</span>'
                if cabe else '')
             + f'<span class="tmv" style="font-size:{fv:.1f}px">{_esc(rotulo)}</span>'
             + '</div>')
 
+    # Legenda embaixo, com todos os itens: nas caixas pequenas o nome não
+    # cabe, e sem ela o leitor fica com um "2,6%" sem dizer de quê.
     legenda = ''.join(
         f'<span class="tmleg"><i style="background:'
         f'{TREEMAP_CORES[min(i, len(TREEMAP_CORES) - 1)]}"></i>{_esc(n)} '
         f'<b>{_esc(r)}</b></span>'
         for i, (n, r, _) in enumerate(itens))
-
     return (f'<div class="tmwrap" style="aspect-ratio:{largura}/{altura}">'
             + ''.join(blocos) + '</div>'
             + f'<div class="tmlegs">{legenda}</div>')
+
+
+# ---------------------------------------------------------------------------
+# Desenho dos relatórios publicados (PDF de agosto/2026, Institucional 30 e
+# ALT 180). Barra horizontal com o rótulo alinhado à direita, um eixo fino e o
+# valor logo depois do fim da barra — não numa coluna à parte. A espessura e a
+# cor mudam por bloco: emissores em barra grossa azul, setores e rating em
+# barra fina azul-clara, a estratégia do ALT em verde.
+# ---------------------------------------------------------------------------
+def barras_modelo(itens, estilo, altura):
+    """[(nome, '12,34%', valor)] -> linhas proporcionais ao maior valor.
+
+    `altura` é a do bloco em px na folha: as linhas se distribuem nela, como no
+    PPTX, onde a lista de setores desce até o rodapé.
+    """
+    itens = [i for i in itens if i[2] is not None]
+    if not itens:
+        return '<div class="histvazio">sem carteira nesta edição</div>'
+    mx = max(float(v) for _, _, v in itens) or 1
+    linhas = []
+    for nome, rotulo, v in itens:
+        # a barra ocupa até 80% do trilho: o resto é do valor escrito depois dela
+        larg = max(0.6, float(v) / mx * 80)
+        linhas.append(
+            f'<div class="hb"><span class="hbk">{_esc(nome)}</span>'
+            f'<span class="hbt"><span class="hbf" style="width:{larg:.2f}%"></span>'
+            f'<span class="hbv">{_esc(rotulo)}</span></span></div>')
+    return (f'<div class="hbars hb-{estilo}" style="height:{altura}px;'
+            f'--hb-n:{len(itens)}">' + ''.join(linhas) + '</div>')
+
+
+def _passo_eixo(maxv):
+    """Degrau redondo do eixo Y: 5 em 5 até 30%, 10 em 10 acima."""
+    for p in (1, 2, 2.5, 5, 10, 20, 25, 50):
+        if maxv / p <= 7:
+            return p
+    return 100
+
+
+def historico_modelo(hist, nome_bench, estilo, data_inicio=None,
+                     largura=1000, altura=None):
+    """Rentabilidade acumulada desde o início, no desenho do relatório publicado.
+
+    cp: Fundo azul e CDI verde-claro, eixo em 0,00%, meses inclinados (dez-24).
+    ce: Fundo verde e CDI preto, eixo em 0,0%, meses na vertical (jan/25) e o
+        valor final de cada linha numa etiqueta da cor dela.
+    """
+    if not hist or not hist.get('l') or len(hist['l']) < 2:
+        return '<div class="histvazio">sem série histórica</div>'
+    meses, fundo, bench = list(hist['l']), list(hist['f']), list(hist['c'])
+    # a curva publicada nasce em 0% no mês de início do fundo
+    if fundo[0] != 0 and data_inicio is not None and str(data_inicio) != 'NaT':
+        ini = f'{data_inicio:%Y-%m}'
+        if ini < meses[0]:
+            meses.insert(0, ini); fundo.insert(0, 0.0); bench.insert(0, 0.0)
+    sep = '-' if estilo == 'cp' else '/'
+    labels = [f'{fmt.MES_ABR[int(m[5:7]) - 1]}{sep}{m[2:4]}' for m in meses]
+    n = len(labels)
+
+    # o do ALT é mais alto: divide a folha só com a estratégia e os colaterais
+    altura = altura or (360 if estilo == 'cp' else 470)
+    if estilo == 'cp':
+        cf, cb, wf, wb, casas = '#5B8299', '#A9EBC4', 2.6, 2.6, 2
+        padL, padR, padT, padB, rot = 78, 44, 46, 62, -45
+    else:
+        cf, cb, wf, wb, casas = '#26B663', '#1F1F1F', 3.6, 3.6, 1
+        padL, padR, padT, padB, rot = 84, 112, 26, 82, -90
+
+    maxv = max(fundo + bench + [0])
+    passo = _passo_eixo(maxv)
+    topo = passo * (int(maxv / passo) + 1)
+    minv = min(fundo + bench + [0])
+    base = 0 if minv >= 0 else -passo * (int(-minv / passo) + 1)
+
+    def X(i):
+        return padL + (largura - padL - padR) * i / (n - 1)
+
+    def Y(v):
+        return padT + (altura - padT - padB) * (1 - (v - base) / (topo - base))
+
+    s = [f'<svg viewBox="0 0 {largura} {altura}" xmlns="http://www.w3.org/2000/svg" '
+         f'font-family="Versos,Arial,sans-serif" class="histsvg hs-{estilo}">']
+    if estilo == 'cp':
+        meio = largura / 2
+        s.append(f'<g font-size="12.5" fill="#333" font-weight="600">'
+                 f'<line x1="{meio - 118}" y1="{padT - 20}" x2="{meio - 84}" y2="{padT - 20}" '
+                 f'stroke="{cf}" stroke-width="3"/>'
+                 f'<text x="{meio - 80}" y="{padT - 16}">Fundo</text>'
+                 f'<line x1="{meio - 16}" y1="{padT - 20}" x2="{meio + 18}" y2="{padT - 20}" '
+                 f'stroke="{cb}" stroke-width="3"/>'
+                 f'<text x="{meio + 22}" y="{padT - 16}">{_esc(nome_bench)}</text></g>')
+    v = base
+    while v <= topo + 1e-9:
+        gy = Y(v)
+        s.append(f'<line x1="{padL}" y1="{gy:.1f}" x2="{largura - padR}" y2="{gy:.1f}" '
+                 f'stroke="#D6D6D6" stroke-width="1"/>')
+        s.append(f'<text x="{padL - 12}" y="{gy + 4.5:.1f}" fill="#333" font-size="'
+                 f'{13 if estilo == "cp" else 15.5}" font-weight="600" text-anchor="end">'
+                 f'{fmt.num(v, casas)}%</text>')
+        v += passo
+    # Um rótulo por mês, como no publicado, enquanto couber (~24 meses). O
+    # Institucional tem série desde 2005: mês a mês vira uma mancha no eixo,
+    # então rareia mantendo o último mês.
+    passo = max(1, -(-n // 24)) if n <= 30 else max(2, -(-n // 18))
+    for i, lb in enumerate(labels):
+        if (n - 1 - i) % passo:
+            continue
+        x, y = X(i), altura - padB + 14
+        anc = 'end'
+        s.append(f'<text x="{x:.1f}" y="{y:.1f}" fill="#333" font-size="'
+                 f'{12.5 if estilo == "cp" else 14.5}" font-weight="600" text-anchor="{anc}" '
+                 f'transform="rotate({rot} {x:.1f} {y:.1f})" '
+                 f'dominant-baseline="middle">{lb}</text>')
+    pts = lambda serie: ' '.join(f'{X(i):.1f},{Y(v):.1f}' for i, v in enumerate(serie))
+    s.append(f'<polyline points="{pts(bench)}" fill="none" stroke="{cb}" stroke-width="{wb}" '
+             f'stroke-linejoin="round" stroke-linecap="round"/>')
+    s.append(f'<polyline points="{pts(fundo)}" fill="none" stroke="{cf}" stroke-width="{wf}" '
+             f'stroke-linejoin="round" stroke-linecap="round"/>')
+    if estilo == 'ce':
+        lx = X(n - 1)
+        yf, yb = Y(fundo[-1]), Y(bench[-1])
+        if abs(yf - yb) < 30:
+            m = (yf + yb) / 2
+            yf, yb = (m - 15, m + 15) if fundo[-1] >= bench[-1] else (m + 15, m - 15)
+        for yy, cor, val in ((yf, cf, fundo[-1]), (yb, cb, bench[-1])):
+            s.append(f'<rect x="{lx + 2:.1f}" y="{yy - 14:.1f}" width="62" height="28" '
+                     f'fill="{cor}"/><text x="{lx + 33:.1f}" y="{yy + 5:.1f}" fill="#fff" '
+                     f'font-size="15" font-weight="700" text-anchor="middle">'
+                     f'{fmt.num(val, 2)}%</text>')
+    s.append('</svg>')
+    return _envelope({'tipo': 'historico', 'labels': labels, 'fundo': fundo,
+                      'bench_serie': bench, 'bench': nome_bench}, ''.join(s))

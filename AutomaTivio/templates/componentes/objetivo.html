@@ -1,5 +1,10 @@
-{# Objetivo da carteira — texto editorial de configs/fundos.yml #}
-<div class="objcard">
-  <h2 class="sh">{{ titulo }}</h2>
-  <p>{{ f.objetivo }}</p>
+{# Objetivo da carteira — texto editorial de configs/fundos.yml. No ALT
+   publicado o nome do fundo vai em negrito e "high yield" em itálico. #}
+{% set txt = f.objetivo|string %}
+{% if ve == 'ce' %}
+  {% set txt = txt|replace(f.nome, '<b>' ~ f.nome ~ '</b>')|replace('high yield', '<i>high yield</i>') %}
+{% endif %}
+<div class="obj">
+  <h2 class="obj-h">{{ titulo }}</h2>
+  <p>{{ txt|safe }}</p>
 </div>

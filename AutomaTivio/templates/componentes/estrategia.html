@@ -1,8 +1,5 @@
-{# Alocação real da carteira de crédito — coluna Book da Base Carteira (FIDC
-   Sênior, FIDC Mezanino, Caixa…). É o bloco de abertura dos relatórios de
-   Crédito Estruturado, e no PPTX publicado ele é um TREEMAP: retângulos
-   proporcionais, do maior para o menor, com o nome e o percentual dentro.
-   Barras horizontais diziam o mesmo número com outro desenho. #}
-<div class="tmblock"><h3 class="chart-h">{{ titulo }}</h3>
+{# Alocação real da carteira de crédito — treemap da coluna 'Tipo aj.', como
+   no ALT publicado: retângulos proporcionais, do maior para o menor. #}
+<div class="tmblock"><h3 class="sh">{{ titulo }}</h3>
   {{ c.estrategia_treemap|safe }}
 </div>

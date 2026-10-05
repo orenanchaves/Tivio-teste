@@ -1,7 +1,11 @@
-{# Gráfico com a série real das cotas — ver calculators/grafico.py.
-   Sem nota de rodapé: os rótulos do eixo X já declaram o período, e um
-   parágrafo solto aqui encosta no bloco do comentário. #}
+{# Rentabilidade acumulada desde o início — calculators/grafico.historico_modelo.
+   No ALT, entre o título e o gráfico vêm a caixa "Rentabilidade · CDI +"
+   (bench_mais.html) e a legenda. #}
 <div class="histbox">
-  <h3 class="chart-h">{{ titulo }}</h3>
+  <h3 class="sh sh-fino">{{ titulo }}</h3>
+  {% if ve == 'ce' %}
+    {% include 'componentes/bench_mais.html' %}
+    <div class="hleg"><span>Fundo <i class="hl-f"></i></span><span><i class="hl-b"></i> {{ c.benchmark }}</span></div>
+  {% endif %}
   {{ grafico|safe }}
 </div>

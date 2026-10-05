@@ -1,4 +1,3 @@
-<div class="ratingblk">
-  <h3 class="chart-h">{{ titulo }}</h3>
-  {{ rating_cols(c.rating)|safe }}
+<div class="blk blk-rating"><h3 class="sh">{{ titulo }}</h3>
+  {{ barras_modelo(c.rating_relatorio, 'rating', 34 * (c.rating_relatorio|length))|safe }}
 </div>
