@@ -6,6 +6,10 @@
   {{ barras_modelo(c.setores_relatorio, 'estrat' ~ (' compacta' if passo < 30 else ''), passo * (c.setores_relatorio|length))|safe }}
   {% else %}
   {% set ns = [c.setores_relatorio|length, 1]|max %}
-  {{ barras_modelo(c.setores_relatorio, 'setor', [600, 30 * ns]|min, espessura=[17, [26, (560 / ns * 0.45)]|min]|max)|safe }}
+  {# poucos setores (o Banks tem 2): as barras crescem e ocupam a coluna,
+     como no publicado; muitos setores: barra fina, linhas compactas #}
+  {% set poucos = ns <= 4 %}
+  {{ barras_modelo(c.setores_relatorio, 'setor' ~ (' poucos' if poucos else ''), [600, 30 * ns]|min,
+       espessura=([17, [130, (620 / ns * 0.5)]|min]|max if poucos else [17, [26, (560 / ns * 0.45)]|min]|max))|safe }}
   {% endif %}
 </div>

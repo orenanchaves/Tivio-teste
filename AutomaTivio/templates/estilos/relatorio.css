@@ -122,6 +122,9 @@ table.perf tr.fundo td:first-child{color:#111}
 .grade-hg .hb-emissor{--hb-max:64px}
 .grade-hg .hb-rating{--hb-max:44px}
 .grade-hg .hb-setor{--hb-max:62px}
+.grade-hg .hb-setor.poucos{--hb-max:none;--hb-c:#5A82A0}
+.grade-hg .hb-setor.poucos .hbk{font-size:16px}
+.grade-hg .hb-setor.poucos .hbv{font-size:18px;color:#5A82A0}
 
 .twocol{margin-top:38px;display:grid;grid-template-columns:1fr 1fr;gap:50px;align-items:start}
 
