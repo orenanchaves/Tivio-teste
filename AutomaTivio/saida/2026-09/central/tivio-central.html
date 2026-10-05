@@ -1,0 +1,531 @@
+<!DOCTYPE html>
+<html lang="pt-BR" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="theme-color" content="#0A0F14">
+<title>Tivio Capital · Central de Materiais</title>
+<meta name="description" content="Central de materiais recorrentes da Tivio Capital: destaques, relatórios de gestão, e-mails, apresentações, landing pages, construtores de one pager e assets visuais por vertical.">
+<link rel="preconnect" href="https://cdn-sites-assets.mziq.com" crossorigin>
+<link rel="preload" href="https://cdn-sites-assets.mziq.com/wp-content/themes/mziq_tivio_capital/assets/fonts/Versos-ExtraLight.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="https://cdn-sites-assets.mziq.com/wp-content/themes/mziq_tivio_capital/assets/fonts/Versos-Regular.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="https://cdn-sites-assets.mziq.com/wp-content/themes/mziq_tivio_capital/assets/fonts/Versos-Bold.woff2" as="font" type="font/woff2" crossorigin>
+<style>
+/* ================= FONTE VERSOS · Design System ================= */
+@font-face{font-family:Versos;src:local("Versos ExtraLight"),local("Versos-ExtraLight"),url(https://cdn-sites-assets.mziq.com/wp-content/themes/mziq_tivio_capital/assets/fonts/Versos-ExtraLight.woff2) format("woff2");font-weight:200;font-display:swap}
+@font-face{font-family:Versos;src:local("Versos ExtraLight"),local("Versos-ExtraLight"),url(https://cdn-sites-assets.mziq.com/wp-content/themes/mziq_tivio_capital/assets/fonts/Versos-ExtraLight.woff2) format("woff2");font-weight:300;font-display:swap}
+@font-face{font-family:Versos;src:local("Versos Regular"),local("Versos-Regular"),url(https://cdn-sites-assets.mziq.com/wp-content/themes/mziq_tivio_capital/assets/fonts/Versos-Regular.woff2) format("woff2");font-weight:400;font-display:swap}
+@font-face{font-family:Versos;src:local("Versos SemiBold"),local("Versos-SemiBold"),url(https://cdn-sites-assets.mziq.com/wp-content/themes/mziq_tivio_capital/assets/fonts/Versos-SemiBold.woff2) format("woff2");font-weight:600;font-display:swap}
+@font-face{font-family:Versos;src:local("Versos Bold"),local("Versos-Bold"),url(https://cdn-sites-assets.mziq.com/wp-content/themes/mziq_tivio_capital/assets/fonts/Versos-Bold.woff2) format("woff2");font-weight:700;font-display:swap}
+/* ================= TOKENS ================= */
+:root{
+  --tv-verde:#C1F4D4;--tv-verde-escuro:#92D3AB;--tv-verde-light-accent:#337F51;--tv-verde-ink:#0A2415;
+  --tv-preto:#000;--tv-branco:#FFF;--tv-offwhite:#E6EDF1;
+  --tv-azul-escuro:#3C4A60;--tv-azul:#759DB4;--tv-cinza:#637881;--tv-cinza-claro:#ABC6CD;
+  --tv-azul-imob:#C8D7E0;--tv-bradesco:#CC092F;--tv-agro:#52B97A;
+  --bg-base:#0A0F14;--bg-elev-1:#12181F;
+  --bg-glass:linear-gradient(135deg,rgba(255,255,255,.06),rgba(255,255,255,.015));
+  --bg-glass-strong:linear-gradient(135deg,rgba(255,255,255,.10),rgba(255,255,255,.03));
+  --bg-radial:radial-gradient(1200px 800px at 12% -12%,rgba(193,244,212,.11),transparent 60%),radial-gradient(900px 700px at 108% 6%,rgba(117,157,180,.09),transparent 60%);
+  --text-primary:#FFF;--text-secondary:#E6EDF1;--text-muted:#8A99A3;
+  --line:rgba(255,255,255,.10);--line-strong:rgba(255,255,255,.18);
+  --header-bg:rgba(10,15,20,.68);--input-bg:rgba(255,255,255,.03);--overlay:rgba(6,10,14,.72);
+  --accent-strong:var(--tv-verde);--pill-bg:rgba(193,244,212,.10);--pill-border:rgba(193,244,212,.35);
+  --glow:0 0 60px rgba(193,244,212,.15);--shadow-card:0 18px 44px rgba(0,0,0,.42);
+  --menu-bg:rgba(18,24,31,.97);--menu-border:rgba(255,255,255,.16);
+  --menu-title:#FFF;--menu-desc:rgba(230,237,241,.72);
+  --menu-hover:rgba(255,255,255,.07);--menu-shadow:0 24px 56px rgba(0,0,0,.55);
+  --ff:"Versos","Helvetica Neue",Helvetica,Arial,sans-serif;
+  --r-sm:8px;--r-md:12px;--r-lg:20px;--r-xl:28px;--r-full:999px;--container:1320px;
+  --ease:cubic-bezier(.22,.9,.32,1);
+  --btn-radius:var(--r-full);--btn-weight:600;
+  --btn-focus-ring:0 0 0 3px color-mix(in srgb,var(--accent-strong) 45%,transparent);
+  --safe-b:env(safe-area-inset-bottom,0px);
+  --v-imob:var(--tv-azul-imob);--v-credito:var(--tv-verde);--v-solutions:var(--tv-azul);--v-energia:var(--tv-cinza);--v-agro:var(--tv-agro);--v-previdencia:var(--tv-verde-escuro);--v-central:var(--tv-cinza-claro);
+}
+:root[data-theme="light"]{
+  --bg-base:#EEF3F6;--bg-elev-1:#FFF;
+  --bg-glass:linear-gradient(135deg,rgba(255,255,255,.78),rgba(255,255,255,.48));
+  --bg-glass-strong:linear-gradient(135deg,rgba(255,255,255,.95),rgba(255,255,255,.76));
+  --bg-radial:radial-gradient(1200px 800px at 12% -12%,rgba(51,127,81,.12),transparent 60%),radial-gradient(900px 700px at 108% 6%,rgba(117,157,180,.12),transparent 60%);
+  --text-primary:#0A0F14;--text-secondary:#12181F;--text-muted:#4a5a66;
+  --line:rgba(10,15,20,.09);--line-strong:rgba(10,15,20,.18);
+  --header-bg:rgba(255,255,255,.78);--input-bg:rgba(10,15,20,.02);--overlay:rgba(226,234,239,.80);
+  --accent-strong:var(--tv-verde-light-accent);--pill-bg:rgba(51,127,81,.08);--pill-border:rgba(51,127,81,.30);
+  --shadow-card:0 18px 40px rgba(10,15,20,.10);
+  --menu-bg:#FFFFFF;--menu-border:rgba(10,15,20,.14);
+  --menu-title:#0A0F14;--menu-desc:#5A6670;
+  --menu-hover:rgba(10,15,20,.05);--menu-shadow:0 24px 56px rgba(10,15,20,.16);
+  --v-credito:var(--tv-verde-light-accent);--v-central:var(--tv-azul-escuro);
+}
+*,*::before,*::after{box-sizing:border-box}
+html{scroll-behavior:smooth;scroll-padding-top:96px}
+body{margin:0;font-family:var(--ff);font-weight:300;font-size:15px;line-height:1.55;color:var(--text-secondary);background:var(--bg-radial),var(--bg-base);-webkit-font-smoothing:antialiased;overflow-x:hidden}
+body.is-locked{overflow:hidden}
+a{color:inherit;text-decoration:none}
+.container{max-width:var(--container);margin:0 auto;padding:0 28px}
+@media(max-width:640px){.container{padding:0 20px}}
+.skip{position:absolute;left:-9999px;top:0;z-index:200;padding:12px 20px;background:var(--tv-verde);color:#000;border-radius:0 0 var(--r-md) 0;font-weight:700}
+.skip:focus{left:0}
+/* ================= BOTÕES ================= */
+button,input,select,textarea{font-family:var(--ff)}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:10px;padding:12px 22px;white-space:nowrap;border-radius:var(--btn-radius);font-size:14px;font-weight:var(--btn-weight);line-height:1.2;border:1px solid transparent;cursor:pointer;transition:background-color .2s var(--ease),color .2s var(--ease),border-color .2s var(--ease),transform .2s var(--ease),box-shadow .2s var(--ease)}
+.btn:focus-visible{outline:none;box-shadow:var(--btn-focus-ring)}
+.btn:active{transform:scale(.985)}
+.btn svg{width:1em;height:1em;flex-shrink:0}
+.btn-sm{padding:8px 16px;font-size:12px;gap:8px}
+.btn-xs{padding:6px 14px;font-size:11px;gap:6px}
+.btn-primary{background:var(--tv-verde);color:var(--tv-preto)}
+.btn-primary:hover{background:var(--tv-verde-escuro);transform:translateY(-1px);box-shadow:var(--glow)}
+:root[data-theme="light"] .btn-primary{background:var(--tv-verde-light-accent);color:#fff}
+.btn-glass{background:var(--bg-glass);color:var(--text-primary);border-color:var(--line-strong);backdrop-filter:blur(12px)}
+.btn-glass:hover{border-color:var(--accent-strong);color:var(--accent-strong);transform:translateY(-1px)}
+.btn-ghost{background:transparent;color:var(--text-muted);border-color:transparent}
+.btn-ghost:hover{background:var(--input-bg);color:var(--text-primary)}
+.btn-icon{padding:0;width:40px;height:40px;border-radius:50%;gap:0}
+.btn-icon svg{width:17px;height:17px}
+.btn-group{display:inline-flex;align-items:center;gap:4px;padding:4px;border-radius:var(--r-full);background:var(--input-bg);border:1px solid var(--line-strong)}
+.btn-group .btn[aria-pressed="true"]{background:var(--accent-strong);color:var(--tv-preto)}
+:root[data-theme="light"] .btn-group .btn[aria-pressed="true"]{color:#fff}
+/* ===== THEME TOGGLE · padrão C&M Hub (idêntico ao cm-hub-portal) ===== */
+.theme-toggle{display:inline-flex;align-items:center;gap:4px;padding:4px;border-radius:var(--r-full);background:var(--input-bg);border:1px solid var(--line-strong);flex:0 0 auto}
+.theme-toggle button{background:transparent;border:0;cursor:pointer;width:30px;height:30px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;color:var(--text-muted);transition:.2s}
+.theme-toggle button:hover{color:var(--text-primary)}
+.theme-toggle button[aria-pressed="true"]{background:var(--accent-strong);color:var(--tv-preto)}
+:root[data-theme="light"] .theme-toggle button[aria-pressed="true"]{color:#fff}
+.theme-toggle svg{width:15px;height:15px}
+@media(hover:none){.btn{min-height:40px}}
+/* ================= HEADER ================= */
+.header{position:sticky;top:0;z-index:60;background:var(--header-bg);backdrop-filter:blur(20px) saturate(160%);border-bottom:1px solid var(--line)}
+.header .inner{--hd-h:32px;max-width:var(--container);margin:0 auto;padding:16px 28px;height:auto;display:flex;align-items:center;gap:28px}
+.brand{display:flex;align-items:center;gap:0;height:auto;flex:0 0 auto;text-decoration:none}
+.brand .logo-mark{height:30px;width:auto;color:var(--text-primary);display:block;flex:0 0 auto;margin-left:0;transform:none}
+.brand .tag{display:flex;align-items:center;height:26px;margin-left:20px;padding-left:20px;border-left:1px solid var(--line-strong);font-size:10px;line-height:1;letter-spacing:.22em;text-transform:uppercase;color:var(--text-muted);font-weight:700;white-space:nowrap}
+@media(max-width:1060px){.header .inner{--hd-h:26px;height:64px;padding:0 20px;gap:16px}}
+/* NAV · pills roláveis com setas */
+.navwrap{flex:1 1 auto;min-width:0;display:flex;align-items:center;gap:6px;height:var(--hd-h)}
+.cmhub-back{flex:0 0 auto;display:inline-flex;align-items:center;gap:8px;height:var(--hd-h);padding:0 15px 0 13px;border-radius:var(--r-full);font-family:var(--ff);font-size:12.5px;font-weight:600;text-decoration:none;color:var(--text-primary);background:var(--pill-bg);border:1px solid var(--pill-border);white-space:nowrap;transition:color .2s var(--ease),border-color .2s var(--ease),background .2s var(--ease)}
+.cmhub-back svg{width:14px;height:14px;flex:0 0 auto;color:var(--accent-strong);transition:transform .2s}
+.cmhub-back:hover{color:var(--accent-strong);border-color:var(--accent-strong)}
+.cmhub-back:hover svg{transform:translateX(-3px)}
+.cmhub-back:focus-visible{outline:none;box-shadow:var(--btn-focus-ring)}
+.nav-sep{flex:0 0 auto;width:1px;height:20px;background:var(--line-strong);margin:0 2px}
+.nav-track{flex:1 1 auto;min-width:0;display:flex;align-items:center;gap:8px;overflow-x:auto;scroll-behavior:smooth;scrollbar-width:none;-ms-overflow-style:none;padding:2px 2px;-webkit-mask-image:linear-gradient(90deg,transparent 0,#000 14px,#000 calc(100% - 14px),transparent 100%);mask-image:linear-gradient(90deg,transparent 0,#000 14px,#000 calc(100% - 14px),transparent 100%)}
+.nav-track.no-mask{-webkit-mask-image:none;mask-image:none}
+.nav-track::-webkit-scrollbar{display:none}
+.npill{flex:0 0 auto;display:inline-flex;align-items:center;gap:8px;height:var(--hd-h);padding:0 15px;border-radius:var(--r-full);font-size:12.5px;font-weight:500;color:var(--text-muted);background:transparent;border:1px solid var(--line-strong);cursor:pointer;white-space:nowrap;transition:color .2s var(--ease),border-color .2s var(--ease),background .2s var(--ease)}
+.npill:hover{color:var(--text-primary);border-color:var(--accent-strong)}
+.npill:focus-visible{outline:none;border-color:var(--accent-strong);box-shadow:var(--btn-focus-ring)}
+.npill.active{color:var(--text-primary);background:var(--pill-bg);border-color:var(--pill-border);font-weight:600}
+.npill .vdot{width:7px;height:7px;border-radius:50%;background:var(--dot,var(--accent-strong));flex-shrink:0}
+.nav-arrow{flex:0 0 auto;width:30px;height:30px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;background:var(--input-bg);border:1px solid var(--line-strong);color:var(--text-muted);cursor:pointer;transition:.2s var(--ease)}
+.nav-arrow:hover{border-color:var(--accent-strong);color:var(--accent-strong)}
+.nav-arrow svg{width:14px;height:14px}
+.nav-arrow[hidden]{display:none}
+.head-right{margin-left:auto;display:flex;align-items:center;gap:10px}
+.search{display:flex;align-items:center;height:var(--hd-h);gap:9px;padding:0 16px;border-radius:var(--r-full);background:var(--input-bg);border:1px solid var(--line-strong);min-width:230px}
+.search svg{width:15px;height:15px;color:var(--text-muted);flex-shrink:0}
+.search input{border:0;background:transparent;color:var(--text-primary);font-size:13px;outline:none;width:100%}
+.search input::placeholder{color:var(--text-muted)}
+.burger{display:none}
+@media(max-width:1180px){.search{min-width:170px}}
+@media(max-width:1060px){.navwrap,.search{display:none}.burger{display:inline-flex}}
+/* menu mobile */
+.mnav{position:fixed;inset:0;z-index:90;display:none;background:var(--overlay);backdrop-filter:blur(20px)}
+.mnav.open{display:block}
+.mnav .sheet{position:absolute;top:0;right:0;bottom:0;width:min(400px,88vw);background:var(--bg-elev-1);border-left:1px solid var(--line);padding:20px 20px calc(28px + var(--safe-b));overflow-y:auto;transform:translateX(100%);transition:transform .28s var(--ease)}
+.mnav.open .sheet{transform:translateX(0)}
+.mnav h4{margin:24px 0 8px;font-size:10px;letter-spacing:.24em;text-transform:uppercase;color:var(--text-muted);font-weight:700}
+.mnav a,.mnav .macc{display:flex;align-items:center;gap:11px;width:100%;padding:13px 14px;border-radius:var(--r-md);color:var(--text-primary);font-size:15px;background:transparent;border:0;cursor:pointer;text-align:left;font-weight:400}
+.mnav a:hover,.mnav .macc:hover{background:var(--input-bg)}
+.mnav a.mnav-hub{background:var(--pill-bg);border:1px solid var(--pill-border);font-weight:600;margin-bottom:6px}
+.mnav a.mnav-hub svg{width:15px;height:15px;color:var(--accent-strong)}
+.mnav .sub{padding-left:18px;display:none}
+.mnav .sub.open{display:block}
+.mnav .sub a{font-size:14px;color:var(--text-muted)}
+/* ================= HERO ================= */
+.hero{padding-block:60px 26px}
+.hero .eyebrow{font-size:11px;letter-spacing:.28em;text-transform:uppercase;color:var(--accent-strong);font-weight:700}
+.hero h1{font-size:clamp(30px,4.6vw,54px);font-weight:300;letter-spacing:-.025em;color:var(--text-primary);margin:14px 0 14px;line-height:1.08}
+.hero h1 strong{font-weight:700}
+.hero p{color:var(--text-muted);max-width:660px;margin:0;font-size:15px}
+/* ================= SEÇÕES ================= */
+.sec{padding-block:46px}
+.sec-head{display:flex;align-items:flex-end;justify-content:space-between;gap:20px;flex-wrap:wrap;margin-bottom:24px}
+.sec-head .k{font-size:11px;letter-spacing:.26em;text-transform:uppercase;color:var(--accent-strong);font-weight:700}
+.sec-head h2{margin:8px 0 0;font-size:clamp(21px,2.6vw,30px);font-weight:300;letter-spacing:-.02em;color:var(--text-primary)}
+.sec-head h2 strong{font-weight:700}
+.sec-head p{margin:8px 0 0;font-size:13.5px;color:var(--text-muted);max-width:560px}
+.verticals{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:18px}
+@media(max-width:1000px){.verticals{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:560px){.verticals{grid-template-columns:1fr}}
+.vcard{position:relative;padding:24px;border-radius:var(--r-lg);background:var(--bg-glass);border:1px solid var(--line);backdrop-filter:blur(16px) saturate(140%);transition:.25s var(--ease);overflow:hidden;display:block}
+.vcard::after{content:"";position:absolute;left:0;top:0;bottom:0;width:3px;background:var(--dot);opacity:.85}
+.vcard:hover{transform:translateY(-4px);border-color:var(--dot);box-shadow:0 16px 40px color-mix(in srgb,var(--dot) 22%,transparent)}
+.vcard .ic{width:40px;height:40px;border-radius:11px;display:flex;align-items:center;justify-content:center;background:color-mix(in srgb,var(--dot) 14%,transparent);border:1px solid color-mix(in srgb,var(--dot) 36%,transparent);margin-bottom:16px}
+.vcard .ic svg{width:19px;height:19px;color:var(--dot)}
+.vcard h3{margin:0;font-size:18px;font-weight:700;color:var(--text-primary);letter-spacing:-.01em}
+.vcard p{margin:7px 0 0;font-size:12.5px;color:var(--text-muted);line-height:1.5}
+.vcard .subs{margin-top:14px;display:flex;gap:7px;flex-wrap:wrap}
+.chip{display:inline-flex;align-items:center;padding:4px 11px;border-radius:var(--r-full);font-size:10.5px;font-weight:600;letter-spacing:.04em;background:var(--input-bg);border:1px solid var(--line-strong);color:var(--text-muted)}
+.vcard .cnt{position:absolute;top:22px;right:22px;font-size:11px;font-weight:700;color:var(--text-muted)}
+/* ================= CENTRAL ================= */
+.central{border-radius:var(--r-xl);border:1px solid var(--line);background:var(--bg-glass);backdrop-filter:blur(18px) saturate(140%);overflow:hidden}
+.tabs-wrap{display:flex;align-items:stretch;border-bottom:1px solid var(--line)}
+.tabs{flex:1 1 auto;min-width:0;display:flex;gap:2px;padding:10px 12px;overflow-x:auto;scroll-behavior:smooth;scrollbar-width:none}
+.tabs::-webkit-scrollbar{display:none}
+.tabs-arrow{flex:0 0 auto;align-self:center;width:32px;height:32px;margin:0 8px;border-radius:50%;display:none;align-items:center;justify-content:center;background:var(--input-bg);border:1px solid var(--line-strong);color:var(--text-muted);cursor:pointer;transition:.2s var(--ease)}
+.tabs-arrow:hover{border-color:var(--accent-strong);color:var(--accent-strong)}
+.tabs-arrow svg{width:15px;height:15px}
+.tabs-arrow.show{display:inline-flex}
+.tab-reset{flex:0 0 auto;align-self:center;display:inline-flex;align-items:center;gap:8px;margin:0 12px 0 6px;padding:9px 16px;border-radius:var(--r-full);font-size:12.5px;font-weight:600;color:var(--text-muted);background:var(--input-bg);border:1px solid var(--line-strong);cursor:pointer;white-space:nowrap;transition:color .2s var(--ease),border-color .2s var(--ease),background .2s var(--ease)}
+.tab-reset:hover{color:var(--accent-strong);border-color:var(--accent-strong)}
+.tab-reset:focus-visible{outline:none;box-shadow:var(--btn-focus-ring)}
+.tab-reset svg{width:15px;height:15px}
+.tab{display:inline-flex;align-items:center;gap:9px;padding:11px 20px;border-radius:var(--r-full);font-size:13.5px;font-weight:400;color:var(--text-muted);background:transparent;border:1px solid transparent;cursor:pointer;white-space:nowrap;transition:.2s var(--ease)}
+.tab:hover{color:var(--text-primary);background:var(--input-bg)}
+.tab[aria-selected="true"]{color:var(--text-primary);font-weight:600;background:var(--pill-bg);border-color:var(--pill-border)}
+.tab svg{width:15px;height:15px}
+.tab .badge{font-size:10px;font-weight:700;padding:2px 8px;border-radius:var(--r-full);background:var(--input-bg);border:1px solid var(--line-strong)}
+.tab[aria-selected="true"] .badge{background:var(--accent-strong);color:var(--tv-preto);border-color:transparent}
+:root[data-theme="light"] .tab[aria-selected="true"] .badge{color:#fff}
+.toolbar{display:flex;align-items:center;gap:12px;padding:16px 22px;flex-wrap:wrap;border-bottom:1px solid var(--line)}
+.filters{display:flex;gap:6px;flex-wrap:wrap;align-items:center}
+.fchip{padding:7px 15px;border-radius:var(--r-full);font-size:12px;font-weight:500;color:var(--text-muted);background:transparent;border:1px solid var(--line-strong);cursor:pointer;transition:.2s var(--ease);display:inline-flex;align-items:center;gap:7px}
+.fchip:hover{color:var(--text-primary);border-color:var(--accent-strong)}
+.fchip[aria-pressed="true"]{color:var(--text-primary);background:var(--pill-bg);border-color:var(--pill-border);font-weight:600}
+.fchip .vdot{width:7px;height:7px;border-radius:50%;background:var(--dot)}
+.toolbar .right{margin-left:auto;display:flex;gap:10px;align-items:center}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(268px,1fr));gap:18px;padding:22px}
+.item{position:relative;display:flex;flex-direction:column;border-radius:var(--r-lg);background:var(--bg-glass);border:1px solid var(--line);overflow:hidden;transition:.25s var(--ease)}
+.item:hover{transform:translateY(-4px);border-color:var(--accent-strong);box-shadow:var(--shadow-card)}
+.item .thumb{position:relative;aspect-ratio:4/3;background:linear-gradient(140deg,color-mix(in srgb,var(--dot) 22%,var(--bg-elev-1)),var(--bg-elev-1));display:flex;align-items:center;justify-content:center;overflow:hidden;border-bottom:1px solid var(--line)}
+.item .thumb img{width:100%;height:100%;object-fit:cover}
+.item .thumb .gm{width:52px;height:52px;color:color-mix(in srgb,var(--dot) 85%,transparent);opacity:.55}
+.item .thumb .kind{position:absolute;top:12px;left:12px;padding:5px 11px;border-radius:var(--r-full);font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;background:rgba(10,15,20,.62);backdrop-filter:blur(10px);border:1px solid rgba(255,255,255,.2);color:#fff}
+.item .thumb .soon{position:absolute;inset:auto 12px 12px auto;padding:5px 11px;border-radius:var(--r-full);font-size:10px;font-weight:700;background:var(--input-bg);border:1px dashed var(--line-strong);color:var(--text-muted)}
+.item .bd{padding:16px 18px 18px;display:flex;flex-direction:column;gap:8px;flex:1}
+.item .bd .vt{display:inline-flex;align-items:center;gap:7px;font-size:10px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--text-muted)}
+.item .bd .vt .vdot{width:7px;height:7px;border-radius:50%;background:var(--dot)}
+.item .bd h4{margin:0;font-size:15.5px;font-weight:600;color:var(--text-primary);line-height:1.3}
+.item .bd p{margin:0;font-size:12.5px;color:var(--text-muted);line-height:1.45}
+.item .ft{margin-top:auto;padding-top:12px;display:flex;align-items:center;justify-content:space-between;gap:10px}
+.item .ft .dt{font-size:11px;color:var(--text-muted);flex:0 0 auto}
+.item .ft .acts{display:inline-flex;align-items:center;gap:6px;flex-wrap:wrap;justify-content:flex-end}
+.item .ft .code-ph{cursor:default;opacity:.45;border:1px dashed var(--line-strong)}
+.item.placeholder{border-style:dashed}
+.item.placeholder .bd h4{color:var(--text-muted)}
+.additem{border-radius:var(--r-lg);border:2px dashed var(--line-strong);background:transparent;color:var(--text-muted);cursor:pointer;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;min-height:240px;padding:24px;transition:.25s var(--ease);text-align:center}
+.additem:hover{border-color:var(--accent-strong);color:var(--accent-strong);background:var(--pill-bg)}
+.additem .plus{width:46px;height:46px;border-radius:50%;border:1px solid currentColor;display:flex;align-items:center;justify-content:center}
+.additem .plus svg{width:20px;height:20px}
+.additem .t{font-size:14px;font-weight:700}
+.additem .s{font-size:11.5px;opacity:.8;max-width:190px}
+.empty{grid-column:1/-1;padding:56px 24px;text-align:center;color:var(--text-muted)}
+.empty svg{width:38px;height:38px;opacity:.4;margin-bottom:14px}
+.empty .t{font-size:15px;font-weight:600;color:var(--text-primary)}
+.empty .s{font-size:13px;margin-top:6px}
+/* ================= MODAL ================= */
+.modal{position:fixed;inset:0;z-index:120;display:none;align-items:center;justify-content:center;padding:20px;background:var(--overlay);backdrop-filter:blur(18px)}
+.modal.open{display:flex}
+.modal .box{width:min(560px,100%);max-height:88vh;overflow-y:auto;border-radius:var(--r-xl);background:var(--bg-glass-strong);backdrop-filter:blur(30px) saturate(160%);border:1px solid var(--line-strong);box-shadow:var(--shadow-card);padding:28px}
+.modal h3{margin:0 0 4px;font-size:20px;font-weight:700;color:var(--text-primary)}
+.modal .sub{margin:0 0 22px;font-size:13px;color:var(--text-muted)}
+.field{margin-bottom:16px}
+.field label{display:block;font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--text-muted);font-weight:700;margin-bottom:7px}
+.field input,.field select,.field textarea{width:100%;padding:12px 15px;border-radius:var(--r-md);background:var(--input-bg);border:1px solid var(--line-strong);color:var(--text-primary);font-size:14px;outline:none;transition:.2s var(--ease)}
+.field textarea{resize:vertical;min-height:76px;font-weight:300}
+.field input:focus,.field select:focus,.field textarea:focus{border-color:var(--accent-strong);box-shadow:var(--btn-focus-ring)}
+.field select option{background:var(--bg-elev-1);color:var(--text-primary)}
+.row2{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+@media(max-width:520px){.row2{grid-template-columns:1fr}}
+.modal .acts{display:flex;justify-content:flex-end;gap:10px;margin-top:24px;flex-wrap:wrap}
+.toast{position:fixed;left:50%;bottom:calc(28px + var(--safe-b));transform:translateX(-50%) translateY(20px);opacity:0;pointer-events:none;padding:12px 22px;border-radius:var(--r-full);background:var(--tv-verde);color:#000;font-size:13px;font-weight:700;transition:.25s var(--ease);z-index:200}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+@media(prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important;scroll-behavior:auto}}
+</style>
+</head>
+<body>
+<a class="skip" href="#main">Pular para o conteúdo</a>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs>
+<symbol id="tv-logo" viewBox="118 104 844 294"><path d="M227.02,134.16l-2.53,3.27h102.14v-26.9h-51.56c-18.94,0-36.45,8.61-48.06,23.63ZM382.26,334.1c3.54-2.25,7.63-3.38,12.27-3.38,5.15,0,9.52,1.32,13.09,3.96,3.57,2.64,5.97,6.31,7.2,11.01h8.41c-1.29-7.02-4.46-12.56-9.52-16.62-5.06-4.06-11.32-6.09-18.79-6.09-6.44,0-12.11,1.43-17.01,4.3-4.89,2.87-8.66,6.91-11.3,12.13s-3.96,11.21-3.96,17.97,1.32,12.83,3.96,18.02c2.64,5.19,6.41,9.21,11.3,12.08,4.89,2.87,10.56,4.3,17.01,4.3,7.54,0,13.8-2.03,18.79-6.09,4.99-4.06,8.13-9.6,9.42-16.62h-8.41c-1.29,4.77-3.67,8.45-7.15,11.06-3.48,2.61-7.83,3.91-13.04,3.91-4.64,0-8.73-1.13-12.27-3.38-3.54-2.25-6.27-5.41-8.16-9.47-1.9-4.06-2.85-8.66-2.85-13.82s.95-9.84,2.85-13.86c1.9-4.02,4.62-7.16,8.16-9.42ZM488.35,323.57l-25.8,67.63h8.69l7.15-18.26h29.47l7.15,18.26h8.98l-25.7-67.63h-9.95ZM480.91,365.31l12.17-32.56,12.27,32.56h-24.45ZM210.25,176.57v111.2s28.51,0,28.51,0l-.02-111.2c0-13.53-4.37-26.35-12.64-37.06l-1.61-2.08-1.61,2.08c-8.27,10.71-12.64,23.52-12.64,37.06ZM396.06,110.53h-27.69v177.23h27.69V110.53ZM928.99,265.08c18.48-16.33,28.66-39.75,28.66-65.94s-10.18-49.61-28.66-65.94c-18.5-16.35-43.92-24.99-73.51-24.99s-55.01,8.64-73.51,24.99c-18.48,16.33-28.66,39.75-28.66,65.94s10.18,49.61,28.66,65.94c18.5,16.35,43.92,24.99,73.51,24.99s55.01-8.64,73.51-24.99ZM781.77,199.15c0-18.44,6.79-34.09,19.65-45.28,13.24-11.52,31.93-17.61,54.06-17.61s40.82,6.09,54.06,17.61c12.85,11.18,19.65,26.84,19.65,45.28s-6.79,34.09-19.65,45.28c-13.24,11.52-31.93,17.6-54.06,17.6s-40.83-6.09-54.06-17.6c-12.85-11.19-19.65-26.84-19.65-45.28ZM913.56,323.57h-8.4v67.63h39.23v-7.73h-30.82v-59.9ZM173.91,110.53h-51.56v26.9h102.14l-2.53-3.27c-11.6-15.02-29.12-23.63-48.06-23.63ZM716.56,331.3h21.93v59.9h8.41v-59.9h21.93v-7.73h-52.27v7.73ZM825.16,323.57l-25.8,67.63h8.7l7.15-18.26h29.47l7.15,18.26h8.98l-25.7-67.63h-9.95ZM817.72,365.31l12.17-32.56,12.27,32.56h-24.45ZM683.88,287.76h27.69V110.53h-27.69v177.23ZM662.46,391.2h8.41v-67.63h-8.41v67.63ZM606.13,326.13c-3.42-1.71-7.34-2.56-11.79-2.56h-25.99v67.63h8.41v-25.99h17.59c4.44,0,8.36-.85,11.74-2.56,3.38-1.71,6-4.14,7.87-7.29,1.87-3.16,2.8-6.83,2.8-11.01s-.92-7.84-2.75-10.97c-1.84-3.12-4.46-5.54-7.87-7.25ZM604.19,353.91c-2.64,2.38-6.18,3.58-10.63,3.58h-16.81v-26.18h16.91c4.44,0,7.97,1.18,10.58,3.53,2.61,2.35,3.91,5.52,3.91,9.52s-1.32,7.18-3.96,9.56ZM435.8,110.53s52.67,125.49,63.09,150.44c12.15,29.1,31.88,29.1,39.46,29.1h1.62l-72.21-179.55h-31.96ZM539.97,290.08h1.62c7.59,0,27.32,0,39.46-29.1,10.41-24.95,63.09-150.44,63.09-150.44h-31.96l-72.21,179.55Z" fill="currentColor"/></symbol>
+<symbol id="i-post" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2.5"/><path d="M3 15l4.5-4.5 4 4 3-3L21 17"/><circle cx="8.5" cy="8" r="1.4"/></symbol>
+<symbol id="i-report" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5"/><path d="M9 17v-3M12 17v-5M15 17v-2"/></symbol>
+<symbol id="i-mail" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2.5" y="5" width="19" height="14" rx="2.5"/><path d="M3 7l9 6 9-6"/></symbol>
+<symbol id="i-deck" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2.5" y="4" width="19" height="12" rx="2"/><path d="M12 16v4M8 20h8"/></symbol>
+<symbol id="i-assets" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="13.5" cy="6.5" r="2.5"/><circle cx="6.5" cy="17.5" r="3.5"/><rect x="3" y="3" width="7" height="7" rx="1.5"/><path d="M14 14h7v7h-7z"/></symbol>
+<symbol id="i-globe" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c2.5 2.6 3.8 5.7 3.8 9S14.5 18.4 12 21c-2.5-2.6-3.8-5.7-3.8-9S9.5 5.6 12 3z"/></symbol>
+<symbol id="i-pdf" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5"/></symbol>
+<symbol id="i-code" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 6l-5 6 5 6M16 6l5 6-5 6"/></symbol>
+<symbol id="i-search" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></symbol>
+<symbol id="i-x" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M18 6L6 18M6 6l12 12"/></symbol>
+<symbol id="i-ext" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 4h6v6M20 4l-9 9M18 14v5a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h5"/></symbol>
+<symbol id="i-hub" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></symbol>
+</defs></svg>
+<header class="header">
+  <div class="inner">
+    <a href="#top" class="brand"><svg class="logo-mark" viewBox="0 0 844 294"><use href="#tv-logo"/></svg></a>
+    <div class="navwrap">
+      <a href="cm-hub-portal.html" class="cmhub-back" title="Voltar ao C&amp;M Hub" aria-label="Voltar ao C&amp;M Hub"><svg><use href="#i-hub"/></svg>C&amp;M Hub</a>
+      <span class="nav-sep" aria-hidden="true"></span>
+      <button class="nav-arrow" data-navscroll="-1" aria-label="Verticais anteriores" hidden><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg></button>
+      <div class="nav-track" id="nav">
+        <a class="npill" href="#verticais" data-vnav="imob" style="--dot:var(--v-imob)"><span class="vdot"></span>Imobiliário</a>
+        <a class="npill" href="#verticais" data-vnav="credito-estruturado" style="--dot:var(--v-credito)"><span class="vdot"></span>Créd. Estruturado</a>
+        <a class="npill" href="#verticais" data-vnav="credito-privado" style="--dot:var(--v-credito)"><span class="vdot"></span>Créd. Privado</a>
+        <a class="npill" href="#verticais" data-vnav="solutions" style="--dot:var(--v-solutions)"><span class="vdot"></span>Investment Solutions</a>
+        <a class="npill" href="#verticais" data-vnav="energia" style="--dot:var(--v-energia)"><span class="vdot"></span>Energia &amp; Infraestrutura</a>
+        <a class="npill" href="#verticais" data-vnav="agro" style="--dot:var(--v-agro)"><span class="vdot"></span>Agro</a>
+        <a class="npill" href="#verticais" data-vnav="previdencia" style="--dot:var(--v-previdencia)"><span class="vdot"></span>Previdência</a>
+        <a class="npill" href="#central" data-vnav="central" style="--dot:var(--v-central)"><span class="vdot"></span>Central</a>
+      </div>
+      <button class="nav-arrow" data-navscroll="1" aria-label="Próximas verticais" hidden><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg></button>
+    </div>
+    <div class="head-right">
+      <label class="search"><svg><use href="#i-search"/></svg><input type="search" id="q" placeholder="Buscar material…" aria-label="Buscar material"></label>
+      <div class="theme-toggle" role="group" aria-label="Alternar tema">
+        <button type="button" data-theme-set="light" title="Modo claro" aria-label="Modo claro"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></svg></button>
+        <button type="button" data-theme-set="dark" title="Modo escuro" aria-label="Modo escuro"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg></button>
+      </div>
+      <button class="btn btn-glass btn-icon burger" id="burger" aria-label="Abrir menu"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button>
+    </div>
+  </div>
+</header>
+<div class="mnav" id="mnav">
+  <div class="sheet">
+    <div style="display:flex;justify-content:space-between;align-items:center">
+      <svg class="logo-mark" style="height:26px;width:75px;color:var(--text-primary)" viewBox="0 0 844 294"><use href="#tv-logo"/></svg>
+      <button class="btn btn-glass btn-icon" id="mclose" aria-label="Fechar menu"><svg><use href="#i-x"/></svg></button>
+    </div>
+    <a class="mnav-hub" href="cm-hub-portal.html"><svg><use href="#i-hub"/></svg>Voltar ao C&amp;M Hub</a>
+    <h4>Verticais</h4>
+    <a href="#verticais" data-vnav="imob"><span class="vdot" style="--dot:var(--v-imob);width:8px;height:8px;border-radius:50%;background:var(--dot)"></span>Imobiliário</a>
+    <button class="macc" data-macc><span class="vdot" style="--dot:var(--v-credito);width:8px;height:8px;border-radius:50%;background:var(--dot)"></span>Crédito
+      <svg style="width:14px;height:14px;margin-left:auto" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M6 9l6 6 6-6"/></svg></button>
+    <div class="sub">
+      <a href="#verticais" data-vnav="credito-estruturado">Crédito Estruturado</a>
+      <a href="#verticais" data-vnav="credito-privado">Crédito Privado</a>
+    </div>
+    <a href="#verticais" data-vnav="solutions"><span class="vdot" style="--dot:var(--v-solutions);width:8px;height:8px;border-radius:50%;background:var(--dot)"></span>Investment Solutions</a>
+    <a href="#verticais" data-vnav="energia"><span class="vdot" style="--dot:var(--v-energia);width:8px;height:8px;border-radius:50%;background:var(--dot)"></span>Energia &amp; Infraestrutura</a>
+    <a href="#verticais" data-vnav="agro"><span class="vdot" style="--dot:var(--v-agro);width:8px;height:8px;border-radius:50%;background:var(--dot)"></span>Agro</a>
+    <a href="#verticais" data-vnav="previdencia"><span class="vdot" style="--dot:var(--v-previdencia);width:8px;height:8px;border-radius:50%;background:var(--dot)"></span>Previdência</a>
+    <a href="#verticais" data-vnav="central"><span class="vdot" style="--dot:var(--v-central);width:8px;height:8px;border-radius:50%;background:var(--dot)"></span>Central</a>
+    <h4>Central de materiais</h4>
+    <a href="#central" data-mtab="destaques">Destaques</a>
+    <a href="#central" data-mtab="relatorios">Relatórios de Gestão</a>
+    <a href="#central" data-mtab="emails">E-mails</a>
+    <a href="#central" data-mtab="apresentacoes">Apresentações</a>
+    <a href="#central" data-mtab="landings">Landing Pages</a>
+    <a href="#central" data-mtab="onepagers">One Pager</a>
+    <a href="#central" data-mtab="assets">Assets Visuais</a>
+  </div>
+</div>
+<main id="main">
+  <section class="container hero" id="top">
+    <h1>Central de <strong>materiais recorrentes</strong></h1>
+    <p>Um só lugar para os materiais que se repetem todo mês: destaques dos fundos, relatórios de gestão, e-mails, apresentações, landing pages, construtores de one pager e assets visuais, organizados por vertical e prontos para reutilizar.</p>
+  </section>
+  <section class="container sec" id="central">
+    <div class="central">
+      <div class="tabs-wrap">
+      <button class="tabs-arrow" data-tabscroll="-1" aria-label="Abas anteriores"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg></button>
+      <div class="tabs" role="tablist" id="tabs">
+        <button class="tab" role="tab" data-tab="destaques" aria-selected="true"><svg><use href="#i-post"/></svg>Destaques<span class="badge" data-count="destaques">0</span></button>
+        <button class="tab" role="tab" data-tab="relatorios" aria-selected="false"><svg><use href="#i-report"/></svg>Relatórios de Gestão<span class="badge" data-count="relatorios">0</span></button>
+        <button class="tab" role="tab" data-tab="emails" aria-selected="false"><svg><use href="#i-mail"/></svg>E-mails<span class="badge" data-count="emails">0</span></button>
+        <button class="tab" role="tab" data-tab="apresentacoes" aria-selected="false"><svg><use href="#i-deck"/></svg>Apresentações<span class="badge" data-count="apresentacoes">0</span></button>
+        <button class="tab" role="tab" data-tab="landings" aria-selected="false"><svg><use href="#i-globe"/></svg>Landing Pages<span class="badge" data-count="landings">0</span></button>
+        <button class="tab" role="tab" data-tab="onepagers" aria-selected="false"><svg><use href="#i-report"/></svg>One Pager<span class="badge" data-count="onepagers">0</span></button>
+        <button class="tab" role="tab" data-tab="assets" aria-selected="false"><svg><use href="#i-assets"/></svg>Assets Visuais<span class="badge" data-count="assets">0</span></button>
+      </div>
+      <button class="tabs-arrow" data-tabscroll="1" aria-label="Próximas abas"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg></button>
+      <button class="tab-reset" id="tabReset" type="button" title="Restaura os materiais originais da Central">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 1 0 3-6.7L3 8"/><path d="M3 3v5h5"/></svg>
+        Resetar
+      </button>
+      </div>
+      <div class="grid" id="grid" role="tabpanel"></div>
+    </div>
+  </section>
+</main>
+<div class="toast" id="toast"></div>
+<script>
+/* ================= TEMA ================= */
+(function(){const r=document.documentElement,K='tv-central-theme';
+function ap(t){r.setAttribute('data-theme',t);document.querySelectorAll('[data-theme-set]').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.themeSet===t)));try{localStorage.setItem(K,t)}catch(e){}}
+let s=null;try{s=localStorage.getItem(K)}catch(e){}ap(s||'dark');
+document.querySelectorAll('[data-theme-set]').forEach(b=>b.addEventListener('click',()=>ap(b.dataset.themeSet)))})();
+function toast(m){const t=document.getElementById('toast');t.textContent=m;t.classList.add('show');clearTimeout(t._x);t._x=setTimeout(()=>t.classList.remove('show'),2600)}
+/* ================= MENU DESKTOP · pills roláveis ================= */
+(function(){
+  const track=document.getElementById('nav');
+  const arrows=document.querySelectorAll('[data-navscroll]');
+  if(!track)return;
+  function sync(){
+    const over=track.scrollWidth>track.clientWidth+4;
+    arrows.forEach(a=>{a.hidden=!over});
+    track.classList.toggle('no-mask',!over);
+    if(!over)return;
+    arrows[0].style.opacity=track.scrollLeft>4?'1':'.35';
+    arrows[1].style.opacity=track.scrollLeft<track.scrollWidth-track.clientWidth-4?'1':'.35';
+  }
+  arrows.forEach(a=>a.addEventListener('click',()=>{
+    track.scrollBy({left:parseInt(a.dataset.navscroll,10)*Math.round(track.clientWidth*.7),behavior:'smooth'});
+  }));
+  track.addEventListener('scroll',sync,{passive:true});
+  window.addEventListener('resize',sync);
+  window.addEventListener('load',sync);
+  sync();
+})();
+/* ================= MENU MOBILE ================= */
+const mnav=document.getElementById('mnav');
+const setM=v=>{mnav.classList.toggle('open',v);document.body.classList.toggle('is-locked',v)};
+document.getElementById('burger').addEventListener('click',()=>setM(true));
+document.getElementById('mclose').addEventListener('click',()=>setM(false));
+mnav.addEventListener('click',e=>{if(e.target===mnav)setM(false)});
+document.querySelector('[data-macc]').addEventListener('click',e=>{e.currentTarget.nextElementSibling.classList.toggle('open')});
+mnav.querySelectorAll('a').forEach(a=>a.addEventListener('click',()=>setM(false)));
+/* ================= DADOS ================= */
+const VERT={
+  'imob':{n:'Imobiliário',c:'var(--v-imob)'},
+  'credito-estruturado':{n:'Crédito Estruturado',c:'var(--v-credito)'},
+  'credito-privado':{n:'Crédito Privado',c:'var(--v-solutions)'},
+  'solutions':{n:'Investment Solutions',c:'var(--v-solutions)'},
+  'energia':{n:'Energia & Infraestrutura',c:'var(--v-energia)'},
+  'agro':{n:'Agro',c:'var(--v-agro)'},
+  'previdencia':{n:'Previdência',c:'var(--v-previdencia)'},
+  'central':{n:'Central',c:'var(--v-central)'},
+  'institucional':{n:'Institucional',c:'var(--tv-cinza-claro)'}
+};
+const KIND={destaques:{n:'Destaque',i:'#i-post'},relatorios:{n:'Relatório',i:'#i-report'},emails:{n:'E-mail',i:'#i-mail'},apresentacoes:{n:'Apresentação',i:'#i-deck'},landings:{n:'Landing',i:'#i-globe'},onepagers:{n:'One Pager',i:'#i-report'},assets:{n:'Asset',i:'#i-assets'}};
+const SEED=[{"id":"s1","kind":"destaques","vert":"credito-estruturado","title":"Destaques · Crédito Estruturado","desc":"Carrossel de 6 páginas com ALT 180, ALT 90, ALT Light e disclaimer. Exportação em JPG e PDF.","date":"Setembro 2026","status":"pronto","link":"tivio-post-credito-estruturado.html","thumb":"https://www.tivio.com/wp-content/uploads/sites/1532/2026/08/Background-01-scaled.png"},{"id":"s2","kind":"destaques","vert":"credito-privado","title":"Destaques · Crédito Privado","desc":"Carrossel de 8 páginas com Banks, Institucional, Institucional 15, Institucional 30 e Infra Plus. Exportação em JPG e PDF.","date":"Setembro 2026","status":"pronto","link":"tivio-post-credito-privado.html","thumb":"https://www.tivio.com/wp-content/uploads/sites/1532/2026/08/destaques-bg-01.jpg"},{"id":"s8","kind":"destaques","vert":"solutions","title":"Destaques · Investment Solutions","desc":"Carrossel de 11 páginas com a família Top Gestor (Crédito Privado, High Yield, Ativo, Macro, Long Only e Global), Ativo RF e Prev Low Vol. Exportação em JPG e PDF.","date":"Setembro 2026","status":"pronto","link":"tivio-post-investment-solutions.html","thumb":"https://www.tivio.com/wp-content/uploads/sites/1532/2026/08/background-01-is.png"},{"id":"s3","kind":"destaques","vert":"imob","title":"Destaques · Imobiliário","desc":"Mesmo template do carrossel, aplicado aos FIIs da vertical.","date":"Mensal","status":"producao","link":""},{"id":"rg-credito_privado","kind":"relatorios","vert":"credito-privado","title":"Relatórios de Gestão · Crédito Privado","desc":"10 fundos em abas — Banks, Institucional, Institucional 15, Institucional 30, Infra Plus, BVP, RF CP, Infra Plus CDI, Esplanada, Legacy Prev. Relatório de gestão mensal, 4 páginas (A4): objetivo e rentabilidade em 6 períodos; principais emissores, alocação por setor e distribuição de rating; rentabilidade histórica e comentário do gestor; mercado de crédito; características e disclaimer. Exporta em PDF, JPG, PNG e PPTX.","date":"Setembro 2026","status":"pronto","link":"../relatorios/Relatório de Gestão - Crédito Privado - Setembro 2026.html"},{"id":"rg-credito_estruturado","kind":"relatorios","vert":"credito-estruturado","title":"Relatórios de Gestão · Crédito Estruturado","desc":"3 fundos em abas — ALT 180, ALT 90, ALT Light. Relatório de gestão mensal, 3 páginas (A4): objetivo e rentabilidade em 6 períodos; alocação real da carteira de crédito e alocação por estratégia; rentabilidade histórica e comentário do gestor; características e disclaimer. Exporta em PDF, JPG, PNG e PPTX.","date":"Setembro 2026","status":"pronto","link":"../relatorios/Relatório de Gestão - Crédito Estruturado - Setembro 2026.html"},{"id":"e1","kind":"emails","vert":"central","title":"Construtor de E-mail · Resultados | Fundos de Crédito","desc":"Construtor do e-mail mensal de resultados dos fundos de Crédito, versões Ágora, BTG e XP. Faseado por fundo, com logos, gráfico e exportação em JPG e HTML.","date":"Setembro 2026","status":"pronto","link":"tivio-email-fundos-credito.html","thumb":"https://www.tivio.com/wp-content/uploads/sites/1532/2026/06/header_fundos_credito-1-scaled.png"},{"id":"e2","kind":"emails","vert":"solutions","title":"Construtor de E-mail · Nordea Global Rates Opportunity","desc":"Construtor do e-mail de Investment Solutions para a abertura do período de captação do feeder Nordea Global Rates Opportunity (Nordea Asset Management), com calendário de cut-offs, fundo transparente e exportação em PNG, por partes e HTML (Mailchimp).","date":"Agosto 2026","status":"pronto","link":"tivio-email-nordea-studio.html"},{"id":"s6","kind":"emails","vert":"imob","title":"E-mail de oferta · Imobiliário","desc":"Disparo de oferta em andamento, com CTA para a landing.","date":"Sob demanda","status":"placeholder","link":""},{"id":"d01","kind":"apresentacoes","vert":"credito-privado","title":"Call Advisors · Private","desc":"Material de distribuição para call com advisors.","date":"Vigente","status":"pronto","link":"https://tiviocapital.sharepoint.com/sites/comercial-inteligencia/Documentos%20Compartilhados/Comunica%C3%A7%C3%A3o%20%26%20Marketing/Editing/Distribui%C3%A7%C3%A3o/Call%20Advisors%20-%20Private_Material%20-%2016.03/_Atual/Call%20Advisors%20-%20Private_Material.pptx","pdf":"https://tiviocapital.sharepoint.com/sites/hub/SiteAssets/SitePages/Fundos%20%26%20Institucional%20-%20PDF/Call-Advisors---Private_Material.png"},{"id":"d02","kind":"apresentacoes","vert":"credito-privado","title":"Crédito · HG · HY · BTG","desc":"Versão customizada para BTG Pactual.","date":"Vigente","status":"pronto","link":"https://tiviocapital.sharepoint.com/sites/comercial-inteligencia/Documentos%20Compartilhados/Comunica%C3%A7%C3%A3o%20%26%20Marketing/Editing/Cr%C3%A9dito/Cr%C3%A9dito/Comercial/Apresenta%C3%A7%C3%A3o%20Geral/_Atual/Cr%C3%A9dito%20-%20HG%20-%20HY%20-%20BTG.pptx","pdf":"https://tiviocapital.sharepoint.com/sites/comercial-inteligencia/Documentos%20Compartilhados/Comunica%C3%A7%C3%A3o%20%26%20Marketing/Editing/Cr%C3%A9dito/Cr%C3%A9dito/Comercial/Apresenta%C3%A7%C3%A3o%20Geral/_Atual/Cr%C3%A9dito%20-%20HG%20-%20HY%20-%20BTG.pdf"},{"id":"d03","kind":"apresentacoes","vert":"credito-privado","title":"Crédito · HG · HY","desc":"Deck geral de Crédito Privado e Estruturado.","date":"Vigente","status":"pronto","link":"https://tiviocapital.sharepoint.com/:p:/s/comercial-inteligencia/IQD2uHCjw8FgR6a2qsyW_ycFAfJP4jnU9qQ3bW9KDoTsmNU?e=WnZtiQ","pdf":"https://tiviocapital.sharepoint.com/sites/comercial-inteligencia/Documentos%20Compartilhados/Comunica%C3%A7%C3%A3o%20%26%20Marketing/Editing/Cr%C3%A9dito/Cr%C3%A9dito/Comercial/Apresenta%C3%A7%C3%A3o%20Geral/_Atual/Cr%C3%A9dito%20-%20HG%20-%20HY.pdf"},{"id":"d04","kind":"apresentacoes","vert":"institucional","title":"Tivio Conecta","desc":"Apresentação institucional Tivio Conecta.","date":"Vigente","status":"pronto","link":"https://tiviocapital.sharepoint.com/:p:/s/comercial-inteligencia/IQAycevMiCpuSalwinGPAg4OAUIK1bkCCeY9-emOvTHIzsA?e=d4p2tG","pdf":"https://tiviocapital.sharepoint.com/:b:/s/comercial-inteligencia/IQDZRbCK743rQ4uQ69YpiaN6ATKGm3kZ91P0iRGYr6pS2V4?e=90DOKa"},{"id":"d05","kind":"apresentacoes","vert":"imob","title":"Imobiliário","desc":"Vertical Imobiliária da Tivio Capital.","date":"Vigente","status":"pronto","link":"https://tiviocapital.sharepoint.com/:p:/s/comercial-inteligencia/IQA7JHyZSu88Rog1_y_FVYYJAU1q0O2F_FM92Y2t8JAAdqc?e=5BVYHi","pdf":"https://tiviocapital.sharepoint.com/:b:/s/comercial-inteligencia/ET0BVK_Smn5CgJ9JCvhWRgkBCIjngC8JZuPyNKbuzcUATg?e=TFgLz9"},{"id":"d06","kind":"apresentacoes","vert":"credito-privado","title":"Crédito · HG & HY","desc":"Vertical de Crédito da Tivio Capital.","date":"Vigente","status":"pronto","link":"https://tiviocapital.sharepoint.com/:p:/s/comercial-inteligencia/IQDH7yrBJpScS7TgwT_vQgoCAbZb3ZXk2eksb4QkaLpJASI?e=4z60au","pdf":"https://tiviocapital.sharepoint.com/:b:/s/comercial-inteligencia/EV-k_QlYQfJEpcJVhQqUYQwBLrtZIiT7za9VoKd5D_gg3Q?e=j0D3L1"},{"id":"d07","kind":"apresentacoes","vert":"solutions","title":"Investment Solutions","desc":"Vertical de Investment Solutions & FoF.","date":"Vigente","status":"pronto","link":"https://tiviocapital.sharepoint.com/:p:/s/comercial-inteligencia/IQAjVyeLdBgBQoXsM5xVGrYsAdIpEbYg__tF8dthwO3wEk0?e=a0DsDN","pdf":"https://tiviocapital.sharepoint.com/:b:/s/comercial-inteligencia/EVc01NZgf3VPotBZiC4PVk4B0Dtzm4bVAHgsODPg8HdFnw?e=uJtUh4"},{"id":"d08","kind":"apresentacoes","vert":"institucional","title":"Apresentação Institucional · PT","desc":"Versão em português.","date":"Vigente","status":"pronto","link":"https://tiviocapital.sharepoint.com/:p:/s/comercial-inteligencia/IQAxEK1ZZmKRRKX3jJkuZLOrAXqFNWqpn7qVehozLgqWW10?e=Z8Fvmr","pdf":"https://tiviocapital.sharepoint.com/:b:/s/comercial-inteligencia/ESoUDLnEOItJvvYiVmC28O0BkmBJoPZvycPHUEqvnUQMpA?e=k8Pgmo"},{"id":"d09","kind":"apresentacoes","vert":"institucional","title":"Institutional Presentation · EN","desc":"English version.","date":"Vigente","status":"pronto","link":"https://tiviocapital.sharepoint.com/:p:/s/comercial-inteligencia/IQBJtv2TVSL0Q69SjPWVlA_vAZgnzNmbnAszLGHWFzu5BuI?e=fpiN2A","pdf":"https://tiviocapital.sharepoint.com/:b:/s/comercial-inteligencia/EbnuEvwG22tMvL-46f3RExEB271LueT7vyAF6kDw4fCTvA?e=AR4Vhk"},{"id":"d10","kind":"apresentacoes","vert":"previdencia","title":"HGD30","desc":"Previdência High Grade · D+30.","date":"Vigente","status":"pronto","link":"https://tiviocapital.sharepoint.com/:p:/s/comercial-inteligencia/IQAzqDxJWywpQ66i8_SGJUstAQSLrOba-K6SqPFmKmtvRIg?e=UXwPGx","pdf":""},{"id":"d11","kind":"apresentacoes","vert":"credito-privado","title":"Institucional","desc":"Deck institucional principal · High Grade.","date":"Vigente","status":"pronto","link":"https://tiviocapital.sharepoint.com/:p:/s/comercial-inteligencia/IQDS3VVFEmOzR5pOCsYyebYzAUmU-Cf3-5e_GFMfUeOIiXo?e=nPVVfQ","pdf":""},{"id":"d12","kind":"apresentacoes","vert":"credito-privado","title":"Institucional 15","desc":"Renda Fixa Crédito · D+15.","date":"Vigente","status":"pronto","link":"https://tiviocapital.sharepoint.com/:p:/s/comercial-inteligencia/IQBwvzzdAi3EQKQwYw74KYaSAXBV8gXmZbzfrSyCdF1YtyI?e=L7iz0K","pdf":""},{"id":"d13","kind":"apresentacoes","vert":"credito-privado","title":"Institucional 30","desc":"Renda Fixa Crédito · D+30.","date":"Vigente","status":"pronto","link":"https://tiviocapital.sharepoint.com/:p:/s/comercial-inteligencia/IQBy0djw226-QpoQvlWmvi4tAW6dPmejuB72B06eDzpGNsA?e=a7d7E5","pdf":""},{"id":"d14","kind":"apresentacoes","vert":"energia","title":"Institucional Incentivado CDI 30","desc":"Debêntures incentivadas · CDI · D+30.","date":"Vigente","status":"pronto","link":"https://tiviocapital.sharepoint.com/:p:/s/comercial-inteligencia/IQDVNKsRa-1zT4yn8hpmZID-AeONU5N259bt6R8vsT5tPfo?e=PDYKdC","pdf":""},{"id":"d15","kind":"apresentacoes","vert":"credito-estruturado","title":"XP · ALT 180 · 90 · Light","desc":"Família ALT completa · versão XP Investimentos.","date":"Vigente","status":"pronto","link":"https://tiviocapital.sharepoint.com/:p:/s/comercial-inteligencia/IQD_6Pm9yvk_RJcik_-vwW0AAbAVR4alVehd21G7DfGGnz8?e=ZCPTyd","pdf":"https://tiviocapital.sharepoint.com/:b:/s/comercial-inteligencia/IQAvW-ElS8oGSbZHcOxE7gkbAc6uXA15p5bXZ6XjNO2tfLk?e=dDJFN7"},{"id":"d16","kind":"apresentacoes","vert":"credito-estruturado","title":"Tivio · ALT 180 · 90","desc":"Versão institucional combinada · sem co-marca.","date":"Vigente","status":"pronto","link":"https://tiviocapital.sharepoint.com/:p:/s/comercial-inteligencia/IQDcTUYSRT_HRpFXXm-pI2LoAZBI6mfYhzB6KtNn4R-0Ezg?e=grK0jH","pdf":"https://tiviocapital.sharepoint.com/:b:/s/comercial-inteligencia/IQBDp5E2Q0zVRr4uDiMJedZKARemaeh5UQUvmfSbp61MPjM?e=AkB1yx"},{"id":"d17","kind":"apresentacoes","vert":"credito-estruturado","title":"BTG · ALT 180 · 90","desc":"Versão BTG Pactual da família ALT.","date":"Vigente","status":"pronto","link":"https://tiviocapital.sharepoint.com/:p:/s/comercial-inteligencia/IQAS4kWLzkKyTq4YH2Nt_Q3FAd6tTNnQT9hsvyxw8vo8q-o?e=TdNrO7","pdf":"https://tiviocapital.sharepoint.com/:b:/s/comercial-inteligencia/IQD69n5OAjyGSqTCwrEYTsKHAZHJGqIU51Nyv_7Mz6zDw6o?e=ze6F4N"},{"id":"d18","kind":"apresentacoes","vert":"credito-estruturado","title":"ALT 180","desc":"Deck individual do ALT 180.","date":"Vigente","status":"pronto","link":"https://tiviocapital.sharepoint.com/:p:/s/comercial-inteligencia/IQBq183opfsUQamyADYlWaEQAedjtIlUf8Xs9xgHQrNkWXQ?e=q7hdNh","pdf":"https://tiviocapital.sharepoint.com/:b:/s/comercial-inteligencia/IQAxP4_qvhv4QKPorVF0VBchAcE0aEsEBa-Ue_TuJih4HqQ?e=GVzyyG"},{"id":"d19","kind":"apresentacoes","vert":"credito-estruturado","title":"ALT 90 · Com ROA","desc":"Versão com indicador de ROA destacado.","date":"Vigente","status":"pronto","link":"https://tiviocapital.sharepoint.com/:p:/s/comercial-inteligencia/IQBY3KEWYRIDQoyFH5jqgpy5AcGIMWY_XJHcn_kN8sRR7eo?e=qDzfGN","pdf":"https://tiviocapital.sharepoint.com/:b:/s/comercial-inteligencia/IQBerdcbL2bLT4SCwnTFoGrHARhttrUITj5GJKgcfC6Qm4k?e=s9virF"},{"id":"d20","kind":"apresentacoes","vert":"credito-estruturado","title":"ALT 90","desc":"Versão padrão do deck individual.","date":"Vigente","status":"pronto","link":"https://tiviocapital.sharepoint.com/:p:/s/comercial-inteligencia/IQCEpafbRnZvTLVeQ-30FgmeAbezjBZ763LbJC-PMQnPOJ8?e=UDZszD","pdf":"https://tiviocapital.sharepoint.com/:b:/s/comercial-inteligencia/IQDQKYKlL7epTpnMl15eDqvaAb5oKmM8jjhszxvMPx8iZ7Y?e=uIfR3K"},{"id":"d21","kind":"apresentacoes","vert":"credito-estruturado","title":"ALT Light","desc":"Versão previdenciária da família ALT.","date":"Vigente","status":"pronto","link":"https://tiviocapital.sharepoint.com/:p:/s/comercial-inteligencia/IQBARyyfZZNDT4J_IKBZ3KhHAe19jFaYKaQlllOCRkB_fDA?e=RTKLI1","pdf":"https://tiviocapital.sharepoint.com/:b:/s/comercial-inteligencia/IQCT8Dh8SbAVQ5j45OfAVUQXAS23xnFZqCE3cYJkCUI7R-c?e=llSHqW"},{"id":"op1","kind":"onepagers","vert":"credito-estruturado","labelVert":"Crédito Estruturado (GTF Foods)","title":"Construtor de One Pager · GTF Foods","desc":"Construtor A4 schema-driven para montar o One Pager do GTF Foods, produto de Crédito Estruturado, com edição de textos e exportação em JPG, PPTX e PDF.","date":"Julho 2026","status":"pronto","link":"tivio-construtor-one-pager.html","thumb":"https://www.tivio.com/wp-content/uploads/sites/1532/2026/08/background-01-1-scaled.png"},{"id":"l1","kind":"landings","vert":"imob","title":"TIVIO Malls Opportunities II FII","desc":"Investimento em shopping centers, FII com objetivo de IPCA + 9,75% a.a.","date":"No ar","status":"pronto","link":"https://tivio-malls-opportunities-ii-fii.tivio.com/","code":""},{"id":"l2","kind":"landings","vert":"central","title":"Tivio Capital · Investimentos Alternativos","desc":"Página interna Bradesco, com a visão geral das estratégias alternativas da casa.","date":"No ar","status":"pronto","link":"https://interno-bradesco.tivio.com/#top","code":""},{"id":"l3","kind":"landings","vert":"agro","title":"AGBI Tivio RegenAg Farmland IV","desc":"Landing do fundo de farmland regenerativo, em parceria com a AGBI.","date":"No ar","status":"pronto","link":"https://agbi-tivio-regenag-farmland-iv.tivio.com/","code":""},{"id":"s12","kind":"assets","vert":"central","title":"Backgrounds oficiais dos posts","desc":"Fundos usados nos carrosséis de destaques, em alta resolução.","date":"Ago 2026","status":"pronto","link":"https://www.tivio.com/wp-content/uploads/sites/1532/2026/08/destaques-bg-01.jpg","thumb":"https://www.tivio.com/wp-content/uploads/sites/1532/2026/08/destaques-bg-02.png"},{"id":"s13","kind":"assets","vert":"central","title":"Logo e monograma · SVG","desc":"Ativos #tv-logo e #tv-mono em currentColor, direto do Design System.","date":"v1.2","status":"pronto","link":""},{"id":"s14","kind":"assets","vert":"central","title":"Selos ANBIMA, S&P e PRI","desc":"Selos oficiais para rodapé de relatórios e materiais publicitários.","date":"Vigente","status":"pronto","link":"https://www.tivio.com/wp-content/uploads/sites/1532/2026/07/selo-distribuicao.png"},{"id":"s15","kind":"assets","vert":"credito-estruturado","title":"Logos dos fundos ALT","desc":"Marcas ALT 180, ALT 90 e ALT Light em SVG, já aplicadas no carrossel de destaques.","date":"Vigente","status":"pronto","link":"tivio-post-credito-estruturado.html"}];
+const KEY='tv-central-items';
+let items=[];
+try{const r=localStorage.getItem(KEY);items=r?JSON.parse(r):SEED.slice()}catch(e){items=SEED.slice()}
+SEED.filter(s=>s.link&&(s.kind==='landings'||s.kind==='apresentacoes'||s.kind==='emails'||s.kind==='destaques'||s.kind==='relatorios'||s.kind==='onepagers')).forEach(s=>{
+  if(!items.some(i=>i.link===s.link))items.push(s);
+});
+items=items.filter(i=>!(i.kind==='apresentacoes'&&!i.link&&/^s\d+$/.test(i.id)));
+items=items.filter(i=>!(i.kind==='emails'&&!i.link&&(i.id==='s4'||i.id==='s5'||i.id==='s7')));
+/* ===== DATA AUTOMÁTICA · materiais recorrentes (gerado por run.py) ===== */
+const DATA_BASE='2026-09-30';
+const RECORRENTES=['tivio-email-fundos-credito.html','tivio-post-credito-estruturado.html','tivio-post-credito-privado.html','tivio-post-investment-solutions.html'];
+(function(){
+  const M=['Janeiro','Fevereiro','Março','Abril','Maio','Junho','Julho','Agosto','Setembro','Outubro','Novembro','Dezembro'];
+  const d=new Date(DATA_BASE+'T12:00:00'),lb=M[d.getMonth()]+' '+d.getFullYear();
+  const rec=i=>RECORRENTES.indexOf(i.link)>-1&&['destaques','relatorios','emails'].indexOf(i.kind)>-1;
+  SEED.forEach(i=>{if(rec(i))i.date=lb});
+  items.forEach(i=>{if(rec(i))i.date=lb});
+})();
+/* ===== fim data automática ===== */
+const save=()=>{try{localStorage.setItem(KEY,JSON.stringify(items))}catch(e){}};
+save();
+/* ================= ESTADO ================= */
+let TAB='destaques',VF='todos',Q='';
+const matchV=it=>VF==='todos'||it.vert===VF||(VF==='credito'&&it.vert.startsWith('credito'));
+const matchQ=it=>!Q||((it.title+' '+it.desc+' '+(VERT[it.vert]||{}).n).toLowerCase().includes(Q));
+function counts(){
+  Object.keys(KIND).forEach(k=>{
+    const n=items.filter(i=>i.kind===k&&matchV(i)&&matchQ(i)).length;
+    const el=document.querySelector('[data-count="'+k+'"]');if(el)el.textContent=n;
+  });
+  ['imob','solutions','energia','agro','previdencia','central'].forEach(v=>{const e=document.querySelector('[data-vcount="'+v+'"]');if(e)e.textContent=items.filter(i=>i.vert===v).length});
+  const cr=document.querySelector('[data-vcount="credito"]');if(cr)cr.textContent=items.filter(i=>i.vert.indexOf('credito')===0).length;
+  const mEl=document.querySelector('[data-stat="materiais"]');if(mEl)mEl.textContent=items.length;
+  const aEl=document.querySelector('[data-stat="ativos"]');if(aEl)aEl.textContent=items.filter(i=>i.status==='pronto').length;
+}
+function acts(it){
+  const ext=u=>/^https?:/.test(u)?' target="_blank" rel="noopener"':'';
+  const A=(u,lb,ic,ti)=>'<a class="btn btn-glass btn-xs"'+ext(u)+' href="'+u+'"'+(ti?' title="'+ti+'"':'')+'>'+
+        (ic?'<svg><use href="'+ic+'"/></svg>':'')+lb+(ic?'':'<svg><use href="#i-ext"/></svg>')+'</a>';
+  const ph=(lb,ic,ti)=>'<span class="btn btn-ghost btn-xs code-ph" title="'+ti+'"><svg><use href="'+ic+'"/></svg>'+lb+'</span>';
+  if(it.kind==='apresentacoes'){
+    return (it.link?A(it.link,'PPT','#i-deck','Abrir e editar no PowerPoint'):ph('PPT','#i-deck','Sem arquivo editável'))+
+           (it.pdf ?A(it.pdf,'PDF','#i-pdf','Abrir o PDF')                  :ph('PDF','#i-pdf','PDF ainda não publicado'));
+  }
+  if(it.kind==='landings'){
+    return (it.link?A(it.link,'Ver no ar','','')                            :ph('Ver no ar','#i-globe','Sem link'))+
+           (it.code?A(it.code,'Código','#i-code','Repositório / código-fonte'):ph('Código','#i-code','Cole o link do código ao editar o material'));
+  }
+  return it.link?A(it.link,'Abrir','','')
+               :'<span class="btn btn-ghost btn-xs" style="cursor:default;opacity:.55">Sem link</span>';
+}
+function card(it){
+  const v=VERT[it.vert]||VERT.institucional,k=KIND[it.kind];
+  const el=document.createElement('article');
+  el.className='item'+(it.status==='placeholder'?' placeholder':'');
+  el.style.setProperty('--dot',v.c);
+  el.innerHTML=
+   '<div class="thumb">'+(it.thumb?'<img src="'+it.thumb+'" alt="" loading="lazy" referrerpolicy="no-referrer">':'<svg class="gm"><use href="'+k.i+'"/></svg>')+
+     '<span class="kind">'+k.n+'</span>'+
+     (it.status!=='pronto'?'<span class="soon">'+(it.status==='producao'?'Em produção':'Placeholder')+'</span>':'')+
+   '</div>'+
+   '<div class="bd"><span class="vt"><span class="vdot"></span>'+(it.labelVert||v.n)+'</span>'+
+     '<h4></h4><p></p>'+
+     '<div class="ft"><span class="dt"></span><span class="acts">'+acts(it)+'</span></div></div>';
+  el.querySelector('h4').textContent=it.title;
+  el.querySelector('.bd p').textContent=it.desc||'';
+  el.querySelector('.dt').textContent=it.date||'';
+  return el;
+}
+function render(){
+  const g=document.getElementById('grid');g.innerHTML='';
+  const list=items.filter(i=>i.kind===TAB&&matchV(i)&&matchQ(i));
+  if(!list.length){
+    const e=document.createElement('div');e.className='empty';
+    e.innerHTML='<svg><use href="'+KIND[TAB].i+'"/></svg><div class="t">Nada por aqui ainda</div><div class="s">Nenhum material cadastrado nesta aba.</div>';
+    g.appendChild(e);
+  }else list.forEach(it=>g.appendChild(card(it)));
+  counts();
+}
+/* ================= TABS / FILTROS ================= */
+function setTab(t){TAB=t;document.querySelectorAll('#tabs .tab').forEach(b=>b.setAttribute('aria-selected',String(b.dataset.tab===t)));render()}
+document.querySelectorAll('#tabs .tab').forEach(b=>b.addEventListener('click',()=>setTab(b.dataset.tab)));
+(function(){
+  const tabs=document.getElementById('tabs'),arrows=document.querySelectorAll('[data-tabscroll]');
+  if(!tabs||!arrows.length)return;
+  function sync(){
+    const over=tabs.scrollWidth>tabs.clientWidth+4;
+    arrows.forEach(a=>a.classList.toggle('show',over));
+    if(!over)return;
+    arrows[0].style.opacity=tabs.scrollLeft>4?'1':'.35';
+    arrows[1].style.opacity=tabs.scrollLeft<tabs.scrollWidth-tabs.clientWidth-4?'1':'.35';
+  }
+  arrows.forEach(a=>a.addEventListener('click',()=>{
+    tabs.scrollBy({left:parseInt(a.dataset.tabscroll,10)*Math.round(tabs.clientWidth*.7),behavior:'smooth'});
+  }));
+  tabs.addEventListener('scroll',sync,{passive:true});
+  window.addEventListener('resize',sync);
+  sync();
+})();
+function setVF(v){
+  VF=v;
+  document.querySelectorAll('#vfilters .fchip').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.vf===v)));
+  document.querySelectorAll('#nav .npill[data-vnav]').forEach(a=>a.classList.toggle('active',a.dataset.vnav===v));
+  render();
+}
+document.querySelectorAll('#vfilters .fchip').forEach(b=>b.addEventListener('click',()=>setVF(b.dataset.vf)));
+document.querySelectorAll('[data-vnav]').forEach(a=>a.addEventListener('click',()=>{setVF(a.dataset.vnav)}));
+document.querySelectorAll('[data-mtab]').forEach(a=>a.addEventListener('click',()=>setTab(a.dataset.mtab)));
+document.getElementById('q').addEventListener('input',e=>{Q=e.target.value.trim().toLowerCase();render()});
+render();
+/* ===== RESETAR CENTRAL ===== */
+(function(){
+  const b=document.getElementById('tabReset');
+  if(!b)return;
+  b.addEventListener('click',()=>{
+    if(!confirm('Resetar a Central de Materiais? Isso restaura a lista original de materiais.'))return;
+    try{localStorage.removeItem('tv-central-items')}catch(e){}
+    items=SEED.slice();save();
+    VF='todos';Q='';
+    const qi=document.getElementById('q');if(qi)qi.value='';
+    document.querySelectorAll('#vfilters .fchip').forEach(x=>x.setAttribute('aria-pressed',String(x.dataset.vf==='todos')));
+    document.querySelectorAll('#nav .npill[data-vnav]').forEach(a=>a.classList.remove('active'));
+    setTab('destaques');
+    toast('Central restaurada aos materiais originais.');
+  });
+})();
+</script>
+</body>
+</html>

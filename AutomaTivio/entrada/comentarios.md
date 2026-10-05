@@ -159,7 +159,7 @@ Nesse cenário, o Infra Plus CDI apresentou rentabilidade, isenta de imposto de 
 
 ## Tivio ALT Light
 
-O Tivio ALT Light registrou rentabilidade de 1,17% no mês, equivalente a 1,08% do CDI no período. Desde o início da estratégia, o fundo acumula retorno de 22,67%, frente a 19,70% do CDI, o que corresponde a um desempenho anualizado de 111,24% do CDI.
+O Tivio ALT Light registrou rentabilidade de 1,03% no mês, equivalente a 95,47% do CDI no período. Desde o início da estratégia, o fundo acumula retorno de 13,76%, frente a 12,60% do CDI, o que corresponde a um desempenho anualizado de 109,18% do CDI.
 
 Em setembro, o mercado de crédito apresentou reabertura dos spreads e liquidez reduzida no mercado secundário. Os spreads médios dos títulos corporativos indexados ao CDI avançaram cerca de 5 bps, passando de CDI + 1,23% para CDI + 1,28% ao ano, interrompendo parcialmente o movimento de compressão observado nos últimos meses.
 
@@ -173,7 +173,7 @@ Em relação a parcela da carteira de crédito estruturado. ao longo do mês, a 
 
 ## Tivio ALT 180
 
-O Tivio ALT 180 registrou rentabilidade de 1,29% no mês, equivalente a 1,08% do CDI no período. Desde o início da estratégia, o fundo acumula retorno de 34,87%, frente a 26,79% do CDI, o que corresponde a um desempenho anualizado de 120,09% do CDI.
+O Tivio ALT 180 registrou rentabilidade de 1,29% no mês, equivalente a 119,45% do CDI no período. Desde o início da estratégia, o fundo acumula retorno de 34,87%, frente a 26,79% do CDI, o que corresponde a um desempenho anualizado de 109,18% do CDI.
 
 Em setembro, iniciamos posição em uma cota sênior de FIDC com exposição ao setor de telecomunicações. A tese de investimento está fundamentada na atuação consolidada do originador, que possui mais de 23 anos de experiência no segmento, bem como nas características estruturais do mercado em que atua, marcado por elevada pulverização, baixa bancarização, receitas recorrentes e oferta restrita de crédito. Adicionalmente, a operação apresenta carteira de recebíveis amplamente diversificada entre cedentes e sacados, além de mecanismos de proteção que incluem overcollateral mínimo de 25% sobre os ativos cedidos ao fundo.
 
@@ -181,7 +181,7 @@ A nova alocação reforça nossa estratégia de buscar operações com perfil de
 
 ## Tivio ALT 90
 
-O Tivio ALT 90 registrou rentabilidade de 1,17% no mês, equivalente a 1,08% do CDI no período. Desde o início da estratégia, o fundo acumula retorno de 22,67%, frente a 19,70% do CDI, o que corresponde a um desempenho anualizado de 111,24% do CDI.
+O Tivio ALT 90 registrou rentabilidade de 1,17% no mês, equivalente a 108,27% do CDI no período. Desde o início da estratégia, o fundo acumula retorno de 22,67%, frente a 19,70% do CDI, o que corresponde a um desempenho anualizado de 115,11% do CDI.
 
 Em setembro, iniciamos posição em uma cota sênior de FIDC com exposição ao setor de telecomunicações. A tese de investimento está fundamentada na atuação consolidada do originador, que possui mais de 23 anos de experiência no segmento, bem como nas características estruturais do mercado em que atua, marcado por elevada pulverização, baixa bancarização, receitas recorrentes e oferta restrita de crédito. Adicionalmente, a operação apresenta carteira de recebíveis amplamente diversificada entre cedentes e sacados, além de mecanismos de proteção que incluem overcollateral mínimo de 25% sobre os ativos cedidos ao fundo.
 

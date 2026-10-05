@@ -158,7 +158,8 @@ class Conferencia:
     def _conferir_numeros_do_comentario(self, ctx):
         if not ctx.comentario or not ctx.tem_dados:
             return
-        texto = ' '.join(ctx.comentario)
+        # o texto como sai publicado: depois da sincronização com a tabela
+        texto = ' '.join(ctx.comentario_preenchido)
         escritos = re.findall(r'(?<![\w,.])(\d{1,3}(?:,\d{1,2})?)%', texto)
         if not escritos:
             return

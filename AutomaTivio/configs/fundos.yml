@@ -288,7 +288,7 @@ fundos:
 
   alt90:
     nome: Tivio ALT 90
-    book_depara: alt          # alocação real = Book Maravi pelo de-para
+    book_depara: alt90          # alocação real = Book Maravi pelo de-para
     vertical: credito_estruturado
     carteira: TIVIO ALT HY 90 FIDC RL
     busca: [ALT HY 90]
@@ -379,7 +379,20 @@ book_sem_book:
   Debênture: Deb
 
 book_depara:
-  alt:                       # ALT 90, ALT 180, HYD60
+  alt:                       # ALT 180, HYD60
+    Caixa: Liquidez
+    Crédito Estruturado: Crédito Estruturado
+    Crédito Privado: Crédito Privado
+    Fiagro: Fiagro
+    FIDC Mezanino: FIDCs Cota Mezanino
+    FIDC Sênior: FIDCs Cota Sênior
+    LF Sênior: Liquidez
+    LFSC: Liquidez
+    LFSN: Liquidez
+    Precatórios: Precatório
+    TPF: Liquidez
+    Deb: Crédito Privado
+  alt90:                     # ALT 90 (Deb segue como Debêntures)
     Caixa: Liquidez
     Crédito Estruturado: Crédito Estruturado
     Crédito Privado: Crédito Privado
@@ -403,7 +416,7 @@ book_depara:
     LFSC: Bancário
     LFSN: Bancário
     Precatórios: Precatório
-    Deb: Debêntures
+    Deb: Crédito Privado
     FIP: FIP
     TPF: Liquidez
 
