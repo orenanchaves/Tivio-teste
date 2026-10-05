@@ -54,6 +54,7 @@ fundos:
 
   institucional:
     nome: Tivio Institucional
+    razao_social: "Tivio Institucional RF CP FIF – RL"
     vertical: credito_privado
     carteira: TIVIO INSTITUCIONAL RF CRPR FIF RL
     busca: [INSTITUCIONAL, CRPR]
@@ -76,6 +77,7 @@ fundos:
 
   inst15:
     nome: Tivio Institucional 15
+    razao_social: "Tivio Institucional 15 FIF – RF CP LP – RL"
     vertical: credito_privado
     carteira: TIVIO INSTITUCIONAL 15 FIF CI RF CP LP RL - Expandida
     busca: [INSTITUCIONAL 15]
@@ -118,6 +120,7 @@ fundos:
   infraplus:
     casas_pct: 2              # "99,01%" e não "99%", como no publicado
     nome: Tivio Infra Plus
+    razao_social: "Tivio Plus RF Fundo Incentivado de Investimento Financeiro em Infra – RL"
     vertical: credito_privado
     carteira: TIVIO INFRA PLUS IPCA RF FIF RL
     busca: [INFRA PLUS, IPCA]
@@ -141,6 +144,7 @@ fundos:
     # "Institucional Incentivado CDI" nos comentários do gestor. O apelido
     # abaixo faz o título do comentário casar com qualquer um dos dois.
     nome: Tivio Infra Plus CDI
+    razao_social: "Tivio Infra Plus CDI 30 FIF CIC RF RL"
     apelidos: [Institucional Incentivado CDI, Infra Plus CDI]
     vertical: credito_privado
     busca: [INFRA PLUS, CDI]
@@ -161,6 +165,7 @@ fundos:
 
   esplanada:
     nome: Tivio Esplanada
+    razao_social: "TIVIO ESPLANADA RESP LIMITADA FIF FI INFRA RENDA FIXA"
     vertical: credito_privado
     busca: [ESPLANADA]
     logo: Esplanada
@@ -181,6 +186,8 @@ fundos:
   legacy:
     casas_pct: 2              # "97,36%" e não "97%", como no publicado
     nome: Tivio Legacy Prev
+    razao_social: "BV ICATU SEG LEGACY PREV FIF - CIC RF CRED PRIV – RL"
+    cnpj_exibido: "09.166.056/0001-95"   # o relatório publicado; a DePara tem outro, que segue nas taxas
     vertical: credito_privado
     busca: [LEGACY]
     logo: Legacy
@@ -227,6 +234,7 @@ fundos:
 
   rfcp:
     nome: Tivio RF CP
+    razao_social: "RF CP - TIVIO FI FINANCEIRO - CI RF CRED PRIV - RL"
     vertical: credito_privado
     # fixada depois da conciliação com o relatório publicado: a busca por
     # "RF CP" casava com cinco carteiras, inclusive a do Banks

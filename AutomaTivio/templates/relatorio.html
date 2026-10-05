@@ -41,7 +41,13 @@
           {% if pagina.numero != 1 %}<div class="hdate">{{ edicao.mes_ano }}</div>{% endif %}
         </div>
         {% if pagina.numero == 1 %}
-        <div class="hrazao">{{ razao_social }}{% if c.f.cnpj %} <span class="hcnpj">/ CNPJ <span>{{ c.f.cnpj }}</span></span>{% endif %}</div>
+        {# CNPJ de exibição (fundos.yml) vence o da DePara, que segue nas taxas.
+           A linha não quebra: o corpo diminui com o comprimento para caber
+           antes da caixa do T (~790 px). #}
+        {% set cnpj = f.cfg.get('cnpj_exibido') or c.f.cnpj %}
+        {% set chars = (razao_social|length) + (26 if cnpj else 0) %}
+        {% set corpo_r = [17 if ve == 'cp' else 18.5, 760 / ([chars, 1]|max * 0.6)]|min %}
+        <div class="hrazao" style="font-size:{{ '%.1f'|format(corpo_r) }}px">{{ razao_social }}{% if cnpj %} <span class="hcnpj">/ CNPJ <span>{{ cnpj }}</span></span>{% endif %}</div>
         <div class="hrule"></div>
         <div class="hdate">{{ edicao.mes_ano }}</div>
         {% endif %}
