@@ -164,11 +164,19 @@ class Pipeline:
         for ctx, _, _, _ in htmls.values():
             por_vert.setdefault(ctx.f.vertical, []).append(ctx)
 
+        # as páginas se apontam umas às outras: a troca de vertical no topo
+        # leva de Crédito Privado para Crédito Estruturado sem voltar à Central
+        ordem = list(self.cadastro.verticais)
+        irmas = []
+        for v in sorted(por_vert, key=lambda v: ordem.index(v) if v in ordem else len(ordem)):
+            rot = (self.cadastro.verticais.get(v) or {}).get('rotulo', v)
+            irmas.append((v, rot, self.edicao.nome_arquivo(f'Relatório de Gestão - {rot}', 'html')))
+
         for vertical, ctxs in por_vert.items():
             rotulo = (self.cadastro.verticais.get(vertical) or {}).get('rotulo', vertical)
             self.log.contexto(f'relatorio/{vertical}')
             try:
-                html = rend.html_vertical(ctxs, vertical)
+                html = rend.html_vertical(ctxs, vertical, irmas)
             except Exception as e:
                 self.log.erro(vertical, f'falha ao montar a página da vertical: {e!r}')
                 continue

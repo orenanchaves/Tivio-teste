@@ -284,7 +284,34 @@ class RenderizadorLegado:
                 else:
                     self.log.aviso(k, 'histórico não recalculado (sem cotas)')
             return hist
-        return replace_literal(html, 'const HIST=', fh)
+        html = replace_literal(html, 'const HIST=', fh)
+        return self.logos_email(html)
+
+    def logos_email(self, html):
+        """Troca os logos embutidos no e-mail pelas versões HORIZONTAIS de
+        assets/logos (escuro: branca; claro: preta) — renderers/logos.py."""
+        from renderers.logos import logos_horizontais, como_js
+        i = html.find('const FUND_LOGOS=')
+        # o literal termina na última chave antes da função que desenha o logo
+        # (que vem na linha seguinte) — ou antes de FUNDS, se ela não existir
+        k = html.find('const fundLogoSVG', i)
+        if k < 0:
+            k = html.find('const FUNDS=', i)
+        j = html.rfind('}', i, k) + 1 if k > 0 else -1
+        if i < 0 or j < 0:
+            self.log.aviso('e-mail', 'FUND_LOGOS não encontrado — logos mantidos')
+            return html
+        chaves = re.findall(r"'(\w+)':\{vb:", html[i:j])
+        escuro, claro = logos_horizontais(chaves, log=self.log)
+        if not escuro:
+            return html
+        antigos = dict.fromkeys(chaves)
+        faltam = [k for k in antigos if k not in escuro]
+        if faltam:
+            self.log.aviso('e-mail', 'sem logo horizontal, mantido o antigo: ' + ', '.join(faltam))
+            return html
+        novo = como_js('FUND_LOGOS', escuro)[:-1] + ';' + como_js('FUND_LOGOS_LIGHT', claro)[:-1]
+        return html[:i] + novo + html[j:]
 
     def frase_abertura(self, ctx, nome):
         """A primeira frase do comentário do e-mail, montada dos números."""

@@ -202,6 +202,12 @@
   var MONTAGEM = { historico: historico, barras: barras, colunas: colunas };
 
   function desenhar() {
+    // sem contêiner para o ECharts assumir (o desenho do servidor é o final),
+    // não há o que esperar — nem motivo para avisar que ele não carregou
+    if (!document.querySelector('.tv-chart[data-tv]')) {
+      window.__tvCharts = { ok: true, total: 0, desenhados: 0 };
+      return;
+    }
     if (typeof echarts === 'undefined') {
       // sem ECharts o SVG do servidor permanece — é o comportamento desejado
       window.__tvCharts = { ok: false, motivo: 'echarts não carregou', total: 0 };

@@ -277,6 +277,47 @@ body.edit .ecard [contenteditable]:hover{background:rgba(117,157,180,.16);box-sh
 .ecard .flogo-light{display:none;width:auto}
 .ecard.elight .flogo.institucional,.ecard.elight .flogo.inst15{display:none}
 .ecard.elight .flogo-light{display:block}
+
+/* (patch) logos HORIZONTAIS (assets/logos): uma linha só, altura única por
+   família; no modo claro entra a versão preta, no escuro a branca */
+.ecard .flogo-wrap{height:auto!important;min-height:0;margin-bottom:12px!important}
+.ecard .flogo{height:44px!important;width:auto;max-width:100%}
+.ecard .flogo.altlight,.ecard .flogo.alt180,.ecard .flogo.alt90{height:64px!important}
+.ecard .flogo-light{display:none!important}
+.ecard.elight .flogo:not(.flogo-light){display:none!important}
+.ecard.elight .flogo-light{display:block!important}
+
+/* (patch) cartão QUADRADO 700x700 — rentabilidade em destaque e botão */
+.ecard.sq{height:700px;padding:0}
+.ecard.sq .sq-in{height:100%;display:flex;flex-direction:column;padding:44px 46px 42px;background:#0F0F0F;border-radius:26px}
+/* borda e nao box-shadow inset: o html2canvas pinta o inset como preenchimento */
+.ecard.sq .sq-in{box-sizing:border-box;border:1px solid transparent}
+.ecard.sq.gr .sq-in{border-color:#C1F4D4}.ecard.sq.bl .sq-in{border-color:rgba(117,157,180,.35)}
+.ecard.sq .flogo-wrap{margin-bottom:10px!important}
+.ecard.sq .sq-sec{margin:30px 0 14px;display:flex;align-items:center;gap:14px;font-size:12px;font-weight:700;letter-spacing:.24em;text-transform:uppercase;color:rgba(255,255,255,.62)}
+.ecard.sq .sq-sec::after{content:"";flex:1;height:1px;background:rgba(255,255,255,.14)}
+.ecard.sq .sq-grid{flex:1;min-height:0;display:grid;grid-template-columns:1.25fr 1fr;gap:14px}
+.ecard.sq .sq-col{display:grid;grid-template-rows:1fr 1fr;gap:14px;min-height:0}
+.ecard.sq .sq-t{display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;border-radius:18px;background:linear-gradient(160deg,rgba(255,255,255,.07),rgba(255,255,255,.02));border:1px solid rgba(255,255,255,.12);padding:14px}
+.ecard.sq .sq-k{font-size:22px;font-weight:400;color:rgba(255,255,255,.8)}
+.ecard.sq .sq-v{font-size:46px;font-weight:700;line-height:1.05;margin:6px 0 4px;letter-spacing:-.01em}
+.ecard.sq .sq-t.grande .sq-k{font-size:28px}
+.ecard.sq .sq-t.grande .sq-v{font-size:76px;margin:10px 0 8px}
+.ecard.sq .sq-p{font-size:17px;color:rgba(255,255,255,.72)}
+.ecard.sq .sq-t.grande .sq-p{font-size:21px}
+.ecard.sq.gr .sq-v{color:#C1F4D4}
+.ecard.sq .sq-db{margin-top:12px;text-align:right}
+.ecard.sq .sq-cta{display:flex;align-items:center;justify-content:center;gap:10px;margin-top:16px;height:54px;border-radius:999px;font-family:"Versos",Helvetica,Arial,sans-serif;font-size:13px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;text-decoration:none}
+.ecard.sq .sq-cta svg{width:16px;height:16px}
+.ecard.sq.elight .sq-in{background:#fff}
+.ecard.sq.elight .sq-t{background:#F2F5F7;border-color:#E1E7EB}
+.ecard.sq.elight .sq-k,.ecard.sq.elight .sq-p,.ecard.sq.elight .sq-sec{color:#4A5A66}
+.ecard.sq.elight .sq-v{color:#0A0F14}.ecard.sq.elight.gr .sq-v{color:#337F51}
+.ecard.sq.elight .sq-sec::after{background:#E1E7EB}
+/* (patch) seleção do que entra no download */
+.sel-inc{display:inline-flex;align-items:center;gap:6px;cursor:pointer;letter-spacing:.06em;font-size:11px;color:var(--text-secondary)}
+.sel-inc input{width:14px;height:14px;accent-color:var(--accent-strong);margin:0}
+.slot.fora .stage{opacity:.35}
 </style>
 </head>
 <body>
@@ -313,7 +354,7 @@ body.edit .ecard [contenteditable]:hover{background:rgba(117,157,180,.16);box-sh
   <section class="intro hero-stagger">
     <div class="eyebrow"><span class="dot"></span><span>Julho de 2026 · Data base 31/07/2026 · JPG 1400 px</span></div>
     <h1>Resultados <span class="sep">|</span> <strong>Fundos de Crédito</strong></h1>
-    <p>Gerador do e-mail mensal, faseado por fundo — cada card baixa em JPG separado. Três versões: <b>Ágora</b> (simplificada, cartão quadrado), <b>BTG</b> e <b>XP</b>. O ALT Light é exclusivo da XP. Ative <b>Editar textos</b> para atualizar rentabilidades e comentários, e use <b>E-mail (HTML)</b> para exportar o arquivo pronto para disparo.</p>
+    <p>Gerador do e-mail mensal, faseado por fundo: cada card baixa em PNG separado. Quatro versões: <b>Ágora</b> (simplificada), <b>BTG</b>, <b>XP</b> e <b>Quadrado</b> (1:1, rentabilidade em destaque). O ALT Light é exclusivo da XP. Desmarque <b>Incluir</b> para tirar um fundo do <b>Baixar tudo</b> e do e-mail completo. Ative <b>Editar textos</b> para atualizar rentabilidades e comentários, e use <b>E-mail (HTML)</b> para exportar o arquivo pronto para disparo.</p>
     <span class="edit-flag"><span class="pulse"></span>Modo edição ativo</span>
   </section>
   <div class="deck" id="deck"></div>
@@ -377,8 +418,12 @@ const fundLogoSVG=k=>{const l=FUND_LOGOS[k];return l?'<svg class="flogo '+k+'" v
 const VERSIONS={
   agora:{n:'Ágora',d:'Simplificada · quadrado',simple:true, exclude:['altlight']},
   btg:  {n:'BTG',  d:'Todos, exceto ALT Light',simple:false,exclude:['altlight']},
-  xp:   {n:'XP',   d:'Todos (inclui ALT Light)',simple:false,exclude:[]}
+  xp:   {n:'XP',   d:'Todos (inclui ALT Light)',simple:false,exclude:[]},
+  /* (patch) cartão 1:1 com a rentabilidade em destaque e o botão */
+  quadrado:{n:'Quadrado',d:'Destaque da rentabilidade',simple:true,square:true,exclude:[]}
 };
+/* (patch) seleção do que entra no download e no e-mail completo — por fundo */
+const SEL={};
 const SEC={privado:{k:'Crédito Privado',fam:'Família Institucional',color:'#759DB4'},
            estruturado:{k:'Crédito Estruturado',fam:'Família ALT',color:'#C1F4D4'}};
 const CARD_W=700;
@@ -547,14 +592,40 @@ function fundBlockHTML(f,simple){
     '<a class="cta" href="'+f.report+'" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;gap:9px;margin-top:16px;padding:14px 26px;border-radius:999px;font-family:\'Versos\',Helvetica,Arial,sans-serif;font-size:12px;line-height:1;letter-spacing:.1em;text-transform:uppercase;font-weight:700;text-decoration:none;background:'+(f.tone==='gr'?'#C1F4D4':'#759DB4')+';color:'+(f.tone==='gr'?'#06120C':'#06121C')+'"><span class="cta-txt" style="font-family:\'Versos\',Helvetica,Arial,sans-serif;font-weight:700;line-height:1;display:inline-block;vertical-align:middle">Ver relatório completo</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" style="width:15px;height:15px;flex:0 0 auto;vertical-align:middle"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>'+
   '</div>';
 }
+function squareCardHTML(f){
+  const fund=f.rows.find(r=>r[0]==='Fundo')||[];
+  const pct=f.rows.find(r=>r[0]==='%')||[];
+  const bench=(f.meta.find(m=>m[0]==='Benchmark')||[0,'CDI'])[1];
+  const ok=v=>v&&v!=='-'&&v!=='\u2013'&&v!=='\u2014'&&v!=='\u2212';
+  /* o maior período com número: 12M; sem 12M (fundo novo), desde o início */
+  const big=ok(fund[3])?{k:'12M',v:fund[3],p:pct[3]}:{k:'Desde o início',v:fund[6],p:pct[6]};
+  const tile=(k,v,p,cls)=>'<div class="sq-t '+cls+'"><div class="sq-k" contenteditable="true">'+k+'</div>'+
+    '<div class="sq-v" contenteditable="true">'+(ok(v)?v:'\u2013')+'</div>'+
+    (ok(p)?'<div class="sq-p" contenteditable="true">'+p+' do '+bench+'</div>':'')+'</div>';
+  const acc=f.tone==='gr'?'#C1F4D4':'#759DB4', ink=f.tone==='gr'?'#06120C':'#06121C';
+  return '<div class="ecard sq '+f.tone+'" data-name="tivio-email-'+f.key+'">'+
+    '<div class="sq-in">'+
+      '<div class="fhead"><div class="fh-l"><div class="flogo-wrap">'+fundLogoSVG(f.key)+'</div>'+
+        '<p class="razao" contenteditable="true">'+f.razao+'</p></div>'+
+        '<span class="tag" style="background:'+SEC[f.sec].color+'22;border:1px solid '+SEC[f.sec].color+'66;color:'+SEC[f.sec].color+'" contenteditable="true">'+SEC[f.sec].k+'</span></div>'+
+      '<div class="sq-sec" contenteditable="true">Rentabilidade</div>'+
+      '<div class="sq-grid">'+tile(big.k,big.v,big.p,'grande')+
+        '<div class="sq-col">'+tile('Ano',fund[2],pct[2],'')+tile('M\u00eas',fund[1],pct[1],'')+'</div></div>'+
+      '<div class="databox sq-db" contenteditable="true">Data base: 31/07/2026</div>'+
+      '<a class="cta sq-cta" href="'+f.report+'" target="_blank" rel="noopener" style="background:'+acc+';color:'+ink+'">'+
+        '<span class="cta-txt">Ver relat\u00f3rio completo</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>'+
+    '</div></div>';
+}
 function fundCardHTML(f,simple){
+  if(VERSIONS[VER].square) return squareCardHTML(f);
   const s=SEC[f.sec];
   return '<div class="ecard '+f.tone+(simple?' simple':'')+'" data-name="tivio-email-'+f.key+'">'+
     fundBlockHTML(f,simple)+'</div>';
 }
 function activeFunds(){const ex=VERSIONS[VER].exclude;return FUNDS.filter(f=>ex.indexOf(f.key)<0)}
+function selectedFunds(){return activeFunds().filter(f=>SEL[f.key]!==false)}
 function emailFullHTML(simple){
-  const funds=activeFunds();
+  const funds=selectedFunds();
   const priv=funds.filter(f=>f.sec==='privado').map(f=>fundBlockHTML(f,simple)).join('');
   const estr=funds.filter(f=>f.sec==='estruturado').map(f=>fundBlockHTML(f,simple)).join('');
   return '<div class="ecard email" data-name="tivio-email-completo">'+
@@ -598,7 +669,7 @@ function buildDeck(){
   const simple=VERSIONS[VER].simple, funds=activeFunds();let n=0;
   funds.forEach(f=>{n++;const slot=document.createElement('div');slot.className='slot';
     slot.innerHTML='<div class="slot-head"><span class="n">'+String(n).padStart(2,'0')+' · '+f.name+'</span>'+
-      '<span class="meta-file"><span class="fmt">PNG</span></span>'+
+      '<span class="meta-file"><label class="sel-inc" title="Desmarcado: fica fora do Baixar tudo e do e-mail completo"><input type="checkbox" data-sel="'+f.key+'"'+(SEL[f.key]===false?'':' checked')+'> Incluir</label><span class="fmt">PNG</span></span>'+
       '<button class="btn btn-glass btn-xs" data-dl>Baixar PNG</button></div>'+
       '<div class="stage" role="button" tabindex="0" aria-label="Ampliar '+f.name+'">'+
       '<span class="zoom-hint"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/></svg> Ampliar</span>'+
@@ -616,7 +687,19 @@ function buildDeck(){
   deck.appendChild(fslot);
   CARDS.push({id:'email',name:'E-mail completo',el:fslot.querySelector('.ecard'),stage:fslot.querySelector('.stage'),full:true});
   wireStages();applyEmailTheme();buildDots();fitAll();renderAllCharts(document);
+  deck.querySelectorAll('[data-sel]').forEach(cb=>{
+    cb.closest('.slot').classList.toggle('fora',!cb.checked);
+    cb.addEventListener('change',()=>{SEL[cb.dataset.sel]=cb.checked;
+      cb.closest('.slot').classList.toggle('fora',!cb.checked);refreshFull();
+      toast(selectedFunds().length+' de '+activeFunds().length+' fundos no download e no e-mail completo.')});
+  });
 }
+/* (patch) refaz só o e-mail completo quando a seleção muda */
+function refreshFull(){const full=CARDS.find(c=>c.full);if(!full)return;
+  const tmp=document.createElement('div');tmp.innerHTML=emailFullHTML(VERSIONS[VER].simple);
+  const novo=tmp.firstElementChild;full.el.replaceWith(novo);full.el=novo;
+  if(typeof injectLightLogos==='function')injectLightLogos(full.stage);
+  applyEmailTheme();fitAll();renderAllCharts(full.stage);}
 /* ================= ESCALA ================= */
 function fitThumbs(){document.querySelectorAll('.deck .stage').forEach(st=>{const c=st.querySelector('.ecard');if(!c)return;
   const cw=c.offsetWidth||CARD_W,ch=c.offsetHeight||900,k=st.clientWidth/cw;c.style.transform='scale('+k+')';st.style.height=Math.round(ch*k)+'px'})}
@@ -767,7 +850,7 @@ function emailExport(){
 async function exportAll(){
   await ensureLibs();const wasOpen=LB.open;if(wasOpen)park();
   const shots=[],errs=[];
-  for(const c of CARDS){try{const blob=await canvasBlob(await renderCard(c.el,c.full?FULL_SCALE:PNG_SCALE));if(blob)shots.push({name:(c.el.dataset.name||c.id)+'-'+VER+'.png',blob});else errs.push(c.id)}catch(e){errs.push(c.id)}await new Promise(r=>setTimeout(r,80))}
+  for(const c of CARDS){if(!c.full&&SEL[c.id]===false)continue;try{const blob=await canvasBlob(await renderCard(c.el,c.full?FULL_SCALE:PNG_SCALE));if(blob)shots.push({name:(c.el.dataset.name||c.id)+'-'+VER+'.png',blob});else errs.push(c.id)}catch(e){errs.push(c.id)}await new Promise(r=>setTimeout(r,80))}
   const html=emailExport();
   if(window.JSZip){const zip=new JSZip(),f=zip.folder('01-cards-png');shots.forEach(s=>f.file(s.name,s.blob));zip.file('email-'+VER+'.html',html);
     saveBlob(await zip.generateAsync({type:'blob'}),'tivio-email-fundos-credito-'+VER+'.zip');
@@ -793,19 +876,17 @@ function normalizeLogos(root){
 }
 /* ===== FIX LOGO CLARO (patch) — logos "preto" derivados no modo claro ===== */
 function buildLightLogo(key){
-  var l=FUND_LOGOS[key]; if(!l) return '';
-  var p=l.p, i=p.indexOf('<rect fill="#79949b"');
-  var pre=i>=0?p.slice(0,i):'', post=i>=0?p.slice(i):p;
-  pre=pre.replace(/#fff/g,'#0A0F14');
-  post=post.replace('<rect fill="#fff" x="378.82"','<rect fill="#0A0F14" x="378.82"').replace(/#06121C/gi,'#ABC6CD');
-  return '<svg class="flogo flogo-light '+key+'-light" viewBox="'+l.vb+'" preserveAspectRatio="xMinYMid meet" xmlns="http://www.w3.org/2000/svg">'+pre+post+'</svg>';
+  /* (patch) logos horizontais: o modo claro usa a versão PRETA de cada logo
+     (FUND_LOGOS_LIGHT, gerado de assets/logos pelo AutomaTivio) */
+  var L=(typeof FUND_LOGOS_LIGHT!=='undefined'&&FUND_LOGOS_LIGHT[key])||null;
+  if(!L) return '';
+  return '<svg class="flogo flogo-light '+key+' '+key+'-light" viewBox="'+L.vb+'" preserveAspectRatio="xMinYMid meet" xmlns="http://www.w3.org/2000/svg">'+L.p+'</svg>';
 }
 function injectLightLogos(root){
-  (root||document).querySelectorAll('.ecard .flogo.institucional, .ecard .flogo.inst15').forEach(function(orig){
-    if(orig.classList.contains('flogo-light')) return;
+  (root||document).querySelectorAll('.ecard .flogo:not(.flogo-light)').forEach(function(orig){
     if(orig.parentNode.querySelector('.flogo-light')) return;
-    var key=orig.classList.contains('inst15')?'inst15':'institucional';
-    orig.insertAdjacentHTML('afterend', buildLightLogo(key));
+    var key=[].slice.call(orig.classList).filter(function(c){return c!=='flogo';})[0];
+    if(key) orig.insertAdjacentHTML('afterend', buildLightLogo(key));
   });
 }
 (function(){ var _bd = buildDeck; buildDeck = function(){ _bd.apply(this, arguments); injectLightLogos(); }; })();

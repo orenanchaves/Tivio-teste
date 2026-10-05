@@ -457,6 +457,18 @@ body.edit .card [contenteditable]:hover{background:rgba(117,157,180,.20);box-sha
 .footer .logo-mark{height:24px;width:69px;color:var(--text-primary);margin:0 auto 14px;display:block;overflow:visible}
 .toast{position:fixed;left:50%;bottom:calc(28px + var(--safe-b));transform:translateX(-50%) translateY(20px);opacity:0;pointer-events:none;padding:12px 22px;border-radius:var(--r-full);background:var(--tv-azul);color:#000;font-size:13px;font-weight:700;transition:.25s var(--ease);z-index:100;max-width:90vw;text-align:center}
 .toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+
+/* (patch) ficha distribuida na altura: o espaco livre ia todo para antes do
+   rodape e os blocos ficavam colados no topo. Mais respiro entre os blocos e
+   a rentabilidade cresce para ocupar o resto. */
+.fx .metabar{margin-top:30px}
+.fx .sec-title{margin:46px 0 22px}
+.fx .pad>.perf{flex:1 1 auto;min-height:440px;max-height:640px}
+.fx .patbar{margin-top:30px}
+.fx .resumo{margin-top:24px}
+.fx .notes{padding-top:34px}
+/* texto longo na faixa (taxa de performance) quebra em vez de sumir em "..." */
+.fx .patbar .pi em{white-space:normal;line-height:1.15;font-size:24px}
 </style>
 </head>
 <body>

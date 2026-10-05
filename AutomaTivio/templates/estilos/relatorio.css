@@ -160,6 +160,48 @@ table.mkt-resumo + table.mkt{margin-top:40px}
 .mktnote{margin-top:auto;padding-bottom:104px;font-size:12.6px;line-height:1.3;color:#222}
 .mktnote sup{font-size:.7em}
 
+/* ---- mercado de crédito em vidro ------------------------------------------
+   Pedido de 05/10/2026: a tabela setorial sai do zebrado cinza do PPTX e vira
+   um painel em glassmorphism. O vidro é feito só com cor translúcida, borda
+   clara e brilho interno, SEM backdrop-filter: o Chromium rasteriza
+   backdrop-filter na impressão, e o PDF perderia o texto selecionável.
+   As alturas somam o mesmo que o zebrado (36px + 3px de respiro = 39px por
+   linha), para a nota do rodapé não ser empurrada para fora da folha.
+   O PPTX é montado à parte (exporters/pptx.py) e continua no desenho antigo. */
+.mkt-vidro{position:relative;margin:4px 0 0;padding:16px 15px 14px;border-radius:24px;overflow:hidden;
+  background:
+    radial-gradient(520px 300px at 8% 0%,rgba(193,244,212,.42),transparent 70%),
+    radial-gradient(560px 360px at 100% 18%,rgba(117,157,180,.60),transparent 70%),
+    radial-gradient(480px 320px at 26% 100%,rgba(146,211,171,.30),transparent 70%),
+    radial-gradient(420px 280px at 92% 96%,rgba(171,198,205,.35),transparent 70%),
+    linear-gradient(160deg,#16202b 0%,#2b3a4d 48%,#1b2733 100%);
+  box-shadow:0 18px 44px rgba(16,28,40,.28),inset 0 1px 0 rgba(255,255,255,.18)}
+.mkt-vidro table.mkt{width:100%;margin-left:0;border-collapse:separate;border-spacing:0 3px}
+.mkt-vidro table.mkt th{height:36px;background:rgba(255,255,255,.16);color:#fff;font-weight:600;
+  border:0;border-top:1px solid rgba(255,255,255,.34);border-bottom:1px solid rgba(255,255,255,.10)}
+.mkt-vidro table.mkt th:first-child{border-radius:12px 0 0 12px;border-left:1px solid rgba(255,255,255,.26)}
+.mkt-vidro table.mkt th:last-child{border-radius:0 12px 12px 0;border-right:1px solid rgba(255,255,255,.18)}
+.mkt-vidro table.mkt th.vazio{background:none;border:0}
+.mkt-vidro table.mkt td{height:36px;background:rgba(255,255,255,.06);color:rgba(255,255,255,.94);
+  border-top:1px solid rgba(255,255,255,.10)}
+.mkt-vidro table.mkt td:first-child{border-radius:10px 0 0 10px;padding-left:12px;color:#fff;font-weight:400}
+.mkt-vidro table.mkt td:last-child{border-radius:0 10px 10px 0}
+.mkt-vidro table.mkt tbody tr:nth-child(even) td{background:rgba(255,255,255,.12)}
+.mkt-vidro table.mkt td.vol{color:#C1F4D4;font-weight:500}
+/* o total vira uma placa de vidro só, alinhada às colunas da tabela de baixo:
+   o rótulo na faixa clara de cima, o número grande embaixo */
+.mkt-vidro table.mkt-resumo{margin-top:0;border-spacing:0}
+.mkt-vidro table.mkt-resumo th{border-radius:0;border-left:1px solid rgba(255,255,255,.12)}
+.mkt-vidro table.mkt-resumo th:nth-child(2){border-radius:14px 0 0 0;border-left:1px solid rgba(255,255,255,.26)}
+.mkt-vidro table.mkt-resumo th:last-child{border-radius:0 14px 0 0}
+.mkt-vidro table.mkt-resumo th.vazio{border:0;background:none}
+.mkt-vidro table.mkt-resumo td{height:46px;color:#fff;font-weight:600;font-size:19px;
+  background:rgba(255,255,255,.09)!important;border-top:0;border-bottom:1px solid rgba(255,255,255,.16)}
+.mkt-vidro table.mkt-resumo td:nth-child(2){border-radius:0 0 0 14px;border-left:1px solid rgba(255,255,255,.18)}
+.mkt-vidro table.mkt-resumo td:last-child{border-radius:0 0 14px 0;border-right:1px solid rgba(255,255,255,.14)}
+.mkt-vidro table.mkt-resumo td:first-child{background:none!important;border:0;padding:0}
+.mkt-vidro table.mkt-resumo + table.mkt{margin-top:18px}
+
 /* ---- características gerais --------------------------------------------- */
 .carac{margin-top:16px;display:grid;grid-template-columns:402px 1fr}
 .ccol{display:flex;flex-direction:column}

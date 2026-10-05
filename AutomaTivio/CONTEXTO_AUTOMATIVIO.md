@@ -450,6 +450,8 @@ precisar mexer, prefira reextrair a reescrever.
 | Ligar/desligar um material do mês | `configs/edicao.yml` → `materiais:` |
 | Mudar o disclaimer | `configs/disclaimer.md` |
 | Trocar um selo | `assets/selos/<chave>.png` |
+| Trocar o logo de um fundo no e-mail | o SVG em `assets/logos/` — o e-mail usa sempre a horizontal (branca no escuro, preta no claro), via `renderers/logos.py` |
+| Formato quadrado do e-mail | versão **Quadrado** no `tivio-email-fundos-credito.html` (`squareCardHTML`) |
 
 ### Adicionar um fundo novo
 

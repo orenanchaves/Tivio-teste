@@ -14,19 +14,39 @@
 
 /* ---- o cabeçalho com seis ações ------------------------------------------
    O gerador oficial tinha três botões de download; aqui são cinco formatos
-   mais a edição. Numa linha só eles empurravam a página 33px para fora da
-   tela (e 293px no celular), o que aparece como rolagem horizontal no
-   documento inteiro. Quebrando em linhas, o cabeçalho cresce e a página
-   continua do tamanho da tela. */
-.header .inner{height:auto;min-height:72px;padding-top:12px;padding-bottom:12px;
-  flex-wrap:wrap;row-gap:10px}
-.head-actions{height:auto;flex-wrap:wrap;row-gap:8px}
-.dl-split{flex-wrap:wrap;row-gap:8px}
+   mais a edição. No desktop tudo fica numa linha só: marca à esquerda, ações
+   à direita, na mesma altura. Para caber, os botões ficam mais justos e, até
+   1380px, o rótulo da vertical sai do cabeçalho (ele continua na troca de
+   vertical, logo abaixo). Abaixo de 1060px vale o layout em duas linhas do
+   pagina.css, com os formatos ocupando a largura toda. */
+.header .inner{gap:20px}
+.header .brand .brand-tag{margin-left:16px;padding-left:16px}
+.head-actions{gap:6px}
+.head-actions .btn-sm{padding:8px 12px}
+.dl-split{gap:6px}
+@media(max-width:1380px){.header .brand .brand-tag{display:none}}
+@media(max-width:1060px){
+  .head-actions{gap:8px}.dl-split{flex-wrap:wrap;row-gap:8px;gap:8px}
+}
+@media(max-width:1060px) and (min-width:461px){.header .brand .brand-tag{display:flex}}
 @media(max-width:640px){
   .head-actions{width:100%;margin-left:0;gap:8px}
   .dl-split{width:100%;gap:8px}
   .dl-split .btn{flex:1 1 calc(33.333% - 6px)}
 }
+
+/* ---- troca de vertical ----------------------------------------------------
+   Crédito Privado e Crédito Estruturado são páginas irmãs; a chave leva de uma
+   à outra sem voltar à Central. É link comum: abre o outro arquivo da mesma
+   pasta. */
+.vtroca{display:inline-flex;gap:4px;padding:4px;margin:0 0 18px;border-radius:var(--r-full);
+  background:var(--input-bg);border:1px solid var(--line-strong)}
+.vtroca a{padding:9px 18px;border-radius:var(--r-full);font-size:13px;font-weight:600;
+  color:var(--text-muted);white-space:nowrap;transition:background-color .2s var(--ease),color .2s var(--ease)}
+.vtroca a:hover{color:var(--text-primary)}
+.vtroca a[aria-current="page"]{background:var(--accent-strong);color:var(--tv-preto)}
+:root[data-theme="light"] .vtroca a[aria-current="page"]{color:#fff}
+@media(max-width:640px){.vtroca{display:flex}.vtroca a{flex:1 1 0;text-align:center;padding:9px 10px;font-size:12px}}
 
 /* No celular a linha do eyebrow quebra em duas, e o ponto, centralizado no
    bloco inteiro, flutuava no meio da segunda linha. */
@@ -93,6 +113,11 @@ body.tv-exportando .backtop{display:none}
 
 <main class="container" id="top">
   <section class="intro hero-stagger">
+    {% if verticais %}
+    <nav class="vtroca" aria-label="Trocar de vertical">
+      {% for v in verticais %}<a href="{{ v.href }}"{% if v.atual %} aria-current="page"{% endif %}>{{ v.rotulo }}</a>{% endfor %}
+    </nav>
+    {% endif %}
     <div class="eyebrow"><span class="dot news-pulse"></span>{{ edicao.mes_ano }} · Data base {{ edicao.br }} · A4 · {{ paginas_por_fundo }} páginas por fundo</div>
     <h1>Relatórios de Gestão <span class="sep">|</span> <strong>{{ vertical_rotulo }}</strong></h1>
     <p>Escolha o <b>fundo</b> nas abas abaixo. Cada aba abre o relatório completo de

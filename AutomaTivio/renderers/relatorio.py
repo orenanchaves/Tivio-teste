@@ -14,6 +14,7 @@ import json
 import os
 import re
 import unicodedata
+from urllib.parse import quote
 
 import jinja2
 import yaml
@@ -764,7 +765,7 @@ class RenderizadorRelatorio:
                           titulo_de=lambda sid: titulos_por_secao.get(sid, sid))
 
     # --------------------------------------------------- página por vertical
-    def html_vertical(self, contextos, vertical):
+    def html_vertical(self, contextos, vertical, irmas=()):
         """Um documento com todos os fundos da vertical, em abas.
 
         Treze arquivos avulsos era o errado: quem abre quer "os relatórios de
@@ -774,6 +775,9 @@ class RenderizadorRelatorio:
 
         Os fundos ficam todos no documento, só um visível. Trocar de aba não
         recarrega nada, e exportar pega só o que está na tela.
+
+        `irmas` são as outras páginas por vertical da edição, como
+        (vertical, rótulo, arquivo): viram a troca de vertical no topo.
         """
         rotulo = (self.cad.verticais.get(vertical) or {}).get('rotulo', vertical)
         decks = []
@@ -793,8 +797,11 @@ class RenderizadorRelatorio:
 
         tpl = self.env.get_template('relatorio_vertical.html')
         paginas = max((b['paginas'] for b in decks), default=4)
+        verticais = [{'rotulo': rot, 'href': quote(arq), 'atual': v == vertical}
+                     for v, rot, arq in irmas]
         return tpl.render(
             decks=decks, vertical_rotulo=rotulo, edicao=self.edicao,
+            verticais=verticais if len(verticais) > 1 else [],
             paginas_por_fundo=paginas,
             descricao_secoes=self.SECOES_HERO.get(
                 vertical, self.SECOES_HERO['credito_privado']),
