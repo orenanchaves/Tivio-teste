@@ -214,7 +214,15 @@ class Pipeline:
                 if quer_pptx:
                     try:
                         destino = self._destino('pptx', self.edicao.nome_arquivo(base, 'pptx'))
-                        pptx.nativo(ctx, rend, destino)
+                        # fiel à folha (imagem sem texto + texto nativo editável);
+                        # o "nativo" antigo redesenhava com outro layout e só
+                        # entra se o fiel falhar
+                        try:
+                            from exporters.pptx_fiel import ExportadorPPTXFiel
+                            ExportadorPPTXFiel(self.log).exportar(pdf._browser, arquivo, destino)
+                        except Exception as e:
+                            self.log.aviso(key, f'PPTX fiel falhou ({e!r}), usando o nativo antigo')
+                            pptx.nativo(ctx, rend, destino)
                         self.log.gerado(destino, 'pptx')
                     except Exception as e:
                         # o nativo é o desejado; a imagem garante que o usuário
@@ -287,7 +295,6 @@ class Pipeline:
             'tivio-post-investment-solutions.html': 'post_investment_solutions',
             'tivio-email-fundos-credito.html': 'email_fundos_credito',
             'tivio-central.html': 'central',
-            'tivio-relatorio-gestao-credito-privado.html': 'relatorio_gestao',
             'tivio-email-nordea-studio.html': 'email_nordea',
             'tivio-construtor-one-pager.html': 'one_pager',
         }

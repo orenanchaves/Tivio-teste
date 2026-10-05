@@ -49,7 +49,7 @@ Ele lê as planilhas do mês e o documento de comentários do gestor, calcula tu
 |---|---|
 | **2 páginas por vertical** — fundos em abas, com botões de exportação | `saida/AAAA-MM/relatorios/` ← **é o que você abre** |
 | **13 relatórios em PDF A4** vetorial, um por fundo | `saida/AAAA-MM/pdf/` |
-| **13 relatórios em PPTX**, um por fundo | `saida/AAAA-MM/pptx/` |
+| **13 relatórios em PPTX**, um por fundo — idênticos à folha, texto editável (`exporters/pptx_fiel.py`) | `saida/AAAA-MM/pptx/` |
 | Posts, e-mail e a **Central de Materiais** | `saida/AAAA-MM/central/` |
 | **`conferencia_AAAA-MM.xlsx`** — o que mudou, o que faltou, o que não bateu | `saida/AAAA-MM/` |
 | Log da rodada | `saida/AAAA-MM/AAAA-MM-processamento.log` |
@@ -431,7 +431,7 @@ Detalhes em `docs/CONCILIACAO.md`.
 | `estilos/entrega.css` | só a barra escura do relatório solto |
 
 `pagina.css` e `abas.css` foram **extraídos sem alterar uma linha** de
-`templates/materiais/tivio-relatorio-gestao-credito-privado.html`, para a página
+`templates/referencia/tivio-relatorio-gestao-credito-privado.html`, para a página
 por vertical ter o mesmo visual do gerador oficial — não um parecido. Se
 precisar mexer, prefira reextrair a reescrever.
 
@@ -451,6 +451,8 @@ precisar mexer, prefira reextrair a reescrever.
 | Mudar o disclaimer | `configs/disclaimer.md` |
 | Trocar um selo | `assets/selos/<chave>.png` |
 | Trocar o logo de um fundo no e-mail | o SVG em `assets/logos/` — o e-mail usa sempre a horizontal (branca no escuro, preta no claro), via `renderers/logos.py` |
+| PPTX | `exporters/pptx_fiel.py`: cada slide é a folha renderizada sem texto (fundo) + cada bloco de texto como caixa nativa editável, na posição e no estilo medidos no navegador (rota "Image to PPTX" da skill ppt-master). Sem a fonte Versos instalada, o PowerPoint troca a fonte; o layout se mantém |
+| Logo com texto digitado (`<text>`) | converter em curvas: o Legacy e o Esplanada foram convertidos com a Versos Bold (10/2026) |
 | Formato quadrado do e-mail | versão **Quadrado** no `tivio-email-fundos-credito.html` (`squareCardHTML`) |
 
 ### Adicionar um fundo novo

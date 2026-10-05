@@ -122,7 +122,7 @@ imprimir — se você mexer no CSS da folha e o aviso aparecer, é isso.
 | `entrega.css` | só a barra escura do relatório solto |
 
 `pagina.css` e `abas.css` foram **extraídos sem alterar uma linha** de
-`templates/materiais/tivio-relatorio-gestao-credito-privado.html`, para a página
+`templates/referencia/tivio-relatorio-gestao-credito-privado.html`, para a página
 por vertical ter o mesmo visual do gerador oficial. Se precisar mexer, prefira
 reextrair a reescrever.
 

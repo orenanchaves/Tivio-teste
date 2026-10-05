@@ -47,9 +47,6 @@ body.tv-exportando .tv-bar,body.tv-exportando .tv-toast{display:none}
 .sealrow img.selo,.sealrow .qr{image-rendering:auto}
 .chart-h sup{font-size:.62em;vertical-align:super;line-height:0;margin-left:1px}
 .tv-chart>svg.histsvg{width:100%;height:auto;display:block}
-/* a caixa da marca é preta no gerador interativo; aqui a faixa já é escura,
-   e o retângulo preto sobre o degradê lê como erro de render */
-.rc-head .rbox{background:transparent}
 .feat.op .fv{line-height:1.55}
 
 /* ---- tela estreita: a barra de exportação ------------------------------- */

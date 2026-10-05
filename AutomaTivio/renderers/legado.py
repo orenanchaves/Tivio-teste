@@ -25,7 +25,6 @@ P6 = ['mes', 'ano', '12m', '24m', '36m', 'inicio']
 MENSAIS = {
     'tivio-post-credito-estruturado.html', 'tivio-post-credito-privado.html',
     'tivio-post-investment-solutions.html',
-    'tivio-relatorio-gestao-credito-privado.html',
     'tivio-email-fundos-credito.html',
 }
 
@@ -37,7 +36,6 @@ class RenderizadorLegado:
         'tivio-post-investment-solutions.html': 'post_investment_solutions',
         'tivio-email-fundos-credito.html': 'email_fundos_credito',
         'tivio-central.html': 'central',
-        'tivio-relatorio-gestao-credito-privado.html': 'relatorio_legado',
     }
 
     def __init__(self, contexto, cadastro, edicao, comentarios, manual, log,
