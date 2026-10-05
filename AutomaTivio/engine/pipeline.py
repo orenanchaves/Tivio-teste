@@ -360,9 +360,35 @@ class Pipeline:
             self._relatorios(contextos)
         self._materiais_legados()
         self._copiar_libs()
+        self._destaques()
+        self._emails()
         self._porta_de_entrada()
         self._fechar(contextos)
         return self.log.ok
+
+    def _destaques(self):
+        """JPG e pacote PDF dos posts de Destaques, uma pasta por vertical."""
+        if not self.cfg['saidas'].get('destaques', True):
+            return
+        from exporters.destaques import exportar_destaques
+        try:
+            n = exportar_destaques(self._destino('central'), self._destino('destaques'), self.log)
+            if n:
+                self.log.gerado(self._destino('destaques'), 'jpg')
+        except Exception as e:
+            self.log.aviso('destaques', f'JPG/PDF dos destaques não gerados: {e!r}')
+
+    def _emails(self):
+        """PNG dos cards e HTML de disparo do e-mail, uma pasta por versão."""
+        if not self.cfg['saidas'].get('emails', True):
+            return
+        from exporters.emails import exportar_emails
+        try:
+            n = exportar_emails(self._destino('central'), self._destino('emails'), self.log)
+            if n:
+                self.log.gerado(self._destino('emails'), 'png')
+        except Exception as e:
+            self.log.aviso('emails', f'PNG/HTML dos e-mails não gerados: {e!r}')
 
     def _porta_de_entrada(self):
         """saida/AAAA-MM/index.html: abre a Central, de onde se chega a tudo.

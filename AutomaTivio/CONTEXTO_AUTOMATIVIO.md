@@ -4,6 +4,8 @@
 > da Tivio Capital: o que faz, como rodar no seu PC, como é por dentro, o que já
 > foi conferido contra os relatórios publicados e o que ainda falta.
 >
+> Visão de processo, para quem roda o mês: `../Documentacao_AutomaTivio/COMO_FUNCIONA.md`.
+>
 > Documento único e autossuficiente — dá para abrir só ele e trabalhar.
 > Última revisão: **10/2026**.
 >
@@ -51,6 +53,9 @@ Ele lê as planilhas do mês e o documento de comentários do gestor, calcula tu
 | **13 relatórios em PDF A4** vetorial, um por fundo | `saida/AAAA-MM/pdf/` |
 | **13 relatórios em PPTX**, um por fundo — idênticos à folha, texto editável (`exporters/pptx_fiel.py`) | `saida/AAAA-MM/pptx/` |
 | Posts, e-mail e a **Central de Materiais** | `saida/AAAA-MM/central/` |
+| **Carrosséis de Destaques** em JPG (2160 × 2880) + pacote PDF, uma pasta por vertical | `saida/AAAA-MM/destaques/<vertical>/` |
+| **E-mails** em PNG (cards + completo) + HTML de disparo, uma pasta por versão | `saida/AAAA-MM/emails/<versao>/` |
+| `index.html` que abre a Central | `saida/AAAA-MM/` |
 | **`conferencia_AAAA-MM.xlsx`** — o que mudou, o que faltou, o que não bateu | `saida/AAAA-MM/` |
 | Log da rodada | `saida/AAAA-MM/AAAA-MM-processamento.log` |
 
