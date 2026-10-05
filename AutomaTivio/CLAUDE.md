@@ -6,6 +6,10 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 > Mantenha assim — quem lê e mantém isto é o time de Marketing e Produtos da
 > Tivio, não um time de engenharia.
 
+> **`CONTEXTO_AUTOMATIVIO.md` é o guia completo e a fonte de verdade.** Este
+> arquivo é o recorte curto dele, com o que importa para mexer no código. Em
+> caso de divergência, vale o guia.
+
 ---
 
 ## O que é

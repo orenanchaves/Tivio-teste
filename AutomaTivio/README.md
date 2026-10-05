@@ -24,8 +24,8 @@ HTML, PDF, PPTX, a `conferencia_AAAA-MM.xlsx` e o log.
 
 | Arquivo | Para quem |
 |---|---|
-| **[`CONTEXTO_AUTOMATIVIO.md`](CONTEXTO_AUTOMATIVIO.md)** | Handoff: por que o ambiente é assim, o que já foi conferido contra os PPTX publicados e o que falta. Comece por aqui se for assumir o projeto. |
-| **[`CLAUDE.md`](CLAUDE.md)** | Guia de quem mexe no código (ou da IA que mexe): comandos, arquitetura, invariantes e as armadilhas já pagas. |
+| **[`CONTEXTO_AUTOMATIVIO.md`](CONTEXTO_AUTOMATIVIO.md)** | **O guia completo**, em um arquivo só: instalar, rodar, como é por dentro, o que foi conferido contra os PPTX publicados, onde mexer para cada coisa, as armadilhas e o que falta. Comece por aqui. |
+| **[`CLAUDE.md`](CLAUDE.md)** | O recorte curto do guia, escrito para a IA que mexe no código. |
 
 ---
 
