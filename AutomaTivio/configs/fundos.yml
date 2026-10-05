@@ -190,7 +190,7 @@ fundos:
     casas_pct: 2              # "97,36%" e não "97%", como no publicado
     nome: Tivio Legacy Prev
     razao_social: "BV ICATU SEG LEGACY PREV FIF - CIC RF CRED PRIV – RL"
-    cnpj_exibido: "09.166.056/0001-95"   # o relatório publicado; a DePara tem outro, que segue nas taxas
+    cnpj_exibido: "09.166.056/0001-95"   # o do relatório publicado; vale no cabeçalho e na busca da taxa (a DePara tem 09.083.848/0001-04, taxa 0%)
     vertical: credito_privado
     busca: [LEGACY]
     logo: Legacy

@@ -284,6 +284,10 @@
       }
     }
     el.style.fontSize = (Math.floor(lo * 4) / 4) + 'px';
+    // SAC e Ouvidoria no mesmo corpo do texto do disclaimer
+    var faixa = el.closest && el.closest('.disc');
+    var contatos = faixa && faixa.querySelector('.contatos');
+    if (contatos) { contatos.style.fontSize = el.style.fontSize; }
     // data-centro: o que sobrar de altura vai metade em cima, metade embaixo
     // (o texto fica no meio da caixa, sem um vão grande só no pé)
     if (el.hasAttribute('data-centro')) {

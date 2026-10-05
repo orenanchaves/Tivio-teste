@@ -455,8 +455,11 @@ class Contexto:
             hist = dict(hist, t=[round(v * float(fator), 2) for v in hist['c']])
         hist12 = self.calc.historico(f.quantum, f.benchmark, janela_meses=12)
 
-        taxa = self.tx.global_(key, f.cnpj, f.quantum)
-        perf = self.tx.performance(key, f.cnpj, None, f.quantum)
+        # o CNPJ do relatório publicado (cnpj_exibido) vence o da DePara também
+        # na busca da taxa: no Legacy o da DePara é outra classe, com taxa 0%
+        cnpj_tx = f.cfg.get('cnpj_exibido') or f.cnpj
+        taxa = self.tx.global_(key, cnpj_tx, f.quantum)
+        perf = self.tx.performance(key, cnpj_tx, None, f.quantum)
         # O texto publicado em configs/fundos.yml (`taxa`, `performance`) vence
         # a taxas_global.xlsx: nos ALT a planilha diverge do relatório
         # publicado (ALT 90 2,43% x 1,25%; ALT Light 0,65% x 1,15%).

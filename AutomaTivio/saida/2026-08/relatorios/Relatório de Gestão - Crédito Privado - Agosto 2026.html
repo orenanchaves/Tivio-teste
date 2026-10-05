@@ -4455,7 +4455,7 @@ body.tv-exportando .backtop{display:none}
     <div class="ci"><div class="ck">Gestor</div><div class="cv">Tivio Capital</div></div>
     <div class="ci"><div class="ck">Público Alvo</div><div class="cv">Investidores em geral</div></div>
     <div class="ci"><div class="ck">Data de início</div><div class="cv">14/08/2008</div></div>
-    <div class="ci"><div class="ck">Taxa global</div><div class="cv">0,00% a.a.</div></div>
+    <div class="ci"><div class="ck">Taxa global</div><div class="cv">0,50% a.a.</div></div>
     <div class="ci"><div class="ck">Taxa de performance</div><div class="cv">Não há</div></div>
   </div>
   <div class="ccol">
@@ -4811,6 +4811,10 @@ body.tv-exportando .backtop{display:none}
       }
     }
     el.style.fontSize = (Math.floor(lo * 4) / 4) + 'px';
+    // SAC e Ouvidoria no mesmo corpo do texto do disclaimer
+    var faixa = el.closest && el.closest('.disc');
+    var contatos = faixa && faixa.querySelector('.contatos');
+    if (contatos) { contatos.style.fontSize = el.style.fontSize; }
     // data-centro: o que sobrar de altura vai metade em cima, metade embaixo
     // (o texto fica no meio da caixa, sem um vão grande só no pé)
     if (el.hasAttribute('data-centro')) {
