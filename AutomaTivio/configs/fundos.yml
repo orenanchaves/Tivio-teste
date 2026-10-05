@@ -391,7 +391,7 @@ book_depara:
     LFSN: Liquidez
     Precatórios: Precatório
     TPF: Liquidez
-    Deb: Crédito Privado
+    Deb: Debêntures
   alt_light:                 # ALT Light
     Caixa: Liquidez
     Crédito Estruturado: Crédito Estruturado
@@ -403,7 +403,7 @@ book_depara:
     LFSC: Bancário
     LFSN: Bancário
     Precatórios: Precatório
-    Deb: Crédito Privado
+    Deb: Debêntures
     FIP: FIP
     TPF: Liquidez
 
