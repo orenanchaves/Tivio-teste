@@ -109,6 +109,7 @@ class Cadastro:
         self.rotulo_taxa = self.cfg.get('rotulo_taxa', 'Taxa global')
         self.tipo_label = self.cfg.get('tipo_label', {})
         self.book_depara = self.cfg.get('book_depara', {})
+        self.book_sem_book = self.cfg.get('book_sem_book', {})
         self.verticais = self.cfg.get('verticais', {})
         self._idx = {_norm(r['carteira']): r for _, r in depara.iterrows()}
         self.fundos = {}

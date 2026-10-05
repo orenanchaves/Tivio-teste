@@ -67,6 +67,16 @@ class ContextoFundo:
         tabela = (cadastro.book_depara or {}).get(self.f.cfg.get('book_depara') or '')
         if tabela and self.cart.get('estrategia') is not None:
             serie = self.cart['estrategia']
+            bt = self.cart.get('book_tipo')
+            if bt is not None:
+                # "Padrão" = sem book: o tipo do ativo decide o book
+                junto = {}
+                for (book, tipo), v in bt.items():
+                    if str(book).strip().lower() == 'padrão':
+                        book = (cadastro.book_sem_book or {}).get(tipo, tipo)
+                    junto[book] = junto.get(book, 0) + v
+                import pandas as _pd
+                serie = _pd.Series(junto)
             fora = sorted(str(b) for b in serie.index if b not in tabela and serie[b])
             if fora:
                 self.avisos.append('alocação real: book sem de-para, saiu com o próprio nome: '

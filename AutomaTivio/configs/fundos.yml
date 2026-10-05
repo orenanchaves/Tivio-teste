@@ -365,18 +365,31 @@ rotulo_taxa: Taxa global
 # De-para "Book Maravi" (coluna Book da Base Carteira) -> rótulo da
 # "Alocação real da carteira de crédito" dos ALT. Os percentuais dos books de
 # mesmo rótulo são SOMADOS. O fundo escolhe a tabela com `book_depara:`.
+# Posição com Book "Padrão" é posição SEM book na planilha — "Padrão" nunca
+# aparece no relatório. O tipo do ativo (coluna Tipo aj.) diz qual book ela é,
+# e daí ela segue o de-para abaixo como qualquer outra.
+book_sem_book:
+  Caixa: Caixa
+  ordinária: FIP
+  FIDC Sr: FIDC Sênior
+  FIDC Mez/Sub: FIDC Mezanino
+  LFSN: LFSN
+  LFSC: LFSC
+  LF: LF Sênior
+  Debênture: Deb
+
 book_depara:
   alt:                       # ALT 90, ALT 180, HYD60
     Caixa: Liquidez
     Crédito Estruturado: Crédito Estruturado
     Crédito Privado: Crédito Privado
     Fiagro: Fiagro
-    FIDC Mezanino: FIDC Mezanino
-    FIDC Sênior: FIDC Sênior
+    FIDC Mezanino: FIDCs Cota Mezanino
+    FIDC Sênior: FIDCs Cota Sênior
     LF Sênior: Liquidez
     LFSC: Liquidez
     LFSN: Liquidez
-    Precatórios: Precatórios
+    Precatórios: Precatório
     TPF: Liquidez
     Deb: Crédito Privado
   alt_light:                 # ALT Light
@@ -384,12 +397,12 @@ book_depara:
     Crédito Estruturado: Crédito Estruturado
     Crédito Privado: Crédito Privado
     Fiagro: Fiagro
-    FIDC Mezanino: FIDC Mezanino
-    FIDC Sênior: FIDC Sênior
+    FIDC Mezanino: FIDCs Cota Mezanino
+    FIDC Sênior: FIDCs Cota Sênior
     LF Sênior: Bancário
     LFSC: Bancário
     LFSN: Bancário
-    Precatórios: Precatórios
+    Precatórios: Precatório
     Deb: Crédito Privado
     FIP: FIP
     TPF: Liquidez

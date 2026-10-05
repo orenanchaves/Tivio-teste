@@ -160,10 +160,15 @@ class Calc:
         # É o que os relatórios de Crédito Estruturado chamam de "Alocação por
         # Estratégia" — um corte que o relatório de high grade não usa.
         estrategia = grupo('Book', c) if 'Book' in c.columns else None
+        # (Book, Tipo aj.): o "Padrão" do Book é posição SEM book; o tipo do
+        # ativo na mesma linha decide para onde ela vai (engine/contexto.py)
+        book_tipo = None
+        if 'Book' in c.columns and 'Tipo aj.' in c.columns:
+            book_tipo = c.groupby(['Book', 'Tipo aj.'])['Exposição'].sum() / pl
         credito = c[~c['Setor'].isin(['Caixa', 'DAP'])]['Exposição'].sum() / pl
         return {
             'emissores': emissores, 'setores': setores, 'tipos': tipos, 'rating': rating,
-            'estrategia': estrategia,
+            'estrategia': estrategia, 'book_tipo': book_tipo,
             'carrego': float((c['Taxa'] * exp).sum() / pl),
             'duration': float((c['duration'] * exp).sum() / pl / 252),
             'credito': float(credito),
