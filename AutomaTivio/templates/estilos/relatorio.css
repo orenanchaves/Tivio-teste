@@ -240,7 +240,8 @@ table.mkt-resumo + table.mkt{margin-top:40px}
 .ccol{display:flex;flex-direction:column}
 .ccol:first-child{border-right:1px solid #D2DADE;padding-right:20px}
 .ccol:last-child{padding-left:58px}
-.ccol .ci:last-child{margin-top:auto}
+/* os dois patrimônios descem juntos para o pé da coluna da direita */
+.ccol:last-child .ci:nth-last-child(2){margin-top:auto}
 .ci{margin-bottom:22px}
 .ck{font-size:20px;font-weight:600;color:#111;line-height:1.15}
 .cv{font-size:20px;font-weight:400;color:#222;line-height:1.12;margin-top:2px}

@@ -587,8 +587,8 @@ class RenderizadorRelatorio:
     def caracteristicas_modelo(self, ctx):
         """As duas colunas de "Características gerais do fundo" do publicado.
 
-        Esquerda: gestor, público, início, taxa, PL. Direita: performance,
-        informações operacionais, PL médio. Sem benchmark, carrego e duration,
+        Esquerda: gestor, público, início, taxa global e taxa de performance.
+        Direita: informações operacionais, PL e PL médio. Sem benchmark, carrego e duration,
         que o relatório publicado não traz.
         """
         f = ctx.f
@@ -599,14 +599,16 @@ class RenderizadorRelatorio:
         if inicio is not None:
             esq.append(('Data de início', f'{inicio:%d/%m/%Y}'))
         # "Taxa global" em todos os fundos, inclusive nos ALT (pedido de 05/10/2026)
+        # as duas taxas juntas na esquerda; os dois patrimônios juntos na direita
         esq += [(self.cad.rotulo_taxa, ctx.taxa or fmt.MINUS),
-                ('Patrimônio líquido', ctx.pl_fmt)]
-        dir_ = [('Taxa de performance', ctx.perf or fmt.MINUS)]
+                ('Taxa de performance', ctx.perf or fmt.MINUS)]
+        dir_ = []
         # sem `operacional` no fundos.yml o bloco sairia só com o título
         if f.cfg.get('operacional'):
             dir_.append(('Informações Operacionais', None))
-        dir_.append(('Patrimônio líquido médio ' + ('(12M)' if ve == 'ce' else '(12 meses)'),
-                     ctx.pl_medio_fmt))
+        dir_ += [('Patrimônio líquido', ctx.pl_fmt),
+                 ('Patrimônio líquido médio ' + ('(12M)' if ve == 'ce' else '(12 meses)'),
+                  ctx.pl_medio_fmt)]
         return esq, dir_
 
     @staticmethod

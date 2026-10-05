@@ -127,6 +127,8 @@ para e não publica.
 - **Crédito Privado: 4 páginas.** Objetivo e rentabilidade · emissores, rating e
   setores · histórico e comentário · Mercado de Crédito · características e
   disclaimer.
+- Características gerais: as duas taxas (global e performance) juntas na coluna
+  da esquerda; os dois patrimônios (PL e PL médio) juntos no pé da direita.
 - **Crédito Estruturado (ALT): 3 páginas.** Treemap, estratégia, colaterais,
   histórico com a caixa CDI+, comentário, características e disclaimer.
 - O layout se adapta ao conteúdo:
