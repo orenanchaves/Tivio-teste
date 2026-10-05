@@ -1,18 +1,22 @@
 <!-- ===========================================================================
 Disclaimer dos Relatórios de Gestão
 
-Texto extraído, sem alteração, dos relatórios publicados de agosto/2026 —
-idêntico nos 12 fundos. É jurídico: só muda com aprovação de quem responde
-por ele, e por isso mora aqui e não dentro do código.
+Texto "Material Técnico" enviado em 05/10/2026, igual em todos os fundos.
+É jurídico: só muda com aprovação de quem responde por ele, e por isso mora
+aqui e não dentro do código. O título da faixa fica em configs/relatorio.yml.
 
 Um parágrafo por bloco, separados por linha em branco. O relatório ajusta o
 corpo da letra para o texto caber na faixa, sem cortar.
 ============================================================================ -->
 
-Este material foi elaborado pela Tivio Capital Distribuidora de Títulos e Valores Mobiliários S.A. (“TIVIO CAPITAL”). Este material é destinado aos seus receptores, fornecido unicamente para fins comerciais, não constituindo compromisso, indicação ou recomendação para iniciar ou encerrar qualquer transação. Este conteúdo não deve ser reproduzido no todo ou em parte, redistribuído ou transmitido para qualquer outra pessoa sem o consentimento prévio da TIVIO CAPITAL. Este documento não é, e não deve ser interpretado como, uma oferta de venda ou solicitação de uma oferta de compra de qualquer título ou valor mobiliário. A TIVIO CAPITAL, seus acionistas e demais empresas coligadas se eximem de qualquer responsabilidade por quaisquer prejuízos, diretos ou indiretos, que venham a decorrer da utilização deste material, de seu conteúdo e da realização de operações com base neste material.
+Este material foi elaborado pela Tivio Capital Distribuidora de Títulos e Valores Mobiliários S.A. e possui caráter meramente informativo. Não constitui oferta, recomendação ou aconselhamento de investimento.
 
-Consulte o documento de tributação para Fundos de Investimento para mais informações sobre a tributação aplicável, inclusive a regra aplicável em eventual desenquadramento, este documento está disponível em https://tivio.com/documentos/. A descrição acima não pode ser considerada como objetivo do fundo. Todas as informações legais podem ser observadas no regulamento do fundo, disponíveis no site https://tivio.com/fundos/. Os indicadores aqui apresentados devem ser utilizados como referência econômica e não parâmetro objetivo do fundo. Principais Fatores de Risco: (i) Crédito: risco de os emissores dos ativos financeiros e/ou das contrapartes não cumprirem suas obrigações de pagamento e/ou de liquidação das operações contratadas; (ii) Liquidez: risco de redução ou inexistência de demanda pelos ativos financeiros nos respectivos mercados em que são negociados; (iii) Mercado: Risco de oscilações decorrentes das flutuações de preços e cotações de mercado; (iv) Derivativos: pode não resultar nos efeitos desejados, devido a fatores como: descolamento entre o preço do derivativo e seu ativo objeto; alterações nas condições de negociação ou liquidação devido à interferência de órgãos reguladores ou dos mercados organizados onde são negociados; (v) Tratamento Tributário de Longo Prazo: O tratamento aplicável ao investidor depende da manutenção da carteira de ativos com prazo médio superior a 365 dias. Não há garantia de que o fundo terá o tratamento tributário de longo prazo.
+Antes de investir, leia a lâmina de informações básicas, se aplicável, o regulamento, o formulário de informações complementares, seus anexos e apêndices. Esses documentos e informações sobre tributação estão disponíveis em tivio.com/fundos/ e tivio.com/documentos/.
 
-Leia a lâmina de informações essenciais, se houver, e o regulamento antes de investir. Estes documentos podem ser encontrados no site https://tivio.com/fundos/. Leia previamente as condições de cada produto antes de investir. Os investimentos apresentados podem não ser adequados aos seus objetivos, situação financeira ou necessidades individuais. A rentabilidade obtida no passado não representa garantia de resultados futuros. A rentabilidade divulgada não é líquida de impostos. “Os ativos financeiros integrantes nesta carteira podem não possuir liquidez imediata, podendo seus prazos e/ou rentabilidade variar de acordo com o vencimento ou prazo de resgate de cada ativo, caso seja negociado antecipadamente.
+Os investimentos envolvem riscos. Consulte os documentos do fundo para conhecer sua estratégia, público-alvo, condições e principais fatores de risco.
 
-Para avaliação da performance de fundo(s) de investimento(s), é recomendável uma análise de, no mínimo, 12 (doze) meses. Fundos de investimento não contam com garantia do administrador, do gestor, de qualquer mecanismo de seguro ou do Fundo Garantidor de Crédito (FGC). O preenchimento do formulário API – Análise de Perfil do Investidor ou Suitability é essencial para garantir a adequação do perfil do cliente ao produto de investimento escolhido. Os indicadores aqui apresentados devem ser utilizados como referência econômica e não parâmetro objetivo do fundo. Material de Divulgação.
+Rentabilidade obtida no passado não representa garantia de resultados futuros. A rentabilidade divulgada não é líquida de impostos.
+
+Os investimentos em fundos não são garantidos pelo administrador, pelo gestor, por qualquer mecanismo de seguro ou pelo Fundo Garantidor de Crédito – FGC.
+
+A Tivio Capital Distribuidora de Títulos e Valores Mobiliários S.A. integra o conglomerado prudencial liderado pelo Banco Bradesco S.A.

@@ -3,7 +3,7 @@
    até caber: cortar disclaimer não é defeito de layout. #}
 <div class="disc">
   <div class="dh">{{ titulo }}</div>
-  <div class="disc-txt tv-ajusta" data-max="11.4" style="font-size:11.4px">
+  <div class="disc-txt tv-ajusta" data-max="11.4" data-teto="16" style="font-size:11.4px">
     {% if nota_rodape %}<p class="disc-nota">{{ nota_rodape }}</p>{% endif %}
     {% for p in disclaimer %}<p>{{ p }}</p>{% endfor %}
     {% if not disclaimer %}

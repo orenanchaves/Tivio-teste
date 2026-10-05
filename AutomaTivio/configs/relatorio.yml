@@ -24,7 +24,7 @@ secoes:
   - {id: comentario,      pagina: 2, titulo: "Comentário do Gestor e Análise de Mercado"}
   - {id: mercado_credito, pagina: 3, titulo: MERCADO DE CRÉDITO}
   - {id: caracteristicas, pagina: 4, titulo: CARACTERÍSTICAS GERAIS DO FUNDO}
-  - {id: disclaimer,      pagina: 4, titulo: Disclaimer}
+  - {id: disclaimer,      pagina: 4, titulo: MATERIAL TÉCNICO}
 
 por_vertical:
   # ------------------------------------------- Crédito Estruturado (3 páginas)
@@ -56,7 +56,7 @@ por_vertical:
       # título e o gráfico, como no publicado (componentes/historico.html)
       - {id: historico,       pagina: 2, titulo: RENTABILIDADE HISTÓRICA}
       - {id: caracteristicas, pagina: 3, titulo: CARACTERÍSTICAS GERAIS DO FUNDO}
-      - {id: disclaimer,      pagina: 3, titulo: Disclaimer}
+      - {id: disclaimer,      pagina: 3, titulo: MATERIAL TÉCNICO}
 
 # ajustes de um fundo só (vencem sobre a vertical)
 por_fundo: {}
