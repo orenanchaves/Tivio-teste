@@ -99,6 +99,24 @@ Se faltar alguma dependência, o `run.py` **diz qual e qual é o comando** — e
 traduz o nome do módulo para o nome no pip (`No module named 'yaml'` é o pacote
 `PyYAML`, o que o erro padrão do Python não conta).
 
+### ⚠️ Uma planilha não vem no repositório
+
+| Arquivo em `entrada/` | Está no GitHub? |
+|---|---|
+| **`dados_mensais.xlsx`** | **Não** — 31 MB, trocado todo mês. Está no `.gitignore`. |
+| `taxas_global.xlsx` · `tabela_spreads.xlsx` | sim (28 KB / 48 KB) |
+| `comentarios.docx` · `comentarios.md` | sim |
+| `preenchimento_manual.xlsx` | sim |
+
+Depois de clonar, **copie a sua `dados_mensais.xlsx` para `entrada/`** antes de
+rodar. Sem ela o `run.py` para na primeira etapa dizendo que não encontrou a
+entrada — não gera material pela metade.
+
+Ela fica de fora porque são 31 MB que mudam inteiros todo mês: doze edições
+versionadas seriam ~370 MB de planilha binária, que o git não consegue
+comprimir. As outras entradas são pequenas e ficam no repositório, inclusive
+como exemplo do formato esperado.
+
 ### Comandos
 
 ```powershell
@@ -123,7 +141,8 @@ Há também `atualizar.bat` para quem prefere dar dois cliques.
 ## 3. O mês na prática
 
 1. Trocar em `entrada/`: **`dados_mensais.xlsx`**, **`taxas_global.xlsx`**,
-   **`tabela_spreads.xlsx`**.
+   **`tabela_spreads.xlsx`**. *(A `dados_mensais.xlsx` não vem no repositório —
+   ver §2.)*
 2. Colocar os comentários do gestor em **`entrada/comentarios.docx`**.
 3. `python run.py`
 4. Conferir **`saida/AAAA-MM/conferencia_AAAA-MM.xlsx`** — abas *Mudanças*,
