@@ -34,6 +34,7 @@ fundos:
     nome: Tivio Banks
     vertical: credito_privado
     carteira: TIVIO BANKS RF CP RL
+    razao_social: TIVIO BANKS RENDA FIXA CRÉDITO PRIVADO FIF – RL
     busca: [BANKS]
     logo: Banks
     relatorio: true

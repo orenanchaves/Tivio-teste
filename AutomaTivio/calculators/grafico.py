@@ -338,7 +338,7 @@ def treemap(itens, largura=1000, altura=192, cores=None):
 # cor mudam por bloco: emissores em barra grossa azul, setores e rating em
 # barra fina azul-clara, a estratégia do ALT em verde.
 # ---------------------------------------------------------------------------
-def barras_modelo(itens, estilo, altura):
+def barras_modelo(itens, estilo, altura, espessura=None):
     """[(nome, '12,34%', valor)] -> linhas proporcionais ao maior valor.
 
     `altura` é a do bloco em px na folha: as linhas se distribuem nela, como no
@@ -356,7 +356,9 @@ def barras_modelo(itens, estilo, altura):
             f'<div class="hb"><span class="hbk">{_esc(nome)}</span>'
             f'<span class="hbt"><span class="hbf" style="width:{larg:.2f}%"></span>'
             f'<span class="hbv">{_esc(rotulo)}</span></span></div>')
-    return (f'<div class="hbars hb-{estilo}" style="height:{altura}px;'
+    # lista curta: barra mais grossa (a linha também fica mais alta)
+    esp = f'--hb-h:{espessura:.1f}px;' if espessura else ''
+    return (f'<div class="hbars hb-{estilo}" style="height:{altura}px;{esp}'
             f'--hb-n:{len(itens)}">' + ''.join(linhas) + '</div>')
 
 

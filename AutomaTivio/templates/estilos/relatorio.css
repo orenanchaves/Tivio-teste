@@ -111,6 +111,18 @@ table.perf tr.fundo td:first-child{color:#111}
 .grade-hg{display:grid;grid-template-columns:434px 1fr;column-gap:16px;margin-top:38px}
 .grade-hg .gcol{min-width:0}
 .blk-rating{margin-top:28px}
+/* página 1 do high grade: os blocos ocupam a folha até o rodapé, de acordo
+   com o tamanho de cada lista. Lista curta (poucos setores, poucas notas)
+   espaça as linhas até um teto, em vez de deixar meia coluna vazia. */
+.grade-hg{flex:1 1 auto;min-height:0;padding-bottom:86px;align-items:stretch}
+.grade-hg .gcol{display:flex;flex-direction:column;min-height:0}
+.grade-hg .blk{display:flex;flex-direction:column;min-height:0;flex:var(--peso,1) 1 0}
+.grade-hg .hbars{height:auto!important;flex:1 1 auto;min-height:0}
+.grade-hg .hb{flex:1 1 0;max-height:var(--hb-max,48px)}
+.grade-hg .hb-emissor{--hb-max:64px}
+.grade-hg .hb-rating{--hb-max:44px}
+.grade-hg .hb-setor{--hb-max:62px}
+
 .twocol{margin-top:38px;display:grid;grid-template-columns:1fr 1fr;gap:50px;align-items:start}
 
 /* ---- rentabilidade histórica -------------------------------------------- */
@@ -183,12 +195,12 @@ table.mkt-resumo + table.mkt{margin-top:40px}
     linear-gradient(160deg,#13233a 0%,#2a4664 48%,#182c45 100%);
   box-shadow:0 18px 44px rgba(16,28,40,.28),inset 0 1px 0 rgba(255,255,255,.18)}
 .mkt-vidro table.mkt{width:100%;margin-left:0;border-collapse:separate;border-spacing:0 3px}
-.mkt-vidro table.mkt th{height:36px;background:rgba(150,190,218,.22);color:#fff;font-weight:600;
+.mkt-vidro table.mkt th{height:34px;background:rgba(150,190,218,.22);color:#fff;font-weight:600;
   border:0;border-top:1px solid rgba(255,255,255,.34);border-bottom:1px solid rgba(255,255,255,.10)}
 .mkt-vidro table.mkt th:first-child{border-radius:12px 0 0 12px;border-left:1px solid rgba(255,255,255,.26)}
 .mkt-vidro table.mkt th:last-child{border-radius:0 12px 12px 0;border-right:1px solid rgba(255,255,255,.18)}
 .mkt-vidro table.mkt th.vazio{background:none;border:0}
-.mkt-vidro table.mkt td{height:36px;background:rgba(171,205,228,.07);color:rgba(255,255,255,.94);
+.mkt-vidro table.mkt td{height:32px;background:rgba(171,205,228,.07);color:rgba(255,255,255,.94);
   border-top:1px solid rgba(255,255,255,.10)}
 .mkt-vidro table.mkt td:first-child{border-radius:10px 0 0 10px;padding-left:12px;color:#fff;font-weight:400}
 .mkt-vidro table.mkt td:last-child{border-radius:0 10px 10px 0}
@@ -211,8 +223,13 @@ table.mkt-resumo + table.mkt{margin-top:40px}
    até a nota e as linhas crescem, em vez de sobrar um vão branco na folha */
 .mkt-vidro{flex:1 1 auto;display:flex;flex-direction:column;min-height:0}
 .mkt-vidro>table.mkt:not(.mkt-resumo){flex:1 1 auto;height:100%}
-.mkt-vidro + .mktnote{margin-top:22px}
+.mkt-vidro + .mktnote{margin-top:18px}
 /* tabela larga: o total em corpo menor, senão "393.307" encosta em "100%" */
+/* tabela de spreads: célula sempre centrada na vertical, com respiro lateral
+   e entrelinha fixa (na exportação em imagem o texto subia na faixa) */
+.mkt-vidro table.mkt th,.mkt-vidro table.mkt td{vertical-align:middle;line-height:1.15;padding-left:6px;padding-right:6px}
+.mkt-vidro table.mkt td:first-child{padding-left:12px}
+.mkt-vidro table.mkt-resumo td{font-size:17px}
 .mkt-vidro table.mkt-resumo.largo td{font-size:15.5px}
 
 /* ---- características gerais --------------------------------------------- */

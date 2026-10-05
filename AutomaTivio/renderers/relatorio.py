@@ -649,7 +649,8 @@ class RenderizadorRelatorio:
         # larguras do publicado (tabela CDI, 7 colunas); a do IPCA tem 10 e
         # divide o que sobra do setor em partes iguais
         if len(cab) == 7:
-            larg = [270, 150, 60, 92, 155, 68, 68]
+            # mais folga em %, Variação e Duration: os números encostavam
+            larg = [244, 118, 76, 104, 134, 94, 94]
         else:
             resto = (863 - 196) / max(1, len(cab) - 1)
             larg = [196] + [round(resto, 1)] * (len(cab) - 1)

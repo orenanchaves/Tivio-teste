@@ -5,6 +5,7 @@
   {% set passo = f.cfg.get('estrategia_linha', 34) %}
   {{ barras_modelo(c.setores_relatorio, 'estrat' ~ (' compacta' if passo < 30 else ''), passo * (c.setores_relatorio|length))|safe }}
   {% else %}
-  {{ barras_modelo(c.setores_relatorio, 'setor', [600, 30 * (c.setores_relatorio|length)]|min)|safe }}
+  {% set ns = [c.setores_relatorio|length, 1]|max %}
+  {{ barras_modelo(c.setores_relatorio, 'setor', [600, 30 * ns]|min, espessura=[17, [26, (560 / ns * 0.45)]|min]|max)|safe }}
   {% endif %}
 </div>

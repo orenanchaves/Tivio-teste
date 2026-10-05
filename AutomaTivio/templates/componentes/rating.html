@@ -1,3 +1,3 @@
-<div class="blk blk-rating"><h3 class="sh">{{ titulo }}</h3>
-  {{ barras_modelo(c.rating_relatorio, 'rating', 34 * (c.rating_relatorio|length))|safe }}
+{% set nr = c.rating_relatorio|length %}<div class="blk blk-rating" style="--peso:{{ [nr, 3]|max }}"><h3 class="sh">{{ titulo }}</h3>
+  {{ barras_modelo(c.rating_relatorio, 'rating', 34 * nr, espessura=[20, [26, (300 / [nr, 1]|max * 0.45)]|min]|max)|safe }}
 </div>
