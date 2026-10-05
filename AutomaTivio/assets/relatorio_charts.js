@@ -55,7 +55,7 @@
         top: px(pad[2] - 30), left: 'center', itemWidth: px(34), itemHeight: px(3),
         itemGap: px(40), icon: 'rect',
         textStyle: { fontSize: px(12.5), fontWeight: 600, color: '#333', fontFamily: FF },
-        data: [{ name: 'Fundo' }, { name: d.bench }]
+        data: [{ name: 'Fundo' }, { name: d.bench }].concat(d.trib ? [{ name: 'Bench Tributado' }] : [])
       };
     }
     o.xAxis = {
@@ -106,6 +106,12 @@
       linha(d.bench, d.bench_serie, d.cb, d.wb, d.tinta_b, 2),
       linha('Fundo', d.fundo, d.cf, d.wf, '#fff', 3)
     ];
+    if (d.trib) {
+      // Bench Tributado (benchmark líquido de IR): só onde o fundo pede
+      var t = linha('Bench Tributado', d.trib, d.ct, 2.4, '#fff', 1);
+      t.lineStyle.type = [px(6), px(4)];
+      o.series.splice(1, 0, t);
+    }
     return o;
   }
 

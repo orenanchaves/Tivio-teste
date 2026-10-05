@@ -450,6 +450,9 @@ class Contexto:
                               f'{atraso} dias antes da data base')
 
         hist = self.calc.historico(f.quantum, f.benchmark, f.cota_inicial, f.data_inicial)
+        fator = f.cfg.get('bench_tributado')
+        if hist and fator:
+            hist = dict(hist, t=[round(v * float(fator), 2) for v in hist['c']])
         hist12 = self.calc.historico(f.quantum, f.benchmark, janela_meses=12)
 
         taxa = self.tx.global_(key, f.cnpj, f.quantum)

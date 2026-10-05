@@ -381,17 +381,20 @@ def historico_modelo(hist, nome_bench, estilo, data_inicio=None,
     if not hist or not hist.get('l') or len(hist['l']) < 2:
         return '<div class="histvazio">sem série histórica</div>'
     meses, fundo, bench = list(hist['l']), list(hist['f']), list(hist['c'])
+    trib = list(hist['t']) if hist.get('t') else None
     # a curva publicada nasce em 0% no mês de início do fundo
     inserido = False
     if fundo[0] != 0 and data_inicio is not None and str(data_inicio) != 'NaT':
         ini = f'{data_inicio:%Y-%m}'
         if ini < meses[0]:
             meses.insert(0, ini); fundo.insert(0, 0.0); bench.insert(0, 0.0)
+            if trib is not None: trib.insert(0, 0.0)
             inserido = True
         elif estilo == 'ce' and ini == meses[0]:
             # começou no meio do mês: a linha nasce em 0 e o mês parcial fica
             # sem rótulo — o primeiro rótulo é o mês seguinte, como no publicado
             meses.insert(0, ini); fundo.insert(0, 0.0); bench.insert(0, 0.0)
+            if trib is not None: trib.insert(0, 0.0)
             inserido = 'parcial'
     sep = '-' if estilo == 'cp' else '/'
     labels = [f'{fmt.MES_ABR[int(m[5:7]) - 1]}{sep}{m[2:4]}' for m in meses]
@@ -406,7 +409,8 @@ def historico_modelo(hist, nome_bench, estilo, data_inicio=None,
         cf, cb, wf, wb, casas = '#26B663', '#1F1F1F', 3.6, 3.6, 1
         padL, padR, padT, padB, rot = 84, 112, 26, 82, -90
 
-    maxv = max(fundo + bench + [0])
+    ct = '#3C4A60'                    # Bench Tributado: azul escuro, tracejado
+    maxv = max(fundo + bench + (trib or []) + [0])
     passo = _passo_eixo(maxv)
     topo = passo * (int(maxv / passo) + 1)
     if estilo == 'ce':
@@ -415,7 +419,7 @@ def historico_modelo(hist, nome_bench, estilo, data_inicio=None,
         topo = max(passo, passo * int(maxv / passo))
     # a escala vai até o valor final (com folga para a etiqueta); a grade, só até o topo
     escala_topo = max(topo, maxv * 1.06)
-    minv = min(fundo + bench + [0])
+    minv = min(fundo + bench + (trib or []) + [0])
     base = 0 if minv >= 0 else -passo * (int(-minv / passo) + 1)
 
     def X(i):
@@ -429,12 +433,16 @@ def historico_modelo(hist, nome_bench, estilo, data_inicio=None,
     if estilo == 'cp':
         meio = largura / 2
         s.append(f'<g font-size="12.5" fill="#333" font-weight="600">'
-                 f'<line x1="{meio - 118}" y1="{padT - 20}" x2="{meio - 84}" y2="{padT - 20}" '
+                 f'<line x1="{meio - 118 - (70 if trib else 0)}" y1="{padT - 20}" x2="{meio - 84 - (70 if trib else 0)}" y2="{padT - 20}" '
                  f'stroke="{cf}" stroke-width="3"/>'
-                 f'<text x="{meio - 80}" y="{padT - 16}">Fundo</text>'
-                 f'<line x1="{meio - 16}" y1="{padT - 20}" x2="{meio + 18}" y2="{padT - 20}" '
+                 f'<text x="{meio - 80 - (70 if trib else 0)}" y="{padT - 16}">Fundo</text>'
+                 f'<line x1="{meio - 16 - (70 if trib else 0)}" y1="{padT - 20}" x2="{meio + 18 - (70 if trib else 0)}" y2="{padT - 20}" '
                  f'stroke="{cb}" stroke-width="3"/>'
-                 f'<text x="{meio + 22}" y="{padT - 16}">{_esc(nome_bench)}</text></g>')
+                 f'<text x="{meio + 22 - (70 if trib else 0)}" y="{padT - 16}">{_esc(nome_bench)}</text>'
+                 + (f'<line x1="{meio + 110}" y1="{padT - 20}" x2="{meio + 144}" y2="{padT - 20}" '
+                    f'stroke="{ct}" stroke-width="2.4" stroke-dasharray="6 4"/>'
+                    f'<text x="{meio + 148}" y="{padT - 16}">Bench Tributado</text>' if trib else '')
+                 + '</g>')
     v = base
     while v <= topo + 1e-9:
         gy = Y(v)
@@ -468,6 +476,9 @@ def historico_modelo(hist, nome_bench, estilo, data_inicio=None,
     pts = lambda serie: ' '.join(f'{X(i):.1f},{Y(v):.1f}' for i, v in enumerate(serie))
     s.append(f'<polyline points="{pts(bench)}" fill="none" stroke="{cb}" stroke-width="{wb}" '
              f'stroke-linejoin="round" stroke-linecap="round"/>')
+    if trib:
+        s.append(f'<polyline points="{pts(trib)}" fill="none" stroke="{ct}" stroke-width="2.4" '
+                 f'stroke-dasharray="6 4" stroke-linejoin="round" stroke-linecap="round"/>')
     s.append(f'<polyline points="{pts(fundo)}" fill="none" stroke="{cf}" stroke-width="{wf}" '
              f'stroke-linejoin="round" stroke-linecap="round"/>')
     # o acumulado no fim de cada linha, numa etiqueta da cor dela (as duas
@@ -479,7 +490,14 @@ def historico_modelo(hist, nome_bench, estilo, data_inicio=None,
         yf, yb = (m - 15, m + 15) if fundo[-1] >= bench[-1] else (m + 15, m - 15)
     tinta_b = '#fff' if not _claro(cb) else '#1F1F1F'
     larg_et = 74 if max(abs(fundo[-1]), abs(bench[-1])) >= 100 else 64
-    for yy, cor, tinta, val in ((yf, cf, '#fff', fundo[-1]), (yb, cb, tinta_b, bench[-1])):
+    etiquetas = [(yf, cf, '#fff', fundo[-1]), (yb, cb, tinta_b, bench[-1])]
+    if trib:
+        yt = Y(trib[-1])
+        for outro in (yf, yb):
+            if abs(yt - outro) < 30:
+                yt = outro + (30 if yt >= outro else -30)
+        etiquetas.append((yt, ct, '#fff', trib[-1]))
+    for yy, cor, tinta, val in etiquetas:
         s.append(f'<rect x="{lx + 4:.1f}" y="{yy - 14:.1f}" width="{larg_et}" height="28" '
                  f'rx="3" fill="{cor}"/><text x="{lx + 4 + larg_et / 2:.1f}" y="{yy + 5:.1f}" '
                  f'fill="{tinta}" font-size="15" font-weight="700" text-anchor="middle">'
@@ -488,6 +506,7 @@ def historico_modelo(hist, nome_bench, estilo, data_inicio=None,
     return _envelope({
         'tipo': 'historico', 'estilo': estilo, 'labels': labels, 'rotulos': visiveis,
         'fundo': fundo, 'bench_serie': bench, 'bench': nome_bench,
+        'trib': trib, 'ct': ct,
         'cf': cf, 'cb': cb, 'tinta_b': tinta_b, 'wf': wf, 'wb': wb, 'casas': casas,
         'pad': [padL, padR, padT, padB], 'rot': rot, 'largura': largura,
         'base': base, 'topo': topo, 'escala_topo': escala_topo, 'passo': passo_eixo,

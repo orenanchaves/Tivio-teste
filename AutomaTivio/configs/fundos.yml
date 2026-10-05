@@ -166,6 +166,9 @@ fundos:
   esplanada:
     nome: Tivio Esplanada
     razao_social: "TIVIO ESPLANADA RESP LIMITADA FIF FI INFRA RENDA FIXA"
+    # 3ª linha no gráfico histórico: o benchmark acumulado líquido de 15% de IR,
+    # a mesma conta da coluna "Bench Tributado" da aba Dados (= IMA-B 5 x 0,85)
+    bench_tributado: 0.85
     vertical: credito_privado
     busca: [ESPLANADA]
     logo: Esplanada
