@@ -286,26 +286,53 @@ def treemap(itens, largura=1000, altura=192, cores=None):
     if not itens:
         return '<div class="histvazio">sem carteira nesta edição</div>'
 
-    valores = [i[2] for i in itens]
+    def limites(v, lo, hi):
+        return max(lo, min(hi, v))
+
+    # Abaixo de 2%: faixa fina empilhada no pé do último bloco, com nome e
+    # valor numa linha só ("FIP 1,9%"), como no ALT Light publicado. Num
+    # retângulo próprio esse item vira um quadradinho ilegível.
+    grandes = [i for i in itens if i[2] >= 2] or itens[:1]
+    pequenos = [i for i in itens if i not in grandes]
+    valores = [i[2] for i in grandes]
+    valores[-1] += sum(i[2] for i in pequenos)
     escala = (largura * altura) / sum(valores)
     caixas = []
     _squarify(valores, 0.0, 0.0, float(largura), float(altura), escala, caixas)
-
-    def limites(v, lo, hi):
-        return max(lo, min(hi, v))
+    faixas = []
+    if pequenos:
+        bx, by, bl, ba = caixas[-1]
+        total = valores[-1]
+        alturas = [max(ba * i[2] / total, 18.0) for i in pequenos]
+        topo = max(ba - sum(alturas), ba * 0.45)
+        k = (ba - topo) / sum(alturas)
+        alturas = [h * k for h in alturas]
+        caixas[-1] = (bx, by, bl, topo)
+        y = by + topo
+        for it, h in zip(pequenos, alturas):
+            faixas.append((it, (bx, y, bl, h)))
+            y += h
+    itens = grandes
 
     blocos = []
     for i, ((nome, rotulo, _), (bx, by, bl, ba)) in enumerate(zip(itens, caixas)):
         cor = paleta[min(i, len(paleta) - 1)]
         tinta = '#2B3744' if _claro(cor) else '#fff'
 
-        fv = limites(min(bl / 5.2, ba / 3.2), 9.5, 21.0)
-        fn = limites(min(bl / 8.0, ba / 5.2), 8.0, 17.0)
+        fv = limites(min(bl / 5.2, ba / 3.2), 8.0, 21.0)
+        fn = limites(min(bl / 8.0, ba / 5.2), 6.5, 17.0)
         # o nome só entra se couber em duas linhas de verdade: largura para uns
         # 9 caracteres por linha, e altura para as duas linhas mais o valor
         pad = limites(bl / 14, 5.0, 13.0)
-        # nome em duas linhas + valor + respiro, senão o nome sobe por cima do valor
-        cabe = bl >= fn * 7 and ba >= fn * 2.3 + fv * 1.15 + 2 * pad + 4
+        # O nome aparece sempre que puder ser lido: tenta em duas linhas, depois
+        # numa linha só com corpo menor; some só quando nem 6,5 px cabem.
+        larg_nome = max(len(w) for w in str(nome).split()) if str(nome).split() else 1
+        cabe = bl >= fn * 0.62 * larg_nome + 2 * pad and ba >= fn * 2.3 + fv * 1.15 + 2 * pad
+        uma_linha = False
+        if not cabe:
+            fn1 = limites(min((bl - 2 * pad) / (0.6 * max(len(str(nome)), 1)), ba / 3.2), 6.5, fn)
+            if bl - 2 * pad >= 0.6 * fn1 * len(str(nome)) and ba >= fn1 * 1.2 + fv * 1.15 + 2 * pad:
+                fn, cabe, uma_linha = fn1, True, True
         pad = limites(bl / 14, 5.0, 13.0)
 
         blocos.append(
@@ -314,10 +341,22 @@ def treemap(itens, largura=1000, altura=192, cores=None):
             f'height:{ba / altura * 100:.4f}%;background:{cor};color:{tinta};'
             f'padding:{pad:.1f}px" '
             f'title="{_esc(nome)} · {_esc(rotulo)}">'
-            + (f'<span class="tmn" style="font-size:{fn:.1f}px">{_rotulo_tm(nome)}</span>'
-               if cabe else '')
+            + (f'<span class="tmn" style="font-size:{fn:.1f}px">'
+               f'{_esc(nome) if uma_linha else _rotulo_tm(nome)}</span>' if cabe else '')
             + f'<span class="tmv" style="font-size:{fv:.1f}px">{_esc(rotulo)}</span>'
             + '</div>')
+
+    for j, ((nome, rotulo, _), (bx, by, bl, ba)) in enumerate(faixas):
+        cor = paleta[min(len(grandes) + j, len(paleta) - 1)]
+        tinta = '#2B3744' if _claro(cor) else '#fff'
+        corpo = limites(min(ba * 0.62, (bl - 10) / (0.62 * (len(nome) + len(rotulo) + 1))), 6.5, 15.0)
+        blocos.append(
+            f'<div class="tmbox tm-faixa" style="left:{bx / largura * 100:.4f}%;'
+            f'top:{by / altura * 100:.4f}%;width:{bl / largura * 100:.4f}%;'
+            f'height:{ba / altura * 100:.4f}%;background:{cor};color:{tinta};'
+            f'font-size:{corpo:.1f}px" title="{_esc(nome)} · {_esc(rotulo)}">'
+            f'<span class="tmn">{_esc(nome)}</span> <b>{_esc(rotulo)}</b></div>')
+    itens = grandes + [f[0] for f in faixas]
 
     # Legenda embaixo, com todos os itens: nas caixas pequenas o nome não
     # cabe, e sem ela o leitor fica com um "2,6%" sem dizer de quê.

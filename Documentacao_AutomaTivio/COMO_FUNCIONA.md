@@ -137,6 +137,14 @@ para e não publica.
   - comentário curto aumenta a fonte e fica centralizado, comentário longo diminui até caber;
   - razão social longa diminui o corpo para caber numa linha.
 - **Gráfico histórico:** desenhado em ECharts, com o acumulado no fim de cada linha.
+- **Comentário sempre bate com a tabela:** nas frases-padrão do gestor
+  ("rentabilidade de X% no mês (Y% do CDI)", "acumulando X% no ano",
+  "acumula retorno de X%, frente a Y% do CDI", "CDI + Z%", "anualizado de W%",
+  alocação em crédito, carrego e duration) o número é trocado pelo da tabela,
+  no mesmo formato. O resto do texto sai como o gestor escreveu.
+- **Alocação real (treemap dos ALT):** o nome aparece em todo bloco onde dá
+  para ler; item abaixo de 2% vira uma faixa no pé do último bloco
+  ("FIP 1,9%").
 - **Saídas:** página por vertical em `relatorios/`, com botões PDF/JPG/PNG/PPTX
   para reexportar depois de editar um texto na tela. Também gera direto em
   `pdf/`, com texto selecionável, e `pptx/`, com fundo fiel e texto editável.

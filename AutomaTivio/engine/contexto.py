@@ -362,8 +362,19 @@ class ContextoFundo:
             return None
 
     def preencher(self, texto):
-        """Resolve {marcadores} de um texto do gestor. Devolve (texto, faltando)."""
+        """Resolve {marcadores} de um texto do gestor. Devolve (texto, faltando).
+
+        Antes, os números das frases-padrão ("rentabilidade de X% no mês (Y% do
+        CDI)…") são trocados pelos da tabela (engine/sincroniza.py), para o
+        comentário nunca contradizer a rentabilidade publicada.
+        """
         import re as _re
+        from engine.sincroniza import sincronizar
+        texto, trocas = sincronizar(self, texto)
+        for antes, depois in trocas:
+            msg = f'comentário ajustado à tabela: {antes} → {depois}'
+            if msg not in self.avisos:
+                self.avisos.append(msg)
         faltando = []
 
         def troca(m):
