@@ -472,6 +472,9 @@ body.edit .card [contenteditable]:hover{background:rgba(117,157,180,.20);box-sha
 .footer .logo-mark{height:24px;width:69px;color:var(--text-primary);margin:0 auto 14px;display:block;overflow:visible}
 .toast{position:fixed;left:50%;bottom:calc(28px + var(--safe-b));transform:translateX(-50%) translateY(20px);opacity:0;pointer-events:none;padding:12px 22px;border-radius:var(--r-full);background:var(--tv-azul-imob);color:#000;font-size:13px;font-weight:700;transition:.25s var(--ease);z-index:100;max-width:90vw;text-align:center}
 .toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+
+/* (patch) logos HORIZONTAIS (assets/logos): mesma altura nos fundos */
+.fund-mark .fund-logo{height:64px!important;width:auto!important;max-width:100%}
 </style>
 </head>
 <body>
@@ -761,7 +764,15 @@ const FUNDS=[
   alloc:{total:'95',top:[{p:'55%',n:'energia elétrica'},{p:'15%',n:'transporte e logística'},{p:'7%',n:'saneamento'}]},
   carrego:{pre:'IPCA+',val:'8,63',unit:'a.a.'},
   duration:{val:'4,00',unit:'anos'},
-  taxas:'Taxa de administração: 0,75% a.a. Taxa de performance: não há. Resgate: D+31. Rentabilidade isenta de IR para pessoa física.'}
+  taxas:'Taxa de administração: 0,75% a.a. Taxa de performance: não há. Resgate: D+31. Rentabilidade isenta de IR para pessoa física.'},
+ {key:'infrapluscdi',nome:'TIVIO INFRA PLUS CDI',cnpj:'62.791.756/0001-53',
+  publico:'Investidores em geral',inicio:'20/10/2025',bench:'CDI',
+  k1:'12M',v1:'-',u1:'do CDI', k2:'ANO',v2:'-',u2:'do CDI', k3:'MÊS',v3:'-',u3:'do CDI',
+  pl:'-',plm:'-',
+  alloc:{total:'0',top:[]},
+  carrego:{pre:'CDI+',val:'-',unit:'a.a.'},
+  duration:{val:'-',unit:'anos'},
+  taxas:'Taxa de administração: 0,75% a.a. Taxa de performance: não há. Aplicação: D+0 · Resgate: D+30. Rentabilidade isenta de IR para pessoa física.'}
 ];
 
 const SEALS={

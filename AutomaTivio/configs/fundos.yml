@@ -259,6 +259,7 @@ fundos:
   # ----------------------------------------------- Crédito Estruturado (HY)
   alt180:
     nome: Tivio ALT 180
+    abertura: alt                  # 1º parágrafo do comentário gerado com os números da tabela
     book_depara: alt          # alocação real = Book Maravi pelo de-para
     vertical: credito_estruturado
     carteira: TIVIO ALT HY 180 FIDC RL - Expandida
@@ -288,6 +289,7 @@ fundos:
 
   alt90:
     nome: Tivio ALT 90
+    abertura: alt                  # 1º parágrafo do comentário gerado com os números da tabela
     book_depara: alt90          # alocação real = Book Maravi pelo de-para
     vertical: credito_estruturado
     carteira: TIVIO ALT HY 90 FIDC RL
@@ -315,6 +317,7 @@ fundos:
 
   altlight:
     nome: Tivio ALT Light
+    abertura: alt                  # 1º parágrafo do comentário gerado com os números da tabela
     book_depara: alt_light          # alocação real = Book Maravi pelo de-para
     alocacao_100: true              # o que passar de 100% do PL sai só da linha do Caixa
     vertical: credito_estruturado

@@ -415,11 +415,38 @@ class ContextoFundo:
         saida = _re.sub(r'\{([a-z_0-9]{2,24})\}', troca, texto or '')
         return saida, faltando
 
+    # Abertura padrão dos ALT: a mesma frase todo mês, só os números mudam.
+    # `abertura: alt` no fundo (configs/fundos.yml) liga.
+    ABERTURA_ALT = ('O {nome} registrou rentabilidade de {mes} no mês, equivalente a '
+                    '{pct_mes} do {bench} no período. Desde o início da estratégia, o '
+                    'fundo acumula retorno de {inicio}, frente a {bench_inicio} do {bench}, '
+                    'o que corresponde a um desempenho anualizado de {pct_inicio} do {bench}.')
+
+    def _abertura(self):
+        if self.f.cfg.get('abertura') != 'alt':
+            return None
+        return self.ABERTURA_ALT
+
     @property
     def comentario_preenchido(self):
-        """Parágrafos do gestor com os marcadores já resolvidos."""
+        """Parágrafos do gestor com os marcadores já resolvidos.
+
+        Nos fundos com `abertura: alt`, o primeiro parágrafo é a abertura
+        padrão com os números da tabela: substitui a do gestor quando ela
+        existe ("O Tivio ALT … registrou rentabilidade…") e entra no topo
+        quando não existe.
+        """
+        import re as _re
+        paragrafos = list(self.comentario)
+        modelo = self._abertura()
+        if modelo:
+            if paragrafos and _re.match(r'\s*O\s+Tivio\s+ALT\b.*registrou\s+rentabilidade',
+                                        paragrafos[0], _re.I | _re.S):
+                paragrafos[0] = modelo
+            else:
+                paragrafos.insert(0, modelo)
         out, faltas = [], []
-        for p in self.comentario:
+        for p in paragrafos:
             txt, falta = self.preencher(p)
             out.append(txt)
             faltas += falta

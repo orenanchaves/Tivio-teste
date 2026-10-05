@@ -58,9 +58,10 @@ def _regras(ctx):
         # "desempenho de CDI + Z%"
         (rf'(desempenho\s+de\s+{B}\s*\+\s*)({P})',
          [(2, t('inicio', 'bench_mais'))]),
-        # "desempenho anualizado de W% do CDI"
+        # "desempenho anualizado de W% do CDI": o "%" desde o início da tabela
+        # (no ALT 180 de setembro, 130,15% — o mesmo número da linha "%")
         (rf'(anualizado\s+de\s)({P})(\s+do\s+{B})',
-         [(2, anual)]),
+         [(2, t('inicio', 'pct'))]),
     ]
     if getattr(ctx, 'cart', None):
         r += [

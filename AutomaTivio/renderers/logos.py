@@ -28,6 +28,8 @@ LOGO_DO_EMAIL = {
     'inst30': 'Institucional 30', 'infra': 'Infra Plus', 'infracdi': 'Infra Plus CDI',
     'esplanada': 'Esplanada', 'legacy': 'Legacy', 'rfcp': 'RF CP',
     'altlight': 'ALT_LIGHT', 'alt180': 'ALT_180', 'alt90': 'ALT_90',
+    # chaves usadas nos posts de Destaques
+    'infraplus': 'Infra Plus', 'infrapluscdi': 'Infra Plus CDI', 'legacy': 'Legacy',
 }
 
 

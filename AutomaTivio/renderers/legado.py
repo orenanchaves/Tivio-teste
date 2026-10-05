@@ -117,6 +117,18 @@ class RenderizadorLegado:
         return html
 
     # ============================================================== POSTS
+    # Posts de Destaques: os boxes de Rentabilidade saem sem casa decimal
+    # ("100%"); os Infra mantêm as casas (pedido de 05/10/2026)
+    COM_CASAS_NO_POST = ('infraplus', 'infrapluscdi')
+
+    def rent_post(self, ctx, per, campo):
+        if ctx.key in self.COM_CASAS_NO_POST:
+            return ctx.texto(per, campo)
+        v = ctx.valor(per, campo)
+        if v is None:
+            return fmt.MINUS
+        return fmt.num(v * 100, 0) + '%'
+
     def post_credito_privado(self, html):
         # bug do material publicado: buildPages() usa f.tw e f.hl, que não existem
         # em FUNDS, e as páginas 3-7 saem com "undefined undefined" no cabeçalho
@@ -130,12 +142,15 @@ class RenderizadorLegado:
                 if not ctx:
                     self.log.aviso(k, 'sem dados — mantido como estava')
                     continue
-                for i, per in ((1, '12m'), (2, 'ano'), (3, 'mes')):
+                sem_12m = ctx.texto('12m', 'pct' if not ctx.f.retorno_absoluto else 'fundo') in ('-', '–', '—', '', fmt.MINUS)
+                for i, per in ((1, 'inicio' if sem_12m else '12m'), (2, 'ano'), (3, 'mes')):
+                    if i == 1:
+                        self.set(k, f, 'k1', 'Desde o início' if sem_12m else '12M')
                     if ctx.f.retorno_absoluto:
-                        self.set(k, f, f'v{i}', ctx.texto(per, 'fundo'))
+                        self.set(k, f, f'v{i}', self.rent_post(ctx, per, 'fundo'))
                         self.set(k, f, f'a{i}', '*Alfa: ' + ctx.texto(per, 'alfa'))
                     else:
-                        self.set(k, f, f'v{i}', ctx.texto(per, 'pct'))
+                        self.set(k, f, f'v{i}', self.rent_post(ctx, per, 'pct'))
                 self.set(k, f, 'pl', ctx.pl_fmt)
                 self.set(k, f, 'plm', ctx.pl_medio_fmt)
                 if ctx.cart:
@@ -155,7 +170,8 @@ class RenderizadorLegado:
                     self.set(k, f, 'taxas', self.troca_taxas(f['taxas'], ctx.taxa, ctx.perf))
                 self.overrides(k, f)
             return funds
-        return replace_literal(html, 'const FUNDS=', fn)
+        html = replace_literal(html, 'const FUNDS=', fn)
+        return self.logos_horizontais_no_html(html, 'p', extras=('infrapluscdi',))
 
     def post_credito_estruturado(self, html):
         def fn(funds):
@@ -176,7 +192,7 @@ class RenderizadorLegado:
                     self.set(k, f, 'k1', 'Desde o início')
                     p1 = 'inicio'
                 for i, per in ((1, p1), (2, 'ano'), (3, 'mes')):
-                    self.set(k, f, f'v{i}', ctx.texto(per, 'pct'))
+                    self.set(k, f, f'v{i}', self.rent_post(ctx, per, 'pct'))
                 if ctx.cart:
                     # o mesmo agrupamento do treemap do relatório — uma
                     # implementação só, em engine/contexto.py
@@ -192,7 +208,8 @@ class RenderizadorLegado:
                     self.set(k, f, 'taxas', self.troca_taxas(f['taxas'], ctx.taxa, ctx.perf))
                 self.overrides(k, f)
             return funds
-        return replace_literal(html, 'const FUNDS=', fn)
+        html = replace_literal(html, 'const FUNDS=', fn)
+        return self.logos_horizontais_no_html(html, 'path')
 
     def post_investment_solutions(self, html):
         html = html.replace('<span contenteditable="true">Taxa de administração</span>',
@@ -211,10 +228,10 @@ class RenderizadorLegado:
                     continue
                 for i, per in ((1, 'mes'), (2, 'ano'), (3, '12m')):
                     if ctx.f.retorno_absoluto:
-                        self.set(k, f, f'v{i}', ctx.texto(per, 'fundo'))
+                        self.set(k, f, f'v{i}', self.rent_post(ctx, per, 'fundo'))
                         self.set(k, f, f'a{i}', '*Alfa: ' + ctx.texto(per, 'alfa'))
                     else:
-                        self.set(k, f, f'v{i}', ctx.texto(per, 'pct'))
+                        self.set(k, f, f'v{i}', self.rent_post(ctx, per, 'pct'))
                 self.set(k, f, 'plm', fmt.brl_curto(ctx.pl_medio) if ctx.pl_medio else fmt.MINUS)
                 self.overrides(k, f)
             return funds
@@ -284,6 +301,32 @@ class RenderizadorLegado:
             return hist
         html = replace_literal(html, 'const HIST=', fh)
         return self.logos_email(html)
+
+    def logos_horizontais_no_html(self, html, campo='p', extras=()):
+        """Troca o literal FUND_LOGOS do material pelos logos HORIZONTAIS de
+        assets/logos (versão branca). `campo` é o nome da chave do desenho no
+        material: 'p' no post de Crédito Privado, 'path' no de Estruturado.
+        `extras`: chaves que o material ainda não tem e passam a ter logo."""
+        from renderers.logos import logos_horizontais
+        import json as _json
+        i = html.find('const FUND_LOGOS=')
+        if i < 0:
+            return html
+        k = html.find('const fundLogoSVG', i)
+        if k < 0:
+            k = html.find('const FUNDS=', i)
+        j = html.rfind('}', i, k) + 1 if k > 0 else -1
+        if j <= 0:
+            return html
+        chaves = re.findall(r"'(\w+)':\{vb:", html[i:j])
+        chaves += [c for c in extras if c not in chaves]
+        escuro, _ = logos_horizontais(chaves, log=self.log)
+        faltam = [c for c in chaves if c not in escuro]
+        if faltam:
+            self.log.aviso('logos', 'sem logo horizontal, mantido o antigo: ' + ', '.join(faltam))
+            return html
+        novo = {c: {'vb': v['vb'], campo: v['p']} for c, v in escuro.items()}
+        return html[:i] + 'const FUND_LOGOS=' + _json.dumps(novo, ensure_ascii=False) + html[j:]
 
     def logos_email(self, html):
         """Troca os logos embutidos no e-mail pelas versões HORIZONTAIS de
