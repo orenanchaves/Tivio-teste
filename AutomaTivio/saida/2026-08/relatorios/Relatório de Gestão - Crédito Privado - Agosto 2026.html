@@ -328,6 +328,13 @@ table.mkt-resumo + table.mkt{margin-top:40px}
 .mkt-vidro table.mkt-resumo td:last-child{border-radius:0 0 14px 0;border-right:1px solid rgba(255,255,255,.14)}
 .mkt-vidro table.mkt-resumo td:first-child{background:none!important;border:0;padding:0}
 .mkt-vidro table.mkt-resumo + table.mkt{margin-top:18px}
+/* tabela curta (a do IPCA tem 10 setores): o painel ocupa a altura livre
+   até a nota e as linhas crescem, em vez de sobrar um vão branco na folha */
+.mkt-vidro{flex:1 1 auto;display:flex;flex-direction:column;min-height:0}
+.mkt-vidro>table.mkt:not(.mkt-resumo){flex:1 1 auto;height:100%}
+.mkt-vidro + .mktnote{margin-top:22px}
+/* tabela larga: o total em corpo menor, senão "393.307" encosta em "100%" */
+.mkt-vidro table.mkt-resumo.largo td{font-size:15.5px}
 
 /* ---- características gerais --------------------------------------------- */
 .carac{margin-top:16px;display:grid;grid-template-columns:402px 1fr}
@@ -597,9 +604,6 @@ body.tv-exportando .rcard *{font-variant-numeric:normal!important}
 :root[data-theme="light"] .folhas .rcard{box-shadow:0 18px 50px rgba(16,28,40,.18)}
 .deck{scroll-margin-top:96px}
 
-/* a caixa da marca é preta no gerador interativo; aqui a faixa já é escura,
-   e o retângulo preto sobre o degradê lê como erro de render */
-.rc-head .rbox{background:transparent}
 body.tv-editando .rcard [contenteditable="true"]:hover{outline:1px dashed var(--tv-azul)}
 body.tv-editando .rcard [contenteditable="true"]:focus{outline:2px solid var(--tv-verde)}
 body.tv-exportando .header,body.tv-exportando .toast,

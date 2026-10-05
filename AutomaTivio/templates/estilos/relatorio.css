@@ -205,6 +205,13 @@ table.mkt-resumo + table.mkt{margin-top:40px}
 .mkt-vidro table.mkt-resumo td:last-child{border-radius:0 0 14px 0;border-right:1px solid rgba(255,255,255,.14)}
 .mkt-vidro table.mkt-resumo td:first-child{background:none!important;border:0;padding:0}
 .mkt-vidro table.mkt-resumo + table.mkt{margin-top:18px}
+/* tabela curta (a do IPCA tem 10 setores): o painel ocupa a altura livre
+   até a nota e as linhas crescem, em vez de sobrar um vão branco na folha */
+.mkt-vidro{flex:1 1 auto;display:flex;flex-direction:column;min-height:0}
+.mkt-vidro>table.mkt:not(.mkt-resumo){flex:1 1 auto;height:100%}
+.mkt-vidro + .mktnote{margin-top:22px}
+/* tabela larga: o total em corpo menor, senão "393.307" encosta em "100%" */
+.mkt-vidro table.mkt-resumo.largo td{font-size:15.5px}
 
 /* ---- características gerais --------------------------------------------- */
 .carac{margin-top:16px;display:grid;grid-template-columns:402px 1fr}
