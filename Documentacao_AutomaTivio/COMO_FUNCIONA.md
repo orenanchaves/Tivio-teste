@@ -172,6 +172,7 @@ Para desligar algum formato: `AutomaTivio/configs/edicao.yml` → `saidas:`.
 | Corrigir um número pontual (taxa, PL, carrego) | `entrada/preenchimento_manual.xlsx`, aba Overrides |
 | Razão social, CNPJ exibido, público alvo, aplicação/resgate | `configs/fundos.yml`, no bloco do fundo |
 | Taxa ou performance diferente da planilha | `configs/fundos.yml` → `taxa:` / `performance:` |
+| De-para do Book Maravi para a "Alocação real" dos ALT (visão da gestão) | `configs/fundos.yml` → `book_depara:` (tabela `alt` para ALT 90/180/HYD60, `alt_light` para o Light) |
 | Linha de benchmark tributado em outro fundo | `configs/fundos.yml` → `bench_tributado: 0.85` |
 | Ligar/desligar um material ou um formato | `configs/edicao.yml` → `materiais:` / `saidas:` |
 | Ordem e seções das páginas do relatório | `configs/relatorio.yml` |

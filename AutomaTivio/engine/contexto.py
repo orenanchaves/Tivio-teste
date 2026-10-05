@@ -53,6 +53,27 @@ def agrupar_tipos(serie, rotulos):
 class ContextoFundo:
     """Tudo sobre um fundo nesta edição. Só leitura."""
 
+    def alocacao_real(self, cadastro):
+        """A "alocação real da carteira de crédito" (treemap do ALT).
+
+        Com `book_depara` no fundo: a coluna Book (Book Maravi) passa pelo
+        de-para da tabela escolhida e os percentuais de mesmo rótulo são
+        somados (Caixa + LF Sênior + LFSC + LFSN = Liquidez). Book que não
+        está na tabela sai com o próprio nome e vira aviso no log.
+        Sem `book_depara`: o corte antigo, 'Tipo aj.' + tipo_label.
+        """
+        if not self.cart:
+            return []
+        tabela = (cadastro.book_depara or {}).get(self.f.cfg.get('book_depara') or '')
+        if tabela and self.cart.get('estrategia') is not None:
+            serie = self.cart['estrategia']
+            fora = sorted(str(b) for b in serie.index if b not in tabela and serie[b])
+            if fora:
+                self.avisos.append('alocação real: book sem de-para, saiu com o próprio nome: '
+                                   + ', '.join(fora))
+            return agrupar_tipos(serie, tabela)
+        return agrupar_tipos(self.cart.get('tipos'), cadastro.tipo_label)
+
     def __init__(self, fundo, edicao, rent, cart, hist, hist12, taxa, perf,
                  comentario, avisos, calc=None):
         self.f = fundo

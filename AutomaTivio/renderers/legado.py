@@ -182,7 +182,7 @@ class RenderizadorLegado:
                     # implementação só, em engine/contexto.py
                     self.set(k, f, 'alloc',
                              [{'n': n, 'p': round(v, 1)} for n, _, v in
-                              agrupar_tipos(ctx.cart['tipos'], self.cad.tipo_label)])
+                              ctx.alocacao_real(self.cad)])
                     faltam = [t for t in ctx.cart['tipos'].index
                               if t not in self.cad.tipo_label]
                     if faltam:

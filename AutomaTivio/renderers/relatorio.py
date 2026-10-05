@@ -693,8 +693,7 @@ class RenderizadorRelatorio:
         # aparece "Liquidez" e não existe linha "LFSN". Retângulos proporcionais
         # e não barras: é assim que o relatório mostra de relance que metade da
         # carteira é cota sênior de FIDC.
-        tipos = agrupar_tipos(ctx.cart['tipos'] if ctx.cart else None,
-                              self.cad.tipo_label)
+        tipos = ctx.alocacao_real(self.cad)
         estrategia_treemap = grafico.treemap(tipos, cores=f.cfg.get('treemap_cores'))
 
         dados = {

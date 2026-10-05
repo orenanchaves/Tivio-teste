@@ -259,6 +259,7 @@ fundos:
   # ----------------------------------------------- Crédito Estruturado (HY)
   alt180:
     nome: Tivio ALT 180
+    book_depara: alt          # alocação real = Book Maravi pelo de-para
     vertical: credito_estruturado
     carteira: TIVIO ALT HY 180 FIDC RL - Expandida
     busca: [ALT HY 180]
@@ -287,6 +288,7 @@ fundos:
 
   alt90:
     nome: Tivio ALT 90
+    book_depara: alt          # alocação real = Book Maravi pelo de-para
     vertical: credito_estruturado
     carteira: TIVIO ALT HY 90 FIDC RL
     busca: [ALT HY 90]
@@ -313,6 +315,7 @@ fundos:
 
   altlight:
     nome: Tivio ALT Light
+    book_depara: alt_light          # alocação real = Book Maravi pelo de-para
     vertical: credito_estruturado
     carteira: TIVIO ALT LIGHT XP SEG PREV FC MULT CP RL - Expandida
     busca: [ALT LIGHT]
@@ -359,6 +362,38 @@ alias:
 rotulo_taxa: Taxa global
 
 # nome amigável das classes do treemap de Crédito Estruturado (coluna 'Tipo aj.')
+# De-para "Book Maravi" (coluna Book da Base Carteira) -> rótulo da
+# "Alocação real da carteira de crédito" dos ALT. Os percentuais dos books de
+# mesmo rótulo são SOMADOS. O fundo escolhe a tabela com `book_depara:`.
+book_depara:
+  alt:                       # ALT 90, ALT 180, HYD60
+    Caixa: Liquidez
+    Crédito Estruturado: Crédito Estruturado
+    Crédito Privado: Crédito Privado
+    Fiagro: Fiagro
+    FIDC Mezanino: FIDC Mezanino
+    FIDC Sênior: FIDC Sênior
+    LF Sênior: Liquidez
+    LFSC: Liquidez
+    LFSN: Liquidez
+    Precatórios: Precatórios
+    TPF: Liquidez
+    Deb: Crédito Privado
+  alt_light:                 # ALT Light
+    Caixa: Liquidez
+    Crédito Estruturado: Crédito Estruturado
+    Crédito Privado: Crédito Privado
+    Fiagro: Fiagro
+    FIDC Mezanino: FIDC Mezanino
+    FIDC Sênior: FIDC Sênior
+    LF Sênior: Bancário
+    LFSC: Bancário
+    LFSN: Bancário
+    Precatórios: Precatórios
+    Deb: Crédito Privado
+    FIP: FIP
+    TPF: Liquidez
+
 tipo_label:
   FIDC Sr: FIDCs Cotas Sênior
   FIDC Mez/Sub: FIDCs Cotas Mezanino
