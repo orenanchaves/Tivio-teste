@@ -49,7 +49,7 @@ DISCLAIMER_PADRAO = carregar_disclaimer()
 # textos conferidos contra o relatório publicado.
 SELOS = [
     ('qr', 'QR Code Tivio',
-     'https://www.tivio.com/wp-content/uploads/sites/1532/2026/08/QR-Code-scaled.png'),
+     'https://www.tivio.com/wp-content/uploads/sites/1532/2026/10/QR-Code-Redes-Tivio-Capital.png'),
     ('anbima1', 'Selo ANBIMA — Distribuição de Produtos de Investimento',
      'https://www.tivio.com/wp-content/uploads/sites/1532/2026/07/selo-distribuicao.png'),
     ('anbima2', 'Selo ANBIMA — Gestão de Recursos de Terceiros',
