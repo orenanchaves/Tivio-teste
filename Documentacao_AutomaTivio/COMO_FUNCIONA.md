@@ -321,6 +321,18 @@ python -m playwright install chromium
 
 ---
 
+## 8b. Próximas fases (ideias registradas em 06/10/2026, ainda não feitas)
+
+- **Dados sem Excel:** ler direto do Databricks interno da Tivio Capital, no lugar
+  da `dados_mensais.xlsx`.
+- **Painel de feedback de Riscos:** onde Riscos aprova os materiais.
+- **Comentários da Gestão:** página para subir os comentários, com um comentário
+  padrão de retorno já preenchido; e um feedback sobre o comentário.
+- **Página de aprovação.**
+- **Páginas administrativas:** cadastro de fundos; inserção de templates em geral
+  (apresentações, relatórios, posts).
+- **Mercado de Crédito:** subir a planilha por uma página.
+
 ## 9. Download
 
 O pacote completo (código + saída de agosto) fica na Release **AutomaTivio v2**:

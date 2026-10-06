@@ -58,6 +58,10 @@ paginas:
       produto: "/ / BRADESCO TIVIO HGD30 PGBL/VGBL RF CRÉDITO PRIVADO"
       blocos: [cabecalho, texto, kpis, rentabilidade, alocacao, setorial, rating, composicao, historico, caracteristicas]
     informativo: templates/informativos/hgd30.pptx
+    # resumo em áudio do mês (o de setembro sobe em outubro: {ano_pub}/{mm_pub})
+    audio:
+      url: "https://www.tivio.com/wp-content/uploads/sites/1532/{ano_pub}/{mm_pub}/HGD30-{Mes}-de-{ano}.mp3"
+      titulo: "TIVIO HGD30 · Resumo em áudio · {Mes} {ano}"
     secoes: [texto, kpis, rentabilidade, alocacao_real, setorial, rating, composicao, historico, caracteristicas]
 
   hyd60:
@@ -83,6 +87,15 @@ paginas:
       - {rotulo: Duration, dado: duration}
       - {rotulo: "Taxas de Adm & Gestão", valor: "1% a.a."}
       - {rotulo: Taxa de Performance, valor: "20% do que exceder 100% do CDI"}
+    # cartões de indicadores (desenho de 06/10/2026); números da planilha
+    cartoes:
+      veiculo: Fundo de Previdência
+      chips: [PGBL, VGBL]
+      resgate: D+60
+      taxa: 1%
+      performance: 20%
+      performance_sobre: 100% do CDI
+      capacity_mi: 500
     previsao_alocacao:
       # o % de alocação sai da carteira do mês; o retorno estimado fica fixo
       - {nome: Crédito High Grade, alocacao: "70%", retorno: "CDI + 1,20%"}

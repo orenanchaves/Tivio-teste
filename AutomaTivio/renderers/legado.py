@@ -71,6 +71,13 @@ class RenderizadorLegado:
             obj[campo] = novo
 
     def overrides(self, key, obj):
+        # data de início oficial (`data_inicio` em configs/fundos.yml) vale em
+        # todo material que mostra a data — os modelos traziam a data à mão
+        if 'inicio' in obj:
+            ctx = self.ctx.de(key)
+            oficial = ctx.f.cfg.get('data_inicio') if ctx is not None else None
+            if oficial:
+                self.set(key, obj, 'inicio', str(oficial))
         for campo, valor in self.ov.get(self.cad.alias.get(key, key), {}).items():
             if campo == 'casas_taxa':
                 continue

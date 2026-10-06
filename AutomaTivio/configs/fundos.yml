@@ -77,6 +77,7 @@ fundos:
 
   inst15:
     nome: Tivio Institucional 15
+    data_inicio: 02/04/2001      # data oficial
     razao_social: "Tivio Institucional 15 FIF – RF CP LP – RL"
     vertical: credito_privado
     carteira: TIVIO INSTITUCIONAL 15 FIF CI RF CP LP RL - Expandida
@@ -120,7 +121,7 @@ fundos:
   infraplus:
     casas_pct: 2              # "99,01%" e não "99%", como no publicado
     nome: Tivio Infra Plus
-    data_inicio: 15/07/2019      # data exibida; a DePara traz 31/05/2021 (o gráfico segue a DePara)
+    data_inicio: 15/07/2019      # data oficial; a DePara traz 31/05/2021 (o gráfico segue a DePara)
     razao_social: "Tivio Plus RF Fundo Incentivado de Investimento Financeiro em Infra – RL"
     vertical: credito_privado
     carteira: TIVIO INFRA PLUS IPCA RF FIF RL
@@ -290,6 +291,7 @@ fundos:
 
   alt90:
     nome: Tivio ALT 90
+    data_inicio: 06/06/2025      # data oficial (o carrossel trazia 27/05/2025)
     abertura: alt                  # 1º parágrafo do comentário gerado com os números da tabela
     book_depara: alt90          # alocação real = Book Maravi pelo de-para
     vertical: credito_estruturado

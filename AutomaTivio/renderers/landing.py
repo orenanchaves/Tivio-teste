@@ -347,6 +347,58 @@ class RenderizadorLanding:
         return [mapa[c] for c in pg.get('caracteristicas') or ['nome', 'cnpj']
                 if c in mapa and mapa[c][1]]
 
+    def _kx(self, pg, ctx):
+        """Cartões de indicadores do HYD60 (desenho do Renan, 06/10/2026). Os
+        números saem da planilha; o resto de configs/previdencia.yml → cartoes."""
+        c = pg.get('cartoes')
+        if not c:
+            return None
+        dur = ctx.duration_fmt.split(' ')
+        cap = float(c.get('capacity_mi', 0) or 0)
+        pl_mi = (ctx.pl or 0) / 1e6
+        return {
+            'veiculo': c.get('veiculo', 'Fundo de Previdência'), 'chips': c.get('chips', []),
+            'resgate': c.get('resgate', ''), 'taxa': c.get('taxa', ''),
+            'perf': c.get('performance', ''), 'perf_sobre': c.get('performance_sobre', ''),
+            'duration': dur[0], 'duration_un': dur[1] if len(dur) > 1 else '',
+            'mes_ano': f'{fmt.MESES[self.edicao.db.month - 1]} {self.edicao.db.year}',
+            'carrego': ctx.carrego_fmt,
+            'rent_mes': ctx.texto('mes', 'fundo'), 'pct_mes': ctx.texto('mes', 'pct'),
+            'rent_inicio': ctx.texto('inicio', 'fundo'), 'pct_inicio': ctx.texto('inicio', 'pct'),
+            'capacity': fmt.num(cap, 0),
+            'preenchido': fmt.num(pl_mi / cap * 100, 1) + '%' if cap else fmt.MINUS,
+            'pl': f'R$ {fmt.num(pl_mi, 1)} mi',
+        }
+
+    def _audio(self, chave, pg):
+        """Resumo em áudio do mês (configs/previdencia.yml → audio).
+
+        O endereço é montado com o mês da edição e o mês de publicação (o arquivo
+        de setembro sobe em outubro): {ano_pub}/{mm_pub} e {Mes} {ano}. Se o
+        arquivo não responder, a página sai sem o player e o log avisa.
+        """
+        cfg = pg.get('audio')
+        if not cfg:
+            return None
+        db = self.edicao.db
+        pub_m, pub_a = (db.month % 12) + 1, db.year + (1 if db.month == 12 else 0)
+        mes = fmt.MESES[db.month - 1]
+        troca = {'{Mes}': mes, '{ano}': str(db.year), '{ano_pub}': str(pub_a), '{mm_pub}': f'{pub_m:02d}'}
+        url, titulo = cfg.get('url', ''), cfg.get('titulo', '')
+        for k, v in troca.items():
+            url, titulo = url.replace(k, v), titulo.replace(k, v)
+        try:
+            import urllib.request
+            req = urllib.request.Request(url, headers={'Range': 'bytes=0-0', 'User-Agent': 'Mozilla/5.0'})
+            with urllib.request.urlopen(req, timeout=8) as r:
+                ok = r.status in (200, 206)
+        except Exception:
+            ok = False
+        if not ok:
+            self.log.aviso(chave, f'resumo em áudio não encontrado ({url}): página sem o player')
+            return None
+        return {'url': url, 'titulo': titulo}
+
     def _ec(self, ctx, previsao):
         """Dados dos gráficos ECharts da página: [nome, valor, rótulo]."""
         def lista(itens):
@@ -425,5 +477,7 @@ class RenderizadorLanding:
             logo_horizontal=logo_svg((pg.get('logo') or {}).get('horizontal'), 'lp-logo-h'),
             logo_horizontal_hero=logo_svg((pg.get('logo') or {}).get('horizontal'), 'lp-logo'),
             ec=self._ec(ctx, previsao),
+            audio=self._audio(chave, pg),
+            kx=self._kx(pg, ctx),
             css_marca=self.r.css_marca, css_pagina=self.r.css_pagina,
             echarts_src=self.r.ECHARTS)
