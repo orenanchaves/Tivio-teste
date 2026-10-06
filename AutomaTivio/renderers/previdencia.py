@@ -65,6 +65,13 @@ def dados_fundo(chave, pg, ctx, edicao, textos, log=None, por_key=None):
         ('%', ctx.texto('mes', 'pct'), ctx.texto('inicio', 'pct')),
         (f'{ctx.benchmark} +', ctx.texto('mes', 'bench_mais'), ctx.texto('inicio', 'bench_mais')),
     ]
+    # e-mail: o "% do CDI" com as casas de `email.casas_pct` (HYD60: 2)
+    casas = int((pg.get('email') or {}).get('casas_pct', 0))
+
+    def pct(per):
+        v = ctx.valor(per, 'pct')
+        return fmt.num(v * 100, casas) + '%' if v is not None else fmt.MINUS
+    rent_email = [r if r[0] != '%' else ('%', pct('mes'), pct('inicio')) for r in rent]
     aloc = {n: r for n, r, _ in ctx.alocacao_hghy}
     retornos = {a['nome']: a.get('retorno') for a in pg.get('previsao_alocacao') or []}
     alocacao = [{'nome': n, 'pct': r, 'retorno': retornos.get(n)}
@@ -90,6 +97,7 @@ def dados_fundo(chave, pg, ctx, edicao, textos, log=None, por_key=None):
         'texto_md': texto_md,
         'kpis': lp._kpis(pg, ctx),
         'rent': rent,
+        'rent_email': rent_email,
         'alocacao': alocacao,
         'aloc_mapa': aloc,
         'setores': setores,

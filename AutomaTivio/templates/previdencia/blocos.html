@@ -53,7 +53,7 @@
 <table class="b-rent {{ d.estilo }}">
   <thead><tr><th></th><th>Mês</th><th>Desde o Início</th></tr></thead>
   <tbody>
-  {% for rot, m, i in d.rent %}<tr{% if loop.first %} class="f"{% endif %}><td>{{ rot }}</td><td contenteditable="true">{{ m }}</td><td contenteditable="true">{{ i }}</td></tr>
+  {% for rot, m, i in d.rent_email %}<tr{% if loop.first %} class="f"{% endif %}><td>{{ rot }}</td><td contenteditable="true">{{ m }}</td><td contenteditable="true">{{ i }}</td></tr>
   {% endfor %}
   </tbody>
 </table>

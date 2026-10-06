@@ -138,6 +138,7 @@ paginas:
       titulo: BRADESCO TIVIO HYD60 PGBL VGBL FIF CIC MULTIMERCADO CP RL
       produto: "/ / BRADESCO TIVIO HYD60 PGBL/VGBL FIF"
       nota_rating: "*Não incluindo a parte de crédito estruturado"
+      casas_pct: 2                    # "98,12% do CDI" na tabela do e-mail
       blocos: [cabecalho, texto, kpis, rentabilidade, alocacao, setorial, rating, historico, beneficios]
     informativo: templates/informativos/hyd60.pptx
     secoes: [texto, kpis, rentabilidade, previsao_alocacao, setorial, rating, historico, beneficios, caracteristicas]
