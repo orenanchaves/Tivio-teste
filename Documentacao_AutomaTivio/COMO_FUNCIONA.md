@@ -55,10 +55,12 @@ AutomaTivio/saida/AAAA-MM/
 │   ├── tivio-central.html        índice com todos os cards
 │   ├── Relatório de Gestão - <vertical> - <mês>.html   relatórios, fundos em abas
 │   ├── tivio-post-*.html         carrosséis de Destaques (editáveis na tela)
-│   ├── tivio-hgd30-saiba-mais.html   página "Saiba mais" do HGD30 (previdência)
-│   ├── tivio-hyd60-saiba-mais.html   página "Saiba mais" do HYD60 (previdência)
 │   ├── tivio-email-previdencia.html  gerador do e-mail de previdência (HGD30 e HYD60)
 │   └── tivio-email-*.html        construtores de e-mail
+├── landing page/                 site externo: páginas "Saiba mais" do HGD30 e do HYD60
+│   ├── tivio-hgd30-saiba-mais.html
+│   ├── tivio-hyd60-saiba-mais.html
+│   └── vendor/echarts.min.js      (sobe junto: a pasta funciona sozinha)
 ├── pdf/                          13 relatórios em PDF A4, texto selecionável
 │                                 + os 3 carrosséis de Destaques ("Destaques - <vertical> - <mês>.pdf")
 ├── pptx/                         13 relatórios em PPTX, texto editável
@@ -220,8 +222,9 @@ enviar; para virar modelo, Arquivo > Salvar como > Modelo do Outlook (.oft).
 - **Site externo:** as páginas Saiba mais não têm botão para a Central; o menu
   das seções fica no cabeçalho e acompanha a rolagem.
 - **Gráficos em ECharts:** alocação em meia-rosca (com o retorno estimado no
-  HYD60), composição em rosca, setores em barras, rating em colunas e histórico
-  em linha com área. O logo do fundo é sempre o horizontal.
+  HYD60), composição em rosca, setores em mapa de blocos (treemap), rating em
+  colunas e histórico em linha com área. Menu do cabeçalho com setas quando as
+  seções não cabem na largura. O logo do fundo é sempre o horizontal.
   A frase "apresentou rentabilidade de X% no mês (Y% do CDI), acumulando Z%
   (W% do CDI) desde o início" é ajustada à tabela, como no relatório.
 - **O resto** (nome, CNPJ, meta, público, taxas, cards, previsão de alocação,

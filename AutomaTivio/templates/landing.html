@@ -39,7 +39,18 @@
 
 /* abas de seção, em pílula como .tabs da referência */
 .header .inner{gap:18px}
-.hd-nav{flex:1 1 auto;min-width:0;display:flex;justify-content:center}
+.hd-nav{flex:1 1 auto;min-width:0;display:flex;justify-content:center;position:relative}
+/* setas: só aparecem quando há seção escondida daquele lado do menu */
+.hd-seta{position:absolute;top:50%;transform:translateY(-50%);z-index:2;width:30px;height:30px;border-radius:50%;
+  display:flex;align-items:center;justify-content:center;padding:0;cursor:pointer;color:var(--text-primary);
+  background:var(--bg-elev-1);border:1px solid var(--line-strong);box-shadow:0 2px 10px rgba(0,0,0,.25)}
+.hd-seta[hidden]{display:none}
+.hd-seta svg{width:16px;height:16px}
+.hd-seta:hover{border-color:var(--accent-strong);color:var(--accent-strong)}
+.hd-seta.esq{left:-4px}.hd-seta.dir{right:-4px}
+.hd-nav.corta-esq .tabs{-webkit-mask-image:linear-gradient(90deg,transparent 0,#000 44px);mask-image:linear-gradient(90deg,transparent 0,#000 44px)}
+.hd-nav.corta-dir .tabs{-webkit-mask-image:linear-gradient(270deg,transparent 0,#000 44px);mask-image:linear-gradient(270deg,transparent 0,#000 44px)}
+.hd-nav.corta-esq.corta-dir .tabs{-webkit-mask-image:linear-gradient(90deg,transparent 0,#000 44px,#000 calc(100% - 44px),transparent 100%);mask-image:linear-gradient(90deg,transparent 0,#000 44px,#000 calc(100% - 44px),transparent 100%)}
 .hd-nav .tabs{display:flex;gap:2px;padding:4px;border-radius:var(--r-full);background:var(--input-bg);border:1px solid var(--line-strong);overflow-x:auto;scrollbar-width:none;max-width:100%}
 .hd-nav .tabs::-webkit-scrollbar{display:none}
 .hd-nav a{padding:7px 12px;border-radius:var(--r-full);font-size:12px;font-weight:600;color:var(--text-muted);white-space:nowrap;transition:background-color .2s var(--ease),color .2s var(--ease)}
@@ -48,7 +59,7 @@
 :root[data-theme="light"] .hd-nav a.on{background:var(--tv-verde-light-accent);color:#fff}
 .header .head-actions{margin-left:auto;width:auto;flex:0 0 auto}
 /* sem espaço para tudo numa linha: o menu desce para a segunda linha do cabeçalho */
-@media(max-width:1580px){
+@media(max-width:760px){
   .header .inner{flex-wrap:wrap;height:auto;padding-top:12px;padding-bottom:10px;row-gap:10px}
   .hd-nav{order:3;flex:1 0 100%;justify-content:flex-start}
 }
@@ -136,6 +147,7 @@
 .lp-hist{height:360px}
 .lp-ec{width:100%}
 .ec-duo{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,1fr);gap:28px;align-items:center}
+.ec-set{height:440px}
 .ec-meia{height:260px}.ec-rosca{height:300px}.ec-rat{height:300px}
 .ec-leg{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:14px}
 .ec-leg li{display:grid;grid-template-columns:14px 1fr auto;align-items:center;gap:12px;font-size:15px;padding-bottom:12px;border-bottom:1px dashed var(--line-strong)}
@@ -147,7 +159,7 @@
 .ec-leg.com-ret em{font-style:normal;font-weight:600;color:var(--accent-strong);min-width:118px;text-align:right}
 .ec-leg li.cab{border-bottom:0;padding-bottom:0}
 .ec-leg li.cab b,.ec-leg li.cab em{font-size:9px;letter-spacing:.16em;text-transform:uppercase;color:var(--text-muted);font-weight:700}
-@media(max-width:640px){.ec-duo{grid-template-columns:1fr;gap:8px}.ec-meia{height:210px}.ec-rosca{height:250px}.ec-rat{height:240px}
+@media(max-width:640px){.ec-set{height:520px}.ec-duo{grid-template-columns:1fr;gap:8px}.ec-meia{height:210px}.ec-rosca{height:250px}.ec-rat{height:240px}
   .ec-leg b{font-size:17px}.ec-leg.com-ret em{min-width:0}}
 .lp-hist-leg{display:flex;gap:18px;justify-content:center;font-size:12px;color:var(--text-muted);margin-top:6px}
 .lp-hist-leg i{display:inline-block;width:14px;height:3px;border-radius:2px;vertical-align:middle;margin-right:6px}
@@ -216,9 +228,13 @@
       <svg class="logo-mark anim-brand" viewBox="0 0 844 294"><use href="#tv-logo"/></svg>
       <span class="brand-tag">{% if logo_horizontal %}{{ logo_horizontal|safe }}{% else %}{{ pg.marca|join('') }}{% endif %}</span>
     </a>
-    <nav class="hd-nav" aria-label="Seções"><div class="tabs">
+    <nav class="hd-nav" aria-label="Seções">
+      <button type="button" class="hd-seta esq" aria-label="Seções anteriores" hidden><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg></button>
+      <div class="tabs">
       {% for s, t in nav %}<a href="#sec-{{ s }}">{{ t }}</a>{% endfor %}
-    </div></nav>
+      </div>
+      <button type="button" class="hd-seta dir" aria-label="Próximas seções" hidden><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg></button>
+    </nav>
     <div class="head-actions">
       <div class="btn-group" role="group" aria-label="Alternar tema da interface">
         <button type="button" class="btn btn-ghost btn-xs" data-theme-set="light" aria-label="Modo claro"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></svg></button>
@@ -291,7 +307,8 @@
   {% elif s == 'setorial' %}
   <section class="lp-sec lp-card" id="sec-setorial">
     <h2 class="lp-h">Exposição <em>setorial</em></h2>
-    <div class="lp-ec ec-set" data-ec='{{ ec.setorial|tojson }}' style="height:{{ 26 * setores|length + 20 }}px"></div>
+    <div class="lp-ec ec-set" data-ec='{{ ec.setorial|tojson }}'></div>
+    <p class="lp-nota">% do patrimônio líquido · passe o mouse num bloco para ver o setor</p>
   </section>
 
   {% elif s == 'rating' %}
@@ -370,6 +387,13 @@
   var EC = [];
   function paleta() { return [cor('--lp-acc'), cor('--lp-acc-2'), cor('--tv-verde-escuro'), cor('--lp-cx')]; }
   function fonte() { return 'Versos, Helvetica Neue, Arial, sans-serif'; }
+  function hexa(c) { c = (c || '').trim(); if (c[0] !== '#') return [128, 128, 128];
+    if (c.length === 4) c = '#' + c[1] + c[1] + c[2] + c[2] + c[3] + c[3];
+    return [1, 3, 5].map(function (i) { return parseInt(c.substr(i, 2), 16); }); }
+  function luz(c) { var m = (c.match(/\d+/g) || hexa(c)).map(Number);
+    if (m.length < 3) m = hexa(c); return (0.299 * m[0] + 0.587 * m[1] + 0.114 * m[2]) / 255; }
+  function mistura(a, b, t) { var x = hexa(a), y = hexa(b);
+    return 'rgb(' + x.map(function (v, i) { return Math.round(v + (y[i] - v) * t); }).join(',') + ')'; }
   function graficos() {
     EC.forEach(function (g) { g.dispose(); }); EC = [];
     var pal = paleta(), tx = cor('--text-secondary'), mu = cor('--text-muted'), li = cor('--line');
@@ -380,16 +404,43 @@
       var g = echarts.init(el, null, {renderer: 'svg'}), op;
       var dados = d.itens.map(function (x, i) { return {name: x[0], value: x[1], rotulo: x[2], itemStyle: {color: x[0] === 'Caixa' ? cor('--lp-cx') : pal[i % pal.length]}}; });
       if (d.tipo === 'meia' || d.tipo === 'rosca') {
-        var meia = d.tipo === 'meia';
+        // tudo em pixels, a partir do tamanho real do gráfico: o número fica
+        // sempre dentro do vão, em qualquer largura de tela
+        var meia = d.tipo === 'meia', W = el.clientWidth, H = el.clientHeight, R, cy;
+        if (meia) { R = Math.min(W / 2 - 6, H - 14); cy = H - 8; }
+        else { R = Math.min(W, H) / 2 - 6; cy = H / 2; }
+        var ri = R * (meia ? 0.66 : 0.64);
+        var fz = Math.max(16, Math.min(30, Math.round(ri * (meia ? 0.36 : 0.34))));
+        var yNum = meia ? cy - ri * 0.42 : cy - fz * 0.18;
+        var ySub = meia ? cy - ri * 0.42 + fz * 0.95 : cy + fz * 0.85;
         op = {animation: false, tooltip: {trigger: 'item', formatter: function (p) { return p.name + ': ' + p.data.rotulo; }},
-          series: [{type: 'pie', radius: meia ? ['62%', '96%'] : ['52%', '80%'], center: meia ? ['50%', '88%'] : ['50%', '50%'],
+          series: [{type: 'pie', radius: [ri, R], center: [W / 2, cy],
             startAngle: 180, endAngle: meia ? 360 : -180, avoidLabelOverlap: true, padAngle: 1.5,
             itemStyle: {borderRadius: 6, borderColor: cor('--bg-base'), borderWidth: 2},
             label: {show: false}, data: dados}],
-          graphic: [{type: 'text', left: 'center', top: meia ? '58%' : 'middle',
-            style: {text: d.centro || '', fill: cor('--text-primary'), font: '700 ' + (el.clientWidth < 420 ? 21 : 30) + 'px ' + fonte(), textAlign: 'center'}},
-            {type: 'text', left: 'center', top: meia ? '76%' : '58%',
-            style: {text: d.sub || '', fill: mu, font: '600 11px ' + fonte(), textAlign: 'center'}}]};
+          graphic: [{type: 'text', x: W / 2, y: yNum,
+            style: {text: d.centro || '', fill: cor('--text-primary'), font: '700 ' + fz + 'px ' + fonte(), textAlign: 'center', textVerticalAlign: 'middle'}},
+            {type: 'text', x: W / 2, y: ySub,
+            style: {text: d.sub || '', fill: mu, font: '600 ' + Math.max(9, Math.round(fz * 0.36)) + 'px ' + fonte(), textAlign: 'center', textVerticalAlign: 'middle'}}]};
+      } else if (d.tipo === 'blocos') {
+        // treemap: cada setor do tamanho do seu peso; o tom clareia do maior
+        // para o menor, e o Caixa fica no cinza da casa
+        var n = d.itens.length, base = pal[0], fundo = cor('--bg-elev-1') || '#fff';
+        var blocos = d.itens.map(function (x, i) {
+          var c = x[0] === 'Caixa' ? cor('--lp-cx') : mistura(base, cor('--lp-acc-2'), Math.min(0.85, i / Math.max(1, n - 1)));
+          var claro = luz(c) > 0.55;
+          return {name: x[0], value: x[1], rotulo: x[2], itemStyle: {color: c},
+            label: {show: x[1] >= 1.5, rich: {n: {color: claro ? '#0A0F14' : '#FFFFFF'}, v: {color: claro ? '#0A0F14' : '#FFFFFF'}}}};
+        });
+        op = {animation: false, tooltip: {formatter: function (p) { return p.name + ': ' + p.data.rotulo; }},
+          series: [{type: 'treemap', roam: false, nodeClick: false, breadcrumb: {show: false},
+            left: 0, right: 0, top: 0, bottom: 0, squareRatio: 0.9, data: blocos,
+            itemStyle: {borderColor: cor('--bg-base'), borderWidth: 2, gapWidth: 2, borderRadius: 6},
+            label: {show: true, position: 'insideTopLeft', padding: [8, 10],
+              formatter: function (p) { return '{n|' + p.name + '}\n{v|' + p.data.rotulo + '}'; },
+              rich: {n: {fontSize: 12, fontWeight: 600, fontFamily: fonte(), lineHeight: 16},
+                     v: {fontSize: 16, fontWeight: 700, fontFamily: fonte(), lineHeight: 22}}},
+            upperLabel: {show: false}}]};
       } else if (d.tipo === 'barras') {
         op = {animation: false, grid: {left: 4, right: 64, top: 4, bottom: 4, containLabel: true},
           xAxis: {type: 'value', show: false},
@@ -410,7 +461,7 @@
       g.setOption(op); EC.push(g);
     });
   }
-  window.addEventListener('resize', function () { EC.forEach(function (g) { g.resize(); }); });
+  var _rt; window.addEventListener('resize', function () { clearTimeout(_rt); _rt = setTimeout(function () { if (window.echarts) graficos(); }, 150); });
 
   window.lpGrafico = function () {
     if (window.echarts) graficos();
@@ -475,6 +526,23 @@
     topo.classList.toggle('show', window.scrollY > 600);
   }
   window.addEventListener('scroll', marcar, {passive: true});
+
+  // setas do menu
+  var nav = document.querySelector('.hd-nav'), trilho = nav && nav.querySelector('.tabs');
+  var sEsq = nav && nav.querySelector('.hd-seta.esq'), sDir = nav && nav.querySelector('.hd-seta.dir');
+  function setas() {
+    if (!trilho) return;
+    var temEsq = trilho.scrollLeft > 4, temDir = trilho.scrollLeft + trilho.clientWidth < trilho.scrollWidth - 4;
+    sEsq.hidden = !temEsq; sDir.hidden = !temDir;
+    nav.classList.toggle('corta-esq', temEsq); nav.classList.toggle('corta-dir', temDir);
+  }
+  if (trilho) {
+    trilho.addEventListener('scroll', setas, {passive: true});
+    window.addEventListener('resize', setas);
+    sEsq.addEventListener('click', function () { trilho.scrollBy({left: -trilho.clientWidth * 0.6, behavior: 'smooth'}); });
+    sDir.addEventListener('click', function () { trilho.scrollBy({left: trilho.clientWidth * 0.6, behavior: 'smooth'}); });
+    setas();
+  }
   topo.addEventListener('click', function () { window.scrollTo({top: 0, behavior: 'smooth'}); });
   marcar();
 })();

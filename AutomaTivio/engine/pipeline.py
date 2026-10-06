@@ -244,7 +244,11 @@ class Pipeline:
                             self.log.erro(key, f'PPTX não gerado: {e2!r}')
 
     # bibliotecas que cada pasta de saída precisa ter ao lado dos HTMLs
+    PASTA_LANDING = 'landing page'
+
     LIBS_POR_PASTA = {
+        # as páginas Saiba mais (HGD30, HYD60) são um site externo, numa pasta só delas
+        ('landing page',): ('echarts.min.js',),
         # todos os HTML da edição ficam em central/ (Central, posts, e-mails e
         # as páginas de relatório por vertical): uma pasta só para navegar
         ('central',): ('html2canvas.min.js', 'jszip.min.js', 'jspdf.umd.min.js',
@@ -391,7 +395,11 @@ class Pipeline:
             except Exception as e:
                 self.log.erro(chave, f'falha ao montar a página Saiba mais: {e!r}')
                 continue
-            exp_html.gravar(html, self._destino('central', lp.arquivo(chave)), self.log)
+            # site externo: pasta própria, que sobe sozinha (com o vendor/ ao lado)
+            exp_html.gravar(html, self._destino(self.PASTA_LANDING, lp.arquivo(chave)), self.log)
+            antiga = self._destino('central', lp.arquivo(chave))
+            if os.path.exists(antiga):
+                os.remove(antiga)
 
     def _previdencia(self, contextos):
         """Gerador do e-mail de previdência (central/) — os PNG, o HTML, o .eml

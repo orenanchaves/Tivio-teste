@@ -26,7 +26,8 @@ MENSAIS = {
     'tivio-post-credito-estruturado.html', 'tivio-post-credito-privado.html',
     'tivio-post-investment-solutions.html',
     'tivio-email-fundos-credito.html',
-    'tivio-email-previdencia.html', 'tivio-hgd30-saiba-mais.html', 'tivio-hyd60-saiba-mais.html',
+    'tivio-email-previdencia.html', '../landing%20page/tivio-hgd30-saiba-mais.html',
+    '../landing%20page/tivio-hyd60-saiba-mais.html',
 }
 
 
@@ -499,7 +500,9 @@ const RECORRENTES=%REC%;
             """
             if not link or '://' in link or not link.lower().endswith('.html'):
                 return True
-            return os.path.exists(os.path.join(self.pasta_saida, 'central', link))
+            from urllib.parse import unquote
+            return os.path.exists(os.path.normpath(
+                os.path.join(self.pasta_saida, 'central', unquote(link))))
 
         def fn(seed):
             for it in seed:

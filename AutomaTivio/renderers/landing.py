@@ -225,7 +225,7 @@ class RenderizadorLanding:
                 m = re.match(r'^(\S+%|\S+)\s+(.+)$', v) if v and not v.startswith(('R$', 'CDI')) else None
                 if m:
                     v, u = m.group(1), m.group(2)
-            saida.append({'rotulo': k.get('rotulo', '').replace('{mes_ano}', self.edicao.mes_ano), 'valor': v, 'unidade': u,
+            saida.append({'rotulo': k.get('rotulo', '').replace('{mes_ano}', f'{fmt.MESES[self.edicao.db.month - 1]} {self.edicao.db.year}'), 'valor': v, 'unidade': u,
                           'destaque': not v})
         return saida
 
@@ -273,7 +273,8 @@ class RenderizadorLanding:
         return {
             'alocacao': {'tipo': 'meia', 'itens': lista(aloc), 'centro': hg, 'sub': 'HIGH GRADE'},
             'previsao': {'tipo': 'meia', 'itens': lista(aloc), 'centro': hg, 'sub': 'HIGH GRADE'},
-            'setorial': {'tipo': 'barras', 'itens': lista(setores)},
+            # treemap: maior para o menor (o Caixa na posição do seu peso)
+            'setorial': {'tipo': 'blocos', 'itens': lista(sorted(ctx.setores_relatorio, key=lambda x: -x[2]))},
             'rating': {'tipo': 'colunas', 'itens': lista(ctx.rating_relatorio)},
             'composicao': {'tipo': 'rosca', 'itens': lista(comp),
                            'centro': maior[1] if maior else '', 'sub': maior[0].upper() if maior else ''},
