@@ -57,6 +57,44 @@ def carregar_textos(caminho=None):
             for i in range(1, len(partes) - 1, 2)}
 
 
+TITULO_MERCADO = re.compile(r'Vis[ãa]o de Mercado\s*\|\s*[A-Za-zÀ-ú]+', re.I)
+TITULO_DESTAQUES = re.compile(r'Destaques da atua[çc][ãa]o da gest[ãa]o em\s+[A-Za-zÀ-ú]+', re.I)
+
+
+def html_para_markdown(texto):
+    """Texto colado de editor de texto rico (site, e-mail) vira Markdown simples.
+
+    <strong>/<b> viram **negrito**, <br>/<p>/<li> viram quebra de parágrafo, o
+    resto das tags sai e as entidades (&amp;, &nbsp;) voltam a ser caracteres.
+    Texto sem HTML passa intacto.
+    """
+    if '<' not in (texto or ''):
+        return texto
+    t = re.sub(r'<\s*(strong|b)\b[^>]*>', '**', texto, flags=re.I)
+    t = re.sub(r'<\s*/\s*(strong|b)\s*>', '**', t, flags=re.I)
+    t = re.sub(r'<\s*li\b[^>]*>', '\n\n- ', t, flags=re.I)
+    t = re.sub(r'<\s*(br|/p|p|/li|/ul|ul|/div|div)\b[^>]*>', '\n\n', t, flags=re.I)
+    t = re.sub(r'<[^>]+>', '', t)
+    t = _html.unescape(t).replace('\xa0', ' ')
+    t = re.sub(r'\*\*\s*\*\*', '', t)                    # negrito vazio
+    t = re.sub(r'[ \t]+', ' ', t)
+    return '\n\n'.join(x.strip() for x in re.split(r'\n\s*\n', t) if x.strip())
+
+
+def _secoes_proprias(texto):
+    """Separa "Visão de Mercado | <mês>" e "Destaques da atuação da gestão em
+    <mês>" quando o texto do fundo traz os dois títulos (mesmo colados no meio
+    do parágrafo). Devolve (mercado, destaques); (None, texto) sem os títulos."""
+    m = TITULO_MERCADO.search(texto)
+    if not m:
+        return None, texto
+    d = TITULO_DESTAQUES.search(texto, m.end())
+    mercado = texto[m.end():d.start() if d else len(texto)]
+    destaques = texto[d.end():] if d else ''
+    limpa = lambda x: x.strip(' *\n:|')
+    return limpa(mercado), limpa(destaques)
+
+
 def comentario_automatico(chave, pg, por_key, textos, edicao):
     """O texto do gestor dos fundos de previdência, montado sozinho.
 
@@ -78,6 +116,9 @@ def comentario_automatico(chave, pg, por_key, textos, edicao):
     paragrafos = [p.strip() for p in (proprio.comentario if proprio is not None else []) if p.strip()]
     if not paragrafos and textos.get(chave):            # legado: entrada/previdencia.md
         paragrafos = [p.strip() for p in re.split(r'\n\s*\n', textos[chave]) if p.strip()]
+    bruto = html_para_markdown('\n\n'.join(paragrafos))
+    mercado_proprio, resto = _secoes_proprias(bruto)
+    paragrafos = [p.strip() for p in re.split(r'\n\s*\n', resto) if p.strip()]
     if not cfg:
         return '\n\n'.join(paragrafos)
     mes = fmt.MESES[edicao.db.month - 1]
@@ -90,6 +131,10 @@ def comentario_automatico(chave, pg, por_key, textos, edicao):
         partes += ['**Sobre o Fundo**', '\n'.join('- ' + m(x) for x in cfg['sobre'])]
     ref = por_key.get(cfg.get('mercado_de'))
     mercado = []
+    if mercado_proprio:
+        # o gestor escreveu o mercado do próprio fundo: ele vale
+        mercado = [p.strip() for p in re.split(r'\n\s*\n', mercado_proprio) if p.strip()]
+        ref = None
     if ref is not None:
         for p in ref.comentario or []:
             if re.search(r'Nesse cen[áa]rio|apresentou rentabilidade|obteve retorno|acumula retorno', p):

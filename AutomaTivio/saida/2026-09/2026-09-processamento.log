@@ -1,98 +1,98 @@
-14:55:28       === Central de Materiais · edição edicao · 06/10/2026 14:55:28 ===
-14:55:28
-14:55:28       1/6 Lendo entradas
-14:55:28         usando cache de dados_mensais.xlsx
-14:55:28         mercado de crédito CDI: 24 linhas, 7 colunas (aba "spread mensal CDI+")
-14:55:28         mercado de crédito IPCA: 12 linhas, 10 colunas (aba "spread mensal IPCA+")
-14:55:28       data base: 30/09/2026 (Setembro de 2026)
-14:55:28       cadastro: 24 fundos, 23 resolvidos na DePara
-14:55:28       comentários: 19 fundos em comentarios.md + comentarios.docx
-14:55:28 AVISO [atuarial] não encontrado na DePara (procurei por 'ATUARIAL'). Candidatos: nenhum
-14:55:28
-14:55:28       2/6 Calculando
-14:55:29       21 de 24 fundos com dados nesta edição
-14:55:29
-14:55:29       3/6 Validando
-14:55:29       2 divergências · 9 dados faltantes
-14:55:29
-14:55:29       4/6 Relatórios de Gestão
-14:55:29 AVISO [bvp] logo não encontrado em assets/logos (procurei "tivio_bvp")
-14:55:29 AVISO [atuarial] relatório não gerado: sem dados nesta edição
-14:55:29         1 bibliotecas copiadas para landing page/vendor/
-14:55:29         5 bibliotecas copiadas para central/vendor/
-14:55:29         1 bibliotecas copiadas para central/_fundos/vendor/
-14:55:30       Chromium: C:\Program Files\Google\Chrome\Application\chrome.exe
-14:55:32       PDF  Tivio Banks - Relatório de Gestão - Setembro 2026.pdf (790 KB)
-14:55:35       PPTX Tivio Banks - Relatório de Gestão - Setembro 2026.pptx (1918 KB)
-14:55:38       PDF  Tivio Institucional - Relatório de Gestão - Setembro 2026.pdf (796 KB)
-14:55:40       PPTX Tivio Institucional - Relatório de Gestão - Setembro 2026.pptx (1925 KB)
-14:55:43       PDF  Tivio Institucional 15 - Relatório de Gestão - Setembro 2026.pdf (800 KB)
-14:55:45       PPTX Tivio Institucional 15 - Relatório de Gestão - Setembro 2026.pptx (1944 KB)
-14:55:48       PDF  Tivio Institucional 30 - Relatório de Gestão - Setembro 2026.pdf (795 KB)
-14:55:50       PPTX Tivio Institucional 30 - Relatório de Gestão - Setembro 2026.pptx (1919 KB)
-14:55:53       PDF  Tivio Infra Plus - Relatório de Gestão - Setembro 2026.pdf (771 KB)
-14:55:55       PPTX Tivio Infra Plus - Relatório de Gestão - Setembro 2026.pptx (1905 KB)
-14:55:57       PDF  Tivio BVP - Relatório de Gestão - Setembro 2026.pdf (779 KB)
-14:56:00       PPTX Tivio BVP - Relatório de Gestão - Setembro 2026.pptx (1902 KB)
-14:56:02       PDF  Tivio RF CP - Relatório de Gestão - Setembro 2026.pdf (789 KB)
-14:56:04       PPTX Tivio RF CP - Relatório de Gestão - Setembro 2026.pptx (1916 KB)
-14:56:06       PDF  Tivio ALT 180 - Relatório de Gestão - Setembro 2026.pdf (585 KB)
-14:56:08       PPTX Tivio ALT 180 - Relatório de Gestão - Setembro 2026.pptx (293 KB)
-14:56:09       PDF  Tivio ALT 90 - Relatório de Gestão - Setembro 2026.pdf (583 KB)
-14:56:11       PPTX Tivio ALT 90 - Relatório de Gestão - Setembro 2026.pptx (289 KB)
-14:56:13       PDF  Tivio ALT Light - Relatório de Gestão - Setembro 2026.pdf (579 KB)
-14:56:14       PPTX Tivio ALT Light - Relatório de Gestão - Setembro 2026.pptx (283 KB)
-14:56:17       PDF  Tivio Infra Plus CDI - Relatório de Gestão - Setembro 2026.pdf (791 KB)
-14:56:20       PPTX Tivio Infra Plus CDI - Relatório de Gestão - Setembro 2026.pptx (1919 KB)
-14:56:22       PDF  Tivio Esplanada - Relatório de Gestão - Setembro 2026.pdf (793 KB)
-14:56:24       PPTX Tivio Esplanada - Relatório de Gestão - Setembro 2026.pptx (1927 KB)
-14:56:26       PDF  Tivio Legacy Prev - Relatório de Gestão - Setembro 2026.pdf (792 KB)
-14:56:29       PPTX Tivio Legacy Prev - Relatório de Gestão - Setembro 2026.pptx (1918 KB)
-14:56:29 AVISO [bvp] logo não encontrado em assets/logos (procurei "tivio_bvp")
-14:56:29       HTML Relatório de Gestão - Crédito Privado - Setembro 2026.html (4849 KB)
-14:56:29       HTML Relatório de Gestão - Crédito Estruturado - Setembro 2026.html (1873 KB)
-14:56:29       HTML tivio-hgd30-saiba-mais.html (527 KB)
-14:56:29       HTML tivio-hyd60-saiba-mais.html (535 KB)
-14:56:29       HTML tivio-email-previdencia.html (2044 KB)
-14:56:29
-14:56:29       5/6 Materiais da Central
-14:56:29         tivio-construtor-one-pager.html copiado sem atualizar (desligado em configs/edicao.yml)
-14:56:29       HTML tivio-construtor-one-pager.html (86 KB)
-14:56:29 AVISO [alt180] o texto se refere a "julho" como o mês corrente — a data base é setembro
-14:56:31       HTML tivio-email-fundos-credito.html (173 KB)
-14:56:31         tivio-email-nordea-studio.html copiado sem atualizar (desligado em configs/edicao.yml)
-14:56:31       HTML tivio-email-nordea-studio.html (49 KB)
-14:56:31 AVISO [alt180] tipos sem nome amigável em fundos.yml (tipo_label): ['Fiagro Mz', 'Fiagro Sr']
-14:56:31 AVISO [alt90] tipos sem nome amigável em fundos.yml (tipo_label): ['Fiagro Sr']
-14:56:32       HTML tivio-post-credito-estruturado.html (115 KB)
-14:56:34       HTML tivio-post-credito-privado.html (129 KB)
-14:56:34 AVISO [topgestormacro] sem dados — rentabilidade e PL mantidos
-14:56:34 AVISO [topgestorlongonly] sem dados — rentabilidade e PL mantidos
-14:56:34       HTML tivio-post-investment-solutions.html (101 KB)
-14:56:34 AVISO [tivio-central.html] card "Gerador de Relatório de Gestão · Incentivado CDI 30" removido: aponta para "Tivio Incentivado CDI 30 - Relatório de Gestão Mensal.html", que não existe nesta edição
-14:56:34       HTML tivio-central.html (66 KB)
-14:56:34         1 bibliotecas copiadas para landing page/vendor/
-14:56:34         5 bibliotecas copiadas para central/vendor/
-14:56:56         PDF  pdf/Destaques - Crédito Privado - Setembro 2026.pdf
-14:56:56         JPG+PDF  destaques/credito-privado/ (9 páginas)
-14:57:09         PDF  pdf/Destaques - Crédito Estruturado - Setembro 2026.pdf
-14:57:09         JPG+PDF  destaques/credito-estruturado/ (6 páginas)
-14:57:31         PDF  pdf/Destaques - Investment Solutions - Setembro 2026.pdf
-14:57:31         JPG+PDF  destaques/investment-solutions/ (11 páginas)
-14:57:31       JPG  destaques (4 KB)
-14:57:40         PNG+HTML  emails/agora/ (7 imagens)
-14:57:52         PNG+HTML  emails/btg/ (7 imagens)
-14:58:06         PNG+HTML  emails/xp/ (8 imagens)
-14:58:07       PNG  emails (0 KB)
-14:58:10       PNG  hgd30 (4 KB)
-14:58:12       PNG  hyd60 (4 KB)
-14:58:14       PPTX Informativo - HGD30 - Setembro 2026.pptx (4716 KB)
-14:58:21       PDF  Informativo - HGD30 - Setembro 2026.pdf (413 KB)
-14:58:23       PPTX Informativo - HYD60 - Setembro 2026.pptx (5327 KB)
-14:58:27       PDF  Informativo - HYD60 - Setembro 2026.pdf (541 KB)
-14:58:27       HTML index.html (0 KB)
-14:58:27
-14:58:27       6/6 Conferência e log
-14:58:27       XLSX conferencia_2026-09.xlsx (32 KB)
-14:58:27
-14:58:27       === 48 arquivos · 165 alterações · 10 avisos · 0 erros · 180s ===
+15:18:19       === Central de Materiais · edição edicao · 06/10/2026 15:18:19 ===
+15:18:19
+15:18:19       1/6 Lendo entradas
+15:18:19         usando cache de dados_mensais.xlsx
+15:18:19         mercado de crédito CDI: 24 linhas, 7 colunas (aba "spread mensal CDI+")
+15:18:19         mercado de crédito IPCA: 12 linhas, 10 colunas (aba "spread mensal IPCA+")
+15:18:19       data base: 30/09/2026 (Setembro de 2026)
+15:18:19       cadastro: 24 fundos, 23 resolvidos na DePara
+15:18:19       comentários: 19 fundos em comentarios.md + comentarios.docx
+15:18:19 AVISO [atuarial] não encontrado na DePara (procurei por 'ATUARIAL'). Candidatos: nenhum
+15:18:19
+15:18:19       2/6 Calculando
+15:18:20       21 de 24 fundos com dados nesta edição
+15:18:20
+15:18:20       3/6 Validando
+15:18:20       2 divergências · 9 dados faltantes
+15:18:20
+15:18:20       4/6 Relatórios de Gestão
+15:18:20 AVISO [bvp] logo não encontrado em assets/logos (procurei "tivio_bvp")
+15:18:20 AVISO [atuarial] relatório não gerado: sem dados nesta edição
+15:18:21         1 bibliotecas copiadas para landing page/vendor/
+15:18:21         5 bibliotecas copiadas para central/vendor/
+15:18:21         1 bibliotecas copiadas para central/_fundos/vendor/
+15:18:21       Chromium: C:\Program Files\Google\Chrome\Application\chrome.exe
+15:18:24       PDF  Tivio Banks - Relatório de Gestão - Setembro 2026.pdf (790 KB)
+15:18:27       PPTX Tivio Banks - Relatório de Gestão - Setembro 2026.pptx (1918 KB)
+15:18:29       PDF  Tivio Institucional - Relatório de Gestão - Setembro 2026.pdf (796 KB)
+15:18:32       PPTX Tivio Institucional - Relatório de Gestão - Setembro 2026.pptx (1925 KB)
+15:18:34       PDF  Tivio Institucional 15 - Relatório de Gestão - Setembro 2026.pdf (800 KB)
+15:18:37       PPTX Tivio Institucional 15 - Relatório de Gestão - Setembro 2026.pptx (1944 KB)
+15:18:39       PDF  Tivio Institucional 30 - Relatório de Gestão - Setembro 2026.pdf (795 KB)
+15:18:42       PPTX Tivio Institucional 30 - Relatório de Gestão - Setembro 2026.pptx (1919 KB)
+15:18:44       PDF  Tivio Infra Plus - Relatório de Gestão - Setembro 2026.pdf (771 KB)
+15:18:46       PPTX Tivio Infra Plus - Relatório de Gestão - Setembro 2026.pptx (1905 KB)
+15:18:49       PDF  Tivio BVP - Relatório de Gestão - Setembro 2026.pdf (779 KB)
+15:18:51       PPTX Tivio BVP - Relatório de Gestão - Setembro 2026.pptx (1902 KB)
+15:18:53       PDF  Tivio RF CP - Relatório de Gestão - Setembro 2026.pdf (789 KB)
+15:18:56       PPTX Tivio RF CP - Relatório de Gestão - Setembro 2026.pptx (1916 KB)
+15:18:57       PDF  Tivio ALT 180 - Relatório de Gestão - Setembro 2026.pdf (585 KB)
+15:18:59       PPTX Tivio ALT 180 - Relatório de Gestão - Setembro 2026.pptx (293 KB)
+15:19:01       PDF  Tivio ALT 90 - Relatório de Gestão - Setembro 2026.pdf (583 KB)
+15:19:02       PPTX Tivio ALT 90 - Relatório de Gestão - Setembro 2026.pptx (289 KB)
+15:19:04       PDF  Tivio ALT Light - Relatório de Gestão - Setembro 2026.pdf (579 KB)
+15:19:06       PPTX Tivio ALT Light - Relatório de Gestão - Setembro 2026.pptx (283 KB)
+15:19:08       PDF  Tivio Infra Plus CDI - Relatório de Gestão - Setembro 2026.pdf (791 KB)
+15:19:11       PPTX Tivio Infra Plus CDI - Relatório de Gestão - Setembro 2026.pptx (1919 KB)
+15:19:13       PDF  Tivio Esplanada - Relatório de Gestão - Setembro 2026.pdf (793 KB)
+15:19:15       PPTX Tivio Esplanada - Relatório de Gestão - Setembro 2026.pptx (1927 KB)
+15:19:17       PDF  Tivio Legacy Prev - Relatório de Gestão - Setembro 2026.pdf (792 KB)
+15:19:20       PPTX Tivio Legacy Prev - Relatório de Gestão - Setembro 2026.pptx (1918 KB)
+15:19:20 AVISO [bvp] logo não encontrado em assets/logos (procurei "tivio_bvp")
+15:19:20       HTML Relatório de Gestão - Crédito Privado - Setembro 2026.html (4849 KB)
+15:19:20       HTML Relatório de Gestão - Crédito Estruturado - Setembro 2026.html (1873 KB)
+15:19:20       HTML tivio-hgd30-saiba-mais.html (527 KB)
+15:19:20       HTML tivio-hyd60-saiba-mais.html (535 KB)
+15:19:20       HTML tivio-email-previdencia.html (2044 KB)
+15:19:20
+15:19:20       5/6 Materiais da Central
+15:19:20         tivio-construtor-one-pager.html copiado sem atualizar (desligado em configs/edicao.yml)
+15:19:20       HTML tivio-construtor-one-pager.html (86 KB)
+15:19:20 AVISO [alt180] o texto se refere a "julho" como o mês corrente — a data base é setembro
+15:19:22       HTML tivio-email-fundos-credito.html (173 KB)
+15:19:22         tivio-email-nordea-studio.html copiado sem atualizar (desligado em configs/edicao.yml)
+15:19:22       HTML tivio-email-nordea-studio.html (49 KB)
+15:19:22 AVISO [alt180] tipos sem nome amigável em fundos.yml (tipo_label): ['Fiagro Mz', 'Fiagro Sr']
+15:19:22 AVISO [alt90] tipos sem nome amigável em fundos.yml (tipo_label): ['Fiagro Sr']
+15:19:23       HTML tivio-post-credito-estruturado.html (115 KB)
+15:19:24       HTML tivio-post-credito-privado.html (129 KB)
+15:19:24 AVISO [topgestormacro] sem dados — rentabilidade e PL mantidos
+15:19:24 AVISO [topgestorlongonly] sem dados — rentabilidade e PL mantidos
+15:19:24       HTML tivio-post-investment-solutions.html (101 KB)
+15:19:24 AVISO [tivio-central.html] card "Gerador de Relatório de Gestão · Incentivado CDI 30" removido: aponta para "Tivio Incentivado CDI 30 - Relatório de Gestão Mensal.html", que não existe nesta edição
+15:19:24       HTML tivio-central.html (66 KB)
+15:19:24         1 bibliotecas copiadas para landing page/vendor/
+15:19:24         5 bibliotecas copiadas para central/vendor/
+15:19:46         PDF  pdf/Destaques - Crédito Privado - Setembro 2026.pdf
+15:19:46         JPG+PDF  destaques/credito-privado/ (9 páginas)
+15:19:58         PDF  pdf/Destaques - Crédito Estruturado - Setembro 2026.pdf
+15:19:58         JPG+PDF  destaques/credito-estruturado/ (6 páginas)
+15:20:20         PDF  pdf/Destaques - Investment Solutions - Setembro 2026.pdf
+15:20:20         JPG+PDF  destaques/investment-solutions/ (11 páginas)
+15:20:20       JPG  destaques (4 KB)
+15:20:30         PNG+HTML  emails/agora/ (7 imagens)
+15:20:41         PNG+HTML  emails/btg/ (7 imagens)
+15:20:56         PNG+HTML  emails/xp/ (8 imagens)
+15:20:56       PNG  emails (0 KB)
+15:20:59       PNG  hgd30 (4 KB)
+15:21:01       PNG  hyd60 (4 KB)
+15:21:03       PPTX Informativo - HGD30 - Setembro 2026.pptx (4716 KB)
+15:21:10       PDF  Informativo - HGD30 - Setembro 2026.pdf (413 KB)
+15:21:12       PPTX Informativo - HYD60 - Setembro 2026.pptx (5327 KB)
+15:21:18       PDF  Informativo - HYD60 - Setembro 2026.pdf (541 KB)
+15:21:19       HTML index.html (0 KB)
+15:21:19
+15:21:19       6/6 Conferência e log
+15:21:19       XLSX conferencia_2026-09.xlsx (32 KB)
+15:21:19
+15:21:19       === 48 arquivos · 165 alterações · 10 avisos · 0 erros · 179s ===

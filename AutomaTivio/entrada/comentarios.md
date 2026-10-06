@@ -208,21 +208,34 @@ Por outro lado, a carteira de debêntures foi a principal detratora de performan
 
 ## Tivio HYD60
 
-<!-- Previdência: "Sobre o Fundo", o mercado (do Tivio Institucional) e a frase
-     de rentabilidade, carrego e duration são montados sozinhos. Aqui, só os
-     destaques da gestão, um tópico por parágrafo (linha em branco entre eles).
-     ATENÇÃO: ainda são os destaques de agosto. -->
+<!-- Previdência: "Sobre o Fundo" e a frase de rentabilidade, carrego e duration
+     são montados sozinhos. Aqui: "Visão de Mercado | <mês>" (se não houver, vale
+     o mercado do Tivio Institucional) e "Destaques da atuação da gestão em <mês>".
+     Um tópico por parágrafo (linha em branco entre eles). Texto colado de outro
+     editor, com HTML, também funciona: as tags são convertidas. -->
 
-- Na parcela de **crédito estruturado**, avanço na **diversificação da carteira**, com a inclusão de novas posições em **FIDCs**.
+**Visão de Mercado | Setembro**
 
-- Destaque para o investimento em um **FIDC de antecipação de recebíveis de cartões de crédito**, caracterizado por **prazo médio reduzido**, **elevada pulverização da carteira (mais de 125 mil contratos)** e **baixo valor médio por operação**.
+- Mercado de crédito marcado por **reabertura dos spreads** e **liquidez reduzida no secundário**, interrompendo parcialmente o movimento de compressão observado nos últimos meses.
 
-- Os investimentos contam com **elevados níveis de subordinação** e **ampla diversificação** em diferentes teses, setores e emissores, contribuindo para a **mitigação da concentração de risco** e reduzindo a dependência de nomes específicos.
+- Os spreads médios dos títulos corporativos indexados ao CDI avançaram cerca de **5 bps**, passando de **CDI + 1,23%** para **CDI + 1,28% ao ano**.
 
-- Gestão segue **acompanhando de perto a evolução dos fundamentos dos emissores**, com atenção especial aos indicadores operacionais, à geração de caixa e à preservação de estruturas de capital adequadas.
+- No secundário, a **liquidez permaneceu limitada**, especialmente em ativos corporativos, resultando em uma formação de preços mais seletiva.
 
-- Ambiente técnico para o crédito segue **favorável**, com forte demanda pela classe, mas os **spreads permanecem historicamente comprimidos**.
+- No primário, as **emissões bancárias seguiram registrando demanda consistente**, embora com menor intensidade em comparação aos meses anteriores. Já o **pipeline de emissões corporativas permaneceu restrito**, mantendo a oferta de ativos em níveis reduzidos.
 
-- **Disciplina na alocação** dos recursos, priorizando operações com adequada relação entre risco e retorno.
+- Fundos com alocação mínima de 15% em crédito e ao menos 1% em debêntures registraram **resgates líquidos próximos de R$ 10 bilhões** no período. Esse movimento contribuiu para a reabertura dos spreads e para uma **piora da dinâmica técnica da classe**.
 
-- **Preservação de flexibilidade** para capturar oportunidades em eventuais momentos de maior volatilidade do mercado.
+- Apesar desse cenário, os **fundamentos corporativos permanecem resilientes** e os níveis de inadimplência seguem controlados.
+
+**Destaques da atuação da gestão em setembro**
+
+- Na parcela de crédito estruturado, a gestão **iniciou posição em uma cota sênior de FIDC com exposição ao setor de telecomunicações**.
+
+- A tese de investimento está fundamentada na atuação consolidada do originador, com **mais de 23 anos de experiência no segmento**, e nas características do mercado em que atua: **elevada pulverização, baixa bancarização, receitas recorrentes e oferta restrita de crédito**.
+
+- A operação apresenta **carteira de recebíveis amplamente diversificada entre cedentes e sacados**, além de mecanismos de proteção que incluem **overcollateralization mínima de 25% sobre os ativos cedidos ao fundo**.
+
+- A gestão também **adicionou ao portfólio cotas de um FIDC** estruturado como uma **securitização revolvente lastreada em recebíveis de cartão de crédito** originados por uma adquirente. Os devedores desses recebíveis são os **bancos emissores dos cartões** referentes às transações na modalidade crédito, limitadas às bandeiras **Visa, Mastercard, American Express, Elo e Hipercard**.
+
+- A gestão manteve uma **postura disciplinada e seletiva na alocação dos recursos**, buscando capturar oportunidades geradas pela recente abertura dos spreads sem abrir mão da qualidade de crédito das carteiras.

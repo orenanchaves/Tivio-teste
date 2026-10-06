@@ -181,8 +181,11 @@ Os três materiais leem os mesmos números e o mesmo texto:
   meses"; no HYD60, desde o início, mais carrego e duration); o HYD60 tem ainda
   "Sobre o Fundo" fixo. **Tudo fica em `entrada/comentarios.md`**: nas seções
   `## Tivio HGD30` e `## Tivio HYD60` vai só o complemento do mês (atribuição de
-  performance; destaques da gestão, um tópico por parágrafo). Notas `<!-- -->`
-  no arquivo são ignoradas. No Informativo, a letra encolhe sozinha quando o
+  performance; destaques da gestão, um tópico por parágrafo). Se a seção trouxer
+  o próprio **"Visão de Mercado | <mês>"**, esse mercado vale no lugar do do
+  Institucional (é o caso do HYD60 em setembro). Texto colado de outro editor,
+  com HTML (`<strong>`, `<br>`), é convertido sozinho. Notas `<!-- -->` no
+  arquivo são ignoradas. No Informativo, a letra encolhe sozinha quando o
   texto do mês é mais longo que a caixa.
 - **Composição da carteira:** Bancário = emissor do setor Financeiro ou
   Financeiro Corp (inclui debênture de banco), Corporativo, FIDC e Caixa, sobre o
@@ -311,8 +314,7 @@ python -m playwright install chromium
 - **BVP:** sem logo em `assets/logos/`.
 - **Tivio Atuarial:** fora da DePara da planilha, então não gera relatório.
 - **Complemento de previdência** (`## Tivio HGD30` / `## Tivio HYD60` em
-  `entrada/comentarios.md`): o do HGD30 é de setembro; o do HYD60 (destaques da
-  gestão) ainda é o de agosto.
+  `entrada/comentarios.md`): os dois já são de setembro.
 - **Botão "Voltar ao C&M Hub"** da Central: aponta para uma página que não existe
   no projeto.
 
