@@ -55,6 +55,8 @@ AutomaTivio/saida/AAAA-MM/
 │   ├── tivio-central.html        índice com todos os cards
 │   ├── Relatório de Gestão - <vertical> - <mês>.html   relatórios, fundos em abas
 │   ├── tivio-post-*.html         carrosséis de Destaques (editáveis na tela)
+│   ├── tivio-hgd30-saiba-mais.html   página "Saiba mais" do HGD30 (previdência)
+│   ├── tivio-hyd60-saiba-mais.html   página "Saiba mais" do HYD60 (previdência)
 │   └── tivio-email-*.html        construtores de e-mail
 ├── pdf/                          13 relatórios em PDF A4, texto selecionável
 ├── pptx/                         13 relatórios em PPTX, texto editável
@@ -159,6 +161,25 @@ para e não publica.
   que existe, e tira o card que apontaria para link quebrado.
 - Todas as páginas têm o botão **Central de Materiais** para voltar.
 
+### 4.5b Páginas "Saiba mais" (HGD30 e HYD60)
+
+- Uma página por fundo de previdência, no design system do site interno
+  (interno-bradesco.tivio.com): casca escura com modo claro, Versos, cartões de
+  vidro, números em destaque com a borda verde.
+- **Números da planilha**, da carteira FIFE de cada fundo: rentabilidade (Mês e
+  Desde o início, com CDI, Alfa, % e CDI+), alocação High Grade / High Yield /
+  Caixa, exposição setorial, rating (no HYD60 também Título Público e
+  S/rating), composição (Bancário, Corporativo, FIDC, Caixa), histórico em
+  ECharts, PL, PL médio, duration e carrego.
+- **Texto do gestor** em `entrada/landings.md` (um `## hgd30` / `## hyd60`).
+  A frase "apresentou rentabilidade de X% no mês (Y% do CDI), acumulando Z%
+  (W% do CDI) desde o início" é ajustada à tabela, como no relatório.
+- **O resto** (nome, CNPJ, meta, público, taxas, cards, previsão de alocação,
+  benefícios, quais seções entram e em que ordem) em `configs/landings.yml`.
+- **Logos** oficiais em `assets/landings/` (empilhado no topo, horizontal no
+  cabeçalho), com o texto em curvas. O preto do desenho vira branco no modo
+  escuro; a cor do HG e do HY fica a do arquivo.
+
 ### 4.6 Exportação dos carrosséis e dos e-mails
 
 O Python abre cada material no navegador e usa **a mesma função do botão** da
@@ -187,6 +208,8 @@ Para desligar algum formato: `AutomaTivio/configs/edicao.yml` → `saidas:`.
 | Visual da folha (cores, tamanhos) | `templates/estilos/relatorio.css` |
 | Logo de um fundo | o SVG em `assets/logos/`, sempre **horizontal** e com o texto em curvas |
 | Texto jurídico do rodapé | `configs/disclaimer.md` |
+| Texto das páginas Saiba mais (HGD30, HYD60) | `entrada/landings.md` |
+| Cards, seções, taxas e público das páginas Saiba mais | `configs/landings.yml` |
 
 ---
 
@@ -230,6 +253,8 @@ python -m playwright install chromium
   ficaram guardados em `entrada/comentarios_2026-08.md`.
 - **BVP:** sem logo em `assets/logos/`.
 - **Tivio Atuarial:** fora da DePara da planilha, então não gera relatório.
+- **Texto das páginas Saiba mais:** `entrada/landings.md` ainda traz o texto
+  que estava no site (HGD30 de agosto, HYD60 de junho). Trocar pelo do mês.
 - **Botão "Voltar ao C&M Hub"** da Central: aponta para uma página que não existe
   no projeto.
 

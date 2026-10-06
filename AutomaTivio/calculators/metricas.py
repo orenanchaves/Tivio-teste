@@ -169,9 +169,22 @@ class Calc:
         if 'Book' in c.columns and 'Tipo aj.' in c.columns:
             book_tipo = c.groupby(['Book', 'Tipo aj.'])['Exposição'].sum() / pl
         credito = c[~c['Setor'].isin(['Caixa', 'DAP'])]['Exposição'].sum() / pl
+        # (HGHY, Tipo aj.): a "Alocação da carteira" das páginas Saiba mais
+        # (HGD30/HYD60) separa High Grade, High Yield e Caixa
+        hghy_tipo = None
+        if 'HGHY' in c.columns and 'Tipo aj.' in c.columns:
+            hghy_tipo = c.groupby(['HGHY', 'Tipo aj.'], dropna=False)['Exposição'].sum() / pl
+        tipo_aj = grupo('Tipo aj.', c) if 'Tipo aj.' in c.columns else None
+        # rating com tudo o que não é nota (Caixa, NA) e o Book ao lado: as
+        # páginas Saiba mais do HYD60 mostram "Título Público" e "S/rating"
+        rating_book = None
+        if 'Book' in c.columns:
+            rating_book = c.groupby(['Rating Externo', 'Book', 'Tipo aj.'],
+                                    dropna=False)['Exposição'].sum() / pl
         return {
             'emissores': emissores, 'setores': setores, 'tipos': tipos, 'rating': rating,
             'estrategia': estrategia, 'book_tipo': book_tipo,
+            'hghy_tipo': hghy_tipo, 'tipo_aj': tipo_aj, 'rating_book': rating_book,
             'carrego': float((c['Taxa'] * exp).sum() / pl),
             'duration': float((c['duration'] * exp).sum() / pl / 252),
             'credito': float(credito),

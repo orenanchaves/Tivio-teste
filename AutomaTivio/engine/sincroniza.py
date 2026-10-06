@@ -52,6 +52,10 @@ def _regras(ctx):
         # "acumulando X% (Y% do CDI) no ano" / "acumula X% (Y% do CDI) em 2026"
         (rf'(acumul(?:ando|a)\s)({P})(?:(\s*\()({P})(\s+do\s+{B}\)))?(\s+(?:no\s+ano|em\s+\d{{4}}))',
          [(2, t('ano', 'fundo')), (4, t('ano', 'pct'))]),
+        # "acumulando **X% (Y% do CDI)** desde o início" (texto das landings,
+        # com o negrito do Markdown em volta dos números)
+        (rf'(acumul(?:ando|a)\s(?:\*\*)?)({P})(\s*\()({P})(\s+do\s+{B}\)(?:\*\*)?\s+desde\s+o\s+in[íi]cio)',
+         [(2, t('inicio', 'fundo')), (4, t('inicio', 'pct'))]),
         # "acumula retorno de X%, frente a B% do CDI"
         (rf'(acumula\s+retorno\s+de\s)({P})(,\s+frente\s+a\s)({P})(\s+do\s+{B})',
          [(2, t('inicio', 'fundo')), (4, t('inicio', 'bench'))]),

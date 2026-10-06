@@ -283,6 +283,46 @@ class ContextoFundo:
         return [(n, fmt.pct(v, 1), round(v * 100, 2)) for n, v in e.head(8).items()]
 
     @property
+    def alocacao_hghy(self):
+        """High Grade / High Yield / Caixa sobre o PL (páginas Saiba mais).
+
+        O caixa vem marcado como HG na coluna HGHY; aqui ele sai do HG e vira
+        linha própria, como na página publicada do HGD30.
+        """
+        bt = self.cart.get('hghy_tipo') if self.cart else None
+        if bt is None:
+            return []
+        junto = {'Crédito High Grade': 0.0, 'Crédito High Yield': 0.0, 'Caixa': 0.0}
+        for (hghy, tipo), v in bt.items():
+            if str(tipo).strip().lower() == 'caixa':
+                junto['Caixa'] += v
+            elif str(hghy).strip().upper() == 'HY':
+                junto['Crédito High Yield'] += v
+            else:
+                junto['Crédito High Grade'] += v
+        return [(n, fmt.pct(v, 1), round(v * 100, 2)) for n, v in junto.items() if v > 0.0005]
+
+    def rating_extras(self):
+        """Fora das notas: Título Público (Book TPF) e S/rating (sem nota,
+        fora o caixa). [(rótulo, '1,23%', 1.23)], só os que existem."""
+        rb = self.cart.get('rating_book') if self.cart else None
+        if rb is None:
+            return []
+        tp = sr = 0.0
+        for (nota, book, tipo), v in rb.items():
+            nota, book = str(nota).strip(), str(book).strip().upper()
+            if book == 'TPF':
+                tp += v
+            elif nota.upper() in ('NA', 'NAN', 'N/A', '', 'S/RATING') and                     str(tipo).strip().lower() != 'caixa':
+                sr += v
+        return [(n, fmt.pct(v, 2), round(v * 100, 4))
+                for n, v in (('Título Público', tp), ('S/rating', sr)) if v > 0.00005]
+
+    def composicao(self, grupos):
+        """'Tipo aj.' agrupado por `grupos` (Bancário, Corporativo, FIDC, Caixa)."""
+        return agrupar_tipos(self.cart.get('tipo_aj') if self.cart else None, grupos)
+
+    @property
     def carrego(self):
         return self.cart['carrego'] if self.cart else None
 

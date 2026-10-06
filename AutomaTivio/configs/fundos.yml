@@ -347,6 +347,21 @@ fundos:
       aplicacao_minima: R$ 1.000,00
       movimentacao_minima: R$ 1.000,00
 
+  # ---------------------------------------------- Previdência (landing pages)
+  # Sem relatório de gestão: alimentam as páginas "Saiba mais sobre o fundo"
+  # (configs/landings.yml). A rentabilidade é a da carteira FIFE.
+  hgd30:
+    nome: Tivio HGD30
+    vertical: credito_privado
+    carteira: TIVIO HGD30 RF CP FIFE RL
+    busca: [HGD30]
+
+  hyd60:
+    nome: Tivio HYD60
+    vertical: credito_privado
+    carteira: TIVIO HYD60 FIFE CI MULT CP RL - Expandida
+    busca: [HYD60 FIFE]
+
   # ------------------------------------------------- Investment Solutions
   topgestor:         {nome: BV Top Gestor Crédito Privado,  vertical: investment_solutions, carteira: BV TOP GESTOR CRED PRIV FC FIM}
   topgestorhy:       {nome: Tivio Top Gestor HY,            vertical: investment_solutions, carteira: TIVIO TOP GESTOR HY FIF RL}

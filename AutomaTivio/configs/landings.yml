@@ -1,0 +1,118 @@
+# ============================================================================
+# Páginas "Saiba mais sobre o fundo" (previdência) — HGD30 e HYD60
+# ----------------------------------------------------------------------------
+# Os NÚMEROS saem da planilha do mês (carteira FIFE de cada fundo em
+# configs/fundos.yml): rentabilidade, alocação HG/HY/Caixa, exposição setorial,
+# rating, composição, histórico, PL, duration e carrego.
+#
+# Aqui fica só o que a planilha não tem: nome e CNPJ exibidos, meta, público,
+# taxas, textos fixos. O texto do gestor ("Visão de Mercado", "Destaques") fica
+# em entrada/landings.md.
+#
+# Saída: saida/AAAA-MM/central/tivio-<chave>-saiba-mais.html
+# ============================================================================
+
+# Tipo do ativo (coluna Tipo aj.) -> grupo da "Composição da carteira"
+composicao:
+  LF: Bancário
+  LFSC: Bancário
+  LFSN: Bancário
+  CDB: Bancário
+  DPGE: Bancário
+  Debênture: Corporativo
+  NC: Corporativo
+  CRA: Corporativo
+  CRI: Corporativo
+  FIDC Sr: FIDC
+  FIDC Mez/Sub: FIDC
+  Caixa: Caixa
+  ordinária: Corporativo
+
+paginas:
+  hgd30:
+    fundo: hgd30
+    logo:                            # arquivos oficiais, texto em curvas
+      empilhado: assets/landings/hgd30_empilhado.svg
+      horizontal: assets/landings/hgd30_horizontal.svg
+    marca: [TIVIO, HG, D30]          # wordmark do hero: parte destacada no meio
+    acento: azul
+    nome: BRADESCO TIVIO HGD30 FIF CLASSE INVESTIMENTO RF CP FIFE RL
+    cnpj: 59.889.169/0001-97
+    nome_caracteristicas: TIVIO HGD30 FIF CLASSE INVESTIMENTO RF CP FIFE RL
+    data_inicio: 09/05/2025
+    publico: >-
+      Investidores Profissionais: Plano Gerador de Benefício Livre (PGBL) e de
+      Vida Gerador de Benefício Livre (VGBL), instituídos e sob responsabilidade
+      do Bradesco Vida e Previdência S.A.
+    taxas: >-
+      Administração: 0,016% | Gestão: 0,184% | Estruturação: 0,20% | Máxima de
+      Administração: 0,05% | Máxima de Gestão: 0,50% | Custódia: 0,03%
+    kpis:
+      - {rotulo: Meta de retorno, valor: "CDI + 1,0%"}
+      - {rotulo: Duration, dado: duration}
+      - {rotulo: Patrimônio Líquido, dado: pl_curto}
+    caracteristicas: [nome, cnpj, inicio, pl_medio, publico, taxas]
+    secoes: [texto, kpis, rentabilidade, alocacao_real, setorial, rating, composicao, historico, caracteristicas]
+
+  hyd60:
+    fundo: hyd60
+    logo:                            # arquivos oficiais, texto em curvas
+      empilhado: assets/landings/hyd60_empilhado.svg
+      horizontal: assets/landings/hyd60_horizontal.svg
+    marca: [BRADESCO TIVIO, HY, D60]
+    acento: verde
+    nome: BRADESCO TIVIO HYD60 PGBL VGBL FIF CIC MULTIMERCADO CP RL
+    cnpj: 63.949.230/0001-11
+    nome_caracteristicas: BRADESCO TIVIO HYD60 PGBL VGBL FIF CIC MULTIMERCADO CP RL
+    kpis:
+      - {rotulo: Fundo de Previdência, valor: ""}
+      - {rotulo: "Resgate", valor: "D+60"}
+      - {rotulo: Carrego, dado: carrego}
+      - {rotulo: Capacity limitada, valor: "R$ 500 milhões"}
+      - {rotulo: Duration, dado: duration}
+      - {rotulo: "Taxas de Adm & Gestão", valor: "1% a.a."}
+      - {rotulo: Taxa de Performance, valor: "20% do que exceder 100% do CDI"}
+    previsao_alocacao:
+      - {nome: Crédito High Grade, alocacao: "70%", retorno: "CDI + 1,20%"}
+      - {nome: Crédito High Yield, alocacao: "25%", retorno: "CDI + 3,00%"}
+      - {nome: Caixa, alocacao: "5%", retorno: "100% do CDI"}
+    beneficios:
+      - titulo: Gestão de riscos
+        texto: >-
+          Os ativos de crédito estruturado são lastreados por garantias reais e
+          pessoais, como imóveis, recebíveis de contratos de longo prazo, bens
+          móveis, depósitos em contas vinculadas e fianças, entre outros.
+        destaque: >-
+          A presença dessas garantias e colaterais robustos diminui a exposição
+          ao risco de crédito, proporcionando segurança ao investidor.
+      - titulo: Estruturação de riscos
+        texto: >-
+          O risco pode ser dividido em diferentes tranches (camadas). As tranches
+          seniores possuem prioridade no recebimento dos fluxos de pagamento, com
+          menor risco e menor volatilidade. Já as tranches subordinadas ficam em
+          posição inferior na ordem de pagamento e assumem maior risco e,
+          consequentemente, podem oferecer retornos mais elevados.
+        destaque: >-
+          Técnicas de aprimoramento de crédito, como subordinação, reservas de
+          liquidez e seguros de crédito, são usadas para proteger os investidores.
+      - titulo: Retornos atrativos
+        texto: >-
+          Em razão de sua maior complexidade e da utilização de mecanismos
+          sofisticados de estruturação, o crédito estruturado tende a oferecer
+          rendimentos superiores em comparação ao crédito privado tradicional, ao
+          mesmo tempo em que distribui riscos de forma mais eficiente entre os
+          investidores.
+        destaque: >-
+          A presença dessas garantias e colaterais robustos diminui a exposição
+          ao risco de crédito, proporcionando mais segurança ao investidor.
+      - titulo: Menor volatilidade de mercado
+        texto: >-
+          Os ativos de crédito estruturado apresentam menor volatilidade no
+          mercado secundário, mesmo em períodos de crise de crédito, graças à sua
+          natureza, às garantias envolvidas e à forma como o risco é estruturado.
+        destaque: >-
+          A menor volatilidade dos fundos de crédito estruturado é resultado de
+          uma combinação de fatores resultantes da gestão ativa do fundo.
+    caracteristicas: [nome, cnpj]
+    rating_extras: true               # colunas Título Público e S/rating, como no publicado
+    secoes: [texto, kpis, previsao_alocacao, setorial, rating, beneficios, caracteristicas]

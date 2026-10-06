@@ -307,6 +307,19 @@ Reescrevê-los como template Jinja trocaria material desenhado por uniformidade
 de código, o que é troca ruim. Eles seguem sendo a fonte do layout; o que mudou
 é **de onde vem o número** — agora do mesmo Contexto que alimenta o relatório.
 
+### As páginas "Saiba mais" (HGD30, HYD60)
+
+`renderers/landing.py` + `templates/landing.html`, chamados por
+`Pipeline._landings` depois dos relatórios. Uma página por entrada de
+`configs/landings.yml`, gravada em `central/tivio-<chave>-saiba-mais.html`.
+Os fundos `hgd30` e `hyd60` de `configs/fundos.yml` apontam para as carteiras
+**FIFE**; os cortes novos nasceram no Contexto (`alocacao_hghy`,
+`composicao(grupos)`, `rating_extras()`) a partir de `hghy_tipo`, `tipo_aj` e
+`rating_book` de `Calc.carteira`. Texto do gestor em `entrada/landings.md`
+(Markdown simples, passa por `ctx.preencher`). Logos em `assets/landings/`:
+`logo_svg()` troca as classes do Illustrator por atributos e o preto por
+`currentColor`. Design de referência: interno-bradesco.tivio.com.
+
 ---
 
 ## 6. O relatório de gestão

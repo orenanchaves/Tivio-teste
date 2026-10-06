@@ -1,0 +1,417 @@
+<!doctype html>
+<html lang="pt-BR" data-theme="dark">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>{{ pg.marca|join(' ') }} · Saiba mais</title>
+<meta name="description" content="Saiba mais sobre o fundo de previdência {{ pg.nome }}. Referente a {{ mes_ref }}.">
+<style>
+{{ css_marca|safe }}
+{{ css_pagina|safe }}
+
+/* ---- página Saiba mais -----------------------------------------------------
+   Design system de referência: interno-bradesco.tivio.com (mesmos tokens de
+   _marca.css, com o verde como acento da casa). Os componentes repetem os de
+   lá: big numbers com borda verde à esquerda, cartões de vidro com brilho no
+   canto, abas em pílula, título de seção leve com a palavra-chave em negrito,
+   meta-k / meta-v nas características. A cor dos DADOS (barras, linha do
+   fundo) é a do fundo: azul no HG, verde no HY, como no logo. */
+:root{
+  --tv-verde-ink:#0A2415;
+  --accent-strong:var(--tv-verde);--pill-bg:rgba(193,244,212,.10);--pill-border:rgba(193,244,212,.35);
+  --glow:0 0 60px rgba(193,244,212,.15);--container:1240px;
+  --bg-radial:radial-gradient(1200px 800px at 15% -10%,rgba(193,244,212,.10),transparent 60%),radial-gradient(900px 700px at 110% 10%,rgba(117,157,180,.08),transparent 60%),radial-gradient(700px 500px at 50% 100%,rgba(193,244,212,.06),transparent 70%);
+  --lp-acc:var(--tv-azul);--lp-acc-2:var(--tv-cinza-claro);--lp-cx:#637881}
+:root[data-acento="verde"]{--lp-acc:var(--tv-verde-escuro);--lp-acc-2:var(--tv-verde)}
+:root[data-theme="light"]{
+  --accent-strong:var(--tv-verde-light-accent);--pill-bg:rgba(51,127,81,.08);--pill-border:rgba(51,127,81,.32);
+  --glow:0 0 60px rgba(51,127,81,.12);
+  --bg-radial:radial-gradient(1200px 800px at 15% -10%,rgba(51,127,81,.12),transparent 60%),radial-gradient(900px 700px at 110% 10%,rgba(117,157,180,.10),transparent 60%),radial-gradient(700px 500px at 50% 100%,rgba(146,211,171,.15),transparent 70%);
+  --lp-acc:var(--tv-azul-escuro);--lp-acc-2:var(--tv-azul);--lp-cx:#8A99A3}
+:root[data-theme="light"][data-acento="verde"]{--lp-acc:var(--tv-verde-light-accent);--lp-acc-2:var(--tv-agro)}
+.btn-group .btn[aria-pressed="true"]{color:var(--tv-verde-ink)}
+
+.lp{max-width:980px;margin:0 auto}
+
+/* cabeçalho: marca Tivio | logo horizontal do fundo */
+.header .brand .brand-tag{height:30px}
+.lp-logo-h{height:26px;width:auto;display:block;color:var(--text-primary)}
+
+/* abas de seção, em pílula como .tabs da referência */
+.lp-nav{position:sticky;top:72px;z-index:50;padding:12px 0;background:linear-gradient(var(--bg-base),color-mix(in srgb,var(--bg-base) 0%,transparent))}
+.lp-nav .inner{max-width:var(--container);margin:0 auto;padding:0 28px}
+.lp-nav .tabs{display:flex;gap:2px;padding:4px;border-radius:var(--r-full);background:var(--input-bg);border:1px solid var(--line-strong);backdrop-filter:blur(12px);overflow-x:auto;scrollbar-width:none;width:max-content;max-width:100%;margin:0 auto}
+.lp-nav .tabs::-webkit-scrollbar{display:none}
+.lp-nav a{padding:9px 14px;border-radius:var(--r-full);font-size:12.5px;font-weight:600;color:var(--text-muted);white-space:nowrap;transition:background-color .2s var(--ease),color .2s var(--ease)}
+.lp-nav a:hover{color:var(--text-primary)}
+.lp-nav a.on{background:var(--tv-verde-escuro);color:var(--tv-verde-ink)}
+:root[data-theme="light"] .lp-nav a.on{background:var(--tv-verde-light-accent);color:#fff}
+
+/* hero: o logo empilhado do fundo é a peça principal */
+.lp-hero{padding:48px 0 36px;text-align:center}
+.lp-hero .num{display:inline-flex;align-items:center;gap:9px;font-size:11px;font-weight:700;letter-spacing:.28em;text-transform:uppercase;color:var(--accent-strong)}
+.lp-hero .num .dot{width:7px;height:7px;border-radius:50%;background:currentColor}
+.lp-hero .sub{font-size:clamp(20px,2.4vw,27px);color:var(--text-primary);margin:22px 0 30px;font-weight:300;letter-spacing:-.01em}
+.lp-hero .sub em{font-style:normal;font-weight:700}
+.lp-logo{display:block;margin:0 auto;width:min(560px,86vw);height:auto;color:var(--text-primary)}
+.lp-hero .nome{margin:30px auto 0;max-width:760px;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--text-muted);font-weight:600;line-height:1.7}
+
+/* seções: cartão de vidro com brilho no canto (.hero-about / .vertical) */
+.lp-sec{scroll-margin-top:150px;margin:0 0 22px}
+.lp-card{position:relative;overflow:hidden;background:var(--bg-glass);border:1px solid var(--line);border-radius:var(--r-lg);padding:32px 30px;backdrop-filter:blur(16px) saturate(1.4)}
+.lp-card::before{content:"";position:absolute;inset:0;pointer-events:none;border-radius:inherit;background:linear-gradient(135deg,rgba(255,255,255,.06),transparent 55%)}
+:root[data-theme="light"] .lp-card::before{background:linear-gradient(135deg,rgba(255,255,255,.45),transparent 55%)}
+.lp-card>*{position:relative}
+.lp-h{font-size:clamp(24px,2.6vw,32px);font-weight:300;letter-spacing:-.01em;color:var(--text-primary);margin:0 0 6px;line-height:1.15}
+.lp-h em{font-style:normal;font-weight:700}
+.lp-desc{font-size:14px;color:var(--text-muted);margin:0 0 24px}
+.lp-h+:not(.lp-desc){margin-top:24px}
+.lp-nota{font-size:10px;color:var(--text-muted);margin:14px 0 0;text-align:right;font-family:ui-monospace,SFMono-Regular,Menlo,monospace}
+
+.lp-texto{font-size:15px;line-height:1.7;color:var(--text-secondary)}
+.lp-texto h3{font-size:11px;letter-spacing:.24em;text-transform:uppercase;font-weight:700;color:var(--accent-strong);margin:30px 0 14px}
+.lp-texto h3:first-of-type{margin-top:18px}
+.lp-texto p{margin:0 0 14px}
+.lp-texto ul{margin:0 0 8px;padding-left:20px}
+.lp-texto li{margin:0 0 9px}
+.lp-texto li::marker{color:var(--accent-strong)}
+.lp-texto strong{color:var(--text-primary);font-weight:600}
+
+/* big numbers (.bn da referência) */
+.lp-kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:14px}
+.bn{position:relative;background:var(--bg-glass);border:1px solid var(--line);border-left:3px solid var(--accent-strong);border-radius:0 var(--r-md) var(--r-md) 0;padding:24px 20px 22px 22px;backdrop-filter:blur(16px) saturate(1.4);display:flex;flex-direction:column;justify-content:flex-end;min-height:132px}
+.bn .n{font-size:40px;line-height:1.05;font-weight:700;letter-spacing:-.03em;color:var(--accent-strong)}
+.bn .n small{font-size:.5em;margin-left:6px;letter-spacing:-.01em}
+.bn .k{font-size:13px;font-weight:500;letter-spacing:.02em;color:var(--text-muted);margin-top:12px}
+.bn.so-texto .n{font-size:26px;line-height:1.15;letter-spacing:-.01em;color:var(--text-primary)}
+.bn.longo .n{font-size:30px}
+
+.lp-tab{width:100%;border-collapse:collapse;font-size:16px}
+.lp-tab th{font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:var(--text-muted);font-weight:700;text-align:right;padding:0 0 12px}
+.lp-tab th:first-child{text-align:left}
+.lp-tab td{padding:13px 0;border-top:1px dashed var(--line-strong);text-align:right;color:var(--text-secondary);font-variant-numeric:tabular-nums}
+.lp-tab td:first-child{text-align:left;font-weight:600;color:var(--text-primary)}
+.lp-tab tr.fundo td{font-weight:700;color:var(--text-primary);border-top:0}
+.lp-tab tr.fundo td:not(:first-child){color:var(--accent-strong);font-size:20px}
+
+.bars{display:flex;flex-direction:column;gap:9px}
+.bar{display:grid;grid-template-columns:minmax(120px,240px) 1fr;align-items:center;gap:14px;font-size:13px}
+.bar .n{color:var(--text-secondary);text-align:right;line-height:1.25}
+.bar .t{display:flex;align-items:center;gap:10px;min-width:0}
+.bar .f{height:14px;border-radius:3px;background:var(--lp-acc);flex:0 0 auto}
+.bar.cx .f{background:var(--lp-cx)}
+.bar .v{font-weight:700;color:var(--text-primary);white-space:nowrap;font-variant-numeric:tabular-nums}
+.bars.grossa{gap:12px}
+.bars.grossa .bar{font-size:15px}.bars.grossa .f{height:34px;border-radius:6px}
+.bars.grossa .n{font-weight:600;color:var(--text-primary)}
+
+/* previsão de alocação (HYD60): três faixas na cor do fundo */
+.aloc{display:flex;flex-direction:column;gap:10px}
+.aloc .cab,.aloc .lin{display:grid;grid-template-columns:1.4fr 1fr 1fr;align-items:center}
+.aloc .cab span{font-size:9px;color:var(--text-muted);font-weight:700;letter-spacing:.18em;text-transform:uppercase;padding:0 18px;line-height:1.5}
+.aloc .cab small{letter-spacing:.04em;text-transform:none;font-weight:500;font-size:11px}
+.aloc .lin{border-radius:var(--r-md);min-height:56px;font-weight:700;color:var(--tv-verde-ink);font-size:16px}
+.aloc .lin span{padding:0 18px}
+.aloc .lin:nth-child(2){background:var(--lp-acc)}
+.aloc .lin:nth-child(3){background:var(--lp-acc-2)}
+.aloc .lin:nth-child(4){background:var(--lp-cx);color:#fff}
+:root[data-theme="light"] .aloc .lin:nth-child(2){color:#fff}
+.aloc .lin span+span{font-variant-numeric:tabular-nums}
+
+.rcols{display:grid;grid-auto-flow:column;grid-auto-columns:1fr;gap:10px;align-items:end;height:250px;border-bottom:1px solid var(--line-strong)}
+.rcol{display:flex;flex-direction:column;align-items:center;justify-content:flex-end;height:100%}
+.rcol .v{font-size:12px;font-weight:700;color:var(--text-primary);margin-bottom:6px;white-space:nowrap}
+.rcol .f{width:min(56px,80%);background:var(--lp-acc);border-radius:4px 4px 0 0}
+.rcol.extra .f{background:var(--lp-cx)}
+.rlabels{display:grid;grid-auto-flow:column;grid-auto-columns:1fr;gap:10px;margin-top:10px}
+.rlabels span{text-align:center;font-size:12px;color:var(--text-muted);font-weight:600}
+
+.lp-hist{height:360px}
+.lp-hist-leg{display:flex;gap:18px;justify-content:center;font-size:12px;color:var(--text-muted);margin-top:6px}
+.lp-hist-leg i{display:inline-block;width:14px;height:3px;border-radius:2px;vertical-align:middle;margin-right:6px}
+
+.benef{display:grid;grid-template-columns:repeat(2,1fr);gap:14px}
+.ben{border:1px solid var(--line);border-radius:var(--r-md);overflow:hidden;display:flex;flex-direction:column;background:var(--bg-glass)}
+.ben .top{padding:24px 22px 20px;flex:1}
+.ben h3{margin:0 0 12px;font-size:19px;line-height:1.2;font-weight:600;letter-spacing:-.01em;color:var(--accent-strong)}
+.ben h3 em{font-style:normal;font-weight:700;color:var(--accent-strong)}
+.ben p{margin:0;font-size:14px;line-height:1.6;color:var(--text-secondary)}
+.ben .dst{padding:18px 22px;background:var(--pill-bg);border-top:1px solid var(--pill-border);font-size:14px;line-height:1.55;color:var(--text-primary)}
+
+/* características: meta-k / meta-v (.fund-meta da referência) */
+.carac{display:grid;grid-template-columns:200px 1fr;margin:0}
+.carac dt,.carac dd{padding:14px 0;border-top:1px dashed var(--line-strong);margin:0}
+.carac dt{font-size:9px;letter-spacing:.18em;text-transform:uppercase;color:var(--text-muted);font-weight:700;padding-right:18px;padding-top:17px}
+.carac dd{font-size:14px;font-weight:600;color:var(--text-primary);line-height:1.55}
+.carac dt:first-of-type,.carac dd:first-of-type{border-top:0}
+
+.lp-fim{font-size:15px;color:var(--text-secondary);margin:34px 0 26px;line-height:1.7}
+.lp-fim strong{color:var(--text-primary)}
+.lp-disc{font-size:11px;line-height:1.6;color:var(--text-muted);border-top:1px solid var(--line);padding:24px 0 10px}
+.lp-disc h4{font-size:9px;letter-spacing:.22em;text-transform:uppercase;margin:0 0 12px;color:var(--text-muted)}
+.lp-disc p{margin:0 0 10px}
+.lp-disc .sac{display:flex;gap:28px;flex-wrap:wrap;margin-top:14px;color:var(--text-secondary);font-size:11px}
+.footer{padding:28px 0 40px;border-top:1px solid var(--line);margin-top:40px}
+.footer .container{display:flex;align-items:center;gap:20px;font-size:12px;color:var(--text-muted)}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
+.footer .logo-mark{height:22px;width:63px;color:var(--text-primary);flex:0 0 auto}
+
+@media(max-width:1060px){.lp-nav{top:0;position:relative}}
+@media(max-width:640px){
+  .lp-nav .inner{padding:0 16px}
+  .lp-nav .tabs{margin:0}
+  .lp-hero{padding:32px 0 24px}
+  .lp-card{padding:24px 18px;border-radius:var(--r-md)}
+  .lp-kpis{grid-template-columns:1fr 1fr;gap:10px}
+  .bn{min-height:108px;padding:18px 14px 16px 16px}
+  .bn .n{font-size:26px}.bn.longo .n{font-size:21px}.bn.so-texto .n{font-size:19px}
+  .bn .k{font-size:12px}
+  .lp-kpis .bn:last-child:nth-child(odd){grid-column:1/-1}
+  .bar{grid-template-columns:104px 1fr;gap:10px;font-size:12px}
+  .bars.grossa .bar{font-size:13px}.bars.grossa .f{height:28px}
+  .aloc .cab span,.aloc .lin span{padding:0 10px}
+  .aloc .lin{font-size:13px;min-height:50px}
+  .rcols{height:210px;gap:4px}.rlabels{gap:4px}
+  .rcol .v{font-size:9px}.rlabels span{font-size:9px}
+  .benef{grid-template-columns:1fr}
+  .carac{grid-template-columns:1fr}.carac dd{border-top:0;padding-top:0}
+  .carac dd:first-of-type{padding-top:0}
+  .lp-tab{font-size:14px}.lp-tab tr.fundo td:not(:first-child){font-size:17px}
+  .lp-hist{height:300px}
+  .footer .container{flex-direction:column;align-items:flex-start}
+}
+</style>
+</head>
+<body>
+<script>document.documentElement.setAttribute('data-acento','{{ pg.acento or "azul" }}')</script>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs>
+<symbol id="tv-logo" viewBox="118 104 844 294">{{ marca_path|safe }}</symbol>
+</defs></svg>
+
+<header class="header">
+  <div class="inner">
+    <a href="#top" class="brand">
+      <svg class="logo-mark anim-brand" viewBox="0 0 844 294"><use href="#tv-logo"/></svg>
+      <span class="brand-tag">{% if logo_horizontal %}{{ logo_horizontal|safe }}{% else %}{{ pg.marca|join('') }}{% endif %}</span>
+    </a>
+    <div class="head-actions">
+      <a class="btn btn-glass btn-sm" href="tivio-central.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M11 18l-6-6 6-6"/></svg>Central de Materiais</a>
+      <div class="btn-group" role="group" aria-label="Alternar tema da interface">
+        <button type="button" class="btn btn-ghost btn-xs" data-theme-set="light" aria-label="Modo claro"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></svg></button>
+        <button type="button" class="btn btn-ghost btn-xs" data-theme-set="dark" aria-label="Modo escuro"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg></button>
+      </div>
+    </div>
+  </div>
+</header>
+
+<nav class="lp-nav" aria-label="Seções">
+  <div class="inner"><div class="tabs">
+    {% for s, t in nav %}<a href="#sec-{{ s }}">{{ t }}</a>{% endfor %}
+  </div></div>
+</nav>
+
+<main class="container" id="top">
+<div class="lp">
+  <section class="lp-hero hero-stagger">
+    <div class="num"><span class="dot news-pulse"></span>Referente a {{ mes_ref }}</div>
+    <p class="sub">Saiba mais sobre o fundo de <em>previdência</em></p>
+    {% if logo_empilhado %}<h1 style="margin:0">{{ logo_empilhado|safe }}<span class="sr">{{ pg.marca|join(' ') }}</span></h1>
+    {% else %}<h1 class="lp-h">{{ pg.marca|join(' ') }}</h1>{% endif %}
+    <p class="nome">{{ pg.nome }} · <span style="white-space:nowrap">CNPJ {{ pg.cnpj }}</span></p>
+  </section>
+
+  {% for s in secoes %}
+  {% if s == 'texto' %}
+  <section class="lp-sec lp-card" id="sec-texto">
+    <div class="lp-texto"><p>Prezados(as),</p>{{ texto_html|safe }}</div>
+  </section>
+
+  {% elif s == 'kpis' %}
+  <section class="lp-sec" id="sec-kpis">
+    <div class="lp-kpis">
+      {% for k in kpis %}
+      {% if k.destaque %}<div class="bn so-texto"><div class="n">{{ k.rotulo }}</div></div>
+      {% else %}<div class="bn{{ ' longo' if k.valor|length > 9 }}"><div class="n">{{ k.valor }}{% if k.unidade %}<small>{{ k.unidade }}</small>{% endif %}</div><div class="k">{{ k.rotulo }}</div></div>{% endif %}
+      {% endfor %}
+    </div>
+    <p class="lp-nota">Data base: {{ edicao.br }}</p>
+  </section>
+
+  {% elif s == 'rentabilidade' %}
+  <section class="lp-sec lp-card" id="sec-rentabilidade">
+    <h2 class="lp-h">Rentabilidade</h2>
+    <table class="lp-tab">
+      <thead><tr><th></th>{% for p in rent.periodos %}<th>{{ p }}</th>{% endfor %}</tr></thead>
+      <tbody>
+      {% for rot, vals in rent.linhas %}<tr{% if loop.first %} class="fundo"{% endif %}><td>{{ rot }}</td>{% for v in vals %}<td>{{ v }}</td>{% endfor %}</tr>
+      {% endfor %}
+      </tbody>
+    </table>
+  </section>
+
+  {% elif s == 'alocacao_real' %}
+  <section class="lp-sec lp-card" id="sec-alocacao_real">
+    <h2 class="lp-h">Alocação da <em>carteira</em></h2>
+    <div class="bars grossa">
+      {% for n, r, w, cx in alocacao %}<div class="bar{{ ' cx' if cx }}"><span class="n">{{ n }}</span><span class="t"><span class="f" style="width:{{ '%.1f'|format(w * 0.82) }}%"></span><span class="v">{{ r }}</span></span></div>
+      {% endfor %}
+    </div>
+    <p class="lp-nota">% do patrimônio líquido · High Grade e High Yield pela classificação interna</p>
+  </section>
+
+  {% elif s == 'previsao_alocacao' %}
+  <section class="lp-sec lp-card" id="sec-previsao_alocacao">
+    <h2 class="lp-h">Alocação da <em>carteira</em></h2>
+    <div class="aloc">
+      <div class="cab"><span></span><span>Previsão de alocação<br><small>% do patrimônio líquido</small></span><span>Retornos estimados<br><small>líquidos de taxas e custos</small></span></div>
+      {% for a in pg.previsao_alocacao %}<div class="lin"><span>{{ a.nome }}</span><span>{{ a.alocacao }}</span><span>{{ a.retorno }}</span></div>
+      {% endfor %}
+    </div>
+  </section>
+
+  {% elif s == 'setorial' %}
+  <section class="lp-sec lp-card" id="sec-setorial">
+    <h2 class="lp-h">Exposição <em>setorial</em></h2>
+    <div class="bars">
+      {% for n, r, w, cx in setores %}<div class="bar{{ ' cx' if cx }}"><span class="n">{{ n }}</span><span class="t"><span class="f" style="width:{{ '%.1f'|format(w * 0.82) }}%"></span><span class="v">{{ r }}</span></span></div>
+      {% endfor %}
+    </div>
+  </section>
+
+  {% elif s == 'rating' %}
+  <section class="lp-sec lp-card" id="sec-rating">
+    <h2 class="lp-h">Distribuição de <em>rating</em> da carteira</h2>
+    <p class="lp-desc">Exposição de rating externo</p>
+    <div class="rcols">
+      {% for n, r, w, cx in rating %}<div class="rcol{{ ' extra' if n in ('Título Público', 'S/rating') }}"><span class="v">{{ r }}</span><span class="f" style="height:{{ '%.1f'|format(w * 0.86) }}%"></span></div>{% endfor %}
+    </div>
+    <div class="rlabels">{% for n, r, w, cx in rating %}<span>{{ n }}</span>{% endfor %}</div>
+  </section>
+
+  {% elif s == 'composicao' %}
+  <section class="lp-sec lp-card" id="sec-composicao">
+    <h2 class="lp-h">Composição da <em>carteira</em></h2>
+    <div class="bars grossa">
+      {% for n, r, w, cx in composicao %}<div class="bar{{ ' cx' if cx }}"><span class="n">{{ n }}</span><span class="t"><span class="f" style="width:{{ '%.1f'|format(w * 0.82) }}%"></span><span class="v">{{ r }}</span></span></div>
+      {% endfor %}
+    </div>
+  </section>
+
+  {% elif s == 'historico' %}
+  <section class="lp-sec lp-card" id="sec-historico">
+    <h2 class="lp-h">Rentabilidade <em>histórica</em></h2>
+    <div class="lp-hist" id="lp-hist"></div>
+    <div class="lp-hist-leg"><span><i style="background:var(--lp-acc)"></i>Fundo</span><span><i style="background:var(--text-muted)"></i>{{ ctx.benchmark }}</span></div>
+  </section>
+
+  {% elif s == 'beneficios' %}
+  <section class="lp-sec lp-card" id="sec-beneficios">
+    <h2 class="lp-h">Benefícios de <em>crédito estruturado</em></h2>
+    <div class="benef">
+      {% for b in pg.beneficios %}<article class="ben"><div class="top"><h3>{{ b.titulo }}</h3><p>{{ b.texto }}</p></div><div class="dst">{{ b.destaque }}</div></article>
+      {% endfor %}
+    </div>
+  </section>
+
+  {% elif s == 'caracteristicas' %}
+  <section class="lp-sec lp-card" id="sec-caracteristicas">
+    <h2 class="lp-h">Características do <em>fundo</em></h2>
+    <dl class="carac">
+      {% for k, v in caracteristicas %}<dt>{{ k }}</dt><dd>{{ v }}</dd>
+      {% endfor %}
+    </dl>
+  </section>
+  {% endif %}
+  {% endfor %}
+
+  <p class="lp-fim">Em caso de dúvidas, entre em contato conosco.<br>Atenciosamente,<br><strong>Tivio Capital</strong></p>
+
+  <section class="lp-disc">
+    <h4>Disclaimer</h4>
+    {% for p in disclaimer %}<p>{{ p }}</p>{% endfor %}
+    <div class="sac"><span>SAC 0800 704 8383</span><span>Ouvidoria 0800 727 9933</span></div>
+  </section>
+</div>
+</main>
+
+<footer class="footer">
+  <div class="container">
+    <svg class="logo-mark" viewBox="0 0 844 294"><use href="#tv-logo"/></svg>
+    <div>Material de divulgação · Data base {{ edicao.br }} · tivio.com</div>
+  </div>
+</footer>
+
+<button class="btn btn-icon backtop" id="backtop" aria-label="Voltar ao topo"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19V5M5 12l7-7 7 7"/></svg></button>
+
+<script src="{{ echarts_src[0] }}"
+        onerror="var s=document.createElement('script');s.src='{{ echarts_src[1] }}';
+                 s.onload=window.lpGrafico;document.head.appendChild(s)"></script>
+<script>
+(function () {
+  var raiz = document.documentElement, CHAVE = 'tivio-relgestao-theme';
+  var HIST = {{ historico|safe }};
+  var grafico = null;
+  function cor(v) { return getComputedStyle(raiz).getPropertyValue(v).trim(); }
+  function pct(v) { return v.toFixed(2).replace('.', ',') + '%'; }
+
+  window.lpGrafico = function () {
+    var el = document.getElementById('lp-hist');
+    if (!el || !HIST || !window.echarts) return;
+    if (grafico) grafico.dispose();
+    grafico = echarts.init(el, null, {renderer: 'svg'});
+    var ac = cor('--lp-acc'), mu = cor('--text-muted'), li = cor('--line');
+    var ultimo = HIST.l.length - 1;
+    function serie(nome, dados, c, w) {
+      return {name: nome, type: 'line', data: dados, symbol: 'none', smooth: false,
+        lineStyle: {color: c, width: w}, itemStyle: {color: c},
+        endLabel: {show: true, formatter: function (p) { return pct(p.value); },
+          color: c, fontWeight: 600, fontSize: 12, fontFamily: 'Versos, sans-serif'}};
+    }
+    grafico.setOption({
+      animation: false,
+      grid: {left: 8, right: 64, top: 16, bottom: 8, containLabel: true},
+      tooltip: {trigger: 'axis', valueFormatter: pct},
+      xAxis: {type: 'category', data: HIST.l, boundaryGap: false,
+        axisLine: {lineStyle: {color: li}}, axisTick: {show: false},
+        axisLabel: {color: mu, fontSize: 11, fontFamily: 'Versos, sans-serif',
+          interval: Math.max(0, Math.ceil(HIST.l.length / 8) - 1)}},
+      yAxis: {type: 'value', axisLabel: {color: mu, fontSize: 11, formatter: function (v) { return v + '%'; }},
+        splitLine: {lineStyle: {color: li}}},
+      series: [serie(HIST.bench, HIST.c, mu, 2), serie('Fundo', HIST.f, ac, 3)]
+    });
+  };
+
+  function aplicar(t) {
+    raiz.setAttribute('data-theme', t);
+    [].forEach.call(document.querySelectorAll('[data-theme-set]'), function (b) {
+      b.setAttribute('aria-pressed', String(b.dataset.themeSet === t));
+    });
+    try { localStorage.setItem(CHAVE, t); } catch (e) {}
+    window.lpGrafico();
+  }
+  var salvo = null;
+  try { salvo = localStorage.getItem(CHAVE); } catch (e) {}
+  [].forEach.call(document.querySelectorAll('[data-theme-set]'), function (b) {
+    b.addEventListener('click', function () { aplicar(b.dataset.themeSet); });
+  });
+  aplicar(salvo || 'dark');
+  window.addEventListener('resize', function () { if (grafico) grafico.resize(); });
+
+  // seção atual destacada na barra de navegação
+  var links = [].slice.call(document.querySelectorAll('.lp-nav a'));
+  var alvos = links.map(function (a) { return document.querySelector(a.getAttribute('href')); });
+  var topo = document.getElementById('backtop');
+  function marcar() {
+    var y = window.scrollY + 170, atual = 0;
+    alvos.forEach(function (s, i) { if (s && s.offsetTop <= y) atual = i; });
+    links.forEach(function (a, i) { a.classList.toggle('on', i === atual); });
+    topo.classList.toggle('show', window.scrollY > 600);
+  }
+  window.addEventListener('scroll', marcar, {passive: true});
+  topo.addEventListener('click', function () { window.scrollTo({top: 0, behavior: 'smooth'}); });
+  marcar();
+})();
+</script>
+</body>
+</html>

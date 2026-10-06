@@ -360,6 +360,7 @@ class Pipeline:
 
         if self.cfg.get('materiais', {}).get('relatorio_gestao', True):
             self._relatorios(contextos)
+        self._landings(contextos)
         self._materiais_legados()
         self._copiar_libs()
         self._destaques()
@@ -367,6 +368,28 @@ class Pipeline:
         self._porta_de_entrada()
         self._fechar(contextos)
         return self.log.ok
+
+    def _landings(self, contextos):
+        """Páginas "Saiba mais sobre o fundo" (HGD30, HYD60): configs/landings.yml."""
+        if not self.cfg['saidas'].get('html'):
+            return
+        from renderers.landing import RenderizadorLanding
+        rend = RenderizadorRelatorio(self.edicao, self.cadastro, self.manual, self.log,
+                                     spreads=self.spreads)
+        lp = RenderizadorLanding(rend, self.edicao, self.log)
+        por_key = {c.key: c for c in contextos}
+        for chave, pg in lp.paginas.items():
+            self.log.contexto(f'landing/{chave}')
+            ctx = por_key.get(pg.get('fundo') or chave)
+            if ctx is None or not ctx.tem_dados:
+                self.log.aviso(chave, 'página Saiba mais não gerada: fundo sem dados nesta edição')
+                continue
+            try:
+                html = lp.html(chave, ctx)
+            except Exception as e:
+                self.log.erro(chave, f'falha ao montar a página Saiba mais: {e!r}')
+                continue
+            exp_html.gravar(html, self._destino('central', lp.arquivo(chave)), self.log)
 
     def _destaques(self):
         """JPG e pacote PDF dos posts de Destaques, uma pasta por vertical."""
