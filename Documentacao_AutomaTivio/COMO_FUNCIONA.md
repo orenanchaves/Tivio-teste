@@ -63,7 +63,7 @@ AutomaTivio/saida/AAAA-MM/
 │   ├── credito-estruturado/      01-…jpg a 06-…jpg + PDF
 │   └── investment-solutions/     01-…jpg a 11-…jpg + PDF
 ├── emails/                       e-mail de Fundos de Crédito, uma pasta por versão
-│   ├── agora/  btg/  xp/  quadrado/
+│   ├── agora/  btg/  xp/          (Ágora = cartão quadrado)
 │   │   ├── tivio-email-<fundo>.png     um card por fundo
 │   │   ├── tivio-email-completo.png    o e-mail inteiro
 │   │   └── email-<versao>.html         pronto para o disparo
@@ -165,7 +165,7 @@ O Python abre cada material no navegador e usa **a mesma função do botão** da
 página, então o arquivo sai idêntico ao que sairia clicando:
 - **Destaques:** JPG 2160 × 2880 de cada página e um PDF por carrossel
   (1080 × 1440 pt, renderizado em 4×).
-- **E-mails:** as quatro versões (Ágora, BTG, XP e Quadrado), PNG de cada card,
+- **E-mails:** as três versões (Ágora, que é o cartão quadrado, BTG e XP), PNG de cada card,
   PNG do e-mail completo e o HTML de disparo.
 
 Para desligar algum formato: `AutomaTivio/configs/edicao.yml` → `saidas:`.

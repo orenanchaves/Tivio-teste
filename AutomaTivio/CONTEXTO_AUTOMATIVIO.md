@@ -464,7 +464,7 @@ precisar mexer, prefira reextrair a reescrever.
 | Trocar o logo de um fundo no e-mail | o SVG em `assets/logos/` — o e-mail usa sempre a horizontal (branca no escuro, preta no claro), via `renderers/logos.py` |
 | PPTX | `exporters/pptx_fiel.py`: cada slide é a folha renderizada sem texto (fundo) + cada bloco de texto como caixa nativa editável, na posição e no estilo medidos no navegador (rota "Image to PPTX" da skill ppt-master). Sem a fonte Versos instalada, o PowerPoint troca a fonte; o layout se mantém |
 | Logo com texto digitado (`<text>`) | converter em curvas: o Legacy e o Esplanada foram convertidos com a Versos Bold (10/2026) |
-| Formato quadrado do e-mail | versão **Quadrado** no `tivio-email-fundos-credito.html` (`squareCardHTML`) |
+| Formato quadrado do e-mail | versão **Ágora** (`square:true`) no `tivio-email-fundos-credito.html` (`squareCardHTML`) |
 
 ### Adicionar um fundo novo
 
