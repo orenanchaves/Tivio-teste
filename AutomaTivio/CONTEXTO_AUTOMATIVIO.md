@@ -312,8 +312,10 @@ de código, o que é troca ruim. Eles seguem sendo a fonte do layout; o que mudo
 Configuração em `configs/previdencia.yml`. Texto do gestor montado por
 `renderers/landing.py::comentario_automatico`: parágrafos de mercado do fundo
 `comentario.mercado_de` (Institucional, de `entrada/comentarios.md`, até a frase
-"Nesse cenário…") + `comentario.frase` com marcadores + complemento de
-`entrada/previdencia.md`; tudo passa por `ctx.preencher`. No Informativo,
+"Nesse cenário…") + `comentario.frase` com marcadores + complemento da seção
+do próprio fundo em `entrada/comentarios.md` (parágrafos que repetem o mercado
+ou a frase são ignorados); tudo passa por `ctx.preencher`. O loader descarta
+notas `<!-- -->` do .md. No Informativo,
 `exporters/previdencia.py::_cabe` reduz o corpo da caixa até o texto caber. Os fundos `hgd30` e `hyd60` de
 `configs/fundos.yml` apontam para as carteiras **FIFE** (rentabilidade, PL e
 carteira). Cortes no Contexto: `alocacao_hghy`, `composicao()` (Bancário por

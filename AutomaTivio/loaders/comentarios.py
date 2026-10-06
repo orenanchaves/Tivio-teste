@@ -200,6 +200,8 @@ def carregar(caminho):
 
     with open(caminho, encoding='utf-8') as f:
         texto = f.read()
+    # nota <!-- … --> é para quem edita, não vai para o material
+    texto = re.sub(r'<!--.*?-->', '', texto, flags=re.S)
     # o .md pode ter duas seções de nível 1 separando relatório de e-mail
     partes = re.split(r'(?im)^#\s*(relat[óo]rio|e-?mail)\s*$', texto)
     if len(partes) >= 3:

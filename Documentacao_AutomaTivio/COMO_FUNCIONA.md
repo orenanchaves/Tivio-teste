@@ -176,9 +176,11 @@ Os três materiais leem os mesmos números e o mesmo texto:
   os mesmos do HGD30); a frase de rentabilidade sai da tabela do mês ("o Tivio
   HGD30 apresentou rentabilidade de X% no mês (Y% do CDI), acumulando Z% em 12
   meses"; no HYD60, desde o início, mais carrego e duration); o HYD60 tem ainda
-  "Sobre o Fundo" fixo. Em `entrada/previdencia.md` fica só o complemento do mês
-  (atribuição de performance, destaques da gestão). No Informativo, a letra
-  encolhe sozinha quando o texto do mês é mais longo que a caixa.
+  "Sobre o Fundo" fixo. **Tudo fica em `entrada/comentarios.md`**: nas seções
+  `## Tivio HGD30` e `## Tivio HYD60` vai só o complemento do mês (atribuição de
+  performance; destaques da gestão, um tópico por parágrafo). Notas `<!-- -->`
+  no arquivo são ignoradas. No Informativo, a letra encolhe sozinha quando o
+  texto do mês é mais longo que a caixa.
 - **Composição da carteira:** Bancário = emissor do setor Financeiro ou
   Financeiro Corp (inclui debênture de banco), Corporativo, FIDC e Caixa, sobre o
   total da carteira. Confere com o Informativo de setembro (28,3 / 36,1 / 7,2 / 28,4).
@@ -208,7 +210,10 @@ enviar; para virar modelo, Arquivo > Salvar como > Modelo do Outlook (.oft).
   Caixa, exposição setorial, rating (no HYD60 também Título Público e
   S/rating), composição (Bancário, Corporativo, FIDC, Caixa), histórico em
   ECharts, PL, PL médio, duration e carrego.
-- **Texto do gestor** em `entrada/previdencia.md` (um `## hgd30` / `## hyd60`).
+- **Texto do gestor** montado de `entrada/comentarios.md` (ver acima).
+- **Gráficos em ECharts:** alocação em meia-rosca (com o retorno estimado no
+  HYD60), composição em rosca, setores em barras, rating em colunas e histórico
+  em linha com área. O logo do fundo é sempre o horizontal.
   A frase "apresentou rentabilidade de X% no mês (Y% do CDI), acumulando Z%
   (W% do CDI) desde o início" é ajustada à tabela, como no relatório.
 - **O resto** (nome, CNPJ, meta, público, taxas, cards, previsão de alocação,
@@ -246,7 +251,7 @@ Para desligar algum formato: `AutomaTivio/configs/edicao.yml` → `saidas:`
 | Visual da folha (cores, tamanhos) | `templates/estilos/relatorio.css` |
 | Logo de um fundo | o SVG em `assets/logos/`, sempre **horizontal** e com o texto em curvas |
 | Texto jurídico do rodapé | `configs/disclaimer.md` |
-| Texto do gestor do HGD30 e do HYD60 | automático (mercado do Institucional em `entrada/comentarios.md` + números); complemento do mês em `entrada/previdencia.md`; regras em `configs/previdencia.yml` → `comentario` |
+| Texto do gestor do HGD30 e do HYD60 | automático (mercado do Institucional + números); complemento do mês nas seções `## Tivio HGD30` / `## Tivio HYD60` de `entrada/comentarios.md`; regras em `configs/previdencia.yml` → `comentario` |
 | Cards, seções, taxas, público e blocos do e-mail de previdência | `configs/previdencia.yml` |
 | Modelo do Informativo (PPTX) | `templates/informativos/` (os nomes dos shapes estão em `exporters/previdencia.py`, `MAPAS`) |
 | Data de início exibida diferente da DePara | `configs/fundos.yml` → `data_inicio: DD/MM/AAAA` (Infra Plus: 15/07/2019) |
@@ -294,8 +299,9 @@ python -m playwright install chromium
   ficaram guardados em `entrada/comentarios_2026-08.md`.
 - **BVP:** sem logo em `assets/logos/`.
 - **Tivio Atuarial:** fora da DePara da planilha, então não gera relatório.
-- **Complemento de previdência:** em `entrada/previdencia.md`, o do HGD30 é
-  de setembro; o do HYD60 (destaques da gestão) ainda é o de agosto.
+- **Complemento de previdência** (`## Tivio HGD30` / `## Tivio HYD60` em
+  `entrada/comentarios.md`): o do HGD30 é de setembro; o do HYD60 (destaques da
+  gestão) ainda é o de agosto.
 - **Botão "Voltar ao C&M Hub"** da Central: aponta para uma página que não existe
   no projeto.
 

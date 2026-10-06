@@ -196,3 +196,33 @@ No mercado primário, manteve-se o cenário de oferta restrita de ativos, com pa
 Sob a ótica da gestão, mantivemos uma postura cautelosa ao longo do período, priorizando o encurtamento da duration da carteira como forma de mitigar a volatilidade e reduzir a sensibilidade do portfólio a eventuais movimentos adversos nos spreads de crédito. Apesar da melhora observada no desempenho dos ativos incentivados no mês, seguimos avaliando que os níveis atuais de prêmio ainda oferecem pouca margem de segurança frente aos riscos inerentes à classe. Dessa forma, permanecemos atentos à evolução das condições de mercado e à dinâmica de precificação dos ativos, buscando identificar oportunidades mais atrativas para aumentar a exposição ao risco de crédito de forma gradual e criteriosa, quando a relação risco-retorno se mostrar mais favorável.
 
 Nesse cenário, o Institucional Incentivado CDI apresentou rentabilidade, isenta de imposto de renda, de 0,97% no mês (89% do CDI), acumulando 8,80% (94% do CDI) no ano. Na atribuição de performance, pode-se destacar as debêntures de Copel e CPFL, enquanto as de Energisa foram as maiores detratoras.
+
+## Tivio HGD30
+
+<!-- Previdência: o mercado vem do Tivio Institucional e a frase de rentabilidade
+     é montada com os números do mês. Aqui, só a atribuição de performance. -->
+
+Na atribuição de performance, a carteira de títulos bancários foi a principal responsável pelo resultado do período, contribuindo com aproximadamente 3 bps de alfa, com destaque para a parcela de LFs perpétuas.
+
+Por outro lado, a carteira de debêntures foi a principal detratora de performance, com impacto negativo de cerca de 1,3 bps de alfa. Dentro da classe, os destaques positivos foram os papéis de Tupy e Randon, que conjuntamente adicionaram 2,3 bps de rentabilidade acima do CDI. Em contrapartida, Hapvida e Sendas foram os principais detratores do mês, com contribuição combinada de aproximadamente 2,5 bps abaixo do CDI.
+
+## Tivio HYD60
+
+<!-- Previdência: "Sobre o Fundo", o mercado (do Tivio Institucional) e a frase
+     de rentabilidade, carrego e duration são montados sozinhos. Aqui, só os
+     destaques da gestão, um tópico por parágrafo (linha em branco entre eles).
+     ATENÇÃO: ainda são os destaques de agosto. -->
+
+- Na parcela de **crédito estruturado**, avanço na **diversificação da carteira**, com a inclusão de novas posições em **FIDCs**.
+
+- Destaque para o investimento em um **FIDC de antecipação de recebíveis de cartões de crédito**, caracterizado por **prazo médio reduzido**, **elevada pulverização da carteira (mais de 125 mil contratos)** e **baixo valor médio por operação**.
+
+- Os investimentos contam com **elevados níveis de subordinação** e **ampla diversificação** em diferentes teses, setores e emissores, contribuindo para a **mitigação da concentração de risco** e reduzindo a dependência de nomes específicos.
+
+- Gestão segue **acompanhando de perto a evolução dos fundamentos dos emissores**, com atenção especial aos indicadores operacionais, à geração de caixa e à preservação de estruturas de capital adequadas.
+
+- Ambiente técnico para o crédito segue **favorável**, com forte demanda pela classe, mas os **spreads permanecem historicamente comprimidos**.
+
+- **Disciplina na alocação** dos recursos, priorizando operações com adequada relação entre risco e retorno.
+
+- **Preservação de flexibilidade** para capturar oportunidades em eventuais momentos de maior volatilidade do mercado.

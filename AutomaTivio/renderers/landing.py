@@ -5,7 +5,7 @@ Uma página por entrada de `configs/previdencia.yml`, no design system da Centra
 (casca escura, Versos, tokens de _marca.css). Os números saem do Contexto do
 fundo FIFE de cada uma (configs/fundos.yml): rentabilidade, alocação HG/HY/
 Caixa, setores, rating, composição, histórico, PL, duration e carrego. O texto
-do gestor vem de `entrada/previdencia.md`, com os números das frases-padrão
+do gestor vem de `entrada/comentarios.md`, com os números das frases-padrão
 trocados pelos da tabela (engine/sincroniza.py), como no comentário do
 relatório.
 
@@ -66,14 +66,20 @@ def comentario_automatico(chave, pg, por_key, textos, edicao):
       2. os parágrafos de mercado do fundo de referência (comentario.mercado_de),
          até a frase do próprio fundo ("Nesse cenário…");
       3. a frase de rentabilidade (comentario.frase), com os números da tabela;
-      4. o complemento manual do mês, se houver, em entrada/previdencia.md
-         (atribuição de performance, destaques da gestão).
-    Sem `comentario` no fundo, vale só o texto de entrada/previdencia.md.
+      4. o complemento do mês, na seção do próprio fundo em
+         entrada/comentarios.md ("## Tivio HGD30", "## Tivio HYD60"):
+         atribuição de performance, destaques da gestão.
+    Tudo fica no comentarios.md, como nos outros fundos. Se a seção do fundo
+    repetir o mercado ou a frase de rentabilidade, esses parágrafos são
+    ignorados (já entram montados).
     """
     cfg = pg.get('comentario') or {}
-    manual = (textos.get(chave) or '').strip()
+    proprio = por_key.get(pg.get('fundo') or chave)
+    paragrafos = [p.strip() for p in (proprio.comentario if proprio is not None else []) if p.strip()]
+    if not paragrafos and textos.get(chave):            # legado: entrada/previdencia.md
+        paragrafos = [p.strip() for p in re.split(r'\n\s*\n', textos[chave]) if p.strip()]
     if not cfg:
-        return manual
+        return '\n\n'.join(paragrafos)
     mes = fmt.MESES[edicao.db.month - 1]
 
     def m(t):
@@ -96,6 +102,10 @@ def comentario_automatico(chave, pg, por_key, textos, edicao):
         partes += mercado
     if cfg.get('frase'):
         partes.append(m(cfg['frase']))
+    manual = '\n\n'.join(
+        p for p in paragrafos
+        if p not in mercado
+        and not re.search(r'Nesse cen[áa]rio|apresentou rentabilidade|obteve retorno', p))
     if manual:
         if cfg.get('titulo_destaques'):
             partes.append('**' + m(cfg['titulo_destaques']) + '**')
@@ -239,13 +249,35 @@ class RenderizadorLanding:
         mapa = {
             'nome': ('Nome', pg.get('nome_caracteristicas') or pg.get('nome')),
             'cnpj': ('CNPJ', pg.get('cnpj')),
-            'inicio': ('Data de início do fundo', pg.get('data_inicio')),
+            'inicio': ('Data de início do fundo', pg.get('data_inicio') or (
+                f'{ctx.data_inicio:%d/%m/%Y}' if ctx.data_inicio is not None
+                and str(ctx.data_inicio) != 'NaT' else None)),
+            'pl': ('Patrimônio líquido', ctx.pl_fmt.split(',')[0] if ctx.pl else None),
             'pl_medio': ('PL médio (12M)', ctx.pl_medio_fmt.split(',')[0] if ctx.pl_medio else None),
             'publico': ('Público alvo', pg.get('publico')),
             'taxas': ('Taxas', pg.get('taxas')),
         }
         return [mapa[c] for c in pg.get('caracteristicas') or ['nome', 'cnpj']
                 if c in mapa and mapa[c][1]]
+
+    def _ec(self, ctx, previsao):
+        """Dados dos gráficos ECharts da página: [nome, valor, rótulo]."""
+        def lista(itens):
+            return [[n, round(float(v), 4), r] for n, r, v in itens]
+        setores = [x for x in ctx.setores_relatorio if x[0] != 'Caixa'] + \
+                  [x for x in ctx.setores_relatorio if x[0] == 'Caixa']
+        aloc = ctx.alocacao_hghy
+        hg = next((r for n, r, _ in aloc if 'High Grade' in n), '')
+        comp = ctx.composicao()
+        maior = max(comp, key=lambda x: x[2]) if comp else None
+        return {
+            'alocacao': {'tipo': 'meia', 'itens': lista(aloc), 'centro': hg, 'sub': 'HIGH GRADE'},
+            'previsao': {'tipo': 'meia', 'itens': lista(aloc), 'centro': hg, 'sub': 'HIGH GRADE'},
+            'setorial': {'tipo': 'barras', 'itens': lista(setores)},
+            'rating': {'tipo': 'colunas', 'itens': lista(ctx.rating_relatorio)},
+            'composicao': {'tipo': 'rosca', 'itens': lista(comp),
+                           'centro': maior[1] if maior else '', 'sub': maior[0].upper() if maior else ''},
+        }
 
     def _historico(self, ctx):
         h = ctx.hist or ctx.hist12
@@ -264,7 +296,7 @@ class RenderizadorLanding:
         bruto = comentario_automatico(chave, pg, por_key or {}, self.textos, self.edicao)
         texto, faltando = ctx.preencher(bruto)
         if not bruto:
-            self.log.aviso(chave, 'previdência sem texto do gestor: nem comentarios.md nem entrada/previdencia.md')
+            self.log.aviso(chave, 'previdência sem texto do gestor em entrada/comentarios.md')
         for k in faltando:
             self.log.aviso(chave, f'landing: marcador sem valor: {{{k}}}')
 
@@ -303,5 +335,7 @@ class RenderizadorLanding:
             marca_path=self.r._marca_path(),
             logo_empilhado=logo_svg((pg.get('logo') or {}).get('empilhado'), 'lp-logo'),
             logo_horizontal=logo_svg((pg.get('logo') or {}).get('horizontal'), 'lp-logo-h'),
+            logo_horizontal_hero=logo_svg((pg.get('logo') or {}).get('horizontal'), 'lp-logo'),
+            ec=self._ec(ctx, previsao),
             css_marca=self.r.css_marca, css_pagina=self.r.css_pagina,
             echarts_src=self.r.ECHARTS)

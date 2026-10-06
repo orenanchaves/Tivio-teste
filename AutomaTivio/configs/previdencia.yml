@@ -9,7 +9,8 @@
 # Aqui fica só o que a planilha não tem: nome e CNPJ exibidos, meta, público,
 # taxas, textos fixos. O texto do gestor ("Visão de Mercado", "Destaques") fica
 # montado sozinho (ver `comentario` em cada fundo), com o complemento manual de
-# entrada/previdencia.md. O mesmo texto vai para os três materiais.
+# entrada/comentarios.md (seções "## Tivio HGD30" e "## Tivio HYD60").
+# O mesmo texto vai para os três materiais.
 #
 # Saídas:
 #   saida/AAAA-MM/central/tivio-<chave>-saiba-mais.html     página Saiba mais
@@ -48,7 +49,7 @@ paginas:
     caracteristicas: [nome, cnpj, inicio, pl_medio, publico, taxas]
     # texto do gestor automático: mercado do comentário do Institucional
     # (entrada/comentarios.md) + a frase com os números + complemento manual
-    # (entrada/previdencia.md, se houver)
+    # (seção "## Tivio HGD30" de entrada/comentarios.md, se houver)
     comentario:
       mercado_de: institucional
       frase: "Nesse cenário, o **Tivio HGD30 apresentou rentabilidade de {mes} no mês ({pct_mes} do CDI), acumulando {12m} ({pct_12m} do CDI) em 12 meses.**"
@@ -69,6 +70,11 @@ paginas:
     nome: BRADESCO TIVIO HYD60 PGBL VGBL FIF CIC MULTIMERCADO CP RL
     cnpj: 63.949.230/0001-11
     nome_caracteristicas: BRADESCO TIVIO HYD60 PGBL VGBL FIF CIC MULTIMERCADO CP RL
+    # data de início: a primeira cota da planilha (04/03/2026), se ficar vazio
+    publico: Investidor Qualificado
+    taxas: >-
+      Taxa de Administração e Gestão: 1,0% a.a. | Taxa de Performance: 20% do
+      retorno que exceder o CDI
     kpis:
       - {rotulo: Fundo de Previdência, valor: ""}
       - {rotulo: "Resgate", valor: "D+60"}
@@ -119,7 +125,7 @@ paginas:
         destaque: >-
           A menor volatilidade dos fundos de crédito estruturado é resultado de
           uma combinação de fatores resultantes da gestão ativa do fundo.
-    caracteristicas: [nome, cnpj]
+    caracteristicas: [nome, cnpj, inicio, pl, publico, taxas]
     comentario:
       sobre:
         - "O **Tivio HYD60** combina **duas estratégias complementares de geração de alfa**, apoiadas na ampla expertise da área de crédito da Tivio Capital."

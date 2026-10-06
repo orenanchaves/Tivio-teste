@@ -51,9 +51,10 @@
 .lp-hero{padding:48px 0 36px;text-align:center}
 .lp-hero .num{display:inline-flex;align-items:center;gap:9px;font-size:11px;font-weight:700;letter-spacing:.28em;text-transform:uppercase;color:var(--accent-strong)}
 .lp-hero .num .dot{width:7px;height:7px;border-radius:50%;background:currentColor}
-.lp-hero .sub{font-size:clamp(20px,2.4vw,27px);color:var(--text-primary);margin:22px 0 30px;font-weight:300;letter-spacing:-.01em}
+.lp-hero .sub{font-size:clamp(17px,1.9vw,21px);color:var(--text-primary);margin:22px 0 30px;font-weight:300;letter-spacing:-.01em}
 .lp-hero .sub em{font-style:normal;font-weight:700}
-.lp-logo{display:block;margin:0 auto;width:min(560px,86vw);height:auto;color:var(--text-primary)}
+.lp-h1{margin:0}
+.lp-logo{display:block;margin:0 auto;width:min(620px,88vw);height:auto;color:var(--text-primary)}
 .lp-hero .nome{margin:30px auto 0;max-width:760px;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--text-muted);font-weight:600;line-height:1.7}
 
 /* seções: cartão de vidro com brilho no canto (.hero-about / .vertical) */
@@ -62,7 +63,7 @@
 .lp-card::before{content:"";position:absolute;inset:0;pointer-events:none;border-radius:inherit;background:linear-gradient(135deg,rgba(255,255,255,.06),transparent 55%)}
 :root[data-theme="light"] .lp-card::before{background:linear-gradient(135deg,rgba(255,255,255,.45),transparent 55%)}
 .lp-card>*{position:relative}
-.lp-h{font-size:clamp(24px,2.6vw,32px);font-weight:300;letter-spacing:-.01em;color:var(--text-primary);margin:0 0 6px;line-height:1.15}
+.lp-h{font-size:clamp(19px,1.8vw,23px);font-weight:300;letter-spacing:-.01em;color:var(--text-primary);margin:0 0 6px;line-height:1.15}
 .lp-h em{font-style:normal;font-weight:700}
 .lp-desc{font-size:14px;color:var(--text-muted);margin:0 0 24px}
 .lp-h+:not(.lp-desc){margin-top:24px}
@@ -127,16 +128,33 @@
 .rlabels span{text-align:center;font-size:12px;color:var(--text-muted);font-weight:600}
 
 .lp-hist{height:360px}
+.lp-ec{width:100%}
+.ec-duo{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,1fr);gap:28px;align-items:center}
+.ec-meia{height:260px}.ec-rosca{height:300px}.ec-rat{height:300px}
+.ec-leg{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:14px}
+.ec-leg li{display:grid;grid-template-columns:14px 1fr auto;align-items:center;gap:12px;font-size:15px;padding-bottom:12px;border-bottom:1px dashed var(--line-strong)}
+.ec-leg li:last-child{border-bottom:0}
+.ec-leg i{width:14px;height:14px;border-radius:4px;display:block}
+.ec-leg .n{color:var(--text-secondary)}
+.ec-leg b{font-size:20px;font-weight:700;color:var(--text-primary);font-variant-numeric:tabular-nums}
+.ec-leg.com-ret li{grid-template-columns:14px 1fr auto auto}
+.ec-leg.com-ret em{font-style:normal;font-weight:600;color:var(--accent-strong);min-width:118px;text-align:right}
+.ec-leg li.cab{border-bottom:0;padding-bottom:0}
+.ec-leg li.cab b,.ec-leg li.cab em{font-size:9px;letter-spacing:.16em;text-transform:uppercase;color:var(--text-muted);font-weight:700}
+@media(max-width:640px){.ec-duo{grid-template-columns:1fr;gap:8px}.ec-meia{height:210px}.ec-rosca{height:250px}.ec-rat{height:240px}
+  .ec-leg b{font-size:17px}.ec-leg.com-ret em{min-width:0}}
 .lp-hist-leg{display:flex;gap:18px;justify-content:center;font-size:12px;color:var(--text-muted);margin-top:6px}
 .lp-hist-leg i{display:inline-block;width:14px;height:3px;border-radius:2px;vertical-align:middle;margin-right:6px}
 
-.benef{display:grid;grid-template-columns:repeat(2,1fr);gap:14px}
-.ben{border:1px solid var(--line);border-radius:var(--r-md);overflow:hidden;display:flex;flex-direction:column;background:var(--bg-glass)}
-.ben .top{padding:24px 22px 20px;flex:1}
-.ben h3{margin:0 0 12px;font-size:19px;line-height:1.2;font-weight:600;letter-spacing:-.01em;color:var(--accent-strong)}
+.benef{display:grid;grid-template-columns:repeat(2,1fr);gap:16px}
+.ben{border-radius:4px;overflow:hidden;display:flex;flex-direction:column;background:#EFEFEF;box-shadow:0 1px 0 rgba(0,0,0,.08)}
+.ben .top{padding:26px 24px 34px;flex:1}
+.ben h3{margin:0 0 16px;font-size:21px;line-height:1.1;font-weight:700;letter-spacing:.01em;text-transform:uppercase;color:#52B97A}
 .ben h3 em{font-style:normal;font-weight:700;color:var(--accent-strong)}
-.ben p{margin:0;font-size:14px;line-height:1.6;color:var(--text-secondary)}
-.ben .dst{padding:18px 22px;background:var(--pill-bg);border-top:1px solid var(--pill-border);font-size:14px;line-height:1.55;color:var(--text-primary)}
+.ben p{margin:0;font-size:15px;line-height:1.45;color:#2b2b2b}
+.ben .dst{position:relative;padding:30px 24px 26px;background:#A6A6A6;font-size:15px;line-height:1.45;color:#161616}
+.ben .dst::before{content:"";position:absolute;left:50%;top:-18px;transform:translateX(-50%);border:18px solid transparent;border-top:0;border-bottom-color:#A6A6A6}
+.ben .dst strong{font-weight:700}
 
 /* características: meta-k / meta-v (.fund-meta da referência) */
 .carac{display:grid;grid-template-columns:200px 1fr;margin:0}
@@ -216,7 +234,7 @@
   <section class="lp-hero hero-stagger">
     <div class="num"><span class="dot news-pulse"></span>Referente a {{ mes_ref }}</div>
     <p class="sub">Saiba mais sobre o fundo de <em>previdência</em></p>
-    {% if logo_empilhado %}<h1 style="margin:0">{{ logo_empilhado|safe }}<span class="sr">{{ pg.marca|join(' ') }}</span></h1>
+    {% if logo_horizontal %}<h1 class="lp-h1">{{ logo_horizontal_hero|safe }}<span class="sr">{{ pg.marca|join(' ') }}</span></h1>
     {% else %}<h1 class="lp-h">{{ pg.marca|join(' ') }}</h1>{% endif %}
     <p class="nome">{{ pg.nome }} · <span style="white-space:nowrap">CNPJ {{ pg.cnpj }}</span></p>
   </section>
@@ -253,9 +271,9 @@
   {% elif s == 'alocacao_real' %}
   <section class="lp-sec lp-card" id="sec-alocacao_real">
     <h2 class="lp-h">Alocação da <em>carteira</em></h2>
-    <div class="bars grossa">
-      {% for n, r, w, cx in alocacao %}<div class="bar{{ ' cx' if cx }}"><span class="n">{{ n }}</span><span class="t"><span class="f" style="width:{{ '%.1f'|format(w * 0.82) }}%"></span><span class="v">{{ r }}</span></span></div>
-      {% endfor %}
+    <div class="ec-duo">
+      <div class="lp-ec ec-meia" data-ec='{{ ec.alocacao|tojson }}'></div>
+      <ul class="ec-leg">{% for n, r, w, cx in alocacao %}<li><i data-cor="{{ loop.index0 }}"{% if n == 'Caixa' %} data-cx{% endif %}></i><span class="n">{{ n }}</span><b>{{ r }}</b></li>{% endfor %}</ul>
     </div>
     <p class="lp-nota">% do patrimônio líquido · High Grade e High Yield pela classificação interna</p>
   </section>
@@ -263,38 +281,33 @@
   {% elif s == 'previsao_alocacao' %}
   <section class="lp-sec lp-card" id="sec-previsao_alocacao">
     <h2 class="lp-h">Alocação da <em>carteira</em></h2>
-    <div class="aloc">
-      <div class="cab"><span></span><span>Previsão de alocação<br><small>% do patrimônio líquido</small></span><span>Retornos estimados<br><small>líquidos de taxas e custos</small></span></div>
-      {% for a in previsao %}<div class="lin"><span>{{ a.nome }}</span><span>{{ a.alocacao }}</span><span>{{ a.retorno }}</span></div>
-      {% endfor %}
+    <div class="ec-duo">
+      <div class="lp-ec ec-meia" data-ec='{{ ec.previsao|tojson }}'></div>
+      <ul class="ec-leg com-ret"><li class="cab"><i></i><span class="n"></span><b>Previsão de alocação</b><em>Retorno estimado</em></li>
+      {% for a in previsao %}<li><i data-cor="{{ loop.index0 }}"{% if a.nome == 'Caixa' %} data-cx{% endif %}></i><span class="n">{{ a.nome }}</span><b>{{ a.alocacao }}</b><em>{{ a.retorno }}</em></li>{% endfor %}</ul>
     </div>
+    <p class="lp-nota">% do patrimônio líquido · retorno estimado bruto de taxas e custos</p>
   </section>
 
   {% elif s == 'setorial' %}
   <section class="lp-sec lp-card" id="sec-setorial">
     <h2 class="lp-h">Exposição <em>setorial</em></h2>
-    <div class="bars">
-      {% for n, r, w, cx in setores %}<div class="bar{{ ' cx' if cx }}"><span class="n">{{ n }}</span><span class="t"><span class="f" style="width:{{ '%.1f'|format(w * 0.82) }}%"></span><span class="v">{{ r }}</span></span></div>
-      {% endfor %}
-    </div>
+    <div class="lp-ec ec-set" data-ec='{{ ec.setorial|tojson }}' style="height:{{ 26 * setores|length + 20 }}px"></div>
   </section>
 
   {% elif s == 'rating' %}
   <section class="lp-sec lp-card" id="sec-rating">
     <h2 class="lp-h">Distribuição de <em>rating</em> da carteira</h2>
     <p class="lp-desc">Exposição de rating externo</p>
-    <div class="rcols">
-      {% for n, r, w, cx in rating %}<div class="rcol{{ ' extra' if n in ('Título Público', 'S/rating') }}"><span class="v">{{ r }}</span><span class="f" style="height:{{ '%.1f'|format(w * 0.86) }}%"></span></div>{% endfor %}
-    </div>
-    <div class="rlabels">{% for n, r, w, cx in rating %}<span>{{ n }}</span>{% endfor %}</div>
+    <div class="lp-ec ec-rat" data-ec='{{ ec.rating|tojson }}'></div>
   </section>
 
   {% elif s == 'composicao' %}
   <section class="lp-sec lp-card" id="sec-composicao">
     <h2 class="lp-h">Composição da <em>carteira</em></h2>
-    <div class="bars grossa">
-      {% for n, r, w, cx in composicao %}<div class="bar{{ ' cx' if cx }}"><span class="n">{{ n }}</span><span class="t"><span class="f" style="width:{{ '%.1f'|format(w * 0.82) }}%"></span><span class="v">{{ r }}</span></span></div>
-      {% endfor %}
+    <div class="ec-duo">
+      <div class="lp-ec ec-rosca" data-ec='{{ ec.composicao|tojson }}'></div>
+      <ul class="ec-leg">{% for n, r, w, cx in composicao %}<li><i data-cor="{{ loop.index0 }}"{% if n == 'Caixa' %} data-cx{% endif %}></i><span class="n">{{ n }}</span><b>{{ r }}</b></li>{% endfor %}</ul>
     </div>
   </section>
 
@@ -309,7 +322,7 @@
   <section class="lp-sec lp-card" id="sec-beneficios">
     <h2 class="lp-h">Benefícios de <em>crédito estruturado</em></h2>
     <div class="benef">
-      {% for b in pg.beneficios %}<article class="ben"><div class="top"><h3>{{ b.titulo }}</h3><p>{{ b.texto }}</p></div><div class="dst">{{ b.destaque }}</div></article>
+      {% for b in pg.beneficios %}<article class="ben"><div class="top"><h3>{% if ' de ' in b.titulo %}{{ b.titulo.split(' de ', 1)[0] }}<br>de {{ b.titulo.split(' de ', 1)[1] }}{% else %}{{ b.titulo.split(' ', 1)[0] }}<br>{{ b.titulo.split(' ', 1)[1] if ' ' in b.titulo else '' }}{% endif %}</h3>{% for par in b.texto.split('\n\n') %}<p{% if not loop.first %} style="margin-top:14px"{% endif %}>{{ par }}</p>{% endfor %}</div><div class="dst">{{ b.destaque }}</div></article>
       {% endfor %}
     </div>
   </section>
@@ -355,7 +368,53 @@
   function cor(v) { return getComputedStyle(raiz).getPropertyValue(v).trim(); }
   function pct(v) { return v.toFixed(2).replace('.', ',') + '%'; }
 
+  var EC = [];
+  function paleta() { return [cor('--lp-acc'), cor('--lp-acc-2'), cor('--tv-verde-escuro'), cor('--lp-cx')]; }
+  function fonte() { return 'Versos, Helvetica Neue, Arial, sans-serif'; }
+  function graficos() {
+    EC.forEach(function (g) { g.dispose(); }); EC = [];
+    var pal = paleta(), tx = cor('--text-secondary'), mu = cor('--text-muted'), li = cor('--line');
+    document.querySelectorAll('.ec-leg i[data-cor]').forEach(function (i) { i.style.background = i.hasAttribute('data-cx') ? cor('--lp-cx') : pal[+i.dataset.cor % pal.length]; });
+    document.querySelectorAll('.lp-ec').forEach(function (el) {
+      var d = JSON.parse(el.dataset.ec || 'null'); if (!d || !d.itens || !d.itens.length) return;
+      el.innerHTML = '';
+      var g = echarts.init(el, null, {renderer: 'svg'}), op;
+      var dados = d.itens.map(function (x, i) { return {name: x[0], value: x[1], rotulo: x[2], itemStyle: {color: x[0] === 'Caixa' ? cor('--lp-cx') : pal[i % pal.length]}}; });
+      if (d.tipo === 'meia' || d.tipo === 'rosca') {
+        var meia = d.tipo === 'meia';
+        op = {animation: false, tooltip: {trigger: 'item', formatter: function (p) { return p.name + ': ' + p.data.rotulo; }},
+          series: [{type: 'pie', radius: meia ? ['62%', '96%'] : ['52%', '80%'], center: meia ? ['50%', '88%'] : ['50%', '50%'],
+            startAngle: 180, endAngle: meia ? 360 : -180, avoidLabelOverlap: true, padAngle: 1.5,
+            itemStyle: {borderRadius: 6, borderColor: cor('--bg-base'), borderWidth: 2},
+            label: {show: false}, data: dados}],
+          graphic: [{type: 'text', left: 'center', top: meia ? '58%' : 'middle',
+            style: {text: d.centro || '', fill: cor('--text-primary'), font: '700 ' + (el.clientWidth < 420 ? 21 : 30) + 'px ' + fonte(), textAlign: 'center'}},
+            {type: 'text', left: 'center', top: meia ? '76%' : '58%',
+            style: {text: d.sub || '', fill: mu, font: '600 11px ' + fonte(), textAlign: 'center'}}]};
+      } else if (d.tipo === 'barras') {
+        op = {animation: false, grid: {left: 4, right: 64, top: 4, bottom: 4, containLabel: true},
+          xAxis: {type: 'value', show: false},
+          yAxis: {type: 'category', inverse: true, data: d.itens.map(function (x) { return x[0]; }),
+            axisLine: {lineStyle: {color: li}}, axisTick: {show: false}, axisLabel: {color: tx, fontSize: el.clientWidth < 420 ? 10 : 12, fontFamily: fonte()}},
+          series: [{type: 'bar', barWidth: 12, data: dados, itemStyle: {borderRadius: [0, 4, 4, 0]},
+            label: {show: true, position: 'right', formatter: function (p) { return p.data.rotulo; }, color: cor('--text-primary'), fontWeight: 700, fontSize: 12, fontFamily: fonte()}}]};
+        op.series[0].data.forEach(function (x) { if (x.name !== 'Caixa') x.itemStyle.color = pal[0]; });
+      } else {
+        op = {animation: false, grid: {left: 4, right: 4, top: 28, bottom: 4, containLabel: true},
+          xAxis: {type: 'category', data: d.itens.map(function (x) { return x[0]; }), axisLine: {lineStyle: {color: li}}, axisTick: {show: false},
+            axisLabel: {color: mu, fontSize: 12, fontWeight: 600, fontFamily: fonte(), interval: 0}},
+          yAxis: {type: 'value', show: false},
+          series: [{type: 'bar', barMaxWidth: 56, data: dados.map(function (x) { x.itemStyle = {color: {type: 'linear', x: 0, y: 0, x2: 0, y2: 1,
+              colorStops: [{offset: 0, color: pal[0]}, {offset: 1, color: pal[1]}]}, borderRadius: [6, 6, 0, 0]}; return x; }),
+            label: {show: true, position: 'top', formatter: function (p) { return p.data.rotulo; }, color: cor('--text-primary'), fontWeight: 700, fontSize: 12, fontFamily: fonte()}}]};
+      }
+      g.setOption(op); EC.push(g);
+    });
+  }
+  window.addEventListener('resize', function () { EC.forEach(function (g) { g.resize(); }); });
+
   window.lpGrafico = function () {
+    if (window.echarts) graficos();
     var el = document.getElementById('lp-hist');
     if (!el || !HIST || !window.echarts) return;
     if (grafico) grafico.dispose();
@@ -365,6 +424,8 @@
     function serie(nome, dados, c, w) {
       return {name: nome, type: 'line', data: dados, symbol: 'none', smooth: false,
         lineStyle: {color: c, width: w}, itemStyle: {color: c},
+        areaStyle: nome === 'Fundo' ? {color: {type: 'linear', x: 0, y: 0, x2: 0, y2: 1,
+          colorStops: [{offset: 0, color: c + '55'}, {offset: 1, color: c + '00'}]}} : undefined,
         endLabel: {show: true, formatter: function (p) { return pct(p.value); },
           color: c, fontWeight: 600, fontSize: 12, fontFamily: 'Versos, sans-serif'}};
     }
