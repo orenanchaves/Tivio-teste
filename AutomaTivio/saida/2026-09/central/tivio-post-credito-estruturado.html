@@ -655,7 +655,9 @@ const LOGO_SVG='<svg class="tv-brand lg" viewBox="118 104 844 294" xmlns="http:/
    =================================================================== */
 const CLASS_COLORS={
   'FIDCs Cotas Sênior':'#ABC6CD',   /* cinza-claro   */
+  'FIDCs Cota Sênior':'#ABC6CD',    /* (nome novo, mesma cor) */
   'FIDCs Cotas Mezanino':'#5B6B77', /* cinza-escuro  */
+  'FIDCs Cota Mezanino':'#5B6B77',
   'FIDC Mezanino':'#5B6B77',
   'Crédito Estruturado':'#C1F4D4',  /* verde Tivio   */
   'Crédito Privado':'#759DB4',      /* azul          */
@@ -663,8 +665,12 @@ const CLASS_COLORS={
   'Liquidez':'#E6EDF1',             /* off-white     */
   'Precatório':'#92D3AB',           /* verde escuro  */
   'Fiagro':'#52B97A',               /* verde agro    */
-  'FIP':'#337F51'                   /* verde profundo*/
+  'FIP':'#337F51',                  /* verde profundo*/
+  'Debêntures':'#3C4A60'            /* azul-escuro   */
 };
+/* reserva da marca: quando duas categorias do mesmo fundo cairiam na mesma
+   cor (categoria nova, sem cor na tabela), a segunda pega a próxima livre */
+const CORES_RESERVA=['#3C4A60','#C8D7E0','#8A99A3','#2F5D48','#B7E4C7','#637881','#9DB8C7','#1E2A36'];
 const colorOf=n=>CLASS_COLORS[n]||'#637881';
 /* Cor do texto = a que rende mais contraste sobre o bloco (WCAG). */
 function inkOn(hex){
@@ -677,6 +683,7 @@ function inkOn(hex){
 /* forma abreviada, usada só quando o nome inteiro não cabe na legenda */
 const SHORT={
   'FIDCs Cotas Sênior':'FIDCs Cotas Sên.','FIDCs Cotas Mezanino':'FIDCs Cotas Mez.',
+  'FIDCs Cota Sênior':'FIDCs Cota Sên.','FIDCs Cota Mezanino':'FIDCs Cota Mez.',
   'FIDC Mezanino':'FIDC Mez.','Crédito Estruturado':'Créd. Estruturado',
   'Crédito Privado':'Créd. Privado','Precatório':'Precatório'
 };
@@ -696,7 +703,8 @@ const juntaRotulo=t=>{
 };
 
 const FUNDS=[{"key":"alt180","nome":"TIVIO ALT 180","cnpj":"58.038.938/0001-80","publico":"Investidores qualificados, Family Offices e Multi Family","inicio":"18/12/2024","b1lab":"Patrimônio líquido","b1val":"R$ 153.589.286,51","b2lab":"Patrimônio líquido médio (12M)","b2val":"R$ 104.590.801,56","k1":"12M","v1":"123%","k2":"Ano","v2":"120%","k3":"Mês","v3":"119%","taxas":"Taxa global: 1,15% a.a. Taxa de performance: 20% do que exceder do CDI. Resgate: D+180.","alloc":[{"n":"FIDCs Cota Sênior","p":49.3},{"n":"FIDCs Cota Mezanino","p":27.0},{"n":"Liquidez","p":9.1},{"n":"Crédito Estruturado","p":5.5},{"n":"Crédito Privado","p":3.4},{"n":"Fiagro","p":3.2},{"n":"Precatório","p":2.8}]},{"key":"alt90","nome":"TIVIO ALT 90","cnpj":"61.020.441/0001-40","publico":"Investidor qualificado","inicio":"06/06/2025","b1lab":"Patrimônio líquido","b1val":"R$ 20.954.147,09","b2lab":"Patrimônio líquido médio (12M)","b2val":"R$ 16.917.619,85","k1":"12M","v1":"112%","k2":"Ano","v2":"111%","k3":"Mês","v3":"108%","taxas":"Taxa global: 1,25% a.a. Taxa de performance: 10% do que exceder do CDI. Resgate: D+90.","alloc":[{"n":"FIDCs Cota Sênior","p":76.7},{"n":"Liquidez","p":15.7},{"n":"Crédito Privado","p":3.5},{"n":"Crédito Estruturado","p":2.8},{"n":"Fiagro","p":1.5},{"n":"FIDCs Cota Mezanino","p":0.5}]},{"key":"altlight","nome":"TIVIO ALT + Light","cnpj":"53.991.177/0001-63","publico":"Investidor qualificado","inicio":"11/11/2025","b1lab":"Patrimônio líquido","b1val":"R$ 20.571.241,16","b2lab":"Patrimônio líquido médio (desde o início)","b2val":"R$ 19.052.692,02","k1":"Desde o início","v1":"109%","k2":"Ano","v2":"101%","k3":"Mês","v3":"95%","taxas":"Taxa global: 1,15% a.a. Taxa de performance: 15% do retorno que exceder CDI+0,65%.","alloc":[{"n":"Bancário","p":39.6},{"n":"FIDCs Cota Sênior","p":25.9},{"n":"Crédito Privado","p":23.8},{"n":"Liquidez","p":8.2},{"n":"FIP","p":2.4}]}];
-FUNDS.forEach(f=>f.alloc.forEach(a=>{a.c=colorOf(a.n)}));
+FUNDS.forEach(f=>{const usadas=new Set();f.alloc.forEach(a=>{let c=colorOf(a.n);
+  if(usadas.has(c))c=CORES_RESERVA.find(x=>!usadas.has(x))||c;usadas.add(c);a.c=c})});
 
 const SEALS={
   anbima1:'https://www.tivio.com/wp-content/uploads/sites/1532/2026/07/selo-distribuicao.png',
