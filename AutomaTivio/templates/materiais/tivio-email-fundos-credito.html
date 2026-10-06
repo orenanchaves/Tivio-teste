@@ -307,6 +307,8 @@ body.edit .ecard [contenteditable]:hover{background:rgba(117,157,180,.16);box-sh
 .ecard.sq .sq-t.grande .sq-p{font-size:21px}
 .ecard.sq.gr .sq-v{color:#C1F4D4}
 .ecard.sq .sq-db{margin-top:12px;text-align:right}
+.ecard.sq .sq-nota{margin-top:8px;font-size:12px;color:rgba(255,255,255,.5)}
+.ecard.sq.elight .sq-nota{color:#6b7880}
 .ecard.sq .sq-cta{display:flex;align-items:center;justify-content:center;gap:10px;margin-top:16px;height:54px;border-radius:999px;font-family:"Versos",Helvetica,Arial,sans-serif;font-size:15px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;text-decoration:none}
 .ecard.sq .sq-cta svg{width:16px;height:16px}
 .ecard.sq.elight .sq-in{background:#fff}
@@ -591,15 +593,29 @@ function fundBlockHTML(f,simple){
   '</div>';
 }
 function squareCardHTML(f){
+  /* (patch) a mesma estrutura dos cards de Destaques: fundo CDI mostra só o
+     % do CDI em destaque ("100%" + "do CDI"); fundo de outro benchmark
+     (Infra Plus, IMA-B 5) mostra o retorno com o Alfa embaixo e a nota
+     "*Benchmark: IMA-B 5." */
   const fund=f.rows.find(r=>r[0]==='Fundo')||[];
   const pct=f.rows.find(r=>r[0]==='%')||[];
+  const alfa=f.rows.find(r=>r[0]==='Alfa')||[];
   const bench=(f.meta.find(m=>m[0]==='Benchmark')||[0,'CDI'])[1];
   const ok=v=>v&&v!=='-'&&v!=='\u2013'&&v!=='\u2014'&&v!=='\u2212';
+  const cdi=bench==='CDI';
+  const inteiro=v=>{if(!ok(v))return v;const neg=/^[-\u2212]/.test(v);
+    const n=parseFloat(String(v).replace(/[^\d,.]/g,'').replace(/\./g,'').replace(',','.'));
+    return isNaN(n)?v:(neg?'\u2212':'')+Math.round(n)+'%'};
   /* o maior período com número: 12M; sem 12M (fundo novo), desde o início */
-  const big=ok(fund[3])?{k:'12M',v:fund[3],p:pct[3]}:{k:'Desde o início',v:fund[6],p:pct[6]};
-  const tile=(k,v,p,cls)=>'<div class="sq-t '+cls+'"><div class="sq-k" contenteditable="true">'+k+'</div>'+
-    '<div class="sq-v" contenteditable="true">'+(ok(v)?v:'\u2013')+'</div>'+
-    (ok(p)?'<div class="sq-p" contenteditable="true">'+p+' do '+bench+'</div>':'')+'</div>';
+  const col=ok(fund[3])?3:6;
+  const big={k:col===3?'12M':'Desde o in\u00edcio',i:col};
+  const tile=(k,i,cls)=>{
+    const v=cdi?(ok(pct[i])?inteiro(pct[i]):fund[i]):fund[i];
+    const sub=cdi?(ok(pct[i])?'do CDI':''):(ok(alfa[i])?'*Alfa: '+alfa[i]:'');
+    return '<div class="sq-t '+cls+'"><div class="sq-k" contenteditable="true">'+k+'</div>'+
+      '<div class="sq-v" contenteditable="true">'+(ok(v)?v:'\u2013')+'</div>'+
+      (sub?'<div class="sq-p" contenteditable="true">'+sub+'</div>':'')+'</div>'};
+  const nota=cdi?'':'<div class="sq-nota" contenteditable="true">*Benchmark: '+bench+'.</div>';
   const acc=f.tone==='gr'?'#C1F4D4':'#759DB4', ink=f.tone==='gr'?'#06120C':'#06121C';
   return '<div class="ecard sq '+f.tone+'" data-name="tivio-email-'+f.key+'">'+
     '<div class="sq-in">'+
@@ -607,8 +623,8 @@ function squareCardHTML(f){
         '<p class="razao" contenteditable="true">'+f.razao+'</p></div>'+
         '<span class="tag" style="background:'+SEC[f.sec].color+'22;border:1px solid '+SEC[f.sec].color+'66;color:'+SEC[f.sec].color+'" contenteditable="true">'+SEC[f.sec].k+'</span></div>'+
       '<div class="sq-sec" contenteditable="true">Rentabilidade</div>'+
-      '<div class="sq-grid">'+tile(big.k,big.v,big.p,'grande')+
-        '<div class="sq-col">'+tile('Ano',fund[2],pct[2],'')+tile('M\u00eas',fund[1],pct[1],'')+'</div></div>'+
+      '<div class="sq-grid">'+tile(big.k,big.i,'grande')+
+        '<div class="sq-col">'+tile('ANO',2,'')+tile('M\u00caS',1,'')+'</div></div>'+nota+
       '<div class="databox sq-db" contenteditable="true">Data base: 31/07/2026</div>'+
       '<a class="cta sq-cta" href="'+f.report+'" target="_blank" rel="noopener" style="background:'+acc+';color:'+ink+'">'+
         '<span class="cta-txt">Ver relat\u00f3rio completo</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>'+
