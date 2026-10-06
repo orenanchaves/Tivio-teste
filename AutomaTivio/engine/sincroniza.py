@@ -15,7 +15,7 @@ Frases reconhecidas (o benchmark pode ser CDI, IMA-B 5, Ibovespa…):
   rentabilidade [, isenta de imposto de renda,] de X% no mês (Y% do CDI)
   obteve retorno de X% (Y% do CDI) no mês
   equivalente a Y% do CDI no período
-  acumulando / acumula X% (Y% do CDI) no ano | em 2026
+  acumulando / acumula X% (Y% do CDI) no ano | em 2026 | em 12 meses | desde o início
   acumula retorno de X%, frente a B% do CDI          (desde o início)
   desempenho de CDI + Z%                             (CDI+ desde o início)
   desempenho anualizado de W% do CDI
@@ -56,6 +56,9 @@ def _regras(ctx):
         # com o negrito do Markdown em volta dos números)
         (rf'(acumul(?:ando|a)\s(?:\*\*)?)({P})(\s*\()({P})(\s+do\s+{B}\)(?:\*\*)?\s+desde\s+o\s+in[íi]cio)',
          [(2, t('inicio', 'fundo')), (4, t('inicio', 'pct'))]),
+        # "acumulando X% (Y% do CDI) em 12 meses" (previdência: HGD30)
+        (rf'(acumul(?:ando|a)\s(?:\*\*)?)({P})(\s*\()({P})(\s+do\s+{B}\)(?:\*\*)?\s+(?:em|nos)(?:\s+[úu]ltimos)?\s*12\s*meses)',
+         [(2, t('12m', 'fundo')), (4, t('12m', 'pct'))]),
         # "acumula retorno de X%, frente a B% do CDI"
         (rf'(acumula\s+retorno\s+de\s)({P})(,\s+frente\s+a\s)({P})(\s+do\s+{B})',
          [(2, t('inicio', 'fundo')), (4, t('inicio', 'bench'))]),

@@ -318,9 +318,34 @@ class ContextoFundo:
         return [(n, fmt.pct(v, 2), round(v * 100, 4))
                 for n, v in (('Título Público', tp), ('S/rating', sr)) if v > 0.00005]
 
-    def composicao(self, grupos):
-        """'Tipo aj.' agrupado por `grupos` (Bancário, Corporativo, FIDC, Caixa)."""
-        return agrupar_tipos(self.cart.get('tipo_aj') if self.cart else None, grupos)
+    def composicao(self, setores_bancarios=('Financeiro', 'Financeiro Corp')):
+        """Composição da carteira dos materiais de previdência, na ordem do
+        Informativo: Corporativo, Bancário, FIDC, Caixa.
+
+        Caixa = tipo Caixa; FIDC = cota de FIDC; Bancário = emissor do setor
+        financeiro (LF, LFSC, LFSN, CDB e também debênture de banco); o resto é
+        Corporativo. Percentual sobre o total da carteira. Conferido com o
+        Informativo do HGD30 de setembro/2026:
+        28,3% / 36,1% / 7,2% / 28,4%.
+        """
+        ts = self.cart.get('tipo_setor') if self.cart else None
+        if ts is None:
+            return []
+        junto = {'Corporativo': 0.0, 'Bancário': 0.0, 'FIDC': 0.0, 'Caixa': 0.0}
+        for (tipo, setor, fidc), v in ts.items():
+            tipo = str(tipo).strip()
+            if tipo.lower() == 'caixa' or str(setor).strip() == 'Caixa':
+                junto['Caixa'] += v
+            elif bool(fidc) is True or tipo.upper().startswith('FIDC'):
+                junto['FIDC'] += v
+            elif str(setor).strip() in setores_bancarios:
+                junto['Bancário'] += v
+            else:
+                junto['Corporativo'] += v
+        # sobre o total da carteira (fecha 100%), não sobre o PL, como no Informativo
+        tot = sum(junto.values()) or 1.0
+        junto = {n: v / tot for n, v in junto.items()}
+        return [(n, fmt.pct(v, 1), round(v * 100, 2)) for n, v in junto.items() if v > 0.0005]
 
     @property
     def carrego(self):

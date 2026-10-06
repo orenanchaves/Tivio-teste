@@ -361,16 +361,18 @@ class Pipeline:
         if self.cfg.get('materiais', {}).get('relatorio_gestao', True):
             self._relatorios(contextos)
         self._landings(contextos)
+        self._previdencia(contextos)
         self._materiais_legados()
         self._copiar_libs()
         self._destaques()
         self._emails()
+        self._previdencia_saidas()
         self._porta_de_entrada()
         self._fechar(contextos)
         return self.log.ok
 
     def _landings(self, contextos):
-        """Páginas "Saiba mais sobre o fundo" (HGD30, HYD60): configs/landings.yml."""
+        """Páginas "Saiba mais sobre o fundo" (HGD30, HYD60): configs/previdencia.yml."""
         if not self.cfg['saidas'].get('html'):
             return
         from renderers.landing import RenderizadorLanding
@@ -390,6 +392,45 @@ class Pipeline:
                 self.log.erro(chave, f'falha ao montar a página Saiba mais: {e!r}')
                 continue
             exp_html.gravar(html, self._destino('central', lp.arquivo(chave)), self.log)
+
+    def _previdencia(self, contextos):
+        """Gerador do e-mail de previdência (central/) — os PNG, o HTML, o .eml
+        e o Informativo saem depois, em _previdencia_saidas."""
+        self._prev = None
+        if not self.cfg['saidas'].get('html'):
+            return
+        from renderers.previdencia import RenderizadorEmailPrevidencia
+        rend = RenderizadorRelatorio(self.edicao, self.cadastro, self.manual, self.log,
+                                     spreads=self.spreads)
+        em = RenderizadorEmailPrevidencia(rend, self.edicao, self.log)
+        self.log.contexto('email/previdencia')
+        try:
+            html = em.html(contextos)
+        except Exception as e:
+            self.log.erro('previdência', f'falha ao montar o e-mail de previdência: {e!r}')
+            return
+        exp_html.gravar(html, self._destino('central', em.ARQUIVO), self.log)
+        self._prev = em
+
+    def _previdencia_saidas(self):
+        """PNG + HTML + .eml (+ .oft) do e-mail e o Informativo (PPTX + PDF)."""
+        em = getattr(self, '_prev', None)
+        if em is None:
+            return
+        fundos = getattr(em, 'ultimos', [])
+        if self.cfg['saidas'].get('emails', True):
+            from exporters.previdencia import exportar_email
+            try:
+                exportar_email(self._destino('central'), self._destino('emails', 'previdencia'),
+                               em, fundos, self.log)
+            except Exception as e:
+                self.log.aviso('previdência', f'e-mail de previdência não exportado: {e!r}')
+        if self.cfg['saidas'].get('informativos', True):
+            from exporters.previdencia import exportar_informativos
+            try:
+                exportar_informativos(fundos, self._destino('informativos'), em, self.log)
+            except Exception as e:
+                self.log.aviso('previdência', f'Informativo não gerado: {e!r}')
 
     def _destaques(self):
         """JPG e pacote PDF dos posts de Destaques, uma pasta por vertical."""

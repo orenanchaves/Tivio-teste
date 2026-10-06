@@ -1,11 +1,11 @@
 # -*- coding: utf-8 -*-
 """Páginas "Saiba mais sobre o fundo" (previdência): HGD30 e HYD60.
 
-Uma página por entrada de `configs/landings.yml`, no design system da Central
+Uma página por entrada de `configs/previdencia.yml`, no design system da Central
 (casca escura, Versos, tokens de _marca.css). Os números saem do Contexto do
 fundo FIFE de cada uma (configs/fundos.yml): rentabilidade, alocação HG/HY/
 Caixa, setores, rating, composição, histórico, PL, duration e carrego. O texto
-do gestor vem de `entrada/landings.md`, com os números das frases-padrão
+do gestor vem de `entrada/previdencia.md`, com os números das frases-padrão
 trocados pelos da tabela (engine/sincroniza.py), como no comentário do
 relatório.
 
@@ -38,7 +38,7 @@ TITULOS = {
 
 
 def carregar_config(caminho=None):
-    caminho = caminho or os.path.join(RAIZ, 'configs', 'landings.yml')
+    caminho = caminho or os.path.join(RAIZ, 'configs', 'previdencia.yml')
     if not os.path.exists(caminho):
         return {}
     with open(caminho, encoding='utf-8') as f:
@@ -46,8 +46,8 @@ def carregar_config(caminho=None):
 
 
 def carregar_textos(caminho=None):
-    """entrada/landings.md -> {chave: texto markdown}."""
-    caminho = caminho or os.path.join(RAIZ, 'entrada', 'landings.md')
+    """entrada/previdencia.md -> {chave: texto markdown}."""
+    caminho = caminho or os.path.join(RAIZ, 'entrada', 'previdencia.md')
     if not os.path.exists(caminho):
         return {}
     txt = open(caminho, encoding='utf-8').read()
@@ -169,7 +169,7 @@ class RenderizadorLanding:
                 m = re.match(r'^(\S+%|\S+)\s+(.+)$', v) if v and not v.startswith(('R$', 'CDI')) else None
                 if m:
                     v, u = m.group(1), m.group(2)
-            saida.append({'rotulo': k.get('rotulo', ''), 'valor': v, 'unidade': u,
+            saida.append({'rotulo': k.get('rotulo', '').replace('{mes_ano}', self.edicao.mes_ano), 'valor': v, 'unidade': u,
                           'destaque': not v})
         return saida
 
@@ -217,11 +217,14 @@ class RenderizadorLanding:
         pg = self.paginas[chave]
         texto, faltando = ctx.preencher(self.textos.get(chave, ''))
         if not self.textos.get(chave):
-            self.log.aviso(chave, 'entrada/landings.md sem texto para esta página')
+            self.log.aviso(chave, 'entrada/previdencia.md sem texto para esta página')
         for k in faltando:
             self.log.aviso(chave, f'landing: marcador sem valor: {{{k}}}')
 
-        grupos = self.cfg.get('composicao') or {}
+        # previsão de alocação (HYD60): o % de cada linha é o da carteira do mês
+        aloc = {n: r for n, r, _ in ctx.alocacao_hghy}
+        previsao = [dict(a, alocacao=aloc.get(a.get('nome'), a.get('alocacao')))
+                    for a in pg.get('previsao_alocacao') or []]
         rating = list(ctx.rating_relatorio)
         if pg.get('rating_extras'):
             rating += ctx.rating_extras()
@@ -245,7 +248,8 @@ class RenderizadorLanding:
             setores=self._barras([x for x in ctx.setores_relatorio if x[0] != 'Caixa']
                                  + [x for x in ctx.setores_relatorio if x[0] == 'Caixa']),
             rating=self._barras(rating),
-            composicao=self._barras(ctx.composicao(grupos)),
+            composicao=self._barras(ctx.composicao()),
+            previsao=previsao,
             historico=json.dumps(self._historico(ctx), ensure_ascii=False),
             caracteristicas=self._caracteristicas(pg, ctx),
             disclaimer=self.r.disclaimer,

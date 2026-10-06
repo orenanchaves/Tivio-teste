@@ -13,7 +13,7 @@ def main(argv=None):
     ap.add_argument('--so', metavar='FUNDO', nargs='+',
                     help='gera só estes fundos (ex.: --so banks infraplus)')
     ap.add_argument('--saidas', metavar='FORMATO', nargs='+',
-                    choices=['html', 'pdf', 'pptx', 'destaques', 'emails'],
+                    choices=['html', 'pdf', 'pptx', 'destaques', 'emails', 'informativos'],
                     help='limita os formatos desta rodada')
     ap.add_argument('--config', default='configs/edicao.yml')
     ap.add_argument('--silencioso', action='store_true',

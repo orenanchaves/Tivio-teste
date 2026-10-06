@@ -307,18 +307,30 @@ Reescrevê-los como template Jinja trocaria material desenhado por uniformidade
 de código, o que é troca ruim. Eles seguem sendo a fonte do layout; o que mudou
 é **de onde vem o número** — agora do mesmo Contexto que alimenta o relatório.
 
-### As páginas "Saiba mais" (HGD30, HYD60)
+### Previdência: páginas "Saiba mais", e-mail e Informativo (HGD30, HYD60)
 
-`renderers/landing.py` + `templates/landing.html`, chamados por
-`Pipeline._landings` depois dos relatórios. Uma página por entrada de
-`configs/landings.yml`, gravada em `central/tivio-<chave>-saiba-mais.html`.
-Os fundos `hgd30` e `hyd60` de `configs/fundos.yml` apontam para as carteiras
-**FIFE**; os cortes novos nasceram no Contexto (`alocacao_hghy`,
-`composicao(grupos)`, `rating_extras()`) a partir de `hghy_tipo`, `tipo_aj` e
-`rating_book` de `Calc.carteira`. Texto do gestor em `entrada/landings.md`
-(Markdown simples, passa por `ctx.preencher`). Logos em `assets/landings/`:
-`logo_svg()` troca as classes do Illustrator por atributos e o preto por
-`currentColor`. Design de referência: interno-bradesco.tivio.com.
+Configuração em `configs/previdencia.yml`; texto do gestor em
+`entrada/previdencia.md` (passa por `ctx.preencher`, inclusive a regra nova
+"acumulando X% (Y%) em 12 meses"). Os fundos `hgd30` e `hyd60` de
+`configs/fundos.yml` apontam para as carteiras **FIFE** (rentabilidade, PL e
+carteira). Cortes no Contexto: `alocacao_hghy`, `composicao()` (Bancário por
+setor, sobre o total da carteira), `rating_extras()`, a partir de `hghy_tipo`,
+`tipo_aj`, `tipo_setor` e `rating_book` de `Calc.carteira`.
+
+- `renderers/landing.py` + `templates/landing.html` → `central/tivio-<chave>-saiba-mais.html`.
+- `renderers/previdencia.py::dados_fundo` junta tudo o que e-mail e Informativo
+  mostram; `RenderizadorEmailPrevidencia` gera `central/tivio-email-previdencia.html`
+  (blocos em `templates/previdencia/blocos.html` + `blocos.css`) e o HTML de
+  disparo (`templates/previdencia/email_disparo.html`).
+- `exporters/previdencia.py`: `exportar_email` (Playwright fotografa cada bloco;
+  grava PNG, HTML e .eml com cid:) e `exportar_informativos` (python-pptx sobre
+  o PPTX de `templates/informativos/`, mapa de shapes em `MAPAS`; os gráficos
+  perdem o vínculo com a planilha Excel externa e ganham uma embutida; PDF pelo
+  PowerPoint via COM). O `.oft` pelo Outlook existe (`oft=True`) mas fica
+  desligado: sem perfil configurado o Outlook abre a tela de boas-vindas e trava.
+- Pipeline: `_landings` e `_previdencia` depois dos relatórios; `_previdencia_saidas`
+  depois dos e-mails. Cards na Central: landings `l4`/`l5`, e-mail `e3`, e os
+  Informativos (`inf-*`) entram por `RenderizadorLegado.central`.
 
 ---
 

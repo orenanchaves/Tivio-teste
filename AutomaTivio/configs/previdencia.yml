@@ -1,5 +1,6 @@
 # ============================================================================
-# Páginas "Saiba mais sobre o fundo" (previdência) — HGD30 e HYD60
+# Materiais de previdência (HGD30 e HYD60): página "Saiba mais", e-mail e
+# Informativo (PPTX + PDF)
 # ----------------------------------------------------------------------------
 # Os NÚMEROS saem da planilha do mês (carteira FIFE de cada fundo em
 # configs/fundos.yml): rentabilidade, alocação HG/HY/Caixa, exposição setorial,
@@ -7,26 +8,18 @@
 #
 # Aqui fica só o que a planilha não tem: nome e CNPJ exibidos, meta, público,
 # taxas, textos fixos. O texto do gestor ("Visão de Mercado", "Destaques") fica
-# em entrada/landings.md.
+# em entrada/previdencia.md (o mesmo texto vai para os três materiais).
 #
-# Saída: saida/AAAA-MM/central/tivio-<chave>-saiba-mais.html
+# Saídas:
+#   saida/AAAA-MM/central/tivio-<chave>-saiba-mais.html     página Saiba mais
+#   saida/AAAA-MM/central/tivio-email-previdencia.html      gerador de e-mail
+#   saida/AAAA-MM/emails/previdencia/<chave>/               PNG dos blocos + HTML
+#   saida/AAAA-MM/informativos/                             Informativo PPTX e PDF
 # ============================================================================
 
-# Tipo do ativo (coluna Tipo aj.) -> grupo da "Composição da carteira"
-composicao:
-  LF: Bancário
-  LFSC: Bancário
-  LFSN: Bancário
-  CDB: Bancário
-  DPGE: Bancário
-  Debênture: Corporativo
-  NC: Corporativo
-  CRA: Corporativo
-  CRI: Corporativo
-  FIDC Sr: FIDC
-  FIDC Mez/Sub: FIDC
-  Caixa: Caixa
-  ordinária: Corporativo
+# Composição da carteira (Corporativo, Bancário, FIDC, Caixa): regra fixa em
+# engine/contexto.py::composicao. Bancário = emissor do setor Financeiro ou
+# Financeiro Corp (inclui debênture de banco), como no Informativo.
 
 paginas:
   hgd30:
@@ -52,6 +45,11 @@ paginas:
       - {rotulo: Duration, dado: duration}
       - {rotulo: Patrimônio Líquido, dado: pl_curto}
     caracteristicas: [nome, cnpj, inicio, pl_medio, publico, taxas]
+    email:
+      titulo: TIVIO HGD30 FIF CLASSE INVESTIMENTO RF CP FIFE RL
+      produto: "/ / BRADESCO TIVIO HGD30 PGBL/VGBL RF CRÉDITO PRIVADO"
+      blocos: [cabecalho, texto, kpis, rentabilidade, alocacao, setorial, rating, composicao, historico, caracteristicas]
+    informativo: templates/informativos/hgd30.pptx
     secoes: [texto, kpis, rentabilidade, alocacao_real, setorial, rating, composicao, historico, caracteristicas]
 
   hyd60:
@@ -67,12 +65,13 @@ paginas:
     kpis:
       - {rotulo: Fundo de Previdência, valor: ""}
       - {rotulo: "Resgate", valor: "D+60"}
-      - {rotulo: Carrego, dado: carrego}
+      - {rotulo: "Carrego ({mes_ano})", dado: carrego}
       - {rotulo: Capacity limitada, valor: "R$ 500 milhões"}
       - {rotulo: Duration, dado: duration}
       - {rotulo: "Taxas de Adm & Gestão", valor: "1% a.a."}
       - {rotulo: Taxa de Performance, valor: "20% do que exceder 100% do CDI"}
     previsao_alocacao:
+      # o % de alocação sai da carteira do mês; o retorno estimado fica fixo
       - {nome: Crédito High Grade, alocacao: "70%", retorno: "CDI + 1,20%"}
       - {nome: Crédito High Yield, alocacao: "25%", retorno: "CDI + 3,00%"}
       - {nome: Caixa, alocacao: "5%", retorno: "100% do CDI"}
@@ -114,5 +113,10 @@ paginas:
           A menor volatilidade dos fundos de crédito estruturado é resultado de
           uma combinação de fatores resultantes da gestão ativa do fundo.
     caracteristicas: [nome, cnpj]
-    rating_extras: true               # colunas Título Público e S/rating, como no publicado
-    secoes: [texto, kpis, previsao_alocacao, setorial, rating, beneficios, caracteristicas]
+    email:
+      titulo: BRADESCO TIVIO HYD60 PGBL VGBL FIF CIC MULTIMERCADO CP RL
+      produto: "/ / BRADESCO TIVIO HYD60 PGBL/VGBL FIF"
+      nota_rating: "*Não incluindo a parte de crédito estruturado"
+      blocos: [cabecalho, texto, kpis, rentabilidade, alocacao, setorial, rating, historico, beneficios]
+    informativo: templates/informativos/hyd60.pptx
+    secoes: [texto, kpis, rentabilidade, previsao_alocacao, setorial, rating, historico, beneficios, caracteristicas]

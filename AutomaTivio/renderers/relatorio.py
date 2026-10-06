@@ -541,8 +541,10 @@ class RenderizadorRelatorio:
         # confiável é a primeira cota da série — que é, por definição, quando o
         # fundo começou a ser cotado. Confere com os relatórios publicados
         # (Banks 30/04/2009, Institucional 13/05/2005).
-        inicio = None
-        if f.resolvido and f.data_inicial is not None and str(f.data_inicial) != 'NaT':
+        inicio = self._inicio_exibido(f)
+        if inicio is not None:
+            pass
+        elif f.resolvido and f.data_inicial is not None and str(f.data_inicial) != 'NaT':
             inicio = f.data_inicial
         elif ctx.data_inicio is not None:
             inicio = ctx.data_inicio
@@ -584,6 +586,15 @@ class RenderizadorRelatorio:
             return f.data_inicial
         return ctx.data_inicio
 
+    @staticmethod
+    def _inicio_exibido(f):
+        """`data_inicio: DD/MM/AAAA` em fundos.yml: só a data escrita nas
+        características (Infra Plus 15/07/2019). O gráfico continua na DePara."""
+        if f.cfg.get('data_inicio'):
+            import pandas as _pd
+            return _pd.to_datetime(str(f.cfg['data_inicio']), dayfirst=True)
+        return None
+
     def caracteristicas_modelo(self, ctx):
         """As duas colunas de "Características gerais do fundo" do publicado.
 
@@ -593,7 +604,7 @@ class RenderizadorRelatorio:
         """
         f = ctx.f
         ve = self.ve(f)
-        inicio = self._inicio(ctx)
+        inicio = self._inicio_exibido(f) or self._inicio(ctx)
         esq = [('Gestor', 'Tivio Capital'),
                ('Público Alvo', f.cfg.get('publico', 'Investidores em geral'))]
         if inicio is not None:

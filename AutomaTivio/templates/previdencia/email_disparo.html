@@ -1,0 +1,46 @@
+{# E-mail pronto para o disparo: os textos em HTML e cada bloco de dados como
+   imagem (o PNG que o gerador exporta, no mesmo ZIP). `arquivos` mapeia o
+   bloco ao nome do PNG. Tabelas e estilo em linha: é o que os clientes de
+   e-mail entendem. #}
+{% set TITULOS = {
+  'hg': {'alocacao': 'Alocação da Carteira', 'setorial': 'Exposição Setorial',
+         'rating': 'Distribuição de Rating da Carteira', 'rating_sub': 'Exposição de Rating Externo',
+         'composicao': 'Composição da carteira', 'historico': 'Rentabilidade histórica',
+         'rentabilidade': ''},
+  'hy': {'alocacao': 'Alocação e retorno estimados da carteira', 'setorial': 'Exposição setorial',
+         'rating': 'Distribuição de rating da carteira | Exposição de rating externo*',
+         'composicao': 'Composição da carteira', 'historico': 'Rentabilidade histórica',
+         'rentabilidade': 'Rentabilidade', 'beneficios': 'Benefícios do crédito estruturado'}} %}
+{% set T = TITULOS[d.estilo] %}
+{% set VF = "'Versos','Helvetica Neue',Helvetica,Arial,sans-serif" %}
+<!DOCTYPE html>
+<html lang="pt-BR"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Saiba mais sobre o fundo {{ d.nome_curto }}</title></head>
+<body style="margin:0;padding:0;background:#F4F4F4">
+<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background:#F4F4F4"><tr><td align="center" style="padding:16px 0">
+<table role="presentation" width="600" cellpadding="0" cellspacing="0" style="width:600px;max-width:100%;background:#FFFFFF;font-family:{{ VF }};color:#1d1d1d">
+{% for b in d.blocos %}
+  {% if b == 'texto' %}
+  <tr><td style="padding:22px 26px 6px;font-size:13px;line-height:1.5">{{ d.texto_html|replace('<p>', '<p style="margin:0 0 10px">')|replace('<h3>', '<p style="margin:14px 0 8px;font-weight:700;color:#000">')|replace('</h3>', '</p>')|replace('<ul>', '<ul style="margin:0 0 10px;padding-left:22px">')|replace('<li>', '<li style="margin:0 0 6px">')|safe }}</td></tr>
+  {% elif b == 'caracteristicas' %}
+  <tr><td style="padding:18px 26px;font-size:12px;line-height:1.5">
+    <p style="margin:0 0 6px"><b>Características do fundo:</b></p>
+    {% for k, v in d.caracteristicas %}<p style="margin:0 0 6px">{% if k == 'Nome' %}<b>{{ v }}</b>{% else %}{{ k }}: <b>{{ v }}</b>{% endif %}</p>{% endfor %}
+  </td></tr>
+  {% else %}
+    {% if T.get(b) %}
+    <tr><td style="padding:22px 26px 4px;font-size:{{ '14px' if d.estilo == 'hg' else '11px' }};font-weight:700;{{ 'text-transform:uppercase;letter-spacing:.06em;' if d.estilo == 'hy' }}color:#000">{{ T[b] }}{% if b == 'rating' and d.estilo == 'hg' %}<br><span style="font-weight:400">{{ T.rating_sub }}</span>{% endif %}</td></tr>
+    {% endif %}
+  <tr><td style="padding:0"><img src="{{ arquivos[b] }}" width="600" alt="{{ nomes_bloco[b] }}" style="display:block;width:100%;max-width:600px;height:auto;border:0"></td></tr>
+  {% endif %}
+{% endfor %}
+  <tr><td style="padding:20px 26px 6px;font-size:13px;line-height:1.5">Em caso de dúvidas, entre em contato conosco.<br><br>Atenciosamente,<br><b>Tivio Capital</b></td></tr>
+  <tr><td style="padding:18px 26px;font-size:9px;line-height:1.5;color:#444">
+    <p style="margin:0 0 6px;font-weight:700">Disclaimer</p>
+    {% for p in disclaimer %}<p style="margin:0 0 6px">{{ p }}</p>{% endfor %}
+    <p style="margin:10px 0 0"><b>SAC: 0800 704 8383</b> · Atendimento 24 horas<br><b>Ouvidoria: 0800 727 9933</b> · Atendimento das 9h às 18h, de segunda a sexta-feira, exceto feriados nacionais.</p>
+  </td></tr>
+  <tr><td align="center" style="padding:16px;background:#000;color:#fff;font-size:12px;font-weight:700">www.tivio.com</td></tr>
+</table>
+</td></tr></table>
+</body></html>

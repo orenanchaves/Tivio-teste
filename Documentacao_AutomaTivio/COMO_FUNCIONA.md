@@ -57,6 +57,7 @@ AutomaTivio/saida/AAAA-MM/
 │   ├── tivio-post-*.html         carrosséis de Destaques (editáveis na tela)
 │   ├── tivio-hgd30-saiba-mais.html   página "Saiba mais" do HGD30 (previdência)
 │   ├── tivio-hyd60-saiba-mais.html   página "Saiba mais" do HYD60 (previdência)
+│   ├── tivio-email-previdencia.html  gerador do e-mail de previdência (HGD30 e HYD60)
 │   └── tivio-email-*.html        construtores de e-mail
 ├── pdf/                          13 relatórios em PDF A4, texto selecionável
 ├── pptx/                         13 relatórios em PPTX, texto editável
@@ -69,6 +70,9 @@ AutomaTivio/saida/AAAA-MM/
 │   │   ├── tivio-email-<fundo>.png     um card por fundo
 │   │   ├── tivio-email-completo.png    o e-mail inteiro
 │   │   └── email-<versao>.html         pronto para o disparo
+│   └── previdencia/hgd30/ e hyd60/    blocos em PNG (01-…, 02-…) + email-<fundo>.html
+│                                      + email-<fundo>.eml (abre no Outlook com as imagens)
+├── informativos/                 Informativo HGD30 e HYD60 em PPTX e PDF
 ├── conferencia_AAAA-MM.xlsx      o que mudou, o que faltou, o que não bateu
 └── AAAA-MM-processamento.log     registro completo da rodada
 ```
@@ -161,7 +165,35 @@ para e não publica.
   que existe, e tira o card que apontaria para link quebrado.
 - Todas as páginas têm o botão **Central de Materiais** para voltar.
 
-### 4.5b Páginas "Saiba mais" (HGD30 e HYD60)
+### 4.5b Previdência (HGD30 e HYD60): página, e-mail e Informativo
+
+Os três materiais leem os mesmos números e o mesmo texto:
+- **Rentabilidade, PL e carteira: FIFE** (`TIVIO HGD30 RF CP FIFE RL` e
+  `TIVIO HYD60 FIFE CI MULT CP RL - Expandida`). Nome, CNPJ e produto exibidos
+  ficam em `configs/previdencia.yml`.
+- **Texto do gestor:** `entrada/previdencia.md` (um `## hgd30`, um `## hyd60`).
+  As frases "rentabilidade de X% no mês (Y% do CDI), acumulando Z% (W% do CDI)
+  em 12 meses / desde o início" são ajustadas à tabela.
+- **Composição da carteira:** Bancário = emissor do setor Financeiro ou
+  Financeiro Corp (inclui debênture de banco), Corporativo, FIDC e Caixa, sobre o
+  total da carteira. Confere com o Informativo de setembro (28,3 / 36,1 / 7,2 / 28,4).
+- **HYD60:** agora com rentabilidade (Mês e Desde o início) e histórico nos três
+  materiais. A "Previsão de Alocação" usa o HG/HY/Caixa do mês; o retorno
+  estimado fica fixo.
+
+**Informativo (PPTX + PDF):** o modelo é o PPTX que vai para os clientes
+(`templates/informativos/`). A automação troca o mês, o texto do gestor, PL,
+duration, alocação, os gráficos de rating e composição e a imagem de setores; o
+resto do desenho fica igual. No HYD60 entra uma página de rentabilidade. O PDF
+sai pelo PowerPoint (precisa do Office instalado).
+
+**E-mail:** `central/tivio-email-previdencia.html`, no formato do gerador de
+Fundos de Crédito: uma aba por fundo, cada bloco com "Baixar PNG", "Baixar tudo
+(ZIP)" e "E-mail (HTML)". A rodada já grava em `emails/previdencia/<fundo>/` os
+PNG, o HTML e um **.eml**: abre no Outlook com as imagens no corpo, pronto para
+enviar; para virar modelo, Arquivo > Salvar como > Modelo do Outlook (.oft).
+
+### 4.5c Páginas "Saiba mais" (HGD30 e HYD60)
 
 - Uma página por fundo de previdência, no design system do site interno
   (interno-bradesco.tivio.com): casca escura com modo claro, Versos, cartões de
@@ -171,11 +203,11 @@ para e não publica.
   Caixa, exposição setorial, rating (no HYD60 também Título Público e
   S/rating), composição (Bancário, Corporativo, FIDC, Caixa), histórico em
   ECharts, PL, PL médio, duration e carrego.
-- **Texto do gestor** em `entrada/landings.md` (um `## hgd30` / `## hyd60`).
+- **Texto do gestor** em `entrada/previdencia.md` (um `## hgd30` / `## hyd60`).
   A frase "apresentou rentabilidade de X% no mês (Y% do CDI), acumulando Z%
   (W% do CDI) desde o início" é ajustada à tabela, como no relatório.
 - **O resto** (nome, CNPJ, meta, público, taxas, cards, previsão de alocação,
-  benefícios, quais seções entram e em que ordem) em `configs/landings.yml`.
+  benefícios, quais seções entram e em que ordem) em `configs/previdencia.yml`.
 - **Logos** oficiais em `assets/landings/` (empilhado no topo, horizontal no
   cabeçalho), com o texto em curvas. O preto do desenho vira branco no modo
   escuro; a cor do HG e do HY fica a do arquivo.
@@ -189,7 +221,8 @@ página, então o arquivo sai idêntico ao que sairia clicando:
 - **E-mails:** as três versões (Ágora, que é o cartão quadrado, BTG e XP), PNG de cada card,
   PNG do e-mail completo e o HTML de disparo.
 
-Para desligar algum formato: `AutomaTivio/configs/edicao.yml` → `saidas:`.
+Para desligar algum formato: `AutomaTivio/configs/edicao.yml` → `saidas:`
+(`html`, `pdf`, `pptx`, `destaques`, `emails`, `informativos`).
 
 ---
 
@@ -208,8 +241,11 @@ Para desligar algum formato: `AutomaTivio/configs/edicao.yml` → `saidas:`.
 | Visual da folha (cores, tamanhos) | `templates/estilos/relatorio.css` |
 | Logo de um fundo | o SVG em `assets/logos/`, sempre **horizontal** e com o texto em curvas |
 | Texto jurídico do rodapé | `configs/disclaimer.md` |
-| Texto das páginas Saiba mais (HGD30, HYD60) | `entrada/landings.md` |
-| Cards, seções, taxas e público das páginas Saiba mais | `configs/landings.yml` |
+| Texto do gestor do HGD30 e do HYD60 (página, e-mail e Informativo) | `entrada/previdencia.md` |
+| Cards, seções, taxas, público e blocos do e-mail de previdência | `configs/previdencia.yml` |
+| Modelo do Informativo (PPTX) | `templates/informativos/` (os nomes dos shapes estão em `exporters/previdencia.py`, `MAPAS`) |
+| Data de início exibida diferente da DePara | `configs/fundos.yml` → `data_inicio: DD/MM/AAAA` (Infra Plus: 15/07/2019) |
+| Disclaimer dos carrosséis de Destaques | `templates/materiais/tivio-post-*.html` (`DISCLAIMER_HTML`) |
 
 ---
 
@@ -253,8 +289,8 @@ python -m playwright install chromium
   ficaram guardados em `entrada/comentarios_2026-08.md`.
 - **BVP:** sem logo em `assets/logos/`.
 - **Tivio Atuarial:** fora da DePara da planilha, então não gera relatório.
-- **Texto das páginas Saiba mais:** `entrada/landings.md` ainda traz o texto
-  que estava no site (HGD30 de agosto, HYD60 de junho). Trocar pelo do mês.
+- **Texto de previdência:** em `entrada/previdencia.md`, o HGD30 já é o de
+  setembro; o HYD60 ainda é o de agosto. Trocar pelo do mês.
 - **Botão "Voltar ao C&M Hub"** da Central: aponta para uma página que não existe
   no projeto.
 

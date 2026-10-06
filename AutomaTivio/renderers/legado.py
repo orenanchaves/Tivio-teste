@@ -26,6 +26,7 @@ MENSAIS = {
     'tivio-post-credito-estruturado.html', 'tivio-post-credito-privado.html',
     'tivio-post-investment-solutions.html',
     'tivio-email-fundos-credito.html',
+    'tivio-email-previdencia.html', 'tivio-hgd30-saiba-mais.html', 'tivio-hyd60-saiba-mais.html',
 }
 
 
@@ -502,7 +503,7 @@ const RECORRENTES=%REC%;
 
         def fn(seed):
             for it in seed:
-                if it.get('link') in MENSAIS and it.get('kind') in ('destaques', 'relatorios', 'emails'):
+                if it.get('link') in MENSAIS and it.get('kind') in ('destaques', 'relatorios', 'emails', 'landings'):
                     self.set(it.get('id', '?'), it, 'date', rotulo)
 
             if not novos:
@@ -533,6 +534,23 @@ const RECORRENTES=%REC%;
                          'Construtor interativo, folha a folha. Os relatórios '
                          'prontos do mês estão no card acima. '
                          + str(it.get('desc', '')))
+
+            # Informativos de previdência (PPTX + PDF) desta edição: saem em
+            # ../informativos/, depois da Central; o nome é previsível
+            from urllib.parse import quote
+            seed = [it for it in seed if not str(it.get('id', '')).startswith('inf-')]
+            mes = f'{fmt.MESES[self.edicao.db.month - 1]} {self.edicao.db.year}'
+            infs = []
+            for sigla, nome in (('HGD30', 'Tivio HGD30'), ('HYD60', 'Bradesco Tivio HYD60')):
+                base = '../informativos/' + quote(f'Informativo - {sigla} - {mes}')
+                infs.append({'id': f'inf-{sigla.lower()}', 'kind': 'apresentacoes',
+                             'vert': 'previdencia', 'title': f'Informativo · {nome}',
+                             'desc': 'Informativo mensal que vai para os clientes, com os '
+                                     'números da carteira do mês. PPT editável e PDF.',
+                             'date': rotulo, 'status': 'pronto',
+                             'link': base + '.pptx', 'pdf': base + '.pdf'})
+            pos = next((i for i, it in enumerate(seed) if it.get('kind') == 'apresentacoes'), len(seed))
+            seed[pos:pos] = infs
 
             # card apontando para HTML que não existe é link morto no índice —
             # alguém clica e não acontece nada

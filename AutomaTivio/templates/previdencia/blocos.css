@@ -1,0 +1,135 @@
+/* Blocos do e-mail de previdência: 600 px de largura, fundo branco, no
+   desenho das imagens que vão hoje no Mailchimp. Cores tiradas das imagens
+   publicadas (HGD30 azul, HYD60 verde). */
+.bloco{width:600px;background:#fff;color:#000;font-family:"Versos","Helvetica Neue",Helvetica,Arial,sans-serif;
+  font-weight:400;box-sizing:border-box;padding:22px 26px;position:relative;line-height:1.3;
+  -webkit-font-smoothing:antialiased}
+.bloco *{box-sizing:border-box}
+.bloco.sem-pad{padding:0}
+.b-nota{font-size:8px;color:#000;text-align:right;margin-top:8px}
+.b-nota.esq{text-align:left;margin-top:10px}
+
+/* cabeçalho */
+.b-cab{position:relative;height:256px;background-size:cover;background-position:right center;overflow:hidden}
+.b-cab .cab-tivio{position:absolute;top:22px;right:24px;width:70px;height:25px;color:#fff}
+.b-cab.hg{color:#fff}
+.b-cab.hg .cab-sub{position:absolute;left:26px;top:26px;font-size:17px;font-weight:600;line-height:1.15}
+.b-cab.hg .cab-logo{position:absolute;left:26px;top:76px;width:205px;color:#fff}
+.b-cab.hg .cab-logo svg{width:100%;height:auto;display:block}
+.b-cab.hg .cab-prod{position:absolute;left:26px;top:124px;font-size:8.5px;font-weight:700;letter-spacing:.02em}
+.b-cab .cab-pe{position:absolute;left:26px;bottom:22px;display:flex;align-items:center;gap:16px}
+.b-cab .cab-mes{border:1px solid currentColor;border-radius:4px;padding:5px 9px;font-size:9px;letter-spacing:.04em}
+.b-cab .cab-uso{font-size:6.5px;letter-spacing:.06em;text-transform:uppercase}
+.b-cab.hy{color:#111;height:270px;background-position:center 30%}
+.b-cab.hy .cab-tivio{color:#111}
+.b-cab.hy .cab-logo{position:absolute;left:30px;top:70px;width:200px;color:#111}
+.b-cab.hy .cab-logo svg{width:100%;height:auto;display:block}
+.b-cab.hy .cab-pe{left:30px;bottom:auto;top:178px}
+.b-cab.hy .cab-mes{font-size:8px;padding:4px 8px}
+.b-uso{background:#E9EAEA;color:#555;text-align:center;font-size:7px;letter-spacing:.08em;text-transform:uppercase;padding:6px 0}
+
+/* texto do gestor */
+.b-txt{font-size:12.5px;line-height:1.5;color:#1d1d1d}
+.b-txt p{margin:0 0 10px}
+.b-txt h3{font-size:12.5px;font-weight:700;margin:14px 0 8px;color:#000}
+.b-txt h3:first-child{margin-top:0}
+.b-txt ul{margin:0 0 10px;padding-left:22px}
+.b-txt li{margin:0 0 6px}
+.b-txt strong{font-weight:700;color:#000}
+
+/* indicadores HG: três caixas com contorno preto */
+.b-kpis.hg{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+.b-kpis.hg .kb{border:1.6px solid #000;border-radius:12px;padding:9px 12px 12px}
+.b-kpis.hg .kl{font-size:10.5px;padding-bottom:6px;border-bottom:1px solid #000;margin-bottom:12px}
+.b-kpis.hg .kv{font-size:21px;font-weight:700;letter-spacing:-.01em;white-space:nowrap}
+.b-kpis.hg .kv small{font-size:13px;font-weight:600}
+
+/* indicadores HY: ladrilhos verde e grafite, grade de 12 colunas */
+.b-kpis.hy{display:grid;grid-template-columns:repeat(12,1fr);gap:7px}
+.b-kpis.hy .kt{border-radius:9px;min-height:96px;padding:12px 13px;display:flex;flex-direction:column;justify-content:space-between}
+.b-kpis.hy .kg{background:linear-gradient(135deg,#C1F4D4 0%,#92D3AB 60%,#6FBF8E 100%);color:#0A2415}
+.b-kpis.hy .kd{background:linear-gradient(135deg,#5E5E5E 0%,#3A3A3A 55%,#262626 100%);color:#fff}
+.b-kpis.hy .kt-l{font-size:11.5px;line-height:1.2}
+.b-kpis.hy .kt-v{font-size:27px;line-height:1.05;font-weight:500;letter-spacing:-.01em}
+.b-kpis.hy .kt-v small{font-size:13px;font-weight:400;letter-spacing:0}
+.b-kpis.hy .kt-v small.un{display:block;font-size:10px;line-height:1.2;margin-top:4px}
+.b-kpis.hy .kt-dest{font-size:15px;font-weight:600;line-height:1.15;margin-top:18px}
+.b-kpis.hy .kt-linha{display:block;height:1px;background:#0A2415;width:70%;margin-bottom:10px}
+.b-kpis.hy .kt-t{align-items:center;justify-content:center}
+.b-kpis.hy .kt-t svg{width:46px;height:auto;color:#fff}
+
+/* rentabilidade */
+.b-rent{width:100%;border-collapse:collapse;font-size:11.5px}
+.b-rent th{font-size:11px;font-weight:700;text-align:center;padding:0 0 6px;border-bottom:1px solid #808080}
+.b-rent td{padding:6px 0;border-bottom:1px solid #BFBFBF;text-align:center;color:#808080;font-variant-numeric:tabular-nums}
+.b-rent td:first-child{text-align:left;font-weight:700;color:#000;width:30%}
+.b-rent tr.f td{color:#3C4A60;font-weight:600}
+.b-rent tr.f td:first-child{color:#000}
+.b-rent.hy tr.f td{color:#337F51}
+.b-rent.hy tr.f td:first-child{color:#000}
+
+/* alocação: barras cheias com o quadrado mais escuro à esquerda */
+.b-aloc{position:relative;padding:64px 0 30px}
+.b-aloc .col{position:absolute;top:0;bottom:0;background:#F2F2F2;border:1px solid #D9D9D9;padding:8px 9px;font-size:10px;line-height:1.15}
+.b-aloc .col b{display:block;font-size:11px}
+.b-aloc .col small{display:block;font-size:6.5px;color:#595959;margin-top:2px}
+.b-aloc .col em{position:absolute;left:9px;bottom:8px;font-style:normal;font-size:6.5px;color:#000}
+.b-aloc.hg .c1{left:47%;width:33%}
+.b-aloc.hy .c1{left:47%;width:20%}
+.b-aloc.hy .c2{left:70%;width:20%}
+.b-aloc .lin{position:relative;display:flex;align-items:center;height:42px;margin:0 0 12px 28px;color:#fff;font-weight:700;font-size:13px}
+.b-aloc .lin .sq{position:absolute;left:-28px;top:-3px;bottom:-3px;width:30px;border:1px solid rgba(0,0,0,.35)}
+.b-aloc .lin .n{padding-left:14px}
+.b-aloc .lin .v{position:absolute;left:calc(47% - 28px + 10px)}
+.b-aloc .lin .r{position:absolute;left:calc(70% - 28px + 10px)}
+.b-aloc.hg .l1{background:#557F97}.b-aloc.hg .l1 .sq{background:#2A3F4B}
+.b-aloc .l2{background:#92D3AB}.b-aloc .l2 .sq{background:#52B97A}
+.b-aloc .l3{background:#7F7F7F}.b-aloc .l3 .sq{background:#595959}
+.b-aloc.hy .l1{background:#4B9D74}.b-aloc.hy .l1 .sq{background:#2A3F4B}
+
+/* setores: barras horizontais, Caixa no pé */
+.b-set{display:flex;flex-direction:column;gap:5px;position:relative}
+.b-set .sl{display:grid;grid-template-columns:44% 1fr;align-items:center;gap:0}
+.b-set .n{text-align:right;padding-right:10px;font-size:11.5px;line-height:1.15;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.b-set .t{display:flex;align-items:center;gap:8px;border-left:1.2px solid #000;min-height:18px}
+.b-set .f{height:13px;background:#C8D7E0;flex:0 0 auto}
+.b-set .cx .f{background:#D4D4D4}
+.b-set .v{font-size:12px;font-weight:700;white-space:nowrap}
+.b-set.hy .n{color:#404040;font-size:10.5px}
+.b-set.hy .t{border-left-color:#595959}
+.b-set.hy .f{background:#92D3AB}
+.b-set.hy .cx .f{background:#A8BCB0}
+.b-set.hy .v{font-weight:400;color:#404040;font-size:10.5px}
+
+/* rating: colunas */
+.b-rat .cols{display:flex;align-items:flex-end;gap:12px;height:190px;border-bottom:1px solid #000}
+.b-rat .rc{flex:1 1 0;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;height:100%}
+.b-rat .rc .v{font-size:10px;font-weight:700;margin-bottom:4px;white-space:nowrap}
+.b-rat .rc .f{width:72%;background:#C8D7E0}
+.b-rat .labs{display:flex;gap:12px;margin-top:5px}
+.b-rat .labs span{flex:1 1 0;text-align:center;font-size:9.5px}
+.b-rat.hy .rc .f{background:#92D3AB}
+.b-rat.hy .rc .v{color:#4B9D74}
+
+/* composição */
+.b-comp{display:flex;flex-direction:column;gap:18px;padding:6px 0}
+.b-comp .cl{display:grid;grid-template-columns:110px 1fr;align-items:center}
+.b-comp .n{text-align:right;padding-right:10px;font-size:11px;font-weight:700}
+.b-comp .t{border-left:1.2px solid #000;min-height:26px;display:flex;align-items:center}
+.b-comp .f{height:20px;background:#C8D7E0;display:flex;align-items:center;justify-content:center}
+.b-comp .v{font-size:10px;font-weight:700;white-space:nowrap}
+.b-comp.hy .f{background:#92D3AB}
+
+/* histórico */
+.b-hist .hc{width:548px;height:250px}
+.b-hist .leg{display:flex;gap:16px;justify-content:center;font-size:8px;color:#595959;margin-top:2px}
+.b-hist .leg i{display:inline-block;width:16px;height:2px;vertical-align:middle;margin-right:5px}
+.b-hist.hg .lf{background:#759DB3}.b-hist.hg .lc{background:#ABC6CD}
+.b-hist.hy .lf{background:#4B9D74}.b-hist.hy .lc{background:#92D3AB}
+
+/* características */
+.b-car{font-size:12px;line-height:1.45;color:#1d1d1d}
+.b-car p{margin:0 0 6px}
+
+/* benefícios (imagem do e-mail publicado) */
+.b-ben img{display:block;width:100%;height:auto}

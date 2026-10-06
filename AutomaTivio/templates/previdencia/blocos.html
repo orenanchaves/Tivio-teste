@@ -1,0 +1,120 @@
+{# Blocos do e-mail de previdência (HGD30, HYD60). Cada bloco é uma peça de
+   600 px de largura, no desenho das imagens que vão hoje no Mailchimp
+   ("Dados - E-mail"). O mesmo HTML vira o PNG do e-mail e a imagem de setores
+   do Informativo. Cores tiradas das imagens publicadas. #}
+
+{% macro cabecalho(d, logos, imagens, marca_path) %}
+{% if d.estilo == 'hg' %}
+<div class="b-cab hg" style="background-image:linear-gradient(90deg,rgba(0,0,0,.92) 0%,rgba(0,0,0,.78) 45%,rgba(0,0,0,.15) 100%),url('{{ imagens.hgd30_capa }}')">
+  <svg class="cab-tivio" viewBox="0 0 844 294"><use href="#tv-logo"/></svg>
+  <div class="cab-sub" contenteditable="true">Saiba mais sobre<br>o fundo de previdência</div>
+  <div class="cab-logo">{{ logos[d.chave].horizontal|safe }}</div>
+  <div class="cab-prod" contenteditable="true">{{ d.produto }}</div>
+  <div class="cab-pe"><span class="cab-mes" contenteditable="true">{{ d.mes|upper }} {{ d.ano }}</span><span class="cab-uso">Material de uso interno</span></div>
+</div>
+{% else %}
+<div class="b-cab hy" style="background-image:linear-gradient(90deg,rgba(255,255,255,.55) 0%,rgba(255,255,255,.15) 55%,rgba(255,255,255,0) 100%),url('{{ imagens.hyd60_capa }}')">
+  <svg class="cab-tivio" viewBox="0 0 844 294"><use href="#tv-logo"/></svg>
+  <div class="cab-logo">{{ logos[d.chave].empilhado|safe }}</div>
+  <div class="cab-pe"><span class="cab-mes" contenteditable="true">{{ d.mes|upper }} {{ d.ano }}</span></div>
+</div>
+<div class="b-uso">Material de uso interno</div>
+{% endif %}
+{% endmacro %}
+
+{% macro kpis(d, t_svg) %}
+{% if d.estilo == 'hg' %}
+<div class="b-kpis hg">
+  {% for k in d.kpis %}
+  <div class="kb"><div class="kl" contenteditable="true">{{ k.rotulo }}</div><div class="kv" contenteditable="true">{% if k.valor.startswith('R$') %}<small>R$</small>{{ k.valor[3:] }}{% elif k.valor.endswith('%') %}{{ k.valor[:-1] }}<small>%</small>{% else %}{{ k.valor }}{% endif %}{% if k.unidade %} <small>{{ 'anos' if k.rotulo == 'Duration' else k.unidade }}</small>{% endif %}</div></div>
+  {% endfor %}
+</div>
+<div class="b-nota" contenteditable="true">Data base: {{ d.data_base }}</div>
+{% else %}
+{# grade 12 colunas, como no e-mail publicado: 6+4+2 / 6+6 / 6+3+3 #}
+{% set k = d.kpis %}
+<div class="b-kpis hy">
+  {% for item in k %}
+    {% set i = loop.index0 %}
+    {% set span = [6, 4, 6, 6, 6, 3, 3][i] if i < 7 else 4 %}
+    {% set verde = i in [0, 4, 5, 6] %}
+    <div class="kt {{ 'kg' if verde else 'kd' }}" style="grid-column:span {{ span }}">
+      {% if k[i].destaque %}<div class="kt-dest" contenteditable="true">{{ item.rotulo }}</div><span class="kt-linha"></span>
+      {% else %}<div class="kt-l" contenteditable="true">{{ item.rotulo }}{{ ':' if i in [1, 3] }}</div>
+      <div class="kt-v" contenteditable="true">{% if item.valor.startswith('R$') %}{{ item.valor.rsplit(' ', 1)[0] }} <small>{{ item.valor.rsplit(' ', 1)[1] }}</small>{% elif item.valor.startswith('CDI') %}CDI +<br>{{ item.valor[6:] }} <small>{{ item.unidade }}</small>{% else %}{{ item.valor }}{% if item.unidade %}<small class="un">{{ 'anos' if item.rotulo == 'Duration' else item.unidade }}</small>{% endif %}{% endif %}</div>{% endif %}
+    </div>
+    {% if i == 1 %}<div class="kt kd kt-t" style="grid-column:span 2">{{ t_svg|safe }}</div>{% endif %}
+  {% endfor %}
+</div>
+<div class="b-nota" contenteditable="true">Data base: {{ d.data_base }}</div>
+{% endif %}
+{% endmacro %}
+
+{% macro rentabilidade(d) %}
+<table class="b-rent {{ d.estilo }}">
+  <thead><tr><th></th><th>Mês</th><th>Desde o Início</th></tr></thead>
+  <tbody>
+  {% for rot, m, i in d.rent %}<tr{% if loop.first %} class="f"{% endif %}><td>{{ rot }}</td><td contenteditable="true">{{ m }}</td><td contenteditable="true">{{ i }}</td></tr>
+  {% endfor %}
+  </tbody>
+</table>
+{% endmacro %}
+
+{% macro alocacao(d) %}
+<div class="b-aloc {{ d.estilo }}">
+  {% if d.estilo == 'hg' %}
+  <div class="col c1"><b>Alocação<br>da Carteira</b><small>(% patrimônio líquido)</small><em>*baseado em classificação interna</em></div>
+  {% else %}
+  <div class="col c1"><b>Previsão<br>de Alocação</b><small>(% patrimônio líquido)</small></div>
+  <div class="col c2"><b>Retornos<br>Estimados</b><small>(bruto de taxas e custos)</small></div>
+  {% endif %}
+  {% for a in d.alocacao %}
+  <div class="lin l{{ loop.index }}"><span class="sq"></span><span class="n">{{ a.nome }}</span><span class="v" contenteditable="true">{{ a.pct }}</span>{% if d.estilo == 'hy' %}<span class="r" contenteditable="true">{{ a.retorno or '' }}</span>{% endif %}</div>
+  {% endfor %}
+</div>
+{% endmacro %}
+
+{% macro setorial(d, larg=600) %}
+{% set mx = (d.setores|map(attribute=2)|max) if d.setores else 1 %}
+<div class="b-set {{ d.estilo }}" style="--n:{{ d.setores|length }}">
+  {% for n, r, v in d.setores %}<div class="sl{{ ' cx' if n == 'Caixa' }}"><span class="n">{{ n }}</span><span class="t"><span class="f" style="width:{{ '%.2f'|format([v / mx * 62, 0.4]|max) }}%"></span><span class="v">{{ r }}</span></span></div>
+  {% endfor %}
+</div>
+{% endmacro %}
+
+{% macro rating(d) %}
+{% set mx = (d.rating|map(attribute=2)|max) if d.rating else 1 %}
+<div class="b-rat {{ d.estilo }}">
+  <div class="cols">{% for n, r, v in d.rating %}<div class="rc"><span class="v">{{ r }}</span><span class="f" style="height:{{ '%.1f'|format([v / mx * 84, 1]|max) }}%"></span></div>{% endfor %}</div>
+  <div class="labs">{% for n, r, v in d.rating %}<span>{{ n }}</span>{% endfor %}</div>
+  {% if d.nota_rating %}<div class="b-nota esq">{{ d.nota_rating }}</div>{% endif %}
+</div>
+{% endmacro %}
+
+{% macro composicao(d) %}
+{% set mx = (d.composicao|map(attribute=2)|max) if d.composicao else 1 %}
+<div class="b-comp {{ d.estilo }}">
+  {% for n, r, v in d.composicao %}<div class="cl"><span class="n">{{ n }}</span><span class="t"><span class="f" style="width:{{ '%.1f'|format(v / mx * 90) }}%"><span class="v">{{ r }}</span></span></span></div>
+  {% endfor %}
+</div>
+{% endmacro %}
+
+{% macro historico(d) %}
+<div class="b-hist {{ d.estilo }}"><div class="hc" data-hist="{{ d.chave }}"></div>
+  <div class="leg"><span><i class="lf"></i>Fundo</span><span><i class="lc"></i>CDI</span></div></div>
+{% endmacro %}
+
+{% macro caracteristicas(d) %}
+<div class="b-car">
+  <p><b>Características do fundo:</b></p>
+  {% for k, v in d.caracteristicas %}<p>{% if k == 'Nome' %}<b>{{ v }}</b>{% else %}{{ k }}: <b>{{ v }}</b>{% endif %}</p>{% endfor %}
+</div>
+{% endmacro %}
+
+{% macro beneficios(d, imagens) %}
+<div class="b-ben"><img src="{{ imagens.hyd60_beneficios }}" alt="Benefícios do crédito estruturado"></div>
+{% endmacro %}
+
+{% macro texto(d) %}
+<div class="b-txt {{ d.estilo }}">{{ d.texto_html|safe }}</div>
+{% endmacro %}

@@ -265,7 +265,7 @@
     <h2 class="lp-h">Alocação da <em>carteira</em></h2>
     <div class="aloc">
       <div class="cab"><span></span><span>Previsão de alocação<br><small>% do patrimônio líquido</small></span><span>Retornos estimados<br><small>líquidos de taxas e custos</small></span></div>
-      {% for a in pg.previsao_alocacao %}<div class="lin"><span>{{ a.nome }}</span><span>{{ a.alocacao }}</span><span>{{ a.retorno }}</span></div>
+      {% for a in previsao %}<div class="lin"><span>{{ a.nome }}</span><span>{{ a.alocacao }}</span><span>{{ a.retorno }}</span></div>
       {% endfor %}
     </div>
   </section>
