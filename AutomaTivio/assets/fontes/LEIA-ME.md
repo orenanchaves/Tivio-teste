@@ -34,3 +34,12 @@ máquina, com ou sem rede.
 
 Se a pasta estiver vazia, nada quebra — o comportamento é o atual, e a conferência
 avisa quando a fonte não carregou.
+
+## Os arquivos desta pasta
+
+Baixados do CDN da marca (`cdn-sites-assets.mziq.com`, os mesmos do site) em
+06/10/2026: `.woff2` para os HTML/PDF do Chromium e `.ttf` (convertidos) para o
+PowerPoint, que não lê woff2. `Versos-Light.ttf` é a ExtraLight com o nome
+"Versos Light": os modelos do Informativo pedem essa família e o CDN não tem a
+Light. `exporters/previdencia.py::instalar_versos` instala os `.ttf` para o
+usuário do Windows antes de gerar o Informativo.

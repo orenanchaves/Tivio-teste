@@ -195,6 +195,11 @@ duration, alocação, os gráficos de rating e composição e a imagem de setore
 resto do desenho fica igual. No HYD60 entra uma página de rentabilidade. O PDF
 sai pelo PowerPoint (precisa do Office instalado).
 
+**Fonte:** os modelos usam "Versos" e "Versos Light". A rodada instala as duas,
+só para o seu usuário (sem administrador), a partir de `assets/fontes/` (baixadas
+do CDN da marca; a Light é a ExtraLight com outro nome, como no site), e o PPTX
+sai com a fonte embutida, para o cliente ver certo mesmo sem a Versos.
+
 **E-mail:** `central/tivio-email-previdencia.html`, no formato do gerador de
 Fundos de Crédito: uma aba por fundo, cada bloco com "Baixar PNG", "Baixar tudo
 (ZIP)" e "E-mail (HTML)". A rodada já grava em `emails/previdencia/<fundo>/` os

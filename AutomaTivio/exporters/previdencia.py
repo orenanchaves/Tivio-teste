@@ -166,6 +166,15 @@ def _escreve_texto(shape, md):
             rpr = r.find(A + 'rPr')
             if rpr is not None:
                 rpr.set('b', '1' if b else '0')
+                if rpr.find(A + 'latin') is None:
+                    from lxml import etree
+                    lat = etree.SubElement(rpr, A + 'latin', typeface='Versos')
+                    # a ordem do schema: latin vem depois de preenchimento/efeitos
+                    for tag in ('ea', 'cs', 'sym', 'hlinkClick', 'hlinkMouseOver', 'rtl', 'extLst'):
+                        x = rpr.find(A + tag)
+                        if x is not None:
+                            x.addprevious(lat)
+                            break
             r.find(A + 't').text = t
             if fim is not None:
                 fim.addprevious(r)
@@ -334,6 +343,7 @@ def _pagina_rentabilidade(prs, depois_de, d, larg_pt=540):
         ch.legend.include_in_layout = False
         ch.legend.font.size = Pt(8)
         ch.font.size = Pt(8)
+        ch.font.name = 'Versos'
         ch.font.color.rgb = RGBColor(0x59, 0x59, 0x59)
         for se, cor, w in zip(ch.plots[0].series, (RGBColor(0x4B, 0x9D, 0x74), RGBColor(0x92, 0xD3, 0xAB)), (2.25, 1.75)):
             se.format.line.color.rgb = cor
@@ -418,15 +428,94 @@ def _png_setorial(d, larg_pt, alt_pt, css, html_bloco, navegador):
         pg.close()
 
 
-def _pdf_powerpoint(pptx, pdf, log):
-    """PPTX -> PDF pelo PowerPoint (COM). Sem PowerPoint: devolve False."""
+FONTES_PPT = ('.ttf', '.otf')
+
+
+def versos_instalada():
+    """A Versos está instalada no Windows (para todos ou só para o usuário)?"""
     if os.name != 'nt':
         return False
+    pastas = [os.path.join(os.environ.get('WINDIR', r'C:\Windows'), 'Fonts'),
+              os.path.join(os.environ.get('LOCALAPPDATA', ''), 'Microsoft', 'Windows', 'Fonts')]
+    for pasta in pastas:
+        if os.path.isdir(pasta) and any(n.lower().startswith('versos') for n in os.listdir(pasta)):
+            return True
+    return False
+
+
+def _carregar_fontes(caminhos):
+    """Carrega as fontes na sessão do Windows e avisa os programas abertos.
+
+    Fonte instalada depois do login só aparece para o PowerPoint depois disto
+    (ou de sair e entrar de novo no Windows).
+    """
+    try:
+        import ctypes
+        gdi = ctypes.windll.gdi32
+        for c in caminhos:
+            gdi.AddFontResourceW(c)
+        HWND_BROADCAST, WM_FONTCHANGE = 0xFFFF, 0x001D
+        ctypes.windll.user32.SendMessageTimeoutW(HWND_BROADCAST, WM_FONTCHANGE, 0, 0, 0x0002, 1000, None)
+    except Exception:
+        pass
+
+
+def instalar_versos(log):
+    """Instala a Versos de assets/fontes/ só para o usuário (sem administrador).
+
+    O PowerPoint só desenha e embute a fonte que está instalada no Windows. Sem
+    ela, o PDF do Informativo sai em Calibri/Aptos. O PowerPoint lê .ttf/.otf;
+    .woff2 (o formato da web) não serve aqui.
+    """
+    if os.name != 'nt':
+        return False
+    pasta_usuario = os.path.join(os.environ.get('LOCALAPPDATA', ''), 'Microsoft', 'Windows', 'Fonts')
+    sistema = os.path.join(os.environ.get('WINDIR', r'C:\Windows'), 'Fonts')
+    origem = os.path.join(RAIZ, 'assets', 'fontes')
+    todos = [n for n in (os.listdir(origem) if os.path.isdir(origem) else [])
+             if n.lower().startswith('versos') and n.lower().endswith(FONTES_PPT)]
+    # "Versos Light" é a ExtraLight com outro nome (o CDN da marca não tem a
+    # Light; o site usa a ExtraLight nos pesos 200 e 300): os modelos pedem as duas
+    arquivos = [n for n in todos if not os.path.exists(os.path.join(pasta_usuario, n))
+                and not os.path.exists(os.path.join(sistema, n))]
+    if todos and not arquivos:
+        _carregar_fontes([os.path.join(pasta_usuario, n) for n in todos
+                          if os.path.exists(os.path.join(pasta_usuario, n))])
+        return True
+    if not arquivos:
+        log.aviso('informativo', 'fonte Versos não instalada nesta máquina e sem .ttf/.otf em '
+                                 'assets/fontes: o PDF do Informativo sai com Calibri/Aptos')
+        return False
+    import shutil
+    import winreg
+    destino = os.path.join(os.environ['LOCALAPPDATA'], 'Microsoft', 'Windows', 'Fonts')
+    os.makedirs(destino, exist_ok=True)
+    chave = winreg.CreateKey(winreg.HKEY_CURRENT_USER,
+                             r'Software\Microsoft\Windows NT\CurrentVersion\Fonts')
+    for n in arquivos:
+        alvo = os.path.join(destino, n)
+        shutil.copy2(os.path.join(origem, n), alvo)
+        nome = os.path.splitext(n)[0].replace('-', ' ')
+        tipo = 'TrueType' if n.lower().endswith('.ttf') else 'OpenType'
+        winreg.SetValueEx(chave, f'{nome} ({tipo})', 0, winreg.REG_SZ, alvo)
+    winreg.CloseKey(chave)
+    _carregar_fontes([os.path.join(destino, n) for n in arquivos])
+    log.info(f'  fonte Versos instalada para o usuário ({len(arquivos)} arquivos)')
+    return True
+
+
+def _pdf_powerpoint(pptx, pdf, log):
+    """PPTX -> PDF pelo PowerPoint (COM), e o PPTX regravado com a fonte embutida
+    (quem abre sem a Versos instalada vê a fonte certa). Sem PowerPoint: False."""
+    if os.name != 'nt':
+        return False
+    embute = versos_instalada()
     script = (
         "$ErrorActionPreference='Stop';"
         "$pp=New-Object -ComObject PowerPoint.Application;"
-        f"$p=$pp.Presentations.Open('{pptx}',$true,$false,$false);"
-        f"$p.SaveAs('{pdf}',32);$p.Close();$pp.Quit()")
+        f"$p=$pp.Presentations.Open('{pptx}',$false,$false,$false);"
+        + (f"$p.SaveAs('{pptx}',24,-1);" if embute else "")
+        + f"$p.SaveAs('{pdf}',32);$p.Close();$pp.Quit()")
     try:
         r = subprocess.run(['powershell', '-NoProfile', '-NonInteractive', '-Command', script],
                            capture_output=True, text=True, timeout=240)
@@ -441,6 +530,7 @@ def exportar_informativos(fundos, destino, rend_email, log):
     from pptx import Presentation
     from playwright.sync_api import sync_playwright
     os.makedirs(destino, exist_ok=True)
+    instalar_versos(log)
     css = rend_email.r.css_marca + open(os.path.join(RAIZ, 'templates', 'previdencia', 'blocos.css'),
                                          encoding='utf-8').read()
     macros = rend_email.r.env.get_template('previdencia/blocos.html').module
