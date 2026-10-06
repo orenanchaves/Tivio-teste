@@ -202,6 +202,10 @@ def carregar(caminho):
         texto = f.read()
     # nota <!-- … --> é para quem edita, não vai para o material
     texto = re.sub(r'<!--.*?-->', '', texto, flags=re.S)
+    # texto colado de editor de texto rico (HTML, uma frase por linha): cada
+    # linha com tag vira parágrafo próprio, senão as linhas se juntariam numa só
+    texto = '\n'.join(l + '\n' if re.search(r'<(br|strong|b|p|li|/p|/li)\b', l, re.I) else l
+                      for l in texto.splitlines())
     # o .md pode ter duas seções de nível 1 separando relatório de e-mail
     partes = re.split(r'(?im)^#\s*(relat[óo]rio|e-?mail)\s*$', texto)
     if len(partes) >= 3:

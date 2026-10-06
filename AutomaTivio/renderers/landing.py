@@ -76,51 +76,84 @@ def html_para_markdown(texto):
     t = re.sub(r'<\s*(br|/p|p|/li|/ul|ul|/div|div)\b[^>]*>', '\n\n', t, flags=re.I)
     t = re.sub(r'<[^>]+>', '', t)
     t = _html.unescape(t).replace('\xa0', ' ')
-    t = re.sub(r'\*\*\s*\*\*', '', t)                    # negrito vazio
+    t = re.sub(r'\*\*(\s*)\*\*', r'\1', t)            # dois negritos seguidos: fica o espaço
+    # espaço dentro do negrito vai para fora ("de** CDI**" -> "de **CDI**")
+    t = re.sub(r'\*\*(.+?)\*\*', lambda m: (' ' if m.group(1)[:1].isspace() else '') + '**' + m.group(1).strip() + '**'
+               + (' ' if m.group(1)[-1:].isspace() else ''), t)
     t = re.sub(r'[ \t]+', ' ', t)
     return '\n\n'.join(x.strip() for x in re.split(r'\n\s*\n', t) if x.strip())
 
 
 def _secoes_proprias(texto):
-    """Separa "Visão de Mercado | <mês>" e "Destaques da atuação da gestão em
-    <mês>" quando o texto do fundo traz os dois títulos (mesmo colados no meio
-    do parágrafo). Devolve (mercado, destaques); (None, texto) sem os títulos."""
+    """Separa o texto do fundo em (título do mercado, mercado, título dos
+    destaques, destaques), pelos títulos "Visão de Mercado | <mês>" e
+    "Destaques da atuação da gestão em <mês>", mesmo colados no meio do
+    parágrafo. Sem "Visão de Mercado", tudo antes dos Destaques é o mercado.
+    O que vem antes do "Visão de Mercado" (texto de outro mês esquecido) sai.
+    Sem nenhum dos dois títulos: (None, None, None, texto)."""
     m = TITULO_MERCADO.search(texto)
-    if not m:
-        return None, texto
-    d = TITULO_DESTAQUES.search(texto, m.end())
-    mercado = texto[m.end():d.start() if d else len(texto)]
-    destaques = texto[d.end():] if d else ''
+    d = TITULO_DESTAQUES.search(texto, m.end() if m else 0)
+    if not m and not d:
+        return None, None, None, texto
     limpa = lambda x: x.strip(' *\n:|')
-    return limpa(mercado), limpa(destaques)
+    ini = m.end() if m else 0
+    mercado = limpa(texto[ini:d.start() if d else len(texto)])
+    destaques = limpa(texto[d.end():]) if d else ''
+    descartado = limpa(texto[:m.start()]) if m else ''
+    return (limpa(m.group(0)) if m else None, mercado or None,
+            limpa(d.group(0)) if d else None, destaques, descartado)[:4] + (descartado,)
 
 
-def comentario_automatico(chave, pg, por_key, textos, edicao):
+def _paragrafos(t):
+    return [p.strip() for p in re.split(r'\n\s*\n', t or '') if p.strip()]
+
+
+def _topicos(ps):
+    """Cada frase-parágrafo vira tópico (o texto vem de um editor com lista)."""
+    return [p if p.startswith(('- ', '**')) else '- ' + p for p in ps]
+
+
+FRASE_RENT = re.compile(r'apresentou rentabilidade|obteve retorno|acumula retorno', re.I)
+
+
+def comentario_automatico(chave, pg, por_key, textos, edicao, log=None):
     """O texto do gestor dos fundos de previdência, montado sozinho.
 
-    O gestor já escreve, em entrada/comentarios.md, os parágrafos de mercado do
-    mês para os fundos HG (são os mesmos do HGD30). Daqui:
-      1. "Sobre o Fundo" fixo (configs/previdencia.yml → comentario.sobre);
-      2. os parágrafos de mercado do fundo de referência (comentario.mercado_de),
-         até a frase do próprio fundo ("Nesse cenário…");
-      3. a frase de rentabilidade (comentario.frase), com os números da tabela;
-      4. o complemento do mês, na seção do próprio fundo em
-         entrada/comentarios.md ("## Tivio HGD30", "## Tivio HYD60"):
-         atribuição de performance, destaques da gestão.
-    Tudo fica no comentarios.md, como nos outros fundos. Se a seção do fundo
-    repetir o mercado ou a frase de rentabilidade, esses parágrafos são
-    ignorados (já entram montados).
+    Ordem: "Sobre o Fundo" (fixo, configs/previdencia.yml) · Visão de Mercado ·
+    frase de rentabilidade · Destaques da gestão.
+
+    - Mercado: o que o gestor escreveu na seção do próprio fundo em
+      entrada/comentarios.md ("## Tivio HGD30"); sem isso, os parágrafos de
+      mercado do fundo de referência (comentario.mercado_de, o Institucional).
+    - Frase de rentabilidade: a do gestor, onde ele pôs (os números são
+      conferidos pela tabela); se ele não escreveu, a de comentario.frase.
+    - Destaques: o que vem depois de "Destaques da atuação da gestão em <mês>"
+      (ou, sem títulos, o texto do fundo inteiro).
+    Texto colado com HTML é convertido (html_para_markdown).
     """
     cfg = pg.get('comentario') or {}
     proprio = por_key.get(pg.get('fundo') or chave)
     paragrafos = [p.strip() for p in (proprio.comentario if proprio is not None else []) if p.strip()]
     if not paragrafos and textos.get(chave):            # legado: entrada/previdencia.md
-        paragrafos = [p.strip() for p in re.split(r'\n\s*\n', textos[chave]) if p.strip()]
+        paragrafos = _paragrafos(textos[chave])
+    veio_html = any('<' in p for p in paragrafos)
+    # texto comum antes de um bloco colado com HTML: o colado é o mais recente
+    antigo = []
+    if veio_html:
+        primeiro = next(i for i, p in enumerate(paragrafos) if '<' in p)
+        antigo, paragrafos = paragrafos[:primeiro], paragrafos[primeiro:]
+    if antigo and log:
+        log.aviso(chave, 'comentário: o texto antes do bloco colado (com HTML) foi ignorado '
+                         '(parece de outro mês): ' + antigo[0][:80] + '…')
     bruto = html_para_markdown('\n\n'.join(paragrafos))
-    mercado_proprio, resto = _secoes_proprias(bruto)
-    paragrafos = [p.strip() for p in re.split(r'\n\s*\n', resto) if p.strip()]
+    secoes = _secoes_proprias(bruto)
+    tit_m, mercado_proprio, tit_d, destaques = secoes[:4]
+    descartado = secoes[4] if len(secoes) > 4 else ''
+    if descartado and log:
+        log.aviso(chave, 'comentário: o texto antes de "Visão de Mercado" foi ignorado '
+                         '(parece de outro mês): ' + descartado[:80] + '…')
     if not cfg:
-        return '\n\n'.join(paragrafos)
+        return '\n\n'.join(_paragrafos(bruto))
     mes = fmt.MESES[edicao.db.month - 1]
 
     def m(t):
@@ -129,32 +162,41 @@ def comentario_automatico(chave, pg, por_key, textos, edicao):
     partes = []
     if cfg.get('sobre'):
         partes += ['**Sobre o Fundo**', '\n'.join('- ' + m(x) for x in cfg['sobre'])]
-    ref = por_key.get(cfg.get('mercado_de'))
-    mercado = []
+
+    # mercado
     if mercado_proprio:
-        # o gestor escreveu o mercado do próprio fundo: ele vale
-        mercado = [p.strip() for p in re.split(r'\n\s*\n', mercado_proprio) if p.strip()]
-        ref = None
-    if ref is not None:
-        for p in ref.comentario or []:
-            if re.search(r'Nesse cen[áa]rio|apresentou rentabilidade|obteve retorno|acumula retorno', p):
+        mercado = _paragrafos(mercado_proprio)
+        if veio_html:
+            mercado = _topicos(mercado)
+    else:
+        mercado = []
+        ref = por_key.get(cfg.get('mercado_de'))
+        for p in (ref.comentario if ref is not None else []) or []:
+            if re.search(r'Nesse cen[áa]rio', p) or FRASE_RENT.search(p):
                 break
             if p.strip():
                 mercado.append(p.strip())
     if mercado:
-        if cfg.get('titulo_mercado'):
-            partes.append('**' + m(cfg['titulo_mercado']) + '**')
+        titulo = tit_m or (m(cfg['titulo_mercado']) if cfg.get('titulo_mercado') else None)
+        if titulo:
+            partes.append('**' + titulo + '**')
         partes += mercado
-    if cfg.get('frase'):
+
+    # destaques (o texto do fundo sem títulos conta como destaques)
+    if tit_m is None and tit_d is None:
+        resto = [p for p in _paragrafos(bruto) if p not in mercado]
+    else:
+        resto = _paragrafos(destaques)
+    if veio_html:
+        resto = _topicos(resto)
+    tem_frase = any(FRASE_RENT.search(p) for p in resto)
+    if cfg.get('frase') and not tem_frase:
         partes.append(m(cfg['frase']))
-    manual = '\n\n'.join(
-        p for p in paragrafos
-        if p not in mercado
-        and not re.search(r'Nesse cen[áa]rio|apresentou rentabilidade|obteve retorno', p))
-    if manual:
-        if cfg.get('titulo_destaques'):
-            partes.append('**' + m(cfg['titulo_destaques']) + '**')
-        partes.append(manual)
+    if resto:
+        titulo = tit_d or (m(cfg['titulo_destaques']) if cfg.get('titulo_destaques') else None)
+        if titulo:
+            partes.append('**' + titulo + '**')
+        partes += resto
     return '\n\n'.join(partes)
 
 
@@ -339,7 +381,7 @@ class RenderizadorLanding:
     # ------------------------------------------------------------- página
     def html(self, chave, ctx, por_key=None):
         pg = self.paginas[chave]
-        bruto = comentario_automatico(chave, pg, por_key or {}, self.textos, self.edicao)
+        bruto = comentario_automatico(chave, pg, por_key or {}, self.textos, self.edicao, self.log)
         texto, faltando = ctx.preencher(bruto)
         if not bruto:
             self.log.aviso(chave, 'previdência sem texto do gestor em entrada/comentarios.md')

@@ -243,7 +243,8 @@ página, então o arquivo sai idêntico ao que sairia clicando:
 - **Destaques:** JPG 2160 × 2880 de cada página e um PDF por carrossel
   (1080 × 1440 pt, renderizado em 4×).
 - **E-mails:** as três versões (Ágora, que é o cartão quadrado, BTG e XP), PNG de cada card,
-  PNG do e-mail completo e o HTML de disparo.
+  PNG do e-mail completo e o HTML de disparo. A Ágora tem também o Institucional 30
+  e o Infra Plus CDI (fora da BTG e da XP: `VERSIONS` no tivio-email-fundos-credito.html).
 
 Para desligar algum formato: `AutomaTivio/configs/edicao.yml` → `saidas:`
 (`html`, `pdf`, `pptx`, `destaques`, `emails`, `informativos`).

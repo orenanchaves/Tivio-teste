@@ -51,7 +51,7 @@ def dados_fundo(chave, pg, ctx, edicao, textos, log=None, por_key=None):
     lp = RenderizadorLanding.__new__(RenderizadorLanding)
     lp.edicao = edicao
     texto_md, faltando = ctx.preencher(
-        comentario_automatico(chave, pg, por_key or {}, textos, edicao))
+        comentario_automatico(chave, pg, por_key or {}, textos, edicao, log))
     if log:
         for k in faltando:
             log.aviso(chave, f'previdência: marcador sem valor: {{{k}}}')

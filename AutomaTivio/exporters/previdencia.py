@@ -187,8 +187,9 @@ def _escreve_texto(shape, md):
             txBody.append(copy.deepcopy(m_vazio))
 
     anterior = None
+    tem_marcador = m_li is not m_p        # o modelo tem parágrafo com marcador?
     for tipo, texto in _blocos_markdown(md):
-        if anterior is not None and not (tipo == 'li' and anterior == 'li'):
+        if anterior is not None and not (tipo == 'li' and anterior == 'li' and tem_marcador):
             espaco()
         novo(tipo, texto)
         anterior = tipo

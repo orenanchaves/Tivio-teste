@@ -345,6 +345,8 @@ class RenderizadorLegado:
             self.log.aviso('e-mail', 'FUND_LOGOS não encontrado — logos mantidos')
             return html
         chaves = re.findall(r"'(\w+)':\{vb:", html[i:j])
+        # fundos que entraram no e-mail depois do desenho original (só Ágora)
+        chaves += [c for c in ('inst30', 'infrapluscdi') if c not in chaves]
         escuro, claro = logos_horizontais(chaves, log=self.log)
         if not escuro:
             return html

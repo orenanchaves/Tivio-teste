@@ -206,36 +206,56 @@ Na atribuição de performance, a carteira de títulos bancários foi a principa
 
 Por outro lado, a carteira de debêntures foi a principal detratora de performance, com impacto negativo de cerca de 1,3 bps de alfa. Dentro da classe, os destaques positivos foram os papéis de Tupy e Randon, que conjuntamente adicionaram 2,3 bps de rentabilidade acima do CDI. Em contrapartida, Hapvida e Sendas foram os principais detratores do mês, com contribuição combinada de aproximadamente 2,5 bps abaixo do CDI.
 
+
+<br>
+Mercado de crédito marcado por <strong class="___1qwroh2 fl43uef f19n0e5" data-lexical-text="true">reabertura dos spreads e liquidez reduzida no secundário,</strong> interrompendo parcialmente o movimento de compressão observado nos últimos meses.<br>Os spreads médios dos títulos corporativos indexados ao CDI avançaram cerca de <strong class="___1qwroh2 fl43uef f19n0e5" data-lexical-text="true">5 bps</strong>, passando de<strong class="___1qwroh2 fl43uef f19n0e5" data-lexical-text="true"> CDI + 1,23% para CDI + 1,28% ao ano.</strong>
+No secundário, a <strong class="___1qwroh2 fl43uef f19n0e5" data-lexical-text="true">liquidez permaneceu limitada,</strong> especialmente em ativos corporativos, resultando em uma formação de preços mais seletiva.
+No primário, as <strong class="___1qwroh2 fl43uef f19n0e5" data-lexical-text="true">emissões bancárias seguiram registrando demanda consistente,</strong> embora com menor intensidade em comparação aos meses anteriores.
+O <strong class="___1qwroh2 fl43uef f19n0e5" data-lexical-text="true">pipeline de emissões corporativas permaneceu restrito,</strong> mantendo a oferta de novos ativos em níveis reduzidos.
+Fundos com alocação mínima de 15% em crédito e ao menos 1% em debêntures registraram <strong class="___1qwroh2 fl43uef f19n0e5" data-lexical-text="true">resgates</strong> <strong class="___1qwroh2 fl43uef f19n0e5" data-lexical-text="true">líquidos próximos de R$ 10 bilhões</strong> no período. Esse movimento contribuiu para a reabertura dos spreads e para uma <strong class="___1qwroh2 fl43uef f19n0e5" data-lexical-text="true">piora da dinâmica técnica da classe.</strong>
+Apesar desse cenário, os<strong class="___1qwroh2 fl43uef f19n0e5" data-lexical-text="true"> fundamentos corporativos permanecem resilientes </strong>e os níveis de inadimplência seguem controlados.
+ 
+<strong class="___1qwroh2 fl43uef f19n0e5" data-lexical-text="true">Destaques da atuação da gestão em setembro</strong>
+ 
+O <strong class="___1qwroh2 fl43uef f19n0e5" data-lexical-text="true">Tivio HGD30 apresentou rentabilidade de 1,08% no mês (100% do CDI), acumulando 14,66% (101% do CDI) em 12 meses.</strong>
+A <strong class="___1qwroh2 fl43uef f19n0e5" data-lexical-text="true">carteira de títulos bancários foi a principal responsável pelo resultado </strong>do período, contribuindo com aproximadamente <strong class="___1qwroh2 fl43uef f19n0e5" data-lexical-text="true">3 bps de alfa,</strong> com destaque para a parcela de <strong class="___1qwroh2 fl43uef f19n0e5" data-lexical-text="true">LFs perpétuas</strong>.
+A <strong class="___1qwroh2 fl43uef f19n0e5" data-lexical-text="true">carteira de debêntures foi a principal detratora de performance,</strong> com impacto negativo de cerca de<strong class="___1qwroh2 fl43uef f19n0e5" data-lexical-text="true"> 1,3 bps de alfa.</strong>
+Dentro dessa classe, os papéis de <strong class="___1qwroh2 fl43uef f19n0e5" data-lexical-text="true">Tupy e Randon</strong> foram os destaques positivos, adicionando conjuntamente <strong class="___1qwroh2 fl43uef f19n0e5" data-lexical-text="true">2,3 bps de rentabilidade acima do CDI.</strong> Em contrapartida, <strong class="___1qwroh2 fl43uef f19n0e5" data-lexical-text="true">Hapvida e Sendas </strong>foram os principais detratores do mês, com contribuição combinada de aproximadamente <strong class="___1qwroh2 fl43uef f19n0e5" data-lexical-text="true">2,5 bps abaixo do CDI.</strong>
+A gestão manteve uma <strong class="___1qwroh2 fl43uef f19n0e5" data-lexical-text="true">postura disciplinada e seletiva na alocação dos recursos,</strong> buscando capturar oportunidades geradas pela recente abertura dos spreads sem abrir mão da qualidade de crédito das carteiras.
 ## Tivio HYD60
 
-<!-- Previdência: "Sobre o Fundo" e a frase de rentabilidade, carrego e duration
-     são montados sozinhos. Aqui: "Visão de Mercado | <mês>" (se não houver, vale
-     o mercado do Tivio Institucional) e "Destaques da atuação da gestão em <mês>".
-     Um tópico por parágrafo (linha em branco entre eles). Texto colado de outro
-     editor, com HTML, também funciona: as tags são convertidas. -->
+<!-- Previdência: "Sobre o Fundo", o mercado (do Tivio Institucional) e a frase
+     de rentabilidade, carrego e duration são montados sozinhos. Aqui, só os
+     destaques da gestão, um tópico por parágrafo (linha em branco entre eles).
+     ATENÇÃO: ainda são os destaques de agosto. -->
 
-**Visão de Mercado | Setembro**
+- Na parcela de **crédito estruturado**, avanço na **diversificação da carteira**, com a inclusão de novas posições em **FIDCs**.
 
-- Mercado de crédito marcado por **reabertura dos spreads** e **liquidez reduzida no secundário**, interrompendo parcialmente o movimento de compressão observado nos últimos meses.
+- Destaque para o investimento em um **FIDC de antecipação de recebíveis de cartões de crédito**, caracterizado por **prazo médio reduzido**, **elevada pulverização da carteira (mais de 125 mil contratos)** e **baixo valor médio por operação**.
 
-- Os spreads médios dos títulos corporativos indexados ao CDI avançaram cerca de **5 bps**, passando de **CDI + 1,23%** para **CDI + 1,28% ao ano**.
+- Os investimentos contam com **elevados níveis de subordinação** e **ampla diversificação** em diferentes teses, setores e emissores, contribuindo para a **mitigação da concentração de risco** e reduzindo a dependência de nomes específicos.
 
-- No secundário, a **liquidez permaneceu limitada**, especialmente em ativos corporativos, resultando em uma formação de preços mais seletiva.
+- Gestão segue **acompanhando de perto a evolução dos fundamentos dos emissores**, com atenção especial aos indicadores operacionais, à geração de caixa e à preservação de estruturas de capital adequadas.
 
-- No primário, as **emissões bancárias seguiram registrando demanda consistente**, embora com menor intensidade em comparação aos meses anteriores. Já o **pipeline de emissões corporativas permaneceu restrito**, mantendo a oferta de ativos em níveis reduzidos.
+- Ambiente técnico para o crédito segue **favorável**, com forte demanda pela classe, mas os **spreads permanecem historicamente comprimidos**.
 
-- Fundos com alocação mínima de 15% em crédito e ao menos 1% em debêntures registraram **resgates líquidos próximos de R$ 10 bilhões** no período. Esse movimento contribuiu para a reabertura dos spreads e para uma **piora da dinâmica técnica da classe**.
+- **Disciplina na alocação** dos recursos, priorizando operações com adequada relação entre risco e retorno.
 
-- Apesar desse cenário, os **fundamentos corporativos permanecem resilientes** e os níveis de inadimplência seguem controlados.
+- **Preservação de flexibilidade** para capturar oportunidades em eventuais momentos de maior volatilidade do mercado.
 
-**Destaques da atuação da gestão em setembro**
-
-- Na parcela de crédito estruturado, a gestão **iniciou posição em uma cota sênior de FIDC com exposição ao setor de telecomunicações**.
-
-- A tese de investimento está fundamentada na atuação consolidada do originador, com **mais de 23 anos de experiência no segmento**, e nas características do mercado em que atua: **elevada pulverização, baixa bancarização, receitas recorrentes e oferta restrita de crédito**.
-
-- A operação apresenta **carteira de recebíveis amplamente diversificada entre cedentes e sacados**, além de mecanismos de proteção que incluem **overcollateralization mínima de 25% sobre os ativos cedidos ao fundo**.
-
-- A gestão também **adicionou ao portfólio cotas de um FIDC** estruturado como uma **securitização revolvente lastreada em recebíveis de cartão de crédito** originados por uma adquirente. Os devedores desses recebíveis são os **bancos emissores dos cartões** referentes às transações na modalidade crédito, limitadas às bandeiras **Visa, Mastercard, American Express, Elo e Hipercard**.
-
-- A gestão manteve uma **postura disciplinada e seletiva na alocação dos recursos**, buscando capturar oportunidades geradas pela recente abertura dos spreads sem abrir mão da qualidade de crédito das carteiras.
+<br>
+Visão de Mercado | Setembro
+Mercado de crédito marcado por <strong class="___1qwroh2 fl43uef f19n0e5" data-lexical-text="true">reabertura dos spreads</strong> e <strong class="___1qwroh2 fl43uef f19n0e5" data-lexical-text="true">liquidez reduzida no secundário</strong>, interrompendo parcialmente o movimento de compressão observado nos últimos meses.
+Os spreads médios dos títulos corporativos indexados ao CDI avançaram cerca de <strong class="___1qwroh2 fl43uef f19n0e5" data-lexical-text="true">5 bps</strong>, passando de <strong class="___1qwroh2 fl43uef f19n0e5" data-lexical-text="true">CDI + 1,23%</strong> para <strong class="___1qwroh2 fl43uef f19n0e5" data-lexical-text="true">CDI + 1,28% ao ano</strong>.
+No secundário, a <strong class="___1qwroh2 fl43uef f19n0e5" data-lexical-text="true">liquidez permaneceu limitada</strong>, especialmente em ativos corporativos, resultando em uma formação de preços mais seletiva.
+No primário, as <strong class="___1qwroh2 fl43uef f19n0e5" data-lexical-text="true">emissões bancárias seguiram registrando demanda consistente</strong>, embora com menor intensidade em comparação aos meses anteriores. Já o <strong class="___1qwroh2 fl43uef f19n0e5" data-lexical-text="true">pipeline de emissões corporativas permaneceu restrito</strong>, mantendo a oferta de ativos em níveis reduzidos.
+Fundos com alocação mínima de 15% em crédito e ao menos 1% em debêntures registraram <strong class="___1qwroh2 fl43uef f19n0e5" data-lexical-text="true">resgates líquidos próximos de R$ 10 bilhões</strong> no período. Esse movimento contribuiu para a reabertura dos spreads e para uma <strong class="___1qwroh2 fl43uef f19n0e5" data-lexical-text="true">piora da dinâmica técnica da classe</strong>.
+Apesar desse cenário, os <strong class="___1qwroh2 fl43uef f19n0e5" data-lexical-text="true">fundamentos corporativos permanecem resilientes</strong> e os níveis de inadimplência seguem controlados.
+Destaques da atuação da gestão em setembro
+Na parcela de crédito estruturado, a gestão <strong class="___1qwroh2 fl43uef f19n0e5" data-lexical-text="true">iniciou posição em uma cota sênior de FIDC com exposição ao setor de telecomunicações</strong>.
+A tese de investimento está fundamentada na atuação consolidada do originador, com <strong class="___1qwroh2 fl43uef f19n0e5" data-lexical-text="true">mais de 23 anos de experiência no segmento</strong>, e nas características do mercado em que atua: <strong class="___1qwroh2 fl43uef f19n0e5" data-lexical-text="true">elevada pulverização, baixa bancarização, receitas recorrentes e oferta restrita de crédito</strong>.
+A operação apresenta <strong class="___1qwroh2 fl43uef f19n0e5" data-lexical-text="true">carteira de recebíveis amplamente diversificada entre cedentes e sacados</strong>, além de mecanismos de proteção que incluem <strong class="___1qwroh2 fl43uef f19n0e5" data-lexical-text="true">overcollateralization mínima de 25% sobre os ativos cedidos ao fundo</strong>.
+A gestão também <strong class="___1qwroh2 fl43uef f19n0e5" data-lexical-text="true">adicionou ao portfólio cotas de um FIDC</strong> estruturado como uma <strong class="___1qwroh2 fl43uef f19n0e5" data-lexical-text="true">securitização revolvente lastreada em recebíveis de cartão de crédito</strong> originados por uma adquirente.
+Os devedores desses recebíveis são os <strong class="___1qwroh2 fl43uef f19n0e5" data-lexical-text="true">bancos emissores dos cartões</strong> referentes às transações na modalidade crédito, limitadas às bandeiras <strong class="___1qwroh2 fl43uef f19n0e5" data-lexical-text="true">Visa, Mastercard, American Express, Elo e Hipercard</strong>.
+A gestão manteve uma <strong class="___1qwroh2 fl43uef f19n0e5" data-lexical-text="true">postura disciplinada e seletiva na alocação dos recursos</strong>, buscando capturar oportunidades geradas pela recente abertura dos spreads sem abrir mão da qualidade de crédito das carteiras.
+<br>
