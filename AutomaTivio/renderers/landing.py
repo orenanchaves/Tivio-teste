@@ -57,6 +57,52 @@ def carregar_textos(caminho=None):
             for i in range(1, len(partes) - 1, 2)}
 
 
+def comentario_automatico(chave, pg, por_key, textos, edicao):
+    """O texto do gestor dos fundos de previdência, montado sozinho.
+
+    O gestor já escreve, em entrada/comentarios.md, os parágrafos de mercado do
+    mês para os fundos HG (são os mesmos do HGD30). Daqui:
+      1. "Sobre o Fundo" fixo (configs/previdencia.yml → comentario.sobre);
+      2. os parágrafos de mercado do fundo de referência (comentario.mercado_de),
+         até a frase do próprio fundo ("Nesse cenário…");
+      3. a frase de rentabilidade (comentario.frase), com os números da tabela;
+      4. o complemento manual do mês, se houver, em entrada/previdencia.md
+         (atribuição de performance, destaques da gestão).
+    Sem `comentario` no fundo, vale só o texto de entrada/previdencia.md.
+    """
+    cfg = pg.get('comentario') or {}
+    manual = (textos.get(chave) or '').strip()
+    if not cfg:
+        return manual
+    mes = fmt.MESES[edicao.db.month - 1]
+
+    def m(t):
+        return str(t).replace('{Mes}', mes).replace('{mes_minusculo}', mes.lower())
+
+    partes = []
+    if cfg.get('sobre'):
+        partes += ['**Sobre o Fundo**', '\n'.join('- ' + m(x) for x in cfg['sobre'])]
+    ref = por_key.get(cfg.get('mercado_de'))
+    mercado = []
+    if ref is not None:
+        for p in ref.comentario or []:
+            if re.search(r'Nesse cen[áa]rio|apresentou rentabilidade|obteve retorno|acumula retorno', p):
+                break
+            if p.strip():
+                mercado.append(p.strip())
+    if mercado:
+        if cfg.get('titulo_mercado'):
+            partes.append('**' + m(cfg['titulo_mercado']) + '**')
+        partes += mercado
+    if cfg.get('frase'):
+        partes.append(m(cfg['frase']))
+    if manual:
+        if cfg.get('titulo_destaques'):
+            partes.append('**' + m(cfg['titulo_destaques']) + '**')
+        partes.append(manual)
+    return '\n\n'.join(partes)
+
+
 def _inline(s):
     s = _html.escape(s, quote=False)
     return re.sub(r'\*\*(.+?)\*\*', r'<strong>\1</strong>', s)
@@ -213,11 +259,12 @@ class RenderizadorLanding:
         return {'l': rot, 'f': f, 'c': c, 'bench': ctx.benchmark}
 
     # ------------------------------------------------------------- página
-    def html(self, chave, ctx):
+    def html(self, chave, ctx, por_key=None):
         pg = self.paginas[chave]
-        texto, faltando = ctx.preencher(self.textos.get(chave, ''))
-        if not self.textos.get(chave):
-            self.log.aviso(chave, 'entrada/previdencia.md sem texto para esta página')
+        bruto = comentario_automatico(chave, pg, por_key or {}, self.textos, self.edicao)
+        texto, faltando = ctx.preencher(bruto)
+        if not bruto:
+            self.log.aviso(chave, 'previdência sem texto do gestor: nem comentarios.md nem entrada/previdencia.md')
         for k in faltando:
             self.log.aviso(chave, f'landing: marcador sem valor: {{{k}}}')
 

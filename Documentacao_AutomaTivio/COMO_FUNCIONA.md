@@ -171,9 +171,14 @@ Os três materiais leem os mesmos números e o mesmo texto:
 - **Rentabilidade, PL e carteira: FIFE** (`TIVIO HGD30 RF CP FIFE RL` e
   `TIVIO HYD60 FIFE CI MULT CP RL - Expandida`). Nome, CNPJ e produto exibidos
   ficam em `configs/previdencia.yml`.
-- **Texto do gestor:** `entrada/previdencia.md` (um `## hgd30`, um `## hyd60`).
-  As frases "rentabilidade de X% no mês (Y% do CDI), acumulando Z% (W% do CDI)
-  em 12 meses / desde o início" são ajustadas à tabela.
+- **Texto do gestor: automático.** Os parágrafos de mercado vêm do comentário
+  do Tivio Institucional em `entrada/comentarios.md` (o gestor já escreve, e são
+  os mesmos do HGD30); a frase de rentabilidade sai da tabela do mês ("o Tivio
+  HGD30 apresentou rentabilidade de X% no mês (Y% do CDI), acumulando Z% em 12
+  meses"; no HYD60, desde o início, mais carrego e duration); o HYD60 tem ainda
+  "Sobre o Fundo" fixo. Em `entrada/previdencia.md` fica só o complemento do mês
+  (atribuição de performance, destaques da gestão). No Informativo, a letra
+  encolhe sozinha quando o texto do mês é mais longo que a caixa.
 - **Composição da carteira:** Bancário = emissor do setor Financeiro ou
   Financeiro Corp (inclui debênture de banco), Corporativo, FIDC e Caixa, sobre o
   total da carteira. Confere com o Informativo de setembro (28,3 / 36,1 / 7,2 / 28,4).
@@ -241,7 +246,7 @@ Para desligar algum formato: `AutomaTivio/configs/edicao.yml` → `saidas:`
 | Visual da folha (cores, tamanhos) | `templates/estilos/relatorio.css` |
 | Logo de um fundo | o SVG em `assets/logos/`, sempre **horizontal** e com o texto em curvas |
 | Texto jurídico do rodapé | `configs/disclaimer.md` |
-| Texto do gestor do HGD30 e do HYD60 (página, e-mail e Informativo) | `entrada/previdencia.md` |
+| Texto do gestor do HGD30 e do HYD60 | automático (mercado do Institucional em `entrada/comentarios.md` + números); complemento do mês em `entrada/previdencia.md`; regras em `configs/previdencia.yml` → `comentario` |
 | Cards, seções, taxas, público e blocos do e-mail de previdência | `configs/previdencia.yml` |
 | Modelo do Informativo (PPTX) | `templates/informativos/` (os nomes dos shapes estão em `exporters/previdencia.py`, `MAPAS`) |
 | Data de início exibida diferente da DePara | `configs/fundos.yml` → `data_inicio: DD/MM/AAAA` (Infra Plus: 15/07/2019) |
@@ -289,8 +294,8 @@ python -m playwright install chromium
   ficaram guardados em `entrada/comentarios_2026-08.md`.
 - **BVP:** sem logo em `assets/logos/`.
 - **Tivio Atuarial:** fora da DePara da planilha, então não gera relatório.
-- **Texto de previdência:** em `entrada/previdencia.md`, o HGD30 já é o de
-  setembro; o HYD60 ainda é o de agosto. Trocar pelo do mês.
+- **Complemento de previdência:** em `entrada/previdencia.md`, o do HGD30 é
+  de setembro; o do HYD60 (destaques da gestão) ainda é o de agosto.
 - **Botão "Voltar ao C&M Hub"** da Central: aponta para uma página que não existe
   no projeto.
 

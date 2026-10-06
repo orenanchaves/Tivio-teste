@@ -8,7 +8,8 @@
 #
 # Aqui fica só o que a planilha não tem: nome e CNPJ exibidos, meta, público,
 # taxas, textos fixos. O texto do gestor ("Visão de Mercado", "Destaques") fica
-# em entrada/previdencia.md (o mesmo texto vai para os três materiais).
+# montado sozinho (ver `comentario` em cada fundo), com o complemento manual de
+# entrada/previdencia.md. O mesmo texto vai para os três materiais.
 #
 # Saídas:
 #   saida/AAAA-MM/central/tivio-<chave>-saiba-mais.html     página Saiba mais
@@ -45,6 +46,12 @@ paginas:
       - {rotulo: Duration, dado: duration}
       - {rotulo: Patrimônio Líquido, dado: pl_curto}
     caracteristicas: [nome, cnpj, inicio, pl_medio, publico, taxas]
+    # texto do gestor automático: mercado do comentário do Institucional
+    # (entrada/comentarios.md) + a frase com os números + complemento manual
+    # (entrada/previdencia.md, se houver)
+    comentario:
+      mercado_de: institucional
+      frase: "Nesse cenário, o **Tivio HGD30 apresentou rentabilidade de {mes} no mês ({pct_mes} do CDI), acumulando {12m} ({pct_12m} do CDI) em 12 meses.**"
     email:
       titulo: TIVIO HGD30 FIF CLASSE INVESTIMENTO RF CP FIFE RL
       produto: "/ / BRADESCO TIVIO HGD30 PGBL/VGBL RF CRÉDITO PRIVADO"
@@ -113,6 +120,14 @@ paginas:
           A menor volatilidade dos fundos de crédito estruturado é resultado de
           uma combinação de fatores resultantes da gestão ativa do fundo.
     caracteristicas: [nome, cnpj]
+    comentario:
+      sobre:
+        - "O **Tivio HYD60** combina **duas estratégias complementares de geração de alfa**, apoiadas na ampla expertise da área de crédito da Tivio Capital."
+        - "Equilíbrio entre **75% em ativos líquidos e 25% em operações estruturadas**."
+      mercado_de: institucional
+      titulo_mercado: "Visão de Mercado | {Mes}"
+      frase: "Nesse cenário, o **Tivio HYD60 apresentou rentabilidade de {mes} no mês ({pct_mes} do CDI), acumulando {inicio} ({pct_inicio} do CDI) desde o início.** A carteira encerrou o mês com carrego de **CDI + {carrego}** e duration média de **{duration}**."
+      titulo_destaques: "Destaques da atuação da gestão em {mes_minusculo}"
     email:
       titulo: BRADESCO TIVIO HYD60 PGBL VGBL FIF CIC MULTIMERCADO CP RL
       produto: "/ / BRADESCO TIVIO HYD60 PGBL/VGBL FIF"

@@ -20,12 +20,9 @@
 .b-cab .cab-pe{position:absolute;left:26px;bottom:22px;display:flex;align-items:center;gap:16px}
 .b-cab .cab-mes{border:1px solid currentColor;border-radius:4px;padding:5px 9px;font-size:9px;letter-spacing:.04em}
 .b-cab .cab-uso{font-size:6.5px;letter-spacing:.06em;text-transform:uppercase}
-.b-cab.hy{color:#111;height:270px;background-position:center 30%}
-.b-cab.hy .cab-tivio{color:#111}
-.b-cab.hy .cab-logo{position:absolute;left:30px;top:70px;width:200px;color:#111}
-.b-cab.hy .cab-logo svg{width:100%;height:auto;display:block}
-.b-cab.hy .cab-pe{left:30px;bottom:auto;top:178px}
-.b-cab.hy .cab-mes{font-size:8px;padding:4px 8px}
+.b-cab.hy{height:272px;background-size:100% 100%;background-position:0 0}
+.b-cab.hy .cab-mes{position:absolute;left:67px;top:178px;font-size:9.5px;font-weight:300;letter-spacing:.03em;
+  color:#3a3a3a;border:1px solid #6b6b6b;border-radius:5px;padding:4px 8px;line-height:1.2}
 .b-uso{background:#E9EAEA;color:#555;text-align:center;font-size:7px;letter-spacing:.08em;text-transform:uppercase;padding:6px 0}
 
 /* texto do gestor */

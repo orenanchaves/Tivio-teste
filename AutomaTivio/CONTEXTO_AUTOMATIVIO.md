@@ -309,9 +309,12 @@ de código, o que é troca ruim. Eles seguem sendo a fonte do layout; o que mudo
 
 ### Previdência: páginas "Saiba mais", e-mail e Informativo (HGD30, HYD60)
 
-Configuração em `configs/previdencia.yml`; texto do gestor em
-`entrada/previdencia.md` (passa por `ctx.preencher`, inclusive a regra nova
-"acumulando X% (Y%) em 12 meses"). Os fundos `hgd30` e `hyd60` de
+Configuração em `configs/previdencia.yml`. Texto do gestor montado por
+`renderers/landing.py::comentario_automatico`: parágrafos de mercado do fundo
+`comentario.mercado_de` (Institucional, de `entrada/comentarios.md`, até a frase
+"Nesse cenário…") + `comentario.frase` com marcadores + complemento de
+`entrada/previdencia.md`; tudo passa por `ctx.preencher`. No Informativo,
+`exporters/previdencia.py::_cabe` reduz o corpo da caixa até o texto caber. Os fundos `hgd30` e `hyd60` de
 `configs/fundos.yml` apontam para as carteiras **FIFE** (rentabilidade, PL e
 carteira). Cortes no Contexto: `alocacao_hghy`, `composicao()` (Bancário por
 setor, sobre o total da carteira), `rating_extras()`, a partir de `hghy_tipo`,

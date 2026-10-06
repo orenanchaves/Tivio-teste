@@ -15,9 +15,11 @@ montado, com os textos em HTML e os blocos como imagem.
 import base64
 import json
 import os
+import re
 
 from calculators import formatos as fmt
 from renderers.landing import (RenderizadorLanding, carregar_config, carregar_textos,
+                               comentario_automatico,
                                logo_svg, markdown_simples, _valor_curto)
 
 RAIZ = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -44,11 +46,12 @@ def _pct3(v):
     return fmt.num(v * 100, 3) + '%' if v is not None else fmt.MINUS
 
 
-def dados_fundo(chave, pg, ctx, edicao, textos, log=None):
+def dados_fundo(chave, pg, ctx, edicao, textos, log=None, por_key=None):
     """Tudo o que o e-mail e o Informativo mostram de um fundo."""
     lp = RenderizadorLanding.__new__(RenderizadorLanding)
     lp.edicao = edicao
-    texto_md, faltando = ctx.preencher(textos.get(chave, ''))
+    texto_md, faltando = ctx.preencher(
+        comentario_automatico(chave, pg, por_key or {}, textos, edicao))
     if log:
         for k in faltando:
             log.aviso(chave, f'previdência: marcador sem valor: {{{k}}}')
@@ -123,7 +126,8 @@ class RenderizadorEmailPrevidencia:
             if ctx is None or not ctx.tem_dados:
                 self.log.aviso(chave, 'e-mail de previdência sem este fundo: sem dados nesta edição')
                 continue
-            saida.append((dados_fundo(chave, pg, ctx, self.edicao, self.textos, self.log), pg))
+            saida.append((dados_fundo(chave, pg, ctx, self.edicao, self.textos, self.log,
+                                      por_key), pg))
         return saida
 
     @staticmethod
@@ -150,10 +154,15 @@ class RenderizadorEmailPrevidencia:
             'hgd30_capa': _data_uri('assets/previdencia/hgd30_capa.jpg', 'image/jpeg'),
             'hyd60_capa': _data_uri('assets/previdencia/hyd60_capa.jpg', 'image/jpeg'),
             'hyd60_beneficios': _data_uri('assets/previdencia/hyd60_beneficios.png', 'image/png'),
+            'hyd60_cabecalho': _data_uri('assets/previdencia/hyd60_cabecalho_email.jpg', 'image/jpeg'),
         }
         logos = {d['chave']: {
             'empilhado': logo_svg((pg.get('logo') or {}).get('empilhado'), 'flogo'),
-            'horizontal': logo_svg((pg.get('logo') or {}).get('horizontal'), 'flogo-h')}
+            'horizontal': logo_svg((pg.get('logo') or {}).get('horizontal'), 'flogo-h'),
+            # só o "HY D60" do logo horizontal oficial (a parte à direita do
+            # BRADESCO/TIVIO empilhado), para a capa do e-mail
+            'hy_d60': re.sub(r'viewBox="[^"]*"', 'viewBox="128 0 287 68"',
+                             logo_svg((pg.get('logo') or {}).get('horizontal'), 'flogo-hy'), count=1)}
             for d, pg in fundos}
         return tpl.render(
             fundos=[d for d, _ in fundos], logos=logos, imagens=imagens,

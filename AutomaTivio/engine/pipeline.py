@@ -387,7 +387,7 @@ class Pipeline:
                 self.log.aviso(chave, 'página Saiba mais não gerada: fundo sem dados nesta edição')
                 continue
             try:
-                html = lp.html(chave, ctx)
+                html = lp.html(chave, ctx, por_key)
             except Exception as e:
                 self.log.erro(chave, f'falha ao montar a página Saiba mais: {e!r}')
                 continue

@@ -183,6 +183,47 @@ def _escreve_texto(shape, md):
             espaco()
         novo(tipo, texto)
         anterior = tipo
+    _cabe(shape)
+
+
+def _cabe(shape, largura_char=0.47, entrelinha=1.2):
+    """Encolhe a letra da caixa até o texto caber na altura dela.
+
+    O texto do gestor muda de tamanho todo mês e a caixa do modelo é fixa; o
+    PowerPoint não refaz o "reduzir texto" ao abrir nem ao gerar o PDF. A
+    medida é aproximada (largura média do caractere = 0,47 do corpo, calibrada
+    no Informativo do HYD60) e só reduz, nunca aumenta.
+    """
+    import math
+    tf = shape.text_frame
+    W, H = shape.width / 12700, shape.height / 12700
+    paras = []
+    base = 11.0
+    for p in tf.paragraphs:
+        t = ''.join(r.text for r in p.runs)
+        sz = next((r.font.size.pt for r in p.runs if r.font.size), None)
+        if sz:
+            base = sz
+        marl = int(p._p.pPr.get('marL', '0')) / 12700 if p._p.pPr is not None else 0
+        paras.append((t, marl))
+
+    def altura(sz):
+        linhas = 0
+        for t, marl in paras:
+            cpl = max(10, (W - marl) / (largura_char * sz))
+            linhas += max(1, math.ceil(len(t) / cpl))
+        return linhas * sz * entrelinha
+
+    if altura(base) <= H * 0.98:
+        return
+    s = 1.0
+    while s > 0.6 and altura(base * s) > H * 0.98:
+        s -= 0.02
+    novo = int(round(base * s * 100))
+    for p in tf.paragraphs:
+        for el in p._p.iter():
+            if el.tag in (A + 'rPr', A + 'endParaRPr', A + 'defRPr'):
+                el.set('sz', str(novo))
 
 
 # ------------------------------------------------------------------ números

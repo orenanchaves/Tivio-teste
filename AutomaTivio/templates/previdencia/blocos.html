@@ -13,12 +13,11 @@
   <div class="cab-pe"><span class="cab-mes" contenteditable="true">{{ d.mes|upper }} {{ d.ano }}</span><span class="cab-uso">Material de uso interno</span></div>
 </div>
 {% else %}
-<div class="b-cab hy" style="background-image:linear-gradient(90deg,rgba(255,255,255,.55) 0%,rgba(255,255,255,.15) 55%,rgba(255,255,255,0) 100%),url('{{ imagens.hyd60_capa }}')">
-  <svg class="cab-tivio" viewBox="0 0 844 294"><use href="#tv-logo"/></svg>
-  <div class="cab-logo">{{ logos[d.chave].empilhado|safe }}</div>
-  <div class="cab-pe"><span class="cab-mes" contenteditable="true">{{ d.mes|upper }} {{ d.ano }}</span></div>
+{# a capa do e-mail publicado (foto, linhas, nome e logo) com o mês apagado;
+   só o selo do mês é escrito por cima, todo mês #}
+<div class="b-cab hy" style="background-image:url('{{ imagens.hyd60_cabecalho }}')">
+  <span class="cab-mes" contenteditable="true">{{ d.mes|upper }} {{ d.ano }}</span>
 </div>
-<div class="b-uso">Material de uso interno</div>
 {% endif %}
 {% endmacro %}
 
