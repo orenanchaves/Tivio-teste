@@ -60,6 +60,7 @@ AutomaTivio/saida/AAAA-MM/
 │   ├── tivio-email-previdencia.html  gerador do e-mail de previdência (HGD30 e HYD60)
 │   └── tivio-email-*.html        construtores de e-mail
 ├── pdf/                          13 relatórios em PDF A4, texto selecionável
+│                                 + os 3 carrosséis de Destaques ("Destaques - <vertical> - <mês>.pdf")
 ├── pptx/                         13 relatórios em PPTX, texto editável
 ├── destaques/                    carrosséis prontos para postar
 │   ├── credito-privado/          01-…jpg a 08-…jpg + tivio-destaques-credito-privado.pdf
@@ -211,6 +212,8 @@ enviar; para virar modelo, Arquivo > Salvar como > Modelo do Outlook (.oft).
   S/rating), composição (Bancário, Corporativo, FIDC, Caixa), histórico em
   ECharts, PL, PL médio, duration e carrego.
 - **Texto do gestor** montado de `entrada/comentarios.md` (ver acima).
+- **Site externo:** as páginas Saiba mais não têm botão para a Central; o menu
+  das seções fica no cabeçalho e acompanha a rolagem.
 - **Gráficos em ECharts:** alocação em meia-rosca (com o retorno estimado no
   HYD60), composição em rosca, setores em barras, rating em colunas e histórico
   em linha com área. O logo do fundo é sempre o horizontal.

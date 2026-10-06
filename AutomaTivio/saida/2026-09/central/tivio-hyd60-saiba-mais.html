@@ -151,14 +151,20 @@ body.edit .edit-flag{display:inline-flex}
 .lp-logo-h{height:26px;width:auto;display:block;color:var(--text-primary)}
 
 /* abas de seção, em pílula como .tabs da referência */
-.lp-nav{position:sticky;top:72px;z-index:50;padding:12px 0;background:linear-gradient(var(--bg-base),color-mix(in srgb,var(--bg-base) 0%,transparent))}
-.lp-nav .inner{max-width:var(--container);margin:0 auto;padding:0 28px}
-.lp-nav .tabs{display:flex;gap:2px;padding:4px;border-radius:var(--r-full);background:var(--input-bg);border:1px solid var(--line-strong);backdrop-filter:blur(12px);overflow-x:auto;scrollbar-width:none;width:max-content;max-width:100%;margin:0 auto}
-.lp-nav .tabs::-webkit-scrollbar{display:none}
-.lp-nav a{padding:9px 14px;border-radius:var(--r-full);font-size:12.5px;font-weight:600;color:var(--text-muted);white-space:nowrap;transition:background-color .2s var(--ease),color .2s var(--ease)}
-.lp-nav a:hover{color:var(--text-primary)}
-.lp-nav a.on{background:var(--tv-verde-escuro);color:var(--tv-verde-ink)}
-:root[data-theme="light"] .lp-nav a.on{background:var(--tv-verde-light-accent);color:#fff}
+.header .inner{gap:18px}
+.hd-nav{flex:1 1 auto;min-width:0;display:flex;justify-content:center}
+.hd-nav .tabs{display:flex;gap:2px;padding:4px;border-radius:var(--r-full);background:var(--input-bg);border:1px solid var(--line-strong);overflow-x:auto;scrollbar-width:none;max-width:100%}
+.hd-nav .tabs::-webkit-scrollbar{display:none}
+.hd-nav a{padding:7px 12px;border-radius:var(--r-full);font-size:12px;font-weight:600;color:var(--text-muted);white-space:nowrap;transition:background-color .2s var(--ease),color .2s var(--ease)}
+.hd-nav a:hover{color:var(--text-primary)}
+.hd-nav a.on{background:var(--tv-verde-escuro);color:var(--tv-verde-ink)}
+:root[data-theme="light"] .hd-nav a.on{background:var(--tv-verde-light-accent);color:#fff}
+.header .head-actions{margin-left:auto;width:auto;flex:0 0 auto}
+/* sem espaço para tudo numa linha: o menu desce para a segunda linha do cabeçalho */
+@media(max-width:1580px){
+  .header .inner{flex-wrap:wrap;height:auto;padding-top:12px;padding-bottom:10px;row-gap:10px}
+  .hd-nav{order:3;flex:1 0 100%;justify-content:flex-start}
+}
 
 /* hero: o logo empilhado do fundo é a peça principal */
 .lp-hero{padding:48px 0 36px;text-align:center}
@@ -171,7 +177,7 @@ body.edit .edit-flag{display:inline-flex}
 .lp-hero .nome{margin:30px auto 0;max-width:760px;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--text-muted);font-weight:600;line-height:1.7}
 
 /* seções: cartão de vidro com brilho no canto (.hero-about / .vertical) */
-.lp-sec{scroll-margin-top:150px;margin:0 0 22px}
+.lp-sec{scroll-margin-top:140px;margin:0 0 22px}
 .lp-card{position:relative;overflow:hidden;background:var(--bg-glass);border:1px solid var(--line);border-radius:var(--r-lg);padding:32px 30px;backdrop-filter:blur(16px) saturate(1.4)}
 .lp-card::before{content:"";position:absolute;inset:0;pointer-events:none;border-radius:inherit;background:linear-gradient(135deg,rgba(255,255,255,.06),transparent 55%)}
 :root[data-theme="light"] .lp-card::before{background:linear-gradient(135deg,rgba(255,255,255,.45),transparent 55%)}
@@ -287,10 +293,7 @@ body.edit .edit-flag{display:inline-flex}
 .sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
 .footer .logo-mark{height:22px;width:63px;color:var(--text-primary);flex:0 0 auto}
 
-@media(max-width:1060px){.lp-nav{top:0;position:relative}}
 @media(max-width:640px){
-  .lp-nav .inner{padding:0 16px}
-  .lp-nav .tabs{margin:0}
   .lp-hero{padding:32px 0 24px}
   .lp-card{padding:24px 18px;border-radius:var(--r-md)}
   .lp-kpis{grid-template-columns:1fr 1fr;gap:10px}
@@ -350,8 +353,9 @@ body.edit .edit-flag{display:inline-flex}
   </g>
 </svg></span>
     </a>
+    <nav class="hd-nav" aria-label="Seções"><div class="tabs">
+<a href="#sec-texto">Início</a><a href="#sec-rentabilidade">Rentabilidade</a><a href="#sec-previsao_alocacao">Alocação da Carteira</a><a href="#sec-setorial">Exposição Setorial</a><a href="#sec-rating">Rating</a><a href="#sec-historico">Rentabilidade Histórica</a><a href="#sec-beneficios">Benefícios</a><a href="#sec-caracteristicas">Características do Fundo</a>    </div></nav>
     <div class="head-actions">
-      <a class="btn btn-glass btn-sm" href="tivio-central.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M11 18l-6-6 6-6"/></svg>Central de Materiais</a>
       <div class="btn-group" role="group" aria-label="Alternar tema da interface">
         <button type="button" class="btn btn-ghost btn-xs" data-theme-set="light" aria-label="Modo claro"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></svg></button>
         <button type="button" class="btn btn-ghost btn-xs" data-theme-set="dark" aria-label="Modo escuro"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg></button>
@@ -359,11 +363,6 @@ body.edit .edit-flag{display:inline-flex}
     </div>
   </div>
 </header>
-
-<nav class="lp-nav" aria-label="Seções">
-  <div class="inner"><div class="tabs">
-<a href="#sec-texto">Início</a><a href="#sec-rentabilidade">Rentabilidade</a><a href="#sec-previsao_alocacao">Alocação da Carteira</a><a href="#sec-setorial">Exposição Setorial</a><a href="#sec-rating">Rating</a><a href="#sec-historico">Rentabilidade Histórica</a><a href="#sec-beneficios">Benefícios</a><a href="#sec-caracteristicas">Características do Fundo</a>  </div></div>
-</nav>
 
 <main class="container" id="top">
 <div class="lp">
@@ -602,13 +601,19 @@ body.edit .edit-flag{display:inline-flex}
   window.addEventListener('resize', function () { if (grafico) grafico.resize(); });
 
   // seção atual destacada na barra de navegação
-  var links = [].slice.call(document.querySelectorAll('.lp-nav a'));
+  var links = [].slice.call(document.querySelectorAll('.hd-nav a'));
   var alvos = links.map(function (a) { return document.querySelector(a.getAttribute('href')); });
   var topo = document.getElementById('backtop');
   function marcar() {
     var y = window.scrollY + 170, atual = 0;
     alvos.forEach(function (s, i) { if (s && s.offsetTop <= y) atual = i; });
     links.forEach(function (a, i) { a.classList.toggle('on', i === atual); });
+    // no celular o menu rola de lado: a aba da seção atual fica à vista
+    var on = links[atual], trilho = on && on.parentNode;
+    if (on && trilho && trilho.scrollWidth > trilho.clientWidth && marcar.ultimo !== atual) {
+      trilho.scrollTo({left: Math.max(0, on.offsetLeft - 24), behavior: 'smooth'});
+    }
+    marcar.ultimo = atual;
     topo.classList.toggle('show', window.scrollY > 600);
   }
   window.addEventListener('scroll', marcar, {passive: true});

@@ -50,8 +50,16 @@ async (escala) => {
 """
 
 
-def exportar_destaques(pasta_central, destino, log):
-    """Grava os JPG de cada carrossel em destino/<vertical>/. Devolve a contagem."""
+ROTULOS = {'credito-privado': 'Crédito Privado', 'credito-estruturado': 'Crédito Estruturado',
+           'investment-solutions': 'Investment Solutions'}
+
+
+def exportar_destaques(pasta_central, destino, log, pasta_pdf=None, sufixo=''):
+    """Grava os JPG de cada carrossel em destino/<vertical>/. Devolve a contagem.
+
+    Com `pasta_pdf`, o pacote PDF de cada carrossel sai também lá (a pasta pdf/
+    da edição, junto dos relatórios): "Destaques - Crédito Privado - Setembro 2026.pdf".
+    """
     from playwright.sync_api import sync_playwright
     total = 0
     with sync_playwright() as p:
@@ -98,6 +106,11 @@ def exportar_destaques(pasta_central, destino, log):
                         pagina = pdf.new_page(width=1080, height=1440)
                         pagina.insert_image(pagina.rect, stream=base64.b64decode(b64))
                     pdf.save(os.path.join(pasta, f'tivio-destaques-{vertical}.pdf'), deflate=True)
+                    if pasta_pdf:
+                        os.makedirs(pasta_pdf, exist_ok=True)
+                        nome_pdf = f'Destaques - {ROTULOS.get(vertical, vertical)}{sufixo}.pdf'
+                        pdf.save(os.path.join(pasta_pdf, nome_pdf), deflate=True)
+                        log.info(f'  PDF  pdf/{nome_pdf}')
                     pdf.close()
                 except Exception as e:
                     log.aviso(arquivo, f'pacote PDF dos destaques não gerado: {e!r}')
