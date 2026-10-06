@@ -517,13 +517,24 @@ def _pdf_powerpoint(pptx, pdf, log):
         f"$p=$pp.Presentations.Open('{pptx}',$false,$false,$false);"
         + (f"$p.SaveAs('{pptx}',24,-1);" if embute else "")
         + f"$p.SaveAs('{pdf}',32);$p.Close();$pp.Quit()")
-    try:
-        r = subprocess.run(['powershell', '-NoProfile', '-NonInteractive', '-Command', script],
-                           capture_output=True, text=True, timeout=240)
-        return r.returncode == 0 and os.path.exists(pdf)
-    except Exception as e:
-        log.aviso('informativo', f'PDF pelo PowerPoint falhou: {e!r}')
-        return False
+    # o PDF da rodada anterior sai antes: se a exportação falhar, não fica um
+    # PDF velho com cara de novo na pasta
+    if os.path.exists(pdf):
+        os.remove(pdf)
+    import time
+    for tentativa in (1, 2):         # o PowerPoint às vezes ainda está ocupado
+        try:
+            r = subprocess.run(['powershell', '-NoProfile', '-NonInteractive', '-Command', script],
+                               capture_output=True, text=True, timeout=240)
+            if r.returncode == 0 and os.path.exists(pdf):
+                return True
+            erro = (r.stderr or '').strip().splitlines()[:1]
+        except Exception as e:
+            erro = [repr(e)]
+        if tentativa == 1:
+            time.sleep(4)
+    log.aviso('informativo', 'PDF pelo PowerPoint falhou: ' + (erro[0][:160] if erro else ''))
+    return False
 
 
 def exportar_informativos(fundos, destino, rend_email, log):
