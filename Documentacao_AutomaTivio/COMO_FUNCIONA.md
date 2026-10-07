@@ -294,8 +294,8 @@ enviar; para virar modelo, Arquivo > Salvar como > Modelo do Outlook (.oft).
   viram cartões de vidro.
 - Quando o modelo já está com os números do mês (o time atualizou à mão), os
   blocos da alocação ficam no desenho dele.
-- Fundo com menos de 12 meses (Infra Plus CDI): o quadro "12M" vira "DESDE O
-  INÍCIO"; quando completar 12 meses, volta sozinho.
+- Fundo com menos de 12 meses (Infra Plus CDI): o quadro "12M" vira "Desde o
+  início"; quando completar 12 meses, volta sozinho.
 - `deck_pct_cdi: true` no fundo (`configs/fundos.yml`, hoje no Infra Plus CDI):
   nos decks a rentabilidade sai em "% do CDI", como nos Institucionais, sem a
   linha do Alfa e sem a nota do benchmark.

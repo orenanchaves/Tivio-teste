@@ -342,7 +342,7 @@ class Preenchedor:
                 if ctx.f.cfg.get('deck_pct_cdi') and 'do CDI' not in t:
                     ok |= _para_pct_cdi(par, m, ctx.valor(per, 'pct'))
                     if rotulo_inicio:
-                        _troca_trecho(par, m.start(1), m.end(1), 'DESDE O INÍCIO')
+                        _troca_trecho(par, m.start(1), m.end(1), 'Desde o início')
                     self.trocas += int(bool(ok))
                     return
                 # o próprio quadro diz o formato: "% do CDI" ou retorno (+ Alfa)
@@ -354,7 +354,7 @@ class Preenchedor:
                     v = fmt.num(pv * 100, 0) if pv is not None else None
                 ok |= _troca_trecho(par, m.start(2), m.end(2), v) if v else False
                 if rotulo_inicio and v:
-                    _troca_trecho(par, m.start(1), m.end(1), 'DESDE O INÍCIO')
+                    _troca_trecho(par, m.start(1), m.end(1), 'Desde o início')
                 t = ''.join(r.text for r in par.runs)
                 if 'Alfa' in t:
                     a = ctx.valor(per, 'alfa')
@@ -1489,7 +1489,7 @@ def _alinha_post(slide):
         return None
     L, R = rot[0], cnpj[2]
     caixas = [(sh, b) for sh, b in pecas
-              if sh.shape_type == 1 and re.match(r'(12M|ANO|M[ÊE]S|IN[ÍI]CIO|DESDE O IN[ÍI]CIO)\b', texto[id(sh)])]
+              if sh.shape_type == 1 and re.match(r'(12M|ANO|M[ÊE]S|IN[ÍI]CIO|DESDE O IN[ÍI]CIO)\b', texto[id(sh)], re.I)]
     if len(caixas) < 2:
         return None
     caixas.sort(key=lambda a: (a[1][0], a[1][1]))
@@ -1635,7 +1635,7 @@ def _reflui_post(slide, grade, ctx=None):
     if rot is None or painel is None:
         return
     caixas = [(sh, b) for sh, b in pecas
-              if sh.shape_type == 1 and re.match(r'(12M|ANO|M[ÊE]S|IN[ÍI]CIO|DESDE O IN[ÍI]CIO)\b', tx[id(sh)])]
+              if sh.shape_type == 1 and re.match(r'(12M|ANO|M[ÊE]S|IN[ÍI]CIO|DESDE O IN[ÍI]CIO)\b', tx[id(sh)], re.I)]
     cartoes = [(sh, b) for sh, b in pecas if sh.shape_type == 1 and
                re.match(r'(Aloca[çc][ãa]o de cr[ée]dito|Carrego|Duration)', tx[id(sh)])]
     if not caixas or not cartoes:
