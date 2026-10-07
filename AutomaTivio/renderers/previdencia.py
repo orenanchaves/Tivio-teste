@@ -4,7 +4,7 @@ Informativo compartilham.
 
 `dados_fundo()` junta, num dicionário só, tudo o que o e-mail e o Informativo
 mostram de um fundo: textos (configs/previdencia.yml + entrada/comentarios.md)
-e números (o Contexto do fundo FIFE). Os dois materiais leem esse mesmo
+e números (o Contexto do fundo: rentabilidade do FIE, carteira e PL do FIFE). Os dois materiais leem esse mesmo
 dicionário, e por isso nunca discordam.
 
 O gerador de e-mail (`central/tivio-email-previdencia.html`) é o mesmo formato

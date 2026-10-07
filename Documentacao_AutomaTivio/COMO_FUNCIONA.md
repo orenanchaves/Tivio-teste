@@ -175,9 +175,13 @@ para e não publica.
 ### 4.5b Previdência (HGD30 e HYD60): página, e-mail e Informativo
 
 Os três materiais leem os mesmos números e o mesmo texto:
-- **Rentabilidade, PL e carteira: FIFE** (`TIVIO HGD30 RF CP FIFE RL` e
-  `TIVIO HYD60 FIFE CI MULT CP RL - Expandida`). Nome, CNPJ e produto exibidos
-  ficam em `configs/previdencia.yml`.
+- **Rentabilidade (tabela, frase do texto e histórico): FIE**, a classe
+  BRADESCO TIVIO … PGBL/VGBL de cada fundo (`cotas_rentabilidade` em
+  `configs/fundos.yml`). **PL e carteira: FIFE** (`TIVIO HGD30 RF CP FIFE RL` e
+  `TIVIO HYD60 FIFE CI MULT CP RL - Expandida`). Se as cotas do FIE não vierem na
+  `dados_mensais.xlsx`, a rentabilidade sai do FIFE e o log avisa (é o caso do
+  HGD30 em setembro/2026). Nome, CNPJ e produto exibidos ficam em
+  `configs/previdencia.yml`.
 - **Texto do gestor: automático.** Os parágrafos de mercado vêm do comentário
   do Tivio Institucional em `entrada/comentarios.md` (o gestor já escreve, e são
   os mesmos do HGD30); a frase de rentabilidade sai da tabela do mês ("o Tivio

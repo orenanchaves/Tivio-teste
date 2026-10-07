@@ -289,7 +289,7 @@ class ContextoFundo:
         c = getattr(self, '_calc', None)
         if c is None:
             return []
-        sf = c.serie_fundo(self.f.quantum)
+        sf = c.serie_fundo(getattr(self, 'quantum_rent', None) or self.f.quantum)
         if sf.empty:
             return []
         cota = sf['cota'][sf.index <= c.db].dropna()
@@ -592,7 +592,17 @@ class Contexto:
             self._cache[key] = ctx
             return ctx
 
-        rent = self.calc.rentabilidade(f.quantum, f.benchmark)
+        # Rentabilidade de outra classe (`cotas_rentabilidade` em configs/fundos.yml):
+        # no HGD30 e no HYD60 a carteira e o PL são do FIFE, mas a rentabilidade
+        # que vai para e-mail, Informativo e site é a do FIE (BRADESCO TIVIO …
+        # PGBL/VGBL). Sem cotas do FIE na planilha, fica a do FIFE, com aviso.
+        q_rent = self._quantum_rentabilidade(f, avisos)
+        rent = self.calc.rentabilidade(q_rent, f.benchmark)
+        if rent and q_rent != f.quantum:
+            base = self.calc.rentabilidade(f.quantum, f.benchmark) or {}
+            for k in ('pl', 'pl_medio_12m'):
+                if k in base:
+                    rent[k] = base[k]
         if not rent:
             avisos.append(f'sem cotas para "{f.quantum}" na dados_mensais — material mantido')
             ctx = ContextoFundo(f, self.edicao, None, None, None, None, None, None, [], avisos, self.calc)
@@ -613,11 +623,11 @@ class Contexto:
                 avisos.append(f'carteira de {pd.Timestamp(cart["data"]):%d/%m/%Y} — '
                               f'{atraso} dias antes da data base')
 
-        hist = self.calc.historico(f.quantum, f.benchmark, f.cota_inicial, f.data_inicial)
+        hist = self.calc.historico(q_rent, f.benchmark, f.cota_inicial, f.data_inicial)
         fator = f.cfg.get('bench_tributado')
         if hist and fator:
             hist = dict(hist, t=[round(v * float(fator), 2) for v in hist['c']])
-        hist12 = self.calc.historico(f.quantum, f.benchmark, janela_meses=12)
+        hist12 = self.calc.historico(q_rent, f.benchmark, janela_meses=12)
 
         # o CNPJ do relatório publicado (cnpj_exibido) vence o da DePara também
         # na busca da taxa: no Legacy o da DePara é outra classe, com taxa 0%
@@ -642,12 +652,30 @@ class Contexto:
 
         ctx = ContextoFundo(f, self.edicao, rent, cart, hist, hist12, taxa, perf,
                             coment, avisos, self.calc)
+        ctx.quantum_rent = q_rent
         self._aplicar_overrides(key, ctx)
         if self.log:
             for a in avisos:
                 self.log.aviso(f.key, a)
         self._cache[key] = ctx
         return ctx
+
+    def _quantum_rentabilidade(self, f, avisos):
+        alvo = f.cfg.get('cotas_rentabilidade')
+        if not alvo:
+            return f.quantum
+        import unicodedata
+
+        def norm(x):
+            x = unicodedata.normalize('NFKD', str(x)).encode('ascii', 'ignore').decode()
+            return ' '.join(x.upper().split())
+        nomes = self.calc.d['fundos']['nome'].dropna().unique()
+        achados = sorted((n for n in nomes if norm(n).startswith(norm(alvo))), key=len)
+        if achados:
+            return achados[0]
+        avisos.append(f'sem cotas de "{alvo}" na dados_mensais: a rentabilidade saiu '
+                      f'do {f.quantum} (inclua a classe na planilha para usar a dela)')
+        return f.quantum
 
     def _aplicar_overrides(self, key, ctx):
         """Força os valores da aba Overrides, com registro no log.

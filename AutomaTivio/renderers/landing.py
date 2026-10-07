@@ -3,7 +3,7 @@
 
 Uma página por entrada de `configs/previdencia.yml`, no design system da Central
 (casca escura, Versos, tokens de _marca.css). Os números saem do Contexto do
-fundo FIFE de cada uma (configs/fundos.yml): rentabilidade, alocação HG/HY/
+fundo de cada uma (configs/fundos.yml; rentabilidade do FIE, carteira do FIFE): rentabilidade, alocação HG/HY/
 Caixa, setores, rating, composição, histórico, PL, duration e carrego. O texto
 do gestor vem de `entrada/comentarios.md`, com os números das frases-padrão
 trocados pelos da tabela (engine/sincroniza.py), como no comentário do

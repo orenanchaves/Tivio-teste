@@ -2,9 +2,10 @@
 # Materiais de previdência (HGD30 e HYD60): página "Saiba mais", e-mail e
 # Informativo (PPTX + PDF)
 # ----------------------------------------------------------------------------
-# Os NÚMEROS saem da planilha do mês (carteira FIFE de cada fundo em
-# configs/fundos.yml): rentabilidade, alocação HG/HY/Caixa, exposição setorial,
-# rating, composição, histórico, PL, duration e carrego.
+# Os NÚMEROS saem da planilha do mês. Rentabilidade e histórico: da classe FIE
+# (BRADESCO TIVIO … PGBL/VGBL, `cotas_rentabilidade` em configs/fundos.yml).
+# Carteira FIFE: alocação HG/HY/Caixa, exposição setorial, rating, composição,
+# PL, duration e carrego.
 #
 # Aqui fica só o que a planilha não tem: nome e CNPJ exibidos, meta, público,
 # taxas, textos fixos. O texto do gestor ("Visão de Mercado", "Destaques") fica

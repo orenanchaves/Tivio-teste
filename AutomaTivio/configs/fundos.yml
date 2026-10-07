@@ -358,12 +358,16 @@ fundos:
     vertical: credito_privado
     carteira: TIVIO HGD30 RF CP FIFE RL
     busca: [HGD30]
+    # rentabilidade (e-mail, Informativo, site) do FIE; carteira e PL do FIFE
+    cotas_rentabilidade: BRADESCO TIVIO HGD30 PGBL/VGBL
 
   hyd60:
     nome: Tivio HYD60
     vertical: credito_privado
     carteira: TIVIO HYD60 FIFE CI MULT CP RL - Expandida
     busca: [HYD60 FIFE]
+    # rentabilidade (e-mail, Informativo, site) do FIE; carteira e PL do FIFE
+    cotas_rentabilidade: BRADESCO TIVIO HYD60 PGBL/VGBL
 
   # ------------------------------------------------- Investment Solutions
   topgestor:         {nome: BV Top Gestor Crédito Privado,  vertical: investment_solutions, carteira: BV TOP GESTOR CRED PRIV FC FIM}

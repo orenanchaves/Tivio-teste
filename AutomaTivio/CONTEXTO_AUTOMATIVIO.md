@@ -317,8 +317,10 @@ do próprio fundo em `entrada/comentarios.md` (parágrafos que repetem o mercado
 ou a frase são ignorados); tudo passa por `ctx.preencher`. O loader descarta
 notas `<!-- -->` do .md. No Informativo,
 `exporters/previdencia.py::_cabe` reduz o corpo da caixa até o texto caber. Os fundos `hgd30` e `hyd60` de
-`configs/fundos.yml` apontam para as carteiras **FIFE** (rentabilidade, PL e
-carteira). Cortes no Contexto: `alocacao_hghy`, `composicao()` (Bancário por
+`configs/fundos.yml` apontam para as carteiras **FIFE** (PL e carteira); a
+rentabilidade, o histórico e `serie_diaria` vêm da classe FIE em
+`cotas_rentabilidade` (`Contexto._quantum_rentabilidade`, por prefixo do nome na
+aba de cotas; sem cotas, cai no FIFE com aviso). Cortes no Contexto: `alocacao_hghy`, `composicao()` (Bancário por
 setor, sobre o total da carteira), `rating_extras()`, a partir de `hghy_tipo`,
 `tipo_aj`, `tipo_setor` e `rating_book` de `Calc.carteira`.
 
