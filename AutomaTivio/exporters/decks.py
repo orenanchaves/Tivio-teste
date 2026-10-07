@@ -93,6 +93,54 @@ def _troca_grupo(par, regex, valor, grupo=1, flags=re.I):
     return _troca_trecho(par, m.start(grupo), m.end(grupo), valor)
 
 
+def _para_pct_cdi(par, m, pct):
+    """Quadro "ANO / 8,64% / *Alfa: -1,87%" vira "ANO / 82% do CDI", no formato
+    dos Institucionais: número grande e "% do CDI" menor; a linha do Alfa sai."""
+    if pct is None:
+        return False
+    from pptx.util import Pt
+    p = par._p
+    # tira o Alfa (e a quebra antes dele)
+    filhos = list(p)
+    for i, el in enumerate(filhos):
+        t = el.find(f'{A}t')
+        if el.tag == f'{A}r' and t is not None and 'Alfa' in (t.text or ''):
+            if i > 0 and filhos[i - 1].tag == f'{A}br':
+                p.remove(filhos[i - 1])
+            for x in filhos[i:]:
+                if x.tag in (f'{A}r', f'{A}br'):
+                    p.remove(x)
+            break
+    t = ''.join(r.text for r in par.runs)
+    mm = re.search(r'(' + NUM + r')\s*%', t)
+    if not mm:
+        return False
+    _troca_trecho(par, mm.start(), mm.end(), fmt.num(pct * 100, 0))
+    # "% do CDI" num run menor logo depois do número
+    pos = 0
+    for r in par.runs:
+        if pos <= mm.start() < pos + len(r.text):
+            novo = copy.deepcopy(r._r)
+            r._r.addnext(novo)
+            novo.find(f'{A}t').text = '% do CDI'
+            rpr = novo.find(f'{A}rPr')
+            if rpr is not None and rpr.get('sz'):
+                rpr.set('sz', str(int(int(rpr.get('sz')) * 0.6)))
+            elif rpr is not None:
+                rpr.set('sz', '1400')
+            # o que vinha depois do número no mesmo run fica depois do "% do CDI"
+            fim = mm.start() - pos + len(fmt.num(pct * 100, 0))
+            resto = r.text[fim:]
+            r.text = r.text[:fim]
+            if resto:
+                cauda = copy.deepcopy(r._r)
+                cauda.find(f'{A}t').text = resto
+                novo.addnext(cauda)
+            break
+        pos += len(r.text)
+    return True
+
+
 def _troca_texto(slide, velho, novo):
     """Troca de texto fixa pedida no decks.yml (`textos`), parágrafo a
     parágrafo, mantendo a formatação do run onde o trecho começa."""
@@ -268,6 +316,11 @@ class Preenchedor:
                     cent = ',' in m.group(1)
                     v = fmt.brl(ctx.pl_medio)[3:] if cent else fmt.brl(ctx.pl_medio)[3:].split(',')[0]
                     ok |= _troca_trecho(par, m.start(1), m.end(1), v)
+            # fundo em % do CDI no deck (sem Alfa): a nota do asterisco sai
+            if ctx.f.cfg.get('deck_pct_cdi') and t.strip().startswith('*Benchmark'):
+                for r in par.runs:
+                    r.text = ''
+                return
             # nota do benchmark segue o fundo ("*Benchmark: IMA-B 5." num fundo CDI)
             mb = re.search(r'Benchmark:\s*([^.]+)\.', t)
             if mb and ctx.benchmark and _sem_acento(mb.group(1)) != _sem_acento(ctx.benchmark):
@@ -286,6 +339,12 @@ class Preenchedor:
                 rotulo_inicio = per == '12m' and ctx.valor('12m', 'fundo') is None
                 if rotulo_inicio:
                     per = 'inicio'
+                if ctx.f.cfg.get('deck_pct_cdi') and 'do CDI' not in t:
+                    ok |= _para_pct_cdi(par, m, ctx.valor(per, 'pct'))
+                    if rotulo_inicio:
+                        _troca_trecho(par, m.start(1), m.end(1), 'DESDE O INÍCIO')
+                    self.trocas += int(bool(ok))
+                    return
                 # o próprio quadro diz o formato: "% do CDI" ou retorno (+ Alfa)
                 if ctx.f.retorno_absoluto or 'do CDI' not in t:
                     fv = ctx.valor(per, 'fundo')
@@ -295,7 +354,7 @@ class Preenchedor:
                     v = fmt.num(pv * 100, 0) if pv is not None else None
                 ok |= _troca_trecho(par, m.start(2), m.end(2), v) if v else False
                 if rotulo_inicio and v:
-                    _troca_trecho(par, m.start(1), m.end(1), 'INÍCIO')
+                    _troca_trecho(par, m.start(1), m.end(1), 'DESDE O INÍCIO')
                 t = ''.join(r.text for r in par.runs)
                 if 'Alfa' in t:
                     a = ctx.valor(per, 'alfa')
@@ -1177,6 +1236,8 @@ class Conecta:
                            if b[0] <= (br[0] + br[2]) / 2 <= b[2] and b[1] <= (br[1] + br[3]) / 2 <= b[3]],
                           key=lambda a: a[1][0])
             nomes = [_sem_acento(c) for c in cats]
+            if 'LINE' in str(ch.chart_type):
+                continue                      # linha diária (ALT) é do Preenchedor.grafico
             if len(series) == 2 and all(re.fullmatch(r'\d{5}(\.0)?', c) for c in cats):
                 self._mensal(sh, ctx, cats, series, meus)
             elif len(series) == 2 and set(nomes) <= {'ACUMULADO DO INICIO', 'ANO', 'DESDE O INICIO', '12M', 'MES'}:
@@ -1428,7 +1489,7 @@ def _alinha_post(slide):
         return None
     L, R = rot[0], cnpj[2]
     caixas = [(sh, b) for sh, b in pecas
-              if sh.shape_type == 1 and re.match(r'(12M|ANO|M[ÊE]S|IN[ÍI]CIO)\b', texto[id(sh)])]
+              if sh.shape_type == 1 and re.match(r'(12M|ANO|M[ÊE]S|IN[ÍI]CIO|DESDE O IN[ÍI]CIO)\b', texto[id(sh)])]
     if len(caixas) < 2:
         return None
     caixas.sort(key=lambda a: (a[1][0], a[1][1]))
@@ -1574,7 +1635,7 @@ def _reflui_post(slide, grade, ctx=None):
     if rot is None or painel is None:
         return
     caixas = [(sh, b) for sh, b in pecas
-              if sh.shape_type == 1 and re.match(r'(12M|ANO|M[ÊE]S|IN[ÍI]CIO)\b', tx[id(sh)])]
+              if sh.shape_type == 1 and re.match(r'(12M|ANO|M[ÊE]S|IN[ÍI]CIO|DESDE O IN[ÍI]CIO)\b', tx[id(sh)])]
     cartoes = [(sh, b) for sh, b in pecas if sh.shape_type == 1 and
                re.match(r'(Aloca[çc][ãa]o de cr[ée]dito|Carrego|Duration)', tx[id(sh)])]
     if not caixas or not cartoes:
@@ -1587,8 +1648,8 @@ def _reflui_post(slide, grade, ctx=None):
     Y_ROT, Y_A, BASE = 64 * pt, 88 * pt, 508 * pt
     # linha da rentabilidade mais baixa (sobra para as características), menos
     # quando ANO/MÊS têm três linhas (retorno + Alfa)
-    HA = 120 * pt
-    HB = yb1 - yb0                      # cartões na altura do modelo (o texto deles não encolhe)
+    HA = 140 * pt                       # a rentabilidade é o destaque: maior que os cartões
+    HB = 136 * pt                       # cartões (alocação, carrego, duration) mais baixos
     dyA = Y_A - ya0
     nota = [(sh, b) for sh, b in pecas if tx[id(sh)].startswith('*Benchmark')]
     fim_a = Y_A + HA + (12 * pt if nota else 0)
@@ -1630,6 +1691,12 @@ def _reflui_post(slide, grade, ctx=None):
     # linha B: cartões com a altura nova; o conteúdo acompanha, comprimido no mesmo fator
     for sh, b in cartoes:
         poe(sh, b[0], Y_B, b[2] - b[0], HB)
+        # sem as linhas em branco do modelo, o texto do cartão cabe na altura nova
+        pars = sh.text_frame.paragraphs
+        for par in list(pars):
+            if not ''.join(r.text for r in par.runs).strip() and len(sh.text_frame.paragraphs) > 1:
+                sh.text_frame._txBody.remove(par._p)
+        sh.text_frame.margin_top = sh.text_frame.margin_bottom = 8 * pt
     for sh, b in pecas:
         if id(sh) in mexidos or id(sh) in ids_cart:
             continue
@@ -1686,9 +1753,10 @@ def _reflui_post(slide, grade, ctx=None):
     # painel: mesmo alto da grade (do topo da rentabilidade ao fim das características);
     # alguns modelos têm duas camadas (foto + véu), as duas descem
     x0 = R + G
+    x1 = _borda_do_logo(slide) or (W - 26 * pt)          # alinhado ao logo da Tivio
     for sh, b in pecas:
         if sh.shape_type in (1, 17) and (b[3] - b[1]) > H * 0.8 and b[0] > W * 0.6:
-            poe(sh, x0, Y_A, W - 10 * pt - x0, BASE - Y_A)
+            poe(sh, x0, Y_A, x1 - x0, BASE - Y_A)
     # conteúdo do painel ("Por que o …?" e os tópicos), centrado na vertical
     resto = [(sh, b) for sh, b in pecas if id(sh) not in mexidos and sh is not painel
              and b[0] >= bpai[0] - pt and b[3] <= (btc[1] if titc is not None else bpai[3])]
@@ -1701,11 +1769,21 @@ def _reflui_post(slide, grade, ctx=None):
         vao_pl = 18 * pt if tem_pl else 0
         bloco = (t1 - t0) + vao_pl + alto_pl
         dy = Y_A + ((BASE - Y_A) - bloco) / 2 - t0
-        xi, wi = x0 + 16 * pt, W - 10 * pt - x0 - 32 * pt
+        xi, wi = x0 + 14 * pt, x1 - x0 - 28 * pt
         for sh, b in resto:
             poe(sh, xi, b[1] + dy, min(b[2] - b[0], wi), b[3] - b[1])
         if tem_pl:
             _destaque_pl(slide, ctx, xi, t1 + dy + vao_pl, wi, alto_pl)
+
+
+def _borda_do_logo(slide):
+    """Borda direita do logo da Tivio no layout do slide (canto superior direito)."""
+    W = slide.part.package.presentation_part.presentation.slide_width
+    for sh in slide.slide_layout.shapes:
+        b = _absoluta(sh._element)
+        if b and b[0] > W * 0.8 and b[1] < 80 * 12700 and 'blip' in etree.tostring(sh._element).decode():
+            return b[2]
+    return None
 
 
 def _destaque_pl(slide, ctx, x, y, w, h):

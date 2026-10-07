@@ -142,6 +142,7 @@ fundos:
 
   infrapluscdi:
     sem_alfa: true            # o publicado do Infra Plus CDI não traz Alfa
+    deck_pct_cdi: true        # nos decks, rentabilidade em % do CDI, como os Institucionais
     # dois nomes em uso: "Tivio Infra Plus CDI" no relatório publicado e
     # "Institucional Incentivado CDI" nos comentários do gestor. O apelido
     # abaixo faz o título do comentário casar com qualquer um dos dois.

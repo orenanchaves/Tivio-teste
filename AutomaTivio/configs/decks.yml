@@ -69,8 +69,12 @@ decks:
     modelo: Tivio Conecta.pptx
     slides:
       # estilo: post = estética dos posts de Destaques (fundo navy, quadros de vidro)
-      19: {estilo: post}        # cartões comparando os fundos High Grade
-      20: {estilo: post}
+      19:                       # cartões comparando os fundos
+        estilo: post
+        textos: {"Fundos": "Fundo", "High Grade": "Crédito Privado"}
+      20:
+        estilo: post
+        textos: {"Fundos": "Fundo", "High Grade": "Crédito Privado"}
       21: {estilo: post}
       22: {estilo: post}
       23: {estilo: post}
