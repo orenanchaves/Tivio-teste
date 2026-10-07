@@ -4,3 +4,6 @@
 **/data/*.zip
 **/peers_*.xlsx
 **/agosto_peers.xlsx
+
+# decks gerados: pesados (~25 MB cada) e refeitos a cada rodada
+AutomaTivio/saida/*/decks/

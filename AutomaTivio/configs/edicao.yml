@@ -17,6 +17,7 @@ saidas:
   pptx: true
   destaques: true     # JPG + pacote PDF dos carrosséis em saida/AAAA-MM/destaques/<vertical>/
   emails: true        # PNG dos cards + HTML de disparo em saida/AAAA-MM/emails/<versao>/
+  decks: true         # decks comerciais (PPTX + PDF) em saida/AAAA-MM/decks/ (configs/decks.yml)
   informativos: true  # Informativo HGD30/HYD60 (PPTX + PDF) em saida/AAAA-MM/informativos/
 
 # materiais desta edição; false desliga sem mexer em código

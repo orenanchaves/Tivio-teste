@@ -371,6 +371,7 @@ class Pipeline:
         self._destaques()
         self._emails()
         self._previdencia_saidas()
+        self._decks(contextos)
         self._porta_de_entrada()
         self._fechar(contextos)
         return self.log.ok
@@ -439,6 +440,18 @@ class Pipeline:
                 exportar_informativos(fundos, self._destino('informativos'), em, self.log)
             except Exception as e:
                 self.log.aviso('previdência', f'Informativo não gerado: {e!r}')
+
+    def _decks(self, contextos):
+        """Decks comerciais (PPTX + PDF): configs/decks.yml -> saida/AAAA-MM/decks/."""
+        if not self.cfg['saidas'].get('decks', True):
+            return
+        from exporters.decks import exportar_decks
+        self.log.contexto('decks')
+        try:
+            n = exportar_decks(contextos, self.cadastro, self.edicao, self._destino('decks'), self.log)
+            self.log.info(f'{n} decks gerados')
+        except Exception as e:
+            self.log.aviso('decks', f'decks não gerados: {e!r}')
 
     def _destaques(self):
         """JPG e pacote PDF dos posts de Destaques, uma pasta por vertical."""

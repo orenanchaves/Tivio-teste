@@ -1,0 +1,59 @@
+# ============================================================================
+# Decks comerciais (PPTX + PDF) — saída em saida/AAAA-MM/decks/<pasta>/
+# ----------------------------------------------------------------------------
+# Cada deck parte de um modelo de templates/decks/ (os PPTX que o time usa,
+# com as imagens comprimidas por scripts/comprimir_pptx.py). A automação troca
+# só o que muda todo mês, reconhecendo cada número pelo texto ao lado:
+#   capa (mês) · Data base · Data de início · PL e PL médio · 12M / ANO / MÊS
+#   (% do CDI, ou retorno + Alfa no Infra Plus) · Carrego · Duration ·
+#   Alocação de crédito e top 3 setores · "CDI + x% a.a." por período ·
+#   blocos da alocação dos ALT · gráfico de rentabilidade histórica (diário)
+#   e as etiquetas do valor final.
+# AUM da Tivio, equipe, textos e taxas ficam como estão no modelo.
+#
+# remover:
+#   selo_xp    o selo "Melhor fundo em termos de rentabilidade na plataforma da XP"
+#   roa        o quadro do ROA (versão "sem ROA")
+#   altlight   o slide do ALT Light (e o cartão dele na Família ALT)
+# ============================================================================
+
+decks:
+  # ------------------------------------------------------------------ ALT
+  - pasta: ALT
+    nome: Tivio ALT 180 - ALT 90
+    modelo: Tivio ALT 180 - ALT 90.pptx
+    remover: [selo_xp]
+  - pasta: ALT
+    nome: BTG - ALT 180 - ALT 90
+    modelo: BTG - ALT 180 - ALT 90.pptx
+    remover: [selo_xp]
+  - pasta: ALT
+    nome: XP - Tivio ALT 180 - ALT 90 - ALT Light
+    modelo: XP - Tivio ALT 180 - ALT 90 - ALT Light.pptx
+
+  # --------------------------------------------------------------- ALT 90
+  - pasta: ALT 90
+    nome: Deck - Tivio ALT 90 - Sem ROA
+    modelo: Deck - Tivio ALT 90.pptx
+    remover: [roa]
+  - pasta: ALT 90
+    nome: Deck - Tivio ALT 90 - Com ROA
+    modelo: Deck - Tivio ALT 90 - Com ROA.pptx
+
+  # -------------------------------------------------------------- ALT 180
+  - pasta: ALT 180
+    nome: Deck - Tivio ALT 180 - Sem ROA
+    modelo: Deck - Tivio ALT 180.pptx
+    remover: [roa]
+  - pasta: ALT 180
+    nome: Deck - Tivio ALT 180 - Com ROA
+    modelo: Deck - Tivio ALT 180.pptx
+
+  # -------------------------------------------- Crédito Privado & Estruturado
+  - pasta: Crédito
+    nome: Deck - Crédito Privado & Crédito Estruturado - BTG
+    modelo: Deck - Crédito Privado & Crédito Estruturado - BTG.pptx
+    remover: [altlight]
+  - pasta: Crédito
+    nome: Deck - Crédito Privado & Crédito Estruturado - XP
+    modelo: Deck - Crédito Privado & Crédito Estruturado - XP.pptx

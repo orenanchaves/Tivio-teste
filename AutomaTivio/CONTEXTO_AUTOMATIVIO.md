@@ -337,6 +337,25 @@ setor, sobre o total da carteira), `rating_extras()`, a partir de `hghy_tipo`,
   depois dos e-mails. Cards na Central: landings `l4`/`l5`, e-mail `e3`, e os
   Informativos (`inf-*`) entram por `RenderizadorLegado.central`.
 
+### Decks comerciais (`exporters/decks.py`, `configs/decks.yml`)
+
+- Abre o PPTX do time (`templates/decks/`) e troca só os números, run a run
+  (`_troca_trecho`), reconhecendo cada um pelo texto: capa, "Data base", PL,
+  12M/ANO/MÊS, carrego, duration, `numero-top*`/`nome-top*`, "CDI + x% a.a." pelo
+  rótulo acima (em coordenadas do slide, `_absoluta`, porque rótulo e valor
+  ficam em grupos diferentes), gráfico Fundo x CDI (`ContextoFundo.serie_diaria`,
+  `replace_data` sem o externalData) e as etiquetas do fim das linhas.
+- Treemap dos ALT (`Preenchedor.alocacao`/`_redesenha`): rótulos "Nome 49,1%" +
+  retângulo preenchido que contém o centro do rótulo (blocos podem estar soltos
+  no slide e rótulos num grupo, com escala própria: `_escala_do_pai`,
+  `_posiciona`). Squarify com área mínima de 3%; rótulo encolhe até 40%, quebra
+  antes do número se preciso. Imagem no lugar do treemap vira blocos nativos
+  (`_treemap_nativo`).
+- Remoções: `_remove_selo_xp`, `_remove_roa` (rótulo "ROA" + valor fora do grupo),
+  `_remove_slide` (ALT Light) e `_remove_cartao` (coluna da Família ALT).
+- PDF pelo PowerPoint (`exporters.previdencia._pdf_powerpoint`). Etapa
+  `Pipeline._decks`, ligada por `saidas.decks` em `configs/edicao.yml`.
+
 ---
 
 ## 6. O relatório de gestão

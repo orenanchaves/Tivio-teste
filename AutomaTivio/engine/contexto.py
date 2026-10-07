@@ -282,6 +282,27 @@ class ContextoFundo:
         e = self.cart['estrategia']
         return [(n, fmt.pct(v, 1), round(v * 100, 2)) for n, v in e.head(8).items()]
 
+    def serie_diaria(self):
+        """[(data, fundo, bench)] acumulados desde a primeira cota até a data
+        base, em fração (0,2956 = 29,56%): o gráfico de rentabilidade
+        histórica dos decks, que é diário."""
+        c = getattr(self, '_calc', None)
+        if c is None:
+            return []
+        sf = c.serie_fundo(self.f.quantum)
+        if sf.empty:
+            return []
+        cota = sf['cota'][sf.index <= c.db].dropna()
+        if cota.empty:
+            return []
+        idx = c.serie_indice(self.benchmark)
+        idx = idx[~idx.index.duplicated()].sort_index()
+        base_i = c.asof(idx, cota.index[0])
+        ind = idx.reindex(idx.index.union(cota.index)).ffill().reindex(cota.index)
+        c0 = float(cota.iloc[0])
+        return [(d.to_pydatetime(), float(v) / c0 - 1, float(i) / base_i - 1)
+                for (d, v), i in zip(cota.items(), ind.values)]
+
     @property
     def alocacao_hghy(self):
         """High Grade / High Yield / Caixa sobre o PL (páginas Saiba mais).

@@ -76,6 +76,10 @@ AutomaTivio/saida/AAAA-MM/
 │   └── previdencia/hgd30/ e hyd60/    blocos em PNG (01-…, 02-…) + email-<fundo>.html
 │                                      + email-<fundo>.eml (abre no Outlook com as imagens)
 ├── informativos/                 Informativo HGD30 e HYD60 em PPTX e PDF
+├── decks/                        decks comerciais em PPTX e PDF, uma pasta por família
+│   ├── ALT/                       Tivio, BTG e XP (ALT 180 · ALT 90 · ALT Light)
+│   ├── ALT 90/  ALT 180/          Sem ROA e Com ROA
+│   └── Crédito/                   Crédito Privado & Crédito Estruturado, BTG e XP
 ├── conferencia_AAAA-MM.xlsx      o que mudou, o que faltou, o que não bateu
 └── AAAA-MM-processamento.log     registro completo da rodada
 ```
@@ -236,6 +240,33 @@ enviar; para virar modelo, Arquivo > Salvar como > Modelo do Outlook (.oft).
   cabeçalho), com o texto em curvas. O preto do desenho vira branco no modo
   escuro; a cor do HG e do HY fica a do arquivo.
 
+### 4.5d Decks comerciais (PPTX + PDF)
+
+- **Os modelos são os PPTX do time**, em `templates/decks/` (com as fotos
+  comprimidas por `scripts/comprimir_pptx.py`, sem mudança visível). A lista de
+  decks, a pasta, o nome e o que cada versão tira está em `configs/decks.yml`.
+- **Nada é redesenhado**: a automação reconhece cada número pelo texto ao lado e
+  troca só o número, mantendo fonte, cor e tamanho. O que muda todo mês:
+  mês da capa, "Data base", PL e PL médio, os quadros 12M / ANO / MÊS (% do CDI;
+  no Infra Plus, retorno e Alfa), carrego, duration, alocação de crédito e top 3
+  setores, "CDI + x% a.a." de cada período dos ALT, os blocos da alocação dos ALT
+  e o gráfico de rentabilidade histórica (diário, nativo do PowerPoint, vetor e
+  editável) com as etiquetas do valor final.
+- **"Data de início"** só muda quando o fundo tem `data_inicio` em
+  `configs/fundos.yml`; sem isso fica a do modelo.
+- **Alocação dos ALT:** os blocos são redimensionados pelo peso do mês. Categoria
+  que saiu da carteira some (ou cede o bloco para uma nova, com o nome trocado);
+  categoria nova sem bloco ganha uma cópia do menor, com cor que não se repete.
+  Bloco muito pequeno ganha área mínima de 3% para o rótulo caber (o número
+  escrito é sempre o real). No deck do ALT 90, onde o modelo traz a alocação como
+  imagem, ela vira blocos nativos no mesmo lugar.
+- **Versões:** `selo_xp` tira o selo "Melhor fundo… da XP" (Tivio e BTG); `roa`
+  tira o quadro do ROA (versões Sem ROA); `altlight` tira o slide do ALT Light e o
+  cartão dele na Família ALT, centralizando os outros dois (BTG).
+- AUM da Tivio, equipe, textos, taxas e os gráficos contra Idex/IHFA ficam como
+  estão no modelo. Para um deck novo, coloque o PPTX em `templates/decks/` e uma
+  entrada em `configs/decks.yml`.
+
 ### 4.6 Exportação dos carrosséis e dos e-mails
 
 O Python abre cada material no navegador e usa **a mesma função do botão** da
@@ -269,6 +300,7 @@ Para desligar algum formato: `AutomaTivio/configs/edicao.yml` → `saidas:`
 | Texto do gestor do HGD30 e do HYD60 | automático (mercado do Institucional + números); complemento do mês nas seções `## Tivio HGD30` / `## Tivio HYD60` de `entrada/comentarios.md`; regras em `configs/previdencia.yml` → `comentario` |
 | Cards, seções, taxas, público e blocos do e-mail de previdência | `configs/previdencia.yml` |
 | Modelo do Informativo (PPTX) | `templates/informativos/` (os nomes dos shapes estão em `exporters/previdencia.py`, `MAPAS`) |
+| Lista de decks, versões e o que cada uma tira | `configs/decks.yml` (modelos em `templates/decks/`) |
 | Data de início exibida diferente da DePara | `configs/fundos.yml` → `data_inicio: DD/MM/AAAA` (Infra Plus: 15/07/2019) |
 | Disclaimer dos carrosséis de Destaques | `templates/materiais/tivio-post-*.html` (`DISCLAIMER_HTML`) |
 
