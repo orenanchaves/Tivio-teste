@@ -48,6 +48,12 @@ planilha. Para forçar: `python run.py --data-base 2026-09-30`.
 
 ## 3. O que sai, e onde
 
+Cada rodada grava a edição em `saida/AAAA-MM/` (a pasta do mês, que fica como
+histórico) e copia tudo para **`saida/_Atual/`**, que é sempre a edição mais
+recente no mesmo caminho: é dela que se sobe o material, sem trocar de pasta
+todo mês. O arquivo `EDICAO.txt` dentro dela diz de qual mês é a cópia.
+(Desliga com `saidas.atual: false` em `configs/edicao.yml`.)
+
 ```
 AutomaTivio/saida/AAAA-MM/
 ├── index.html                    ← COMECE AQUI: abre a Central
@@ -79,7 +85,8 @@ AutomaTivio/saida/AAAA-MM/
 ├── decks/                        decks comerciais em PPTX e PDF, uma pasta por família
 │   ├── ALT/                       Tivio, BTG e XP (ALT 180 · ALT 90 · ALT Light)
 │   ├── ALT 90/  ALT 180/          Sem ROA e Com ROA
-│   └── Crédito/                   Crédito Privado & Crédito Estruturado, BTG e XP
+│   ├── Crédito/                   Crédito Privado & Crédito Estruturado, BTG e XP
+│   └── Tivio Conecta/             o deck do Tivio Conecta
 ├── conferencia_AAAA-MM.xlsx      o que mudou, o que faltou, o que não bateu
 └── AAAA-MM-processamento.log     registro completo da rodada
 ```
@@ -179,8 +186,8 @@ Os três materiais leem os mesmos números e o mesmo texto:
   BRADESCO TIVIO … PGBL/VGBL de cada fundo (`cotas_rentabilidade` em
   `configs/fundos.yml`). **PL e carteira: FIFE** (`TIVIO HGD30 RF CP FIFE RL` e
   `TIVIO HYD60 FIFE CI MULT CP RL - Expandida`). Se as cotas do FIE não vierem na
-  `dados_mensais.xlsx`, a rentabilidade sai do FIFE e o log avisa (é o caso do
-  HGD30 em setembro/2026). Nome, CNPJ e produto exibidos ficam em
+  `dados_mensais.xlsx`, a rentabilidade sai do FIFE e o log avisa. A busca
+  ignora espaços (a planilha escreve "HGD 30"). Nome, CNPJ e produto exibidos ficam em
   `configs/previdencia.yml`.
 - **Texto do gestor: automático.** Os parágrafos de mercado vêm do comentário
   do Tivio Institucional em `entrada/comentarios.md` (o gestor já escreve, e são
@@ -267,6 +274,28 @@ enviar; para virar modelo, Arquivo > Salvar como > Modelo do Outlook (.oft).
 - **Versões:** `selo_xp` tira o selo "Melhor fundo… da XP" (Tivio e BTG); `roa`
   tira o quadro do ROA (versões Sem ROA); `altlight` tira o slide do ALT Light e o
   cartão dele na Família ALT, centralizando os outros dois (BTG).
+- **Tivio Conecta:** além do que vale para os outros decks, preenche as tabelas
+  (Mês / Ano / Desde o início e PL em R$ MM), as barras mensais Fundo x CDI com
+  o "% CDI" de cada mês, o acumulado (início e ano), rating, setorial e a rosca
+  da composição, e a frase "rendeu X% no mês (Y% do CDI) e Z% em 12 meses" do
+  comentário. Cada gráfico é reconhecido pelas categorias. Os slides que não
+  dizem de qual fundo são (Conexão ALT 180, HGD30, HYD60…) estão mapeados por
+  número em `configs/decks.yml` (`slides:`). Ali também ficam `textos` (trocas
+  fixas de texto), `alocacao_hghy` e `estilo: post`.
+- **`estilo: post`** (slides 19 a 26 do Conecta): a estética de vidro dos posts
+  de Destaques. Fundo navy com orbes e arcos (no fundo do slide, então o logo e
+  os filetes do layout continuam), quadros e cartões em vidro arredondado, CNPJ
+  em pílula. Nos slides de fundo, a página é refeita numa grade única (margem do
+  "RENTABILIDADE" até a borda do CNPJ, 12 pt entre quadros): rentabilidade em
+  cima, cartões de alocação/carrego/duration no meio, **características gerais
+  embaixo**, em colunas com itens inteiros; data base no canto inferior esquerdo; e o
+  painel "Por que o …?" com o **PL e o PL médio por extenso em destaque**
+  embaixo dos tópicos. Nos slides 19 e 20, os cartões que comparam os fundos
+  viram cartões de vidro.
+- Quando o modelo já está com os números do mês (o time atualizou à mão), os
+  blocos da alocação ficam no desenho dele.
+- Fundo com menos de 12 meses (Infra Plus CDI): o quadro "12M" vira "INÍCIO" com
+  o retorno desde o início; quando completar 12 meses, volta sozinho.
 - AUM da Tivio, equipe, textos, taxas e os gráficos contra Idex/IHFA ficam como
   estão no modelo. Para um deck novo, coloque o PPTX em `templates/decks/` e uma
   entrada em `configs/decks.yml`.

@@ -355,6 +355,19 @@ setor, sobre o total da carteira), `rating_extras()`, a partir de `hghy_tipo`,
   (`_treemap_nativo`).
 - Remoções: `_remove_selo_xp`, `_remove_roa` (rótulo "ROA" + valor fora do grupo),
   `_remove_slide` (ALT Light) e `_remove_cartao` (coluna da Família ALT).
+- Conecta (`Conecta`): tabelas (`tabelas`), PL por rótulo (`pl_rotulado`),
+  gráficos de barra/rosca reconhecidos pelas categorias (`graficos`: datas →
+  `ContextoFundo.mensal`; Acumulado/Ano; notas de rating; Caixa/FIDC/Bancário/
+  Corporativo; setores) e os rótulos "% CDI" dentro da caixa do gráfico, da
+  esquerda para a direita. `decks.yml` → `slides:` mapeia slide → fundo e opções
+  (`estilo: post` = `_estilo_post`, `textos` = `_troca_texto`, `alocacao_hghy`).
+- `_estilo_post`: `_alinha_post` (grade L..R, vão G) → `_fundo_post` (gradiente
+  em `p:bg` via `_fundo_do_slide`, orbes/arcos atrás de tudo) → `_reflui_post`
+  (linhas A/B/C, características em `_em_colunas`, painel na altura da grade,
+  `_destaque_pl`) → pintura de vidro (`_pinta`, que também troca forma livre
+  por roundRect). Cópias de shape ganham `cNvPr id` novo (id repetido ou
+  `txBody` sem `a:p` fazem o PowerPoint recusar o arquivo).
+- `Pipeline._atual` copia `saida/AAAA-MM/` para `saida/_Atual/` no fim da rodada.
 - PDF pelo PowerPoint (`exporters.previdencia._pdf_powerpoint`). Etapa
   `Pipeline._decks`, ligada por `saidas.decks` em `configs/edicao.yml`.
 

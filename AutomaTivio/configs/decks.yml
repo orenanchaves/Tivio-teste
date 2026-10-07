@@ -57,3 +57,35 @@ decks:
   - pasta: Crédito
     nome: Deck - Crédito Privado & Crédito Estruturado - XP
     modelo: Deck - Crédito Privado & Crédito Estruturado - XP.pptx
+
+  # ---------------------------------------------------------- Tivio Conecta
+  # Slides sem "Por que o …?" no título dizem de qual fundo são aqui (número do
+  # slide no modelo). Se o time inserir ou tirar slides antes deles, ajuste os
+  # números. textos: trocas fixas de texto no slide ("velho": "novo").
+# alocacao_hghy: a "Previsão de alocação" do slide é a alocação real
+  # High Grade / High Yield / Caixa do mês (no HGD30 é; no HYD60 é meta e fica).
+  - pasta: Tivio Conecta
+    nome: Tivio Conecta
+    modelo: Tivio Conecta.pptx
+    slides:
+      # estilo: post = estética dos posts de Destaques (fundo navy, quadros de vidro)
+      19: {estilo: post}        # cartões comparando os fundos High Grade
+      20: {estilo: post}
+      21: {estilo: post}
+      22: {estilo: post}
+      23: {estilo: post}
+      24: {estilo: post}
+      25: {estilo: post}
+      26:                       # o modelo veio copiado do Infra Plus
+        fundo: infrapluscdi
+        estilo: post
+        textos: {"INFRA PLUS?": "INFRA PLUS CDI?"}
+      30: conexaoalt180         # Conexão ALT 180: tabela, PL e barras mensais
+      31: alt180                # alocação do portfólio (blocos)
+      32: alt180                # alocação por estratégia (setores)
+      36: hgd30
+      37: {fundo: hgd30, alocacao_hghy: true}
+      38: hgd30
+      39: hgd30
+      41: hyd60
+      42: hyd60

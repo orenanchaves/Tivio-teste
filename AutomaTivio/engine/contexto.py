@@ -303,6 +303,29 @@ class ContextoFundo:
         return [(d.to_pydatetime(), float(v) / c0 - 1, float(i) / base_i - 1)
                 for (d, v), i in zip(cota.items(), ind.values)]
 
+    def mensal(self, n=12):
+        """[(último dia do mês, fundo, bench)] dos últimos `n` meses até a data
+        base, em fração. O primeiro mês do fundo conta da primeira cota. É o
+        gráfico de barras "Desempenho histórico" do Tivio Conecta."""
+        c = getattr(self, '_calc', None)
+        if c is None:
+            return []
+        sf = c.serie_fundo(getattr(self, 'quantum_rent', None) or self.f.quantum)
+        if sf.empty:
+            return []
+        cota = sf['cota'][sf.index <= c.db].dropna()
+        if cota.empty:
+            return []
+        idx = c.serie_indice(self.benchmark)
+        idx = idx[~idx.index.duplicated()].sort_index()
+        fim = cota.groupby([cota.index.year, cota.index.month]).tail(1)
+        bases = [(cota.index[0], float(cota.iloc[0]))] + list(fim.items())[:-1]
+        out = []
+        for (d0, c0), (d1, c1) in zip(bases, fim.items()):
+            i0, i1 = c.asof(idx, d0), c.asof(idx, d1)
+            out.append((d1.to_pydatetime(), float(c1) / c0 - 1, i1 / i0 - 1))
+        return out[-n:]
+
     @property
     def alocacao_hghy(self):
         """High Grade / High Yield / Caixa sobre o PL (páginas Saiba mais).
@@ -668,7 +691,7 @@ class Contexto:
 
         def norm(x):
             x = unicodedata.normalize('NFKD', str(x)).encode('ascii', 'ignore').decode()
-            return ' '.join(x.upper().split())
+            return ''.join(x.upper().split())     # "HGD 30" = "HGD30"
         nomes = self.calc.d['fundos']['nome'].dropna().unique()
         achados = sorted((n for n in nomes if norm(n).startswith(norm(alvo))), key=len)
         if achados:

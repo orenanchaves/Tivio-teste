@@ -353,6 +353,11 @@ fundos:
   # ---------------------------------------------- Previdência (landing pages)
   # Sem relatório de gestão: alimentam as páginas "Saiba mais sobre o fundo"
   # (configs/previdencia.yml). Rentabilidade, PL e carteira: FIFE.
+  conexaoalt180:
+    nome: Conexão Tivio ALT 180
+    vertical: credito_estruturado
+    carteira: CONEXÃO TIVIO ALT HY 180 RL FIM CP   # Tivio Conecta (slide da rentabilidade)
+
   hgd30:
     nome: Tivio HGD30
     vertical: credito_privado

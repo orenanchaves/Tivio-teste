@@ -511,3 +511,21 @@ class Pipeline:
             shutil.copy2(caminho, self._destino(os.path.basename(caminho)))
         except Exception:
             pass
+        self._atual()
+
+    def _atual(self):
+        """saida/_Atual/: cópia da edição mais recente, sempre no mesmo
+        caminho, para quem sobe o material não precisar trocar a pasta todo
+        mês. A pasta do mês (saida/AAAA-MM/) fica como histórico."""
+        if not self.cfg['saidas'].get('atual', True):
+            return
+        atual = os.path.join(RAIZ, 'saida', '_Atual')
+        try:
+            if os.path.isdir(atual):
+                shutil.rmtree(atual)
+            shutil.copytree(self.pasta_saida, atual)
+            with open(os.path.join(atual, 'EDICAO.txt'), 'w', encoding='utf-8') as f:
+                f.write(f'{self.edicao.mes_ano}\nCópia de saida/{self.edicao.competencia}/\n')
+            print(f'  _Atual: saida/_Atual/ = {self.edicao.mes_ano}')
+        except Exception as e:
+            print(f'  AVISO: saida/_Atual/ não atualizada ({e!r}); feche arquivos abertos dela e rode de novo')
