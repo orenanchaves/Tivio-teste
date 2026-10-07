@@ -1,0 +1,147 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<title>AutomaTivio: o que é automático e o que não é</title>
+<style>
+@font-face{font-family:Versos;font-weight:400;src:url("../AutomaTivio/assets/fontes/Versos-Regular.ttf")}
+@font-face{font-family:Versos;font-weight:300;src:url("../AutomaTivio/assets/fontes/Versos-Light.ttf")}
+@font-face{font-family:Versos;font-weight:700;src:url("../AutomaTivio/assets/fontes/Versos-Bold.ttf")}
+@page{size:A4;margin:16mm 15mm 16mm 15mm}
+*{box-sizing:border-box}
+body{font-family:Versos,"Segoe UI",Arial,sans-serif;font-weight:400;font-size:9.6pt;line-height:1.42;color:#1b2430;margin:0}
+h1{font-size:19pt;font-weight:700;margin:0 0 2pt;letter-spacing:-.01em}
+.sub{color:#5d6b7a;font-size:9.5pt;margin:0 0 12pt}
+h2{font-size:12.5pt;font-weight:700;margin:15pt 0 5pt;padding-top:8pt;border-top:1.5px solid #1b2430;break-after:avoid}
+h3{font-size:10pt;font-weight:700;margin:9pt 0 3pt;color:#2c3e50;break-after:avoid}
+p{margin:0 0 5pt}
+table{width:100%;border-collapse:collapse;margin:3pt 0 7pt;font-size:9pt}
+th{text-align:left;font-weight:700;background:#eef2f5;padding:4pt 6pt;border-bottom:1px solid #c7d0d8}
+td{padding:4pt 6pt;border-bottom:1px solid #e3e8ec;vertical-align:top}
+tr{break-inside:avoid}
+ul{margin:2pt 0 6pt 15pt;padding:0}
+li{margin:0 0 2.5pt}
+.cards{display:flex;gap:8pt;margin:6pt 0 4pt}
+.card{flex:1;border:1px solid #c7d0d8;border-radius:6pt;padding:7pt 9pt}
+.card b{display:block;font-size:17pt;line-height:1.1}
+.card span{color:#5d6b7a;font-size:8.6pt}
+.ok{color:#14653a;font-weight:700}
+.man{color:#9a5b00;font-weight:700}
+.nao{color:#a32626;font-weight:700}
+.nota{background:#f6f8fa;border-left:3px solid #7c93a8;padding:5pt 8pt;margin:5pt 0 7pt;font-size:9pt}
+.peq{font-size:8.6pt;color:#5d6b7a}
+</style>
+</head>
+<body>
+
+<h1>AutomaTivio: o que é automático e o que não é</h1>
+<p class="sub">Edição de setembro de 2026 (data base 30/09/2026). Um comando, <b>python run.py</b>, lê as planilhas e gera todo o material abaixo. Rodada fechada com 0 erros e 16 avisos, listados na seção 4.</p>
+
+<div class="cards">
+  <div class="card"><b>13</b><span>relatórios de gestão (HTML, PDF e PPTX)</span></div>
+  <div class="card"><b>10</b><span>decks comerciais (PPTX e PDF)</span></div>
+  <div class="card"><b>26</b><span>imagens de Destaques, em 3 verticais</span></div>
+  <div class="card"><b>~400 s</b><span>para gerar a edição inteira, num computador de trabalho</span></div>
+</div>
+
+<h2>1. O que sai pronto da rodada</h2>
+<table>
+<tr><th style="width:23%">Material</th><th style="width:22%">Formatos</th><th>O que o sistema preenche sozinho</th></tr>
+<tr><td>Relatórios de gestão (13 fundos)</td><td>HTML, PDF A4, PPTX</td><td>Rentabilidade (Fundo, CDI, Alfa, % do CDI, CDI+), PL e PL médio, alocação, setores, rating, emissores, gráfico histórico, taxas, data base, logo e disclaimer. O comentário do gestor é preservado e só os marcadores de número são preenchidos.</td></tr>
+<tr><td>Páginas por vertical</td><td>HTML</td><td>Crédito Privado e Crédito Estruturado, com uma aba por fundo.</td></tr>
+<tr><td>Posts de Destaques</td><td>JPG e PDF</td><td>Crédito Privado (9 imagens), Crédito Estruturado (6) e Investment Solutions (11). Cores únicas por categoria, QR code e disclaimer novos.</td></tr>
+<tr><td>E-mail de Fundos de Crédito</td><td>PNG e HTML de disparo</td><td>Versões Ágora, BTG e XP, com um cartão por fundo. Ágora inclui Institucional 30 e Infra Plus CDI; BTG e XP não.</td></tr>
+<tr><td>Previdência: HGD30 e HYD60</td><td>HTML, PNG, .eml, PPTX e PDF</td><td>Página "Saiba mais", e-mail em 8 blocos (PNG, HTML e .eml que abre no Outlook) e Informativo. Rentabilidade vem do FIE (BRADESCO TIVIO ... PGBL/VGBL); carteira e PL, do FIFE. O texto do gestor é montado sozinho a partir do comentário do Institucional mais a frase com os números da tabela.</td></tr>
+<tr><td>Decks comerciais (10)</td><td>PPTX e PDF</td><td>Tivio, BTG e XP (ALT 180, ALT 90 e ALT Light), ALT 90 e ALT 180 com e sem ROA, Crédito Privado e Estruturado (BTG e XP) e Tivio Conecta. Troca só os números, mantendo o desenho do time: capa, data base, PL, quadros de rentabilidade, carrego, duration, alocação, treemap dos ALT, gráficos e etiquetas.</td></tr>
+<tr><td>Central de Materiais</td><td>HTML</td><td>Índice com todos os cards, apontando só para arquivos que existem nesta edição.</td></tr>
+<tr><td>Conferência e log</td><td>XLSX e LOG</td><td>Planilha com o que mudou, o que faltou e o que não bateu, mais o registro completo da rodada.</td></tr>
+<tr><td>Pasta <b>_Atual</b></td><td>cópia</td><td><b>saida/_Atual/</b> sempre recebe a edição mais recente, no mesmo caminho. A pasta do mês (saida/2026-09/) fica como histórico.</td></tr>
+</table>
+
+<h3>Regras que valem em todos os materiais</h3>
+<ul>
+<li>Um único Contexto por fundo: relatório, post, e-mail, deck e site leem o mesmo número, então o Infra Plus mostra o mesmo valor em todo lugar.</li>
+<li>Uma única data de edição: "Setembro de 2026", "30/09/2026" e o nome dos arquivos saem de um lugar só.</li>
+<li>Datas de início oficiais (Infra Plus 15/07/2019, ALT 90 06/06/2025, Institucional 15 02/04/2001) em todos os materiais.</li>
+<li>Gráficos dos decks são nativos do PowerPoint: vetoriais e editáveis.</li>
+<li>Rentabilidade da previdência (e-mail, Informativo e site): no máximo 2 casas decimais. As taxas contratuais (por exemplo 0,016% de administração) mantêm o valor do regulamento.</li>
+</ul>
+
+<h2>2. O que continua manual</h2>
+
+<h3>Entradas do mês (alguém precisa fornecer)</h3>
+<table>
+<tr><th style="width:30%">Item</th><th>Situação</th></tr>
+<tr><td><span class="man">MANUAL</span> dados_mensais.xlsx</td><td>Cotas, PL e carteira vêm de uma planilha exportada e colocada em entrada/. Trocar o Excel por Databricks está na lista de próximas fases.</td></tr>
+<tr><td><span class="man">MANUAL</span> taxas_global.xlsx</td><td>Taxas de administração e performance.</td></tr>
+<tr><td><span class="man">MANUAL</span> comentarios.md</td><td>O sistema não escreve análise. O gestor fornece o comentário de cada fundo e o complemento do HGD30 e do HYD60. O que ele faz sozinho é preencher os números e ignorar trecho antigo colado antes do bloco do mês (com aviso no log).</td></tr>
+<tr><td><span class="man">MANUAL</span> Mercado de Crédito (spreads)</td><td>Planilha de spreads também vem de fora.</td></tr>
+</table>
+
+<h3>Publicação e envio (o sistema gera, não publica)</h3>
+<ul>
+<li><span class="nao">NÃO FAZ</span> Subir nada para o site ou para o repositório de materiais. As páginas "Saiba mais" saem na pasta "landing page" e sobem à mão para o site externo.</li>
+<li><span class="nao">NÃO FAZ</span> Enviar e-mail. Gera HTML e .eml; o disparo é no Outlook ou no Mailchimp.</li>
+<li><span class="nao">NÃO FAZ</span> Modelo de e-mail .oft: o Outlook do computador onde a automação foi montada não está configurado e abre a tela de boas-vindas. Fica o .eml.</li>
+<li><span class="nao">NÃO FAZ</span> Aprovação. Não existe fluxo de aprovação (painel de Riscos, página de aprovação), só a revisão humana do material gerado.</li>
+</ul>
+
+<h3>Partes dos decks que o sistema não toca</h3>
+<ul>
+<li>AUM e números institucionais da Tivio, equipe, textos de política, benefícios e disclaimers.</li>
+<li><b>ROA</b> e <b>Capacity inicial</b> dos ALT (0,35 e 0,375, R$ 250 e 300 milhões): ficam como estão no modelo.</li>
+<li>Gráficos contra Idex e IHFA e o backtest do Zenit.</li>
+<li><b>Tivio Conecta</b>: tópicos de mercado do slide do HGD30 (só os números da frase "rendeu X% no mês" são trocados), metas "Carteira HGD" e "Carteira HYD", previsão de alocação e retorno estimado do HYD60, setorial do slide 44 (é imagem) e gráfico de dispersão do slide 43.</li>
+<li>Se o time inserir ou tirar slides, o mapa "slide para fundo" do Tivio Conecta em <b>configs/decks.yml</b> precisa ser reajustado.</li>
+</ul>
+
+<h3>Cadastro (acontece quando muda a estrutura)</h3>
+<ul>
+<li>Fundo novo: precisa de uma entrada em <b>configs/fundos.yml</b> (e da linha na DePara da planilha).</li>
+<li>Categoria nova de alocação nos ALT: o bloco do treemap herda a cor e o lugar de outro; nome amigável vai em <b>tipo_label</b>.</li>
+<li>Data de início exibida: só vale a oficial se estiver em fundos.yml (hoje Infra Plus, ALT 90 e Institucional 15). Nos demais fica a do modelo.</li>
+</ul>
+
+<h2>3. Limitações técnicas</h2>
+<ul>
+<li><b>Windows com PowerPoint</b> instalado: PDF e fonte embutida dos decks e Informativos dependem dele. Sem PowerPoint saem só os PPTX.</li>
+<li><b>Fonte Versos</b>: o sistema instala por usuário na primeira rodada; PPTX e PDF saem com ela embutida.</li>
+<li><b>Caminho comprido (corrigido hoje)</b>: em um computador com o AutomaTivio numa pasta funda do OneDrive (mais de 260 caracteres no caminho), o Chromium e o PowerPoint não abriam os arquivos. Afetou o PDF e o PPTX fiel do ALT Light, Infra Plus CDI, Esplanada e Legacy Prev. Agora a rodada abre esses arquivos por um atalho curto e o problema some, sem precisar mudar de pasta.</li>
+<li>O PDF do Tivio Conecta tem 52 páginas porque os 4 slides ocultos do modelo ficam de fora.</li>
+<li>O gráfico setorial do Informativo ainda é uma imagem; proposta: trocar por gráfico nativo (vetor) depois dos decks.</li>
+</ul>
+
+<h2>4. Em aberto na rodada de setembro</h2>
+<table>
+<tr><th style="width:27%">Aviso do log</th><th>O que significa e o que fazer</th></tr>
+<tr><td>Atuarial</td><td>Fundo fora da DePara: relatório não gerado. Incluir a linha na planilha se ele deve sair.</td></tr>
+<tr><td>Top Gestor Macro e Long Only</td><td>Sem dados na planilha: rentabilidade e PL ficaram como estavam no modelo dos posts.</td></tr>
+<tr><td>Conexão ALT 180</td><td>Sem carteira na Base Carteira e sem taxa em taxas_global.xlsx. No Tivio Conecta, a alocação e o setorial desse fundo usam a carteira do ALT 180. A tabela de rentabilidade e o PL usam a série própria do Conexão.</td></tr>
+<tr><td>ALT 180: comentário</td><td>O texto cita "julho" como mês corrente. Corrigir no comentarios.md.</td></tr>
+<tr><td>Tipos sem nome amigável</td><td>Fiagro Sr e Fiagro Mz (ALT 180 e ALT 90). Acrescentar em tipo_label.</td></tr>
+<tr><td>Logo BVP</td><td>Arquivo tivio_bvp não existe em assets/logos.</td></tr>
+<tr><td>Card Incentivado CDI 30</td><td>Removido da Central porque o relatório correspondente não existe nesta edição.</td></tr>
+<tr><td>Comentários HGD30 e HYD60</td><td>Texto de outro mês colado antes do bloco do mês foi ignorado. Vale limpar o comentarios.md.</td></tr>
+<tr><td>Links do e-mail da Ágora</td><td>Os endereços dos relatórios do Institucional 30 e do Infra Plus CDI não foram verificados no ar.</td></tr>
+<tr><td>Tivio Conecta</td><td>Diferenças entre o que estava digitado e o que o sistema calcula: percentuais do CDI do slide do HGD30 deslocados um mês, mês e carrego do Infra Plus CDI copiados do Infra Plus, e jan a mar/26 do Conexão ALT 180 (1,33, 1,16 e 1,32 contra 1,51, 1,07 e 1,25 digitados). Vale o time conferir de onde vieram os números deles.</td></tr>
+</table>
+
+<h2>5. Próximas fases (registradas, não feitas)</h2>
+<ul>
+<li>Trocar a planilha de entrada por Databricks.</li>
+<li>Painel de aprovação de Riscos, página de aprovação e página de comentários, com retorno do gestor sobre o texto gerado.</li>
+<li>Páginas de administração e upload do Mercado de Crédito pelo sistema.</li>
+<li>Gráfico setorial do Informativo como gráfico nativo.</li>
+</ul>
+
+<h2>6. Rotina mensal</h2>
+<ul>
+<li>Colocar dados_mensais.xlsx, taxas_global.xlsx e comentarios.md em <b>AutomaTivio/entrada/</b>.</li>
+<li>Rodar <b>python run.py</b> e abrir <b>saida/_Atual/index.html</b>.</li>
+<li>Ler a planilha de conferência e os avisos do log (seção 4 mostra o formato).</li>
+<li>Revisar o que é manual (seção 2) e publicar.</li>
+</ul>
+
+<p class="peq" style="margin-top:10pt">Documentação completa: Documentacao_AutomaTivio/COMO_FUNCIONA.md e AutomaTivio/CONTEXTO_AUTOMATIVIO.md.</p>
+</body>
+</html>

@@ -16,6 +16,7 @@ escolha de tela, não da edição).
 """
 import base64
 import os
+from exporters.caminhos import url_arquivo
 
 from exporters.pdf import achar_chromium
 
@@ -62,7 +63,7 @@ def exportar_emails(pasta_central, destino, log):
         nav = p.chromium.launch(**op)
         try:
             pg = nav.new_page(viewport={'width': 1440, 'height': 900})
-            pg.goto('file://' + os.path.abspath(origem), wait_until='load')
+            pg.goto(url_arquivo(origem), wait_until='load')
             pg.wait_for_function("typeof renderCard === 'function' && typeof buildDeck === 'function'",
                                  timeout=20000)
             pg.wait_for_timeout(800)

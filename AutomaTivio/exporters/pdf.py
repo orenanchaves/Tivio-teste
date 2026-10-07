@@ -30,6 +30,7 @@ em vez de publicar um PDF com a tipografia trocada sem ninguém notar.
 """
 import glob
 import os
+from exporters.caminhos import url_arquivo
 
 # O Playwright procura o Chromium por uma revisão fixa, embutida na versão do
 # pacote. Quando o navegador já está instalado no sistema com outra revisão, o
@@ -107,7 +108,7 @@ class ExportadorPDF:
         pagina = self._browser.new_page(viewport={'width': largura, 'height': altura})
         try:
             if origem and os.path.exists(origem):
-                pagina.goto('file://' + os.path.abspath(origem), wait_until='load')
+                pagina.goto(url_arquivo(origem), wait_until='load')
             else:
                 pagina.set_content(html, wait_until='load')
             if self.esperar_fonte:

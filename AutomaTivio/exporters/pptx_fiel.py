@@ -20,6 +20,7 @@ desenho, não texto de edição.
 import io
 import os
 import re
+from exporters.caminhos import url_arquivo
 
 from pptx import Presentation
 from pptx.dml.color import RGBColor
@@ -136,7 +137,7 @@ class ExportadorPPTXFiel:
                                   device_scale_factor=2)
         pg = ctx.new_page()
         try:
-            pg.goto('file://' + os.path.abspath(origem), wait_until='load')
+            pg.goto(url_arquivo(origem), wait_until='load')
             # zoom 1: a folha em 1000x1414 exatos (a tela encolhe por media query)
             pg.evaluate("document.body.classList.add('tv-exportando')")
             pg.wait_for_function('document.fonts.ready.then(()=>true)', timeout=15000)

@@ -20,6 +20,7 @@ exporta para PDF nesse mesmo tamanho sem reescalar.
 """
 import io
 import os
+from exporters.caminhos import url_arquivo
 
 from pptx import Presentation
 from pptx.chart.data import CategoryChartData
@@ -296,7 +297,7 @@ class ExportadorPPTX:
                                     device_scale_factor=escala)
         try:
             if origem and os.path.exists(origem):
-                pagina.goto('file://' + os.path.abspath(origem), wait_until='load')
+                pagina.goto(url_arquivo(origem), wait_until='load')
             else:
                 pagina.set_content(html, wait_until='load')
             try:

@@ -226,6 +226,11 @@ Fundos de Crédito: uma aba por fundo, cada bloco com "Baixar PNG", "Baixar tudo
 PNG, o HTML e um **.eml**: abre no Outlook com as imagens no corpo, pronto para
 enviar; para virar modelo, Arquivo > Salvar como > Modelo do Outlook (.oft).
 
+**Casas decimais:** a rentabilidade dos materiais de previdência (e-mail,
+Informativo e site) sai sempre com no máximo 2 casas, inclusive o mês. O "% do
+CDI" do HYD60 usa 2 (`email.casas_pct`); o do HGD30, 0. Taxas contratuais não
+são arredondadas.
+
 ### 4.5c Páginas "Saiba mais" (HGD30 e HYD60)
 
 - Uma página por fundo de previdência, no design system do site interno
@@ -363,6 +368,16 @@ python -m playwright install chromium
 ```
 
 ---
+
+## 6b. Se der erro ao gerar PDF ou PPTX
+
+- **`net::ERR_FILE_NOT_FOUND` em `Page.goto` (PDF não gerado, "PPTX fiel falhou")**
+  só nos fundos de nome longo (ALT Light, Infra Plus CDI, Esplanada, Legacy Prev):
+  o caminho passava de 260 caracteres, limite do Windows para o Chromium e para o
+  PowerPoint. O sistema agora abre esses arquivos por um atalho curto em `%TEMP%`
+  (`exporters/caminhos.py`) e exporta os decks por uma pasta temporária curta
+  (`_pdf_powerpoint`). Mesmo assim, uma pasta curta (por exemplo
+  `C:\AutomaTivio`) evita qualquer problema com outros programas.
 
 ## 7. Antes de publicar (checklist)
 

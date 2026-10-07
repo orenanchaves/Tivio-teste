@@ -25,6 +25,7 @@ import io
 import os
 import re
 import subprocess
+from exporters.caminhos import url_arquivo
 
 from calculators import formatos as fmt
 from exporters.pdf import achar_chromium
@@ -511,28 +512,48 @@ def _pdf_powerpoint(pptx, pdf, log):
     if os.name != 'nt':
         return False
     embute = versos_instalada()
+    # o PowerPoint também para nos 260 caracteres do Windows: em pasta funda
+    # (OneDrive da empresa + subpastas) o arquivo é exportado numa pasta
+    # temporária curta e o resultado volta para o destino
+    import shutil
+    import tempfile
+    longo = len(pptx) > 200 or len(pdf) > 200
+    tmp = tempfile.mkdtemp(prefix='tvp') if longo else None
+    t_pptx = os.path.join(tmp, 'd.pptx') if longo else pptx
+    t_pdf = os.path.join(tmp, 'd.pdf') if longo else pdf
     script = (
         "$ErrorActionPreference='Stop';"
         "$pp=New-Object -ComObject PowerPoint.Application;"
-        f"$p=$pp.Presentations.Open('{pptx}',$false,$false,$false);"
-        + (f"$p.SaveAs('{pptx}',24,-1);" if embute else "")
-        + f"$p.SaveAs('{pdf}',32);$p.Close();$pp.Quit()")
+        f"$p=$pp.Presentations.Open('{t_pptx}',$false,$false,$false);"
+        + (f"$p.SaveAs('{t_pptx}',24,-1);" if embute else "")
+        + f"$p.SaveAs('{t_pdf}',32);$p.Close();$pp.Quit()")
     # o PDF da rodada anterior sai antes: se a exportação falhar, não fica um
     # PDF velho com cara de novo na pasta
     if os.path.exists(pdf):
         os.remove(pdf)
+    if longo:
+        shutil.copyfile(pptx, t_pptx)
     import time
-    for tentativa in (1, 2):         # o PowerPoint às vezes ainda está ocupado
-        try:
-            r = subprocess.run(['powershell', '-NoProfile', '-NonInteractive', '-Command', script],
-                               capture_output=True, text=True, timeout=240)
-            if r.returncode == 0 and os.path.exists(pdf):
-                return True
-            erro = (r.stderr or '').strip().splitlines()[:1]
-        except Exception as e:
-            erro = [repr(e)]
-        if tentativa == 1:
-            time.sleep(4)
+    erro = []
+    try:
+        for tentativa in (1, 2):         # o PowerPoint às vezes ainda está ocupado
+            try:
+                r = subprocess.run(['powershell', '-NoProfile', '-NonInteractive', '-Command', script],
+                                   capture_output=True, text=True, timeout=240)
+                if r.returncode == 0 and os.path.exists(t_pdf):
+                    if longo:
+                        shutil.copyfile(t_pdf, pdf)
+                        if embute:
+                            shutil.copyfile(t_pptx, pptx)     # PPTX com a fonte embutida
+                    return True
+                erro = (r.stderr or '').strip().splitlines()[:1]
+            except Exception as e:
+                erro = [repr(e)]
+            if tentativa == 1:
+                time.sleep(4)
+    finally:
+        if tmp:
+            shutil.rmtree(tmp, ignore_errors=True)
     log.aviso('informativo', 'PDF pelo PowerPoint falhou: ' + (erro[0][:160] if erro else ''))
     return False
 
@@ -673,7 +694,7 @@ def exportar_email(pasta_central, destino, rend_email, fundos, log, oft=False):
         nav = pw.chromium.launch(**op)
         try:
             pg = nav.new_page(viewport={'width': 1700, 'height': 1000}, device_scale_factor=3)
-            pg.goto('file:///' + os.path.abspath(origem).replace(os.sep, '/'), wait_until='load')
+            pg.goto(url_arquivo(origem), wait_until='load')
             pg.wait_for_function('typeof setFundo === "function"', timeout=20000)
             for d, _ in fundos:
                 k = d['chave']

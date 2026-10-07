@@ -541,6 +541,14 @@ precisar mexer, prefira reextrair a reescrever.
 
 ## 9. Armadilhas já pagas
 
+- **Caminho acima de 260 caracteres (Windows).** O Python grava, mas o Chromium
+  (`Page.goto` → `ERR_FILE_NOT_FOUND`) e o PowerPoint COM não abrem. Aconteceu em
+  pasta do OneDrive da empresa + "AutomaTivio_v2 (3)", só nos nomes mais longos.
+  `exporters/caminhos.py::url_arquivo` abre por uma junção curta em `%TEMP%` (sobe
+  até a pasta `saida/` para o `vendor/` e os `../` continuarem valendo) e
+  `_pdf_powerpoint` exporta por uma pasta temporária curta quando o caminho passa
+  de 200. Toda chamada nova a `goto` de arquivo local deve usar `url_arquivo`.
+
 Cada uma destas custou uma rodada. Estão aqui para não custarem outra.
 
 - **ECharts embutido** em cada relatório dava 50 MB de saída. Fica em `vendor/`

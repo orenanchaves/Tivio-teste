@@ -16,6 +16,7 @@ por card, no tamanho do design (1080 x 1440 pt), renderizada em 4x (~288 DPI).
 import base64
 import os
 import re
+from exporters.caminhos import url_arquivo
 
 from exporters.pdf import achar_chromium
 
@@ -75,7 +76,7 @@ def exportar_destaques(pasta_central, destino, log, pasta_pdf=None, sufixo=''):
                     continue
                 pg = nav.new_page(viewport={'width': 1440, 'height': 900})
                 try:
-                    pg.goto('file://' + os.path.abspath(origem), wait_until='load')
+                    pg.goto(url_arquivo(origem), wait_until='load')
                     pg.wait_for_function("typeof renderCard === 'function'", timeout=20000)
                     pg.wait_for_timeout(800)
                     cartoes = pg.evaluate(RENDERIZA, None)

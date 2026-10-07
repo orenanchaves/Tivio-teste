@@ -42,10 +42,6 @@ def _data_uri(caminho, mime):
     return f'data:{mime};base64,' + base64.b64encode(open(caminho, 'rb').read()).decode()
 
 
-def _pct3(v):
-    return fmt.num(v * 100, 3) + '%' if v is not None else fmt.MINUS
-
-
 def dados_fundo(chave, pg, ctx, edicao, textos, log=None, por_key=None):
     """Tudo o que o e-mail e o Informativo mostram de um fundo."""
     lp = RenderizadorLanding.__new__(RenderizadorLanding)
@@ -56,11 +52,11 @@ def dados_fundo(chave, pg, ctx, edicao, textos, log=None, por_key=None):
         for k in faltando:
             log.aviso(chave, f'previdência: marcador sem valor: {{{k}}}')
 
-    # rentabilidade: o mês com três casas, como na tabela do e-mail publicado
-    # (1,085% / 1,083%); desde o início com duas
+    # rentabilidade: no máximo duas casas, em e-mail, Informativo e site
+    # (o mês já saiu com três casas, como no e-mail publicado antigo)
     rent = [
-        ('Fundo', _pct3(ctx.valor('mes', 'fundo')), ctx.texto('inicio', 'fundo')),
-        (ctx.benchmark, _pct3(ctx.valor('mes', 'bench')), ctx.texto('inicio', 'bench')),
+        ('Fundo', ctx.texto('mes', 'fundo'), ctx.texto('inicio', 'fundo')),
+        (ctx.benchmark, ctx.texto('mes', 'bench'), ctx.texto('inicio', 'bench')),
         ('Alfa', ctx.texto('mes', 'alfa'), ctx.texto('inicio', 'alfa')),
         ('%', ctx.texto('mes', 'pct'), ctx.texto('inicio', 'pct')),
         (f'{ctx.benchmark} +', ctx.texto('mes', 'bench_mais'), ctx.texto('inicio', 'bench_mais')),
