@@ -102,7 +102,9 @@ class Pipeline:
     # ------------------------------------------------------------------ saída
     @property
     def pasta_saida(self):
-        return os.path.join(RAIZ, 'saida', self.edicao.competencia)
+        # a edição completa (Central, materiais interativos, tudo) fica no
+        # histórico do mês; _Atual é montada a partir dela (engine/publicacao.py)
+        return os.path.join(RAIZ, 'saida', '_Historico', self.edicao.competencia)
 
     def _destino(self, *partes):
         return os.path.join(self.pasta_saida, *partes)
@@ -514,18 +516,18 @@ class Pipeline:
         self._atual()
 
     def _atual(self):
-        """saida/_Atual/: cópia da edição mais recente, sempre no mesmo
-        caminho, para quem sobe o material não precisar trocar a pasta todo
-        mês. A pasta do mês (saida/AAAA-MM/) fica como histórico."""
+        """saida/_Atual/: a edição do mês por área e com nome fixo, sempre no
+        mesmo caminho (engine/publicacao.py). A edição completa continua em
+        saida/_Historico/AAAA-MM/ e a Central abre por Interno/Abrir a Central.html."""
         if not self.cfg['saidas'].get('atual', True):
             return
+        if self.so_fundos:
+            print('  _Atual: não atualizada (rodada parcial com --so)')
+            return
+        from engine.publicacao import montar_atual
         atual = os.path.join(RAIZ, 'saida', '_Atual')
         try:
-            if os.path.isdir(atual):
-                shutil.rmtree(atual)
-            shutil.copytree(self.pasta_saida, atual)
-            with open(os.path.join(atual, 'EDICAO.txt'), 'w', encoding='utf-8') as f:
-                f.write(f'{self.edicao.mes_ano}\nCópia de saida/{self.edicao.competencia}/\n')
-            print(f'  _Atual: saida/_Atual/ = {self.edicao.mes_ano}')
+            n = montar_atual(self.pasta_saida, atual, self.cadastro, self.edicao, self.log)
+            print(f'  _Atual: {n} arquivos em saida/_Atual/ ({self.edicao.mes_ano})')
         except Exception as e:
             print(f'  AVISO: saida/_Atual/ não atualizada ({e!r}); feche arquivos abertos dela e rode de novo')

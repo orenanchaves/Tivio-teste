@@ -40,7 +40,7 @@ python run.py --data-base 2026-08-31         # força a data base
 python run.py --silencioso                   # só grava o log
 
 # conciliação com os relatórios publicados (o teste que importa)
-python docs/conciliar_com_pptx.py saida/AAAA-MM/conferencia_AAAA-MM.xlsx
+python docs/conciliar_com_pptx.py saida/_Historico/AAAA-MM/conferencia_AAAA-MM.xlsx
 ```
 
 Não há suíte de testes unitários. **A verificação é a rodada completa**: zero
@@ -78,7 +78,9 @@ renderers/legado.py      injeta dados nos HTMLs desenhados à mão
    ▼
 exporters/              html · pdf (Chromium) · pptx (python-pptx)
    ▼
-saida/AAAA-MM/
+saida/_Historico/AAAA-MM/        a edição completa (Central e materiais interativos)
+   ▼  engine/publicacao.py
+saida/_Atual/                    por área, nome fixo sem o mês: o que se publica
 ```
 
 `engine/pipeline.py` orquestra em 6 etapas (ler → calcular → validar →
@@ -173,7 +175,7 @@ recorta o viewBox dos logos dos fundos e encolhe o texto `.tv-ajusta`
 
 1. `python run.py` → **0 erros** (avisos conhecidos: fonte Versos sem rede, QR
    sem arquivo local, BVP sem logo, Tivio Atuarial fora do DePara).
-2. `python docs/conciliar_com_pptx.py saida/AAAA-MM/conferencia_AAAA-MM.xlsx`
+2. `python docs/conciliar_com_pptx.py saida/_Historico/AAAA-MM/conferencia_AAAA-MM.xlsx`
    → **58/58**.
 3. PDFs: 13 arquivos, 210×297 mm, páginas certas, **nenhuma em branco**.
 4. Se mexeu no CSS da folha ou da página: conferir 390 px, 768 px e 1440 px sem

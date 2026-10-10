@@ -9,10 +9,10 @@
 @font-face{font-family:Versos;font-weight:700;src:url("../AutomaTivio/assets/fontes/Versos-Bold.ttf")}
 @page{size:A4;margin:16mm 15mm 16mm 15mm}
 *{box-sizing:border-box}
-body{font-family:Versos,"Segoe UI",Arial,sans-serif;font-weight:400;font-size:9.6pt;line-height:1.42;color:#1b2430;margin:0}
+body{font-family:Versos,"Segoe UI",Arial,sans-serif;font-weight:400;font-size:9.4pt;line-height:1.38;color:#1b2430;margin:0}
 h1{font-size:19pt;font-weight:700;margin:0 0 2pt;letter-spacing:-.01em}
 .sub{color:#5d6b7a;font-size:9.5pt;margin:0 0 12pt}
-h2{font-size:12.5pt;font-weight:700;margin:15pt 0 5pt;padding-top:8pt;border-top:1.5px solid #1b2430;break-after:avoid}
+h2{font-size:12.5pt;font-weight:700;margin:13pt 0 5pt;padding-top:8pt;border-top:1.5px solid #1b2430;break-after:avoid}
 h3{font-size:10pt;font-weight:700;margin:9pt 0 3pt;color:#2c3e50;break-after:avoid}
 p{margin:0 0 5pt}
 table{width:100%;border-collapse:collapse;margin:3pt 0 7pt;font-size:9pt}
@@ -55,7 +55,7 @@ li{margin:0 0 2.5pt}
 <tr><td>Decks comerciais (10)</td><td>PPTX e PDF</td><td>Tivio, BTG e XP (ALT 180, ALT 90 e ALT Light), ALT 90 e ALT 180 com e sem ROA, Crédito Privado e Estruturado (BTG e XP) e Tivio Conecta. Troca só os números, mantendo o desenho do time: capa, data base, PL, quadros de rentabilidade, carrego, duration, alocação, treemap dos ALT, gráficos e etiquetas.</td></tr>
 <tr><td>Central de Materiais</td><td>HTML</td><td>Índice com todos os cards, apontando só para arquivos que existem nesta edição.</td></tr>
 <tr><td>Conferência e log</td><td>XLSX e LOG</td><td>Planilha com o que mudou, o que faltou e o que não bateu, mais o registro completo da rodada.</td></tr>
-<tr><td>Pasta <b>_Atual</b></td><td>cópia</td><td><b>saida/_Atual/</b> sempre recebe a edição mais recente, no mesmo caminho. A pasta do mês (saida/2026-09/) fica como histórico.</td></tr>
+<tr><td>Pasta <b>_Atual</b></td><td>por área</td><td><b>saida/_Atual/</b> é a edição mais recente organizada por área (Crédito Privado, Crédito Estruturado, Investment Solutions, Previdência, Multi-área e Interno), com nomes fixos sem o mês. A edição completa de cada mês fica em saida/_Historico/AAAA-MM/.</td></tr>
 </table>
 
 <h3>Regras que valem em todos os materiais</h3>
@@ -137,7 +137,7 @@ li{margin:0 0 2.5pt}
 <h2>6. Rotina mensal</h2>
 <ul>
 <li>Colocar dados_mensais.xlsx, taxas_global.xlsx e comentarios.md em <b>AutomaTivio/entrada/</b>.</li>
-<li>Rodar <b>python run.py</b> e abrir <b>saida/_Atual/index.html</b>.</li>
+<li>Rodar <b>python run.py</b> e abrir <b>saida/_Atual/LEIA-ME.txt</b> (checklist) e <b>Interno/Abrir a Central.html</b>.</li>
 <li>Ler a planilha de conferência e os avisos do log (seção 4 mostra o formato).</li>
 <li>Revisar o que é manual (seção 2) e publicar.</li>
 </ul>

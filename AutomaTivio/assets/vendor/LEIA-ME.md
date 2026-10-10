@@ -47,7 +47,7 @@ depender de um CDN que ninguém controla.
 
 O `run.py` reescreve as tags `<script>` dos materiais para **tentar a cópia local
 primeiro e cair no CDN se ela não estiver lá**, e copia estes arquivos para
-`saida/AAAA-MM/central/vendor/`. Assim:
+`saida/_Historico/AAAA-MM/central/vendor/`. Assim:
 
 | Situação | O que acontece |
 |---|---|

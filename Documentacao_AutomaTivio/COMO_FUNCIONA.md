@@ -37,9 +37,10 @@ Leva de 3 a 5 minutos. Também dá para dar dois cliques no `atualizar.bat`.
 2. **Comentários do gestor** em `AutomaTivio/entrada/comentarios.md`
    (um `## Nome do fundo` por fundo, parágrafos separados por linha em branco).
 3. `python run.py`
-4. Abra `saida/AAAA-MM/conferencia_AAAA-MM.xlsx` e olhe as abas
+4. Abra `saida/_Atual/Interno/Conferência.xlsx` e olhe as abas
    **Divergências** e **Dados faltantes**.
-5. Abra `saida/AAAA-MM/index.html`: ele abre a Central, de onde se chega a tudo.
+5. Abra `saida/_Atual/LEIA-ME.txt` (checklist do que publicar) e, para a Central
+   com todos os materiais interativos, `saida/_Atual/Interno/Abrir a Central.html`.
 
 **A data base não é digitada em lugar nenhum.** Ela sai do último mês fechado da
 planilha. Para forçar: `python run.py --data-base 2026-09-30`.
@@ -48,48 +49,59 @@ planilha. Para forçar: `python run.py --data-base 2026-09-30`.
 
 ## 3. O que sai, e onde
 
-Cada rodada grava a edição em `saida/AAAA-MM/` (a pasta do mês, que fica como
-histórico) e copia tudo para **`saida/_Atual/`**, que é sempre a edição mais
-recente no mesmo caminho: é dela que se sobe o material, sem trocar de pasta
-todo mês. O arquivo `EDICAO.txt` dentro dela diz de qual mês é a cópia.
-(Desliga com `saidas.atual: false` em `configs/edicao.yml`.)
+A rodada grava em **dois lugares**:
+
+- **`saida/_Atual/`**: o que sai da empresa, organizado por **área**, com **nome
+  fixo (sem o mês)**. É sempre a edição mais recente, no mesmo caminho: ao
+  publicar, o arquivo novo substitui o do mês anterior e nenhum link muda. É
+  montada pelo `engine/publicacao.py` e refeita inteira a cada rodada completa
+  (não é atualizada em rodada parcial com `--so`).
+- **`saida/_Historico/AAAA-MM/`**: a edição completa do mês (a Central, os
+  materiais interativos e tudo o que foi gerado), na estrutura de trabalho. Fica
+  como histórico, um mês por pasta.
 
 ```
-AutomaTivio/saida/AAAA-MM/
-├── index.html                    ← COMECE AQUI: abre a Central
+AutomaTivio/saida/_Atual/
+├── LEIA-ME.txt                      checklist do que publicar e o que é manual
+├── Crédito Privado/
+│   ├── Relatórios/                  <fundo> - Relatório de Gestão.pdf e .pptx (10 fundos)
+│   │                                + Relatório de Gestão - Crédito Privado.html (abas) + vendor/
+│   └── Redes sociais/               Destaques: 01-…jpg a 09-…jpg + PDF
+├── Crédito Estruturado/
+│   ├── Relatórios/                  ALT 180, ALT 90, ALT Light (PDF, PPTX) + página HTML + vendor/
+│   ├── Redes sociais/               Destaques: 01-…jpg a 06-…jpg + PDF
+│   └── Decks/                       ALT/  ALT 90/  ALT 180/  (Tivio, BTG, XP, com e sem ROA)
+├── Investment Solutions/
+│   └── Redes sociais/               Destaques: 01-…jpg a 11-…jpg + PDF
+├── Previdência/
+│   ├── HGD30/   E-mail/             blocos PNG (01-…) + email-hgd30.html + .eml
+│   │            Informativo/        Informativo - HGD30.pptx e .pdf
+│   │            Site (Saiba mais)/  tivio-hgd30-saiba-mais.html + vendor/ (sobe sozinha)
+│   └── HYD60/   (o mesmo)
+├── Multi-área/                      o que cruza áreas
+│   ├── E-mails de Fundos de Crédito/   Ágora/  BTG/  XP/  (PNG por fundo + email-<versao>.html)
+│   └── Decks/                       Crédito Privado & Crédito Estruturado (BTG, XP), Tivio Conecta
+└── Interno/                         não sai da empresa
+    ├── Abrir a Central.html         atalho para a Central da edição completa
+    ├── Conferência.xlsx             o que mudou, o que faltou, o que não bateu
+    └── Log da rodada.log
+
+AutomaTivio/saida/_Historico/AAAA-MM/      a edição completa do mês
+├── index.html                    abre a Central
 ├── central/                      TODOS os HTML da edição, numa pasta só
 │   ├── tivio-central.html        índice com todos os cards
 │   ├── Relatório de Gestão - <vertical> - <mês>.html   relatórios, fundos em abas
 │   ├── tivio-post-*.html         carrosséis de Destaques (editáveis na tela)
-│   ├── tivio-email-previdencia.html  gerador do e-mail de previdência (HGD30 e HYD60)
+│   ├── tivio-email-previdencia.html  gerador do e-mail de previdência
 │   └── tivio-email-*.html        construtores de e-mail
-├── landing page/                 site externo: páginas "Saiba mais" do HGD30 e do HYD60
-│   ├── tivio-hgd30-saiba-mais.html
-│   ├── tivio-hyd60-saiba-mais.html
-│   └── vendor/echarts.min.js      (sobe junto: a pasta funciona sozinha)
-├── pdf/                          13 relatórios em PDF A4, texto selecionável
-│                                 + os 3 carrosséis de Destaques ("Destaques - <vertical> - <mês>.pdf")
-├── pptx/                         13 relatórios em PPTX, texto editável
-├── destaques/                    carrosséis prontos para postar
-│   ├── credito-privado/          01-…jpg a 08-…jpg + tivio-destaques-credito-privado.pdf
-│   ├── credito-estruturado/      01-…jpg a 06-…jpg + PDF
-│   └── investment-solutions/     01-…jpg a 11-…jpg + PDF
-├── emails/                       e-mail de Fundos de Crédito, uma pasta por versão
-│   ├── agora/  btg/  xp/          (Ágora = cartão quadrado)
-│   │   ├── tivio-email-<fundo>.png     um card por fundo
-│   │   ├── tivio-email-completo.png    o e-mail inteiro
-│   │   └── email-<versao>.html         pronto para o disparo
-│   └── previdencia/hgd30/ e hyd60/    blocos em PNG (01-…, 02-…) + email-<fundo>.html
-│                                      + email-<fundo>.eml (abre no Outlook com as imagens)
-├── informativos/                 Informativo HGD30 e HYD60 em PPTX e PDF
-├── decks/                        decks comerciais em PPTX e PDF, uma pasta por família
-│   ├── ALT/                       Tivio, BTG e XP (ALT 180 · ALT 90 · ALT Light)
-│   ├── ALT 90/  ALT 180/          Sem ROA e Com ROA
-│   ├── Crédito/                   Crédito Privado & Crédito Estruturado, BTG e XP
-│   └── Tivio Conecta/             o deck do Tivio Conecta
-├── conferencia_AAAA-MM.xlsx      o que mudou, o que faltou, o que não bateu
-└── AAAA-MM-processamento.log     registro completo da rodada
+├── landing page/  pdf/  pptx/  destaques/  emails/  informativos/  decks/
+├── conferencia_AAAA-MM.xlsx
+└── AAAA-MM-processamento.log
 ```
+
+Em que pasta cada deck cai em `_Atual` é decidido por `area:` em
+`configs/decks.yml` (sem `area`, vai para Multi-área). Os decks gerados e a
+`_Atual` não vão para o GitHub (`.gitignore`).
 
 Os números dos arquivos (`01-`, `02-`…) seguem a ordem do carrossel, para o
 Explorer ordenar na sequência certa.

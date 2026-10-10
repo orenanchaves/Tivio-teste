@@ -1,5 +1,5 @@
 # ============================================================================
-# Decks comerciais (PPTX + PDF) — saída em saida/AAAA-MM/decks/<pasta>/
+# Decks comerciais (PPTX + PDF) — saída em saida/_Historico/AAAA-MM/decks/<pasta>/ e, em _Atual, na pasta da `area`
 # ----------------------------------------------------------------------------
 # Cada deck parte de um modelo de templates/decks/ (os PPTX que o time usa,
 # com as imagens comprimidas por scripts/comprimir_pptx.py). A automação troca
@@ -11,6 +11,9 @@
 #   e as etiquetas do valor final.
 # AUM da Tivio, equipe, textos e taxas ficam como estão no modelo.
 #
+# area: onde o deck vai em saida/_Atual/ (Crédito Estruturado/Decks/<pasta>/ ou
+#       Multi-área/Decks/ para o que cruza áreas). Sem `area`, vai para Multi-área.
+#
 # remover:
 #   selo_xp    o selo "Melhor fundo em termos de rentabilidade na plataforma da XP"
 #   roa        o quadro do ROA (versão "sem ROA")
@@ -20,41 +23,50 @@
 decks:
   # ------------------------------------------------------------------ ALT
   - pasta: ALT
+    area: Crédito Estruturado
     nome: Tivio ALT 180 - ALT 90
     modelo: Tivio ALT 180 - ALT 90.pptx
     remover: [selo_xp]
   - pasta: ALT
+    area: Crédito Estruturado
     nome: BTG - ALT 180 - ALT 90
     modelo: BTG - ALT 180 - ALT 90.pptx
     remover: [selo_xp]
   - pasta: ALT
+    area: Crédito Estruturado
     nome: XP - Tivio ALT 180 - ALT 90 - ALT Light
     modelo: XP - Tivio ALT 180 - ALT 90 - ALT Light.pptx
 
   # --------------------------------------------------------------- ALT 90
   - pasta: ALT 90
+    area: Crédito Estruturado
     nome: Deck - Tivio ALT 90 - Sem ROA
     modelo: Deck - Tivio ALT 90.pptx
     remover: [roa]
   - pasta: ALT 90
+    area: Crédito Estruturado
     nome: Deck - Tivio ALT 90 - Com ROA
     modelo: Deck - Tivio ALT 90 - Com ROA.pptx
 
   # -------------------------------------------------------------- ALT 180
   - pasta: ALT 180
+    area: Crédito Estruturado
     nome: Deck - Tivio ALT 180 - Sem ROA
     modelo: Deck - Tivio ALT 180.pptx
     remover: [roa]
   - pasta: ALT 180
+    area: Crédito Estruturado
     nome: Deck - Tivio ALT 180 - Com ROA
     modelo: Deck - Tivio ALT 180.pptx
 
   # -------------------------------------------- Crédito Privado & Estruturado
   - pasta: Crédito
+    area: Multi-área
     nome: Deck - Crédito Privado & Crédito Estruturado - BTG
     modelo: Deck - Crédito Privado & Crédito Estruturado - BTG.pptx
     remover: [altlight]
   - pasta: Crédito
+    area: Multi-área
     nome: Deck - Crédito Privado & Crédito Estruturado - XP
     modelo: Deck - Crédito Privado & Crédito Estruturado - XP.pptx
 
@@ -65,6 +77,7 @@ decks:
 # alocacao_hghy: a "Previsão de alocação" do slide é a alocação real
   # High Grade / High Yield / Caixa do mês (no HGD30 é; no HYD60 é meta e fica).
   - pasta: Tivio Conecta
+    area: Multi-área
     nome: Tivio Conecta
     modelo: Tivio Conecta.pptx
     slides:

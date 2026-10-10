@@ -14,10 +14,10 @@
 # O mesmo texto vai para os três materiais.
 #
 # Saídas:
-#   saida/AAAA-MM/central/tivio-<chave>-saiba-mais.html     página Saiba mais
-#   saida/AAAA-MM/central/tivio-email-previdencia.html      gerador de e-mail
-#   saida/AAAA-MM/emails/previdencia/<chave>/               PNG dos blocos + HTML
-#   saida/AAAA-MM/informativos/                             Informativo PPTX e PDF
+#   saida/_Historico/AAAA-MM/central/tivio-<chave>-saiba-mais.html     página Saiba mais
+#   saida/_Historico/AAAA-MM/central/tivio-email-previdencia.html      gerador de e-mail
+#   saida/_Historico/AAAA-MM/emails/previdencia/<chave>/               PNG dos blocos + HTML
+#   saida/_Historico/AAAA-MM/informativos/                             Informativo PPTX e PDF
 # ============================================================================
 
 # Composição da carteira (Corporativo, Bancário, FIDC, Caixa): regra fixa em

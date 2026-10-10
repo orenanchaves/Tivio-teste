@@ -49,15 +49,15 @@ Ele lê as planilhas do mês e o documento de comentários do gestor, calcula tu
 
 | O que sai | Onde |
 |---|---|
-| **2 páginas por vertical** — fundos em abas, com botões de exportação | `saida/AAAA-MM/central/` ← **é o que você abre** (todos os HTML ficam aqui) |
-| **13 relatórios em PDF A4** vetorial, um por fundo | `saida/AAAA-MM/pdf/` |
-| **13 relatórios em PPTX**, um por fundo — idênticos à folha, texto editável (`exporters/pptx_fiel.py`) | `saida/AAAA-MM/pptx/` |
-| Posts, e-mail e a **Central de Materiais** | `saida/AAAA-MM/central/` |
-| **Carrosséis de Destaques** em JPG (2160 × 2880) + pacote PDF, uma pasta por vertical | `saida/AAAA-MM/destaques/<vertical>/` |
-| **E-mails** em PNG (cards + completo) + HTML de disparo, uma pasta por versão | `saida/AAAA-MM/emails/<versao>/` |
-| `index.html` que abre a Central | `saida/AAAA-MM/` |
-| **`conferencia_AAAA-MM.xlsx`** — o que mudou, o que faltou, o que não bateu | `saida/AAAA-MM/` |
-| Log da rodada | `saida/AAAA-MM/AAAA-MM-processamento.log` |
+| **2 páginas por vertical** — fundos em abas, com botões de exportação | `saida/_Historico/AAAA-MM/central/` ← **é o que você abre** (todos os HTML ficam aqui) |
+| **13 relatórios em PDF A4** vetorial, um por fundo | `saida/_Historico/AAAA-MM/pdf/` |
+| **13 relatórios em PPTX**, um por fundo — idênticos à folha, texto editável (`exporters/pptx_fiel.py`) | `saida/_Historico/AAAA-MM/pptx/` |
+| Posts, e-mail e a **Central de Materiais** | `saida/_Historico/AAAA-MM/central/` |
+| **Carrosséis de Destaques** em JPG (2160 × 2880) + pacote PDF, uma pasta por vertical | `saida/_Historico/AAAA-MM/destaques/<vertical>/` |
+| **E-mails** em PNG (cards + completo) + HTML de disparo, uma pasta por versão | `saida/_Historico/AAAA-MM/emails/<versao>/` |
+| `index.html` que abre a Central | `saida/_Historico/AAAA-MM/` |
+| **`conferencia_AAAA-MM.xlsx`** — o que mudou, o que faltou, o que não bateu | `saida/_Historico/AAAA-MM/` |
+| Log da rodada | `saida/_Historico/AAAA-MM/AAAA-MM-processamento.log` |
 
 ### Os fundos com relatório
 
@@ -143,7 +143,7 @@ selecionável em todas as páginas. O que não bater vira aviso no log.
 E o teste que importa:
 
 ```powershell
-python docs\conciliar_com_pptx.py saida\AAAA-MM\conferencia_AAAA-MM.xlsx
+python docs\conciliar_com_pptx.py saida\_Historico\AAAA-MM\conferencia_AAAA-MM.xlsx
 ```
 
 Há também `atualizar.bat` para quem prefere dar dois cliques.
@@ -157,9 +157,9 @@ Há também `atualizar.bat` para quem prefere dar dois cliques.
    ver §2.)*
 2. Colocar os comentários do gestor em **`entrada/comentarios.docx`**.
 3. `python run.py`
-4. Conferir **`saida/AAAA-MM/conferencia_AAAA-MM.xlsx`** — abas *Mudanças*,
+4. Conferir **`saida/_Historico/AAAA-MM/conferencia_AAAA-MM.xlsx`** — abas *Mudanças*,
    *Dados faltantes*, *Fundos sem atualização*, *Rentabilidades*, *Taxas*.
-5. Abrir **`saida/AAAA-MM/index.html`** (abre a Central; todos os HTML ficam em `central/`) e exportar o que precisar pelos botões.
+5. Abrir **`saida/_Historico/AAAA-MM/index.html`** (abre a Central; todos os HTML ficam em `central/`) e exportar o que precisar pelos botões.
 
 **A data base não é digitada em lugar nenhum**: sai do último mês fechado da
 planilha. Para forçar, `configs/edicao.yml` → `data_base: 2026-08-31`.
@@ -267,7 +267,7 @@ entrada/*.xlsx + comentarios.docx
       │              │              │              │
       └──────────────┴──────────────┴──────────────┘
                      ▼
-               saida/AAAA-MM/
+               saida/_Historico/AAAA-MM/
 ```
 
 `engine/pipeline.py` orquestra em 6 etapas: ler → calcular → validar →
@@ -367,7 +367,11 @@ setor, sobre o total da carteira), `rating_extras()`, a partir de `hghy_tipo`,
   `_destaque_pl`) → pintura de vidro (`_pinta`, que também troca forma livre
   por roundRect). Cópias de shape ganham `cNvPr id` novo (id repetido ou
   `txBody` sem `a:p` fazem o PowerPoint recusar o arquivo).
-- `Pipeline._atual` copia `saida/AAAA-MM/` para `saida/_Atual/` no fim da rodada.
+- `Pipeline._atual` chama `engine/publicacao.py::montar_atual`, que refaz `saida/_Atual/`
+  a partir da edição completa (`saida/_Historico/AAAA-MM/`): por área, nome fixo sem o
+  mês (`sem_mes`), `vendor/` junto de cada HTML, decks por `area:` de `configs/decks.yml`,
+  `Interno/Abrir a Central.html` (redirect relativo) e `LEIA-ME.txt`. Não roda com `--so`.
+  Para um material novo aparecer em `_Atual`, acrescente a regra em `montar_atual`.
 - PDF pelo PowerPoint (`exporters.previdencia._pdf_powerpoint`). Etapa
   `Pipeline._decks`, ligada por `saidas.decks` em `configs/edicao.yml`.
 
@@ -484,7 +488,7 @@ Nenhum deles apareceria de outro jeito:
 ### O teste que vale
 
 ```powershell
-python docs\conciliar_com_pptx.py saida\AAAA-MM\conferencia_AAAA-MM.xlsx
+python docs\conciliar_com_pptx.py saida\_Historico\AAAA-MM\conferencia_AAAA-MM.xlsx
 ```
 
 Hoje em **58 de 58 rentabilidades idênticas ao relatório publicado (100%)**.
@@ -603,7 +607,7 @@ não como erro.
 1. `python run.py` → **0 erros**.
    Avisos conhecidos e aceitáveis: fonte Versos sem rede, QR sem arquivo local,
    BVP sem logo, Tivio Atuarial fora do DePara.
-2. `python docs\conciliar_com_pptx.py saida\AAAA-MM\conferencia_AAAA-MM.xlsx`
+2. `python docs\conciliar_com_pptx.py saida\_Historico\AAAA-MM\conferencia_AAAA-MM.xlsx`
    → **58/58**.
 3. Os PDFs: **13 arquivos**, 210 × 297 mm, número de páginas certo (4 no Crédito
    Privado, 3 no Estruturado), **nenhuma página em branco**.
