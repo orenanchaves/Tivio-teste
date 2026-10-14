@@ -107,6 +107,10 @@ class Pipeline:
         self.log.info(f'indicadores Tivio: {self.indicadores["aum_institucional"]} sob gestão, '
                       f'Informativo {self.indicadores["aum_informativo"]}, '
                       f'data de referência {self.indicadores["data_ref"]}')
+        for chave, fonte, usado in self.indicadores.get('_forcados', []):
+            self.log.aviso('indicadores', f'{chave} forçado em configs/big_numbers.yml: '
+                                          f'a fonte oficial diz {fonte}, o material usa {usado}. '
+                                          'Tire a linha de `forcar:` quando a fonte for corrigida.')
 
     def _com_tivio(self, rend):
         """Os indicadores institucionais como `tivio` em todo template Jinja

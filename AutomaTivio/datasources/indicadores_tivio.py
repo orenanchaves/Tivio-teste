@@ -15,8 +15,24 @@ gráficos (a rosca "AuM por vertical" dos decks).
 Falha na API ou JSON ausente param a geração com a mensagem do motivo: a
 rodada não usa número antigo sem avisar.
 """
+import os
+
+import yaml
+
 from datasources.aum_verticais import get_aum_verticais
 from datasources.big_numbers import get_big_numbers
+
+RAIZ = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+
+
+def _forcados():
+    """`forcar:` do configs/big_numbers.yml: correção manual que vence a fonte
+    oficial enquanto ela está errada. Cada uso vira aviso no log da rodada."""
+    caminho = os.path.join(RAIZ, 'configs', 'big_numbers.yml')
+    if not os.path.exists(caminho):
+        return {}
+    with open(caminho, encoding='utf-8') as f:
+        return (yaml.safe_load(f) or {}).get('forcar') or {}
 
 
 def get_indicadores_tivio():
@@ -28,7 +44,7 @@ def get_indicadores_tivio():
         ) from erro
     verticais = get_aum_verticais()
 
-    return {
+    ind = {
         # Indicadores públicos institucionais
         "anos_historia": gerais["anos_historia"],
         "aum_institucional": gerais["aum_institucional"],
@@ -49,3 +65,11 @@ def get_indicadores_tivio():
         "aum_verticais_valores": verticais["_verticais"],
         "aum_informativo_valor": verticais["aum_informativo"]["valor"],
     }
+
+    # correções manuais: [(chave, valor da fonte, valor usado)]
+    ind["_forcados"] = []
+    for chave, valor in _forcados().items():
+        if chave in ind and valor is not None:
+            ind["_forcados"].append((chave, ind[chave], str(valor)))
+            ind[chave] = str(valor)
+    return ind

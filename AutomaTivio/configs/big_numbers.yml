@@ -26,6 +26,15 @@
 # Número sem aspas: a casa decimal segue o modelo. Entre aspas: entra como está.
 # ============================================================================
 
+# ----------------------------------------------------------------------------
+# forcar: correção manual que VENCE a fonte oficial, para todos os materiais
+# (HTML, PDF, PPTX), enquanto a fonte está errada. A chave é a do
+# get_indicadores_tivio(). Toda rodada avisa no log que o número está forçado;
+# quando a fonte for corrigida, apague a linha.
+# ----------------------------------------------------------------------------
+forcar:
+  anos_historia: "+27"     # a API pública diz "+25" (out/2026); a Tivio tem 27 anos
+
 # texto antes do mês na "Fonte: Anbima - Set/2026" (o mês vem do data_ref)
 fonte:
   texto: Anbima
