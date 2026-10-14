@@ -387,8 +387,9 @@ lido uma vez em `Pipeline._ler` (`self.indicadores`):
 
 - O JSON do Informativo é interno: fica fora do Git (`data/*.json` no
   `.gitignore`). Atualize-o antes de rodar o mês.
-- API fora do ar ou JSON ausente **param a rodada** com o motivo. Nenhum
-  material sai com número antigo sem avisar.
+- API fora do ar **para a rodada** com o motivo. JSON do Informativo ausente
+  não para: o log avisa e o AUM por vertical (rosca, AuM de crédito) fica como
+  no modelo até o JSON voltar para `data/`.
 - AUM institucional (+32 bi, API) e AUM do Informativo (R$ 29,8 bi) são
   indicadores diferentes. Não trocar um pelo outro sem regra do material.
 - Jinja: `{{ tivio.<chave> }}` em qualquer template do `RenderizadorRelatorio`

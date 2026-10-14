@@ -12,8 +12,9 @@ Chaves (as mesmas em HTML/Jinja, PDF e PPTX):
 Em `aum_verticais_valores` vão os valores em R$ de cada vertical do JSON, para
 gráficos (a rosca "AuM por vertical" dos decks).
 
-Falha na API ou JSON ausente param a geração com a mensagem do motivo: a
-rodada não usa número antigo sem avisar.
+Falha na API para a geração com a mensagem do motivo. JSON do Informativo
+ausente NÃO para: as chaves de AUM por vertical saem vazias (os materiais
+mantêm o valor do modelo) e `_avisos` diz o porquê, para o log da rodada.
 """
 import os
 
@@ -42,7 +43,16 @@ def get_indicadores_tivio():
         raise RuntimeError(
             f"Falha ao consultar os indicadores públicos da Tivio: {erro}"
         ) from erro
-    verticais = get_aum_verticais()
+    avisos = []
+    try:
+        verticais = get_aum_verticais()
+    except FileNotFoundError as erro:
+        avisos.append(f'{erro} AUM por vertical ficou como no modelo.')
+        vazio = {"valor": None, "texto": None}
+        verticais = {k: vazio for k in ("investment_solutions", "credito", "credito_high_grade",
+                                        "credito_estruturado", "imobiliario", "patrimoniais",
+                                        "aum_informativo")}
+        verticais["_verticais"] = {}
 
     ind = {
         # Indicadores públicos institucionais
@@ -65,6 +75,8 @@ def get_indicadores_tivio():
         "aum_verticais_valores": verticais["_verticais"],
         "aum_informativo_valor": verticais["aum_informativo"]["valor"],
     }
+
+    ind["_avisos"] = avisos
 
     # correções manuais: [(chave, valor da fonte, valor usado)]
     ind["_forcados"] = []

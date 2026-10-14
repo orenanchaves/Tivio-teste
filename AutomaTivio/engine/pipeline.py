@@ -105,8 +105,10 @@ class Pipeline:
         from datasources.indicadores_tivio import get_indicadores_tivio
         self.indicadores = get_indicadores_tivio()
         self.log.info(f'indicadores Tivio: {self.indicadores["aum_institucional"]} sob gestão, '
-                      f'Informativo {self.indicadores["aum_informativo"]}, '
+                      f'Informativo {self.indicadores["aum_informativo"] or "sem JSON"}, '
                       f'data de referência {self.indicadores["data_ref"]}')
+        for aviso in self.indicadores.get('_avisos', []):
+            self.log.aviso('indicadores', aviso)
         for chave, fonte, usado in self.indicadores.get('_forcados', []):
             self.log.aviso('indicadores', f'{chave} forçado em configs/big_numbers.yml: '
                                           f'a fonte oficial diz {fonte}, o material usa {usado}. '
