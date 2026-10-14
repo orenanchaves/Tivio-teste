@@ -1,0 +1,436 @@
+# AutomaTivio · como funciona
+
+Guia de cada processo da automação que monta a edição mensal da **Central de
+Materiais da Tivio Capital**: o que entra, o que acontece em cada etapa, o que
+sai e onde mexer. Escrito para quem vai rodar o mês, não para quem programa.
+
+> O código fica em `AutomaTivio/`. Este guia fica fora dele de propósito, para
+> ser lido sem abrir o projeto. O guia técnico completo continua em
+> `AutomaTivio/CONTEXTO_AUTOMATIVIO.md`.
+
+---
+
+## 1. Em uma frase
+
+Você troca as planilhas e o texto do gestor em `AutomaTivio/entrada/`, roda
+**um comando**, e a automação devolve, numa pasta do mês, todos os materiais
+prontos: relatórios de gestão (HTML, PDF e PPTX), carrosséis de Destaques (JPG e
+PDF), e-mails (PNG e HTML), a Central de Materiais ligando tudo e uma planilha
+que aponta o que conferir.
+
+```bash
+cd AutomaTivio
+python run.py
+```
+
+Leva de 3 a 5 minutos. Também dá para dar dois cliques no `atualizar.bat`.
+
+---
+
+## 2. O mês na prática (passo a passo)
+
+1. **Planilhas do mês** em `AutomaTivio/entrada/`:
+   - `dados_mensais.xlsx` (cotas, carteira, DePara). **Não vai para o GitHub**:
+     é grande e muda inteira todo mês. Copie a sua para essa pasta.
+   - `taxas_global.xlsx` (taxa global e taxa de performance).
+   - `tabela_spreads.xlsx` (Mercado de Crédito, ANBIMA).
+2. **Comentários do gestor** em `AutomaTivio/entrada/comentarios.md`
+   (um `## Nome do fundo` por fundo, parágrafos separados por linha em branco).
+3. `python run.py`
+4. Abra `saida/_Atual/Interno/Conferência.xlsx` e olhe as abas
+   **Divergências** e **Dados faltantes**.
+5. Abra `saida/_Atual/LEIA-ME.txt` (checklist do que publicar) e, para a Central
+   com todos os materiais interativos, `saida/_Atual/Interno/Abrir a Central.html`.
+
+**A data base não é digitada em lugar nenhum.** Ela sai do último mês fechado da
+planilha. Para forçar: `python run.py --data-base 2026-09-30`.
+
+---
+
+## 3. O que sai, e onde
+
+A rodada grava em **dois lugares**:
+
+- **`saida/_Atual/`**: o que sai da empresa, organizado por **área**, com **nome
+  fixo (sem o mês)**. É sempre a edição mais recente, no mesmo caminho: ao
+  publicar, o arquivo novo substitui o do mês anterior e nenhum link muda. É
+  montada pelo `engine/publicacao.py` e refeita inteira a cada rodada completa
+  (não é atualizada em rodada parcial com `--so`).
+- **`saida/_Historico/AAAA-MM/`**: a edição completa do mês (a Central, os
+  materiais interativos e tudo o que foi gerado), na estrutura de trabalho. Fica
+  como histórico, um mês por pasta.
+
+```
+AutomaTivio/saida/_Atual/
+├── LEIA-ME.txt                      checklist do que publicar e o que é manual
+├── Crédito Privado/
+│   ├── Relatórios/                  <fundo> - Relatório de Gestão.pdf e .pptx (10 fundos)
+│   │                                + Relatório de Gestão - Crédito Privado.html (abas) + vendor/
+│   └── Redes sociais/               Destaques: 01-…jpg a 09-…jpg + PDF
+├── Crédito Estruturado/
+│   ├── Relatórios/                  ALT 180, ALT 90, ALT Light (PDF, PPTX) + página HTML + vendor/
+│   ├── Redes sociais/               Destaques: 01-…jpg a 06-…jpg + PDF
+│   └── Decks/                       ALT/  ALT 90/  ALT 180/  (Tivio, BTG, XP, com e sem ROA)
+├── Investment Solutions/
+│   └── Redes sociais/               Destaques: 01-…jpg a 11-…jpg + PDF
+├── Previdência/
+│   ├── HGD30/   E-mail/             blocos PNG (01-…) + email-hgd30.html + .eml
+│   │            Informativo/        Informativo - HGD30.pptx e .pdf
+│   │            Site (Saiba mais)/  tivio-hgd30-saiba-mais.html + vendor/ (sobe sozinha)
+│   └── HYD60/   (o mesmo)
+├── Multi-área/                      o que cruza áreas
+│   ├── E-mails de Fundos de Crédito/   Ágora/  BTG/  XP/  (PNG por fundo + email-<versao>.html)
+│   └── Decks/                       Crédito Privado & Crédito Estruturado (BTG, XP), Tivio Conecta
+└── Interno/                         não sai da empresa
+    ├── Abrir a Central.html         atalho para a Central da edição completa
+    ├── Conferência.xlsx             o que mudou, o que faltou, o que não bateu
+    └── Log da rodada.log
+
+AutomaTivio/saida/_Historico/AAAA-MM/      a edição completa do mês
+├── index.html                    abre a Central
+├── central/                      TODOS os HTML da edição, numa pasta só
+│   ├── tivio-central.html        índice com todos os cards
+│   ├── Relatório de Gestão - <vertical> - <mês>.html   relatórios, fundos em abas
+│   ├── tivio-post-*.html         carrosséis de Destaques (editáveis na tela)
+│   ├── tivio-email-previdencia.html  gerador do e-mail de previdência
+│   └── tivio-email-*.html        construtores de e-mail
+├── landing page/  pdf/  pptx/  destaques/  emails/  informativos/  decks/
+├── conferencia_AAAA-MM.xlsx
+└── AAAA-MM-processamento.log
+```
+
+Em que pasta cada deck cai em `_Atual` é decidido por `area:` em
+`configs/decks.yml` (sem `area`, vai para Multi-área). Os decks gerados e a
+`_Atual` não vão para o GitHub (`.gitignore`).
+
+Os números dos arquivos (`01-`, `02-`…) seguem a ordem do carrossel, para o
+Explorer ordenar na sequência certa.
+
+---
+
+## 4. Cada processo, por dentro
+
+A rodada tem 6 etapas. Cada uma registra o que fez no log e na conferência.
+
+### 4.1 Leitura das entradas
+
+- Lê a `dados_mensais.xlsx` (abas DePara, Benchmark, Base Carteira, feriados,
+  Dados). Na primeira vez demora 1 a 2 minutos; depois usa um cache e fica rápido.
+- Lê taxas, spreads, comentários e a planilha de ajustes manuais.
+- Descobre a **data base**: o último mês fechado com cota.
+
+### 4.2 Cálculo (um "Contexto" por fundo)
+
+Para cada fundo, a automação calcula **uma vez** e guarda num único lugar:
+
+- rentabilidade em Mês, Ano, 12M, 24M, 36M e Desde o início, mais o benchmark,
+  o Alfa, o % do benchmark e o CDI+;
+- carteira: emissores, setores, rating, alocação por classe (treemap);
+- histórico mês a mês para o gráfico;
+- PL, PL médio de 12 meses, carrego, duration;
+- taxas e textos (razão social, público alvo, informações operacionais).
+
+**Todos os materiais leem esse mesmo lugar.** Por isso o relatório, o post, o
+e-mail e a Central nunca discordam sobre um número.
+
+Casos especiais já configurados:
+- **Esplanada:** terceira linha no gráfico, *Bench Tributado* = IMA-B 5
+  acumulado × 0,85 (benchmark líquido de 15% de IR).
+- **ALT 180, ALT 90 e ALT Light:** taxa e performance do relatório publicado,
+  que vencem a `taxas_global.xlsx`.
+- **Legacy:** o cabeçalho mostra o CNPJ 09.166.056/0001-95; o da DePara
+  continua sendo usado para buscar as taxas.
+
+### 4.3 Validação (a conferência)
+
+Antes de publicar, compara e avisa. Não reescreve nada sozinha:
+- fundo sem dado no mês, carteira sem data ou atrasada;
+- número citado no comentário que não bate com o calculado;
+- comentário que trata outro mês como o mês corrente;
+- % do benchmark fora de faixa;
+- logo ou selo faltando.
+
+Tudo vai para a `conferencia_AAAA-MM.xlsx`. Se houver **erro grave**, a rodada
+para e não publica.
+
+### 4.4 Relatórios de gestão
+
+- Uma folha A4 por página, desenhada sobre os relatórios publicados de agosto/2026.
+- **Crédito Privado: 4 páginas.** Objetivo e rentabilidade · emissores, rating e
+  setores · histórico e comentário · Mercado de Crédito · características e
+  disclaimer.
+- Características gerais: as duas taxas (global e performance) juntas na coluna
+  da esquerda; os dois patrimônios (PL e PL médio) juntos no pé da direita.
+- **Crédito Estruturado (ALT): 3 páginas.** Treemap, estratégia, colaterais,
+  histórico com a caixa CDI+, comentário, características e disclaimer.
+- O layout se adapta ao conteúdo:
+  - lista curta de setores (o Banks tem 2) faz as barras crescerem e ocuparem a coluna;
+  - Mercado de Crédito curto (IPCA) estica as linhas até a nota;
+  - comentário curto aumenta a fonte e fica centralizado, comentário longo diminui até caber;
+  - razão social longa diminui o corpo para caber numa linha.
+- **Gráfico histórico:** desenhado em ECharts, com o acumulado no fim de cada linha.
+- **Comentário sempre bate com a tabela:** nas frases-padrão do gestor
+  ("rentabilidade de X% no mês (Y% do CDI)", "acumulando X% no ano",
+  "acumula retorno de X%, frente a Y% do CDI", "CDI + Z%", "anualizado de W%",
+  alocação em crédito, carrego e duration) o número é trocado pelo da tabela,
+  no mesmo formato. O resto do texto sai como o gestor escreveu.
+- **Alocação real (treemap dos ALT):** o nome aparece em todo bloco onde dá
+  para ler; item abaixo de 2% vira uma faixa no pé do último bloco
+  ("FIP 1,9%").
+- **Saídas:** página por vertical em `central/`, com botões PDF/JPG/PNG/PPTX
+  para reexportar depois de editar um texto na tela. Também gera direto em
+  `pdf/`, com texto selecionável, e `pptx/`, com fundo fiel e texto editável.
+- Todo PDF é **reaberto e conferido**: número de páginas, tamanho A4 e texto
+  selecionável.
+
+### 4.5 Materiais da Central
+
+- Os posts, os e-mails e a Central são HTMLs desenhados à mão. A automação só
+  troca os **números e datas** dentro deles, sem mexer no desenho.
+- A Central é montada por último: ela confere se cada card aponta para um arquivo
+  que existe, e tira o card que apontaria para link quebrado.
+- Todas as páginas têm o botão **Central de Materiais** para voltar.
+
+### 4.5b Previdência (HGD30 e HYD60): página, e-mail e Informativo
+
+Os três materiais leem os mesmos números e o mesmo texto:
+- **Rentabilidade (tabela, frase do texto e histórico): FIE**, a classe
+  BRADESCO TIVIO … PGBL/VGBL de cada fundo (`cotas_rentabilidade` em
+  `configs/fundos.yml`). **PL e carteira: FIFE** (`TIVIO HGD30 RF CP FIFE RL` e
+  `TIVIO HYD60 FIFE CI MULT CP RL - Expandida`). Se as cotas do FIE não vierem na
+  `dados_mensais.xlsx`, a rentabilidade sai do FIFE e o log avisa. A busca
+  ignora espaços (a planilha escreve "HGD 30"). Nome, CNPJ e produto exibidos ficam em
+  `configs/previdencia.yml`.
+- **Texto do gestor: automático.** Os parágrafos de mercado vêm do comentário
+  do Tivio Institucional em `entrada/comentarios.md` (o gestor já escreve, e são
+  os mesmos do HGD30); a frase de rentabilidade sai da tabela do mês ("o Tivio
+  HGD30 apresentou rentabilidade de X% no mês (Y% do CDI), acumulando Z% em 12
+  meses"; no HYD60, desde o início, mais carrego e duration); o HYD60 tem ainda
+  "Sobre o Fundo" fixo. **Tudo fica em `entrada/comentarios.md`**: nas seções
+  `## Tivio HGD30` e `## Tivio HYD60` vai só o complemento do mês (atribuição de
+  performance; destaques da gestão, um tópico por parágrafo). Se a seção trouxer
+  o próprio **"Visão de Mercado | <mês>"**, esse mercado vale no lugar do do
+  Institucional (é o caso do HYD60 em setembro). Texto colado de outro editor,
+  com HTML (`<strong>`, `<br>`), é convertido sozinho. Notas `<!-- -->` no
+  arquivo são ignoradas. No Informativo, a letra encolhe sozinha quando o
+  texto do mês é mais longo que a caixa.
+- **Composição da carteira:** Bancário = emissor do setor Financeiro ou
+  Financeiro Corp (inclui debênture de banco), Corporativo, FIDC e Caixa, sobre o
+  total da carteira. Confere com o Informativo de setembro (28,3 / 36,1 / 7,2 / 28,4).
+- **HYD60:** agora com rentabilidade (Mês e Desde o início) e histórico nos três
+  materiais. A "Previsão de Alocação" usa o HG/HY/Caixa do mês; o retorno
+  estimado fica fixo.
+
+**Informativo (PPTX + PDF):** o modelo é o PPTX que vai para os clientes
+(`templates/informativos/`). A automação troca o mês, o texto do gestor, PL,
+duration, alocação, os gráficos de rating e composição e a imagem de setores; o
+resto do desenho fica igual. No HYD60 entra uma página de rentabilidade. O PDF
+sai pelo PowerPoint (precisa do Office instalado).
+
+**Fonte:** os modelos usam "Versos" e "Versos Light". A rodada instala as duas,
+só para o seu usuário (sem administrador), a partir de `assets/fontes/` (baixadas
+do CDN da marca; a Light é a ExtraLight com outro nome, como no site), e o PPTX
+sai com a fonte embutida, para o cliente ver certo mesmo sem a Versos.
+
+**E-mail:** `central/tivio-email-previdencia.html`, no formato do gerador de
+Fundos de Crédito: uma aba por fundo, cada bloco com "Baixar PNG", "Baixar tudo
+(ZIP)" e "E-mail (HTML)". A rodada já grava em `emails/previdencia/<fundo>/` os
+PNG, o HTML e um **.eml**: abre no Outlook com as imagens no corpo, pronto para
+enviar; para virar modelo, Arquivo > Salvar como > Modelo do Outlook (.oft).
+
+**Casas decimais:** a rentabilidade dos materiais de previdência (e-mail,
+Informativo e site) sai sempre com no máximo 2 casas, inclusive o mês. O "% do
+CDI" do HYD60 usa 2 (`email.casas_pct`); o do HGD30, 0. Taxas contratuais não
+são arredondadas.
+
+### 4.5c Páginas "Saiba mais" (HGD30 e HYD60)
+
+- Uma página por fundo de previdência, no design system do site interno
+  (interno-bradesco.tivio.com): casca escura com modo claro, Versos, cartões de
+  vidro, números em destaque com a borda verde.
+- **Números da planilha**, da carteira FIFE de cada fundo: rentabilidade (Mês e
+  Desde o início, com CDI, Alfa, % e CDI+), alocação High Grade / High Yield /
+  Caixa, exposição setorial, rating (no HYD60 também Título Público e
+  S/rating), composição (Bancário, Corporativo, FIDC, Caixa), histórico em
+  ECharts, PL, PL médio, duration e carrego.
+- **Texto do gestor** montado de `entrada/comentarios.md` (ver acima).
+- **Site externo:** as páginas Saiba mais não têm botão para a Central; o menu
+  das seções fica no cabeçalho e acompanha a rolagem.
+- **Gráficos em ECharts:** alocação em meia-rosca (com o retorno estimado no
+  HYD60), composição em rosca, setores em mapa de blocos (treemap), rating em
+  colunas e histórico em linha com área. Menu do cabeçalho com setas quando as
+  seções não cabem na largura. O logo do fundo é sempre o horizontal.
+  A frase "apresentou rentabilidade de X% no mês (Y% do CDI), acumulando Z%
+  (W% do CDI) desde o início" é ajustada à tabela, como no relatório.
+- **O resto** (nome, CNPJ, meta, público, taxas, cards, previsão de alocação,
+  benefícios, quais seções entram e em que ordem) em `configs/previdencia.yml`.
+- **Logos** oficiais em `assets/landings/` (empilhado no topo, horizontal no
+  cabeçalho), com o texto em curvas. O preto do desenho vira branco no modo
+  escuro; a cor do HG e do HY fica a do arquivo.
+
+### 4.5d Decks comerciais (PPTX + PDF)
+
+- **Os modelos são os PPTX do time**, em `templates/decks/` (com as fotos
+  comprimidas por `scripts/comprimir_pptx.py`, sem mudança visível). A lista de
+  decks, a pasta, o nome e o que cada versão tira está em `configs/decks.yml`.
+- **Nada é redesenhado**: a automação reconhece cada número pelo texto ao lado e
+  troca só o número, mantendo fonte, cor e tamanho. O que muda todo mês:
+  mês da capa, "Data base", PL e PL médio, os quadros 12M / ANO / MÊS (% do CDI;
+  no Infra Plus, retorno e Alfa), carrego, duration, alocação de crédito e top 3
+  setores, "CDI + x% a.a." de cada período dos ALT, os blocos da alocação dos ALT
+  e o gráfico de rentabilidade histórica (diário, nativo do PowerPoint, vetor e
+  editável) com as etiquetas do valor final.
+- **"Data de início"** só muda quando o fundo tem `data_inicio` em
+  `configs/fundos.yml`; sem isso fica a do modelo.
+- **Alocação dos ALT:** os blocos são redimensionados pelo peso do mês. Categoria
+  que saiu da carteira some (ou cede o bloco para uma nova, com o nome trocado);
+  categoria nova sem bloco ganha uma cópia do menor, com cor que não se repete.
+  Bloco muito pequeno ganha área mínima de 3% para o rótulo caber (o número
+  escrito é sempre o real). No deck do ALT 90, onde o modelo traz a alocação como
+  imagem, ela vira blocos nativos no mesmo lugar.
+- **Versões:** `selo_xp` tira o selo "Melhor fundo… da XP" (Tivio e BTG); `roa`
+  tira o quadro do ROA (versões Sem ROA); `altlight` tira o slide do ALT Light e o
+  cartão dele na Família ALT, centralizando os outros dois (BTG).
+- **Tivio Conecta:** além do que vale para os outros decks, preenche as tabelas
+  (Mês / Ano / Desde o início e PL em R$ MM), as barras mensais Fundo x CDI com
+  o "% CDI" de cada mês, o acumulado (início e ano), rating, setorial e a rosca
+  da composição, e a frase "rendeu X% no mês (Y% do CDI) e Z% em 12 meses" do
+  comentário. Cada gráfico é reconhecido pelas categorias. Os slides que não
+  dizem de qual fundo são (Conexão ALT 180, HGD30, HYD60…) estão mapeados por
+  número em `configs/decks.yml` (`slides:`). Ali também ficam `textos` (trocas
+  fixas de texto), `alocacao_hghy` e `estilo: post`.
+- **`estilo: post`** (slides 19 a 26 do Conecta): a estética de vidro dos posts
+  de Destaques. Fundo navy com orbes e arcos (no fundo do slide, então o logo e
+  os filetes do layout continuam), quadros e cartões em vidro arredondado, CNPJ
+  em pílula. Nos slides de fundo, a página é refeita numa grade única (margem do
+  "RENTABILIDADE" até a borda do CNPJ, 12 pt entre quadros): rentabilidade em
+  cima, cartões de alocação/carrego/duration no meio, **características gerais
+  embaixo**, em colunas com itens inteiros; data base no canto inferior esquerdo; e o
+  painel "Por que o …?" com o **PL e o PL médio por extenso em destaque**
+  embaixo dos tópicos. Nos slides 19 e 20, os cartões que comparam os fundos
+  viram cartões de vidro.
+- Quando o modelo já está com os números do mês (o time atualizou à mão), os
+  blocos da alocação ficam no desenho dele.
+- Fundo com menos de 12 meses (Infra Plus CDI): o quadro "12M" vira "Desde o
+  início"; quando completar 12 meses, volta sozinho.
+- `deck_pct_cdi: true` no fundo (`configs/fundos.yml`, hoje no Infra Plus CDI):
+  nos decks a rentabilidade sai em "% do CDI", como nos Institucionais, sem a
+  linha do Alfa e sem a nota do benchmark.
+- Os slides 19 e 20 do Conecta se chamam "Fundo Crédito Privado" (`textos` no
+  `decks.yml`).
+- AUM da Tivio, equipe, textos, taxas e os gráficos contra Idex/IHFA ficam como
+  estão no modelo. Para um deck novo, coloque o PPTX em `templates/decks/` e uma
+  entrada em `configs/decks.yml`.
+
+### 4.6 Exportação dos carrosséis e dos e-mails
+
+O Python abre cada material no navegador e usa **a mesma função do botão** da
+página, então o arquivo sai idêntico ao que sairia clicando:
+- **Destaques:** JPG 2160 × 2880 de cada página e um PDF por carrossel
+  (1080 × 1440 pt, renderizado em 4×).
+- **E-mails:** as três versões (Ágora, que é o cartão quadrado, BTG e XP), PNG de cada card,
+  PNG do e-mail completo e o HTML de disparo. A Ágora tem também o Institucional 30
+  e o Infra Plus CDI (fora da BTG e da XP: `VERSIONS` no tivio-email-fundos-credito.html).
+
+Para desligar algum formato: `AutomaTivio/configs/edicao.yml` → `saidas:`
+(`html`, `pdf`, `pptx`, `destaques`, `emails`, `informativos`).
+
+---
+
+## 5. Onde mexer em cada coisa
+
+| Quero… | Mexo em… |
+|---|---|
+| Texto do comentário do gestor | `entrada/comentarios.md` (`## Fundo`). Marcadores como `{mes}` e `{pct_mes}` viram o número do mês |
+| Corrigir um número pontual (taxa, PL, carrego) | `entrada/preenchimento_manual.xlsx`, aba Overrides |
+| Razão social, CNPJ exibido, público alvo, aplicação/resgate | `configs/fundos.yml`, no bloco do fundo |
+| Taxa ou performance diferente da planilha | `configs/fundos.yml` → `taxa:` / `performance:` |
+| De-para do Book Maravi para a "Alocação real" dos ALT (visão da gestão) | `configs/fundos.yml` → `book_depara:` (tabela `alt` para ALT 90/180/HYD60, `alt_light` para o Light) |
+| Linha de benchmark tributado em outro fundo | `configs/fundos.yml` → `bench_tributado: 0.85` |
+| Ligar/desligar um material ou um formato | `configs/edicao.yml` → `materiais:` / `saidas:` |
+| Ordem e seções das páginas do relatório | `configs/relatorio.yml` |
+| Visual da folha (cores, tamanhos) | `templates/estilos/relatorio.css` |
+| Logo de um fundo | o SVG em `assets/logos/`, sempre **horizontal** e com o texto em curvas |
+| Texto jurídico do rodapé | `configs/disclaimer.md` |
+| Texto do gestor do HGD30 e do HYD60 | automático (mercado do Institucional + números); complemento do mês nas seções `## Tivio HGD30` / `## Tivio HYD60` de `entrada/comentarios.md`; regras em `configs/previdencia.yml` → `comentario` |
+| Cards, seções, taxas, público e blocos do e-mail de previdência | `configs/previdencia.yml` |
+| Modelo do Informativo (PPTX) | `templates/informativos/` (os nomes dos shapes estão em `exporters/previdencia.py`, `MAPAS`) |
+| Lista de decks, versões e o que cada uma tira | `configs/decks.yml` (modelos em `templates/decks/`) |
+| Data de início exibida diferente da DePara | `configs/fundos.yml` → `data_inicio: DD/MM/AAAA` (Infra Plus: 15/07/2019) |
+| Disclaimer dos carrosséis de Destaques | `templates/materiais/tivio-post-*.html` (`DISCLAIMER_HTML`) |
+
+---
+
+## 6. Comandos úteis
+
+```bash
+python run.py                          # a edição inteira
+python run.py --so banks alt180        # só estes fundos (mais rápido)
+python run.py --saidas html            # só os HTML, sem PDF/PPTX/JPG (para iterar)
+python run.py --conferir               # calcula e confere, não grava nada
+python run.py --data-base 2026-09-30   # força a data base
+python -m exporters.pdf "x.html" "x.pdf"   # converte qualquer HTML em PDF A4
+```
+
+Para instalar no PC (uma vez só):
+
+```bash
+python -m pip install -r AutomaTivio/requirements.txt
+python -m playwright install chromium
+```
+
+---
+
+## 6b. Se der erro ao gerar PDF ou PPTX
+
+- **`net::ERR_FILE_NOT_FOUND` em `Page.goto` (PDF não gerado, "PPTX fiel falhou")**
+  só nos fundos de nome longo (ALT Light, Infra Plus CDI, Esplanada, Legacy Prev):
+  o caminho passava de 260 caracteres, limite do Windows para o Chromium e para o
+  PowerPoint. O sistema agora abre esses arquivos por um atalho curto em `%TEMP%`
+  (`exporters/caminhos.py`) e exporta os decks por uma pasta temporária curta
+  (`_pdf_powerpoint`). Mesmo assim, uma pasta curta (por exemplo
+  `C:\AutomaTivio`) evita qualquer problema com outros programas.
+
+## 7. Antes de publicar (checklist)
+
+1. A rodada termina com **0 erros**. Avisos conhecidos e aceitáveis: Atuarial fora
+   da DePara, BVP sem logo, QR sem arquivo local, carteira sem data no Infra Plus
+   e no Esplanada.
+2. Na `conferencia_AAAA-MM.xlsx`, a aba **Divergências** não tem número do
+   comentário diferente do calculado nem mês errado.
+3. Abrir um PDF de cada vertical: 4 páginas no Crédito Privado, 3 no
+   Estruturado, nenhuma em branco.
+4. Abrir `destaques/` e `emails/` e conferir uma imagem de cada pasta.
+
+---
+
+## 8. O que ainda depende de você
+
+- **`dados_mensais.xlsx`** de cada mês: não vem no GitHub.
+- **Comentários de setembro:** já estão em `entrada/comentarios.md`. Os de agosto
+  ficaram guardados em `entrada/comentarios_2026-08.md`.
+- **BVP:** sem logo em `assets/logos/`.
+- **Tivio Atuarial:** fora da DePara da planilha, então não gera relatório.
+- **Complemento de previdência** (`## Tivio HGD30` / `## Tivio HYD60` em
+  `entrada/comentarios.md`): os dois já são de setembro.
+- **Botão "Voltar ao C&M Hub"** da Central: aponta para uma página que não existe
+  no projeto.
+
+---
+
+## 8b. Próximas fases (ideias registradas em 06/10/2026, ainda não feitas)
+
+- **Dados sem Excel:** ler direto do Databricks interno da Tivio Capital, no lugar
+  da `dados_mensais.xlsx`.
+- **Painel de feedback de Riscos:** onde Riscos aprova os materiais.
+- **Comentários da Gestão:** página para subir os comentários, com um comentário
+  padrão de retorno já preenchido; e um feedback sobre o comentário.
+- **Página de aprovação.**
+- **Páginas administrativas:** cadastro de fundos; inserção de templates em geral
+  (apresentações, relatórios, posts).
+- **Mercado de Crédito:** subir a planilha por uma página.
+
+## 9. Download
+
+O pacote completo (código + saída de agosto) fica na Release **AutomaTivio v2**:
+<https://github.com/orenanchaves/Tivio-teste/releases/download/AutomaTivio_v2/AutomaTivio_v2.zip>

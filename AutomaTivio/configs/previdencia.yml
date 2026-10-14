@@ -1,0 +1,158 @@
+# ============================================================================
+# Materiais de previdência (HGD30 e HYD60): página "Saiba mais", e-mail e
+# Informativo (PPTX + PDF)
+# ----------------------------------------------------------------------------
+# Os NÚMEROS saem da planilha do mês. Rentabilidade e histórico: da classe FIE
+# (BRADESCO TIVIO … PGBL/VGBL, `cotas_rentabilidade` em configs/fundos.yml).
+# Carteira FIFE: alocação HG/HY/Caixa, exposição setorial, rating, composição,
+# PL, duration e carrego.
+#
+# Aqui fica só o que a planilha não tem: nome e CNPJ exibidos, meta, público,
+# taxas, textos fixos. O texto do gestor ("Visão de Mercado", "Destaques") fica
+# montado sozinho (ver `comentario` em cada fundo), com o complemento manual de
+# entrada/comentarios.md (seções "## Tivio HGD30" e "## Tivio HYD60").
+# O mesmo texto vai para os três materiais.
+#
+# Saídas:
+#   saida/_Historico/AAAA-MM/central/tivio-<chave>-saiba-mais.html     página Saiba mais
+#   saida/_Historico/AAAA-MM/central/tivio-email-previdencia.html      gerador de e-mail
+#   saida/_Historico/AAAA-MM/emails/previdencia/<chave>/               PNG dos blocos + HTML
+#   saida/_Historico/AAAA-MM/informativos/                             Informativo PPTX e PDF
+# ============================================================================
+
+# Composição da carteira (Corporativo, Bancário, FIDC, Caixa): regra fixa em
+# engine/contexto.py::composicao. Bancário = emissor do setor Financeiro ou
+# Financeiro Corp (inclui debênture de banco), como no Informativo.
+
+paginas:
+  hgd30:
+    fundo: hgd30
+    logo:                            # arquivos oficiais, texto em curvas
+      empilhado: assets/landings/hgd30_empilhado.svg
+      horizontal: assets/landings/hgd30_horizontal.svg
+    marca: [TIVIO, HG, D30]          # wordmark do hero: parte destacada no meio
+    acento: azul
+    nome: BRADESCO TIVIO HGD30 FIF CLASSE INVESTIMENTO RF CP FIFE RL
+    cnpj: 59.889.169/0001-97
+    nome_caracteristicas: TIVIO HGD30 FIF CLASSE INVESTIMENTO RF CP FIFE RL
+    data_inicio: 09/05/2025
+    publico: >-
+      Investidores Profissionais: Plano Gerador de Benefício Livre (PGBL) e de
+      Vida Gerador de Benefício Livre (VGBL), instituídos e sob responsabilidade
+      do Bradesco Vida e Previdência S.A.
+    taxas: >-
+      Administração: 0,016% | Gestão: 0,184% | Estruturação: 0,20% | Máxima de
+      Administração: 0,05% | Máxima de Gestão: 0,50% | Custódia: 0,03%
+    kpis:
+      - {rotulo: Meta de retorno, valor: "CDI + 1,0%"}
+      - {rotulo: Duration, dado: duration}
+      - {rotulo: Patrimônio Líquido, dado: pl_curto}
+    caracteristicas: [nome, cnpj, inicio, pl_medio, publico, taxas]
+    # texto do gestor automático: mercado do comentário do Institucional
+    # (entrada/comentarios.md) + a frase com os números + complemento manual
+    # (seção "## Tivio HGD30" de entrada/comentarios.md, se houver)
+    comentario:
+      mercado_de: institucional
+      frase: "Nesse cenário, o **Tivio HGD30 apresentou rentabilidade de {mes} no mês ({pct_mes} do CDI), acumulando {12m} ({pct_12m} do CDI) em 12 meses.**"
+    email:
+      titulo: TIVIO HGD30 FIF CLASSE INVESTIMENTO RF CP FIFE RL
+      produto: "/ / BRADESCO TIVIO HGD30 PGBL/VGBL RF CRÉDITO PRIVADO"
+      blocos: [cabecalho, texto, kpis, rentabilidade, alocacao, setorial, rating, composicao, historico, caracteristicas]
+    informativo: templates/informativos/hgd30.pptx
+    # resumo em áudio do mês (o de setembro sobe em outubro: {ano_pub}/{mm_pub})
+    audio:
+      url: "https://www.tivio.com/wp-content/uploads/sites/1532/{ano_pub}/{mm_pub}/HGD30-{Mes}-de-{ano}.mp3"
+      titulo: "TIVIO HGD30 · Resumo em áudio · {Mes} {ano}"
+    secoes: [texto, kpis, rentabilidade, alocacao_real, setorial, rating, composicao, historico, caracteristicas]
+
+  hyd60:
+    fundo: hyd60
+    logo:                            # arquivos oficiais, texto em curvas
+      empilhado: assets/landings/hyd60_empilhado.svg
+      horizontal: assets/landings/hyd60_horizontal.svg
+    marca: [BRADESCO TIVIO, HY, D60]
+    acento: verde
+    nome: BRADESCO TIVIO HYD60 PGBL VGBL FIF CIC MULTIMERCADO CP RL
+    cnpj: 63.949.230/0001-11
+    nome_caracteristicas: BRADESCO TIVIO HYD60 PGBL VGBL FIF CIC MULTIMERCADO CP RL
+    # data de início: a primeira cota da planilha (04/03/2026), se ficar vazio
+    publico: Investidor Qualificado
+    taxas: >-
+      Taxa de Administração e Gestão: 1,0% a.a. | Taxa de Performance: 20% do
+      retorno que exceder o CDI
+    kpis:
+      - {rotulo: Fundo de Previdência, valor: ""}
+      - {rotulo: "Resgate", valor: "D+60"}
+      - {rotulo: "Carrego ({mes_ano})", dado: carrego}
+      - {rotulo: Capacity limitada, valor: "R$ 500 milhões"}
+      - {rotulo: Duration, dado: duration}
+      - {rotulo: "Taxas de Adm & Gestão", valor: "1% a.a."}
+      - {rotulo: Taxa de Performance, valor: "20% do que exceder 100% do CDI"}
+    # cartões de indicadores (desenho de 06/10/2026); números da planilha
+    cartoes:
+      veiculo: Fundo de Previdência
+      chips: [PGBL, VGBL]
+      resgate: D+60
+      taxa: 1%
+      performance: 20%
+      performance_sobre: 100% do CDI
+      capacity_mi: 500
+    previsao_alocacao:
+      # o % de alocação sai da carteira do mês; o retorno estimado fica fixo
+      - {nome: Crédito High Grade, alocacao: "70%", retorno: "CDI + 1,20%"}
+      - {nome: Crédito High Yield, alocacao: "25%", retorno: "CDI + 3,00%"}
+      - {nome: Caixa, alocacao: "5%", retorno: "100% do CDI"}
+    beneficios:
+      - titulo: Gestão de riscos
+        texto: >-
+          Os ativos de crédito estruturado são lastreados por garantias reais e
+          pessoais, como imóveis, recebíveis de contratos de longo prazo, bens
+          móveis, depósitos em contas vinculadas e fianças, entre outros.
+        destaque: >-
+          A presença dessas garantias e colaterais robustos diminui a exposição
+          ao risco de crédito, proporcionando segurança ao investidor.
+      - titulo: Estruturação de riscos
+        texto: >-
+          O risco pode ser dividido em diferentes tranches (camadas). As tranches
+          seniores possuem prioridade no recebimento dos fluxos de pagamento, com
+          menor risco e menor volatilidade. Já as tranches subordinadas ficam em
+          posição inferior na ordem de pagamento e assumem maior risco e,
+          consequentemente, podem oferecer retornos mais elevados.
+        destaque: >-
+          Técnicas de aprimoramento de crédito, como subordinação, reservas de
+          liquidez e seguros de crédito, são usadas para proteger os investidores.
+      - titulo: Retornos atrativos
+        texto: >-
+          Em razão de sua maior complexidade e da utilização de mecanismos
+          sofisticados de estruturação, o crédito estruturado tende a oferecer
+          rendimentos superiores em comparação ao crédito privado tradicional, ao
+          mesmo tempo em que distribui riscos de forma mais eficiente entre os
+          investidores.
+        destaque: >-
+          A presença dessas garantias e colaterais robustos diminui a exposição
+          ao risco de crédito, proporcionando mais segurança ao investidor.
+      - titulo: Menor volatilidade de mercado
+        texto: >-
+          Os ativos de crédito estruturado apresentam menor volatilidade no
+          mercado secundário, mesmo em períodos de crise de crédito, graças à sua
+          natureza, às garantias envolvidas e à forma como o risco é estruturado.
+        destaque: >-
+          A menor volatilidade dos fundos de crédito estruturado é resultado de
+          uma combinação de fatores resultantes da gestão ativa do fundo.
+    caracteristicas: [nome, cnpj, inicio, pl, publico, taxas]
+    comentario:
+      sobre:
+        - "O **Tivio HYD60** combina **duas estratégias complementares de geração de alfa**, apoiadas na ampla expertise da área de crédito da Tivio Capital."
+        - "Equilíbrio entre **75% em ativos líquidos e 25% em operações estruturadas**."
+      mercado_de: institucional
+      titulo_mercado: "Visão de Mercado | {Mes}"
+      frase: "Nesse cenário, o **Tivio HYD60 apresentou rentabilidade de {mes} no mês ({pct_mes} do CDI), acumulando {inicio} ({pct_inicio} do CDI) desde o início.** A carteira encerrou o mês com carrego de **CDI + {carrego}** e duration média de **{duration}**."
+      titulo_destaques: "Destaques da atuação da gestão em {mes_minusculo}"
+    email:
+      titulo: BRADESCO TIVIO HYD60 PGBL VGBL FIF CIC MULTIMERCADO CP RL
+      produto: "/ / BRADESCO TIVIO HYD60 PGBL/VGBL FIF"
+      nota_rating: "*Não incluindo a parte de crédito estruturado"
+      casas_pct: 2                    # "98,12% do CDI" na tabela do e-mail
+      blocos: [cabecalho, texto, kpis, rentabilidade, alocacao, setorial, rating, historico, beneficios]
+    informativo: templates/informativos/hyd60.pptx
+    secoes: [texto, kpis, rentabilidade, previsao_alocacao, setorial, rating, historico, beneficios, caracteristicas]

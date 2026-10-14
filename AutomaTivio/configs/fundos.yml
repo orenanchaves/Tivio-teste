@@ -1,0 +1,472 @@
+# ============================================================================
+# Cadastro de fundos
+# ----------------------------------------------------------------------------
+# CNPJ, nome Quantum, benchmark, cota inicial e data de início vêm da aba
+# DePara da dados_mensais.xlsx — não se repetem aqui. Este arquivo guarda só o
+# que a planilha não tem: a chave usada nos materiais, o vínculo com a DePara,
+# o logo, e as regras de exibição.
+#
+# `carteira`  = valor exato da coluna Carteira na DePara.
+# `busca`     = palavras-chave usadas quando `carteira` não casa (a planilha
+#               muda o sufixo "- Expandida" de um mês para o outro). O resolvedor
+#               tenta `carteira` primeiro e cai para `busca`; o que não resolver
+#               aparece na aba "Fundos sem atualização" da conferência.
+# `retorno`   = "pct_bench" (padrão, mostra % do benchmark) ou "absoluto"
+#               (mostra o retorno do fundo + Alfa).
+# ============================================================================
+
+verticais:
+  credito_privado:
+    rotulo: Crédito Privado
+    acento: azul
+  credito_estruturado:
+    rotulo: Crédito Estruturado
+    acento: verde
+  investment_solutions:
+    rotulo: Investment Solutions
+    acento: azul
+
+fundos:
+
+  # ----------------------------------------------------- Crédito Privado (HG)
+  banks:
+    casas_pct: 2              # "100,59%" e não "101%", como no publicado
+    nome: Tivio Banks
+    vertical: credito_privado
+    carteira: TIVIO BANKS RF CP RL
+    razao_social: TIVIO BANKS RENDA FIXA CRÉDITO PRIVADO FIF – RL
+    busca: [BANKS]
+    logo: Banks
+    relatorio: true
+    objetivo: >-
+      O fundo tem como objetivo identificar oportunidades em ativos de crédito
+      high grade (Bancário e Corporativo). Ele busca superar a variação do CDI
+      no longo prazo.
+    operacional:
+      aplicacao: D+0
+      resgate: D+0
+      aplicacao_minima: R$ 1.000,00
+      movimentacao_minima: R$ 1.000,00
+    publico: Investidores em geral
+    nota_rodape: >-
+      *Para solicitações de resgates que representem até 95% (noventa e cinco por cento) do Patrimônio Líquido do FUNDO, o pagamento dos resgates ocorrerá no dia da solicitação do resgate (D+0). Para solicitações de resgates superiores a 95% (noventa e cinco) do Patrimônio Líquido do FUNDO, o pagamento dos resgates ocorrerá no primeiro dia útil após a solicitação dos resgates (D+1).
+
+
+  institucional:
+    nome: Tivio Institucional
+    razao_social: "Tivio Institucional RF CP FIF – RL"
+    vertical: credito_privado
+    carteira: TIVIO INSTITUCIONAL RF CRPR FIF RL
+    busca: [INSTITUCIONAL, CRPR]
+    logo: Institucional
+    relatorio: true
+    objetivo: >-
+      O fundo tem como objetivo identificar oportunidades em ativos de crédito
+      high grade (Bancário, Corporativo e FIDC). Ele busca superar a variação do
+      CDI no longo prazo.
+    operacional:
+      aplicacao: D+0
+      resgate: D+0 Abertura
+      pagamento_resgate: D+0*
+      aplicacao_minima: R$ 1.000,00
+      movimentacao_minima: R$ 1.000,00
+    publico: Investidores em geral
+    nota_rodape: >-
+      *Para solicitações de resgates que representem até 95% (noventa e cinco por cento) do Patrimônio Líquido do FUNDO, o pagamento dos resgates ocorrerá no dia da solicitação do resgate (D+0). Para solicitações de resgates superiores a 95% (noventa e cinco) do Patrimônio Líquido do FUNDO, o pagamento dos resgates ocorrerá no primeiro dia útil após a solicitação dos resgates (D+1).
+
+
+  inst15:
+    nome: Tivio Institucional 15
+    data_inicio: 02/04/2001      # data oficial
+    razao_social: "Tivio Institucional 15 FIF – RF CP LP – RL"
+    vertical: credito_privado
+    carteira: TIVIO INSTITUCIONAL 15 FIF CI RF CP LP RL - Expandida
+    busca: [INSTITUCIONAL 15]
+    logo: Institucional 15
+    relatorio: true
+    objetivo: >-
+      O fundo tem como objetivo identificar oportunidades em ativos de crédito
+      high grade/mid grade (Bancário, Corporativo e FIDC). Ele busca superar a
+      variação do CDI no longo prazo.
+    operacional:
+      aplicacao: D+0
+      resgate: D+0 Abertura
+      pagamento_resgate: D+0*
+      aplicacao_minima: R$ 1.000,00
+      movimentacao_minima: R$ 1.000,00
+    publico: Investidores em geral
+    nota_rodape: >-
+      *Para solicitações de resgates que representem até 95% (noventa e cinco por cento) do Patrimônio Líquido do FUNDO, o pagamento dos resgates ocorrerá no dia da solicitação do resgate (D+0). Para solicitações de resgates superiores a 95% (noventa e cinco) do Patrimônio Líquido do FUNDO, o pagamento dos resgates ocorrerá no primeiro dia útil após a solicitação dos resgates (D+1).
+
+
+  inst30:
+    nome: Tivio Institucional 30
+    vertical: credito_privado
+    carteira: TIVIO INSTITUCIONAL 30 FIF CI RF CP LP RL - Expandida
+    busca: [INSTITUCIONAL 30]
+    logo: Institucional 30
+    relatorio: true
+    razao_social: TIVIO INSTITUCIONAL 30 FIF CLASSE INVESTIMENTO RF CP LP RL
+    objetivo: >-
+      O fundo tem como objetivo identificar oportunidades em ativos de crédito
+      high grade/mid grade (Bancário, Corporativo e FIDC). Ele busca superar a
+      variação do CDI no longo prazo.
+    operacional:
+      aplicacao: D+0
+      resgate: D+30
+      aplicacao_minima: R$ 1.000,00
+      movimentacao_minima: Não há
+    publico: Investidores em geral
+
+  infraplus:
+    casas_pct: 2              # "99,01%" e não "99%", como no publicado
+    nome: Tivio Infra Plus
+    data_inicio: 15/07/2019      # data oficial; a DePara traz 31/05/2021 (o gráfico segue a DePara)
+    razao_social: "Tivio Plus RF Fundo Incentivado de Investimento Financeiro em Infra – RL"
+    vertical: credito_privado
+    carteira: TIVIO INFRA PLUS IPCA RF FIF RL
+    busca: [INFRA PLUS, IPCA]
+    logo: Infra Plus
+    relatorio: true
+    retorno: absoluto          # IMA-B 5: mostra retorno + Alfa, não % do bench
+    objetivo: >-
+      O fundo busca promover o investimento em debêntures de infraestrutura
+      (Lei 12.431/11) que oferece benefício fiscal para o cotista pessoa física.
+      O fundo busca superar o retorno de ativos indexados à inflação.
+    operacional:
+      aplicacao: D+0
+      resgate: D+31
+      aplicacao_minima: R$ 1.000,00
+      movimentacao_minima: R$ 1.000,00
+    publico: Investidores em geral
+
+  infrapluscdi:
+    sem_alfa: true            # o publicado do Infra Plus CDI não traz Alfa
+    deck_pct_cdi: true        # nos decks, rentabilidade em % do CDI, como os Institucionais
+    # dois nomes em uso: "Tivio Infra Plus CDI" no relatório publicado e
+    # "Institucional Incentivado CDI" nos comentários do gestor. O apelido
+    # abaixo faz o título do comentário casar com qualquer um dos dois.
+    nome: Tivio Infra Plus CDI
+    razao_social: "Tivio Infra Plus CDI 30 FIF CIC RF RL"
+    apelidos: [Institucional Incentivado CDI, Infra Plus CDI]
+    vertical: credito_privado
+    busca: [INFRA PLUS, CDI]
+    logo: Infra Plus CDI
+    relatorio: true
+    objetivo: >-
+      O fundo tem como objetivo entregar retornos acima do CDI, buscando
+      oportunidades em debêntures incentivadas de diversos setores de
+      infraestrutura por meio de uma gestão ativa e diversificada. A estratégia
+      combina o benefício da isenção de Imposto de Renda para pessoas físicas
+      com a busca por retorno superior ao CDI.
+    operacional:
+      aplicacao: D+0
+      resgate: D+30
+      aplicacao_minima: R$ 100,00
+      movimentacao_minima: Não há
+    publico: Investidores em geral
+
+  esplanada:
+    nome: Tivio Esplanada
+    razao_social: "TIVIO ESPLANADA RESP LIMITADA FIF FI INFRA RENDA FIXA"
+    # 3ª linha no gráfico histórico: o benchmark acumulado líquido de 15% de IR,
+    # a mesma conta da coluna "Bench Tributado" da aba Dados (= IMA-B 5 x 0,85)
+    bench_tributado: 0.85
+    vertical: credito_privado
+    busca: [ESPLANADA]
+    logo: Esplanada
+    relatorio: true
+    retorno: absoluto          # IMA-B 5
+    objetivo: >-
+      O fundo tem como objetivo identificar oportunidades em ativos de crédito
+      high grade (Bancário e Corporativo). Ele busca superar a variação do
+      IMA-B 5 no longo prazo.
+    operacional:
+      aplicacao: D+0
+      resgate: D+9 DU
+      pagamento_resgate: D+10 DU
+      aplicacao_minima: R$ 1.000,00
+      movimentacao_minima: R$ 1.000,00
+    publico: Investidor profissional
+
+  legacy:
+    casas_pct: 2              # "97,36%" e não "97%", como no publicado
+    nome: Tivio Legacy Prev
+    razao_social: "BV ICATU SEG LEGACY PREV FIF - CIC RF CRED PRIV – RL"
+    cnpj_exibido: "09.166.056/0001-95"   # o do relatório publicado; vale no cabeçalho e na busca da taxa (a DePara tem 09.083.848/0001-04, taxa 0%)
+    vertical: credito_privado
+    busca: [LEGACY]
+    logo: Legacy
+    relatorio: true
+    objetivo: >-
+      O fundo tem como objetivo identificar oportunidades em ativos de crédito
+      high grade (Bancário, Corporativo e FIDC). Ele busca superar a variação do
+      CDI no longo prazo.
+    operacional:
+      aplicacao: D+0
+      resgate: D+2
+      aplicacao_minima: R$ 0,00
+      movimentacao_minima: R$ 0,00
+    publico: Investidores em geral
+
+  bvp:
+    nome: Tivio BVP
+    vertical: credito_privado
+    carteira: TIVIO BVP RF CP FIFE RL
+    busca: [BVP]
+    relatorio: true
+    objetivo: >-
+      O fundo tem como objetivo identificar oportunidades em ativos de crédito
+      high grade (Bancário, Corporativo e FIDC). Ele busca superar a variação do
+      CDI no longo prazo.
+    operacional:
+      aplicacao: D+0
+      resgate: D+0
+      aplicacao_minima: R$ 1.000,00
+      movimentacao_minima: R$ 1.000,00
+    publico: Investidores em geral
+
+  atuarial:
+    # Aparece nos comentários do gestor, mas não está entre as 29 carteiras da
+    # DePara de agosto/2026. Fica cadastrado para a conferência cobrar: sai na
+    # aba "Fundos sem atualizacao" até a planilha trazê-lo, em vez de
+    # desaparecer sem ninguém notar.
+    nome: Tivio Atuarial
+    vertical: credito_privado
+    busca: [ATUARIAL]
+    relatorio: true
+    retorno: absoluto
+    publico: Investidores em geral
+
+  rfcp:
+    nome: Tivio RF CP
+    razao_social: "RF CP - TIVIO FI FINANCEIRO - CI RF CRED PRIV - RL"
+    vertical: credito_privado
+    # fixada depois da conciliação com o relatório publicado: a busca por
+    # "RF CP" casava com cinco carteiras, inclusive a do Banks
+    carteira: TIVIO FI CI RF CP RL
+    busca: [RF CP]
+    logo: RF CP
+    relatorio: true
+    objetivo: >-
+      O fundo tem como objetivo identificar oportunidades em ativos de crédito
+      high grade (Bancário e Corporativo). Ele busca superar a variação do CDI
+      no longo prazo.
+    operacional:
+      aplicacao: D+0
+      resgate: D+0
+      aplicacao_minima: R$ 1.000,00
+      movimentacao_minima: R$ 1.000,00
+    publico: Investidores em geral
+
+  # ----------------------------------------------- Crédito Estruturado (HY)
+  alt180:
+    nome: Tivio ALT 180
+    abertura: alt                  # 1º parágrafo do comentário gerado com os números da tabela
+    book_depara: alt          # alocação real = Book Maravi pelo de-para
+    vertical: credito_estruturado
+    carteira: TIVIO ALT HY 180 FIDC RL - Expandida
+    busca: [ALT HY 180]
+    logo: ALT_180
+    relatorio: true
+    razao_social: TIVIO ALT CRÉDITO HIGH YIELD 180 FIDC – RL
+    # do relatório publicado de agosto/2026 (vencem a taxas_global.xlsx)
+    taxa: 1,15% a.a.
+    performance: 20% do que exceder do CDI
+    publico: Investidores qualificados, Family Offices e Multi Family
+    operacional:
+      aplicacao: D+1
+      resgate: D+180
+      aplicacao_minima: R$ 1.000,00
+      movimentacao_minima: R$ 1.000,00
+    linha_bench_mais: true    # 4ª linha da tabela, como no original
+    sem_alfa: true            # a tabela do ALT publicado não traz Alfa
+    setores_max: 12           # o publicado lista doze setores, não cinco
+    casas_pct: 2              # "118,88%" e não "119%", como no original
+    objetivo: >-
+      O Tivio ALT 180 se destaca por buscar créditos high yield com ênfase em
+      garantias reais, avais e recebíveis. O fundo oferece uma alternativa de
+      investimento de alto valor agregado, descorrelacionado das classes de
+      ativos tradicionais.
+    performance_fixa: true     # não vem da taxas_global.xlsx
+
+  alt90:
+    nome: Tivio ALT 90
+    data_inicio: 06/06/2025      # data oficial (o carrossel trazia 27/05/2025)
+    abertura: alt                  # 1º parágrafo do comentário gerado com os números da tabela
+    book_depara: alt90          # alocação real = Book Maravi pelo de-para
+    vertical: credito_estruturado
+    carteira: TIVIO ALT HY 90 FIDC RL
+    busca: [ALT HY 90]
+    logo: ALT_90
+    relatorio: true
+    linha_bench_mais: true    # 4ª linha da tabela, como no original
+    sem_alfa: true            # a tabela do ALT publicado não traz Alfa
+    setores_max: 12           # o publicado lista doze setores, não cinco
+    casas_pct: 2              # "118,88%" e não "119%", como no original
+    objetivo: >-
+      O Tivio ALT 90 busca retorno superior ao CDI com baixa volatilidade, por
+      meio de FIDCs em cotas sênior, garantindo diversificação, segurança e
+      relação risco-retorno atrativa.
+    performance_fixa: true
+    # do relatório publicado de agosto/2026 (vencem a taxas_global.xlsx)
+    taxa: 1,25% a.a.
+    performance: 10% do que exceder do CDI
+    publico: Investidor qualificado
+    operacional:
+      aplicacao: D+1
+      resgate: D+90
+      aplicacao_minima: R$ 1.000,00
+      movimentacao_minima: R$ 1.000,00
+
+  altlight:
+    nome: Tivio ALT Light
+    abertura: alt                  # 1º parágrafo do comentário gerado com os números da tabela
+    book_depara: alt_light          # alocação real = Book Maravi pelo de-para
+    alocacao_100: true              # o que passar de 100% do PL sai só da linha do Caixa
+    vertical: credito_estruturado
+    carteira: TIVIO ALT LIGHT XP SEG PREV FC MULT CP RL - Expandida
+    busca: [ALT LIGHT]
+    logo: ALT_LIGHT
+    relatorio: true
+    linha_bench_mais: true    # 4ª linha da tabela, como no original
+    sem_alfa: true            # a tabela do ALT publicado não traz Alfa
+    setores_max: 12           # o publicado lista doze setores, não cinco
+    casas_pct: 2              # "118,88%" e não "119%", como no original
+    objetivo: >-
+      Fundo de previdência de crédito com parcela máxima permitida em crédito
+      estruturado. Além disso aloca em crédito privado e bancários.
+    # desenho do relatório publicado do ALT Light (agosto/2026)
+    razao_social: TIVIO ALT LIGHT XP PREV
+    setores_max_relatorio: 15       # o publicado lista 15 setores, em linhas compactas
+    estrategia_linha: 25
+    treemap_cores: ['#7FA2B6', '#2A3A47', '#92D3AB', '#C2C2C2', '#6F8FA3']
+    # do relatório publicado de agosto/2026 (vencem a taxas_global.xlsx)
+    taxa: 1,15% a.a.
+    performance: 15% do retorno que exceder CDI+0,65%
+    publico: Investidor qualificado
+    operacional:
+      aplicacao: D+1
+      resgate: D+50
+      aplicacao_minima: R$ 1.000,00
+      movimentacao_minima: R$ 1.000,00
+
+  # ---------------------------------------------- Previdência (landing pages)
+  # Sem relatório de gestão: alimentam as páginas "Saiba mais sobre o fundo"
+  # (configs/previdencia.yml). Rentabilidade, PL e carteira: FIFE.
+  conexaoalt180:
+    nome: Conexão Tivio ALT 180
+    vertical: credito_estruturado
+    carteira: CONEXÃO TIVIO ALT HY 180 RL FIM CP   # Tivio Conecta (slide da rentabilidade)
+
+  hgd30:
+    nome: Tivio HGD30
+    vertical: credito_privado
+    carteira: TIVIO HGD30 RF CP FIFE RL
+    busca: [HGD30]
+    # rentabilidade (e-mail, Informativo, site) do FIE; carteira e PL do FIFE
+    cotas_rentabilidade: BRADESCO TIVIO HGD30 PGBL/VGBL
+    bloco_taxas_prev: HGD30        # bloco da entrada/taxas_prev.xlsx (taxa dos decks)
+
+  hyd60:
+    nome: Tivio HYD60
+    vertical: credito_privado
+    carteira: TIVIO HYD60 FIFE CI MULT CP RL - Expandida
+    busca: [HYD60 FIFE]
+    # rentabilidade (e-mail, Informativo, site) do FIE; carteira e PL do FIFE
+    cotas_rentabilidade: BRADESCO TIVIO HYD60 PGBL/VGBL
+    bloco_taxas_prev: HYD60
+
+  # ------------------------------------------------- Investment Solutions
+  topgestor:         {nome: BV Top Gestor Crédito Privado,  vertical: investment_solutions, carteira: BV TOP GESTOR CRED PRIV FC FIM}
+  topgestorhy:       {nome: Tivio Top Gestor HY,            vertical: investment_solutions, carteira: TIVIO TOP GESTOR HY FIF RL}
+  topgestorativo:    {nome: BV Top Gestor RF Ativo,         vertical: investment_solutions, carteira: BV TOP GESTOR RF ATIVO FC FI LP}
+  topgestormacro:    {nome: BV Top Gestor Macro,            vertical: investment_solutions, carteira: BV TOP GESTOR MACRO FC FIM}
+  topgestorlongonly: {nome: Top Gestor Ações Long Only,     vertical: investment_solutions, carteira: TOP GESTOR AÇÕES LONG ONLY FC}
+  topmanagerglobal:  {nome: Tivio Top Manager Global,       vertical: investment_solutions, carteira: TIVIO TOP MANAG GLOBAL ALLOC FIF AÇÕES, retorno: absoluto}
+  ativorf:           {nome: Tivio RF Ativo Longo Prazo,     vertical: investment_solutions, carteira: TIVIO RF ATIVO LONGO PRAZO FI}
+  prevlowvol:        {nome: Tivio Prev Low Vol Itaú,        vertical: investment_solutions, carteira: "TIVIO PREV LOW VOL ITAÚ I FIF CIC MULT RL - Expandida", busca: [LOW VOL], bloco_taxas_prev: LOW VOL}
+  # A CONFERIR com a dados_mensais.xlsx: o nome exato na coluna Carteira da DePara
+  prevtopcredit:     {nome: Tivio Prev Top Credit Itaú,     vertical: investment_solutions, carteira: "TIVIO PREVIDENCIA TOP CREDIT ITAÚ I FIF CIC RF CP RL", busca: [TOP CREDIT], bloco_taxas_prev: TOP CREDIT}
+
+# chaves com nome diferente em algum HTML legado
+alias:
+  infra: infraplus
+  legacyprev: legacy
+
+# rótulo exibido no lugar de "Taxa de administração"
+rotulo_taxa: Taxa global
+
+# nome amigável das classes do treemap de Crédito Estruturado (coluna 'Tipo aj.')
+# De-para "Book Maravi" (coluna Book da Base Carteira) -> rótulo da
+# "Alocação real da carteira de crédito" dos ALT. Os percentuais dos books de
+# mesmo rótulo são SOMADOS. O fundo escolhe a tabela com `book_depara:`.
+# Posição com Book "Padrão" é posição SEM book na planilha — "Padrão" nunca
+# aparece no relatório. O tipo do ativo (coluna Tipo aj.) diz qual book ela é,
+# e daí ela segue o de-para abaixo como qualquer outra.
+book_sem_book:
+  Caixa: Caixa
+  ordinária: FIP
+  FIDC Sr: FIDC Sênior
+  FIDC Mez/Sub: FIDC Mezanino
+  LFSN: LFSN
+  LFSC: LFSC
+  LF: LF Sênior
+  Debênture: Deb
+
+book_depara:
+  alt:                       # ALT 180, HYD60
+    Caixa: Liquidez
+    Crédito Estruturado: Crédito Estruturado
+    Crédito Privado: Crédito Privado
+    Fiagro: Fiagro
+    FIDC Mezanino: FIDCs Cota Mezanino
+    FIDC Sênior: FIDCs Cota Sênior
+    LF Sênior: Liquidez
+    LFSC: Liquidez
+    LFSN: Liquidez
+    Precatórios: Precatório
+    TPF: Liquidez
+    Deb: Crédito Privado
+  alt90:                     # ALT 90 (Deb segue como Debêntures)
+    Caixa: Liquidez
+    Crédito Estruturado: Crédito Estruturado
+    Crédito Privado: Crédito Privado
+    Fiagro: Fiagro
+    FIDC Mezanino: FIDCs Cota Mezanino
+    FIDC Sênior: FIDCs Cota Sênior
+    LF Sênior: Liquidez
+    LFSC: Liquidez
+    LFSN: Liquidez
+    Precatórios: Precatório
+    TPF: Liquidez
+    Deb: Debêntures
+  alt_light:                 # ALT Light
+    Caixa: Liquidez
+    Crédito Estruturado: Crédito Estruturado
+    Crédito Privado: Crédito Privado
+    Fiagro: Fiagro
+    FIDC Mezanino: FIDCs Cota Mezanino
+    FIDC Sênior: FIDCs Cota Sênior
+    LF Sênior: Bancário
+    LFSC: Bancário
+    LFSN: Bancário
+    Precatórios: Precatório
+    Deb: Crédito Privado
+    FIP: FIP
+    TPF: Liquidez
+
+tipo_label:
+  FIDC Sr: FIDCs Cotas Sênior
+  FIDC Mez/Sub: FIDCs Cotas Mezanino
+  Caixa: Liquidez
+  Debênture: Crédito Privado
+  LF: Bancário
+  LFSC: Bancário
+  LFSN: Bancário
+  CDB: Bancário
+  DPGE: Bancário
+  Precatório: Precatório
+  CRA: Fiagro
+  Outros fundos: Crédito Estruturado
+  ordinária: Ações

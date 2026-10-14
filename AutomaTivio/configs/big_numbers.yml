@@ -1,0 +1,51 @@
+# ============================================================================
+# Big numbers da Tivio nos decks (AuM, equipe, história)
+# ----------------------------------------------------------------------------
+# UM lugar só para os números institucionais que aparecem nos decks. Antes,
+# cada deck guardava a sua cópia e elas divergiam: em setembro/2026 havia
+# "+R$ 31 bi" e "+R$ 32 bi", "26" e "27 anos", "+75" e "+85 profissionais" e
+# "Agp/2026" na fonte, todos no mesmo mês.
+#
+# Como a automação acha o lugar de cada número:
+#   1. pelo NOME da caixa no PPTX (Selecionar > Painel de Seleção no
+#      PowerPoint). Os decks novos já vêm com os nomes abaixo
+#      (ativos_sob_gestão, anos_historia, profissionais...);
+#   2. se a caixa não tem nome, pelo rótulo ao lado ("Ativos sob gestão",
+#      "Anos de história", "Profissionais dedicados ao Crédito"...).
+# Só o número é trocado: o "+R$" e o "bi" do modelo ficam.
+#
+# Número sem aspas: a casa decimal segue o modelo ("+R$ 3,5 bi" -> 1 casa).
+# Número entre aspas: entra exatamente como está escrito.
+# ============================================================================
+
+# "Fonte: Anbima - Ago/2026" no slide da Tivio. mes = AAAA-MM do ranking usado.
+fonte:
+  texto: Anbima
+  mes: 2026-08
+
+numeros:
+  # ------------------------------------------------- Tivio (slide "Estamos entre as maiores")
+  ativos_sob_gestao: 32            # R$ bi
+  anos_historia: 27
+  profissionais: 75
+  fundos_criacao: 135
+
+  # ------------------------------------------------- Crédito ("Credibilidade e performance")
+  ativos_sob_gestao_credito: 12    # R$ bi
+  ativos_sob_gestao_credito_12: 3.5   # AuM captado nos últimos 12 meses, R$ bi
+  emissores_bancarios: 30
+  emissores_corporativos: 100
+  profissionais_credito: 11
+
+  # ------------------------------------------------- Investment Solutions (Prev Low Vol / Top Credit)
+  profissionais_investimento: 40
+  turnover: 3.3                    # %
+
+# AuM por vertical (rosca dos decks de Investment Solutions), em R$.
+# O centro da rosca mostra a soma, e cada rótulo "R$ 9,2 bi" segue o seu valor.
+aum_vertical:
+  Crédito Privado: 9049183636.54
+  Investment Solutions: 13780193862.33
+  Crédito Estruturado: 2251320384.45
+  Imobiliário: 3988059473.93
+  Patrimoniais: 3081058924.01
