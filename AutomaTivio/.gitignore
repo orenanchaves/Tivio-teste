@@ -2,6 +2,10 @@
 # A taxas_global e o preenchimento_manual são pequenos e ficam, como exemplo.
 entrada/dados_mensais.xlsx
 
+# JSON do Informativo (AUM por vertical): dado interno, exportado com login
+# corporativo. Fica só na máquina de quem roda o mês.
+data/*.json
+
 # Cache da leitura da planilha (invalida sozinho por tamanho+mtime)
 .cache/
 

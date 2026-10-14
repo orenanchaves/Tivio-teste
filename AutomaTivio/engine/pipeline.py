@@ -99,6 +99,21 @@ class Pipeline:
         self.contexto = Contexto(calc, self.cadastro, self.taxas, self.comentarios,
                                  self.edicao, self.log, overrides)
 
+        # números institucionais (API pública + JSON do Informativo): a fonte
+        # única de todos os materiais. Falha aqui PARA a rodada com o motivo:
+        # nenhum material sai com número antigo sem avisar.
+        from datasources.indicadores_tivio import get_indicadores_tivio
+        self.indicadores = get_indicadores_tivio()
+        self.log.info(f'indicadores Tivio: {self.indicadores["aum_institucional"]} sob gestão, '
+                      f'Informativo {self.indicadores["aum_informativo"]}, '
+                      f'data de referência {self.indicadores["data_ref"]}')
+
+    def _com_tivio(self, rend):
+        """Os indicadores institucionais como `tivio` em todo template Jinja
+        ({{ tivio.aum_institucional }}, {{ tivio.aum_credito }}...)."""
+        rend.env.globals['tivio'] = getattr(self, 'indicadores', {}) or {}
+        return rend
+
     # ------------------------------------------------------------------ saída
     @property
     def pasta_saida(self):
@@ -121,8 +136,8 @@ class Pipeline:
     def _relatorios(self, contextos):
         """O produto principal: um relatório por fundo, nos três formatos."""
         self.log.etapa('4/6 Relatórios de Gestão')
-        rend = RenderizadorRelatorio(self.edicao, self.cadastro, self.manual, self.log,
-                                     spreads=self.spreads)
+        rend = self._com_tivio(RenderizadorRelatorio(self.edicao, self.cadastro, self.manual, self.log,
+                                     spreads=self.spreads))
         alvo = [c for c in contextos if c.f.tem_relatorio]
         if self.so_fundos:
             alvo = [c for c in alvo if c.key in self.so_fundos]
@@ -383,8 +398,8 @@ class Pipeline:
         if not self.cfg['saidas'].get('html'):
             return
         from renderers.landing import RenderizadorLanding
-        rend = RenderizadorRelatorio(self.edicao, self.cadastro, self.manual, self.log,
-                                     spreads=self.spreads)
+        rend = self._com_tivio(RenderizadorRelatorio(self.edicao, self.cadastro, self.manual, self.log,
+                                     spreads=self.spreads))
         lp = RenderizadorLanding(rend, self.edicao, self.log)
         por_key = {c.key: c for c in contextos}
         for chave, pg in lp.paginas.items():
@@ -411,8 +426,8 @@ class Pipeline:
         if not self.cfg['saidas'].get('html'):
             return
         from renderers.previdencia import RenderizadorEmailPrevidencia
-        rend = RenderizadorRelatorio(self.edicao, self.cadastro, self.manual, self.log,
-                                     spreads=self.spreads)
+        rend = self._com_tivio(RenderizadorRelatorio(self.edicao, self.cadastro, self.manual, self.log,
+                                     spreads=self.spreads))
         em = RenderizadorEmailPrevidencia(rend, self.edicao, self.log)
         self.log.contexto('email/previdencia')
         try:
@@ -450,7 +465,8 @@ class Pipeline:
         from exporters.decks import exportar_decks
         self.log.contexto('decks')
         try:
-            n = exportar_decks(contextos, self.cadastro, self.edicao, self._destino('decks'), self.log)
+            n = exportar_decks(contextos, self.cadastro, self.edicao, self._destino('decks'), self.log,
+                               indicadores=self.indicadores)
             self.log.info(f'{n} decks gerados')
         except Exception as e:
             self.log.aviso('decks', f'decks não gerados: {e!r}')

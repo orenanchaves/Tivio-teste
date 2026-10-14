@@ -4,9 +4,13 @@
 Mesma filosofia do decks.py: abrir o PPTX do time, reconhecer cada número pelo
 nome da caixa ou pelo rótulo ao lado, trocar SÓ o número e manter o desenho.
 
-  big numbers ........ AuM, anos, profissionais, emissores, turnover
-                       (configs/big_numbers.yml) e "Fonte: Anbima - Ago/2026"
-  AuM por vertical ... rosca dos decks de Investment Solutions + rótulos
+  big numbers ........ AuM, anos, profissionais, fundos: das fontes oficiais
+                       (datasources/indicadores_tivio.py, mapa em
+                       CAIXA_PARA_INDICADOR); emissores, turnover e o que
+                       ainda não tem fonte: configs/big_numbers.yml.
+                       "Fonte: Anbima - Set/2026" com o mês do data_ref
+  AuM por vertical ... rosca dos decks de Investment Solutions + rótulos,
+                       do JSON do Informativo
   retorno 12M ........ "100% do CDI" ao lado de "Retorno 12 M"
   período ............ "Mai/2025 a Set/2026 (mensal)" fecha no mês da edição
   mês nos slides ..... o selo "Setembro de 2026" em todos os slides
@@ -84,6 +88,24 @@ ROTULOS = [
 ]
 # o nome da caixa no PPTX (sem acento) -> chave, quando difere
 NOMES = {'ativos_sob_gestao': 'ativos_sob_gestao'}
+
+# caixa do deck -> chave de get_indicadores_tivio() (fonte oficial)
+CAIXA_PARA_INDICADOR = {
+    'ativos_sob_gestao': 'aum_institucional',          # API pública
+    'anos_historia': 'anos_historia',                  # API pública
+    'profissionais': 'profissionais',                  # API pública
+    'profissionais_investimento': 'profissionais',     # API pública
+    'fundos_criacao': 'fundos',                        # API pública
+    'ativos_sob_gestao_credito': 'aum_credito',        # Informativo: HG + Estruturado
+}
+# categoria da rosca "AuM por vertical" -> nome da vertical no JSON do Informativo
+ROSCA_PARA_VERTICAL = {
+    'Crédito Privado': 'Crédito High-Grade',
+    'Investment Solutions': 'Investment Solutions',
+    'Crédito Estruturado': 'Crédito Estruturado',
+    'Imobiliário': 'Imobiliário',
+    'Patrimoniais': 'Patrimoniais',
+}
 VALOR = re.compile(r'^\s*\+?\s*(R\$\s*)?' + NUM + r'\s*(%|bi|mi)?\s*$', re.I)
 
 
@@ -97,22 +119,41 @@ def _formata(v, modelo):
 
 
 def _troca_numero(sh, valor):
-    """Troca o primeiro número da caixa, mantendo "+R$" e "bi" do modelo."""
+    """Troca o número da caixa, mantendo "R$" e "bi" do modelo.
+
+    Valor em texto (fonte oficial: "+25", "+32 bi", "R$ 11,3 bi") entra como
+    a fonte escreve: o número e o "+" dela. Só o "+" some quando o modelo já
+    tem "+R$" antes do número. Valor numérico (big_numbers.yml) segue as casas
+    do modelo e mantém o "+" do modelo.
+    """
     for p in sh.text_frame.paragraphs:
         t = ''.join(r.text for r in p.runs)
-        m = re.search(r'\d+(?:[.,]\d+)*', t)
-        if m:
-            return _troca_trecho(p, m.start(), m.end(), _formata(valor, m.group(0)))
+        m = re.search(r'(\+\s*)?(\d+(?:[.,]\d+)*)', t)
+        if not m:
+            continue
+        if isinstance(valor, str):
+            mv = re.search(r'(\+)?\s*(?:R\$\s*)?(\d+(?:[.,]\d+)*)', valor)
+            if not mv:
+                return False
+            tem_rs = bool(re.search(r'R\$\s*$', t[:m.start()]))
+            novo = ('' if tem_rs else (mv.group(1) or '')) + mv.group(2)
+            return _troca_trecho(p, m.start(), m.end(), novo)
+        return _troca_trecho(p, m.start(2), m.end(2), _formata(valor, m.group(2)))
     return False
 
 
 class Extras:
-    def __init__(self, edicao, log, taxas_prev=None, big=None):
+    def __init__(self, edicao, log, taxas_prev=None, big=None, indicadores=None):
         self.ed = edicao
         self.log = log
         self.prev = taxas_prev
         self.big = big if big is not None else carregar_big_numbers()
-        self.num = self.big.get('numeros') or {}
+        self.ind = indicadores or {}
+        # manuais (big_numbers.yml) e, por cima, os oficiais
+        self.num = dict(self.big.get('numeros') or {})
+        for caixa, chave in CAIXA_PARA_INDICADOR.items():
+            if self.ind.get(chave):
+                self.num[caixa] = self.ind[chave]
         self.trocas = 0
 
     # ------------------------------------------------------------ big numbers
@@ -170,9 +211,10 @@ class Extras:
 
     def _fonte(self, slide):
         f = self.big.get('fonte') or {}
-        if not f.get('mes'):
+        ref = self.ind.get('data_ref') or f.get('mes')
+        if not ref:
             return
-        ano, mes = str(f['mes']).split('-')[:2]
+        ano, mes = str(ref).split('-')[:2]
         novo = f'Fonte: {f.get("texto", "Anbima")} - {MESES_CURTOS[int(mes) - 1]}/{ano}'
         for sh, _ in _shapes(slide.shapes):
             if getattr(sh, 'has_text_frame', False) and sh.has_text_frame:
@@ -185,10 +227,19 @@ class Extras:
 
     # -------------------------------------------------------- AuM por vertical
     def aum_vertical(self, slide):
-        aum = self.big.get('aum_vertical') or {}
+        """Valores do JSON do Informativo. Sem ele a rosca fica como no modelo
+        (e a falta já parou a rodada antes, em get_indicadores_tivio)."""
+        vert = self.ind.get('aum_verticais_valores') or {}
+        aum = {cat: vert[v] for cat, v in ROSCA_PARA_VERTICAL.items() if v in vert}
         if not aum:
             return
+        # o centro é a soma das fatias desenhadas (mesma base do Informativo)
         total = sum(float(v) for v in aum.values())
+        ref = self.ind.get('aum_informativo_valor')
+        if ref and abs(total - ref) / ref > 0.01:
+            self.log.aviso('decks', f'AuM por vertical: a soma das fatias ({fmt.num(total / 1e9, 1)} bi) '
+                                    f'difere do AUM do Informativo ({fmt.num(ref / 1e9, 1)} bi); '
+                                    'há vertical no JSON fora da rosca')
         achou = False
         for sh, _ in _shapes(slide.shapes):
             if not (getattr(sh, 'has_chart', False) and sh.has_chart):
@@ -230,8 +281,9 @@ class Extras:
         # o total no centro ("R$31 bi"), que é uma caixa solta sobre a rosca
         for sh, _ in _shapes(slide.shapes):
             t = _texto(sh)
-            if re.fullmatch(r'\s*R\$\s*\d+\s*bi\s*', t):
-                _troca_grupo(sh.text_frame.paragraphs[0], r'R\$\s*(\d+)', fmt.num(total / 1e9, 0))
+            if re.fullmatch(r'\s*R\$\s*\d+(?:,\d)?\s*bi\s*', t):
+                # uma casa, como o Informativo escreve (R$ 29,8 bi)
+                _troca_grupo(sh.text_frame.paragraphs[0], r'R\$\s*(\d+(?:,\d)?)', fmt.num(total / 1e9, 1))
 
     # ------------------------------------- alocação HG / HY / Caixa lado a lado
     def alocacao_lado(self, slide, ctx):

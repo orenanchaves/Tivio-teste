@@ -375,6 +375,31 @@ setor, sobre o total da carteira), `rating_extras()`, a partir de `hghy_tipo`,
 - PDF pelo PowerPoint (`exporters.previdencia._pdf_powerpoint`). Etapa
   `Pipeline._decks`, ligada por `saidas.decks` em `configs/edicao.yml`.
 
+#### Propagação dos números institucionais (`datasources/`)
+
+Os números da Tivio saem de UM lugar, `datasources/indicadores_tivio.py::get_indicadores_tivio()`,
+lido uma vez em `Pipeline._ler` (`self.indicadores`):
+
+| Chave | Fonte |
+|---|---|
+| `anos_historia`, `aum_institucional`, `fundos`, `profissionais`, `data_ref` | API pública de big numbers (`datasources/big_numbers.py`) |
+| `aum_investment_solutions`, `aum_credito` (HG + Estruturado), `aum_credito_high_grade`, `aum_credito_estruturado`, `aum_imobiliario`, `aum_patrimoniais`, `aum_informativo` | `data/tivio_summary.json`, exportado do Informativo com o login corporativo (`datasources/aum_verticais.py`) |
+
+- O JSON do Informativo é interno: fica fora do Git (`data/*.json` no
+  `.gitignore`). Atualize-o antes de rodar o mês.
+- API fora do ar ou JSON ausente **param a rodada** com o motivo. Nenhum
+  material sai com número antigo sem avisar.
+- AUM institucional (+32 bi, API) e AUM do Informativo (R$ 29,8 bi) são
+  indicadores diferentes. Não trocar um pelo outro sem regra do material.
+- Jinja: `{{ tivio.<chave> }}` em qualquer template do `RenderizadorRelatorio`
+  (`Pipeline._com_tivio`).
+- Decks: `exportar_decks(..., indicadores=)`; o mapa caixa do PPTX → chave
+  está em `decks_extras.CAIXA_PARA_INDICADOR` e a rosca em
+  `ROSCA_PARA_VERTICAL`. O que ainda não tem fonte oficial (AuM captado em 12
+  meses, emissores, profissionais de crédito, turnover) fica em
+  `configs/big_numbers.yml`.
+- Teste: `python -c "from datasources.indicadores_tivio import get_indicadores_tivio; import json; print(json.dumps(get_indicadores_tivio(), ensure_ascii=False, indent=2))"`
+
 #### Decks de outubro/2026 (`exporters/decks_extras.py`)
 
 Oito decks novos em `configs/decks.yml`: Institucional, Institucional 15,
@@ -385,12 +410,12 @@ em `exportar_decks`:
 
 | Regra | O que faz | De onde vem o número |
 |---|---|---|
-| `big_numbers` | AuM, anos, profissionais, fundos, emissores, turnover. Acha a caixa pelo **nome** (`ativos_sob_gestão`, `anos_historia`, `profissionais_credito`…) e, sem nome, pelo rótulo vizinho. Corrige a "Fonte: Anbima" (já saiu "Agp/2026") | `configs/big_numbers.yml` |
-| `aum_vertical` | Rosca "AuM por vertical": valores, rótulos "R$ 9,2 bi" e o total no centro | `big_numbers.yml` → `aum_vertical` |
+| `big_numbers` | AuM, anos, profissionais, fundos, emissores, turnover. Acha a caixa pelo **nome** (`ativos_sob_gestão`, `anos_historia`, `profissionais_credito`…) e, sem nome, pelo rótulo vizinho. Corrige a "Fonte: Anbima" (já saiu "Agp/2026") com o mês do `data_ref` | `get_indicadores_tivio()`; o resto em `configs/big_numbers.yml` |
+| `aum_vertical` | Rosca "AuM por vertical": valores, rótulos "R$ 9,2 bi" e o total no centro (soma das fatias, aviso se divergir do AUM do Informativo) | JSON do Informativo |
 | `retorno_12m` | "100% do CDI" ao lado de "Retorno 12 M" (vira "desde o início" em fundo novo) | Contexto do fundo |
 | `periodo` | "Mai/2025 a Set/2026 (mensal)": início = 1ª cota, fim = data base | Contexto do fundo |
 | `nomeados` | Caixas `patrimonio_liquido` e `patrimonio_liquido_medio_12m` | Contexto do fundo |
-| `taxa_prev` | "Taxa de Adm & Gestão" / "Taxa Global" | `entrada/taxas_prev.xlsx` → "Taxa Final" do bloco (`bloco_taxas_prev` em `fundos.yml`) |
+| `taxa_prev` | "Taxa de Adm & Gestão" / "Taxa Global" | `entrada/taxas_prev.xlsx`: soma da Taxa Global Máxima dos veículos (= "Taxa Final" do bloco, conferida na leitura; `bloco_taxas_prev` em `fundos.yml`) |
 | `alocacao_lado` | "High Grade 66,5%" em caixas vizinhas e as tabelas "Carteira HGD/HYD" (só com `alocacao_hghy`) | `ContextoFundo.alocacao_hghy` |
 | `emissores` | Gráfico logo abaixo de "Principais emissores" | `ContextoFundo.emissores_relatorio` |
 | `mes` | Selo "Setembro de 2026" em todos os slides (`mes_em_todos: true`) | data base |

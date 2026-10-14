@@ -12,9 +12,11 @@ A planilha tem um bloco por fundo, um embaixo do outro:
                                     Taxa Final | 0,8%    <- soma dos veículos
 
 O que sai daqui, por bloco:
-  - `taxa_final`  a "Taxa Final" do bloco (o que o investidor paga somando os
-                  veículos: FIE + FIFE). É a taxa dos decks ("Taxa de Adm &
-                  Gestão", "Taxa Global").
+  - `taxa_final`  a "Taxa Final" do bloco: a soma da Taxa Global Máxima dos
+                  veículos (FIE I + FIE II + FIFE), que é a taxa global máxima
+                  do fundo de previdência para o investidor. É a taxa dos decks
+                  ("Taxa de Adm & Gestão", "Taxa Global"). A leitura confere a
+                  soma e avisa se a célula "Taxa Final" não bate com ela.
   - `veiculos`    uma linha por veículo (FIE I, FIE II, FIFE), com as taxas
                   e a performance como texto.
 
@@ -93,6 +95,13 @@ def ler_taxas_prev(caminho):
                     atual['avisos'].append(
                         f'{v["tipo"]}: {COLUNAS[k]} = {v[k]} (fora do padrão de percentual)')
             atual['veiculos'].append(v)
+    for b in blocos.values():
+        soma = sum(_num(v['taxa_global_maxima']) or 0 for v in b['veiculos'])
+        if b['taxa_final'] is None and soma:
+            b['taxa_final'] = soma
+        elif b['taxa_final'] is not None and abs(b['taxa_final'] - soma) > 0.00005:
+            b['avisos'].append(f'Taxa Final {b["taxa_final"]:.4%} diferente da soma da '
+                               f'Taxa Global Máxima dos veículos ({soma:.4%})')
     return blocos
 
 

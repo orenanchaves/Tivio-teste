@@ -1889,7 +1889,7 @@ def _taxas_prev(log):
     return tp
 
 
-def exportar_decks(contextos, cadastro, edicao, destino, log, so=None, pdf=True):
+def exportar_decks(contextos, cadastro, edicao, destino, log, so=None, pdf=True, indicadores=None):
     from pptx import Presentation
     from exporters.decks_extras import Extras
     from exporters.previdencia import _pdf_powerpoint, instalar_versos
@@ -1906,7 +1906,7 @@ def exportar_decks(contextos, cadastro, edicao, destino, log, so=None, pdf=True)
         prs = Presentation(modelo)
         pre = Preenchedor(edicao, contextos, cadastro, log)
         con = Conecta(pre)
-        ext = Extras(edicao, log, tprev)
+        ext = Extras(edicao, log, tprev, indicadores=indicadores)
         remover = set(d.get('remover') or [])
         # slide -> fundo (e opções) quando o título não diz de quem é o slide
         por_slide = {int(n): (v if isinstance(v, dict) else {'fundo': v})
