@@ -1,0 +1,263 @@
+{% import 'previdencia/blocos.html' as B %}
+<!doctype html>
+<html lang="pt-BR" data-theme="dark">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>E-mail Previdência · {{ edicao.mes_ano }}</title>
+<meta name="description" content="Gerador do e-mail dos fundos de previdência HGD30 e HYD60: cada bloco sai em PNG e o e-mail em HTML. Data base {{ edicao.br }}.">
+<style>
+{{ css_marca|safe }}
+{{ css_pagina|safe }}
+{{ css_blocos|safe }}
+
+/* casca: a mesma das outras páginas da Central, acento verde da casa */
+:root{--accent-strong:var(--tv-verde);--container:1340px;--tv-verde-ink:#0A2415}
+:root[data-theme="light"]{--accent-strong:var(--tv-verde-light-accent)}
+.btn-group .btn[aria-pressed="true"]{color:var(--tv-verde-ink)}
+.ftabs{display:inline-flex;gap:4px;padding:4px;border-radius:var(--r-full);background:var(--input-bg);border:1px solid var(--line-strong);margin:4px 0 22px}
+.ftabs button{border:0;background:transparent;color:var(--text-muted);font:600 13px var(--ff);padding:10px 22px;border-radius:var(--r-full);cursor:pointer}
+.ftabs button[aria-selected="true"]{background:var(--tv-verde-escuro);color:var(--tv-verde-ink)}
+:root[data-theme="light"] .ftabs button[aria-selected="true"]{background:var(--tv-verde-light-accent);color:#fff}
+.fundo{display:none}.fundo.ativo{display:block}
+.deck{display:grid;grid-template-columns:repeat(auto-fill,minmax(640px,1fr));gap:22px;padding-bottom:40px}
+@media(max-width:1400px){.deck{grid-template-columns:minmax(0,1fr);max-width:700px}}
+.card{min-width:0}
+.card{background:var(--bg-glass);border:1px solid var(--line);border-radius:var(--r-lg);padding:16px 18px 18px;backdrop-filter:blur(16px)}
+.card-h{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:12px}
+.card-h .t{display:flex;align-items:baseline;gap:10px;min-width:0}
+.card-h .num{font-size:11px;font-weight:700;letter-spacing:.2em;color:var(--accent-strong)}
+.card-h .nm{font-size:15px;font-weight:600;color:var(--text-primary)}
+.card-h .tp{font-size:11px;color:var(--text-muted)}
+.stage{width:100%;overflow:hidden;border-radius:10px;background:#fff}
+.stage .bloco{transform-origin:0 0}
+.sec-t{font-family:var(--ff);color:#000;background:#fff;padding:0 26px 4px;font-size:14px;font-weight:700}
+.sec-t.hy{font-size:11px;text-transform:uppercase;letter-spacing:.06em}
+.sec-t span{font-weight:400}
+body.edit .bloco [contenteditable="true"]:hover{outline:1px dashed #759DB4}
+body.exportando .bloco [contenteditable]{outline:none!important}
+body.exportando .stage{height:auto!important;overflow:visible}
+body.exportando .stage .bloco{transform:none!important}
+body.exportando .header,body.exportando .backtop,body.exportando .toast{display:none!important}
+.toast{position:fixed;left:50%;bottom:24px;transform:translateX(-50%) translateY(20px);opacity:0;background:var(--bg-elev-1);color:var(--text-primary);border:1px solid var(--line-strong);padding:12px 18px;border-radius:var(--r-full);font-size:13px;transition:.3s;z-index:90;pointer-events:none}
+.toast.show{opacity:1;transform:translateX(-50%)}
+@media(max-width:640px){.card{padding:12px}.ftabs{display:flex}.ftabs button{flex:1}}
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs>
+<symbol id="tv-logo" viewBox="118 104 844 294">{{ marca_path|safe }}</symbol>
+</defs></svg>
+
+<header class="header">
+  <div class="inner">
+    <a href="#top" class="brand">
+      <svg class="logo-mark anim-brand" viewBox="0 0 844 294"><use href="#tv-logo"/></svg>
+      <span class="brand-tag">E-mail <i>|</i> Previdência</span>
+    </a>
+    <div class="head-actions">
+      <a class="btn btn-glass btn-sm" href="tivio-central.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M11 18l-6-6 6-6"/></svg>Central de Materiais</a>
+      <div class="btn-group" role="group" aria-label="Alternar tema da interface">
+        <button type="button" class="btn btn-ghost btn-xs" data-theme-set="light" aria-label="Modo claro"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></svg></button>
+        <button type="button" class="btn btn-ghost btn-xs" data-theme-set="dark" aria-label="Modo escuro"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg></button>
+      </div>
+      <button class="btn btn-glass btn-sm" id="editToggle" aria-pressed="false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4z"/></svg><span id="editLabel">Editar textos</span></button>
+      <div class="dl-split">
+        <button class="btn btn-primary btn-sm" id="dlAll"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12M7 12l5 5 5-5M5 21h14"/></svg>Baixar tudo (ZIP)</button>
+        <button class="btn btn-glass btn-sm" id="dlHtml"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 6l-5 6 5 6M16 6l5 6-5 6"/></svg>E-mail (HTML)</button>
+      </div>
+    </div>
+  </div>
+</header>
+
+<main class="container" id="top">
+  <section class="intro hero-stagger">
+    <div class="eyebrow"><span class="dot news-pulse"></span>{{ edicao.mes_ano }} · Data base {{ edicao.br }}</div>
+    <h1>E-mail <span class="sep">|</span> <strong>Previdência</strong></h1>
+    <p>Escolha o <b>fundo</b>. Cada bloco sai em <b>PNG</b>, que é a imagem que vai no Mailchimp; o texto do gestor e as características vão como texto. <b>Baixar tudo</b> leva os PNG e o <b>e-mail em HTML</b> num ZIP. Os números saem da planilha do mês (carteira FIFE).</p>
+  </section>
+
+  <nav class="ftabs" role="tablist" aria-label="Fundos">
+    {% for d in fundos %}<button type="button" role="tab" data-f="{{ d.chave }}" aria-selected="{{ 'true' if loop.first else 'false' }}">{{ d.nome_curto }}</button>{% endfor %}
+  </nav>
+
+  {% for d in fundos %}
+  <section class="fundo{{ ' ativo' if loop.first }}" data-fundo="{{ d.chave }}">
+    <div class="deck">
+    {% set n = namespace(i=0) %}
+    {% for b in d.blocos %}
+      {% set n.i = n.i + 1 %}
+      <article class="card">
+        <div class="card-h">
+          <div class="t"><span class="num">{{ '%02d'|format(n.i) }}</span><span class="nm">{{ nomes_bloco[b] }}</span><span class="tp">{{ 'texto no e-mail' if b in blocos_texto else 'imagem PNG' }}</span></div>
+          {% if b not in blocos_texto %}<button class="btn btn-glass btn-xs" data-png="{{ b }}">Baixar PNG</button>{% endif %}
+        </div>
+        <div class="stage">
+          <div class="bloco{{ ' sem-pad' if b in ('cabecalho', 'beneficios') }}" data-bloco="{{ b }}">
+          {% if b == 'cabecalho' %}{{ B.cabecalho(d, logos, imagens, marca_path) }}
+          {% elif b == 'texto' %}{{ B.texto(d) }}
+          {% elif b == 'kpis' %}{{ B.kpis(d, t_svg) }}
+          {% elif b == 'rentabilidade' %}{{ B.rentabilidade(d) }}
+          {% elif b == 'alocacao' %}{{ B.alocacao(d) }}
+          {% elif b == 'setorial' %}{{ B.setorial(d) }}
+          {% elif b == 'rating' %}{{ B.rating(d) }}
+          {% elif b == 'composicao' %}{{ B.composicao(d) }}
+          {% elif b == 'historico' %}{{ B.historico(d) }}
+          {% elif b == 'caracteristicas' %}{{ B.caracteristicas(d) }}
+          {% elif b == 'beneficios' %}{{ B.beneficios(d, imagens) }}
+          {% endif %}
+          </div>
+        </div>
+      </article>
+    {% endfor %}
+    </div>
+  </section>
+  {% endfor %}
+</main>
+
+<footer class="footer"><div class="container" style="display:flex;gap:20px;align-items:center;padding:28px 28px 40px;font-size:12px;color:var(--text-muted)">
+  <svg class="logo-mark" viewBox="0 0 844 294" style="height:22px;width:63px;color:var(--text-primary)"><use href="#tv-logo"/></svg>
+  <div>Material de uso interno · Data base {{ edicao.br }}</div></div></footer>
+<button class="btn btn-icon backtop" id="backtop" aria-label="Voltar ao topo"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19V5M5 12l7-7 7 7"/></svg></button>
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<script src="vendor/echarts.min.js" onerror="var s=document.createElement('script');s.src='https://cdnjs.cloudflare.com/ajax/libs/echarts/5.6.0/echarts.min.js';s.onload=function(){window.prevGraficos&&prevGraficos()};document.head.appendChild(s)"></script>
+<script>
+var DADOS = {{ dados_json|safe }};
+var MESABR = ['jan','fev','mar','abr','mai','jun','jul','ago','set','out','nov','dez'];
+var CORES = {hg: {f: '#759DB3', c: '#ABC6CD', fl: '#759DB3', cl: '#E6EDF1', ct: '#3C4A60'},
+             hy: {f: '#4B9D74', c: '#92D3AB', fl: '#4B9D74', cl: '#E6F4EA', ct: '#0A2415'}};
+var GRAF = [];
+function pct(v) { return v.toFixed(2).replace('.', ',') + '%'; }
+
+/* histórico: ECharts em canvas (o html2canvas copia canvas sem perda) */
+window.prevGraficos = function () {
+  if (!window.echarts) return;
+  GRAF.forEach(function (g) { g.dispose(); }); GRAF = [];
+  document.querySelectorAll('[data-hist]').forEach(function (el) {
+    var d = DADOS[el.dataset.hist]; if (!d || !d.hist) return;
+    var c = CORES[d.estilo], h = d.hist, u = h.l.length - 1;
+    var g = echarts.init(el, null, {renderer: 'canvas', devicePixelRatio: 3});
+    /* rótulo final: o maior em cima, o menor embaixo, sem se sobrepor */
+    var fAcima = h.f[u] >= h.c[u];
+    function s(nome, v, cor, w, bg, tc, cima) {
+      return {name: nome, type: 'line', data: v, symbol: 'none', lineStyle: {color: cor, width: w}, itemStyle: {color: cor},
+        endLabel: {show: true, formatter: function (p) { return pct(p.value); }, backgroundColor: bg, color: tc,
+          padding: [3, 5], fontSize: 9, fontWeight: 700, fontFamily: 'Versos, sans-serif', offset: [4, cima ? -9 : 9]}};
+    }
+    g.setOption({animation: false, grid: {left: 6, right: 58, top: 14, bottom: 4, containLabel: true},
+      xAxis: {type: 'category', data: h.l.map(function (x) { return x.replace('/', '-'); }), boundaryGap: false,
+        axisLine: {lineStyle: {color: '#D9D9D9'}}, axisTick: {show: false},
+        axisLabel: {color: '#595959', fontSize: 7, fontFamily: 'Versos, sans-serif', interval: 0, rotate: 0}},
+      yAxis: {type: 'value', axisLabel: {color: '#595959', fontSize: 7, formatter: function (v) { return v.toFixed(2).replace('.', ',') + '%'; }},
+        splitLine: {lineStyle: {color: '#D9D9D9'}}},
+      series: [s('CDI', h.c, c.c, 1.6, c.cl, c.ct, !fAcima), s('Fundo', h.f, c.f, 2.2, c.fl, '#fff', fAcima)]});
+    GRAF.push(g);
+  });
+};
+
+(function () {
+  var raiz = document.documentElement, CHAVE = 'tivio-relgestao-theme', FK = 'tivio-email-prev-fundo';
+  function tema(t) {
+    raiz.setAttribute('data-theme', t);
+    document.querySelectorAll('[data-theme-set]').forEach(function (b) { b.setAttribute('aria-pressed', String(b.dataset.themeSet === t)); });
+    try { localStorage.setItem(CHAVE, t); } catch (e) {}
+  }
+  document.querySelectorAll('[data-theme-set]').forEach(function (b) { b.addEventListener('click', function () { tema(b.dataset.themeSet); }); });
+  var salvo = null; try { salvo = localStorage.getItem(CHAVE); } catch (e) {}
+  tema(salvo || 'dark');
+
+  /* encaixe: o bloco tem 600 px; no celular ele encolhe junto com o card */
+  function encaixa() {
+    document.querySelectorAll('.fundo.ativo .stage').forEach(function (st) {
+      var b = st.querySelector('.bloco'); if (!b) return;
+      var z = Math.min(1, st.clientWidth / 600);
+      b.style.transform = z < 1 ? 'scale(' + z + ')' : '';
+      st.style.height = z < 1 ? Math.ceil(b.offsetHeight * z) + 'px' : '';
+      if (z >= 1) { st.style.display = 'flex'; st.style.justifyContent = 'center'; }
+    });
+  }
+  window.prevEncaixa = encaixa;
+
+  window.setFundo = function (k) {
+    document.querySelectorAll('.ftabs button').forEach(function (b) { b.setAttribute('aria-selected', String(b.dataset.f === k)); });
+    document.querySelectorAll('.fundo').forEach(function (s) { s.classList.toggle('ativo', s.dataset.fundo === k); });
+    try { localStorage.setItem(FK, k); } catch (e) {}
+    window.prevGraficos(); encaixa();
+  };
+  document.querySelectorAll('.ftabs button').forEach(function (b) { b.addEventListener('click', function () { setFundo(b.dataset.f); }); });
+  var f0 = null; try { f0 = localStorage.getItem(FK); } catch (e) {}
+  setFundo(DADOS[f0] ? f0 : Object.keys(DADOS)[0]);
+  window.addEventListener('resize', function () { encaixa(); GRAF.forEach(function (g) { g.resize(); }); });
+
+  var ed = document.getElementById('editToggle');
+  ed.addEventListener('click', function () {
+    var on = !document.body.classList.contains('edit');
+    document.body.classList.toggle('edit', on);
+    document.querySelectorAll('.bloco [contenteditable]').forEach(function (e) { e.setAttribute('contenteditable', String(on)); });
+    ed.setAttribute('aria-pressed', String(on));
+    document.getElementById('editLabel').textContent = on ? 'Concluir edição' : 'Editar textos';
+  });
+  document.querySelectorAll('.bloco [contenteditable]').forEach(function (e) { e.setAttribute('contenteditable', 'false'); });
+
+  var topo = document.getElementById('backtop');
+  window.addEventListener('scroll', function () { topo.classList.toggle('show', window.scrollY > 600); }, {passive: true});
+  topo.addEventListener('click', function () { window.scrollTo({top: 0, behavior: 'smooth'}); });
+})();
+
+/* ---------------- exportação (os mesmos PNG que o Python grava) ---------------- */
+function toast(m) { var t = document.getElementById('toast'); t.textContent = m; t.classList.add('show'); clearTimeout(t._x); t._x = setTimeout(function () { t.classList.remove('show'); }, 3200); }
+function carrega(src) { return new Promise(function (ok, er) { var s = document.createElement('script'); s.src = src; s.onload = ok; s.onerror = er; document.head.appendChild(s); }); }
+async function libs() {
+  if (!window.html2canvas) { try { await carrega('vendor/html2canvas.min.js'); } catch (e) { await carrega('https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js'); } }
+  if (!window.JSZip) { try { await carrega('vendor/jszip.min.js'); } catch (e) { await carrega('https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js'); } }
+}
+function fundoAtivo() { return document.querySelector('.fundo.ativo').dataset.fundo; }
+function arquivos(k) {
+  var out = {}, i = 0;
+  DADOS[k].blocos.forEach(function (b) { if (b !== 'texto' && b !== 'caracteristicas') { i++; out[b] = ('0' + i).slice(-2) + '-' + b + '.png'; } });
+  return out;
+}
+async function png(el) {
+  await libs(); if (document.fonts) await document.fonts.ready;
+  var tr = el.style.transform; el.style.transform = '';
+  document.body.classList.add('exportando');
+  try {
+    var cv = await html2canvas(el, {scale: 3, backgroundColor: '#ffffff', useCORS: true, logging: false,
+      width: el.offsetWidth, height: el.offsetHeight});
+    return await new Promise(function (r) { cv.toBlob(r, 'image/png'); });
+  } finally { el.style.transform = tr; document.body.classList.remove('exportando'); window.prevEncaixa(); }
+}
+function salva(blob, nome) { var u = URL.createObjectURL(blob), a = document.createElement('a'); a.href = u; a.download = nome; document.body.appendChild(a); a.click(); setTimeout(function () { a.remove(); URL.revokeObjectURL(u); }, 3000); }
+document.querySelectorAll('[data-png]').forEach(function (b) {
+  b.addEventListener('click', async function () {
+    var k = fundoAtivo(), el = b.closest('.card').querySelector('.bloco');
+    b.classList.add('is-loading');
+    try { salva(await png(el), k + '-' + arquivos(k)[b.dataset.png]); } catch (e) { toast('Falha ao gerar o PNG: ' + e); }
+    b.classList.remove('is-loading');
+  });
+});
+document.getElementById('dlHtml').addEventListener('click', function () {
+  var k = fundoAtivo();
+  salva(new Blob([DADOS[k].disparo], {type: 'text/html'}), 'email-' + k + '.html');
+  toast('E-mail HTML baixado. Suba junto os PNG (Baixar tudo).');
+});
+document.getElementById('dlAll').addEventListener('click', async function () {
+  var b = this, k = fundoAtivo(), arq = arquivos(k);
+  b.classList.add('is-loading');
+  try {
+    await libs(); var zip = new JSZip();
+    var els = document.querySelectorAll('.fundo.ativo .bloco');
+    for (var i = 0; i < els.length; i++) {
+      var nome = arq[els[i].dataset.bloco]; if (!nome) continue;
+      zip.file(nome, await png(els[i]));
+    }
+    zip.file('email-' + k + '.html', DADOS[k].disparo);
+    salva(await zip.generateAsync({type: 'blob'}), 'tivio-email-' + k + '.zip');
+    toast('ZIP com ' + Object.keys(arq).length + ' PNG e o e-mail em HTML.');
+  } catch (e) { toast('Falha na exportação: ' + e); }
+  b.classList.remove('is-loading');
+});
+</script>
+</body>
+</html>

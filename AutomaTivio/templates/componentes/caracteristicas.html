@@ -1,0 +1,21 @@
+{# Duas colunas com divisória, como no publicado: rótulo em negrito, valor
+   leve e um traço curto na cor da vertical. O PL médio fecha a coluna da
+   direita, alinhado ao PL da esquerda. #}
+{% set esq = carac_colunas[0] %}{% set dir = carac_colunas[1] %}
+<h2 class="sh sh-fino">{{ titulo }}</h2>
+<div class="carac">
+  <div class="ccol">
+    {% for rotulo, valor in esq %}
+    <div class="ci"><div class="ck">{{ rotulo }}</div><div class="cv">{{ valor }}</div></div>
+    {% endfor %}
+  </div>
+  <div class="ccol">
+    {% for rotulo, valor in dir %}
+    <div class="ci"><div class="ck">{{ rotulo }}</div>
+      {% if valor is none %}
+      <div class="cv">{% for r, v in operacional %}{{ r }}:<br><b>{{ v }}</b>{% if not loop.last %}<br>{% endif %}{% endfor %}</div>
+      {% else %}<div class="cv">{{ valor }}</div>{% endif %}
+    </div>
+    {% endfor %}
+  </div>
+</div>

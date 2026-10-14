@@ -1,0 +1,111 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>{{ f.nome }} · Relatório de Gestão · {{ edicao.mes_ano }}</title>
+<meta name="description" content="Relatório de gestão mensal — {{ f.nome }}, data base {{ edicao.br }}.">
+<style>
+{{ css_marca|safe }}
+{{ css_relatorio|safe }}
+
+{{ css_entrega|safe }}
+{{ css_impressao|safe }}
+</style>
+</head>
+<body>
+<div class="folhas">
+
+{# Desenho do relatório publicado (PDF de agosto/2026): cabeçalho preto com o
+   logo horizontal do fundo, o T numa caixa à direita e, na página 1, a faixa
+   verde embaixo dela; rodapé com o logo Tivio, o número e a faixa da vertical
+   (azul no Crédito Privado, verde no Estruturado). #}
+{% macro secao(sid) %}{% set titulo = titulos[sid] %}{% include 'componentes/' ~ sid ~ '.html' %}{% endmacro %}
+{% for pagina in paginas %}
+  {% set ids = pagina.secoes|map(attribute='id')|list %}
+  {% set tem_disc = 'disclaimer' in ids %}
+  {# High grade: emissores e rating dividem a coluna da esquerda, setores
+     desce pela da direita até o rodapé #}
+  {% set grade_hg = 'emissores' in ids and 'setores' in ids %}
+  {% set rodape_escuro = tem_disc or (ve == 'cp' and 'comentario' in ids) %}
+  <section class="rcard v-{{ ve }}" data-pagina="{{ pagina.numero }}">
+
+    <header class="rc-head {{ 'big' if pagina.numero == 1 else 'slim' }}">
+      <div class="hl">
+        <div class="hlinha">
+          {% if logo_svg %}
+          <div class="fund-logo">{{ logo_svg|safe }}</div>
+          {% else %}
+          <div class="hname">{{ f.nome }}</div>
+          {% endif %}
+          {% if pagina.numero != 1 %}<div class="hdate">{{ edicao.mes_ano }}</div>{% endif %}
+        </div>
+        {% if pagina.numero == 1 %}
+        {# CNPJ de exibição (fundos.yml) vence o da DePara, que segue nas taxas.
+           A linha não quebra: o corpo diminui com o comprimento para caber
+           antes da caixa do T (~790 px). #}
+        {% set cnpj = f.cfg.get('cnpj_exibido') or c.f.cnpj %}
+        {% set chars = (razao_social|length) + (26 if cnpj else 0) %}
+        {% set corpo_r = [17 if ve == 'cp' else 18.5, 760 / ([chars, 1]|max * 0.6)]|min %}
+        <div class="hrazao" style="font-size:{{ '%.1f'|format(corpo_r) }}px">{{ razao_social }}{% if cnpj %} <span class="hcnpj">/ CNPJ <span>{{ cnpj }}</span></span>{% endif %}</div>
+        <div class="hrule"></div>
+        <div class="hdate">{{ edicao.mes_ano }}</div>
+        {% endif %}
+      </div>
+      <div class="rbox">{{ t_svg|safe }}</div>
+      {% if pagina.numero == 1 %}<div class="gstrip"></div>{% endif %}
+    </header>
+
+    <div class="rc-body">
+      {% for s in pagina.secoes %}
+        {% set sid = s.id %}
+        {% if sid == 'objetivo' %}<div class="toppanel">{% endif %}
+
+        {% if grade_hg and sid == 'emissores' %}
+        <div class="grade-hg">
+          <div class="gcol">
+            {{ secao('emissores') }}
+            {% if 'rating' in ids %}{{ secao('rating') }}{% endif %}
+          </div>
+          <div class="gcol">{{ secao('setores') }}</div>
+        </div>
+        {% elif grade_hg and sid in ('setores', 'rating') %}
+        {% else %}
+          {% if s.primeiro_do_par %}<div class="twocol">{% endif %}
+          {{ secao(sid) }}
+          {% if s.ultimo_do_par %}</div>{% endif %}
+        {% endif %}
+
+        {% if sid == 'rentabilidade' %}</div>{% endif %}
+      {% endfor %}
+    </div>
+
+    {% if not tem_disc %}
+    <div class="rc-foot{{ ' escuro' if rodape_escuro }}">
+      <span class="flogo">{{ marca_svg|safe }}</span>
+      <span class="pgnum">{{ pagina.numero }}</span>
+    </div>
+    {% endif %}
+    <div class="rc-faixa"></div>
+  </section>
+{% endfor %}
+
+</div>
+
+{# ECharts da pasta vendor/ ao lado deste arquivo; se ela não vier junto (o
+   HTML mandado solto por e-mail, por exemplo), cai no CDN #}
+<script src="{{ echarts_src[0] }}"
+        onerror="var s=document.createElement('script');s.src='{{ echarts_src[1] }}';
+                 s.crossOrigin='anonymous';document.head.appendChild(s)"></script>
+{% if charts_js %}
+<script>{{ charts_js|safe }}</script>
+{% endif %}
+<script>
+/* nome do arquivo e do fundo para os botões — vem do Python, não do título */
+window.TV_RELATORIO = {{ meta_json|safe }};
+</script>
+{% if export_js %}
+<script>{{ export_js|safe }}</script>
+{% endif %}
+</body>
+</html>

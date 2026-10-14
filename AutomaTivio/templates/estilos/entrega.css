@@ -1,0 +1,58 @@
+/* CSS do relatório SOLTO: um fundo, uma folha embaixo da outra, barra de
+   exportação escura no topo. É o arquivo de onde saem o PDF e o PPTX, e o
+   que dá para mandar por e-mail sozinho.
+
+   A página por vertical não usa este arquivo: ela veste a casca do gerador
+   oficial (pagina.css). O que os dois compartilham — a folha, a pilha e a
+   impressão — está em relatorio.css e impressao.css. */
+html,body{margin:0;padding:0;background:#f2f5f7}
+body{font-family:var(--ff);-webkit-font-smoothing:antialiased}
+
+/* ---- barra de exportação --------------------------------------------------
+   Fica fora de tudo que é exportado: `.tv-exportando` a esconde durante a
+   captura, e @media print a tira da impressão. Sem isso ela apareceria no
+   topo do PDF. */
+.tv-bar{position:sticky;top:0;z-index:50;display:flex;flex-wrap:wrap;gap:8px;
+  align-items:center;padding:12px 18px;background:rgba(10,15,20,.92);
+  backdrop-filter:blur(10px);border-bottom:1px solid rgba(255,255,255,.12)}
+.tv-bar-tit{color:#E6EDF1;font-size:12px;font-weight:600;letter-spacing:.08em;
+  text-transform:uppercase;margin-right:auto}
+.tv-btn{font-family:var(--ff);font-size:12.5px;font-weight:600;color:#0A0F14;
+  background:var(--tv-verde);border:0;border-radius:999px;padding:8px 16px;
+  cursor:pointer;transition:.18s var(--ease);letter-spacing:.01em}
+.tv-btn:hover:not(:disabled){filter:brightness(1.06);transform:translateY(-1px)}
+.tv-btn:disabled{opacity:.5;cursor:progress}
+.tv-btn.principal{background:#fff}
+.tv-btn.fantasma{background:transparent;color:#E6EDF1;
+  border:1px solid rgba(255,255,255,.28)}
+.tv-btn.fantasma.ativo{background:var(--tv-verde);color:#0A0F14;border-color:transparent}
+.tv-toast{position:fixed;left:50%;bottom:28px;transform:translate(-50%,14px);
+  z-index:60;padding:11px 20px;border-radius:999px;background:rgba(10,15,20,.94);
+  color:#fff;font-size:13px;opacity:0;pointer-events:none;transition:.22s var(--ease);
+  max-width:min(620px,88vw);text-align:center}
+.tv-toast.mostra{opacity:1;transform:translate(-50%,0)}
+.tv-toast.erro{background:#8C2F39}
+body.tv-editando .rcard [contenteditable="true"]:hover{outline:1px dashed var(--tv-azul)}
+body.tv-editando .rcard [contenteditable="true"]:focus{outline:2px solid var(--tv-verde)}
+body.tv-exportando .tv-bar,body.tv-exportando .tv-toast{display:none}
+
+.histvazio{color:#8A99A3;font-size:13px;padding:10px 0}
+/* o contêiner do gráfico guarda o desenho do servidor até o ECharts assumir */
+.tv-chart{width:100%}
+.commentbox p{font-size:inherit;line-height:1.45}
+.discwrap p{font-size:inherit;line-height:1.35}
+.discwrap .disc-nota{color:var(--tv-cinza-claro);margin-bottom:9px}
+.pgnum.sobre-faixa{color:rgba(255,255,255,.6)}
+.pgnum.sobre-faixa b{color:#fff}
+.sealrow img.selo,.sealrow .qr{image-rendering:auto}
+.chart-h sup{font-size:.62em;vertical-align:super;line-height:0;margin-left:1px}
+.tv-chart>svg.histsvg{width:100%;height:auto;display:block}
+.feat.op .fv{line-height:1.55}
+
+/* ---- tela estreita: a barra de exportação ------------------------------- */
+@media(max-width:760px){
+  .tv-bar{padding:9px 12px;gap:6px}
+  .tv-bar-tit{flex:1 0 100%;margin-right:0;font-size:11px}
+  .tv-btn{font-size:12px;padding:7px 13px}
+}
+@media(max-width:460px){.tv-btn{font-size:11.5px;padding:6px 11px}}

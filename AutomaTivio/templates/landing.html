@@ -1,0 +1,684 @@
+<!doctype html>
+<html lang="pt-BR" data-theme="dark">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>{{ pg.marca|join(' ') }} · Saiba mais</title>
+<meta name="description" content="Saiba mais sobre o fundo de previdência {{ pg.nome }}. Referente a {{ mes_ref }}.">
+<style>
+{{ css_marca|safe }}
+{{ css_pagina|safe }}
+
+/* ---- página Saiba mais -----------------------------------------------------
+   Design system de referência: interno-bradesco.tivio.com (mesmos tokens de
+   _marca.css, com o verde como acento da casa). Os componentes repetem os de
+   lá: big numbers com borda verde à esquerda, cartões de vidro com brilho no
+   canto, abas em pílula, título de seção leve com a palavra-chave em negrito,
+   meta-k / meta-v nas características. A cor dos DADOS (barras, linha do
+   fundo) é a do fundo: azul no HG, verde no HY, como no logo. */
+:root{
+  --tv-verde-ink:#0A2415;
+  --accent-strong:var(--tv-verde);--pill-bg:rgba(193,244,212,.10);--pill-border:rgba(193,244,212,.35);
+  --glow:0 0 60px rgba(193,244,212,.15);--container:1240px;
+  --bg-radial:radial-gradient(1200px 800px at 15% -10%,rgba(193,244,212,.10),transparent 60%),radial-gradient(900px 700px at 110% 10%,rgba(117,157,180,.08),transparent 60%),radial-gradient(700px 500px at 50% 100%,rgba(193,244,212,.06),transparent 70%);
+  --lp-acc:var(--tv-azul);--lp-acc-2:var(--tv-cinza-claro);--lp-cx:#637881}
+:root[data-acento="verde"]{--lp-acc:var(--tv-verde-escuro);--lp-acc-2:var(--tv-verde)}
+:root[data-theme="light"]{
+  --accent-strong:var(--tv-verde-light-accent);--pill-bg:rgba(51,127,81,.08);--pill-border:rgba(51,127,81,.32);
+  --glow:0 0 60px rgba(51,127,81,.12);
+  --bg-radial:radial-gradient(1200px 800px at 15% -10%,rgba(51,127,81,.12),transparent 60%),radial-gradient(900px 700px at 110% 10%,rgba(117,157,180,.10),transparent 60%),radial-gradient(700px 500px at 50% 100%,rgba(146,211,171,.15),transparent 70%);
+  --lp-acc:var(--tv-azul-escuro);--lp-acc-2:var(--tv-azul);--lp-cx:#8A99A3}
+:root[data-theme="light"][data-acento="verde"]{--lp-acc:var(--tv-verde-light-accent);--lp-acc-2:var(--tv-agro)}
+.btn-group .btn[aria-pressed="true"]{color:var(--tv-verde-ink)}
+
+.lp{max-width:980px;margin:0 auto}
+
+/* cabeçalho: marca Tivio | logo horizontal do fundo */
+.header .brand .brand-tag{height:30px}
+.lp-logo-h{height:26px;width:auto;display:block;color:var(--text-primary)}
+
+/* abas de seção, em pílula como .tabs da referência */
+.header .inner{gap:18px}
+.hd-nav{flex:1 1 auto;min-width:0;display:flex;justify-content:center;position:relative}
+/* setas: só aparecem quando há seção escondida daquele lado do menu */
+.hd-seta{position:absolute;top:50%;transform:translateY(-50%);z-index:2;width:30px;height:30px;border-radius:50%;
+  display:flex;align-items:center;justify-content:center;padding:0;cursor:pointer;color:var(--text-primary);
+  background:var(--bg-elev-1);border:1px solid var(--line-strong);box-shadow:0 2px 10px rgba(0,0,0,.25)}
+.hd-seta[hidden]{display:none}
+.hd-seta svg{width:16px;height:16px}
+.hd-seta:hover{border-color:var(--accent-strong);color:var(--accent-strong)}
+.hd-seta.esq{left:-4px}.hd-seta.dir{right:-4px}
+.hd-nav.corta-esq .tabs{-webkit-mask-image:linear-gradient(90deg,transparent 0,#000 44px);mask-image:linear-gradient(90deg,transparent 0,#000 44px)}
+.hd-nav.corta-dir .tabs{-webkit-mask-image:linear-gradient(270deg,transparent 0,#000 44px);mask-image:linear-gradient(270deg,transparent 0,#000 44px)}
+.hd-nav.corta-esq.corta-dir .tabs{-webkit-mask-image:linear-gradient(90deg,transparent 0,#000 44px,#000 calc(100% - 44px),transparent 100%);mask-image:linear-gradient(90deg,transparent 0,#000 44px,#000 calc(100% - 44px),transparent 100%)}
+.hd-nav .tabs{display:flex;gap:2px;padding:4px;border-radius:var(--r-full);background:var(--input-bg);border:1px solid var(--line-strong);overflow-x:auto;scrollbar-width:none;max-width:100%}
+.hd-nav .tabs::-webkit-scrollbar{display:none}
+.hd-nav a{padding:7px 12px;border-radius:var(--r-full);font-size:12px;font-weight:600;color:var(--text-muted);white-space:nowrap;transition:background-color .2s var(--ease),color .2s var(--ease)}
+.hd-nav a:hover{color:var(--text-primary)}
+.hd-nav a.on{background:var(--tv-verde-escuro);color:var(--tv-verde-ink)}
+:root[data-theme="light"] .hd-nav a.on{background:var(--tv-verde-light-accent);color:#fff}
+.header .head-actions{margin-left:auto;width:auto;flex:0 0 auto}
+/* sem espaço para tudo numa linha: o menu desce para a segunda linha do cabeçalho */
+@media(max-width:760px){
+  .header .inner{flex-wrap:wrap;height:auto;padding-top:12px;padding-bottom:10px;row-gap:10px}
+  .hd-nav{order:3;flex:1 0 100%;justify-content:flex-start}
+}
+
+/* hero: o logo empilhado do fundo é a peça principal */
+.lp-hero{padding:48px 0 36px;text-align:center}
+.lp-hero .num{display:inline-flex;align-items:center;gap:9px;font-size:11px;font-weight:700;letter-spacing:.28em;text-transform:uppercase;color:var(--accent-strong)}
+.lp-hero .num .dot{width:7px;height:7px;border-radius:50%;background:currentColor}
+.lp-hero .sub{font-size:clamp(17px,1.9vw,21px);color:var(--text-primary);margin:22px 0 30px;font-weight:300;letter-spacing:-.01em}
+.lp-hero .sub em{font-style:normal;font-weight:700}
+.lp-h1{margin:0}
+.lp-logo{display:block;margin:0 auto;width:min(620px,88vw);height:auto;color:var(--text-primary)}
+.lp-hero .nome{margin:30px auto 0;max-width:760px;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--text-muted);font-weight:600;line-height:1.7}
+
+/* seções: cartão de vidro com brilho no canto (.hero-about / .vertical) */
+.lp-sec{scroll-margin-top:140px;margin:0 0 22px}
+.lp-card{position:relative;overflow:hidden;background:var(--bg-glass);border:1px solid var(--line);border-radius:var(--r-lg);padding:32px 30px;backdrop-filter:blur(16px) saturate(1.4)}
+.lp-card::before{content:"";position:absolute;inset:0;pointer-events:none;border-radius:inherit;background:linear-gradient(135deg,rgba(255,255,255,.06),transparent 55%)}
+:root[data-theme="light"] .lp-card::before{background:linear-gradient(135deg,rgba(255,255,255,.45),transparent 55%)}
+.lp-card>*{position:relative}
+.lp-h{font-size:clamp(19px,1.8vw,23px);font-weight:300;letter-spacing:-.01em;color:var(--text-primary);margin:0 0 6px;line-height:1.15}
+.lp-h em{font-style:normal;font-weight:700}
+.lp-desc{font-size:14px;color:var(--text-muted);margin:0 0 24px}
+.lp-h+:not(.lp-desc){margin-top:24px}
+.lp-nota{font-size:10px;color:var(--text-muted);margin:14px 0 0;text-align:right;font-family:ui-monospace,SFMono-Regular,Menlo,monospace}
+
+/* resumo em áudio (HGD30): o player do site, no design system */
+.lp-audio{display:grid;grid-template-columns:auto 1fr;gap:18px;align-items:center;padding:18px 20px;margin:0 0 26px;
+  border-radius:var(--r-md);background:var(--bg-glass-strong);border:1px solid var(--line-strong)}
+.au-play{width:54px;height:54px;border-radius:50%;border:0;cursor:pointer;display:flex;align-items:center;justify-content:center;
+  background:var(--accent-strong);color:var(--tv-verde-ink);box-shadow:var(--glow)}
+:root[data-theme="light"] .au-play{color:#fff}
+.au-play svg{width:22px;height:22px}.au-play .i-pause{display:none}
+.lp-audio.tocando .au-play .i-play{display:none}.lp-audio.tocando .au-play .i-pause{display:block}
+.au-tit{font-size:14px;font-weight:600;color:var(--text-primary);margin-bottom:8px}
+.au-barra{display:flex;align-items:center;gap:12px}
+.au-pos{flex:1;accent-color:var(--accent-strong);height:4px;cursor:pointer}
+.au-tempo{font-size:11px;color:var(--text-muted);font-variant-numeric:tabular-nums;white-space:nowrap}
+.au-acoes{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-top:10px;flex-wrap:wrap}
+.au-vel{display:inline-flex;gap:2px;padding:3px;border-radius:var(--r-full);border:1px solid var(--line-strong);background:var(--input-bg)}
+.au-vel button{border:0;background:transparent;color:var(--text-muted);font:600 11px var(--ff);padding:5px 10px;border-radius:var(--r-full);cursor:pointer}
+.au-vel button[aria-pressed="true"]{background:var(--tv-verde-escuro);color:var(--tv-verde-ink)}
+:root[data-theme="light"] .au-vel button[aria-pressed="true"]{background:var(--tv-verde-light-accent);color:#fff}
+.au-down{display:inline-flex;align-items:center;gap:6px;font-size:12px;font-weight:600;color:var(--text-secondary)}
+.au-down svg{width:14px;height:14px}.au-down:hover{color:var(--accent-strong)}
+@media(max-width:640px){.lp-audio{grid-template-columns:1fr;justify-items:start}.au-meio{width:100%}}
+.lp-texto{font-size:15px;line-height:1.7;color:var(--text-secondary)}
+.lp-texto h3{font-size:11px;letter-spacing:.24em;text-transform:uppercase;font-weight:700;color:var(--accent-strong);margin:30px 0 14px}
+.lp-texto h3:first-of-type{margin-top:18px}
+.lp-texto p{margin:0 0 14px}
+.lp-texto ul{margin:0 0 8px;padding-left:20px}
+.lp-texto li{margin:0 0 9px}
+.lp-texto li::marker{color:var(--accent-strong)}
+.lp-texto strong{color:var(--text-primary);font-weight:600}
+
+/* big numbers (.bn da referência) */
+.lp-kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:14px}
+.bn{position:relative;background:var(--bg-glass);border:1px solid var(--line);border-left:3px solid var(--accent-strong);border-radius:0 var(--r-md) var(--r-md) 0;padding:24px 20px 22px 22px;backdrop-filter:blur(16px) saturate(1.4);display:flex;flex-direction:column;justify-content:flex-end;min-height:132px}
+.bn .n{font-size:40px;line-height:1.05;font-weight:700;letter-spacing:-.03em;color:var(--accent-strong)}
+.bn .n small{font-size:.5em;margin-left:6px;letter-spacing:-.01em}
+.bn .k{font-size:13px;font-weight:500;letter-spacing:.02em;color:var(--text-muted);margin-top:12px}
+.bn.so-texto .n{font-size:26px;line-height:1.15;letter-spacing:-.01em;color:var(--text-primary)}
+.bn.longo .n{font-size:30px}
+
+.lp-tab{width:100%;border-collapse:collapse;font-size:16px}
+.lp-tab th{font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:var(--text-muted);font-weight:700;text-align:right;padding:0 0 12px}
+.lp-tab th:first-child{text-align:left}
+.lp-tab td{padding:13px 0;border-top:1px dashed var(--line-strong);text-align:right;color:var(--text-secondary);font-variant-numeric:tabular-nums}
+.lp-tab td:first-child{text-align:left;font-weight:600;color:var(--text-primary)}
+.lp-tab tr.fundo td{font-weight:700;color:var(--text-primary);border-top:0}
+.lp-tab tr.fundo td:not(:first-child){color:var(--accent-strong);font-size:20px}
+
+.bars{display:flex;flex-direction:column;gap:9px}
+.bar{display:grid;grid-template-columns:minmax(120px,240px) 1fr;align-items:center;gap:14px;font-size:13px}
+.bar .n{color:var(--text-secondary);text-align:right;line-height:1.25}
+.bar .t{display:flex;align-items:center;gap:10px;min-width:0}
+.bar .f{height:14px;border-radius:3px;background:var(--lp-acc);flex:0 0 auto}
+.bar.cx .f{background:var(--lp-cx)}
+.bar .v{font-weight:700;color:var(--text-primary);white-space:nowrap;font-variant-numeric:tabular-nums}
+.bars.grossa{gap:12px}
+.bars.grossa .bar{font-size:15px}.bars.grossa .f{height:34px;border-radius:6px}
+.bars.grossa .n{font-weight:600;color:var(--text-primary)}
+
+/* previsão de alocação (HYD60): três faixas na cor do fundo */
+.aloc{display:flex;flex-direction:column;gap:10px}
+.aloc .cab,.aloc .lin{display:grid;grid-template-columns:1.4fr 1fr 1fr;align-items:center}
+.aloc .cab span{font-size:9px;color:var(--text-muted);font-weight:700;letter-spacing:.18em;text-transform:uppercase;padding:0 18px;line-height:1.5}
+.aloc .cab small{letter-spacing:.04em;text-transform:none;font-weight:500;font-size:11px}
+.aloc .lin{border-radius:var(--r-md);min-height:56px;font-weight:700;color:var(--tv-verde-ink);font-size:16px}
+.aloc .lin span{padding:0 18px}
+.aloc .lin:nth-child(2){background:var(--lp-acc)}
+.aloc .lin:nth-child(3){background:var(--lp-acc-2)}
+.aloc .lin:nth-child(4){background:var(--lp-cx);color:#fff}
+:root[data-theme="light"] .aloc .lin:nth-child(2){color:#fff}
+.aloc .lin span+span{font-variant-numeric:tabular-nums}
+
+.rcols{display:grid;grid-auto-flow:column;grid-auto-columns:1fr;gap:10px;align-items:end;height:250px;border-bottom:1px solid var(--line-strong)}
+.rcol{display:flex;flex-direction:column;align-items:center;justify-content:flex-end;height:100%}
+.rcol .v{font-size:12px;font-weight:700;color:var(--text-primary);margin-bottom:6px;white-space:nowrap}
+.rcol .f{width:min(56px,80%);background:var(--lp-acc);border-radius:4px 4px 0 0}
+.rcol.extra .f{background:var(--lp-cx)}
+.rlabels{display:grid;grid-auto-flow:column;grid-auto-columns:1fr;gap:10px;margin-top:10px}
+.rlabels span{text-align:center;font-size:12px;color:var(--text-muted);font-weight:600}
+
+.lp-hist{height:360px}
+.lp-ec{width:100%}
+.ec-duo{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,1fr);gap:28px;align-items:center}
+.ec-set{height:440px}
+.ec-meia{height:260px}.ec-rosca{height:300px}.ec-rat{height:300px}
+.ec-leg{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:14px}
+.ec-leg li{display:grid;grid-template-columns:14px 1fr auto;align-items:center;gap:12px;font-size:15px;padding-bottom:12px;border-bottom:1px dashed var(--line-strong)}
+.ec-leg li:last-child{border-bottom:0}
+.ec-leg i{width:14px;height:14px;border-radius:4px;display:block}
+.ec-leg .n{color:var(--text-secondary)}
+.ec-leg b{font-size:20px;font-weight:700;color:var(--text-primary);font-variant-numeric:tabular-nums}
+.ec-leg.com-ret li{grid-template-columns:14px 1fr auto auto}
+.ec-leg.com-ret em{font-style:normal;font-weight:600;color:var(--accent-strong);min-width:118px;text-align:right}
+.ec-leg li.cab{border-bottom:0;padding-bottom:0}
+.ec-leg li.cab b,.ec-leg li.cab em{font-size:9px;letter-spacing:.16em;text-transform:uppercase;color:var(--text-muted);font-weight:700}
+@media(max-width:640px){.ec-set{height:520px}.ec-duo{grid-template-columns:1fr;gap:8px}.ec-meia{height:210px}.ec-rosca{height:250px}.ec-rat{height:240px}
+  .ec-leg b{font-size:17px}.ec-leg.com-ret em{min-width:0}}
+.lp-hist-leg{display:flex;gap:18px;justify-content:center;font-size:12px;color:var(--text-muted);margin-top:6px}
+.lp-hist-leg i{display:inline-block;width:14px;height:3px;border-radius:2px;vertical-align:middle;margin-right:6px}
+
+.benef{display:grid;grid-template-columns:repeat(2,1fr);gap:16px}
+.ben{border-radius:4px;overflow:hidden;display:flex;flex-direction:column;background:#EFEFEF;box-shadow:0 1px 0 rgba(0,0,0,.08)}
+.ben .top{padding:26px 24px 34px;flex:1}
+.ben h3{margin:0 0 16px;font-size:21px;line-height:1.1;font-weight:700;letter-spacing:.01em;text-transform:uppercase;color:#52B97A}
+.ben h3 em{font-style:normal;font-weight:700;color:var(--accent-strong)}
+.ben p{margin:0;font-size:15px;line-height:1.45;color:#2b2b2b}
+.ben .dst{position:relative;padding:30px 24px 26px;background:#A6A6A6;font-size:15px;line-height:1.45;color:#161616}
+.ben .dst::before{content:"";position:absolute;left:50%;top:-18px;transform:translateX(-50%);border:18px solid transparent;border-top:0;border-bottom-color:#A6A6A6}
+.ben .dst strong{font-weight:700}
+
+/* características: meta-k / meta-v (.fund-meta da referência) */
+.carac{display:grid;grid-template-columns:200px 1fr;margin:0}
+.carac dt,.carac dd{padding:14px 0;border-top:1px dashed var(--line-strong);margin:0}
+.carac dt{font-size:9px;letter-spacing:.18em;text-transform:uppercase;color:var(--text-muted);font-weight:700;padding-right:18px;padding-top:17px}
+.carac dd{font-size:14px;font-weight:600;color:var(--text-primary);line-height:1.55}
+.carac dt:first-of-type,.carac dd:first-of-type{border-top:0}
+
+.lp-fim{font-size:15px;color:var(--text-secondary);margin:34px 0 26px;line-height:1.7}
+.lp-fim strong{color:var(--text-primary)}
+.lp-disc{font-size:11px;line-height:1.6;color:var(--text-muted);border-top:1px solid var(--line);padding:24px 0 10px}
+.lp-disc h4{font-size:9px;letter-spacing:.22em;text-transform:uppercase;margin:0 0 12px;color:var(--text-muted)}
+.lp-disc p{margin:0 0 10px}
+.lp-disc .sac{display:flex;gap:28px;flex-wrap:wrap;margin-top:14px;color:var(--text-secondary);font-size:11px}
+.footer{padding:28px 0 40px;border-top:1px solid var(--line);margin-top:40px}
+.footer .container{display:flex;align-items:center;gap:20px;font-size:12px;color:var(--text-muted)}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
+.footer .logo-mark{height:22px;width:63px;color:var(--text-primary);flex:0 0 auto}
+
+@media(max-width:640px){
+  .lp-hero{padding:32px 0 24px}
+  .lp-card{padding:24px 18px;border-radius:var(--r-md)}
+  .lp-kpis{grid-template-columns:1fr 1fr;gap:10px}
+  .bn{min-height:108px;padding:18px 14px 16px 16px}
+  .bn .n{font-size:26px}.bn.longo .n{font-size:21px}.bn.so-texto .n{font-size:19px}
+  .bn .k{font-size:12px}
+  .lp-kpis .bn:last-child:nth-child(odd){grid-column:1/-1}
+  .bar{grid-template-columns:104px 1fr;gap:10px;font-size:12px}
+  .bars.grossa .bar{font-size:13px}.bars.grossa .f{height:28px}
+  .aloc .cab span,.aloc .lin span{padding:0 10px}
+  .aloc .lin{font-size:13px;min-height:50px}
+  .rcols{height:210px;gap:4px}.rlabels{gap:4px}
+  .rcol .v{font-size:9px}.rlabels span{font-size:9px}
+  .benef{grid-template-columns:1fr}
+  .carac{grid-template-columns:1fr}.carac dd{border-top:0;padding-top:0}
+  .carac dd:first-of-type{padding-top:0}
+  .lp-tab{font-size:14px}.lp-tab tr.fundo td:not(:first-child){font-size:17px}
+  .lp-hist{height:300px}
+  .footer .container{flex-direction:column;align-items:flex-start}
+}
+/* ---- KPIs visuais ---- */
+.kx{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
+.kx .c{position:relative;overflow:hidden;background:var(--bg-glass);border:1px solid var(--line);border-radius:var(--r-lg);padding:20px 20px 18px;backdrop-filter:blur(16px) saturate(1.4);display:flex;flex-direction:column;gap:12px;min-height:168px}
+.kx .c::before{content:"";position:absolute;inset:0;pointer-events:none;background:linear-gradient(135deg,rgba(255,255,255,.06),transparent 55%)}
+:root[data-theme="light"] .kx .c::before{background:linear-gradient(135deg,rgba(255,255,255,.45),transparent 55%)}
+.kx .c>*{position:relative}
+.kx .w2{grid-column:span 2}
+.kx .top{display:flex;align-items:center;gap:10px}
+.kx .ic{width:32px;height:32px;flex:0 0 32px;border-radius:10px;display:grid;place-items:center;background:var(--pill-bg);border:1px solid var(--pill-border);color:var(--accent-strong)}
+.kx .ic svg{width:17px;height:17px}
+.kx .k{font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:var(--text-muted);font-weight:700;line-height:1.3}
+.kx .n{font-size:34px;font-weight:700;letter-spacing:-.03em;line-height:1;color:var(--accent-strong);margin-top:auto}
+.kx .n small{font-size:.42em;margin-left:6px;font-weight:600;letter-spacing:0}
+.kx .s{font-size:12px;color:var(--text-muted);line-height:1.4}
+.kx .s b{color:var(--text-primary);font-weight:700}
+.kx .tit{font-size:24px;font-weight:700;line-height:1.1;color:var(--text-primary);margin-top:auto}
+.kx .chips{display:flex;gap:6px;flex-wrap:wrap}
+.kx .chips span{font-size:10px;font-weight:700;letter-spacing:.08em;padding:5px 10px;border-radius:var(--r-full);background:var(--pill-bg);border:1px solid var(--pill-border);color:var(--accent-strong)}
+.kx .tr{position:relative;height:8px;border-radius:99px;background:var(--line-strong)}
+.kx .tr i{position:absolute;left:0;top:0;bottom:0;border-radius:inherit;background:linear-gradient(90deg,var(--lp-acc),var(--lp-acc-2))}
+.kx .tr b{position:absolute;top:50%;width:14px;height:14px;border-radius:50%;background:var(--accent-strong);transform:translate(-50%,-50%);box-shadow:0 0 0 4px var(--bg-base)}
+.kx .sc{display:flex;justify-content:space-between;font-size:10px;color:var(--text-muted);font-weight:600;margin-top:-4px}
+.kx .hero .n{font-size:54px}
+.kx .hero{background:linear-gradient(135deg,rgba(193,244,212,.12),rgba(193,244,212,.02));border-color:var(--pill-border)}
+:root[data-theme="light"] .kx .hero{background:linear-gradient(135deg,rgba(51,127,81,.10),rgba(51,127,81,.02))}
+.kx .duo{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.kx .duo div{border-top:1px dashed var(--line-strong);padding-top:10px}
+.kx .duo strong{display:block;font-size:20px;color:var(--text-primary);font-variant-numeric:tabular-nums}
+.kx .duo span{font-size:11px;color:var(--text-muted)}
+@media(max-width:900px){.kx{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:640px){.kx{gap:10px}.kx .c{padding:16px;min-height:140px}.kx .n{font-size:26px}.kx .hero .n{font-size:38px}.kx .tit{font-size:19px}}
+</style>
+</head>
+<body>
+<script>document.documentElement.setAttribute('data-acento','{{ pg.acento or "azul" }}')</script>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs>
+<symbol id="tv-logo" viewBox="118 104 844 294">{{ marca_path|safe }}</symbol>
+</defs></svg>
+
+<header class="header">
+  <div class="inner">
+    <a href="#top" class="brand">
+      <svg class="logo-mark anim-brand" viewBox="0 0 844 294"><use href="#tv-logo"/></svg>
+      <span class="brand-tag">{% if logo_horizontal %}{{ logo_horizontal|safe }}{% else %}{{ pg.marca|join('') }}{% endif %}</span>
+    </a>
+    <nav class="hd-nav" aria-label="Seções">
+      <button type="button" class="hd-seta esq" aria-label="Seções anteriores" hidden><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg></button>
+      <div class="tabs">
+      {% for s, t in nav %}<a href="#sec-{{ s }}">{{ t }}</a>{% endfor %}
+      </div>
+      <button type="button" class="hd-seta dir" aria-label="Próximas seções" hidden><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg></button>
+    </nav>
+    <div class="head-actions">
+      <div class="btn-group" role="group" aria-label="Alternar tema da interface">
+        <button type="button" class="btn btn-ghost btn-xs" data-theme-set="light" aria-label="Modo claro"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></svg></button>
+        <button type="button" class="btn btn-ghost btn-xs" data-theme-set="dark" aria-label="Modo escuro"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg></button>
+      </div>
+    </div>
+  </div>
+</header>
+
+<main class="container" id="top">
+<div class="lp">
+  <section class="lp-hero hero-stagger">
+    <div class="num"><span class="dot news-pulse"></span>Referente a {{ mes_ref }}</div>
+    <p class="sub">Saiba mais sobre o fundo de <em>previdência</em></p>
+    {% if logo_horizontal %}<h1 class="lp-h1">{{ logo_horizontal_hero|safe }}<span class="sr">{{ pg.marca|join(' ') }}</span></h1>
+    {% else %}<h1 class="lp-h">{{ pg.marca|join(' ') }}</h1>{% endif %}
+    <p class="nome">{{ pg.nome }} · <span style="white-space:nowrap">CNPJ {{ pg.cnpj }}</span></p>
+  </section>
+
+  {% for s in secoes %}
+  {% if s == 'texto' %}
+  <section class="lp-sec lp-card" id="sec-texto">
+    {% if audio %}
+    <div class="lp-audio" data-src="{{ audio.url }}">
+      <audio preload="metadata" src="{{ audio.url }}"></audio>
+      <button type="button" class="au-play" aria-label="Ouvir o resumo"><svg class="i-play" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5.5v13l11-6.5z"/></svg><svg class="i-pause" viewBox="0 0 24 24" fill="currentColor"><path d="M7 5h4v14H7zM13 5h4v14h-4z"/></svg></button>
+      <div class="au-meio">
+        <div class="au-tit">{{ audio.titulo }}</div>
+        <div class="au-barra"><input type="range" class="au-pos" min="0" max="1000" value="0" aria-label="Posição do áudio"><span class="au-tempo">0:00 / 0:00</span></div>
+        <div class="au-acoes">
+          <div class="au-vel" role="group" aria-label="Velocidade">{% for v in ['1', '1.5', '2', '3'] %}<button type="button" data-v="{{ v }}"{% if loop.first %} aria-pressed="true"{% endif %}>{{ v|replace('.', ',') }}×</button>{% endfor %}</div>
+          <a class="au-down" href="{{ audio.url }}" download><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12M7 12l5 5 5-5M5 21h14"/></svg>Download</a>
+        </div>
+      </div>
+    </div>
+    {% endif %}
+    <div class="lp-texto"><p>Prezados(as),</p>{{ texto_html|safe }}</div>
+  </section>
+
+  {% elif s == 'kpis' and kx %}
+  <section class="lp-sec" id="sec-kpis">
+  <div class="kx">
+    <div class="c">
+      <div class="top"><span class="k">Veículo</span></div>
+      <div class="tit">{{ kx.veiculo }}</div>
+      <div class="chips">{% for c in kx.chips %}<span>{{ c }}</span>{% endfor %}</div>
+    </div>
+    <div class="c">
+      <div class="top"><span class="k">Resgate</span></div>
+      <div class="n">{{ kx.resgate }}</div>
+      <div class="s">Prazo de pagamento após o pedido</div>
+    </div>
+    <div class="c">
+      <div class="top"><span class="k">Duration</span></div>
+      <div class="n">{{ kx.duration }}<small>{{ kx.duration_un }}</small></div>
+      <div class="s">Prazo médio da carteira</div>
+    </div>
+    <div class="c">
+      <div class="top"><span class="k">Taxa de Adm &amp; Gestão</span></div>
+      <div class="n">{{ kx.taxa }}<small>a.a.</small></div>
+      <div class="s">Taxa única de administração e gestão</div>
+    </div>
+    <div class="c w2 hero">
+      <div class="top"><span class="k">Carrego · {{ kx.mes_ano }}</span></div>
+      <div class="n">CDI + {{ kx.carrego }}<small>a.a.</small></div>
+      <div class="duo">
+        <div><strong>{{ kx.rent_mes }}</strong><span>no mês · {{ kx.pct_mes }} do CDI</span></div>
+        <div><strong>{{ kx.rent_inicio }}</strong><span>desde o início · {{ kx.pct_inicio }} do CDI</span></div>
+      </div>
+    </div>
+    <div class="c">
+      <div class="top"><span class="k">Capacity limitada</span></div>
+      <div class="n">R$ {{ kx.capacity }}<small>mi</small></div>
+      <div class="s"><b>{{ kx.preenchido }}</b> preenchido · PL {{ kx.pl }}</div>
+    </div>
+    <div class="c">
+      <div class="top"><span class="k">Taxa de Performance</span></div>
+      <div class="n">{{ kx.perf }}</div>
+      <div class="s">do que exceder <b>{{ kx.perf_sobre }}</b></div>
+    </div>
+  </div>
+  <p class="lp-nota">Data base: {{ edicao.br }}</p>
+</section>
+
+  {% elif s == 'kpis' %}
+  <section class="lp-sec" id="sec-kpis">
+    <div class="lp-kpis">
+      {% for k in kpis %}
+      {% if k.destaque %}<div class="bn so-texto"><div class="n">{{ k.rotulo }}</div></div>
+      {% else %}<div class="bn{{ ' longo' if k.valor|length > 9 }}"><div class="n">{{ k.valor }}{% if k.unidade %}<small>{{ k.unidade }}</small>{% endif %}</div><div class="k">{{ k.rotulo }}</div></div>{% endif %}
+      {% endfor %}
+    </div>
+    <p class="lp-nota">Data base: {{ edicao.br }}</p>
+  </section>
+
+  {% elif s == 'rentabilidade' %}
+  <section class="lp-sec lp-card" id="sec-rentabilidade">
+    <h2 class="lp-h">Rentabilidade</h2>
+    <table class="lp-tab">
+      <thead><tr><th></th>{% for p in rent.periodos %}<th>{{ p }}</th>{% endfor %}</tr></thead>
+      <tbody>
+      {% for rot, vals in rent.linhas %}<tr{% if loop.first %} class="fundo"{% endif %}><td>{{ rot }}</td>{% for v in vals %}<td>{{ v }}</td>{% endfor %}</tr>
+      {% endfor %}
+      </tbody>
+    </table>
+  </section>
+
+  {% elif s == 'alocacao_real' %}
+  <section class="lp-sec lp-card" id="sec-alocacao_real">
+    <h2 class="lp-h">Alocação da <em>carteira</em></h2>
+    <div class="ec-duo">
+      <div class="lp-ec ec-meia" data-ec='{{ ec.alocacao|tojson }}'></div>
+      <ul class="ec-leg">{% for n, r, w, cx in alocacao %}<li><i data-cor="{{ loop.index0 }}"{% if n == 'Caixa' %} data-cx{% endif %}></i><span class="n">{{ n }}</span><b>{{ r }}</b></li>{% endfor %}</ul>
+    </div>
+    <p class="lp-nota">% do patrimônio líquido · High Grade e High Yield pela classificação interna</p>
+  </section>
+
+  {% elif s == 'previsao_alocacao' %}
+  <section class="lp-sec lp-card" id="sec-previsao_alocacao">
+    <h2 class="lp-h">Alocação da <em>carteira</em></h2>
+    <div class="ec-duo">
+      <div class="lp-ec ec-meia" data-ec='{{ ec.previsao|tojson }}'></div>
+      <ul class="ec-leg com-ret"><li class="cab"><i></i><span class="n"></span><b>Previsão de alocação</b><em>Retorno estimado</em></li>
+      {% for a in previsao %}<li><i data-cor="{{ loop.index0 }}"{% if a.nome == 'Caixa' %} data-cx{% endif %}></i><span class="n">{{ a.nome }}</span><b>{{ a.alocacao }}</b><em>{{ a.retorno }}</em></li>{% endfor %}</ul>
+    </div>
+    <p class="lp-nota">% do patrimônio líquido · retorno estimado bruto de taxas e custos</p>
+  </section>
+
+  {% elif s == 'setorial' %}
+  <section class="lp-sec lp-card" id="sec-setorial">
+    <h2 class="lp-h">Exposição <em>setorial</em></h2>
+    <div class="lp-ec ec-set" data-ec='{{ ec.setorial|tojson }}'></div>
+    <p class="lp-nota">% do patrimônio líquido · passe o mouse num bloco para ver o setor</p>
+  </section>
+
+  {% elif s == 'rating' %}
+  <section class="lp-sec lp-card" id="sec-rating">
+    <h2 class="lp-h">Distribuição de <em>rating</em> da carteira</h2>
+    <p class="lp-desc">Exposição de rating externo</p>
+    <div class="lp-ec ec-rat" data-ec='{{ ec.rating|tojson }}'></div>
+  </section>
+
+  {% elif s == 'composicao' %}
+  <section class="lp-sec lp-card" id="sec-composicao">
+    <h2 class="lp-h">Composição da <em>carteira</em></h2>
+    <div class="ec-duo">
+      <div class="lp-ec ec-rosca" data-ec='{{ ec.composicao|tojson }}'></div>
+      <ul class="ec-leg">{% for n, r, w, cx in composicao %}<li><i data-cor="{{ loop.index0 }}"{% if n == 'Caixa' %} data-cx{% endif %}></i><span class="n">{{ n }}</span><b>{{ r }}</b></li>{% endfor %}</ul>
+    </div>
+  </section>
+
+  {% elif s == 'historico' %}
+  <section class="lp-sec lp-card" id="sec-historico">
+    <h2 class="lp-h">Rentabilidade <em>histórica</em></h2>
+    <div class="lp-hist" id="lp-hist"></div>
+    <div class="lp-hist-leg"><span><i style="background:var(--lp-acc)"></i>Fundo</span><span><i style="background:var(--text-muted)"></i>{{ ctx.benchmark }}</span></div>
+  </section>
+
+  {% elif s == 'beneficios' %}
+  <section class="lp-sec lp-card" id="sec-beneficios">
+    <h2 class="lp-h">Benefícios de <em>crédito estruturado</em></h2>
+    <div class="benef">
+      {% for b in pg.beneficios %}<article class="ben"><div class="top"><h3>{% if ' de ' in b.titulo %}{{ b.titulo.split(' de ', 1)[0] }}<br>de {{ b.titulo.split(' de ', 1)[1] }}{% else %}{{ b.titulo.split(' ', 1)[0] }}<br>{{ b.titulo.split(' ', 1)[1] if ' ' in b.titulo else '' }}{% endif %}</h3>{% for par in b.texto.split('\n\n') %}<p{% if not loop.first %} style="margin-top:14px"{% endif %}>{{ par }}</p>{% endfor %}</div><div class="dst">{{ b.destaque }}</div></article>
+      {% endfor %}
+    </div>
+  </section>
+
+  {% elif s == 'caracteristicas' %}
+  <section class="lp-sec lp-card" id="sec-caracteristicas">
+    <h2 class="lp-h">Características do <em>fundo</em></h2>
+    <dl class="carac">
+      {% for k, v in caracteristicas %}<dt>{{ k }}</dt><dd>{{ v }}</dd>
+      {% endfor %}
+    </dl>
+  </section>
+  {% endif %}
+  {% endfor %}
+
+  <p class="lp-fim">Em caso de dúvidas, entre em contato conosco.<br>Atenciosamente,<br><strong>Tivio Capital</strong></p>
+
+  <section class="lp-disc">
+    <h4>Disclaimer</h4>
+    {% for p in disclaimer %}<p>{{ p }}</p>{% endfor %}
+    <div class="sac"><span>SAC 0800 704 8383</span><span>Ouvidoria 0800 727 9933</span></div>
+  </section>
+</div>
+</main>
+
+<footer class="footer">
+  <div class="container">
+    <svg class="logo-mark" viewBox="0 0 844 294"><use href="#tv-logo"/></svg>
+    <div>Material de divulgação · Data base {{ edicao.br }} · tivio.com</div>
+  </div>
+</footer>
+
+<button class="btn btn-icon backtop" id="backtop" aria-label="Voltar ao topo"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19V5M5 12l7-7 7 7"/></svg></button>
+
+<script defer src="https://cdn.jsdelivr.net/npm/echarts@5.6.0/dist/echarts.min.js"
+        onload="window.lpGrafico&&window.lpGrafico()"
+        onerror="var s=document.createElement('script');s.src='https://cdnjs.cloudflare.com/ajax/libs/echarts/5.6.0/echarts.min.js';s.onload=function(){window.lpGrafico&&window.lpGrafico()};document.head.appendChild(s)"></script>
+<script>
+(function () {
+  var raiz = document.documentElement, CHAVE = 'tivio-relgestao-theme';
+  var HIST = {{ historico|safe }};
+  var grafico = null;
+  function cor(v) { return getComputedStyle(raiz).getPropertyValue(v).trim(); }
+  function pct(v) { return v.toFixed(2).replace('.', ',') + '%'; }
+
+  var EC = [];
+  function paleta() { return [cor('--lp-acc'), cor('--lp-acc-2'), cor('--tv-verde-escuro'), cor('--lp-cx')]; }
+  function fonte() { return 'Versos, Helvetica Neue, Arial, sans-serif'; }
+  function hexa(c) { c = (c || '').trim(); if (c[0] !== '#') return [128, 128, 128];
+    if (c.length === 4) c = '#' + c[1] + c[1] + c[2] + c[2] + c[3] + c[3];
+    return [1, 3, 5].map(function (i) { return parseInt(c.substr(i, 2), 16); }); }
+  function luz(c) { var m = (c.match(/\d+/g) || hexa(c)).map(Number);
+    if (m.length < 3) m = hexa(c); return (0.299 * m[0] + 0.587 * m[1] + 0.114 * m[2]) / 255; }
+  function mistura(a, b, t) { var x = hexa(a), y = hexa(b);
+    return 'rgb(' + x.map(function (v, i) { return Math.round(v + (y[i] - v) * t); }).join(',') + ')'; }
+  function graficos() {
+    EC.forEach(function (g) { g.dispose(); }); EC = [];
+    var pal = paleta(), tx = cor('--text-secondary'), mu = cor('--text-muted'), li = cor('--line');
+    document.querySelectorAll('.ec-leg i[data-cor]').forEach(function (i) { i.style.background = i.hasAttribute('data-cx') ? cor('--lp-cx') : pal[+i.dataset.cor % pal.length]; });
+    document.querySelectorAll('.lp-ec').forEach(function (el) {
+      var d = JSON.parse(el.dataset.ec || 'null'); if (!d || !d.itens || !d.itens.length) return;
+      el.innerHTML = '';
+      var g = echarts.init(el, null, {renderer: 'svg'}), op;
+      var dados = d.itens.map(function (x, i) { return {name: x[0], value: x[1], rotulo: x[2], itemStyle: {color: x[0] === 'Caixa' ? cor('--lp-cx') : pal[i % pal.length]}}; });
+      if (d.tipo === 'meia' || d.tipo === 'rosca') {
+        // tudo em pixels, a partir do tamanho real do gráfico: o número fica
+        // sempre dentro do vão, em qualquer largura de tela
+        var meia = d.tipo === 'meia', W = el.clientWidth, H = el.clientHeight, R, cy;
+        if (meia) { R = Math.min(W / 2 - 6, H - 14); cy = H - 8; }
+        else { R = Math.min(W, H) / 2 - 6; cy = H / 2; }
+        var ri = R * (meia ? 0.66 : 0.64);
+        var fz = Math.max(16, Math.min(30, Math.round(ri * (meia ? 0.36 : 0.34))));
+        var yNum = meia ? cy - ri * 0.42 : cy - fz * 0.18;
+        var ySub = meia ? cy - ri * 0.42 + fz * 0.95 : cy + fz * 0.85;
+        op = {animation: false, tooltip: {trigger: 'item', formatter: function (p) { return p.name + ': ' + p.data.rotulo; }},
+          series: [{type: 'pie', radius: [ri, R], center: [W / 2, cy],
+            startAngle: 180, endAngle: meia ? 360 : -180, avoidLabelOverlap: true, padAngle: 1.5,
+            itemStyle: {borderRadius: 6, borderColor: cor('--bg-base'), borderWidth: 2},
+            label: {show: false}, data: dados}],
+          graphic: [{type: 'text', x: W / 2, y: yNum,
+            style: {text: d.centro || '', fill: cor('--text-primary'), font: '700 ' + fz + 'px ' + fonte(), textAlign: 'center', textVerticalAlign: 'middle'}},
+            {type: 'text', x: W / 2, y: ySub,
+            style: {text: d.sub || '', fill: mu, font: '600 ' + Math.max(9, Math.round(fz * 0.36)) + 'px ' + fonte(), textAlign: 'center', textVerticalAlign: 'middle'}}]};
+      } else if (d.tipo === 'blocos') {
+        // treemap: cada setor do tamanho do seu peso; o tom clareia do maior
+        // para o menor, e o Caixa fica no cinza da casa
+        var n = d.itens.length, base = pal[0], fundo = cor('--bg-elev-1') || '#fff';
+        var blocos = d.itens.map(function (x, i) {
+          var c = x[0] === 'Caixa' ? cor('--lp-cx') : mistura(base, cor('--lp-acc-2'), Math.min(0.85, i / Math.max(1, n - 1)));
+          var claro = luz(c) > 0.55;
+          return {name: x[0], value: x[1], rotulo: x[2], itemStyle: {color: c},
+            label: {show: x[1] >= 1.5, rich: {n: {color: claro ? '#0A0F14' : '#FFFFFF'}, v: {color: claro ? '#0A0F14' : '#FFFFFF'}}}};
+        });
+        op = {animation: false, tooltip: {formatter: function (p) { return p.name + ': ' + p.data.rotulo; }},
+          series: [{type: 'treemap', roam: false, nodeClick: false, breadcrumb: {show: false},
+            left: 0, right: 0, top: 0, bottom: 0, squareRatio: 0.9, data: blocos,
+            itemStyle: {borderColor: cor('--bg-base'), borderWidth: 2, gapWidth: 2, borderRadius: 6},
+            label: {show: true, position: 'insideTopLeft', padding: [8, 10],
+              formatter: function (p) { return '{n|' + p.name + '}\n{v|' + p.data.rotulo + '}'; },
+              rich: {n: {fontSize: 12, fontWeight: 600, fontFamily: fonte(), lineHeight: 16},
+                     v: {fontSize: 16, fontWeight: 700, fontFamily: fonte(), lineHeight: 22}}},
+            upperLabel: {show: false}}]};
+      } else if (d.tipo === 'barras') {
+        op = {animation: false, grid: {left: 4, right: 64, top: 4, bottom: 4, containLabel: true},
+          xAxis: {type: 'value', show: false},
+          yAxis: {type: 'category', inverse: true, data: d.itens.map(function (x) { return x[0]; }),
+            axisLine: {lineStyle: {color: li}}, axisTick: {show: false}, axisLabel: {color: tx, fontSize: el.clientWidth < 420 ? 10 : 12, fontFamily: fonte()}},
+          series: [{type: 'bar', barWidth: 12, data: dados, itemStyle: {borderRadius: [0, 4, 4, 0]},
+            label: {show: true, position: 'right', formatter: function (p) { return p.data.rotulo; }, color: cor('--text-primary'), fontWeight: 700, fontSize: 12, fontFamily: fonte()}}]};
+        op.series[0].data.forEach(function (x) { if (x.name !== 'Caixa') x.itemStyle.color = pal[0]; });
+      } else {
+        op = {animation: false, grid: {left: 4, right: 4, top: 28, bottom: 4, containLabel: true},
+          xAxis: {type: 'category', data: d.itens.map(function (x) { return x[0]; }), axisLine: {lineStyle: {color: li}}, axisTick: {show: false},
+            axisLabel: {color: mu, fontSize: 12, fontWeight: 600, fontFamily: fonte(), interval: 0}},
+          yAxis: {type: 'value', show: false},
+          series: [{type: 'bar', barMaxWidth: 56, data: dados.map(function (x) { x.itemStyle = {color: {type: 'linear', x: 0, y: 0, x2: 0, y2: 1,
+              colorStops: [{offset: 0, color: pal[0]}, {offset: 1, color: pal[1]}]}, borderRadius: [6, 6, 0, 0]}; return x; }),
+            label: {show: true, position: 'top', formatter: function (p) { return p.data.rotulo; }, color: cor('--text-primary'), fontWeight: 700, fontSize: 12, fontFamily: fonte()}}]};
+      }
+      g.setOption(op); EC.push(g);
+    });
+  }
+  var _rt; window.addEventListener('resize', function () { clearTimeout(_rt); _rt = setTimeout(function () { if (window.echarts) graficos(); }, 150); });
+
+  window.lpGrafico = function () {
+    if (window.echarts) graficos();
+    var el = document.getElementById('lp-hist');
+    if (!el || !HIST || !window.echarts) return;
+    if (grafico) grafico.dispose();
+    grafico = echarts.init(el, null, {renderer: 'svg'});
+    var ac = cor('--lp-acc'), mu = cor('--text-muted'), li = cor('--line');
+    var ultimo = HIST.l.length - 1;
+    function serie(nome, dados, c, w) {
+      return {name: nome, type: 'line', data: dados, symbol: 'none', smooth: false,
+        lineStyle: {color: c, width: w}, itemStyle: {color: c},
+        areaStyle: nome === 'Fundo' ? {color: {type: 'linear', x: 0, y: 0, x2: 0, y2: 1,
+          colorStops: [{offset: 0, color: c + '55'}, {offset: 1, color: c + '00'}]}} : undefined,
+        endLabel: {show: true, formatter: function (p) { return pct(p.value); },
+          color: c, fontWeight: 600, fontSize: 12, fontFamily: 'Versos, sans-serif'}};
+    }
+    grafico.setOption({
+      animation: false,
+      grid: {left: 8, right: 64, top: 16, bottom: 8, containLabel: true},
+      tooltip: {trigger: 'axis', valueFormatter: pct},
+      xAxis: {type: 'category', data: HIST.l, boundaryGap: false,
+        axisLine: {lineStyle: {color: li}}, axisTick: {show: false},
+        axisLabel: {color: mu, fontSize: 11, fontFamily: 'Versos, sans-serif',
+          interval: Math.max(0, Math.ceil(HIST.l.length / 8) - 1)}},
+      yAxis: {type: 'value', axisLabel: {color: mu, fontSize: 11, formatter: function (v) { return v + '%'; }},
+        splitLine: {lineStyle: {color: li}}},
+      series: [serie(HIST.bench, HIST.c, mu, 2), serie('Fundo', HIST.f, ac, 3)]
+    });
+  };
+
+  function aplicar(t) {
+    raiz.setAttribute('data-theme', t);
+    [].forEach.call(document.querySelectorAll('[data-theme-set]'), function (b) {
+      b.setAttribute('aria-pressed', String(b.dataset.themeSet === t));
+    });
+    try { localStorage.setItem(CHAVE, t); } catch (e) {}
+    window.lpGrafico();
+  }
+  var salvo = null;
+  try { salvo = localStorage.getItem(CHAVE); } catch (e) {}
+  [].forEach.call(document.querySelectorAll('[data-theme-set]'), function (b) {
+    b.addEventListener('click', function () { aplicar(b.dataset.themeSet); });
+  });
+  aplicar(salvo || 'dark');
+  window.addEventListener('resize', function () { if (grafico) grafico.resize(); });
+
+  // seção atual destacada na barra de navegação
+  var links = [].slice.call(document.querySelectorAll('.hd-nav a'));
+  var alvos = links.map(function (a) { return document.querySelector(a.getAttribute('href')); });
+  var topo = document.getElementById('backtop');
+  function marcar() {
+    var y = window.scrollY + 170, atual = 0;
+    alvos.forEach(function (s, i) { if (s && s.offsetTop <= y) atual = i; });
+    links.forEach(function (a, i) { a.classList.toggle('on', i === atual); });
+    // no celular o menu rola de lado: a aba da seção atual fica à vista
+    var on = links[atual], trilho = on && on.parentNode;
+    if (on && trilho && trilho.scrollWidth > trilho.clientWidth && marcar.ultimo !== atual) {
+      trilho.scrollTo({left: Math.max(0, on.offsetLeft - 24), behavior: 'smooth'});
+    }
+    marcar.ultimo = atual;
+    topo.classList.toggle('show', window.scrollY > 600);
+  }
+  window.addEventListener('scroll', marcar, {passive: true});
+
+  // player do resumo em áudio
+  document.querySelectorAll('.lp-audio').forEach(function (box) {
+    var a = box.querySelector('audio'), bt = box.querySelector('.au-play'),
+        pos = box.querySelector('.au-pos'), tempo = box.querySelector('.au-tempo');
+    function mmss(t) { t = Math.max(0, Math.floor(t || 0)); return Math.floor(t / 60) + ':' + ('0' + t % 60).slice(-2); }
+    function atualiza() {
+      if (a.duration) pos.value = Math.round(a.currentTime / a.duration * 1000);
+      tempo.textContent = mmss(a.currentTime) + ' / ' + mmss(a.duration);
+    }
+    bt.addEventListener('click', function () { if (a.paused) a.play(); else a.pause(); });
+    a.addEventListener('play', function () { box.classList.add('tocando'); bt.setAttribute('aria-label', 'Pausar'); });
+    a.addEventListener('pause', function () { box.classList.remove('tocando'); bt.setAttribute('aria-label', 'Ouvir o resumo'); });
+    a.addEventListener('timeupdate', atualiza); a.addEventListener('loadedmetadata', atualiza);
+    a.addEventListener('durationchange', atualiza); atualiza();   // metadados que chegam antes do script
+    pos.addEventListener('input', function () { if (a.duration) a.currentTime = pos.value / 1000 * a.duration; });
+    box.querySelectorAll('.au-vel button').forEach(function (b) {
+      b.addEventListener('click', function () {
+        a.playbackRate = parseFloat(b.dataset.v);
+        box.querySelectorAll('.au-vel button').forEach(function (x) { x.setAttribute('aria-pressed', String(x === b)); });
+      });
+    });
+  });
+
+  // setas do menu
+  var nav = document.querySelector('.hd-nav'), trilho = nav && nav.querySelector('.tabs');
+  var sEsq = nav && nav.querySelector('.hd-seta.esq'), sDir = nav && nav.querySelector('.hd-seta.dir');
+  function setas() {
+    if (!trilho) return;
+    var temEsq = trilho.scrollLeft > 4, temDir = trilho.scrollLeft + trilho.clientWidth < trilho.scrollWidth - 4;
+    sEsq.hidden = !temEsq; sDir.hidden = !temDir;
+    nav.classList.toggle('corta-esq', temEsq); nav.classList.toggle('corta-dir', temDir);
+  }
+  if (trilho) {
+    trilho.addEventListener('scroll', setas, {passive: true});
+    window.addEventListener('resize', setas);
+    sEsq.addEventListener('click', function () { trilho.scrollBy({left: -trilho.clientWidth * 0.6, behavior: 'smooth'}); });
+    sDir.addEventListener('click', function () { trilho.scrollBy({left: trilho.clientWidth * 0.6, behavior: 'smooth'}); });
+    setas();
+  }
+  topo.addEventListener('click', function () { window.scrollTo({top: 0, behavior: 'smooth'}); });
+  marcar();
+})();
+</script>
+</body>
+</html>

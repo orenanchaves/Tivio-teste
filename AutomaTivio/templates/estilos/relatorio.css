@@ -1,0 +1,388 @@
+/* Folha A4 do Relatório de Gestão (1000x1414) — desenhada sobre os PDFs
+   publicados de agosto/2026 (Institucional 30 e ALT 180). Medidas tiradas do
+   original na escala da folha; qualquer ajuste de design entra aqui.
+   Crédito Privado (.v-cp) tem acento azul; Crédito Estruturado (.v-ce), verde. */
+/* ================= REPORT A4 CARD (1000 x 1414) ================= */
+.rcard,.rcard *{box-sizing:border-box}
+/* peso 400: o 300 cai na Versos ExtraLight, bem mais fina que o publicado */
+.rcard{width:1000px;height:1414px;position:relative;overflow:hidden;background:#fff;
+  color:#141414;font-family:var(--ff);font-weight:400;display:flex;flex-direction:column;
+  --ac:#5B8299;--ac-barra:#A9BFCC;--ac-traco:#5B8299;--ac-faixa:#5B8299}
+.rcard.v-ce{--ac:#26B663;--ac-barra:#52BE7E;--ac-traco:#A6E6BF;
+  --ac-faixa:linear-gradient(90deg,#C6F3D6,#9EDDB7)}
+
+/* ---- cabeçalho ---------------------------------------------------------- */
+.rc-head{position:relative;flex:0 0 auto;width:100%;background:#000;color:#fff;overflow:hidden}
+.rc-head.big{height:210px}.v-ce .rc-head.big{height:244px}
+.rc-head.slim{height:124px}
+.rc-head .hl{position:absolute;left:53px;right:150px;top:0;bottom:0;display:flex;
+  flex-direction:column;justify-content:flex-start;padding-top:40px;z-index:2}
+.v-ce .rc-head.big .hl{padding-top:36px}
+.rc-head .hlinha{display:flex;flex-direction:column;align-items:flex-start}
+.rc-head .fund-logo{height:37px;display:flex;align-items:center;color:#fff}
+.rc-head .fund-logo svg{height:100%;width:auto;display:block}
+.v-ce .rc-head.big .fund-logo{height:77px}
+.v-ce .rc-head.slim .hl{padding-top:0;justify-content:center}
+.v-ce .rc-head.slim .hlinha{flex-direction:row;align-items:center;gap:30px}
+.v-ce .rc-head.slim .fund-logo{height:57px}
+.rc-head .hname{font-size:34px;font-weight:600}
+.rc-head .hrazao{margin-top:22px;font-size:17px;font-weight:400;text-transform:uppercase;
+  white-space:nowrap;letter-spacing:.004em}
+.v-ce .rc-head .hrazao{margin-top:20px;font-size:18.5px}
+.rc-head .hcnpj{font-size:.82em}
+.rc-head .hcnpj span{font-size:1.22em;font-weight:400;color:rgba(255,255,255,.82)}
+.rc-head .hrule{width:722px;height:1px;background:rgba(255,255,255,.4);margin-top:17px}
+.v-ce .rc-head .hrule{background:#A6E6BF;opacity:.8}
+.rc-head .hdate{font-size:21px;font-weight:400;margin-top:12px;white-space:nowrap}
+.rc-head.slim .hdate{margin-top:8px}
+.v-ce .rc-head.slim .hdate{margin-top:0}
+/* 1px além da folha em cima e à direita: no html2canvas o arredondamento
+   deixava um fio escuro na borda (a folha corta o excedente) */
+.rc-head .rbox{position:absolute;right:-1px;top:-1px;width:125px;height:125px;
+  background:linear-gradient(135deg,#1A1A1A 0%,#262626 100%);
+  display:flex;align-items:center;justify-content:center}
+/* caixa do T quadrada, 124x124 visíveis (pedido de 05/10/2026: sem chanfro) */
+.rc-head .rbox .tv-t{width:43.5px;height:auto;color:#fff;display:block;margin-top:2px}
+.rc-head .gstrip{position:absolute;right:-1px;top:124px;bottom:0;width:125px;
+  background:linear-gradient(90deg,#C4F2D5,#A2DFBA)}
+
+/* ---- corpo -------------------------------------------------------------- */
+.rc-body{flex:1 1 auto;min-height:0;display:flex;flex-direction:column;padding:0 53px}
+.sh{margin:0 0 16px;padding-bottom:9px;border-bottom:1px solid #4A4A4A;font-size:16px;
+  font-weight:400;letter-spacing:0;text-transform:uppercase;color:#111;line-height:1.2}
+.sh sup{font-size:.6em;vertical-align:super;line-height:0}
+.sh-fino{border-bottom-color:#E0E6E9;margin-top:40px}
+.v-ce .sh-fino{border-bottom-color:#D7EEE0}
+
+/* painel do topo da página 1: objetivo + rentabilidade */
+.toppanel{position:relative;margin:0 -53px;padding:36px 53px 34px 47px;
+  background:linear-gradient(180deg,#E7EDF1 0%,#F3F6F8 100%);border-bottom-right-radius:46px}
+.v-cp .toppanel::after{content:"";position:absolute;left:0;right:30px;bottom:0;height:16px;
+  background:linear-gradient(90deg,#C3D3DC 0%,#DCE6EC 60%,rgba(220,230,236,0) 100%)}
+.v-ce .toppanel{background:#1F1F1F;color:#fff;padding:18px 53px 22px 51px;border-bottom-right-radius:40px}
+.obj-h{margin:0 0 3px;font-size:17px;font-weight:400;letter-spacing:.01em;text-transform:uppercase}
+.obj p{margin:0;font-size:18.5px;line-height:1.18;font-weight:400;color:#1E1E1E;max-width:840px}
+.v-ce .obj p{font-size:20.5px;line-height:1.2;color:#fff;max-width:none}
+.obj p b{font-weight:600}.obj p i{font-style:italic}
+
+table.perf{margin:30px 0 0 -6px;width:calc(100% + 6px);border-collapse:collapse;table-layout:fixed}
+table.perf th{padding:0 4px 13px;font-size:16px;font-weight:600;color:#111;text-align:center;
+  border-bottom:2px solid #5E6F79}
+table.perf th:first-child{width:104px;text-align:left}
+table.perf td{height:52px;padding:0 4px;text-align:center;font-size:17px;color:#444;
+  border-bottom:1.5px solid #A9B6BE;font-variant-numeric:tabular-nums}
+table.perf td:first-child{text-align:left;font-weight:600;font-size:16px;color:#111;padding-left:4px}
+table.perf tr.fundo td{color:var(--ac);font-weight:600}
+table.perf tr.fundo td:first-child{color:#111}
+.v-ce table.perf{margin-top:18px}
+.v-ce table.perf th{color:#fff;border-bottom:1px solid rgba(255,255,255,.55);padding-bottom:12px}
+.v-ce table.perf td{color:#fff;border-bottom:1px solid rgba(255,255,255,.55);height:51px}
+.v-ce table.perf td:first-child{color:#fff}
+.v-ce table.perf tr.fundo td{color:#A8F0C6}
+.v-ce table.perf tr.fundo td:first-child{color:#fff}
+.databox{margin-top:8px;text-align:right;font-size:12.5px;color:#444}
+.v-ce .databox{color:#fff;margin-top:10px}.databox b{font-weight:600}
+
+/* ---- barras horizontais (grafico.barras_modelo) ------------------------- */
+.hbars{display:flex;flex-direction:column}
+.hb{flex:1 1 0;min-height:0;display:grid;grid-template-columns:var(--hb-lab) 1fr;align-items:center}
+.hbk{text-align:right;padding-right:10px;font-size:13.6px;line-height:1.1;color:#222;font-weight:400}
+.hbt{height:100%;display:flex;align-items:center;border-left:1px solid #3A3A3A;min-width:0}
+.hbf{display:block;flex:0 0 auto;height:var(--hb-h);background:var(--hb-c)}
+.hbv{margin-left:8px;font-size:16px;color:#111;white-space:nowrap;font-variant-numeric:tabular-nums}
+.hb-emissor{--hb-lab:96px;--hb-h:34px;--hb-c:#5A82A0}
+.hb-emissor .hbt{border-left:0;padding-right:66px}
+.hb-emissor .hbk{font-size:15px}
+.hb-emissor .hbv{color:#5A82A0;font-size:15.5px}
+.hb-setor{--hb-lab:214px;--hb-h:17px;--hb-c:var(--ac-barra)}
+.hb-setor .hbt{padding-right:20px}
+.hb-rating{--hb-lab:76px;--hb-h:20px;--hb-c:var(--ac-barra)}
+.hb-rating .hbk{font-size:15px}
+.hb-rating .hbt{padding-right:40px}
+.hb-estrat{--hb-lab:206px;--hb-h:17px;--hb-c:#52BE7E}
+.hb-estrat .hbt{padding-right:18px}
+.hb-estrat .hbv{font-weight:600;font-size:15.5px}
+/* ALT Light publicado: linhas compactas, valor em azul e peso normal */
+.hb-estrat.compacta{--hb-h:15px}
+.hb-estrat.compacta .hbk{font-size:12.6px}
+.hb-estrat.compacta .hbv{font-weight:400;font-size:13.6px;color:#4F7A93}
+
+/* página 1 do high grade: emissores + rating | setores */
+.grade-hg{display:grid;grid-template-columns:434px 1fr;column-gap:16px;margin-top:38px}
+.grade-hg .gcol{min-width:0}
+.blk-rating{margin-top:28px}
+/* página 1 do high grade: os blocos ocupam a folha até o rodapé, de acordo
+   com o tamanho de cada lista. Lista curta (poucos setores, poucas notas)
+   espaça as linhas até um teto, em vez de deixar meia coluna vazia. */
+.grade-hg{flex:1 1 auto;min-height:0;padding-bottom:86px;align-items:stretch}
+.grade-hg .gcol{display:flex;flex-direction:column;min-height:0}
+.grade-hg .blk{display:flex;flex-direction:column;min-height:0;flex:var(--peso,1) 1 0}
+.grade-hg .hbars{height:auto!important;flex:1 1 auto;min-height:0}
+.grade-hg .hb{flex:1 1 0;max-height:var(--hb-max,48px)}
+.grade-hg .hb-emissor{--hb-max:64px}
+.grade-hg .hb-rating{--hb-max:44px}
+.grade-hg .hb-setor{--hb-max:62px}
+.grade-hg .hb-setor.poucos{--hb-max:none;--hb-c:#5A82A0}
+.grade-hg .hb-setor.poucos .hbk{font-size:16px}
+.grade-hg .hb-setor.poucos .hbv{font-size:18px;color:#5A82A0}
+
+.twocol{margin-top:38px;display:grid;grid-template-columns:1fr 1fr;gap:50px;align-items:start}
+
+/* ---- rentabilidade histórica -------------------------------------------- */
+.histbox{flex:0 0 auto}
+.histbox .sh-fino{margin-top:40px}
+.histbox svg.histsvg{width:100%;height:auto;display:block;margin-top:4px}
+.v-ce .histbox .sh-fino{margin-top:44px}
+.bmbox{width:460px;margin-top:6px;background:#1F1F1F;border-radius:10px;color:#fff;padding:14px 20px 13px}
+.bmh{font-size:16.5px;font-weight:600;padding-bottom:9px;border-bottom:1.5px solid #A8F0C6;margin-bottom:12px}
+.bmcels{display:grid;grid-auto-flow:column;grid-auto-columns:minmax(130px,auto)}
+.bmcel{padding:0 16px;border-left:1px solid rgba(255,255,255,.55)}
+.bmcel:first-child{border-left:0;padding-left:0}
+.bmp{font-size:14.5px;font-weight:400}
+.bmk{font-size:16.5px;font-weight:600;margin-top:6px}
+.bmv{font-size:22px;font-weight:600;line-height:1.1}
+.hleg{display:flex;justify-content:center;gap:110px;margin-top:12px;font-size:16px;font-weight:600;color:#111}
+.hleg span{display:inline-flex;align-items:center;gap:8px}
+.hleg i{display:inline-block;width:26px;height:3px}
+.hleg .hl-f{background:#26B663}.hleg .hl-b{background:#1F1F1F}
+
+/* ---- comentário do gestor ----------------------------------------------- */
+.cmt{flex:1 1 auto;min-height:0;display:flex;flex-direction:column;margin:36px -53px 0;
+  padding:42px 53px 92px;background:linear-gradient(180deg,#0A0A0A 0%,#1C1C1C 100%);color:#fff}
+.cmt-h{margin:0 0 24px;text-align:center;font-size:30px;font-weight:600;letter-spacing:-.005em}
+.cmt-card{flex:1 1 auto;min-height:0;display:flex;flex-direction:column;background:#2A2A2A;
+  border-radius:22px;padding:20px 17px 18px}
+.cmt-txt{flex:1 1 auto;min-height:0;overflow:hidden;line-height:1.24;text-align:justify;color:#F1F1F1}
+.cmt-txt p{margin:0 0 .72em}
+.cmt-txt p:last-child{margin-bottom:0}
+.cmt-txt b,.cmt-txt strong{font-weight:600}
+.v-ce .cmt{margin-top:24px;padding:40px 55px 96px;background:#F1F1F1;color:#222}
+.v-ce .cmt-h{font-size:22px;font-weight:500;color:#707070;margin-bottom:40px}
+.v-ce .cmt-card{background:none;border-radius:0;padding:0}
+.v-ce .cmt-txt{color:#222;line-height:1.18}
+.v-ce .cmt-txt p{margin-bottom:.6em}
+
+/* ---- mercado de crédito ------------------------------------------------- */
+table.mkt{width:863px;margin-left:15px;border-collapse:collapse;table-layout:fixed}
+table.mkt th{height:37px;padding:3px 3px;background:#5B8299;color:#fff;font-size:13px;font-weight:600;
+  text-align:center;line-height:1.1;border-right:1px solid #fff}
+table.mkt th:last-child{border-right:0}
+table.mkt th.vazio{background:none}
+table.mkt td{height:39px;padding:0 3px;text-align:center;font-size:17px;color:#111;font-weight:400;
+  font-variant-numeric:tabular-nums}
+table.mkt td:first-child{text-align:left;padding-left:2px;font-weight:400;line-height:1.05}
+table.mkt td.vol{color:#5B8299}
+table.mkt.largo td{font-size:15px}table.mkt.largo td:first-child{font-size:15.5px}
+table.mkt.largo th{font-size:12px}
+table.mkt tbody tr:nth-child(even) td{background:#DCDCDC}
+table.mkt-resumo{margin-top:22px}
+table.mkt-resumo td{height:46px;background:none!important}
+table.mkt-resumo + table.mkt{margin-top:40px}
+.mktnote{margin-top:auto;padding-bottom:104px;font-size:12.6px;line-height:1.3;color:#222}
+.mktnote sup{font-size:.7em}
+
+/* ---- mercado de crédito em vidro ------------------------------------------
+   Pedido de 05/10/2026: a tabela setorial sai do zebrado cinza do PPTX e vira
+   um painel em glassmorphism. O vidro é feito só com cor translúcida, borda
+   clara e brilho interno, SEM backdrop-filter: o Chromium rasteriza
+   backdrop-filter na impressão, e o PDF perderia o texto selecionável.
+   As alturas somam o mesmo que o zebrado (36px + 3px de respiro = 39px por
+   linha), para a nota do rodapé não ser empurrada para fora da folha.
+   O PPTX é montado à parte (exporters/pptx.py) e continua no desenho antigo. */
+.mkt-vidro{position:relative;margin:4px 0 0;padding:16px 15px 14px;border-radius:24px;overflow:hidden;
+  background:
+    radial-gradient(520px 300px at 8% 0%,rgba(140,185,214,.45),transparent 70%),
+    radial-gradient(560px 360px at 100% 18%,rgba(91,130,153,.65),transparent 70%),
+    radial-gradient(480px 320px at 26% 100%,rgba(117,157,180,.38),transparent 70%),
+    radial-gradient(420px 280px at 92% 96%,rgba(171,198,215,.32),transparent 70%),
+    linear-gradient(160deg,#13233a 0%,#2a4664 48%,#182c45 100%);
+  box-shadow:0 18px 44px rgba(16,28,40,.28),inset 0 1px 0 rgba(255,255,255,.18)}
+.mkt-vidro table.mkt{width:100%;margin-left:0;border-collapse:separate;border-spacing:0 3px}
+.mkt-vidro table.mkt th{height:34px;background:rgba(150,190,218,.22);color:#fff;font-weight:600;
+  border:0;border-top:1px solid rgba(255,255,255,.34);border-bottom:1px solid rgba(255,255,255,.10)}
+.mkt-vidro table.mkt th:first-child{border-radius:12px 0 0 12px;border-left:1px solid rgba(255,255,255,.26)}
+.mkt-vidro table.mkt th:last-child{border-radius:0 12px 12px 0;border-right:1px solid rgba(255,255,255,.18)}
+.mkt-vidro table.mkt th.vazio{background:none;border:0}
+.mkt-vidro table.mkt td{height:32px;background:rgba(171,205,228,.07);color:rgba(255,255,255,.94);
+  border-top:1px solid rgba(255,255,255,.10)}
+.mkt-vidro table.mkt td:first-child{border-radius:10px 0 0 10px;padding-left:12px;color:#fff;font-weight:400}
+.mkt-vidro table.mkt td:last-child{border-radius:0 10px 10px 0}
+.mkt-vidro table.mkt tbody tr:nth-child(even) td{background:rgba(171,205,228,.14)}
+.mkt-vidro table.mkt td.vol{color:#BFDAEA;font-weight:500}
+/* o total vira uma placa de vidro só, alinhada às colunas da tabela de baixo:
+   o rótulo na faixa clara de cima, o número grande embaixo */
+.mkt-vidro table.mkt-resumo{margin-top:0;border-spacing:0}
+.mkt-vidro table.mkt-resumo th{border-radius:0;border-left:1px solid rgba(255,255,255,.12)}
+.mkt-vidro table.mkt-resumo th:nth-child(2){border-radius:14px 0 0 0;border-left:1px solid rgba(255,255,255,.26)}
+.mkt-vidro table.mkt-resumo th:last-child{border-radius:0 14px 0 0}
+.mkt-vidro table.mkt-resumo th.vazio{border:0;background:none}
+.mkt-vidro table.mkt-resumo td{height:46px;color:#fff;font-weight:600;font-size:19px;
+  background:rgba(255,255,255,.09)!important;border-top:0;border-bottom:1px solid rgba(255,255,255,.16)}
+.mkt-vidro table.mkt-resumo td:nth-child(2){border-radius:0 0 0 14px;border-left:1px solid rgba(255,255,255,.18)}
+.mkt-vidro table.mkt-resumo td:last-child{border-radius:0 0 14px 0;border-right:1px solid rgba(255,255,255,.14)}
+.mkt-vidro table.mkt-resumo td:first-child{background:none!important;border:0;padding:0}
+.mkt-vidro table.mkt-resumo + table.mkt{margin-top:18px}
+/* tabela curta (a do IPCA tem 10 setores): o painel ocupa a altura livre
+   até a nota e as linhas crescem, em vez de sobrar um vão branco na folha */
+.mkt-vidro{flex:1 1 auto;display:flex;flex-direction:column;min-height:0}
+.mkt-vidro>table.mkt:not(.mkt-resumo){flex:1 1 auto;height:100%}
+.mkt-vidro + .mktnote{margin-top:18px}
+/* tabela larga: o total em corpo menor, senão "393.307" encosta em "100%" */
+/* tabela de spreads: célula sempre centrada na vertical, com respiro lateral
+   e entrelinha fixa (na exportação em imagem o texto subia na faixa) */
+.mkt-vidro table.mkt th,.mkt-vidro table.mkt td{vertical-align:middle;line-height:1.15;padding-left:6px;padding-right:6px}
+.mkt-vidro table.mkt td:first-child{padding-left:12px}
+.mkt-vidro table.mkt-resumo td{font-size:17px}
+.mkt-vidro table.mkt-resumo.largo td{font-size:15.5px}
+
+/* ---- características gerais --------------------------------------------- */
+.carac{margin-top:16px;display:grid;grid-template-columns:402px 1fr}
+.ccol{display:flex;flex-direction:column}
+.ccol:first-child{border-right:1px solid #D2DADE;padding-right:20px}
+.ccol:last-child{padding-left:58px}
+/* os dois patrimônios descem juntos para o pé da coluna da direita */
+.ccol:last-child .ci:nth-last-child(2){margin-top:auto}
+.ci{margin-bottom:22px}
+.ck{font-size:20px;font-weight:600;color:#111;line-height:1.15}
+.cv{font-size:20px;font-weight:400;color:#222;line-height:1.12;margin-top:2px}
+.cv b{font-weight:600}
+.ci::after{content:"";display:block;width:22px;height:2px;background:var(--ac-traco);margin-top:20px}
+
+/* ---- disclaimer --------------------------------------------------------- */
+.disc{flex:0 0 auto;margin:auto -53px 0;height:628px;display:flex;flex-direction:column;
+  background:linear-gradient(180deg,#000 0%,#0E0E0E 100%);color:#fff;padding:38px 53px 54px}
+.disc .dh{font-size:17px;font-weight:600;margin-bottom:12px}
+.disc-txt{flex:1 1 auto;min-height:0;overflow:hidden;line-height:1.22;text-align:justify;color:#E9E9E9}
+.disc-txt p{margin:0 0 .35em}
+.contatos{display:flex;gap:16px;margin-top:12px;font-size:10.8px;line-height:1.25;color:#E9E9E9}
+.selos{display:flex;align-items:flex-end;justify-content:space-between;margin-top:26px}
+.selos .site{display:flex;align-items:center;gap:12px;width:250px;height:92px;padding:0 18px;
+  border:1.5px solid var(--ac);border-radius:12px;font-size:20px;font-weight:500}
+.v-ce .selos .site{border-color:#A8F0C6}
+.selos .site svg{width:32px;height:32px;flex:0 0 auto}
+.selos .qrb{display:flex;align-items:center;gap:10px;width:222px}
+.selos .qrb .qr{width:92px;height:92px;background:#fff;padding:4px;object-fit:contain;flex:0 0 auto}
+.selos .qrb span{font-size:12.5px;line-height:1.25}
+.selos .selo-col{display:flex;flex-direction:column;align-items:flex-start;gap:8px;width:84px}
+.selos img.selo{width:82px;height:auto;display:block}
+.selos .rt{display:flex;flex-direction:column;font-size:10px;line-height:1.2}
+.selos .rt b{font-size:18px;font-weight:600}
+.selos img.pri{width:96px;height:auto;display:block;filter:brightness(0) invert(1)}
+.selos .dlogo{width:106px;color:#fff;padding-bottom:4px}
+.selos .dlogo svg{width:100%;height:auto;display:block}
+
+/* ---- rodapé ------------------------------------------------------------- */
+.rc-foot{position:absolute;left:53px;right:55px;bottom:39px;display:flex;align-items:flex-end;
+  justify-content:space-between;z-index:3;color:#111}
+.rc-foot .flogo{width:84px;display:block}
+.rc-foot .flogo svg{width:100%;height:auto;display:block;color:currentColor}
+.rc-foot .pgnum{font-size:15px;font-weight:400;line-height:1}
+.rc-foot.escuro{color:#fff}
+.rc-faixa{position:absolute;left:0;bottom:0;width:967px;height:24px;z-index:3;
+  background:var(--ac-faixa);border-top-right-radius:16px}
+
+/* ---- treemap · alocação real (ALT) -------------------------------------- */
+.tmblock{margin-top:30px}
+.tmwrap{position:relative;width:100%;overflow:hidden}
+.tmbox{position:absolute;display:flex;flex-direction:column;justify-content:flex-end;
+  overflow:hidden;box-shadow:inset 0 0 0 .75px rgba(255,255,255,.7)}
+.tmbox .tmn{line-height:1.1;font-weight:400;flex:0 0 auto}
+.tmbox .tmv{flex:0 0 auto}
+/* item abaixo de 2%: faixa no pé do bloco, nome e valor numa linha */
+.tmbox.tm-faixa{flex-direction:row;align-items:center;justify-content:flex-start;gap:.35em;padding:0 7px;white-space:nowrap;line-height:1}
+.tmbox.tm-faixa .tmn{font-weight:400}.tmbox.tm-faixa b{font-weight:600}
+.tmlegs{display:flex;flex-wrap:wrap;gap:6px 18px;margin-top:10px;font-size:12.5px;color:#333}
+.tmleg{display:inline-flex;align-items:center;gap:6px;white-space:nowrap}
+.tmleg i{width:11px;height:11px;flex:0 0 auto;box-shadow:inset 0 0 0 1px rgba(0,0,0,.12)}
+.tmleg b{font-weight:600;color:#111}
+.tmbox .tmn b{font-weight:600}
+.tmbox .tmv{line-height:1.1;font-weight:600;margin-top:2px;font-variant-numeric:tabular-nums}
+
+/* ---- colaterais (ALT) --------------------------------------------------- */
+.colblock{min-width:0}
+.colgrid{display:grid;grid-template-columns:1fr 1fr;gap:6px}
+.colcard{display:flex;align-items:center;gap:14px;height:132px;padding:0 16px;background:#F1F1F1;
+  border:2px solid #DADADA}
+.colcard.largo{grid-column:1 / -1}
+.colico{display:block;width:46px;height:46px;flex:0 0 auto;color:#777}
+.colico svg{width:100%;height:100%;display:block}
+.colrot{font-size:18px;font-weight:600;line-height:1.1;color:#7A7A7A;max-width:120px}
+.colcard.largo .colrot{max-width:none}
+.histvazio{font-size:13px;color:#888;padding:20px 0}
+
+[contenteditable="true"]:focus{outline:2px solid var(--tv-azul);outline-offset:2px;border-radius:4px}
+body.edit .rcard [contenteditable]{cursor:text;border-radius:4px;box-shadow:inset 0 0 0 1.5px rgba(117,157,180,.4);background:rgba(117,157,180,.07)}
+body.edit .rcard [contenteditable]:hover{background:rgba(117,157,180,.15);box-shadow:inset 0 0 0 1.5px rgba(117,157,180,.85)}
+
+.lb{position:fixed;inset:0;z-index:80;display:none;flex-direction:column;background:var(--overlay);backdrop-filter:blur(22px) saturate(140%);opacity:0;transition:opacity .25s var(--ease)}
+.lb.open{display:flex}.lb.visible{opacity:1}
+.lb-bar{flex:0 0 auto;display:flex;align-items:center;justify-content:space-between;gap:12px;padding:14px 20px;border-bottom:1px solid var(--line)}
+.lb-title{display:flex;flex-direction:column;gap:2px;min-width:0}
+.lb-title .t{font-size:15px;font-weight:700;color:var(--text-primary);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.lb-title .s{font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:var(--text-muted);font-weight:700}
+.lb-acts{display:flex;align-items:center;gap:10px;flex-shrink:0}
+.lb-body{flex:1 1 auto;position:relative;display:flex;align-items:center;justify-content:center;padding:16px;min-height:0;touch-action:pan-y}
+.lb-host{position:relative;border-radius:var(--r-md);overflow:hidden;box-shadow:0 30px 80px rgba(0,0,0,.55);background:#fff}
+.lb-host .rcard{transform-origin:top left}
+.lb-host.swap{animation:slide-fade-in .35s var(--ease) both}
+.lb-nav{position:absolute;top:50%;transform:translateY(-50%);z-index:4;background:rgba(10,15,20,.55);border:1px solid rgba(255,255,255,.22);color:#fff;backdrop-filter:blur(10px)}
+.lb-nav:hover{background:var(--tv-azul);color:#000;border-color:transparent}
+.lb-prev{left:14px}.lb-next{right:14px}
+.lb-foot{flex:0 0 auto;display:flex;align-items:center;justify-content:center;gap:12px;padding:12px 20px calc(12px + var(--safe-b));border-top:1px solid var(--line);flex-wrap:wrap}
+.lb-dots{display:inline-flex;gap:8px;align-items:center;flex-wrap:wrap;max-width:80vw;justify-content:center}
+.lb-dots button{width:9px;height:9px;border-radius:50%;border:0;padding:0;cursor:pointer;background:var(--line-strong);transition:.25s var(--ease)}
+.lb-dots button[aria-current="true"]{background:var(--accent-strong);width:26px;border-radius:var(--r-full)}
+.lb-tip{font-size:11px;color:var(--text-muted)}
+@media(max-width:720px){.lb-bar{padding:10px 14px}.lb-title .t{font-size:13px}.lb-body{padding:10px}.lb-nav{width:38px;height:38px}.lb-prev{left:6px}.lb-next{right:6px}.lb-acts .lb-dl-label{display:none}.lb-acts .btn-sm{padding:8px 12px}.lb-tip{display:none}}
+.footer{padding:44px 0 60px;color:var(--text-muted);font-size:12px;text-align:center;border-top:1px solid var(--line)}
+.footer .logo-mark{height:24px;width:69px;color:var(--text-primary);margin:0 auto 14px;display:block;overflow:visible}
+.toast{position:fixed;left:50%;bottom:calc(28px + var(--safe-b));transform:translateX(-50%) translateY(20px);opacity:0;pointer-events:none;padding:12px 22px;border-radius:var(--r-full);background:var(--tv-azul);color:#000;font-size:13px;font-weight:700;transition:.25s var(--ease);z-index:100;max-width:90vw;text-align:center}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+
+/* a pilha de folhas na tela */
+.folhas{display:flex;flex-direction:column;align-items:center;gap:24px;padding:24px}
+.folhas .rcard{box-shadow:0 10px 40px rgba(16,28,40,.14);border-radius:0}
+
+/* ================= ENQUADRAMENTO: A FOLHA CABE NA TELA =================
+   A folha é um A4 desenhado em 1000x1414 px fixos. Em tela mais estreita que
+   isso ela transbordava pela direita e o que sobrava ficava fora do alcance:
+   no celular o título aparecia cortado no meio da palavra e o disclaimer
+   corria para fora da borda. Encolher a folha inteira resolve sem mexer em
+   uma linha do layout.
+
+   `zoom` e não `transform:scale` porque o zoom afeta o LAYOUT: a folha passa
+   a ocupar o tamanho reduzido, então não sobra faixa cinza embaixo nem
+   rolagem horizontal. É o mesmo recurso que acerta o PDF.
+
+   O valor exato vem do JS em --folha-zoom (largura disponível / 1000). Os
+   degraus abaixo enquadram antes do script rodar — e se ele não rodar. */
+:root{--folha-zoom:1}
+.folhas .rcard{zoom:var(--folha-zoom)}
+@media(max-width:1060px){:root{--folha-zoom:.95}}
+@media(max-width:1000px){:root{--folha-zoom:.90}}
+@media(max-width:940px){:root{--folha-zoom:.85}}
+@media(max-width:880px){:root{--folha-zoom:.79}}
+@media(max-width:820px){:root{--folha-zoom:.73}}
+@media(max-width:760px){:root{--folha-zoom:.67}}
+@media(max-width:700px){:root{--folha-zoom:.62}}
+@media(max-width:640px){:root{--folha-zoom:.57}}
+@media(max-width:580px){:root{--folha-zoom:.52}}
+@media(max-width:520px){:root{--folha-zoom:.47}}
+@media(max-width:460px){:root{--folha-zoom:.42}}
+@media(max-width:420px){:root{--folha-zoom:.38}}
+@media(max-width:380px){:root{--folha-zoom:.34}}
+@media(max-width:340px){:root{--folha-zoom:.30}}
+
+/* A exportação é independente da tela: o html2canvas captura a folha em
+   1000x1414, o tamanho em que ela foi desenhada, mesmo que na hora do clique
+   ela esteja encolhida no celular. Sem isto o PNG saía na resolução da tela. */
+body.tv-exportando .folhas .rcard{zoom:1}
+/* o html2canvas mede errado os algarismos tabulares e abre um vão antes do
+   "%" ("1,10 %") na imagem exportada */
+body.tv-exportando .rcard *{font-variant-numeric:normal!important}
+
+/* ---- tela estreita: a moldura da pilha ------------------------------------
+   Sem reduzir as margens de 24px a folha já encolhida perderia largura útil
+   à toa — no celular são 36px de 390, quase 10%. */
+@media(max-width:760px){.folhas{gap:14px;padding:14px 10px}}
+@media(max-width:460px){.folhas{padding:10px 6px}}

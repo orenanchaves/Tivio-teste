@@ -1,0 +1,38 @@
+{# Tabela de rentabilidade · 6 períodos.
+
+   A ordem das linhas é a dos relatórios publicados, conferida nos doze PPTX:
+
+     Crédito Privado      Fundo · CDI · Alfa · %        (4 linhas)
+     Crédito Estruturado  Fundo · CDI · %  · CDI+       (4 linhas, sem Alfa)
+     Retorno absoluto     Fundo · benchmark · Alfa      (3 linhas)
+
+   O rótulo da linha de percentual é "%" e não "% do CDI": é assim no original,
+   e o cabeçalho da folha já diz qual é o benchmark.
+
+   A linha CDI+ só aparece nos fundos marcados com `linha_bench_mais` em
+   configs/fundos.yml — hoje, os de Crédito Estruturado. A linha Alfa some nos
+   que marcam `sem_alfa` (o Infra Plus CDI, como no publicado). #}
+<table class="perf">
+  <thead>
+    <tr><th></th>{% for p in periodos %}<th>{{ p }}</th>{% endfor %}</tr>
+  </thead>
+  <tbody>
+    <tr class="fundo"><td>Fundo</td>
+      {% for v in linhas.fundo %}<td>{{ v }}</td>{% endfor %}</tr>
+    <tr><td>{{ c.benchmark }}</td>
+      {% for v in linhas.bench %}<td>{{ v }}</td>{% endfor %}</tr>
+    {% if linhas.alfa %}
+    <tr><td>Alfa</td>
+      {% for v in linhas.alfa %}<td>{{ v }}</td>{% endfor %}</tr>
+    {% endif %}
+    {% if linhas.pct %}
+    <tr><td>%</td>
+      {% for v in linhas.pct %}<td>{{ v }}</td>{% endfor %}</tr>
+    {% endif %}
+    {% if linhas.bench_mais %}
+    <tr><td>{{ c.benchmark }}+</td>
+      {% for v in linhas.bench_mais %}<td>{{ v }}</td>{% endfor %}</tr>
+    {% endif %}
+  </tbody>
+</table>
+<div class="databox"><b>Data base:</b> {{ edicao.br }}</div>
