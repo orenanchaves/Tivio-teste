@@ -1959,8 +1959,8 @@ def exportar_decks(contextos, cadastro, edicao, destino, log, so=None, pdf=True,
             ext.taxa_prev(slide, ctx)
             if d.get('mes_em_todos') and i > 0:
                 ext.mes(slide)
-            if d.get('comentario') == 'lorem':
-                ext.lorem(slide)
+            if d.get('comentario') in ('gestor', 'lorem'):
+                ext.comentario(slide, ctx)
         pasta = os.path.join(destino, d.get('pasta', ''))
         os.makedirs(pasta, exist_ok=True)
         base = f'{d["nome"]} - {fmt.MESES[edicao.db.month - 1]} {edicao.db.year}'

@@ -419,7 +419,7 @@ em `exportar_decks`:
 | `alocacao_lado` | "High Grade 66,5%" em caixas vizinhas e as tabelas "Carteira HGD/HYD" (só com `alocacao_hghy`) | `ContextoFundo.alocacao_hghy` |
 | `emissores` | Gráfico logo abaixo de "Principais emissores" | `ContextoFundo.emissores_relatorio` |
 | `mes` | Selo "Setembro de 2026" em todos os slides (`mes_em_todos: true`) | data base |
-| `lorem` | Texto do gestor vira lorem ipsum (`comentario: lorem`), provisório | — |
+| `comentario` | Slide "Comentário do Gestor" recebe a seção do fundo em `entrada/comentarios.md` (`## Tivio Prev Low Vol`, `## Tivio Prev Top Credit`), com os marcadores resolvidos; sem seção, lorem ipsum e aviso no log (`comentario: gestor`) | `ContextoFundo.comentario_preenchido` |
 
 Opções novas no `decks.yml`: `fundo:` no deck (vale para os slides cujo título
 não identifica o fundo: nos decks novos o "Por que…?" vem em caixas soltas e o
@@ -668,7 +668,7 @@ Cada uma destas custou uma rodada. Estão aqui para não custarem outra.
 | **BVP** sem logo | Não há SVG em `assets/logos` | Adicionar `tivio_bvp.svg` |
 | **Prev Low Vol / Top Credit**: composição da rentabilidade (bps), alocação por tipo de ativo, top 5 exposições e contribuições, volatilidade 12M | Vêm das abas de Investment Solutions da `dados_mensais.xlsx`, ainda não mapeadas | Mapear as abas e criar a leitura no Contexto |
 | **Prev Top Credit** na DePara | O nome exato da coluna Carteira não foi conferido | Conferir `prevtopcredit` em `fundos.yml` com a planilha |
-| **Comentário dos decks de IS** | Sai em lorem ipsum (`comentario: lorem`) | Tirar a opção do `decks.yml` quando o texto vier de `comentarios.md` |
+| **Comentário dos decks de IS** | Sai em lorem ipsum enquanto não houver seção no `comentarios.md` | Escrever `## Tivio Prev Low Vol` e `## Tivio Prev Top Credit` no `comentarios.md` |
 
 Nenhuma delas impede a rodada: todas saem como **aviso** no log e na conferência,
 não como erro.

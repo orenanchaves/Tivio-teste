@@ -19,8 +19,9 @@
 #          e o nome do fundo é imagem).
 # mes_em_todos: o selo "Setembro de 2026" é trocado em todos os slides, não só
 #          na capa (decks de Investment Solutions).
-# comentario: lorem   o texto do gestor vira lorem ipsum (provisório, até o
-#          comentário do mês ser escrito).
+# comentario: gestor  o slide "Comentário do Gestor" recebe a seção do fundo em
+#          entrada/comentarios.md (## Tivio Prev Low Vol, ## Tivio Prev Top
+#          Credit). Sem a seção, sai lorem ipsum e o log avisa.
 #
 # area: onde o deck vai em saida/_Atual/ (Crédito Estruturado/Decks/<pasta>/ ou
 #       Multi-área/Decks/ para o que cruza áreas). Sem `area`, vai para Multi-área.
@@ -168,11 +169,11 @@ decks:
     modelo: Deck - Tivio Prev Low Vol.pptx
     fundo: prevlowvol
     mes_em_todos: true
-    comentario: lorem
+    comentario: gestor
   - pasta: Prev Top Credit
     area: Investment Solutions
     nome: Deck - Tivio Prev Top Credit
     modelo: Deck - Tivio Prev Top Credit.pptx
     fundo: prevtopcredit
     mes_em_todos: true
-    comentario: lorem
+    comentario: gestor

@@ -385,9 +385,9 @@ fundos:
   topgestorlongonly: {nome: Top Gestor Ações Long Only,     vertical: investment_solutions, carteira: TOP GESTOR AÇÕES LONG ONLY FC}
   topmanagerglobal:  {nome: Tivio Top Manager Global,       vertical: investment_solutions, carteira: TIVIO TOP MANAG GLOBAL ALLOC FIF AÇÕES, retorno: absoluto}
   ativorf:           {nome: Tivio RF Ativo Longo Prazo,     vertical: investment_solutions, carteira: TIVIO RF ATIVO LONGO PRAZO FI}
-  prevlowvol:        {nome: Tivio Prev Low Vol Itaú,        vertical: investment_solutions, carteira: "TIVIO PREV LOW VOL ITAÚ I FIF CIC MULT RL - Expandida", busca: [LOW VOL], bloco_taxas_prev: LOW VOL}
+  prevlowvol:        {nome: Tivio Prev Low Vol Itaú,        vertical: investment_solutions, carteira: "TIVIO PREV LOW VOL ITAÚ I FIF CIC MULT RL - Expandida", busca: [LOW VOL], bloco_taxas_prev: LOW VOL, apelidos: [Tivio Prev Low Vol, Prev Low Vol, Tivio Prev Low Vol Itau]}
   # A CONFERIR com a dados_mensais.xlsx: o nome exato na coluna Carteira da DePara
-  prevtopcredit:     {nome: Tivio Prev Top Credit Itaú,     vertical: investment_solutions, carteira: "TIVIO PREVIDENCIA TOP CREDIT ITAÚ I FIF CIC RF CP RL", busca: [TOP CREDIT], bloco_taxas_prev: TOP CREDIT}
+  prevtopcredit:     {nome: Tivio Prev Top Credit Itaú,     vertical: investment_solutions, carteira: "TIVIO PREVIDENCIA TOP CREDIT ITAÚ I FIF CIC RF CP RL", busca: [TOP CREDIT], bloco_taxas_prev: TOP CREDIT, apelidos: [Tivio Prev Top Credit, Prev Top Credit, Tivio Prev Top Credit Itau]}
 
 # chaves com nome diferente em algum HTML legado
 alias:

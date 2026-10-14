@@ -18,8 +18,9 @@ nome da caixa ou pelo rótulo ao lado, trocar SÓ o número e manter o desenho.
   PL nomeado ......... caixas patrimonio_liquido / patrimonio_liquido_medio_12m
   taxa (previdência) . "Taxa de Adm & Gestão" e "Taxa Global" da
                        entrada/taxas_prev.xlsx (soma dos veículos FIE + FIFE)
-  comentário ......... lorem ipsum no lugar do texto do gestor
-                       (opção `comentario: lorem` no decks.yml)
+  comentário ......... texto do gestor de entrada/comentarios.md (seção do
+                       fundo); sem seção, lorem ipsum
+                       (opção `comentario: gestor` no decks.yml)
 """
 import os
 import re
@@ -480,13 +481,24 @@ class Extras:
                 self.trocas += 1
 
     # ---------------------------------------------------------------- comentário
-    def lorem(self, slide):
-        """O texto do gestor (caixa longa num slide de "Comentário do Gestor")
-        vira lorem ipsum, com a formatação do primeiro parágrafo do modelo."""
+    def comentario(self, slide, ctx):
+        """O texto do gestor no slide de "Comentário do Gestor": a seção do
+        fundo em entrada/comentarios.md (com os {marcadores} resolvidos). Sem
+        seção para o fundo, entra lorem ipsum, para o deck não sair com o
+        texto do mês passado. A formatação é a do primeiro parágrafo do modelo."""
         textos = _norm(' '.join(_texto(sh) for sh, _ in _shapes(slide.shapes)))
         if 'comentario do gestor' not in textos:
             return
+        pars_gestor = []
+        if ctx is not None:
+            try:
+                c = ctx.comentario_preenchido
+                pars_gestor = list(c() if callable(c) else c)
+            except Exception:
+                pars_gestor = []
+        pars_gestor = [re.sub(r'\*\*(.+?)\*\*', r'\1', p).strip() for p in pars_gestor if p and p.strip()]
         import copy
+        A = '{http://schemas.openxmlformats.org/drawingml/2006/main}'
         for sh, _ in _shapes(slide.shapes):
             if not (getattr(sh, 'has_text_frame', False) and sh.has_text_frame):
                 continue
@@ -496,24 +508,30 @@ class Extras:
             pars = [p for p in tf.paragraphs if p.runs and ''.join(r.text for r in p.runs).strip()]
             if not pars:
                 continue
+            novos = pars_gestor or LOREM[:max(2, min(len(LOREM), len(pars)))]
+            if not pars_gestor and ctx is not None:
+                self.log.aviso(ctx.key, 'deck: sem comentário em entrada/comentarios.md, saiu lorem ipsum')
             modelo = copy.deepcopy(pars[0]._p)
             corpo = tf._txBody
-            for p in list(corpo.findall('{http://schemas.openxmlformats.org/drawingml/2006/main}p')):
+            for p in list(corpo.findall(f'{A}p')):
                 corpo.remove(p)
-            A = '{http://schemas.openxmlformats.org/drawingml/2006/main}'
-            n = max(2, min(len(LOREM), len(pars)))
-            for i in range(n):
+            for i, texto in enumerate(novos):
                 p = copy.deepcopy(modelo)
                 runs = p.findall(f'{A}r')
                 for r in runs[1:]:
                     p.remove(r)
                 for x in p.findall(f'{A}br'):
                     p.remove(x)
-                runs[0].find(f'{A}t').text = LOREM[i]
+                runs[0].find(f'{A}t').text = texto
                 corpo.append(p)
-                if i < n - 1:                      # linha em branco entre parágrafos
+                if i < len(novos) - 1:                 # linha em branco entre parágrafos
                     vazio = copy.deepcopy(modelo)
                     for x in vazio.findall(f'{A}r') + vazio.findall(f'{A}br'):
                         vazio.remove(x)
                     corpo.append(vazio)
             self.trocas += 1
+            break
+
+    def lorem(self, slide):
+        """Compatibilidade: `comentario: lorem` antigo = comentário sem fundo."""
+        self.comentario(slide, None)
