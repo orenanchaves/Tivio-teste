@@ -22,6 +22,7 @@ nome da caixa ou pelo rótulo ao lado, trocar SÓ o número e manter o desenho.
                        fundo); sem seção, lorem ipsum
                        (opção `comentario: gestor` no decks.yml)
 """
+import copy
 import os
 import re
 import unicodedata
@@ -535,3 +536,151 @@ class Extras:
     def lorem(self, slide):
         """Compatibilidade: `comentario: lorem` antigo = comentário sem fundo."""
         self.comentario(slide, None)
+
+    # ------------------------------------- abas de Investment Solutions (IS)
+    def abas_is(self, slide, ctx, abas):
+        """Prev Low Vol e Top Credit: os quadros que vêm das abas próprias da
+        dados_mensais.xlsx (loaders/abas_is.py). Gráficos pela fórmula que o
+        próprio modelo guarda; composição da rentabilidade (PnL) e
+        volatilidade pelo rótulo."""
+        if not abas:
+            return
+        from loaders import abas_is as ais
+        for sh, _ in _shapes(slide.shapes):
+            if getattr(sh, 'has_chart', False) and sh.has_chart:
+                self._grafico_is(sh, abas, ais)
+        self._cascatas_is(slide, abas, ais)
+        aba = (ctx.f.cfg.get('aba_is') if ctx is not None else None)
+        grade = abas.get(aba) if aba else None
+        if grade is None:
+            return
+        vol = ais.volatilidade(grade)
+        for sh, _ in _shapes(slide.shapes):
+            if not (getattr(sh, 'has_text_frame', False) and sh.has_text_frame):
+                continue
+            if sh.name == 'vol_12m' and vol is not None and re.search(r'\d,\d+\s*%', _texto(sh)):
+                for p in sh.text_frame.paragraphs:
+                    if _troca_grupo(p, r'(' + NUM + r')\s*%', fmt.num(vol * 100, 2).replace('−', '-')):
+                        self.trocas += 1
+                        break
+        linhas = ais.pnl(grade)
+        if linhas:
+            for sh, _ in _shapes(slide.shapes):
+                if getattr(sh, 'has_table', False) and sh.has_table and \
+                        sh.table.cell(0, 0).text.strip().lower().startswith('pnl'):
+                    self._tabela_pnl(sh.table, linhas)
+                    self.trocas += 1
+
+    def _grafico_is(self, sh, abas, ais):
+        from pptx.chart.data import CategoryChartData
+        C = '{http://schemas.openxmlformats.org/drawingml/2006/chart}'
+        cs = sh.chart._chartSpace
+        series = cs.findall(f'.//{C}ser')
+        if not series:
+            return
+        dados = []
+        for se in series:
+            fc = se.find(f'{C}cat//{C}f')
+            fv = se.find(f'{C}val//{C}f')
+            ft = se.find(f'{C}tx//{C}f')
+            cats = ais.faixa(abas, fc.text) if fc is not None else None
+            vals = ais.faixa(abas, fv.text) if fv is not None else None
+            if cats is None or vals is None:
+                return                                   # ligado a outra planilha: fica o do modelo
+            nome = ais.faixa(abas, ft.text) if ft is not None else None
+            fmt_v = se.find(f'{C}val//{C}formatCode')
+            dados.append(((nome or [''])[0] or '', cats, vals,
+                          fmt_v.text if fmt_v is not None else 'General'))
+        # linhas vazias no fim do intervalo (a gestão deixou menos itens que o modelo)
+        n = max((i + 1 for i, c in enumerate(dados[0][1]) if c not in (None, '')), default=0)
+        if not n:
+            return
+        cd = CategoryChartData(number_format=dados[0][3])
+        cd.categories = [str(c) for c in dados[0][1][:n]]
+        for nome, _, vals, _ in dados:
+            cd.add_series(str(nome), [float(v) if isinstance(v, (int, float)) else None for v in vals[:n]])
+        _sem_vinculo(sh.chart)
+        sh.chart.replace_data(cd)
+        self.trocas += 1
+
+    def _cascatas_is(self, slide, abas, ais):
+        """Gráficos de cascata (formato novo do Office, chartEx: o python-pptx não
+        os enxerga como gráfico). Os pontos ficam no próprio XML, ao lado da
+        fórmula da aba; troca os pontos e a contagem, mantendo o desenho."""
+        from lxml import etree
+        CX = '{http://schemas.microsoft.com/office/drawing/2014/chartex}'
+        for rel in list(slide.part.rels.values()):
+            if rel.is_external or 'chartEx' not in str(rel.target_part.partname):
+                continue
+            parte = rel.target_part
+            x = etree.fromstring(parte.blob)
+            mudou = False
+            for dado in x.iter(f'{CX}data'):
+                dims = [d for d in dado if d.tag in (f'{CX}strDim', f'{CX}numDim')]
+                lidos = []
+                for dim in dims:
+                    f = dim.find(f'{CX}f')
+                    v = ais.faixa(abas, f.text) if f is not None else None
+                    lidos.append(v)
+                if not dims or any(v is None for v in lidos):
+                    continue
+                cats = lidos[0]
+                n = max((i + 1 for i, c in enumerate(cats) if c not in (None, '')), default=0)
+                if not n:
+                    continue
+                for dim, vals in zip(dims, lidos):
+                    lvl = dim.find(f'{CX}lvl')
+                    for pt in lvl.findall(f'{CX}pt'):
+                        lvl.remove(pt)
+                    k = 0
+                    for i, v in enumerate(vals[:n]):
+                        if v in (None, ''):
+                            continue
+                        pt = etree.SubElement(lvl, f'{CX}pt', idx=str(i))
+                        pt.text = (f' {v} ' if dim.tag == f'{CX}strDim' else repr(float(v)))
+                        k += 1
+                    # a contagem é a do intervalo inteiro: a posição vazia no fim
+                    # é a margem do desenho (sem ela a última barra sai cortada)
+                    lvl.set('ptCount', str(len(vals)))
+                mudou = True
+            if mudou:
+                parte._blob = etree.tostring(x, xml_declaration=True, encoding='UTF-8', standalone=True)
+                self.trocas += 1
+
+    def _tabela_pnl(self, tabela, linhas):
+        """Reescreve as linhas de dados (a partir da 3ª) com as da planilha,
+        acrescentando ou tirando linhas se a quantidade mudou."""
+        tbl = tabela._tbl
+        trs = tbl.tr_lst
+        cab = 2
+        texto = ' '.join(c.text for r in tabela.rows for c in r.cells)
+        espaco = bool(re.search(r'-\s\d', texto))       # "- 0,6" ou "-0,6", como no modelo
+        modelo = copy.deepcopy(trs[cab])
+        atuais = trs[cab:]
+        while len(atuais) < len(linhas):
+            novo = copy.deepcopy(atuais[-2] if len(atuais) > 1 else modelo)
+            atuais[-1].addprevious(novo)
+            atuais = tbl.tr_lst[cab:]
+        while len(atuais) > len(linhas):
+            tbl.remove(atuais[-2])
+            atuais = tbl.tr_lst[cab:]
+
+        def num(v):
+            if v is None:
+                return '-'
+            s = fmt.num(abs(v), 1)
+            return (('- ' if espaco else '-') + s) if v < 0 else s
+
+        for i, (nome, alpha, bench, total) in enumerate(linhas):
+            for j, valor in enumerate((nome, num(alpha), num(bench), num(total))):
+                cel = tabela.cell(cab + i, j)
+                p = cel.text_frame.paragraphs[0]
+                if p.runs:
+                    p.runs[0].text = valor
+                    for r in p.runs[1:]:
+                        r.text = ''
+                else:
+                    p.add_run().text = valor
+                for q in cel.text_frame.paragraphs[1:]:
+                    for r in q.runs:
+                        r.text = ''
