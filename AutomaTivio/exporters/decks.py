@@ -892,7 +892,12 @@ def _treemap_nativo(slide, pic, itens):
     b = _absoluta(pic._element)                 # a imagem pode estar dentro de um grupo
     x0, y0, w0, h0 = b[0], b[1], int((b[2] - b[0]) * 0.988), b[3] - b[1]
     itens = sorted(itens, key=lambda a: -a[1])
-    rects = _squarify([max(v, 3.0) for _, v in itens], x0, y0, w0, h0)
+    # A legenda ocupa o pé da área da imagem: nos blocos pequenos (0,5%, 1,9%)
+    # o nome não cabe, e sem ela sobra um número solto. O treemap encolhe na
+    # altura em vez de a legenda invadir o que vem abaixo no slide.
+    h_leg = int(h0 * 0.20)
+    h_tree = h0 - h_leg
+    rects = _squarify([max(v, 3.0) for _, v in itens], x0, y0, w0, h_tree)
     # textos soltos por cima da imagem (correções à mão no modelo) saem junto
     for sh, _ in list(_shapes(slide.shapes)):
         c = _absoluta(sh._element)
@@ -903,7 +908,7 @@ def _treemap_nativo(slide, pic, itens):
     if ancora is pic._element:
         ancora = pic._element.getprevious()
     pic._element.getparent().remove(pic._element)
-    alto = h0 / 12700                        # altura do quadro em pt
+    alto = h_tree / 12700                    # altura do quadro em pt
     for i, ((nome, v), (x, y, w, h)) in enumerate(zip(itens, rects)):
         cor = PALETA_TREEMAP[i % len(PALETA_TREEMAP)]
         bl = slide.shapes.add_shape(MSO_SHAPE.RECTANGLE, int(x), int(y), max(int(w), 1), max(int(h), 1))
@@ -943,6 +948,31 @@ def _treemap_nativo(slide, pic, itens):
         el.getparent().remove(el)
         ancora.addnext(el)
         ancora = el
+
+    # legenda: quadradinho na cor do bloco + nome + percentual, em linhas corridas
+    from pptx.util import Pt as _Pt
+    leg = slide.shapes.add_textbox(int(x0), int(y0 + h_tree), int(w0), int(h_leg))
+    leg.name = 'treemap legenda'
+    tf = leg.text_frame
+    tf.word_wrap = True
+    tf.margin_left = tf.margin_right = 0
+    tf.margin_top = int(h_leg * 0.10)
+    tf.margin_bottom = 0
+    corpo_leg = max(5.5, min(8.0, h_leg / 12700 / 2.6, w0 / 12700 / 55))
+    par = tf.paragraphs[0]
+    for i, (nome, v) in enumerate(itens):
+        cor = PALETA_TREEMAP[i % len(PALETA_TREEMAP)]
+        q = par.add_run()
+        q.text = '\u25A0 '
+        q.font.size = _Pt(corpo_leg)
+        q.font.color.rgb = RGBColor.from_string(cor)
+        t = par.add_run()
+        t.text = f'{nome} {fmt.num(v, 2)}%' + ('     ' if i < len(itens) - 1 else '')
+        t.font.size, t.font.name = _Pt(corpo_leg), 'Versos'
+        t.font.color.rgb = RGBColor.from_string('262626')
+    el = leg._element
+    el.getparent().remove(el)
+    ancora.addnext(el)
 
 
 def _squarify(vals, x, y, w, h):

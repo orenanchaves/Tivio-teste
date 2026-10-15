@@ -401,6 +401,9 @@ def barras_modelo(itens, estilo, altura, espessura=None):
             f'--hb-n:{len(itens)}">' + ''.join(linhas) + '</div>')
 
 
+MAX_ROTULOS_EIXO = 12     # rótulos de mês no eixo X da rentabilidade histórica
+
+
 def _passo_eixo(maxv):
     """Degrau redondo do eixo Y: 5 em 5 até 30%, 10 em 10 acima."""
     for p in (1, 2, 2.5, 5, 10, 20, 25, 50):
@@ -491,11 +494,11 @@ def historico_modelo(hist, nome_bench, estilo, data_inicio=None,
                  f'{13 if estilo == "cp" else 15.5}" font-weight="600" text-anchor="end">'
                  f'{fmt.num(v, casas)}%</text>')
         v += passo
-    # Um rótulo por mês, como no publicado, enquanto couber (~24 meses). O
-    # Institucional tem série desde 2005: mês a mês vira uma mancha no eixo,
-    # então rareia mantendo o último mês.
+    # No máximo 12 rótulos no eixo, sempre contando do último mês para trás
+    # (o último é o mês da edição). A série vai desde o início do fundo; o
+    # Institucional tem dados desde 2005, e mês a mês vira uma mancha no eixo.
     passo_eixo = passo
-    passo = max(1, -(-n // 24)) if n <= 30 else max(2, -(-n // 18))
+    passo = max(1, -(-n // MAX_ROTULOS_EIXO))
     visiveis = []
     for i, lb in enumerate(labels):
         mostra = not ((n - 1 - i) % passo)
