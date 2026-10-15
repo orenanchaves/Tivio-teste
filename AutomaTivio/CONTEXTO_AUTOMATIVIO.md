@@ -375,6 +375,77 @@ setor, sobre o total da carteira), `rating_extras()`, a partir de `hghy_tipo`,
 - PDF pelo PowerPoint (`exporters.previdencia._pdf_powerpoint`). Etapa
   `Pipeline._decks`, ligada por `saidas.decks` em `configs/edicao.yml`.
 
+#### Propagação dos números institucionais (`datasources/`)
+
+Os números da Tivio saem de UM lugar, `datasources/indicadores_tivio.py::get_indicadores_tivio()`,
+lido uma vez em `Pipeline._ler` (`self.indicadores`):
+
+| Chave | Fonte |
+|---|---|
+| `anos_historia`, `aum_institucional`, `fundos`, `profissionais`, `data_ref` | API pública de big numbers (`datasources/big_numbers.py`) |
+| `aum_investment_solutions`, `aum_credito` (HG + Estruturado), `aum_credito_high_grade`, `aum_credito_estruturado`, `aum_imobiliario`, `aum_patrimoniais`, `aum_informativo` | `data/tivio_summary.json`, exportado do Informativo com o login corporativo (`datasources/aum_verticais.py`) |
+
+- O JSON do Informativo é interno: fica fora do Git (`data/*.json` no
+  `.gitignore`). Atualize-o antes de rodar o mês.
+- API fora do ar **para a rodada** com o motivo. JSON do Informativo ausente
+  não para: o log avisa e o AUM por vertical (rosca, AuM de crédito) fica como
+  no modelo até o JSON voltar para `data/`.
+- AUM institucional (+32 bi, API) e AUM do Informativo (R$ 29,8 bi) são
+  indicadores diferentes. Não trocar um pelo outro sem regra do material.
+- Jinja: `{{ tivio.<chave> }}` em qualquer template do `RenderizadorRelatorio`
+  (`Pipeline._com_tivio`).
+- Decks: `exportar_decks(..., indicadores=)`; o mapa caixa do PPTX → chave
+  está em `decks_extras.CAIXA_PARA_INDICADOR` e a rosca em
+  `ROSCA_PARA_VERTICAL`. O que ainda não tem fonte oficial (AuM captado em 12
+  meses, emissores, profissionais de crédito, turnover) fica em
+  `configs/big_numbers.yml`.
+- Teste: `python -c "from datasources.indicadores_tivio import get_indicadores_tivio; import json; print(json.dumps(get_indicadores_tivio(), ensure_ascii=False, indent=2))"`
+
+#### Decks de outubro/2026 (`exporters/decks_extras.py`)
+
+Oito decks novos em `configs/decks.yml`: Institucional, Institucional 15,
+Institucional 30, Infra Plus CDI (Crédito Privado), HGD30 e HYD60
+(Previdência), Prev Low Vol e Prev Top Credit (Investment Solutions). As regras
+novas ficam em `decks_extras.py::Extras`, chamadas no fim do laço de cada slide
+em `exportar_decks`:
+
+| Regra | O que faz | De onde vem o número |
+|---|---|---|
+| `big_numbers` | AuM, anos, profissionais, fundos, emissores, turnover. Acha a caixa pelo **nome** (`ativos_sob_gestão`, `anos_historia`, `profissionais_credito`…) e, sem nome, pelo rótulo vizinho. Corrige a "Fonte: Anbima" (já saiu "Agp/2026") com o mês do `data_ref` | `get_indicadores_tivio()`; o resto em `configs/big_numbers.yml` |
+| `aum_vertical` | Rosca "AuM por vertical": valores, rótulos "R$ 9,2 bi" e o total no centro (soma das fatias, aviso se divergir do AUM do Informativo) | JSON do Informativo |
+| `retorno_12m` | "100% do CDI" ao lado de "Retorno 12 M" (vira "desde o início" em fundo novo) | Contexto do fundo |
+| `periodo` | "Mai/2025 a Set/2026 (mensal)": início = 1ª cota, fim = data base | Contexto do fundo |
+| `nomeados` | Caixas `patrimonio_liquido` e `patrimonio_liquido_medio_12m` | Contexto do fundo |
+| `taxa_prev` | "Taxa de Adm & Gestão" / "Taxa Global" | `entrada/taxas_prev.xlsx`: soma da Taxa Global Máxima dos veículos (= "Taxa Final" do bloco, conferida na leitura; `bloco_taxas_prev` em `fundos.yml`) |
+| `alocacao_lado` | "High Grade 66,5%" em caixas vizinhas e as tabelas "Carteira HGD/HYD" (só com `alocacao_hghy`) | `ContextoFundo.alocacao_hghy` |
+| `emissores` | Gráfico logo abaixo de "Principais emissores" | `ContextoFundo.emissores_relatorio` |
+| `mes` | Selo "Setembro de 2026" em todos os slides (`mes_em_todos: true`) | data base |
+| `comentario` | Slide "Comentário do Gestor" recebe a seção do fundo em `entrada/comentarios.md` (`## Tivio Prev Low Vol`, `## Tivio Prev Top Credit`), com os marcadores resolvidos; sem seção, lorem ipsum e aviso no log (`comentario: gestor`) | `ContextoFundo.comentario_preenchido` |
+
+Opções novas no `decks.yml`: `fundo:` no deck (vale para os slides cujo título
+não identifica o fundo: nos decks novos o "Por que…?" vem em caixas soltas e o
+nome do fundo é imagem), `mes_em_todos` e `comentario`.
+
+No `decks.py`: tabelas aceitam 24M/36M e a linha "Alfa"; a "Alocação de
+crédito" aceita decimal ("72,2%"); as etiquetas do fim das linhas ignoram
+cópias guardadas fora da área do slide.
+
+Ajustes feitos nos modelos (uma vez, já gravados em `templates/decks/`):
+
+- **HYD60**: ganhou o slide 10, "Rentabilidade histórica", copiado do HGD30 com
+  `scripts/copiar_slide.py` (gráfico editável, cores do tema do HYD60, nome da
+  classe FIE e CNPJ do HYD60). O gráfico é preenchido todo mês pela regra do
+  gráfico Fundo x CDI, com a série da classe FIE (`cotas_rentabilidade`).
+- **HGD30**: o vídeo embutido de 225 MB foi recomprimido (`comprimir_pptx.py`
+  agora recomprime vídeo com o ffmpeg). O deck foi de 311 MB para 34 MB.
+- **Infra Plus CDI**: a caixa do 1º setor do Top 3 estava nomeada `nome-top2`;
+  o marca-texto amarelo do Duration saiu.
+- **Prev Low Vol / Top Credit**: a caixa "+40 Profissionais de Investimento"
+  passou a se chamar `profissionais_investimento` (antes `profissionais`, que é
+  o "+75" da Tivio).
+- Arquivos com "é" corrompido no nome (`Cr#U00e9dito`) foram renomeados: o
+  `decks.yml` não os encontrava.
+
 ---
 
 ## 6. O relatório de gestão
@@ -596,6 +667,9 @@ Cada uma destas custou uma rodada. Estão aqui para não custarem outra.
 | **Fonte Versos** no PDF | Os `.woff2` vêm do CDN da marca; sem rede o PDF usa a fonte de reserva e a métrica do texto muda | Colocar os arquivos em `assets/fontes/` |
 | **Tivio Atuarial** | Não está no DePara da planilha | Incluir no DePara |
 | **BVP** sem logo | Não há SVG em `assets/logos` | Adicionar `tivio_bvp.svg` |
+| **Prev Low Vol / Top Credit**: composição da rentabilidade (bps), alocação por tipo de ativo, top 5 exposições e contribuições, volatilidade 12M | Vêm das abas de Investment Solutions da `dados_mensais.xlsx`, ainda não mapeadas | Mapear as abas e criar a leitura no Contexto |
+| **Prev Top Credit** na DePara | O nome exato da coluna Carteira não foi conferido | Conferir `prevtopcredit` em `fundos.yml` com a planilha |
+| **Comentário dos decks de IS** | Sai em lorem ipsum enquanto não houver seção no `comentarios.md` | Escrever `## Tivio Prev Low Vol` e `## Tivio Prev Top Credit` no `comentarios.md` |
 
 Nenhuma delas impede a rodada: todas saem como **aviso** no log e na conferência,
 não como erro.

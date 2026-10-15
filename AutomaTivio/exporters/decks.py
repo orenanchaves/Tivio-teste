@@ -405,9 +405,13 @@ class Preenchedor:
                     xt = ''.join(r.text for r in extra.runs)
                     _troca_trecho(extra, 0, len(xt), '')
             self.trocas += 1
-        elif re.fullmatch(r'\s*\d{1,3}\s*%\s*', t) and ctx.cart:
-            p = pars[0]
-            if _troca_grupo(p, r'(\d{1,3})\s*%', fmt.num(ctx.cart['credito'] * 100, 0)):
+        elif re.fullmatch(r'\s*\d{1,3}(?:,\d)?\s*%\s*', t) and ctx.cart:
+            # "69%" ou "72,2%" (as casas seguem o modelo); o "%" pode estar no
+            # parágrafo de baixo
+            p = next((x for x in pars if re.search(r'\d', ''.join(r.text for r in x.runs))), pars[0])
+            tt = ''.join(r.text for r in p.runs)
+            casas = 1 if re.search(r'\d,\d', tt) else 0
+            if _troca_grupo(p, r'(\d{1,3}(?:,\d)?)', fmt.num(ctx.cart['credito'] * 100, casas)):
                 self.trocas += 1
 
     # -- "Desde o início / 12M / Mês" + "CDI + x% a.a." (ALT)
@@ -466,8 +470,10 @@ class Preenchedor:
         if not serie:
             return
         # etiquetas "29,56%" / "22,58%": a de cima é a maior
+        # só as do slide: o modelo às vezes guarda uma cópia antiga fora da área
         etq = [sh for sh, _ in _shapes(slide.shapes)
-               if re.fullmatch(r'\s*\d+,\d{2}\s*%\s*', _texto(sh))]
+               if re.fullmatch(r'\s*\d+,\d{2}\s*%\s*', _texto(sh))
+               and (_absoluta(sh._element) or (0,))[0] < largura_slide]
         if len(etq) == 2:
             fim_f, fim_c = serie[-1][1], serie[-1][2]
             etq.sort(key=lambda s: s.top or 0)
@@ -1099,6 +1105,7 @@ def _remove_slide(prs, slide):
 RATINGS = re.compile(r'^(AAA|AA[+-]?|A[+-]?|BBB[+-]?|BB[+-]?|B[+-]?|CCC|CC|C|D)$')
 COMPOSICAO = {'caixa', 'fidc', 'bancário', 'corporativo'}
 PERIODOS_TABELA = {'MES': 'mes', 'ANO': 'ano', '12M': '12m', '12 M': '12m',
+                   '24M': '24m', '24 M': '24m', '36M': '36m', '36 M': '36m',
                    'DESDE O INICIO': 'inicio', 'INICIO': 'inicio'}
 ROTULO_PCT_CDI = re.compile(r'^\s*(\d+(?:,(\d+))?)\s*%\s*CDI\s*$')
 
@@ -1144,6 +1151,7 @@ class Conecta:
                 for i in range(cab + 1, len(linhas)):
                     rot = textos[i][0]
                     campo = 'pct' if '%' in rot else 'fundo' if 'FUNDO' in rot else \
+                        'alfa' if rot == 'ALFA' else \
                         'bench' if rot in ('CDI', 'IPCA', 'IMA-B 5', 'IMA-B') else None
                     if not campo:
                         continue
@@ -1866,10 +1874,27 @@ def _estilo_post(slide, ctx=None):
 
 
 # ------------------------------------------------------------------ geral
-def exportar_decks(contextos, cadastro, edicao, destino, log, so=None, pdf=True):
+def _taxas_prev(log):
+    """entrada/taxas_prev.xlsx (caminho em configs/edicao.yml); None sem ela."""
+    from loaders.taxas_prev import TaxasPrev, ler_taxas_prev
+    with open(os.path.join(RAIZ, 'configs', 'edicao.yml'), encoding='utf-8') as f:
+        ent = (yaml.safe_load(f) or {}).get('entradas') or {}
+    caminho = os.path.join(RAIZ, ent.get('taxas_prev') or 'entrada/taxas_prev.xlsx')
+    if not os.path.exists(caminho):
+        log.aviso('decks', 'taxas_prev.xlsx não encontrada: taxas de previdência ficam as do modelo')
+        return None
+    tp = TaxasPrev(ler_taxas_prev(caminho))
+    for bloco, aviso in tp.avisos():
+        log.aviso('taxas_prev', f'{bloco}: {aviso}')
+    return tp
+
+
+def exportar_decks(contextos, cadastro, edicao, destino, log, so=None, pdf=True, indicadores=None):
     from pptx import Presentation
+    from exporters.decks_extras import Extras
     from exporters.previdencia import _pdf_powerpoint, instalar_versos
     instalar_versos(log)
+    tprev = _taxas_prev(log)
     feitos = 0
     for d in carregar_config():
         if so and d['nome'] not in so:
@@ -1881,6 +1906,7 @@ def exportar_decks(contextos, cadastro, edicao, destino, log, so=None, pdf=True)
         prs = Presentation(modelo)
         pre = Preenchedor(edicao, contextos, cadastro, log)
         con = Conecta(pre)
+        ext = Extras(edicao, log, tprev, indicadores=indicadores)
         remover = set(d.get('remover') or [])
         # slide -> fundo (e opções) quando o título não diz de quem é o slide
         por_slide = {int(n): (v if isinstance(v, dict) else {'fundo': v})
@@ -1888,7 +1914,10 @@ def exportar_decks(contextos, cadastro, edicao, destino, log, so=None, pdf=True)
         largura = prs.slide_width
         for i, slide in enumerate(list(prs.slides)):
             opc = por_slide.get(i + 1) or {}
-            k = opc.get('fundo') or pre.fundo_do_slide(slide)
+            # deck de um fundo só (`fundo:` no deck): vale para todo slide que
+            # não diga o contrário. Nos decks novos o "Por que…?" vem quebrado
+            # em caixas e o nome do fundo é imagem: o título não identifica.
+            k = opc.get('fundo') or pre.fundo_do_slide(slide) or d.get('fundo')
             if 'altlight' in remover and k == 'altlight':
                 _remove_slide(prs, slide)
                 continue
@@ -1915,10 +1944,23 @@ def exportar_decks(contextos, cadastro, edicao, destino, log, so=None, pdf=True)
             con.graficos(slide, ctx, largura)
             if opc.get('alocacao_hghy'):
                 con.hghy(slide, ctx)
+                ext.alocacao_lado(slide, ctx)
             for velho, novo in (opc.get('textos') or {}).items():
                 _troca_texto(slide, velho, novo)
             if opc.get('estilo') == 'post':
                 _estilo_post(slide, ctx)
+            # regras de outubro/2026 (exporters/decks_extras.py)
+            ext.big_numbers(slide)
+            ext.aum_vertical(slide)
+            ext.nomeados(slide, ctx)
+            ext.emissores(slide, ctx)
+            ext.retorno_12m(slide, ctx)
+            ext.periodo(slide, ctx)
+            ext.taxa_prev(slide, ctx)
+            if d.get('mes_em_todos') and i > 0:
+                ext.mes(slide)
+            if d.get('comentario') in ('gestor', 'lorem'):
+                ext.comentario(slide, ctx)
         pasta = os.path.join(destino, d.get('pasta', ''))
         os.makedirs(pasta, exist_ok=True)
         base = f'{d["nome"]} - {fmt.MESES[edicao.db.month - 1]} {edicao.db.year}'
@@ -1928,6 +1970,6 @@ def exportar_decks(contextos, cadastro, edicao, destino, log, so=None, pdf=True)
         arq_pdf = os.path.join(pasta, base + '.pdf')
         if pdf and _pdf_powerpoint(os.path.abspath(pptx), os.path.abspath(arq_pdf), log):
             log.gerado(arq_pdf, 'pdf')
-        log.info(f'  deck {d["nome"]}: {pre.trocas} trocas')
+        log.info(f'  deck {d["nome"]}: {pre.trocas + ext.trocas} trocas')
         feitos += 1
     return feitos

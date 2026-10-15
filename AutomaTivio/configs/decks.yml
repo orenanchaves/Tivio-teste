@@ -9,7 +9,19 @@
 #   Alocação de crédito e top 3 setores · "CDI + x% a.a." por período ·
 #   blocos da alocação dos ALT · gráfico de rentabilidade histórica (diário)
 #   e as etiquetas do valor final.
-# AUM da Tivio, equipe, textos e taxas ficam como estão no modelo.
+# Big numbers da Tivio (AuM, anos, profissionais, emissores, turnover, AuM por
+# vertical e a "Fonte: Anbima") saem de configs/big_numbers.yml, em TODOS os
+# decks. Equipe e textos ficam como estão no modelo. Taxas: as de previdência
+# vêm da entrada/taxas_prev.xlsx; as demais ficam como no modelo.
+#
+# fundo:   o fundo do deck inteiro, para os slides cujo título não diz de quem
+#          são (nos decks de fundo único o "Por que o …?" vem em caixas soltas
+#          e o nome do fundo é imagem).
+# mes_em_todos: o selo "Setembro de 2026" é trocado em todos os slides, não só
+#          na capa (decks de Investment Solutions).
+# comentario: gestor  o slide "Comentário do Gestor" recebe a seção do fundo em
+#          entrada/comentarios.md (## Tivio Prev Low Vol, ## Tivio Prev Top
+#          Credit). Sem a seção, sai lorem ipsum e o log avisa.
 #
 # area: onde o deck vai em saida/_Atual/ (Crédito Estruturado/Decks/<pasta>/ ou
 #       Multi-área/Decks/ para o que cruza áreas). Sem `area`, vai para Multi-área.
@@ -106,3 +118,62 @@ decks:
       39: hgd30
       41: hyd60
       42: hyd60
+
+  # ===================================================== decks de outubro/2026
+  # ------------------------------------------------------- Crédito Privado
+  - pasta: Institucional
+    area: Crédito Privado
+    nome: Deck - Tivio Institucional
+    modelo: Deck - Tivio Institucional.pptx
+    fundo: institucional
+  - pasta: Institucional 15
+    area: Crédito Privado
+    nome: Deck - Tivio Institucional 15
+    modelo: Deck - Tivio Institucional 15.pptx
+    fundo: inst15
+  - pasta: Institucional 30
+    area: Crédito Privado
+    nome: Deck - Tivio Institucional 30
+    modelo: Deck - Tivio Institucional 30.pptx
+    fundo: inst30
+  - pasta: Infra Plus CDI
+    area: Crédito Privado
+    nome: Deck - Tivio Infra Plus CDI
+    modelo: Deck - Tivio Infra Plus CDI.pptx
+    fundo: infrapluscdi
+    slides:
+      16:                    # o slide da equipe veio copiado do Institucional 30
+        textos: {"Tivio Institucional Incentivado CDI 30": "Tivio Infra Plus CDI"}
+
+  # ------------------------------------------------------------ Previdência
+  # HYD60: o slide de rentabilidade histórica (10) foi criado a partir do
+  # HGD30, com a série da classe FIE (cotas_rentabilidade em fundos.yml).
+  - pasta: HGD30
+    area: Previdência
+    nome: Deck - Tivio HGD30
+    modelo: Deck - Tivio HGD30.pptx
+    fundo: hgd30
+    slides:
+      8: {fundo: hgd30, alocacao_hghy: true}    # alocação real HG / Crédito Estruturado / Caixa
+      9: {fundo: hgd30, alocacao_hghy: true}    # "Carteira HGD" e "Carteira HYD"
+  - pasta: HYD60
+    area: Previdência
+    nome: Deck - Tivio HYD60
+    modelo: Deck - Tivio HYD60.pptx
+    fundo: hyd60
+
+  # --------------------------------------------------- Investment Solutions
+  - pasta: Prev Low Vol
+    area: Investment Solutions
+    nome: Deck - Tivio Prev Low Vol
+    modelo: Deck - Tivio Prev Low Vol.pptx
+    fundo: prevlowvol
+    mes_em_todos: true
+    comentario: gestor
+  - pasta: Prev Top Credit
+    area: Investment Solutions
+    nome: Deck - Tivio Prev Top Credit
+    modelo: Deck - Tivio Prev Top Credit.pptx
+    fundo: prevtopcredit
+    mes_em_todos: true
+    comentario: gestor

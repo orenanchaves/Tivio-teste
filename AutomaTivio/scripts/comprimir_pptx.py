@@ -11,18 +11,26 @@ Para cada imagem acima de LIMITE:
     .rels passam a apontar para o arquivo novo;
   - imagem com transparência continua PNG, só reduzida e otimizada.
 
+Vídeo (.mp4/.mov/.m4v) acima de LIMITE_VIDEO é recomprimido com o ffmpeg, se
+ele estiver instalado: H.264 em até 1080p (CRF 28) e áudio AAC 128k, mantendo
+o mesmo nome dentro do PPTX. O deck do HGD30 chegou com um vídeo de 225 MB.
+
     python scripts/comprimir_pptx.py entrada.pptx saida.pptx
 """
 import io
 import os
 import re
+import shutil
+import subprocess
 import sys
+import tempfile
 import zipfile
 
 from PIL import Image
 
 LIMITE = 600_000          # bytes
 LADO = 2560               # px
+LIMITE_VIDEO = 20_000_000 # bytes
 Image.MAX_IMAGE_PIXELS = None
 
 
@@ -33,11 +41,36 @@ def _tem_transparencia(im):
     return False
 
 
+def _video(dados, log):
+    """Recomprime um vídeo com o ffmpeg; None se não houver ffmpeg ou falhar."""
+    if not shutil.which('ffmpeg'):
+        log('  ffmpeg não encontrado: vídeo mantido como está')
+        return None
+    with tempfile.TemporaryDirectory() as tmp:
+        ent, sai = os.path.join(tmp, 'in.mp4'), os.path.join(tmp, 'out.mp4')
+        with open(ent, 'wb') as f:
+            f.write(dados)
+        cmd = ['ffmpeg', '-y', '-loglevel', 'error', '-i', ent,
+               '-vf', "scale='min(1920,iw)':-2", '-c:v', 'libx264', '-crf', '28',
+               '-preset', 'medium', '-pix_fmt', 'yuv420p', '-c:a', 'aac', '-b:a', '128k',
+               '-movflags', '+faststart', sai]
+        if subprocess.run(cmd).returncode != 0 or not os.path.exists(sai):
+            return None
+        with open(sai, 'rb') as f:
+            return f.read()
+
+
 def comprimir(origem, destino, log=print):
     zin = zipfile.ZipFile(origem)
     novos, renomes = {}, {}
     for info in zin.infolist():
         nome = info.filename
+        if (nome.startswith('ppt/media/') and info.file_size >= LIMITE_VIDEO
+                and os.path.splitext(nome)[1].lower() in ('.mp4', '.mov', '.m4v')):
+            v = _video(zin.read(nome), log)
+            if v and len(v) < info.file_size:
+                novos[nome] = v
+            continue
         if not nome.startswith('ppt/media/') or info.file_size < LIMITE:
             continue
         ext = os.path.splitext(nome)[1].lower()

@@ -1,0 +1,50 @@
+# ============================================================================
+# Big numbers dos decks: o que NÃO vem das fontes oficiais
+# ----------------------------------------------------------------------------
+# Os números institucionais saem de datasources/indicadores_tivio.py (ver o
+# guia, "Propagação de números automáticos"):
+#
+#   caixa no PPTX                 chave central            fonte
+#   ativos_sob_gestão             aum_institucional        API pública (+32 bi)
+#   anos_historia                 anos_historia            API pública (+25)
+#   profissionais                 profissionais            API pública (+40)
+#   profissionais_investimento    profissionais            API pública (+40)
+#   fundos_criacao                fundos                   API pública (+120)
+#   ativos_sob_gestao_credito     aum_credito              Informativo (HG + Estruturado)
+#   "Fonte: … - Set/2026"         data_ref                 API pública
+#   rosca "AuM por vertical"      aum_verticais_valores    Informativo
+#
+# Esses NÃO se digitam aqui: o mapa acima está em exporters/decks_extras.py
+# (CAIXA_PARA_INDICADOR).
+#
+# Ficam aqui só os números que ainda não têm fonte oficial. Quando ganharem
+# uma, saem deste arquivo e entram no datasources/.
+#
+# Como a automação acha o lugar de cada número: pelo NOME da caixa no PPTX
+# (Selecionar > Painel de Seleção no PowerPoint) e, se a caixa não tem nome,
+# pelo rótulo ao lado ("Profissionais dedicados ao Crédito"...).
+# Número sem aspas: a casa decimal segue o modelo. Entre aspas: entra como está.
+# ============================================================================
+
+# ----------------------------------------------------------------------------
+# forcar: correção manual que VENCE a fonte oficial, para todos os materiais
+# (HTML, PDF, PPTX), enquanto a fonte está errada. A chave é a do
+# get_indicadores_tivio(). Toda rodada avisa no log que o número está forçado;
+# quando a fonte for corrigida, apague a linha.
+# ----------------------------------------------------------------------------
+forcar:
+  anos_historia: "+27"     # a API pública diz "+25" (out/2026); a Tivio tem 27 anos
+
+# texto antes do mês na "Fonte: Anbima - Set/2026" (o mês vem do data_ref)
+fonte:
+  texto: Anbima
+
+numeros:
+  # Crédito ("Credibilidade e performance")
+  ativos_sob_gestao_credito_12: 3.5   # AuM captado nos últimos 12 meses, R$ bi
+  emissores_bancarios: 30
+  emissores_corporativos: 100
+  profissionais_credito: 11
+
+  # Investment Solutions (Prev Low Vol / Top Credit)
+  turnover: 3.3                       # %

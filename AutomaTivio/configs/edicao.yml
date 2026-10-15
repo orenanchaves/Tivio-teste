@@ -36,6 +36,10 @@ materiais:
 entradas:
   dados: entrada/dados_mensais.xlsx
   taxas: entrada/taxas_global.xlsx
+  # taxas dos fundos de previdência por veículo (FIE I, FIE II, FIFE) e a
+  # "Taxa Final" de cada bloco, que entra nos decks de HGD30, HYD60, Prev Low
+  # Vol e Prev Top Credit. Sem o arquivo, os decks mantêm a taxa do modelo.
+  taxas_prev: entrada/taxas_prev.xlsx
   # .docx, .md ou .xlsx — e mais de um: o primeiro que define um fundo vence.
   # O .md é a fonte principal (convertido do documento do gestor, com todos os
   # fundos, inclusive os ALT); o .docx ao lado só cobre o que o .md não tiver.

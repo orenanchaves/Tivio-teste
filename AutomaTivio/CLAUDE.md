@@ -135,6 +135,21 @@ lightbox, treemap, exportação no navegador). `renderers/legado.py` só reescre
 os **literais de dados** via `renderers/jsobj.py::replace_literal`. Reescrevê-los
 como Jinja trocaria material desenhado por uniformidade de código.
 
+### Números institucionais
+
+AuM, anos, fundos, profissionais e AUM por vertical saem só de
+`datasources/indicadores_tivio.py::get_indicadores_tivio()` (API pública +
+`data/tivio_summary.json`, interno e fora do Git). **Nunca** escreva esses
+números num template: use `{{ tivio.<chave> }}` ou o dicionário que o pipeline
+passa aos geradores.
+
+### Decks
+
+`configs/decks.yml` lista os decks; `exporters/decks.py` troca os números nos
+PPTX do time e `exporters/decks_extras.py` tem as regras de outubro/2026 (big
+numbers de `get_indicadores_tivio()` e `configs/big_numbers.yml`, taxas de `entrada/taxas_prev.xlsx`,
+rentabilidade do HYD60, lorem ipsum nos comentários). Detalhes no guia.
+
 ### Gráficos
 
 SVG/HTML desenhado no Python (`calculators/grafico.py`: `barras_modelo`,
