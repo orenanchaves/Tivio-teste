@@ -420,6 +420,7 @@ em `exportar_decks`:
 | `alocacao_lado` | "High Grade 66,5%" em caixas vizinhas e as tabelas "Carteira HGD/HYD" (só com `alocacao_hghy`) | `ContextoFundo.alocacao_hghy` |
 | `emissores` | Gráfico logo abaixo de "Principais emissores" | `ContextoFundo.emissores_relatorio` |
 | `mes` | Selo "Setembro de 2026" em todos os slides (`mes_em_todos: true`) | data base |
+| `abas_is` | Prev Low Vol e Top Credit: pizza de alocação, top 5 exposições e contribuições (gráficos pela fórmula que o próprio modelo guarda, ex. `'Low Vol'!$T$6:$T$13`), cascata do PnL (chartEx), tabela "PnL (bps)" e `vol_12m` | Abas `Low Vol` e `TOP Credit` da `dados_mensais.xlsx` (`aba_is` em `fundos.yml`, `loaders/abas_is.py`) |
 | `comentario` | Slide "Comentário do Gestor" recebe a seção do fundo em `entrada/comentarios.md` (`## Tivio Prev Low Vol`, `## Tivio Prev Top Credit`), com os marcadores resolvidos; sem seção, lorem ipsum e aviso no log (`comentario: gestor`) | `ContextoFundo.comentario_preenchido` |
 
 Opções novas no `decks.yml`: `fundo:` no deck (vale para os slides cujo título
@@ -667,8 +668,6 @@ Cada uma destas custou uma rodada. Estão aqui para não custarem outra.
 | **Fonte Versos** no PDF | Os `.woff2` vêm do CDN da marca; sem rede o PDF usa a fonte de reserva e a métrica do texto muda | Colocar os arquivos em `assets/fontes/` |
 | **Tivio Atuarial** | Não está no DePara da planilha | Incluir no DePara |
 | **BVP** sem logo | Não há SVG em `assets/logos` | Adicionar `tivio_bvp.svg` |
-| **Prev Low Vol / Top Credit**: composição da rentabilidade (bps), alocação por tipo de ativo, top 5 exposições e contribuições, volatilidade 12M | Vêm das abas de Investment Solutions da `dados_mensais.xlsx`, ainda não mapeadas | Mapear as abas e criar a leitura no Contexto |
-| **Prev Top Credit** na DePara | O nome exato da coluna Carteira não foi conferido | Conferir `prevtopcredit` em `fundos.yml` com a planilha |
 | **Comentário dos decks de IS** | Sai em lorem ipsum enquanto não houver seção no `comentarios.md` | Escrever `## Tivio Prev Low Vol` e `## Tivio Prev Top Credit` no `comentarios.md` |
 
 Nenhuma delas impede a rodada: todas saem como **aviso** no log e na conferência,

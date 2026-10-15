@@ -1889,12 +1889,33 @@ def _taxas_prev(log):
     return tp
 
 
+def _abas_is(cadastro, log):
+    """Abas de Investment Solutions da dados_mensais.xlsx (`aba_is` em fundos.yml)."""
+    from loaders.abas_is import ler_abas
+    nomes = sorted({f.cfg.get('aba_is') for f in cadastro.fundos.values() if f.cfg.get('aba_is')})
+    if not nomes:
+        return {}
+    with open(os.path.join(RAIZ, 'configs', 'edicao.yml'), encoding='utf-8') as f:
+        ent = (yaml.safe_load(f) or {}).get('entradas') or {}
+    caminho = os.path.join(RAIZ, ent.get('dados') or 'entrada/dados_mensais.xlsx')
+    try:
+        abas = ler_abas(caminho, nomes)
+    except Exception as e:
+        log.aviso('decks', f'abas de Investment Solutions não lidas ({e!r}): os quadros ficam como no modelo')
+        return {}
+    for n in nomes:
+        if n not in abas:
+            log.aviso('decks', f'aba "{n}" não existe na dados_mensais.xlsx: os quadros dela ficam como no modelo')
+    return abas
+
+
 def exportar_decks(contextos, cadastro, edicao, destino, log, so=None, pdf=True, indicadores=None):
     from pptx import Presentation
     from exporters.decks_extras import Extras
     from exporters.previdencia import _pdf_powerpoint, instalar_versos
     instalar_versos(log)
     tprev = _taxas_prev(log)
+    abas_is = _abas_is(cadastro, log)
     feitos = 0
     for d in carregar_config():
         if so and d['nome'] not in so:
@@ -1957,6 +1978,7 @@ def exportar_decks(contextos, cadastro, edicao, destino, log, so=None, pdf=True,
             ext.retorno_12m(slide, ctx)
             ext.periodo(slide, ctx)
             ext.taxa_prev(slide, ctx)
+            ext.abas_is(slide, ctx, abas_is)
             if d.get('mes_em_todos') and i > 0:
                 ext.mes(slide)
             if d.get('comentario') in ('gestor', 'lorem'):
