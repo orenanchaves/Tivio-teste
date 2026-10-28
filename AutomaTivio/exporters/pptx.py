@@ -143,6 +143,22 @@ class ExportadorPPTX:
             if tracejado:
                 from pptx.enum.dml import MSO_LINE_DASH_STYLE
                 linha.dash_style = MSO_LINE_DASH_STYLE.DASH
+        # no máximo 12 meses no eixo, contando a partir do último
+        n = len(hist['l'])
+        passo = max(1, -(-n // 12))
+        if passo > 1:
+            from lxml import etree
+            ax = gf.category_axis._element
+            ns = ax.nsmap.get('c') or 'http://schemas.openxmlformats.org/drawingml/2006/chart'
+            for tag in ('tickLblSkip', 'tickMarkSkip'):
+                for velho in ax.findall(f'{{{ns}}}{tag}'):
+                    ax.remove(velho)
+            skip = etree.SubElement(ax, f'{{{ns}}}tickLblSkip')
+            skip.set('val', str(passo))
+            nom = ax.find(f'{{{ns}}}noMultiLvlLbl')
+            if nom is not None:
+                ax.remove(skip)
+                nom.addprevious(skip)
         gf.value_axis.tick_labels.number_format = '0.0%'
         gf.value_axis.tick_labels.number_format_is_linked = False
         gf.value_axis.has_major_gridlines = True
@@ -211,11 +227,12 @@ class ExportadorPPTX:
         s = self._slide(prs)
         self._faixa(s, Cm(3.0), f.nome, '', ed.mes_ano)
         y = Cm(3.8)
-        if ctx.hist12:
+        hist = ctx.hist or ctx.hist12            # desde o início do fundo
+        if hist:
             self._txt(s, MARGEM, y, Cm(12), Cm(0.5), 'RENTABILIDADE HISTÓRICA',
                       tam=9, bold=True, cor=AZUL)
             self._grafico_linha(s, MARGEM, y + Cm(0.6), A4_L - 2 * MARGEM, Cm(9.0),
-                                ctx.hist12, ctx.benchmark)
+                                hist, ctx.benchmark)
             y += Cm(10.2)
         if ctx.comentario:
             self._txt(s, MARGEM, y, A4_L - 2 * MARGEM, Cm(0.5),

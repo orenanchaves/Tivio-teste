@@ -611,7 +611,7 @@ def exportar_informativos(fundos, destino, rend_email, log):
                 if mapa.get('pagina_rentabilidade'):
                     _pagina_rentabilidade(prs, mapa['pagina_rentabilidade'], d)
 
-                base = f'Informativo - {d["nome_curto"].replace("TIVIO ", "")} - {d["mes"]} {d["ano"]}'
+                base = f'Informativo - {d["nome_curto"].replace("TIVIO ", "")}'
                 pptx = os.path.join(destino, base + '.pptx')
                 prs.save(pptx)
                 log.gerado(pptx, 'pptx')

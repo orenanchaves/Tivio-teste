@@ -98,8 +98,12 @@ class Edicao:
 
     # ------------------------------------------------------------- utilidades
     def nome_arquivo(self, base, ext):
-        """'Relatório de Gestão' -> 'Relatório de Gestão - Agosto 2026.pdf'."""
-        return f'{base} - {self.mes_ano_curto}.{ext.lstrip(".")}'
+        """'Relatório de Gestão' -> 'Relatório de Gestão.pdf'.
+
+        O mês não entra no nome: o caminho estoura os 260 caracteres do Windows
+        dentro do OneDrive da empresa. O mês fica na pasta do histórico
+        (saida/_Historico/AAAA-MM/) e dentro do próprio arquivo."""
+        return f'{base}.{ext.lstrip(".")}'
 
     def __repr__(self):
         return f'<Edicao {self.iso} · {self.mes_ano}>'
