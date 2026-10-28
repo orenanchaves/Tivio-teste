@@ -554,7 +554,7 @@ const RECORRENTES=%REC%;
             mes = f'{fmt.MESES[self.edicao.db.month - 1]} {self.edicao.db.year}'
             infs = []
             for sigla, nome in (('HGD30', 'Tivio HGD30'), ('HYD60', 'Bradesco Tivio HYD60')):
-                base = '../informativos/' + quote(f'Informativo - {sigla} - {mes}')
+                base = '../informativos/' + quote(f'Informativo - {sigla}')
                 infs.append({'id': f'inf-{sigla.lower()}', 'kind': 'apresentacoes',
                              'vert': 'previdencia', 'title': f'Informativo · {nome}',
                              'desc': 'Informativo mensal que vai para os clientes, com os '

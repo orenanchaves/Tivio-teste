@@ -34,6 +34,7 @@
 # ----------------------------------------------------------------------------
 forcar:
   anos_historia: "+27"     # a API pública diz "+25" (out/2026); a Tivio tem 27 anos
+  fundos: "+135"           # a API pública diz "+120" (out/2026); a Tivio tem 135 fundos
 
 # texto antes do mês na "Fonte: Anbima - Set/2026" (o mês vem do data_ref)
 fonte:

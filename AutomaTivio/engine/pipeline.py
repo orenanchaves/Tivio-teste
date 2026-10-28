@@ -485,7 +485,7 @@ class Pipeline:
         try:
             n = exportar_destaques(self._destino('central'), self._destino('destaques'), self.log,
                                    pasta_pdf=self._destino('pdf'),
-                                   sufixo=' - ' + self.edicao.nome_arquivo('', 'pdf')[:-4].strip(' -'))
+                                   sufixo='')
             if n:
                 self.log.gerado(self._destino('destaques'), 'jpg')
         except Exception as e:
