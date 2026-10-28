@@ -4,7 +4,7 @@
 > da Tivio Capital: o que faz, como rodar no seu PC, como é por dentro, o que já
 > foi conferido contra os relatórios publicados e o que ainda falta.
 >
-> Visão de processo, para quem roda o mês: `../Documentacao_AutomaTivio/COMO_FUNCIONA.md`.
+> Visão de processo, para quem roda o mês: `Documentacao/COMO_FUNCIONA.md`.
 >
 > Documento único e autossuficiente — dá para abrir só ele e trabalhar.
 > Última revisão: **10/2026**.

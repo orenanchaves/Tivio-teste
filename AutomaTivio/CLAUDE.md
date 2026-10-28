@@ -158,7 +158,7 @@ desenho do servidor; só o histórico é redesenhado pelo ECharts, com a mesma
 especificação (`data-tv`) e o acumulado no fim das linhas. `assets/relatorio_charts.js`
 recorta o viewBox dos logos dos fundos e encolhe o texto `.tv-ajusta`
 (comentário, disclaimer) até caber. A referência visual está em
-`../_revisao/modelo/` (PDFs de agosto/2026 do Institucional 30 e do ALT 180).
+`_revisao/modelo/` (PDFs de agosto/2026 do Institucional 30 e do ALT 180).
 
 ---
 
