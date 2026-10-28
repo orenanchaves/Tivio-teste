@@ -8,3 +8,7 @@
 # decks gerados: pesados (~25 MB cada) e refeitos a cada rodada
 AutomaTivio/saida/_Historico/*/decks/
 AutomaTivio/saida/_Atual/
+
+# material de apoio do AutomaTivio, local e pesado
+AutomaTivio/_revisao/
+AutomaTivio/_dados_mensais_arquivo/
