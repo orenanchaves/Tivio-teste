@@ -1,0 +1,80 @@
+{{HEADER}}
+<div class="wrap">
+{{HERO}}
+
+<section class="baixar" aria-label="Baixar">
+  <a class="btn" href="{{URL_ZIP}}">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 4v11"/><path d="m7 10 5 5 5-5"/><path d="M5 20h14"/></svg>
+    Baixar AutomaTivio.zip
+  </a>
+  <div class="meta"><span><b>717 MB</b></span><span>Versão de <b>28/10/2026</b></span><span>Windows, Python 3</span><a href="{{URL_REL}}">Ver no GitHub</a></div>
+</section>
+<p class="meta-txt">Ao descompactar, sai a pasta <b>AutomaTivio</b>, com a documentação em <b>Documentacao</b>.</p>
+
+<h2 id="logica">Como <strong>funciona</strong></h2>
+<p class="secao-sub">Seis etapas, sempre nesta ordem. Cada número de um fundo é calculado uma vez só, e todo material lê esse mesmo lugar: por isso relatório, post, e-mail e Central nunca discordam.</p>
+<ol class="fluxo">
+  <li><b>Leitura</b><span>Planilhas do mês e comentários do gestor. Descobre a data base sozinho.</span></li>
+  <li><b>Cálculo</b><span>Um contexto por fundo: rentabilidade, carteira, histórico, PL, carrego, duration.</span></li>
+  <li><b>Validação</b><span>Compara e avisa. Com erro grave, para e não publica.</span></li>
+  <li><b>Relatórios</b><span>13 relatórios de gestão em HTML, PDF A4 e PPTX, cada PDF reaberto e conferido.</span></li>
+  <li><b>Materiais</b><span>Posts, e-mails, decks e a Central, que tira o card de link quebrado.</span></li>
+  <li><b>Conferência</b><span>Planilha com o que mudou, o que faltou e o que não bateu.</span></li>
+</ol>
+<div class="pontas">
+  <div class="ponta"><b>Entra</b><code>entrada/</code> dados_mensais.xlsx, taxas, spreads e comentarios.md. Próxima fase: ler direto do Databricks interno, sem Excel.</div>
+  <div class="ponta"><b>Sai</b><code>saida/_Atual/</code> por área, com nome fixo, para publicar. <code>saida/_Historico/AAAA-MM/</code> a edição completa do mês.</div>
+</div>
+
+<h2 id="ambiente">No ambiente <strong>interno</strong></h2>
+<p class="secao-sub">Uma página para cada time, na ordem do mês: Marketing dá o OK nos dados, a Gestão preenche os comentários, o Marketing roda, Riscos aprova e o Marketing publica. Os números e avisos são os da edição de setembro/2026.</p>
+
+{{APP}}
+
+
+{{SEGMENTOS}}
+
+<h2 id="fallback">Quando algo <strong>falha</strong></h2>
+<p class="secao-sub">O AutomaTivio nunca reescreve um número ou um texto por conta própria. Quando falta alguma coisa, ele segue do jeito seguro e registra o que fez.</p>
+<div class="tab"><table>
+  <tr><th>Situação</th><th>O que ele faz</th><th>Onde você vê</th></tr>
+  <tr><td>Erro grave na validação</td><td>Para a rodada e não publica nada.</td><td>Terminal e log</td></tr>
+  <tr><td>Fundo sem dado no mês</td><td>Mantém rentabilidade e PL anteriores, sem inventar.</td><td>Conferência, aba Dados faltantes</td></tr>
+  <tr><td>Comentário com número que não bate</td><td>Troca só o número pelo da tabela; o resto fica como o gestor escreveu.</td><td>Conferência, aba Divergências</td></tr>
+  <tr><td>Sem cota do FIE na previdência</td><td>Calcula a rentabilidade pelo FIFE.</td><td>Log da rodada</td></tr>
+  <tr><td>Card aponta para arquivo inexistente</td><td>Tira o card da Central.</td><td>Log da rodada</td></tr>
+  <tr><td>Comentário longo demais para a folha</td><td>Diminui a fonte até caber; curto, aumenta e centraliza.</td><td>No próprio PDF</td></tr>
+  <tr><td>Sem PowerPoint no PC</td><td>Gera o PPTX e pula só o PDF do Informativo.</td><td>Aviso na rodada</td></tr>
+  <tr><td>Caminho com mais de 260 caracteres</td><td>Abre o arquivo por um atalho curto na pasta temporária.</td><td>Nada, é automático</td></tr>
+  <tr><td>Sem internet</td><td>Usa as bibliotecas e a fonte Versos guardadas na pasta.</td><td>Aviso da fonte, aceitável</td></tr>
+  <tr><td>Pasta _Atual com arquivo aberto</td><td>Grava o histórico e pede para fechar e rodar de novo.</td><td>Aviso no fim da rodada</td></tr>
+</table></div>
+
+<h2 id="baixar">Como baixar os <strong>materiais</strong></h2>
+<div class="jeitos">
+  <div class="jeito"><b>Na pasta _Atual</b><span>Uma pasta por área, nome fixo sem o mês. O arquivo novo substitui o do mês anterior e nenhum link muda.</span><br><span class="pill ok"><i></i>Funciona hoje</span></div>
+  <div class="jeito"><b>Na Central de Materiais</b><span>Cada material tem botões PDF, JPG, PNG e PPTX. Os e-mails têm Baixar tudo (ZIP) e o .eml que abre no Outlook.</span><br><span class="pill ok"><i></i>Funciona hoje</span></div>
+  <div class="jeito"><b>No ambiente interno</b><span>Baixar a área inteira em um zip, liberado depois da aprovação de Riscos.</span><br><span class="pill espera"><i></i>Próxima fase</span></div>
+</div>
+<div class="areas">
+  <div class="area"><h3>Crédito Privado</h3><span class="caminho">_Atual/Crédito Privado/</span><ul><li>Relatórios de 10 fundos em PDF e PPTX, mais a página com abas</li><li>Destaques: 9 JPGs e o PDF do carrossel</li></ul></div>
+  <div class="area"><h3>Crédito Estruturado</h3><span class="caminho">_Atual/Crédito Estruturado/</span><ul><li>ALT 180, ALT 90 e ALT Light em PDF e PPTX</li><li>Destaques: 6 JPGs e PDF</li><li>Decks Tivio, BTG e XP, com e sem ROA</li></ul></div>
+  <div class="area"><h3>Investment Solutions</h3><span class="caminho">_Atual/Investment Solutions/</span><ul><li>Destaques: 11 JPGs e PDF</li></ul></div>
+  <div class="area"><h3>Previdência</h3><span class="caminho">_Atual/Previdência/HGD30 e HYD60/</span><ul><li>E-mail em blocos PNG, HTML e .eml</li><li>Informativo em PPTX e PDF</li><li>Página Saiba mais, pronta para o site</li></ul></div>
+  <div class="area"><h3>Multi-área</h3><span class="caminho">_Atual/Multi-área/</span><ul><li>E-mails de crédito para Ágora, BTG e XP</li><li>Decks Crédito Privado e Estruturado, Tivio Conecta</li></ul></div>
+  <div class="area"><h3>Interno</h3><span class="caminho">_Atual/Interno/</span><ul><li>Abrir a Central, Conferência.xlsx e o log da rodada</li><li>Não sai da empresa</li></ul></div>
+</div>
+
+<h2 id="comecar">Como <strong>começar</strong></h2>
+<ol class="passos">
+  <li>Descompacte o zip e abra um terminal dentro da pasta <b>AutomaTivio</b>.</li>
+  <li>Instale o que ele usa (uma vez só):<div class="cmd"><code id="c1">python -m pip install -r requirements.txt</code><button type="button" data-copiar="c1">Copiar</button></div><div class="cmd"><code id="c2">python -m playwright install chromium</code><button type="button" data-copiar="c2">Copiar</button></div></li>
+  <li>Coloque as planilhas do mês em <b>entrada</b> e rode a edição (ou dê dois cliques no atualizar.bat):<div class="cmd"><code id="c3">python run.py</code><button type="button" data-copiar="c3">Copiar</button></div></li>
+  <li>Abra a <b>Conferência.xlsx</b> em <b>saida/_Atual/Interno</b> e olhe as abas Divergências e Dados faltantes antes de publicar.</li>
+</ol>
+
+<p class="rodape">Tivio Capital. Passo a passo completo em Documentacao/COMO_FUNCIONA.md, dentro da pasta.</p>
+</div>
+<script>
+JS_APP
+</script>

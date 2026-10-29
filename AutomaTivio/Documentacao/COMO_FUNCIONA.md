@@ -432,5 +432,5 @@ python -m playwright install chromium
 
 ## 9. Download
 
-O pacote completo (código + saída de agosto) fica na Release **AutomaTivio v2**:
-<https://github.com/orenanchaves/Tivio-teste/releases/download/AutomaTivio_v2/AutomaTivio_v2.zip>
+O pacote completo fica na Release **AutomaTivio** (tag AutomaTivio_v2); ao descompactar, sai a pasta `AutomaTivio`:
+<https://github.com/orenanchaves/Tivio-teste/releases/download/AutomaTivio_v2/AutomaTivio.zip>
