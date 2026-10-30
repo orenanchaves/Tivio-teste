@@ -93,3 +93,8 @@ td:first-child{color:var(--fg);font-weight:600}
 #cases ~ .tab table{min-width:560px}
 @media (max-width:720px){.analise{grid-template-columns:1fr}}
 .fonte a{display:inline-block}
+.roteiro.r6{grid-template-columns:repeat(3,minmax(0,1fr))}
+@media (max-width:720px){.roteiro.r6{grid-template-columns:1fr}}
+.nota ul{margin:8px 0 0;padding-left:18px}
+.nota li{margin-bottom:5px}
+#peers ~ .tab table{min-width:640px}
