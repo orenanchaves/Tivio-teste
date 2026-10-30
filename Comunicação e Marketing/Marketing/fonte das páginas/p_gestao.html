@@ -1,5 +1,14 @@
 <div class="app">
 <div class="app-barra"><span class="nome">Edição setembro/2026 <small>data base 30/09/2026</small></span></div>
+    <section class="envio" id="spreads" aria-labelledby="spreads-t">
+    <div class="envio-txt"><h3 id="spreads-t">Tabela de spreads</h3><p class="meta-txt">Planilha do mês do Mercado de Crédito, em .xlsx. Ela vai para os relatórios como <code>tabela_spreads.xlsx</code>.</p></div>
+    <label class="soltar" id="soltar" for="arq-spreads">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 16V5"/><path d="m7 10 5-5 5 5"/><path d="M5 20h14"/></svg>
+      <span id="soltar-txt">Arraste a planilha aqui ou clique para escolher</span>
+      <input type="file" id="arq-spreads" accept=".xlsx">
+    </label>
+    <p class="meta-txt" id="spreads-msg" role="status">Nenhuma planilha enviada neste mês.</p>
+  </section>
   <section class="app-sec" id="v-gestao">
     <div class="sec-topo">
       <div><p class="app-txt">Só os comentários que vão nos relatórios. Cada caixa vira uma seção <code>## Fundo</code> do <code>comentarios.md</code>; o texto entra como foi escrito e os marcadores viram o número do mês.</p></div>

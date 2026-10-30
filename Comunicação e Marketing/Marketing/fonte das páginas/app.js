@@ -141,3 +141,25 @@ function gravarRev(r){try{localStorage.setItem('tivio-revisao',JSON.stringify(r)
     })();
   });
 })();
+
+// Gestão: envio da tabela de spreads (exemplo: guarda só o nome, neste navegador)
+(function(){
+  var ent=document.getElementById('arq-spreads'),st=document.getElementById('status-spreads');
+  function ler(){try{return JSON.parse(localStorage.getItem('tivio-spreads')||'null');}catch(e){return null;}}
+  if(st){var r=ler();if(r){st.innerHTML='<i></i>Enviada em '+r.quando;}return;}
+  if(!ent)return;
+  var caixa=document.getElementById('soltar'),txt=document.getElementById('soltar-txt'),msg=document.getElementById('spreads-msg');
+  function mostrar(r){txt.textContent=r.nome;msg.textContent='Enviada em '+r.quando+'.';msg.classList.add('ok-txt');msg.classList.remove('aviso-txt');}
+  function receber(f){
+    if(!f)return;
+    if(!/\.xlsx$/i.test(f.name)){msg.textContent='Esse arquivo não é .xlsx. Envie a planilha da tabela de spreads.';msg.classList.add('aviso-txt');msg.classList.remove('ok-txt');return;}
+    var r={nome:f.name,quando:new Date().toLocaleDateString('pt-BR')};
+    try{localStorage.setItem('tivio-spreads',JSON.stringify(r));}catch(e){}
+    mostrar(r);
+  }
+  ent.addEventListener('change',function(){receber(ent.files[0]);});
+  ['dragover','dragenter'].forEach(function(n){caixa.addEventListener(n,function(e){e.preventDefault();caixa.classList.add('sobre');});});
+  ['dragleave','drop'].forEach(function(n){caixa.addEventListener(n,function(){caixa.classList.remove('sobre');});});
+  caixa.addEventListener('drop',function(e){e.preventDefault();receber(e.dataTransfer.files[0]);});
+  var r=ler();if(r)mostrar(r);
+})();
