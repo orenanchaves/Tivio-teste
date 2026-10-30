@@ -92,3 +92,4 @@ tr.tv td{color:var(--fg);font-weight:600;background:var(--pill)}
 td:first-child{color:var(--fg);font-weight:600}
 #cases ~ .tab table{min-width:560px}
 @media (max-width:720px){.analise{grid-template-columns:1fr}}
+.fonte a{display:inline-block}
