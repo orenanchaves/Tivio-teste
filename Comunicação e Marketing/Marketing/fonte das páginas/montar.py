@@ -65,7 +65,7 @@ def barra_global():
     nav = "".join([
         dd("AutomaTivio", [("automativio.html", "Visão geral"), ("automativio.html#logica", "Como funciona"), ("automativio.html#segmentos", "Por segmento"), ("automativio.html#fallback", "Quando algo falha"), ("automativio.html#baixar", "Como baixar"), ("", "Times"), ("automativio-gestao.html", "Gestão"), ("automativio-riscos.html", "Riscos"), ("automativio-marketing.html", "Marketing")]),
         dd("Segmentos", segs), dd("Públicos", pubs),
-        dd("Estratégia", [("marketing.html", "Central de Marketing"), ("m-posicionamento.html", "Casa de estruturados"), ("m-sintese.html", "O que fazer"), ("m-sugestoes.html", "Sugestões"), ("m-ideias.html", "Ideias na mesa")]),
+        dd("Estratégia", [("visao.html", "Visão"), ("marketing.html", "Central de Marketing"), ("m-posicionamento.html", "Casa de estruturados"), ("m-sintese.html", "O que fazer"), ("m-sugestoes.html", "Sugestões"), ("m-ideias.html", "Ideias na mesa")]),
         dd("Ações", [("m-posts.html", "Posts"), ("m-eventos.html", "Eventos Itaú"), ("m-captacao.html", "Captação"), ("m-copilot.html", "Copilot")]),
         dd("Peers", peers, True),
         dd("Referências", [("m-cases.html", "Cases"), ("m-peers.html", "Peers no Brasil"), ("m-estrangeiras.html", "Peers no exterior"), ("m-mundo.html", "Mundo"), ("m-mercados.html", "Outros mercados")] + [(f"setor-{s}.html", n) for s, n, _, _ in SETORES] + [("m-relatorio.html", "Relatório 2027")], True),
@@ -74,7 +74,7 @@ def barra_global():
 <a class="marca" href="index.html" aria-label="Comunicação &amp; Marketing">{LOGO}</a>
 <button type="button" class="menu-btn" aria-expanded="false" aria-controls="nav-global">Menu</button>
 <nav class="nav-global" id="nav-global" aria-label="Principal">{nav}</nav>
-<a class="btn-visao" href="visao.html">Visão da diretoria</a>
+<a class="btn-visao" href="visao.html">Visão</a>
 {TEMA_HTML}</div></header>'''
 
 _ic = lambda d: f'<svg class="ic-rede" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">{d}</svg>'

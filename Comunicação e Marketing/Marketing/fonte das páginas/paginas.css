@@ -64,3 +64,9 @@
 .ex:first-of-type{border-top:0;padding-top:0}
 .ex em{font-style:normal;font-size:12.5px;font-weight:600;color:var(--link)}
 @media (max-width:820px){.exemplos{grid-template-columns:1fr}}
+
+.grande.maior{font-size:clamp(23px,3.4vw,36px);line-height:1.2;letter-spacing:-.015em}
+.grande strong{font-weight:700}
+.roteiro.r6.cinco{grid-template-columns:repeat(5,minmax(0,1fr))}
+@media (max-width:1000px){.roteiro.r6.cinco{grid-template-columns:1fr 1fr}}
+@media (max-width:560px){.roteiro.r6.cinco{grid-template-columns:1fr}}
