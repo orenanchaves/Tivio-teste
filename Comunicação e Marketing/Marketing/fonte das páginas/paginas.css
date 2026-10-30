@@ -155,3 +155,4 @@
 #lb img{max-width:100%;max-height:100%;border-radius:12px}
 #lb button{position:absolute;top:16px;right:16px;width:44px;height:44px;border-radius:999px;border:1px solid rgba(255,255,255,.3);background:rgba(10,15,20,.6);color:#FFF;display:flex;align-items:center;justify-content:center;cursor:pointer}
 @media (max-width:640px){.ds-logos{grid-template-columns:repeat(2,minmax(0,1fr))}.ds-logo{height:110px}.ds-raios{grid-template-columns:repeat(3,minmax(0,1fr))}}
+.ds-logo.escuro svg,.ds-logo.escuro svg *{color:#FFF;fill:#FFF}.ds-logo.claro svg,.ds-logo.claro svg *{color:#0A0F14;fill:#0A0F14}
