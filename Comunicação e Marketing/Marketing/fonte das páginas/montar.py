@@ -66,7 +66,7 @@ def barra_global():
         dd("AutomaTivio", [("automativio.html", "Visão geral"), ("automativio.html#logica", "Como funciona"), ("automativio.html#segmentos", "Por segmento"), ("automativio.html#fallback", "Quando algo falha"), ("automativio.html#baixar", "Como baixar"), ("", "Times"), ("automativio-gestao.html", "Gestão"), ("automativio-riscos.html", "Riscos"), ("automativio-marketing.html", "Marketing")]),
         dd("Segmentos", segs), dd("Públicos", pubs),
         dd("Estratégia", [("visao.html", "Visão"), ("marketing.html", "Central de Marketing"), ("m-posicionamento.html", "Casa de estruturados"), ("m-sintese.html", "O que fazer"), ("m-sugestoes.html", "Sugestões"), ("m-ideias.html", "Ideias na mesa")]),
-        dd("Ações", [("calendario.html", "Calendário 2027"), ("polo.html", "Polo"), ("m-posts.html", "Posts"), ("m-eventos.html", "Eventos Itaú"), ("m-captacao.html", "Captação"), ("m-copilot.html", "Copilot")]),
+        dd("Ações", [("estrutura.html", "Estrutura"), ("m-eventos.html", "Eventos Itaú"), ("m-posts.html", "Posts"), ("brand.html", "Brand"), ("calendario.html", "Calendário 2027"), ("m-captacao.html", "Captação"), ("m-copilot.html", "Copilot")]),
         dd("Peers", peers, True),
         dd("Referências", [("m-cases.html", "Cases"), ("m-peers.html", "Peers no Brasil"), ("m-estrangeiras.html", "Peers no exterior"), ("m-mundo.html", "Mundo"), ("m-mercados.html", "Outros mercados")] + [(f"setor-{s}.html", n) for s, n, _, _ in SETORES] + [("m-relatorio.html", "Relatório 2027")], True),
     ])
