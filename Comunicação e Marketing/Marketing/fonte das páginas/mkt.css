@@ -98,3 +98,10 @@ td:first-child{color:var(--fg);font-weight:600}
 .nota ul{margin:8px 0 0;padding-left:18px}
 .nota li{margin-bottom:5px}
 #peers ~ .tab table{min-width:640px}
+.mapa{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin-bottom:12px}
+.mapa > div{padding:18px 20px;min-width:0}
+.mapa dl{margin:8px 0 0;display:grid;gap:12px}
+.mapa dt{color:var(--fg);font-weight:600}
+.mapa dd{margin:2px 0 0;font-size:14.5px;line-height:1.5}
+#setores ~ .tab table{min-width:640px}
+@media (max-width:720px){.mapa{grid-template-columns:1fr}}

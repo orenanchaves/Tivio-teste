@@ -96,11 +96,11 @@ miolo = re.sub(r"<h2>(\d\.)", lambda m: f'<h2 id="r-{ids.get(m.group(1), "x")}">
 SITE = SAIDA / "mkt_site.html"
 FINMKT = SAIDA / "mkt_finmkt.html"
 corpo_mkt = (ler("mkt_corpo.html")
-             .replace("{{IDEIAS}}", ler("mkt_ideias.html")).replace("{{CASES}}", ler("mkt_cases.html")).replace("{{PEERS}}", ler("mkt_peers.html")).replace("{{RELATORIO}}", miolo).replace("{{SUB}}", sub.group(1))
+             .replace("{{IDEIAS}}", ler("mkt_ideias.html")).replace("{{CASES}}", ler("mkt_cases.html")).replace("{{PEERS}}", ler("mkt_peers.html").replace("{{MUNDO}}", ler("mkt_mundo.html"))).replace("{{RELATORIO}}", miolo).replace("{{SUB}}", sub.group(1))
              .replace("{{SITE}}", SITE.read_text(encoding="utf-8") if SITE.exists() else "")
              .replace("{{FINMKT}}", FINMKT.read_text(encoding="utf-8") if FINMKT.exists() else ""))
 cab_mkt = cabecalho("Central de Marketing", [("posicionamento", "Estruturados"), ("posts", "Posts"),
-                                             ("eventos", "Eventos Itaú"), ("captacao", "Captação"), ("ideias", "Ideias"), ("cases", "Cases"), ("peers", "Peers"), ("mercados", "Outros mercados"), ("sintese", "O que fazer"),
+                                             ("eventos", "Eventos Itaú"), ("captacao", "Captação"), ("ideias", "Ideias"), ("cases", "Cases"), ("peers", "Peers"), ("mercados", "Outros mercados"), ("setores", "Setores"), ("mundo", "Mundo"), ("sugestoes", "Sugestões"), ("sintese", "O que fazer"),
                                              ] + ([("site", "Site")] if SITE.exists() else []) + ([("finmkt", "Finmkt")] if FINMKT.exists() else []) + [("copilot", "Copilot"), ("relatorio", "Relatório 2027")])
 hero_mkt = hero("Plano de 2027", "Central de <strong>Marketing</strong>",
                 "O que a Tivio vai publicar, em que segmento e com qual objetivo: posts, eventos com o Itaú, "
