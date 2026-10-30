@@ -74,6 +74,7 @@ def barra_global():
 <a class="marca" href="index.html" aria-label="Comunicação &amp; Marketing">{LOGO}</a>
 <button type="button" class="menu-btn" aria-expanded="false" aria-controls="nav-global">Menu</button>
 <nav class="nav-global" id="nav-global" aria-label="Principal">{nav}</nav>
+<a class="btn-filtro" href="buscar.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 6h16M7 12h10M10 18h4"/></svg>Filtrar</a>
 <a class="btn-visao" href="visao.html">Visão</a>
 {TEMA_HTML}</div></header>'''
 
@@ -205,6 +206,7 @@ corpo_mkt = logos_inline(fichas(corpo_mkt))
 (SAIDA / "marketing.html").write_text(pagina("Central de Marketing Tivio", corpo_mkt, ler("mkt.css")), encoding="utf-8")
 exec(ler("gerar_paginas.py"))
 exec(ler("gerar_categorias.py"))
+exec(ler("gerar_filtro.py"))
 _an = '<header class="barra"><div class="barra-in"><span class="marca">' + LOGO + '</span></div></header>' + ler("analise_corpo.html")
 (SAIDA / "analise.html").write_text('<!doctype html><html lang="pt-BR"><head><meta charset="utf-8">' + pagina("Tivio 2026 e 2027", _an, CSS_P + "@media print{.barra{position:static}.vidro,.tab,tr,.kpi{break-inside:avoid}h2{break-after:avoid}}") + "</html>", encoding="utf-8")
 print("ok", [(p.name, p.stat().st_size) for p in SAIDA.glob("*.html") if p.name in ("automativio.html", "marketing.html")])

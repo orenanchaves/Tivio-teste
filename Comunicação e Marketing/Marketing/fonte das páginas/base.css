@@ -128,3 +128,10 @@ section[id],div[id]{scroll-margin-top:90px}
 @media (max-width:1180px){.dd summary{padding:8px 7px;font-size:13.5px}}
 @media (max-width:999px){.btn-visao{margin-left:auto;padding:8px 11px;font-size:12.5px;box-shadow:none}.menu-btn{margin-left:0}}
 @media (max-width:440px){.tema{display:none}}
+
+.btn-filtro{flex:none;display:inline-flex;align-items:center;gap:5px;font-size:13.5px;font-weight:600;color:var(--fg);text-decoration:none;padding:8px 12px;border:1px solid var(--line-strong);border-radius:999px}
+.btn-filtro svg{width:15px;height:15px}
+.btn-filtro:hover{border-color:var(--accent)}
+@media (max-width:999px){.btn-filtro{padding:8px 10px;font-size:12.5px}}
+@media (max-width:440px){.btn-filtro{font-size:0;gap:0;padding:8px}.btn-visao{margin-left:0}}
+.barra-in{max-width:1280px}

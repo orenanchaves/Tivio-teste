@@ -70,3 +70,16 @@
 .roteiro.r6.cinco{grid-template-columns:repeat(5,minmax(0,1fr))}
 @media (max-width:1000px){.roteiro.r6.cinco{grid-template-columns:1fr 1fr}}
 @media (max-width:560px){.roteiro.r6.cinco{grid-template-columns:1fr}}
+
+.busca{display:grid;gap:6px;margin-bottom:14px}
+.busca span{font-size:12px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
+.busca input{width:100%;font:16px var(--ff);color:var(--fg);background:var(--bg);border:1px solid var(--line-strong);border-radius:12px;padding:12px 14px}
+.busca input:focus-visible{outline:3px solid var(--accent);outline-offset:1px}
+.mini-busca{max-width:380px}
+.fgrupo{display:flex;flex-wrap:wrap;align-items:center;gap:6px;margin-bottom:10px}
+.fgrupo b{width:86px;flex:none;font-size:13px;color:var(--muted);font-weight:600}
+.fchip{font:400 14px var(--ff);color:var(--fg-2);background:transparent;border:1px solid var(--line);border-radius:999px;padding:6px 13px;cursor:pointer}
+.fchip[aria-pressed="true"]{background:var(--accent);border-color:var(--accent);color:var(--on-accent);font-weight:600}
+.fbarra{display:flex;justify-content:space-between;align-items:center;gap:12px;margin:16px 0 12px;color:var(--muted);font-size:14px}
+.flimpa{font:600 13.5px var(--ff);background:none;border:0;color:var(--link);cursor:pointer;padding:4px}
+.sub small{font-size:11px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--verde-txt)}

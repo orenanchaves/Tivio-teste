@@ -158,6 +158,6 @@ inicio = (cabecalho("", []) + '<div class="wrap">'
 
 # ---- Visão: a conclusão de tudo, o que queremos para a Tivio
 visao = (cabecalho("", []) + '<div class="wrap">' + trilha(("index.html", "Início"), ("", "Visão"))
-         + hero("A conclusão de tudo", "Nossa <strong>visão</strong>", "O que queremos para a Tivio Capital.")
+         + hero("A conclusão de tudo", "<strong>Visão</strong>", "O que queremos para a Tivio Capital.")
          + ler("visao_corpo.html") + '<p class="rodape">Tivio Capital · Comunicação &amp; Marketing</p></div>')
 (EXTRA / "visao.html").write_text(pagina("Visão", visao, CSS_P), encoding="utf-8")
