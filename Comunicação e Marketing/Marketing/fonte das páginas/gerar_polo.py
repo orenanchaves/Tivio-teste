@@ -158,3 +158,28 @@ corpo_orc = (cabecalho("Orçamento", []) + '<div class="wrap">'
     + '<p class="meta-txt">Percentuais do orçamento-base, que ainda tem itens em revisão. Os valores em reais ficam no documento interno.</p>'
     + '<p class="rodape">Tivio Capital · Comunicação &amp; Marketing</p></div>')
 (EXTRA / "orcamento.html").write_text(pagina("Orçamento", corpo_orc, CSS_P), encoding="utf-8")
+
+_rows = lambda L: "".join(f"<tr><td>{a}</td><td>{b}</td><td>{c}</td></tr>" for a, b, c in L)
+_vis = [("Primeira dobra no celular", "Faixa do WhatsApp, aviso de cookies e aba da newsletter cobrem a abertura", "Reduzir os avisos e soltar a primeira dobra"),
+        ("Rolagem lateral no celular", "A home passa da largura da tela", "Corrigir o elemento que estoura"),
+        ("Abertura", "Carrossel troca de assunto e arte a cada peça, sem uma mensagem fixa", "Abertura fixa com a ideia da casa e peças em segundo plano"),
+        ("Cartões de fundos", "Alturas e textos desiguais; títulos longos quebram de formas diferentes", "Mesmo tamanho, texto curto e dados no mesmo lugar"),
+        ("Repetição de botão", "Conhecer Fundo repetido em todos os cartões", "Botão secundário e uma ação principal por seção"),
+        ("Linguagem visual", "Cada peça do carrossel e das notícias segue uma direção de arte", "Molde de capa com a mesma família visual")]
+_est = [("Posicionamento", "Título e descrição falam de crédito, imobiliário e alternativos; estruturados não aparece como tema da casa", "Levar casa de estruturados ao título, à abertura e ao menu"),
+        ("Menu", "Crédito Estruturado fica dentro de Fundos", "Criar um hub próprio de estruturados"),
+        ("Públicos", "A home fala com um visitante genérico", "Caminhos para assessor, institucional, originador e investidor"),
+        ("Captação", "Newsletter pede perfil em uma lista longa", "Formulário curto e oferta clara por público"),
+        ("Prova", "Patrimônio, anos, fundos e equipe aparecem bem", "Manter e somar dado próprio de estruturados"),
+        ("Onde investir", "Bloco das plataformas é útil, mas fica no fim da página", "Subir o bloco e ligar cada fundo à plataforma")]
+_pri = [("Agora", "Corrigir celular e avisos da primeira dobra"), ("Em seguida", "Abertura fixa e revisão dos textos institucionais"), ("Depois", "Hub de estruturados e caminhos por público"), ("Por fim", "Moldes de capa e cartões padronizados")]
+corpo_as = (cabecalho("Análise do site", []) + '<div class="wrap">'
+    + trilha(("index.html", "Início"), ("marketing.html", "Central de Marketing"), ("", "Análise do site"))
+    + '<section class="topo-peer"><div><p class="eyebrow"><i></i>tivio.com, home em 30/10/2026</p><h1>Análise do site</h1><p class="lead">O que melhorar no visual e na estratégia.</p></div></section>'
+    + '<div class="as-prints"><figure><img src="site-tivio/desktop.webp" alt="Abertura da home da Tivio Capital no desktop" loading="lazy"><figcaption>Desktop, 1440px</figcaption></figure><figure><img src="site-tivio/celular.webp" alt="Abertura da home da Tivio Capital no celular com avisos sobre a tela" loading="lazy"><figcaption>Celular, 375px</figcaption></figure></div>'
+    + '<h2 id="visual">Melhorias <strong>visuais</strong></h2><div class="tab"><table><tr><th>Ponto</th><th>O que vimos</th><th>O que fazer</th></tr>' + _rows(_vis) + '</table></div>'
+    + '<h2 id="estrategia">Melhorias de <strong>estratégia</strong></h2><div class="tab"><table><tr><th>Ponto</th><th>O que vimos</th><th>O que fazer</th></tr>' + _rows(_est) + '</table></div>'
+    + '<h2 id="ordem">Por onde <strong>começar</strong></h2><ol class="roteiro r6 as-o">' + "".join(f'<li class="vidro"><b>{a}</b><span>{b}</span></li>' for a, b in _pri) + '</ol>'
+    + '<p class="meta-txt">Leitura da home em telas de 1440px e 375px. A home carregou cerca de 500 KB e 277 imagens; desempenho e conversão precisam de dados do Analytics e do Search Console.</p>'
+    + '<p class="rodape">Tivio Capital · Comunicação &amp; Marketing</p></div>')
+(EXTRA / "analise-site.html").write_text(pagina("Análise do site", corpo_as, CSS_P), encoding="utf-8")

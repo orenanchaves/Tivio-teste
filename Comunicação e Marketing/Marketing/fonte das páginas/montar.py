@@ -64,17 +64,17 @@ def barra_global():
             ("publico-originador.html", "Originador"), ("publico-universitario.html", "Universitário"), ("publico-investidor.html", "Investidor")]
     nav = "".join([
         dd("AutomaTivio", [("automativio.html", "Visão geral"), ("automativio.html#logica", "Como funciona"), ("automativio.html#segmentos", "Por segmento"), ("automativio.html#fallback", "Quando algo falha"), ("automativio.html#baixar", "Como baixar"), ("", "Times"), ("automativio-gestao.html", "Gestão"), ("automativio-riscos.html", "Riscos"), ("automativio-marketing.html", "Marketing")]),
-        dd("Estratégia", [("", "Plano"), ("visao.html", "Visão"), ("marketing.html", "Central de Marketing"), ("m-posicionamento.html", "Casa de estruturados"), ("m-sintese.html", "O que fazer"), ("m-sugestoes.html", "Sugestões"), ("m-ideias.html", "Ideias na mesa")] + [("", "Segmentos")] + segs + [("", "Públicos")] + pubs, True),
+        dd("Estratégia", [("", "Plano"), ("visao.html", "Visão"), ("marketing.html", "Central de Marketing"), ("m-posicionamento.html", "Casa de estruturados"), ("m-sintese.html", "O que fazer"), ("m-sugestoes.html", "Sugestões"), ("m-ideias.html", "Ideias na mesa"), ("analise-site.html", "Análise do site")] + [("", "Segmentos")] + segs + [("", "Públicos")] + pubs, True),
         dd("Estrutura", [("estrutura.html", "Frentes e fluxo"), ("m-copilot.html", "Copilot")]),
         dd("Eventos", [("m-eventos.html", "Eventos Itaú"), ("eventos-mercado.html", "Eventos do mercado"), ("calendario.html", "Calendário 2027")]),
         dd("Conteúdo", [("m-posts.html", "Posts"), ("m-captacao.html", "Captação"), ("canal-ofertas.html", "Canal de ofertas")]),
         dd("Brand", [("", "Marca"), ("brand.html#slogan", "Slogan"), ("", "Design system"), ("brand.html#logo", "Logo"), ("brand.html#cores", "Cores"), ("brand.html#tipografia", "Tipografia"), ("brand.html#forma", "Forma"), ("", "Uso"), ("brand.html#diretrizes", "Diretrizes"), ("brand.html#apresentacoes", "Apresentações"), ("brand.html#polo", "Polo"), ("", "Redes"), ("brand.html#feed", "Feed do Instagram")], True),
-        dd("Orçamento", [("orcamento.html#frentes", "Por frente"), ("orcamento.html#decisoes", "O que pode mudar")]),
+        dd("Orçamento", [("orcamento.html", "Orçamento 2027")]),
         dd("Referências", [("", "Estudos"), ("m-cases.html", "Cases"), ("m-peers.html", "Peers no Brasil"), ("m-estrangeiras.html", "Peers no exterior"), ("m-mundo.html", "Mundo"), ("m-mercados.html", "Outros mercados")] + [(f"setor-{s}.html", n) for s, n, _, _ in SETORES] + [("m-relatorio.html", "Relatório 2027")] + peers, True),
     ])
     return f'''<header class="barra"><div class="barra-in">
 <a class="marca" href="index.html" aria-label="Comunicação &amp; Marketing">{LOGO}</a>
-<button type="button" class="menu-btn" aria-expanded="false" aria-controls="nav-global">Menu</button>
+<button type="button" class="menu-btn" aria-expanded="false" aria-controls="nav-global" aria-label="Menu"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button>
 <nav class="nav-global" id="nav-global" aria-label="Principal">{nav}</nav>
 <a class="btn-filtro" href="buscar.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="6.5"/><path d="m20 20-4.2-4.2"/></svg>Pesquisar</a>
 <a class="btn-visao" href="visao.html">Visão</a>
