@@ -66,9 +66,9 @@ def barra_global():
         dd("AutomaTivio", [("automativio.html", "Visão geral"), ("automativio.html#logica", "Como funciona"), ("automativio.html#segmentos", "Por segmento"), ("automativio.html#fallback", "Quando algo falha"), ("automativio.html#baixar", "Como baixar"), ("", "Times"), ("automativio-gestao.html", "Gestão"), ("automativio-riscos.html", "Riscos"), ("automativio-marketing.html", "Marketing")]),
         dd("Estratégia", [("", "Plano"), ("visao.html", "Visão"), ("marketing.html", "Central de Marketing"), ("m-posicionamento.html", "Casa de estruturados"), ("m-sintese.html", "O que fazer"), ("m-sugestoes.html", "Sugestões"), ("m-ideias.html", "Ideias na mesa")] + [("", "Segmentos")] + segs + [("", "Públicos")] + pubs, True),
         dd("Estrutura", [("estrutura.html", "Frentes e fluxo"), ("m-copilot.html", "Copilot")]),
-        dd("Eventos", [("m-eventos.html", "Eventos Itaú"), ("calendario.html", "Calendário 2027")]),
+        dd("Eventos", [("m-eventos.html", "Eventos Itaú"), ("eventos-mercado.html", "Eventos do mercado"), ("calendario.html", "Calendário 2027")]),
         dd("Conteúdo", [("m-posts.html", "Posts"), ("m-captacao.html", "Captação")]),
-        dd("Brand", [("", "Design system"), ("brand.html#logo", "Logo"), ("brand.html#cores", "Cores"), ("brand.html#tipografia", "Tipografia"), ("brand.html#forma", "Forma"), ("", "Aplicações"), ("brand.html#polo", "Polo"), ("", "Redes"), ("brand.html#feed", "Feed do Instagram")], True),
+        dd("Brand", [("", "Marca"), ("brand.html#slogan", "Slogan"), ("", "Design system"), ("brand.html#logo", "Logo"), ("brand.html#cores", "Cores"), ("brand.html#tipografia", "Tipografia"), ("brand.html#forma", "Forma"), ("", "Aplicações"), ("brand.html#polo", "Polo"), ("", "Redes"), ("brand.html#feed", "Feed do Instagram")], True),
         dd("Referências", [("", "Estudos"), ("m-cases.html", "Cases"), ("m-peers.html", "Peers no Brasil"), ("m-estrangeiras.html", "Peers no exterior"), ("m-mundo.html", "Mundo"), ("m-mercados.html", "Outros mercados")] + [(f"setor-{s}.html", n) for s, n, _, _ in SETORES] + [("m-relatorio.html", "Relatório 2027")] + peers, True),
     ])
     return f'''<header class="barra"><div class="barra-in">
