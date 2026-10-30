@@ -33,7 +33,7 @@ for i, p in enumerate(PEERS):
         return "".join(f'<a class="ex" href="{u}" target="_blank" rel="noopener"><span>{t}</span><em>Ver o original</em></a>' for t, u in itens)
     foto = SAIDA / "sites" / f'{p["slug"]}.webp'
     if ex["site"] and foto.exists():
-        vit = f'<a class="site-mini" href="{ex["site"]}" target="_blank" rel="noopener"><img src="sites/{p["slug"]}.webp" alt="Página pública de {p["nome"]}" loading="lazy"><span>Abrir o site original</span></a>'
+        vit = f'<a class="site-mini" href="{ex["site"]}" target="_blank" rel="noopener"><img src="sites/{p["slug"]}.webp" alt="Página pública de {p["nome"]}" width="640" height="248"><span>Abrir o site original</span></a>'
     elif ex["site"]:
         vit = f'<a class="ex" href="{ex["site"]}" target="_blank" rel="noopener"><span>A página pede aceite de termos antes de abrir</span><em>Ver o original</em></a>'
     else:
