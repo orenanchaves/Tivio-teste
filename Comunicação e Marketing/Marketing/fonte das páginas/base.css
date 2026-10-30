@@ -112,7 +112,7 @@ section[id],div[id]{scroll-margin-top:90px}
 .dd-painel a:hover{background:var(--pill);color:var(--fg)}
 .dd-tit{grid-column:1/-1;margin:6px 10px 2px;font-size:11px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--verde-txt)}
 .menu-btn{display:none;margin-left:auto;font:600 14px var(--ff);color:var(--fg);background:transparent;border:1px solid var(--line-strong);border-radius:999px;padding:7px 14px;cursor:pointer}
-@media (max-width:999px){
+@media (max-width:1339px){
   .menu-btn{display:block}
   .nav-global{display:none;position:absolute;top:100%;left:0;right:0;z-index:80;flex-direction:column;align-items:stretch;gap:0;max-height:calc(100vh - 70px);overflow-y:auto;background:var(--bg);border-bottom:1px solid var(--line-strong);
     padding-block:8px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
@@ -134,4 +134,5 @@ section[id],div[id]{scroll-margin-top:90px}
 .btn-filtro:hover{border-color:var(--accent)}
 @media (max-width:999px){.btn-filtro{padding:8px 10px;font-size:12.5px}}
 @media (max-width:440px){.btn-filtro{font-size:0;gap:0;padding:8px}.btn-visao{margin-left:0}}
-.barra-in{max-width:1280px}
+.barra-in{max-width:1360px}
+@media (min-width:1340px){.btn-filtro{font-size:0;gap:0;padding:9px}}
