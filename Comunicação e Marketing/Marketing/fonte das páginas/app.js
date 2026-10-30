@@ -11,6 +11,7 @@ ligarAbas('.app-nav [role="tab"]');
 // Marketing: OK de dados
 (function(){
   var b=document.getElementById('ok-dados'),m=document.getElementById('ok-dados-msg');
+  if(!b)return;
   b.addEventListener('click',function(){
     var dado=b.dataset.dado==='1';
     b.dataset.dado=dado?'0':'1';
@@ -29,6 +30,7 @@ ligarAbas('.app-nav [role="tab"]');
   };
   var NOTA={'Tivio HGD30':'Previdência: só o complemento do mês. O mercado vem do Tivio Institucional e a frase de rentabilidade sai da tabela.','Tivio HYD60':'Previdência: só o complemento do mês, como no HGD30.'};
   var texto={'Tivio ALT 180':'O Tivio ALT 180 registrou rentabilidade de {mes} no mês, equivalente a {pct_mes} do CDI no período. Desde o início da estratégia, o fundo acumula retorno de {inicio}.\n\nEm {mes_nome}, iniciamos posição em uma cota sênior de FIDC com exposição ao setor de telecomunicações.'};
+  if(!document.getElementById('coment-form'))return;
   var form=document.getElementById('coment-form'),md=document.getElementById('md'),prog=document.getElementById('progresso'),atual='cp';
   var todos=[].concat(SEG.cp,SEG.ce,SEG.is);
   function idDe(n){return 'f-'+n.toLowerCase().replace(/[^a-z0-9]+/g,'-');}
@@ -83,41 +85,50 @@ ligarAbas('.app-nav [role="tab"]');
   desenhar();montarMd();
 })();
 
-// Riscos: aprovar ou pedir ajuste; Marketing > Publicar acompanha
+// Riscos decide; Publicar, na página do Marketing, lê a decisão (exemplo: fica neste navegador)
+function lerRev(){try{return JSON.parse(localStorage.getItem('tivio-revisao')||'{}');}catch(e){return {};}}
+function gravarRev(r){try{localStorage.setItem('tivio-revisao',JSON.stringify(r));}catch(e){}}
 (function(){
-  var lista=document.getElementById('revisao'),cont=document.getElementById('aprov-cont');
-  var itens=[].slice.call(lista.querySelectorAll('li'));
-  function pub(id,estado){
-    var p=document.querySelector('#pub li[data-id="'+id+'"] .pill');if(!p)return;
-    var mapa={aprovado:['ok','Liberado para baixar'],ajuste:['aviso','Ajuste pedido'],'':['espera','Aguarda Riscos']};
-    p.className='pill '+mapa[estado][0];p.innerHTML='<i></i>'+mapa[estado][1];
-  }
+  var lista=document.getElementById('revisao');if(!lista)return;
+  var cont=document.getElementById('aprov-cont'),itens=[].slice.call(lista.querySelectorAll('li')),rev=lerRev();
   function contar(){
     var a=itens.filter(function(li){return li.dataset.estado==='aprovado';}).length;
     cont.innerHTML='<i></i>'+a+' de '+itens.length+' aprovados';cont.className='pill '+(a===itens.length?'ok':'aviso');
   }
+  function aplicar(li,novo){
+    li.dataset.estado=novo;rev[li.dataset.id]=novo;gravarRev(rev);
+    var motivo=li.querySelector('.motivo');
+    if(novo==='ajuste'&&!motivo){
+      motivo=document.createElement('div');motivo.className='motivo';
+      var id='m-'+li.dataset.id;
+      motivo.innerHTML='<label for="'+id+'">O que precisa mudar</label><textarea id="'+id+'" rows="2"></textarea>';
+      li.appendChild(motivo);
+    } else if(novo!=='ajuste'&&motivo){motivo.remove();}
+    li.querySelector('[data-acao="aprovar"]').textContent=novo==='aprovado'?'Aprovado':'Aprovar';
+    contar();
+  }
   itens.forEach(function(li){
+    if(rev[li.dataset.id])aplicar(li,rev[li.dataset.id]);
     li.querySelectorAll('[data-acao]').forEach(function(b){b.addEventListener('click',function(){
-      var acao=b.dataset.acao,ja=li.dataset.estado;
-      var novo=(acao==='aprovar')?(ja==='aprovado'?'':'aprovado'):(ja==='ajuste'?'':'ajuste');
-      li.dataset.estado=novo;
-      var motivo=li.querySelector('.motivo');
-      if(novo==='ajuste'&&!motivo){
-        motivo=document.createElement('div');motivo.className='motivo';
-        var id='m-'+li.dataset.id;
-        motivo.innerHTML='<label for="'+id+'">O que precisa mudar</label><textarea id="'+id+'" rows="2" placeholder="Ex.: trocar julho por setembro no segundo parágrafo do ALT 180"></textarea>';
-        li.appendChild(motivo);motivo.querySelector('textarea').focus();
-      } else if(novo!=='ajuste'&&motivo){motivo.remove();}
-      li.querySelector('[data-acao="aprovar"]').textContent=novo==='aprovado'?'Aprovado':'Aprovar';
-      pub(li.dataset.id,novo);contar();
+      var alvo=b.dataset.acao==='aprovar'?'aprovado':'ajuste';
+      aplicar(li,li.dataset.estado===alvo?'':alvo);
     });});
   });
   contar();
 })();
+(function(){
+  var pub=document.getElementById('pub');if(!pub)return;
+  var rev=lerRev(),mapa={aprovado:['ok','Liberado para baixar'],ajuste:['aviso','Ajuste pedido']};
+  [].forEach.call(pub.querySelectorAll('li'),function(li){
+    var e=mapa[rev[li.dataset.id]];if(!e)return;
+    var p=li.querySelector('.pill');p.className='pill '+e[0];p.innerHTML='<i></i>'+e[1];
+  });
+})();
 
 // Marketing > Rodada: simulação das etapas
 (function(){
-  var btn=document.getElementById('simular'),itens=[].slice.call(document.querySelectorAll('#etapas li')),rodando=false;
+  var btn=document.getElementById('simular');if(!btn)return;
+  var itens=[].slice.call(document.querySelectorAll('#etapas li')),rodando=false;
   var lento=!window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   btn.addEventListener('click',function(){
     if(rodando)return;rodando=true;btn.disabled=true;btn.textContent='Rodando…';

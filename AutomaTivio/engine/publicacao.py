@@ -150,7 +150,7 @@ def montar_atual(origem, destino, cadastro, edicao, log=None, historico=False):
         m.pasta(('emails', 'previdencia', chave), 'Previdência', sigla, 'E-mail', renomear=lambda x: x)
         base = os.path.join(origem, 'informativos')
         for nome in sorted(os.listdir(base)) if os.path.isdir(base) else []:
-            if nome.startswith(f'Informativo - {sigla}.'):
+            if sem_mes(nome).startswith(f'Informativo - {sigla}.'):
                 m.arquivo(('informativos', nome), 'Previdência', sigla, 'Informativo', sem_mes(nome))
         m.arquivo(('landing page', f'tivio-{chave}-saiba-mais.html'),
                   'Previdência', sigla, 'Site (Saiba mais)', f'tivio-{chave}-saiba-mais.html')

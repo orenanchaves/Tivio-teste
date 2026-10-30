@@ -1,0 +1,27 @@
+<div class="app">
+<div class="app-barra"><span class="nome">Edição setembro/2026 <small>data base 30/09/2026</small></span></div>
+  <section class="app-sec" id="v-gestao">
+    <div class="sec-topo">
+      <div><p class="app-txt">Só os comentários que vão nos relatórios. Cada caixa vira uma seção <code>## Fundo</code> do <code>comentarios.md</code>; o texto entra como foi escrito e os marcadores viram o número do mês.</p></div>
+      <span class="pill aviso" id="progresso"><i></i>0 de 0</span>
+    </div>
+    <div class="segs" role="tablist" aria-label="Segmentos">
+      <button type="button" data-seg="cp" aria-pressed="true">Crédito Privado</button>
+      <button type="button" data-seg="ce" aria-pressed="false">Crédito Estruturado</button>
+      <button type="button" data-seg="is" aria-pressed="false">Investment Solutions</button>
+    </div>
+    <div class="coment">
+      <div class="coment-form" id="coment-form"></div>
+      <div class="coment-md">
+        <div class="md-topo"><span class="rotulo" style="margin:0">comentarios.md</span><button type="button" class="btn btn-sec" id="copiar-md">Copiar</button></div>
+        <pre id="md"></pre>
+      </div>
+    </div>
+    <div class="app-acoes">
+      <button type="button" class="btn" id="enviar-coment">Enviar comentários para a rodada</button>
+      <span class="meta-txt" id="enviar-msg">Fundos sem comentário saem com texto provisório e entram como aviso para Riscos.</span>
+    </div>
+    <p class="meta-txt">Marcadores: <span class="marc">{mes}</span> <span class="marc">{pct_mes}</span> <span class="marc">{ano}</span> <span class="marc">{12m}</span> <span class="marc">{inicio}</span> <span class="marc">{carrego}</span> <span class="marc">{duration}</span> <span class="marc">{mes_nome}</span></p>
+  </section>
+
+  </div>

@@ -78,3 +78,10 @@ tr.tv td{color:var(--fg);font-weight:600;background:var(--pill)}
 .ok{color:var(--verde-txt);font-weight:600}
 .man{color:var(--alerta);font-weight:600}
 .prio li{margin-bottom:12px}
+.ideias{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin-bottom:12px}
+.ideias > div{padding:18px 20px;min-width:0}
+.ideias h3{margin:0 0 8px}
+.ideias ul{margin:0;padding-left:18px;font-size:14.5px}
+.ideias li{margin-bottom:6px}
+@media (max-width:900px){.ideias{grid-template-columns:1fr 1fr}}
+@media (max-width:560px){.ideias{grid-template-columns:1fr}}

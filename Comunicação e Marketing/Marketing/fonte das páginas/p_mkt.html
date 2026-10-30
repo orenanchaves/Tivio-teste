@@ -1,63 +1,7 @@
-<ol class="trilha" aria-label="Ordem do mês">
-  <li><b>Marketing</b><span>dá o OK nos dados</span></li>
-  <li><b>Gestão</b><span>preenche os comentários</span></li>
-  <li><b>Marketing</b><span>roda a edição</span></li>
-  <li><b>Riscos</b><span>aprova cada material</span></li>
-  <li><b>Marketing</b><span>publica e envia</span></li>
-</ol>
-
-<div class="app" id="app">
-  <div class="app-barra">
-    <span class="nome">Edição setembro/2026 <small>data base 30/09/2026</small></span>
-    <div class="perfis" role="tablist" aria-label="Página de cada time">
-      <button type="button" role="tab" id="p-gestao" aria-controls="v-gestao" aria-selected="true">Gestão</button>
-      <button type="button" role="tab" id="p-riscos" aria-controls="v-riscos" aria-selected="false">Riscos</button>
-      <button type="button" role="tab" id="p-mkt" aria-controls="v-mkt" aria-selected="false">Marketing</button>
-    </div>
-  </div>
-
-  <!-- ===== Gestão: só comentários ===== -->
-  <section class="app-sec" id="v-gestao" role="tabpanel" aria-labelledby="p-gestao">
-    <div class="sec-topo">
-      <div><p class="rotulo">Página da Gestão</p><p class="app-txt">Só os comentários que vão nos relatórios. Cada caixa vira uma seção <code>## Fundo</code> do <code>comentarios.md</code>; o texto entra como foi escrito e os marcadores viram o número do mês.</p></div>
-      <span class="pill aviso" id="progresso"><i></i>0 de 0</span>
-    </div>
-    <div class="segs" role="tablist" aria-label="Segmentos">
-      <button type="button" data-seg="cp" aria-pressed="true">Crédito Privado</button>
-      <button type="button" data-seg="ce" aria-pressed="false">Crédito Estruturado</button>
-      <button type="button" data-seg="is" aria-pressed="false">Investment Solutions</button>
-    </div>
-    <div class="coment">
-      <div class="coment-form" id="coment-form"></div>
-      <div class="coment-md">
-        <div class="md-topo"><span class="rotulo" style="margin:0">comentarios.md</span><button type="button" class="btn btn-sec" id="copiar-md">Copiar</button></div>
-        <pre id="md"></pre>
-      </div>
-    </div>
-    <div class="app-acoes">
-      <button type="button" class="btn" id="enviar-coment">Enviar comentários para a rodada</button>
-      <span class="meta-txt" id="enviar-msg">Fundos sem comentário saem com texto provisório e entram como aviso para Riscos.</span>
-    </div>
-    <p class="meta-txt">Marcadores: <span class="marc">{mes}</span> <span class="marc">{pct_mes}</span> <span class="marc">{ano}</span> <span class="marc">{12m}</span> <span class="marc">{inicio}</span> <span class="marc">{carrego}</span> <span class="marc">{duration}</span> <span class="marc">{mes_nome}</span></p>
-  </section>
-
-  <!-- ===== Riscos: aprovação ===== -->
-  <section class="app-sec" id="v-riscos" role="tabpanel" aria-labelledby="p-riscos" hidden>
-    <div class="sec-topo">
-      <div><p class="rotulo">Página de Riscos</p><p class="app-txt">Cada material da edição, com os avisos da conferência ao lado. Aprovar libera para o Marketing publicar; pedir ajuste volta com o motivo.</p></div>
-      <span class="pill aviso" id="aprov-cont"><i></i>0 de 0 aprovados</span>
-    </div>
-    <ul class="revisao" id="revisao">
-      <li data-id="cp"><div><b>Crédito Privado</b><small>10 relatórios, carrossel de 9 páginas, e-mails Ágora, BTG e XP</small><span class="obs">Sem divergência de número no comentário.</span></div><div class="rev-acoes"><button type="button" class="btn btn-sec" data-acao="ajuste">Pedir ajuste</button><button type="button" class="btn" data-acao="aprovar">Aprovar</button></div></li>
-      <li data-id="ce"><div><b>Crédito Estruturado</b><small>3 relatórios ALT, carrossel de 6 páginas, 7 decks</small><span class="obs aviso-txt">ALT 180: comentário trata julho como mês corrente.</span></div><div class="rev-acoes"><button type="button" class="btn btn-sec" data-acao="ajuste">Pedir ajuste</button><button type="button" class="btn" data-acao="aprovar">Aprovar</button></div></li>
-      <li data-id="is"><div><b>Investment Solutions</b><small>Carrossel de 11 páginas, decks Prev Low Vol e Prev Top Credit</small><span class="obs aviso-txt">Decks com texto provisório: falta comentário da gestão.</span></div><div class="rev-acoes"><button type="button" class="btn btn-sec" data-acao="ajuste">Pedir ajuste</button><button type="button" class="btn" data-acao="aprovar">Aprovar</button></div></li>
-      <li data-id="prev"><div><b>Previdência</b><small>HGD30 e HYD60: e-mail, Informativo, Saiba mais</small><span class="obs">Informativo em PDF pendente (PPTX pronto).</span></div><div class="rev-acoes"><button type="button" class="btn btn-sec" data-acao="ajuste">Pedir ajuste</button><button type="button" class="btn" data-acao="aprovar">Aprovar</button></div></li>
-    </ul>
-  </section>
-
-  <!-- ===== Marketing: dados, rodada, decks, publicação, histórico ===== -->
-  <section class="app-sec" id="v-mkt" role="tabpanel" aria-labelledby="p-mkt" hidden>
-    <p class="rotulo">Página do Marketing</p>
+<div class="app">
+<div class="app-barra"><span class="nome">Edição setembro/2026 <small>data base 30/09/2026</small></span></div>
+  <section class="app-sec" id="v-mkt">
+    
     <nav class="app-nav" role="tablist" aria-label="Seções do Marketing">
       <button type="button" role="tab" id="t-dados" aria-controls="s-dados" aria-selected="true"><em>1</em>Dados</button>
       <button type="button" role="tab" id="t-rodada" aria-controls="s-rodada" aria-selected="false"><em>2</em>Rodada</button>
@@ -144,7 +88,7 @@
     </div>
 
     <div class="sub-sec" id="s-hist" role="tabpanel" aria-labelledby="t-hist" hidden>
-      <p class="app-txt">Cada mês fica guardado inteiro em <code>saida/_Historico/AAAA-MM/</code>, com a Central, os materiais, a conferência e o log.</p>
+      <p class="app-txt">Cada mês fica guardado em <code>saida/_Historico/AAAA-MM/</code>, na mesma estrutura da <code>saida/_Atual</code>.</p>
       <ul class="hist">
         <li><span><b>Setembro/2026</b><small>rodada de 27/10/2026</small></span><span class="n">81 arquivos</span><span class="n">23 avisos</span><span class="n">0 erros</span><span class="pill aviso"><i></i>Atual</span></li>
         <li><span><b>Agosto/2026</b><small>rodada de 05/10/2026</small></span><span class="n">39 arquivos</span><span class="n">10 avisos</span><span class="n">0 erros</span><span class="pill espera"><i></i>Arquivada</span></li>

@@ -203,3 +203,14 @@ ol.passos li{margin:0 0 18px}
   #v-mkt #s-rodada .app-col,#v-mkt #s-rodada .app-col + .app-col{padding:16px 0 0}
   .perfis{width:100%}.perfis button{flex:1;padding:7px 8px}
 }
+
+/* portas para as páginas de cada time */
+.portas{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+.porta{display:grid;gap:6px;padding:22px;text-decoration:none;color:var(--fg-2);min-width:0}
+.porta:hover{border-color:var(--line-strong)}
+.porta b{font-size:24px;font-weight:300;color:var(--fg)}
+.porta span{color:var(--muted);font-size:15px}
+.porta em{font-style:normal;color:var(--link);font-weight:600;font-size:14px;margin-top:4px}
+@media (max-width:720px){.portas{grid-template-columns:1fr}}
+.hero-time{grid-template-columns:1fr;padding-block:40px 20px}
+.meta-txt{color:var(--muted);font-size:14px}

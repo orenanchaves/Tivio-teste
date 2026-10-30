@@ -33,8 +33,9 @@ def hero(eyebrow, titulo, texto):
 
 def cabecalho(area, abas):
     links = "".join(f'<a href="#{i}">{t}</a>' for i, t in abas)
+    nome_area = f'<span class="area-nome">{area}</span>' if area else ""
     return f'''<header class="barra"><div class="barra-in">
-<span class="marca">{LOGO}<span class="area-nome">{area}</span></span>
+<a class="marca" href="index.html" aria-label="Comunicação &amp; Marketing">{LOGO}{nome_area}</a>
 <nav class="chips" aria-label="Seções">{links}</nav>
 <div class="tema" role="group" aria-label="Tema">
 <button type="button" data-tema="light" aria-label="Tema claro"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg></button>
@@ -59,7 +60,7 @@ def pagina(titulo, corpo, css_extra=""):
 # ---------- 1. AutomaTivio ----------
 URL_ZIP = "https://github.com/orenanchaves/Tivio-teste/releases/download/AutomaTivio_v2/AutomaTivio.zip"
 URL_REL = "https://github.com/orenanchaves/Tivio-teste/releases/tag/AutomaTivio_v2"
-cab_dl = cabecalho("AutomaTivio", [("logica", "Como funciona"), ("ambiente", "Ambiente interno"),
+cab_dl = cabecalho("", [("logica", "Como funciona"), ("ambiente", "Ambiente interno"),
                                    ("segmentos", "Segmentos"), ("fallback", "Quando falha"),
                                    ("baixar", "Como baixar"), ("comecar", "Começar")])
 hero_dl = hero("Versão de 28/10/2026", "Automa<strong>Tivio</strong>",
@@ -67,8 +68,21 @@ hero_dl = hero("Versão de 28/10/2026", "Automa<strong>Tivio</strong>",
                "relatórios de gestão, as páginas por vertical, os posts, o e-mail e a Central, com os mesmos números em todos.")
 corpo_dl = (ler("dl_corpo.html").replace("{{HEADER}}", cab_dl).replace("{{HERO}}", hero_dl)
             .replace("{{URL_ZIP}}", URL_ZIP).replace("{{URL_REL}}", URL_REL)
-            .replace("{{APP}}", ler("app.html")).replace("{{SEGMENTOS}}", ler("segmentos.html")).replace("JS_APP", ler("app.js")))
+            .replace("{{AMBIENTE}}", ler("p_ambiente.html")).replace("{{SEGMENTOS}}", ler("segmentos.html")))
 (SAIDA / "automativio.html").write_text(pagina("AutomaTivio", corpo_dl, ler("dl.css")), encoding="utf-8")
+
+# páginas de cada time: públicos diferentes, cada uma só com o que aquele time usa
+def pagina_time(arq, titulo, h1, texto, parte):
+    corpo = (cabecalho(titulo, []) + '<div class="wrap"><section class="hero hero-time"><div>'
+             f'<h1>{h1}</h1><p class="lead">{texto}</p></div></section>' + ler(parte)
+             + '</div><script>\n' + ler("app.js") + '</script>')
+    (SAIDA / arq).write_text(pagina(titulo, corpo, ler("dl.css")), encoding="utf-8")
+pagina_time("automativio-gestao.html", "Gestão", "Comentários da <strong>Gestão</strong>",
+            "Os comentários que vão nos relatórios do mês, por segmento.", "p_gestao.html")
+pagina_time("automativio-riscos.html", "Riscos", "Aprovação de <strong>Riscos</strong>",
+            "Cada material da edição, com os avisos da conferência ao lado.", "p_riscos.html")
+pagina_time("automativio-marketing.html", "Marketing", "Edição do <strong>mês</strong>",
+            "Dados, rodada, decks, publicação e histórico.", "p_mkt.html")
 
 # ---------- 2. Central de Marketing ----------
 fonte = (RAIZ / "Comunicação e Marketing/Marketing/Relatório geral de marketing 2027.html").read_text(encoding="utf-8")
@@ -82,11 +96,11 @@ miolo = re.sub(r"<h2>(\d\.)", lambda m: f'<h2 id="r-{ids.get(m.group(1), "x")}">
 SITE = SAIDA / "mkt_site.html"
 FINMKT = SAIDA / "mkt_finmkt.html"
 corpo_mkt = (ler("mkt_corpo.html")
-             .replace("{{RELATORIO}}", miolo).replace("{{SUB}}", sub.group(1))
+             .replace("{{IDEIAS}}", ler("mkt_ideias.html")).replace("{{RELATORIO}}", miolo).replace("{{SUB}}", sub.group(1))
              .replace("{{SITE}}", SITE.read_text(encoding="utf-8") if SITE.exists() else "")
              .replace("{{FINMKT}}", FINMKT.read_text(encoding="utf-8") if FINMKT.exists() else ""))
 cab_mkt = cabecalho("Central de Marketing", [("posicionamento", "Estruturados"), ("posts", "Posts"),
-                                             ("eventos", "Eventos Itaú"), ("captacao", "Captação"),
+                                             ("eventos", "Eventos Itaú"), ("captacao", "Captação"), ("ideias", "Ideias"),
                                              ] + ([("site", "Site")] if SITE.exists() else []) + ([("finmkt", "Finmkt")] if FINMKT.exists() else []) + [("copilot", "Copilot"), ("relatorio", "Relatório 2027")])
 hero_mkt = hero("Plano de 2027", "Central de <strong>Marketing</strong>",
                 "O que a Tivio vai publicar, em que segmento e com qual objetivo: posts, eventos com o Itaú, "
