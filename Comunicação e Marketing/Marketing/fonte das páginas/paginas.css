@@ -134,3 +134,7 @@
 .dias span.f.e{box-shadow:inset 0 0 0 2px var(--verde-txt)}
 .ev li.le{border-left-style:dashed;border-left-color:var(--verde-txt);color:var(--muted)}
 .sem-d .dias span.e{box-shadow:none;font-weight:400}.sem-d .le{display:none}
+.polos{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:20px;margin-bottom:32px}
+.polo-item img{display:block;width:100%;height:auto;border-radius:14px;margin-bottom:10px;padding:0}
+.polo-item h2{margin:14px 0 2px}.polo-item p{margin:0;color:var(--muted)}
+@media (max-width:640px){.polos{grid-template-columns:1fr}}
