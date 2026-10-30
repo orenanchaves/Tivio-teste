@@ -64,14 +64,12 @@ def barra_global():
             ("publico-originador.html", "Originador"), ("publico-universitario.html", "Universitário"), ("publico-investidor.html", "Investidor")]
     nav = "".join([
         dd("AutomaTivio", [("automativio.html", "Visão geral"), ("automativio.html#logica", "Como funciona"), ("automativio.html#segmentos", "Por segmento"), ("automativio.html#fallback", "Quando algo falha"), ("automativio.html#baixar", "Como baixar"), ("", "Times"), ("automativio-gestao.html", "Gestão"), ("automativio-riscos.html", "Riscos"), ("automativio-marketing.html", "Marketing")]),
-        dd("Segmentos", segs), dd("Públicos", pubs),
-        dd("Estratégia", [("visao.html", "Visão"), ("marketing.html", "Central de Marketing"), ("m-posicionamento.html", "Casa de estruturados"), ("m-sintese.html", "O que fazer"), ("m-sugestoes.html", "Sugestões"), ("m-ideias.html", "Ideias na mesa")]),
+        dd("Estratégia", [("", "Plano"), ("visao.html", "Visão"), ("marketing.html", "Central de Marketing"), ("m-posicionamento.html", "Casa de estruturados"), ("m-sintese.html", "O que fazer"), ("m-sugestoes.html", "Sugestões"), ("m-ideias.html", "Ideias na mesa")] + [("", "Segmentos")] + segs + [("", "Públicos")] + pubs, True),
         dd("Estrutura", [("estrutura.html", "Frentes e fluxo"), ("m-copilot.html", "Copilot")]),
         dd("Eventos", [("m-eventos.html", "Eventos Itaú"), ("calendario.html", "Calendário 2027")]),
         dd("Conteúdo", [("m-posts.html", "Posts"), ("m-captacao.html", "Captação")]),
         dd("Brand", [("brand.html#polo", "Polo"), ("brand.html#design-system", "Design system")]),
-        dd("Peers", peers, True),
-        dd("Referências", [("m-cases.html", "Cases"), ("m-peers.html", "Peers no Brasil"), ("m-estrangeiras.html", "Peers no exterior"), ("m-mundo.html", "Mundo"), ("m-mercados.html", "Outros mercados")] + [(f"setor-{s}.html", n) for s, n, _, _ in SETORES] + [("m-relatorio.html", "Relatório 2027")], True),
+        dd("Referências", [("", "Estudos"), ("m-cases.html", "Cases"), ("m-peers.html", "Peers no Brasil"), ("m-estrangeiras.html", "Peers no exterior"), ("m-mundo.html", "Mundo"), ("m-mercados.html", "Outros mercados")] + [(f"setor-{s}.html", n) for s, n, _, _ in SETORES] + [("m-relatorio.html", "Relatório 2027")], True + peers, True),
     ])
     return f'''<header class="barra"><div class="barra-in">
 <a class="marca" href="index.html" aria-label="Comunicação &amp; Marketing">{LOGO}</a>
