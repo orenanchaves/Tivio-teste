@@ -92,10 +92,10 @@ PUBLICOS = [
   "Uma explicação curta e segura, sem virar especialista.",
   ["Versão de 20 minutos da trilha, com perguntas de cliente", "Eventos como módulos, com regra de marca aprovada", "Matriz Tivio para desenhar em segundos"],
   "Presença por evento, conclusão do material e pedidos de reunião.", ["bram", "itau-asset"]),
- ("institucional", "Institucional", "Fundos de pensão, seguradoras e family offices. Decidem em comitê e pedem dado.",
-  "Tese, governança e prova de processo.",
-  ["Radar trimestral de crédito estruturado", "Carta trimestral em PDF e áudio", "Especialista técnico sem meta de captação", "\"O que pode dar errado\" por fundo"],
-  "Reuniões qualificadas e pedidos de due diligence.", ["golub", "oaktree", "valora"]),
+ ("institucional", "Institucional", "RPPS, fundos de pensão, seguradoras e family offices. Cada um segue uma regra própria, decide em comitê e pede dado. Os fundos de pensão somavam R$ 1,438 trilhão em junho de 2026 (Abrapp).",
+  "Saber se o fundo cabe na regra dele, com tese, governança e prova de processo.",
+  ["Ficha de enquadramento por fundo e por tipo de investidor, conferida por Riscos e Compliance", "Material pronto para comitê e para consultorias de investimento", "Radar trimestral de crédito estruturado", "Carta trimestral em PDF e áudio", "\"O que pode dar errado\" por fundo"],
+  "Reuniões qualificadas e pedidos de due diligence.", ["valora", "bram", "itau-asset"]),
  ("originador", "Originador", "Empresas que cedem recebíveis. Quem nunca fez um FIDC decide mais pelo ranking e pela reputação.",
   "Saber se um FIDC faz sentido e como chegar lá.",
   ["Página para tomadores, com cases e formulário", "Benchmark anual do custo de captar", "Programa \"Primeiro FIDC\" com seis empresas por ano", "Dossiê de reputação"],
@@ -110,6 +110,15 @@ PUBLICOS = [
   "Tempo nas páginas, buscas e citações em IA.", ["kinea", "galapagos"]),
 ]
 lista_p = [(f"publico-{p[0]}.html", p[1]) for p in PUBLICOS]
+CENARIO_P = {"institucional": '''<h2>Cenário <strong>brasileiro</strong></h2>
+<div class="tab"><table>
+  <tr><th>Quem</th><th>Regra</th><th>O que muda para nós</th></tr>
+  <tr><td>RPPS</td><td>CMN 5.272, em vigor desde 02/02/2026</td><td>A certificação Pró-Gestão define limites e ativos permitidos. Cota sênior de FIDC tem teto de 20%.</td></tr>
+  <tr><td>Fundos de pensão</td><td>CMN 4.994, alterada pela 5.202 em 2025</td><td>FIDC entra em renda fixa, com limite de concentração por classe de cota.</td></tr>
+  <tr><td>Seguradoras</td><td>CMN 4.993</td><td>O limite de FIDC também vale por classe de cota.</td></tr>
+  <tr><td>Family offices</td><td>Sem regra de alocação como as demais</td><td>A decisão segue o mandato da família e a relação com quem faz a gestão.</td></tr>
+</table></div>
+<p class="meta-txt">Resumo para orientar o conteúdo. Limites e enquadramento de cada fundo precisam ser confirmados com Riscos e Compliance antes de qualquer peça.</p>'''}
 for j, (s, n, quem, quer, acoes, mede, refs) in enumerate(PUBLICOS):
     ac = "".join(f"<li>{a}</li>" for a in acoes)
     ps = "".join(f'<a class="mini vidro" href="peer-{x}.html">{logo(porta[x]["nome"])}<span>{porta[x]["nome"]}</span></a>' for x in refs)
@@ -118,6 +127,7 @@ for j, (s, n, quem, quer, acoes, mede, refs) in enumerate(PUBLICOS):
              + f'<section class="topo-peer"><div><p class="eyebrow"><i></i>Público que vamos atacar</p><h1>{n}</h1><p class="lead">{quem}</p></div></section>'
              + f'<section class="destaque aprende vidro"><p class="seg-nome"><i></i>O que essa pessoa precisa</p><p class="grande">{quer}</p></section>'
              + f'<div class="blocos"><section class="vidro bloco"><h2>O que vamos fazer</h2><ul>{ac}</ul></section><section class="vidro bloco"><h2>Como medir</h2><p>{mede}</p></section></div>'
+             + CENARIO_P.get(s, "")
              + f'<h2>Referências para <strong>olhar</strong></h2><div class="minis">{ps}</div>'
              + navegar(lista_p, j, "marketing.html#publicos", "Públicos")
              + '<p class="rodape">Proposta para validar com o time e com Riscos.</p></div>')
