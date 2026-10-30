@@ -37,3 +37,20 @@ document.querySelectorAll('[data-copiar]').forEach(function(b){
   if(document.fonts&&document.fonts.ready)document.fonts.ready.then(atualiza);
   atualiza();
 })();
+
+// menu com dropdown: abre um por vez, por clique ou passando o mouse; no celular vira lista
+(function(){
+  var dds=[].slice.call(document.querySelectorAll('.dd'));if(!dds.length)return;
+  var nav=document.getElementById('nav-global'),btn=document.querySelector('.menu-btn');
+  var mouse=window.matchMedia('(hover: hover) and (min-width: 1000px)');
+  function fecha(menos){dds.forEach(function(d){if(d!==menos)d.open=false;});}
+  dds.forEach(function(d){
+    d.addEventListener('toggle',function(){if(d.open)fecha(d);});
+    d.querySelector('summary').addEventListener('click',function(e){if(mouse.matches){e.preventDefault();d.open=true;fecha(d);}});
+    d.addEventListener('mouseenter',function(){if(mouse.matches){d.open=true;}});
+    d.addEventListener('mouseleave',function(){if(mouse.matches){d.open=false;}});
+  });
+  document.addEventListener('click',function(e){if(!e.target.closest('.nav-global')&&!e.target.closest('.menu-btn')){fecha();}});
+  document.addEventListener('keydown',function(e){if(e.key==='Escape'){fecha();nav.classList.remove('aberto');btn.setAttribute('aria-expanded','false');}});
+  btn.addEventListener('click',function(){var a=nav.classList.toggle('aberto');btn.setAttribute('aria-expanded',a);});
+})();

@@ -31,10 +31,12 @@ def hero(eyebrow, titulo, texto):
     return (f'<section class="hero"><div><p class="eyebrow"><i></i>{eyebrow}</p><h1>{titulo}</h1>'
             f'<p class="lead">{texto}</p></div>{T3D_HTML}</section>')
 
-def cabecalho(area, abas):
-    links = "".join(f'<a href="#{i}">{t}</a>' for i, t in abas)
+def cabecalho(area, abas, global_menu=True):
+    links = "".join(f'<a href="{i if i.endswith(".html") else "#" + i}">{t}</a>' for i, t in abas)
     nome_area = f'<span class="area-nome">{area}</span>' if area else ""
     seta = lambda d, p: f'<button type="button" class="seta" data-dir="{d}" aria-label="{"Voltar" if d < 0 else "Avançar"} no menu"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="{p}"/></svg></button>'
+    if global_menu:
+        return barra_global()
     menu = (f'<div class="menu">{seta(-1, "m15 6-6 6 6 6")}<nav class="chips" aria-label="Seções">{links}</nav>{seta(1, "m9 6 6 6-6 6")}</div>'
             if abas else '<div class="menu"></div>')
     return f'''<header class="barra"><div class="barra-in">
@@ -45,9 +47,50 @@ def cabecalho(area, abas):
 <button type="button" data-tema="dark" aria-label="Tema escuro"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 14.5A8 8 0 0 1 9.5 4a8 8 0 1 0 10.5 10.5z"/></svg></button>
 </div></div></header>'''
 
+TEMA_HTML = '''<div class="tema" role="group" aria-label="Tema">
+<button type="button" data-tema="light" aria-label="Tema claro"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg></button>
+<button type="button" data-tema="dark" aria-label="Tema escuro"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 14.5A8 8 0 0 1 9.5 4a8 8 0 1 0 10.5 10.5z"/></svg></button>
+</div>'''
+SETA_DD = '<svg class="dd-seta" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>'
+
+def barra_global():
+    def dd(nome, itens, grande=False):
+        links = "".join(f'<a href="{h}">{t}</a>' if h else f'<p class="dd-tit">{t}</p>' for h, t in itens)
+        return f'<details class="dd"><summary>{nome}{SETA_DD}</summary><div class="dd-painel{" grande" if grande else ""}">{links}</div></details>'
+    peers = [("", "Brasil")] + [(f'peer-{p["slug"]}.html', p["nome"]) for p in PEERS if p["grupo"] == "Brasil"]
+    peers += [("", "Exterior")] + [(f'peer-{p["slug"]}.html', p["nome"]) for p in PEERS if p["grupo"] != "Brasil"]
+    segs = [(f"segmento-{s}.html", n) for _, s, n in SEGMENTOS] + [("segmento-imobiliario.html", "Imobiliário")]
+    pubs = [("publico-assessor.html", "Assessor"), ("publico-gerente.html", "Gerente"), ("publico-institucional.html", "Institucional"),
+            ("publico-originador.html", "Originador"), ("publico-universitario.html", "Universitário"), ("publico-investidor.html", "Investidor")]
+    nav = "".join([
+        dd("AutomaTivio", [("automativio.html", "Visão geral"), ("automativio.html#logica", "Como funciona"), ("automativio.html#segmentos", "Por segmento"), ("automativio.html#fallback", "Quando algo falha"), ("automativio.html#baixar", "Como baixar"), ("", "Times"), ("automativio-gestao.html", "Gestão"), ("automativio-riscos.html", "Riscos"), ("automativio-marketing.html", "Marketing")]),
+        dd("Segmentos", segs), dd("Públicos", pubs),
+        dd("Estratégia", [("marketing.html", "Central de Marketing"), ("m-posicionamento.html", "Casa de estruturados"), ("m-sintese.html", "O que fazer"), ("m-sugestoes.html", "Sugestões"), ("m-ideias.html", "Ideias na mesa")]),
+        dd("Ações", [("m-posts.html", "Posts"), ("m-eventos.html", "Eventos Itaú"), ("m-captacao.html", "Captação"), ("m-copilot.html", "Copilot")]),
+        dd("Peers", peers, True),
+        dd("Referências", [("m-cases.html", "Cases"), ("m-peers.html", "Peers no Brasil"), ("m-estrangeiras.html", "Peers no exterior"), ("m-mundo.html", "Mundo"), ("m-mercados.html", "Outros mercados")] + [(f"setor-{s}.html", n) for s, n, _, _ in SETORES] + [("m-relatorio.html", "Relatório 2027")], True),
+    ])
+    return f'''<header class="barra"><div class="barra-in">
+<a class="marca" href="index.html" aria-label="Comunicação &amp; Marketing">{LOGO}</a>
+<button type="button" class="menu-btn" aria-expanded="false" aria-controls="nav-global">Menu</button>
+<nav class="nav-global" id="nav-global" aria-label="Principal">{nav}</nav>
+{TEMA_HTML}</div></header>'''
+
+_ic = lambda d: f'<svg class="ic-rede" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">{d}</svg>'
+ICONES = {"LinkedIn": _ic('<rect x="3" y="3" width="18" height="18" rx="3"/><path d="M8 10v7M8 7v.01M12 17v-4a2.5 2.5 0 0 1 5 0v4M12 10v7"/>'),
+          "Instagram": _ic('<rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><path d="M17.5 6.5v.01"/>'),
+          "YouTube": _ic('<rect x="2.5" y="5" width="19" height="14" rx="4"/><path d="m10 9 5 3-5 3z"/>')}
+def com_icones(html):
+    for nome, svg in ICONES.items():
+        html = html.replace(f">{nome}<", f">{svg}{nome}<")
+        html = re.sub(rf"(>(?:seguidores no|inscritos no) ){nome}", lambda x: ">" + svg + x.group(1)[1:] + nome, html)
+    return html
+
 def pagina(titulo, corpo, css_extra=""):
+    corpo = com_icones(corpo)
     return f"""<title>{titulo}</title>
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex">
 <meta name="claude:viewport-fit-sides" content="cover">
 <style>
 {BASE_CSS}
@@ -92,10 +135,18 @@ def fichas(html):
             dl = "".join(f"<dt>{cab[i]}</dt><dd>{c[i]}</dd>" for i in range(len(c)) if i != chave and not (chave and i == 0))
             classe = "ficha vidro tv" if 'class="tv"' in tr else "ficha vidro"
             nome_vis = "Tivio" if nome == "Tivio" else nome
-            out.append(f'<article class="{classe}"><header>{logo(nome)}<span><b>{nome_vis}</b>{tag}</span></header><dl>{dl}</dl>{link}</article>')
+            alvo = _paginas.get(nome)
+            abre = f'<a class="ver-pagina" href="{alvo}">Abrir página</a>' if alvo else ""
+            out.append(f'<article class="{classe}"><header>{logo(nome)}<span><b>{nome_vis}</b>{tag}</span></header><dl>{dl}</dl><div class="ficha-pe">{abre}{link}</div></article>')
         out.append("</div>")
         return "".join(out)
     return re.sub(r'<div class="tab"><table>.*?</table></div>', troca, html, flags=re.S)
+
+exec(ler("dados_peers.py"))
+_paginas = {p["nome"]: f'peer-{p["slug"]}.html' for p in PEERS}
+for _s, _n, _f, _cs in SETORES:
+    for _c in _cs:
+        _paginas[_c] = f"setor-{_s}.html"
 
 def logos_inline(html):
     return re.sub(r"\{\{lg:([^}]+)\}\}", lambda x: logo(x.group(1)), html)
@@ -116,7 +167,7 @@ corpo_dl = (ler("dl_corpo.html").replace("{{HEADER}}", cab_dl).replace("{{HERO}}
 
 # páginas de cada time: públicos diferentes, cada uma só com o que aquele time usa
 def pagina_time(arq, titulo, h1, texto, parte):
-    corpo = (cabecalho(titulo, []) + '<div class="wrap"><section class="hero hero-time"><div>'
+    corpo = (cabecalho(titulo, [], False) + '<div class="wrap"><section class="hero hero-time"><div>'
              f'<h1>{h1}</h1><p class="lead">{texto}</p></div></section>' + ler(parte)
              + '</div><script>\n' + ler("app.js") + '</script>')
     (SAIDA / arq).write_text(pagina(titulo, corpo, ler("dl.css")), encoding="utf-8")
@@ -151,4 +202,6 @@ hero_mkt = hero("Plano de 2027", "Central de <strong>Marketing</strong>",
 corpo_mkt = corpo_mkt.replace("{{HEADER}}", cab_mkt).replace("{{HERO}}", hero_mkt)
 corpo_mkt = logos_inline(fichas(corpo_mkt))
 (SAIDA / "marketing.html").write_text(pagina("Central de Marketing Tivio", corpo_mkt, ler("mkt.css")), encoding="utf-8")
+exec(ler("gerar_paginas.py"))
+exec(ler("gerar_categorias.py"))
 print("ok", [(p.name, p.stat().st_size) for p in SAIDA.glob("*.html") if p.name in ("automativio.html", "marketing.html")])

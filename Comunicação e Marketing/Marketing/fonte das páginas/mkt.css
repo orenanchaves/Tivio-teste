@@ -138,3 +138,7 @@ th .lg{width:34px;height:34px}th .lg img{width:22px;height:22px}
 .post-tag{font-size:10.5px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:#C1F4D4}
 .post-marca{font-size:11px;letter-spacing:.3em;font-weight:600;align-self:flex-end}
 @media (max-width:560px){.vitrine{grid-template-columns:1fr 1fr}.post b{font-size:15px}}
+
+.ficha-pe{display:flex;flex-wrap:wrap;gap:6px 14px;align-items:center}
+.ver-pagina{font-size:13.5px;font-weight:600;color:var(--on-accent);background:var(--accent);padding:6px 12px;border-radius:999px;text-decoration:none;display:inline-block}
+.plano .ver-pagina{margin-top:12px}

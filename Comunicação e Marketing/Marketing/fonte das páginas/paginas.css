@@ -1,0 +1,57 @@
+/* páginas por peer, segmento e setor */
+.passa{display:flex;align-items:center;justify-content:space-between;gap:10px;padding-top:20px}
+.passa a{text-decoration:none;font-size:14px;font-weight:400;color:var(--fg-2)}
+.passa-seta{display:inline-flex;align-items:center;gap:8px;min-width:0;flex:1 1 0}
+.passa-seta.dir{justify-content:flex-end}
+.passa-seta svg{flex:none;width:34px;height:34px;padding:8px;border-radius:50%;border:1px solid var(--line-strong);background:var(--bg);color:var(--fg)}
+.passa-seta span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.passa-seta:hover svg{border-color:var(--accent)}
+.passa-volta{flex:none;padding:7px 14px;border:1px solid var(--line);border-radius:999px}
+.topo-peer{display:flex;align-items:center;gap:22px;padding-block:36px 20px}
+.topo-peer > div{min-width:0}
+.topo-peer .lg{width:84px;height:84px;border-radius:20px}
+.topo-peer .lg img{width:58px;height:58px}
+.topo-peer .lg-m{font-size:28px}
+.topo-peer h1{margin:0 0 6px}
+.kpis.peer b{font-size:21px;font-weight:600;letter-spacing:0;line-height:1.25}
+.kpis.peer span{display:block;font-size:12px;letter-spacing:.12em;text-transform:uppercase;margin-bottom:4px}
+.destaque{padding:20px 22px;margin:12px 0}
+.destaque.aprende{border-color:var(--verde-txt)}
+.grande{font-size:clamp(19px,2.4vw,24px);font-weight:300;line-height:1.3;color:var(--fg);margin:0;max-width:none}
+.blocos{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.bloco{padding:18px 20px;min-width:0}
+.bloco h2{font-size:17px;font-weight:600;letter-spacing:0;margin:0 0 6px}
+.bloco p{margin:0;font-size:15px}
+.fontes-peer{display:flex;flex-wrap:wrap;gap:6px 16px;font-size:14px;margin-top:18px;color:var(--muted)}
+.fontes-peer b{color:var(--fg)}
+.segmentos.um{display:grid;max-width:520px}
+.seg{padding:20px 22px}
+.seg-fundos{color:var(--fg);font-weight:600;font-size:16px;line-height:1.4;margin:0 0 14px}
+.seg dl{margin:0;display:grid;gap:10px}
+.seg dt{font-size:11.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);font-weight:600}
+.seg dd{margin:2px 0 0;font-size:14.5px;line-height:1.5;color:var(--fg-2)}
+.fichas.setor{grid-template-columns:repeat(auto-fill,minmax(300px,1fr))}
+@media (max-width:640px){
+  .blocos{grid-template-columns:1fr}
+  .topo-peer{align-items:flex-start;gap:14px}
+  .topo-peer .lg{width:60px;height:60px;border-radius:14px}.topo-peer .lg img{width:42px;height:42px}
+  .passa-seta span{display:none}
+  .kpis.peer{grid-template-columns:1fr 1fr}
+}
+.trilho{display:flex;flex-wrap:wrap;align-items:center;gap:4px 8px;padding-top:18px;font-size:13.5px;color:var(--muted)}
+.trilho a{color:var(--muted);text-decoration:none;font-weight:400}
+.trilho a:hover{color:var(--fg)}
+.trilho span{color:var(--fg)}
+.trilho i{font-style:normal;opacity:.5}
+.subs{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:12px}
+.sub{display:grid;gap:4px;padding:16px 18px;text-decoration:none;min-width:0}
+.sub:hover{border-color:var(--line-strong)}
+.sub b{color:var(--fg);font-size:17px;font-weight:600;line-height:1.25}
+.sub span{color:var(--muted);font-size:14px;line-height:1.4}
+.minis{display:grid;grid-template-columns:repeat(auto-fill,minmax(170px,1fr));gap:10px}
+.mini{display:flex;align-items:center;gap:10px;padding:10px 12px;text-decoration:none;color:var(--fg);font-weight:600;font-size:15px;min-width:0}
+.mini .lg{margin:0}
+.atalhos{display:flex;flex-wrap:wrap;gap:8px}
+.atalhos span{font-size:14px;padding:7px 13px;border-radius:999px;border:1px solid var(--line)}
+.bloco ul{margin:0;padding-left:18px;font-size:15px}
+.bloco li{margin-bottom:6px}
