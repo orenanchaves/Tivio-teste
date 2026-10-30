@@ -143,7 +143,7 @@ kpis_c = capa[capa.index('<div class="kpis">'):capa.index('<p class="meta-txt">'
 secs = [f'<h2 id="segmentos">Segmentos da <strong>Tivio</strong></h2>' + cartoes([(f"segmento-{s}.html", n, ", ".join(FUNDOS.get(n, ["Posts, eventos e marca"])[:3])) for _, s, n in SEGS]),
         f'<h2 id="publicos">Públicos que vamos <strong>atacar</strong></h2>' + cartoes([(f"publico-{p[0]}.html", p[1], p[3]) for p in PUBLICOS])]
 for cid, cnome, itens in CATS:
-    extra_c = [("calendario.html", "Calendário 2027", "Feriados, datas de dinheiro e ações."), ("eventos-mercado.html", "Eventos do mercado", "Onde cada segmento se encontra."), ("brand.html", "Brand", "Polo com o logo bordado."), ("estrutura.html", "Estrutura", "Frentes da área e fluxo de aprovação.")] if cid == "acoes" else []
+    extra_c = [("calendario.html", "Calendário 2027", "Feriados, datas de dinheiro e ações."), ("eventos-mercado.html", "Eventos do mercado", "Onde cada segmento se encontra."), ("canal-ofertas.html", "Canal de ofertas", "WhatsApp para assessores."), ("brand.html", "Brand", "Polo com o logo bordado."), ("estrutura.html", "Estrutura", "Frentes da área e fluxo de aprovação.")] if cid == "acoes" else []
     secs.append(f'<h2 id="{cid}">{cnome}</h2>' + cartoes(extra_c + [(f"m-{i}.html", n, d) for i, n, d in itens]))
 abas_c = [("segmentos", "Segmentos"), ("publicos", "Públicos")] + [(c, n) for c, n, _ in CATS]
 corpo = (cabecalho("Central de Marketing", abas_c) + '<div class="wrap">' + trilha(("index.html", "Início"), ("", "Central de Marketing"))
