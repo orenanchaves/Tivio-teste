@@ -61,13 +61,20 @@ _org = ('<div class="org"><div class="org-n vidro"><span>Direção</span><b>Enri
         '<div class="org-3"><div class="org-n vidro"><span>Conteúdo &amp; Comunicação</span><b>Fernanda Acquati</b></div><div class="org-n vidro"><span>Design &amp; Produção</span><b>Gabriel Fiorilli</b></div><div class="org-n vidro"><span>Performance, Dados &amp; Automação</span><b>Renan Chaves</b></div></div>'
         '<div class="org-t"><span>Eventos</span>Frente transversal, com as três áreas</div>'
         '<div class="org-t"><span>Agência parceira</span>ColaAí, tráfego pago</div></div>')
+_antes = ('<div class="org"><div class="org-n vidro"><span>Direção</span><b>Enrico Trotta</b></div><i class="org-l"></i>'
+          '<div class="org-n vidro org-hub"><span>Hub da área</span><b>Cesar Medeiros</b></div><i class="org-l"></i>'
+          '<div class="org-3">' + "".join(f'<div class="org-n vidro"><span>{a}</span><b>{b}</b></div>' for a, b in [("Materiais, dados e automação", "Renan Chaves"), ("Conteúdo e fluxo editorial", "Fernanda Acquati"), ("Design e produção visual", "Gabriel Fiorilli")]) + '</div>'
+          '<div class="org-t"><span>Agência parceira</span>ColaAí</div></div>'
+          '<div class="tab"><table><tr><th>Quem</th><th>O que fazia</th></tr>'
+          + "".join(f"<tr><td>{a}</td><td>{b}</td></tr>" for a, b in [("Cesar Medeiros", "Coordenação, prioridades, interface com Enrico Trotta, agência, fornecedores, aprovações e grandes eventos"), ("Renan Chaves", "Materiais, decks, relatórios, fechamento, dados, digital e automação"), ("Fernanda Acquati", "Conteúdo, pauta, redes sociais, aprovações, organização e eventos"), ("Gabriel Fiorilli", "Design, identidade visual, peças, materiais, vídeos e produção visual")]) + '</table></div>')
 _fr = "".join(f'<section class="frente vidro"><h3>{n}</h3><p class="dono">{d}</p><ul>' + "".join(f"<li>{x}</li>" for x in l) + "</ul></section>" for n, d, l in FRENTES_E)
 _pap = "".join(f'<div class="papel vidro"><span>{a}</span><b>{b}</b></div>' for a, b in [("Coordenação", "Renan Chaves"), ("Operação", "Fernanda Acquati"), ("Peças", "Gabriel Fiorilli"), ("Aprovação estratégica", "Enrico Trotta")])
 _fl = "".join(f'<li class="vidro"><b>{a}</b><span>{b}</span></li>' for a, b in [("Demanda entra", "Pedido registrado em um lugar só"), ("Triagem", "Definição do responsável"), ("Produção", "Execução pela frente dona"), ("Aprovação técnica", "Revisão e Compliance"), ("Aprovação estratégica", "Quando necessária"), ("Publicação", "Publicação e mensuração")])
 corpo_est = (cabecalho("Estrutura", []) + '<div class="wrap">'
     + trilha(("index.html", "Início"), ("marketing.html", "Central de Marketing"), ("", "Estrutura"))
     + '<section class="topo-peer"><div><p class="eyebrow"><i></i>Comunicação &amp; Marketing</p><h1>Estrutura</h1><p class="lead">Direção, coordenação, três pilares operacionais e Eventos como frente transversal.</p></div></section>'
-    + '<h2>Quem responde <strong>por quê</strong></h2>' + _org
+    + '<h2>Como a área <strong>funcionava</strong></h2><p class="secao-sub">Uma coordenação central, que ligava liderança, agência, gestores, Compliance e execução, e três especialidades operacionais.</p>' + _antes
+    + '<h2>Como fica <strong>agora</strong></h2><p class="secao-sub">Estrutura por frentes, com responsáveis definidos.</p>' + _org
     + '<h2>O que cada frente <strong>cobre</strong></h2><div class="frentes">' + _fr + '</div>'
     + '<h2>Eventos, frente <strong>transversal</strong></h2><div class="papeis">' + _pap + '</div>'
     + '<h2>Como uma demanda <strong>anda</strong></h2><ol class="roteiro r6">' + _fl + '</ol>'

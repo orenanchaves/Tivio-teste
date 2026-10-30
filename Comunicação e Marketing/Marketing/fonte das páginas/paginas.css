@@ -180,3 +180,5 @@
 .uso p{margin:8px 0 0;font-weight:600;font-size:15px}.uso p.ok{color:var(--verde-txt)}.uso p.nao{color:var(--fg)}.uso span{font-size:14px;color:var(--muted)}
 .regras{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:12px;margin-bottom:12px}
 @media (max-width:640px){.usos{grid-template-columns:1fr 1fr}}
+.org-hub{border:1px solid var(--verde-txt)}.org+.tab{margin-bottom:12px}
+.uso-a svg,.uso-a svg *{color:inherit!important;fill:currentColor!important}.regras .bloco h3{margin-top:0}
