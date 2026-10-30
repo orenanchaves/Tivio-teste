@@ -69,6 +69,7 @@ def barra_global():
         dd("Eventos", [("m-eventos.html", "Eventos Itaú"), ("eventos-mercado.html", "Eventos do mercado"), ("calendario.html", "Calendário 2027")]),
         dd("Conteúdo", [("m-posts.html", "Posts"), ("m-captacao.html", "Captação"), ("canal-ofertas.html", "Canal de ofertas")]),
         dd("Brand", [("", "Marca"), ("brand.html#slogan", "Slogan"), ("", "Design system"), ("brand.html#logo", "Logo"), ("brand.html#cores", "Cores"), ("brand.html#tipografia", "Tipografia"), ("brand.html#forma", "Forma"), ("", "Uso"), ("brand.html#diretrizes", "Diretrizes"), ("brand.html#apresentacoes", "Apresentações"), ("brand.html#polo", "Polo"), ("", "Redes"), ("brand.html#feed", "Feed do Instagram")], True),
+        dd("Orçamento", [("orcamento.html#frentes", "Por frente"), ("orcamento.html#decisoes", "O que pode mudar")]),
         dd("Referências", [("", "Estudos"), ("m-cases.html", "Cases"), ("m-peers.html", "Peers no Brasil"), ("m-estrangeiras.html", "Peers no exterior"), ("m-mundo.html", "Mundo"), ("m-mercados.html", "Outros mercados")] + [(f"setor-{s}.html", n) for s, n, _, _ in SETORES] + [("m-relatorio.html", "Relatório 2027")] + peers, True),
     ])
     return f'''<header class="barra"><div class="barra-in">
