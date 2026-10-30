@@ -34,9 +34,12 @@ def hero(eyebrow, titulo, texto):
 def cabecalho(area, abas):
     links = "".join(f'<a href="#{i}">{t}</a>' for i, t in abas)
     nome_area = f'<span class="area-nome">{area}</span>' if area else ""
+    seta = lambda d, p: f'<button type="button" class="seta" data-dir="{d}" aria-label="{"Voltar" if d < 0 else "Avançar"} no menu"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="{p}"/></svg></button>'
+    menu = (f'<div class="menu">{seta(-1, "m15 6-6 6 6 6")}<nav class="chips" aria-label="Seções">{links}</nav>{seta(1, "m9 6 6 6-6 6")}</div>'
+            if abas else '<div class="menu"></div>')
     return f'''<header class="barra"><div class="barra-in">
 <a class="marca" href="index.html" aria-label="Comunicação &amp; Marketing">{LOGO}{nome_area}</a>
-<nav class="chips" aria-label="Seções">{links}</nav>
+{menu}
 <div class="tema" role="group" aria-label="Tema">
 <button type="button" data-tema="light" aria-label="Tema claro"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg></button>
 <button type="button" data-tema="dark" aria-label="Tema escuro"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 14.5A8 8 0 0 1 9.5 4a8 8 0 1 0 10.5 10.5z"/></svg></button>
@@ -56,6 +59,46 @@ def pagina(titulo, corpo, css_extra=""):
 {BASE_JS}
 </script>
 {T3D_JS}"""
+
+import json
+_idx = json.loads((SAIDA / "logos/indice.json").read_text(encoding="utf-8"))
+_url = json.loads(ler("sites.json"))
+def logo(nome):
+    f = _idx.get(nome)
+    if f:
+        b = base64.b64encode((SAIDA / "logos" / f).read_bytes()).decode()
+        return f'<span class="lg"><img src="data:image/png;base64,{b}" alt="" width="28" height="28"></span>'
+    iniciais = "".join(p[0] for p in nome.split()[:2]).upper()
+    return f'<span class="lg lg-m">{iniciais}</span>'
+
+def _celulas(tr):
+    return re.findall(r"<t[dh][^>]*>(.*?)</t[dh]>", tr, re.S)
+
+def fichas(html):
+    """<div class="tab"> de marcas vira grade de fichas; a primeira coluna (ou Case) é o nome."""
+    def troca(mt):
+        linhas = re.findall(r"<tr[^>]*>.*?</tr>", mt.group(0), re.S)
+        cab = _celulas(linhas[0])
+        if cab[0] not in ("Casa", "Case", "Setor"):
+            return mt.group(0)
+        chave = cab.index("Case") if "Case" in cab else 0
+        out = ['<div class="fichas">']
+        for tr in linhas[1:]:
+            c = _celulas(tr)
+            nome = c[chave]
+            tag = f'<small>{c[0]}</small>' if chave else ""
+            url = _url.get(nome)
+            link = f'<a class="ver-site" href="{url}" target="_blank" rel="noopener">Ver o original</a>' if url else ""
+            dl = "".join(f"<dt>{cab[i]}</dt><dd>{c[i]}</dd>" for i in range(len(c)) if i != chave and not (chave and i == 0))
+            classe = "ficha vidro tv" if 'class="tv"' in tr else "ficha vidro"
+            nome_vis = "Tivio" if nome == "Tivio" else nome
+            out.append(f'<article class="{classe}"><header>{logo(nome)}<span><b>{nome_vis}</b>{tag}</span></header><dl>{dl}</dl>{link}</article>')
+        out.append("</div>")
+        return "".join(out)
+    return re.sub(r'<div class="tab"><table>.*?</table></div>', troca, html, flags=re.S)
+
+def logos_inline(html):
+    return re.sub(r"\{\{lg:([^}]+)\}\}", lambda x: logo(x.group(1)), html)
 
 # ---------- 1. AutomaTivio ----------
 URL_ZIP = "https://github.com/orenanchaves/Tivio-teste/releases/download/AutomaTivio_v2/AutomaTivio.zip"
@@ -106,5 +149,6 @@ hero_mkt = hero("Plano de 2027", "Central de <strong>Marketing</strong>",
                 "O que a Tivio vai publicar, em que segmento e com qual objetivo: posts, eventos com o Itaú, "
                 "captação por landing page, SEO e GEO, a partir do relatório de marketing de 2027.")
 corpo_mkt = corpo_mkt.replace("{{HEADER}}", cab_mkt).replace("{{HERO}}", hero_mkt)
+corpo_mkt = logos_inline(fichas(corpo_mkt))
 (SAIDA / "marketing.html").write_text(pagina("Central de Marketing Tivio", corpo_mkt, ler("mkt.css")), encoding="utf-8")
 print("ok", [(p.name, p.stat().st_size) for p in SAIDA.glob("*.html") if p.name in ("automativio.html", "marketing.html")])

@@ -87,3 +87,10 @@ section[id],div[id]{scroll-margin-top:90px}
 .pill.espera{color:var(--muted)}
 .secao-sub{color:var(--muted);max-width:66ch;margin-bottom:22px}
 .rodape{margin-top:64px;padding-top:18px;border-top:1px solid var(--line);color:var(--muted);font-size:14px}
+
+/* menu com setas */
+.menu{display:flex;align-items:center;gap:6px;flex:1;min-width:0}
+.seta{flex:none;width:32px;height:32px;display:grid;place-items:center;border-radius:50%;border:1px solid var(--line-strong);background:var(--bg);color:var(--fg);cursor:pointer}
+.seta svg{width:16px;height:16px}
+.seta:hover{border-color:var(--accent)}
+[hidden]{display:none!important}

@@ -19,3 +19,21 @@ document.querySelectorAll('[data-copiar]').forEach(function(b){
     try{navigator.clipboard.writeText(el.textContent).then(function(){b.textContent='Copiado';setTimeout(function(){b.textContent=txt},1600)},sel)}catch(e){sel()}
   });
 });
+
+// setas do menu: aparecem só quando há mais itens para aquele lado
+(function(){
+  var menu=document.querySelector('.menu');if(!menu)return;
+  var chips=menu.querySelector('.chips');if(!chips)return;
+  var volta=menu.querySelector('[data-dir="-1"]'),vai=menu.querySelector('[data-dir="1"]');
+  function atualiza(){
+    var fim=chips.scrollWidth-chips.clientWidth-2;
+    volta.hidden=chips.scrollLeft<=2;vai.hidden=chips.scrollLeft>=fim;
+  }
+  [volta,vai].forEach(function(b){b.addEventListener('click',function(){
+    chips.scrollBy({left:Number(b.dataset.dir)*Math.max(220,chips.clientWidth*.7),behavior:'smooth'});
+  });});
+  chips.addEventListener('scroll',atualiza,{passive:true});
+  window.addEventListener('resize',atualiza);
+  if(document.fonts&&document.fonts.ready)document.fonts.ready.then(atualiza);
+  atualiza();
+})();
