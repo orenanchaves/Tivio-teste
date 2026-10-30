@@ -157,7 +157,11 @@ inicio = (cabecalho("", []) + '<div class="wrap">'
 (EXTRA / "index.html").write_text(pagina("Comunicação & Marketing", inicio, CSS_P), encoding="utf-8")
 
 # ---- Visão: a conclusão de tudo, o que queremos para a Tivio
+_a = ler("analise_corpo.html")
+_sec = {t: b for t, b in re.findall(r'(<h2>.*?</h2>)(.*?)(?=<h2>|<p class="rodape">)', _a, re.S)}
+def _pega26(trecho):
+    return next(t + b for t, b in _sec.items() if trecho in t)
 visao = (cabecalho("", []) + '<div class="wrap">' + trilha(("index.html", "Início"), ("", "Visão"))
          + hero("A conclusão de tudo", "<strong>Visão</strong>", "O que queremos para a Tivio Capital.")
-         + ler("visao_corpo.html") + '<p class="rodape">Tivio Capital · Comunicação &amp; Marketing</p></div>')
+         + ler("visao_corpo.html").replace("{{BLOCO2026}}", '<section data-anos="2026">' + _pega26("o <strong>negócio</strong>") + _pega26("uma página") + "</section>") + '<p class="rodape">Tivio Capital · Comunicação &amp; Marketing</p></div>')
 (EXTRA / "visao.html").write_text(pagina("Visão", visao, CSS_P), encoding="utf-8")

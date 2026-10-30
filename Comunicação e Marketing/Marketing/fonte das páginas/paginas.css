@@ -83,3 +83,8 @@
 .fbarra{display:flex;justify-content:space-between;align-items:center;gap:12px;margin:16px 0 12px;color:var(--muted);font-size:14px}
 .flimpa{font:600 13.5px var(--ff);background:none;border:0;color:var(--link);cursor:pointer;padding:4px}
 .sub small{font-size:11px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--verde-txt)}
+
+.anos{position:sticky;top:calc(env(safe-area-inset-top,0px) + 76px);z-index:20;display:inline-flex;align-items:center;gap:4px;margin-top:28px;padding:4px 6px 4px 14px;background:var(--bg);border:1px solid var(--line-strong);border-radius:999px}
+.anos span{font-size:12px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin-right:6px}
+.anos button{font:600 14px var(--ff);color:var(--fg-2);background:transparent;border:0;border-radius:999px;padding:7px 14px;cursor:pointer}
+.anos button[aria-pressed="true"]{background:var(--accent);color:var(--on-accent)}

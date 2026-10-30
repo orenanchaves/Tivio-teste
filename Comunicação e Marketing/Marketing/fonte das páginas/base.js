@@ -66,3 +66,14 @@ document.querySelectorAll('.fichas').forEach(function(g,n){
   i.addEventListener('input',function(){var t=sem(i.value).split(/\s+/).filter(Boolean);
     cards.forEach(function(c){var b=sem(c.textContent);c.hidden=!t.every(function(x){return b.indexOf(x)>=0;});});});
 });
+
+// filtro por ano na Visão
+(function(){
+  var bts=[].slice.call(document.querySelectorAll('.anos button'));if(!bts.length)return;
+  var secs=[].slice.call(document.querySelectorAll('[data-anos]'));
+  bts.forEach(function(b){b.addEventListener('click',function(){
+    var a=b.dataset.ano;
+    bts.forEach(function(x){x.setAttribute('aria-pressed',x===b);});
+    secs.forEach(function(s){s.hidden=a!=='todos'&&s.dataset.anos.split(' ').indexOf(a)<0;});
+  });});
+})();
