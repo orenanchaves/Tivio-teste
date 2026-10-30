@@ -1,9 +1,10 @@
 # -*- coding: utf-8 -*-
 """Monta saida/_Atual/: a edição do mês organizada por área, com nome fixo.
 
-A rodada gera a edição completa em `saida/_Historico/AAAA-MM/` (a estrutura de
+A rodada gera a edição completa em `saida/_Trabalho/AAAA-MM/` (a estrutura de
 trabalho: é onde a Central e os materiais interativos se enxergam por caminho
-relativo). Esta etapa copia de lá só o que sai da empresa, por área:
+relativo). Esta etapa copia de lá só o que sai da empresa, por área, para
+`saida/_Atual/` e, na mesma estrutura, para `saida/_Historico/AAAA-MM/`:
 
     _Atual/
       LEIA-ME.txt
@@ -16,7 +17,7 @@ relativo). Esta etapa copia de lá só o que sai da empresa, por área:
 
 Os nomes de arquivo perdem o mês ("Tivio Banks - Relatório de Gestão.pdf"): o
 upload substitui o arquivo do mês anterior e nenhum link precisa mudar. O mês
-fica na pasta do histórico e dentro do próprio arquivo.
+fica no nome da pasta do histórico e dentro do próprio arquivo.
 """
 import os
 import re
@@ -88,12 +89,24 @@ def _vertical_por_nome(cadastro):
     return out
 
 
-def montar_atual(origem, destino, cadastro, edicao, log=None):
+def _limpar(pasta):
+    """Apaga os arquivos de `pasta`. Pasta vazia presa pelo Explorer ou pelo
+    OneDrive fica: não atrapalha, e um rmtree pararia no meio do caminho."""
+    for raiz, subs, nomes in os.walk(pasta, topdown=False):
+        for nome in nomes:
+            os.remove(os.path.join(raiz, nome))
+        for sub in subs:
+            try:
+                os.rmdir(os.path.join(raiz, sub))
+            except OSError:
+                pass
+
+
+def montar_atual(origem, destino, cadastro, edicao, log=None, historico=False):
     """Recria `destino` a partir da edição completa em `origem`. Devolve o nº de arquivos."""
     from exporters.decks import carregar_config
-    if os.path.isdir(destino):
-        shutil.rmtree(destino)
-    os.makedirs(destino)
+    _limpar(destino)
+    os.makedirs(destino, exist_ok=True)
     m = _Montador(origem, destino)
     area_de = _vertical_por_nome(cadastro)
 
@@ -173,7 +186,7 @@ def montar_atual(origem, destino, cadastro, edicao, log=None):
                 f'<p>Se não abrir sozinha: <a href="{href}">abrir a Central</a>.</p>'
                 '</body></html>')
         m.n += 1
-    _leia_me(destino, edicao, origem)
+    _leia_me(destino, edicao, origem, historico)
     m.n += 1
     if log and m.faltou:
         log.info(f'  _Atual: {len(m.faltou)} item(ns) não gerados nesta rodada: ' + ', '.join(m.faltou[:6])
@@ -181,15 +194,22 @@ def montar_atual(origem, destino, cadastro, edicao, log=None):
     return m.n
 
 
-def _leia_me(destino, edicao, origem):
-    txt = f"""AUTOMATIVIO  |  EDIÇÃO {edicao.mes_ano.upper()}  |  DATA BASE {edicao.br}
-
-Esta pasta (_Atual) é sempre a edição mais recente, no mesmo caminho. Os nomes
+def _leia_me(destino, edicao, origem, historico=False):
+    completa = os.path.relpath(origem, destino).replace(os.sep, '/')
+    if historico:
+        abertura = f"""Esta pasta guarda a edição de {edicao.mes_ano}, na mesma estrutura da _Atual.
+A edição completa (Central, materiais interativos, tudo o que foi gerado) fica em:
+  {completa}/"""
+    else:
+        abertura = f"""Esta pasta (_Atual) é sempre a edição mais recente, no mesmo caminho. Os nomes
 dos arquivos não têm o mês: ao publicar, o arquivo novo substitui o do mês
 anterior e os links continuam valendo. A edição completa (Central, materiais
 interativos, tudo o que foi gerado) fica em:
-  {os.path.relpath(origem, os.path.dirname(destino)).replace(os.sep, '/')}/
-e o histórico de meses anteriores está na pasta _Historico.
+  {completa}/
+e os meses anteriores estão na pasta _Historico, na mesma estrutura desta."""
+    txt = f"""AUTOMATIVIO  |  EDIÇÃO {edicao.mes_ano.upper()}  |  DATA BASE {edicao.br}
+
+{abertura}
 
 O QUE HÁ EM CADA PASTA
   Crédito Privado/        Relatórios (PDF e PPTX por fundo + página HTML com abas, com vendor/)

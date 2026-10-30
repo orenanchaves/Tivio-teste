@@ -123,9 +123,10 @@ class Pipeline:
     # ------------------------------------------------------------------ saída
     @property
     def pasta_saida(self):
-        # a edição completa (Central, materiais interativos, tudo) fica no
-        # histórico do mês; _Atual é montada a partir dela (engine/publicacao.py)
-        return os.path.join(RAIZ, 'saida', '_Historico', self.edicao.competencia)
+        # a edição completa (Central, materiais interativos, tudo) fica na pasta
+        # de trabalho do mês; _Atual e _Historico são montadas a partir dela
+        # (engine/publicacao.py)
+        return os.path.join(RAIZ, 'saida', '_Trabalho', self.edicao.competencia)
 
     def _destino(self, *partes):
         return os.path.join(self.pasta_saida, *partes)
@@ -539,8 +540,9 @@ class Pipeline:
 
     def _atual(self):
         """saida/_Atual/: a edição do mês por área e com nome fixo, sempre no
-        mesmo caminho (engine/publicacao.py). A edição completa continua em
-        saida/_Historico/AAAA-MM/ e a Central abre por Interno/Abrir a Central.html."""
+        mesmo caminho (engine/publicacao.py). saida/_Historico/AAAA-MM/ guarda o
+        mês na mesma estrutura. A edição completa fica em saida/_Trabalho/AAAA-MM/
+        e a Central abre por Interno/Abrir a Central.html."""
         if not self.cfg['saidas'].get('atual', True):
             return
         if self.so_fundos:
@@ -548,8 +550,14 @@ class Pipeline:
             return
         from engine.publicacao import montar_atual
         atual = os.path.join(RAIZ, 'saida', '_Atual')
+        historico = os.path.join(RAIZ, 'saida', '_Historico', self.edicao.competencia)
         try:
             n = montar_atual(self.pasta_saida, atual, self.cadastro, self.edicao, self.log)
             print(f'  _Atual: {n} arquivos em saida/_Atual/ ({self.edicao.mes_ano})')
         except Exception as e:
             print(f'  AVISO: saida/_Atual/ não atualizada ({e!r}); feche arquivos abertos dela e rode de novo')
+        try:
+            n = montar_atual(self.pasta_saida, historico, self.cadastro, self.edicao, self.log, historico=True)
+            print(f'  _Historico: {n} arquivos em saida/_Historico/{self.edicao.competencia}/')
+        except Exception as e:
+            print(f'  AVISO: saida/_Historico/ não atualizada ({e!r}); feche arquivos abertos dela e rode de novo')

@@ -33,7 +33,7 @@ def main(argv=None):
     ok = p.rodar()
     print()
     print('  ' + p.log.resumo())
-    print(f'  saída: saida/_Atual/ (para publicar) e saida/_Historico/{p.edicao.competencia}/ (edição completa)')
+    print(f'  saída: saida/_Atual/ (para publicar), saida/_Historico/{p.edicao.competencia}/ (o mês guardado) e saida/_Trabalho/{p.edicao.competencia}/ (edição completa)')
     if not ok:
         print('  ! houve erros — ver a aba Avisos da conferência e o log')
     print()
