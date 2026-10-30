@@ -138,6 +138,13 @@ section[id],div[id]{scroll-margin-top:90px}
 @media (max-width:999px){.btn-visao{margin-left:auto;padding:8px 11px;font-size:12.5px;box-shadow:none}.menu-btn{margin-left:0}}
 @media (max-width:440px){.tema{display:none}}
 
+.btn-filtro{flex:none;display:inline-flex;align-items:center;gap:5px;font-size:13.5px;font-weight:600;color:var(--fg);text-decoration:none;padding:8px 12px;border:1px solid var(--line-strong);border-radius:999px}
+.btn-filtro svg{width:15px;height:15px}
+.btn-filtro:hover{border-color:var(--accent)}
+@media (max-width:999px){.btn-filtro{padding:8px 10px;font-size:12.5px}}
+@media (max-width:440px){.btn-filtro{font-size:0;gap:0;padding:8px}.btn-visao{margin-left:0}}
+.barra-in{max-width:1280px}
+
 
 /* baixar */
 .baixar{display:flex;flex-wrap:wrap;align-items:center;gap:16px 24px;margin:12px 0 8px;padding:24px;border:1px solid var(--line-strong);border-radius:20px;background:var(--bg-elev)}
@@ -702,6 +709,18 @@ document.querySelectorAll('[data-copiar]').forEach(function(b){
   document.addEventListener('keydown',function(e){if(e.key==='Escape'){fecha();nav.classList.remove('aberto');btn.setAttribute('aria-expanded','false');}});
   btn.addEventListener('click',function(){var a=nav.classList.toggle('aberto');btn.setAttribute('aria-expanded',a);});
 })();
+
+// campo de filtro nas listas de fichas
+document.querySelectorAll('.fichas').forEach(function(g,n){
+  var cards=[].slice.call(g.children);if(cards.length<4)return;
+  function sem(t){return t.normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase();}
+  var w=document.createElement('label');w.className='busca mini-busca';w.htmlFor='ff'+n;
+  var s=document.createElement('span');s.textContent='Filtrar';
+  var i=document.createElement('input');i.id='ff'+n;i.type='search';i.placeholder='Nome ou assunto';i.autocomplete='off';
+  w.appendChild(s);w.appendChild(i);g.parentNode.insertBefore(w,g);
+  i.addEventListener('input',function(){var t=sem(i.value).split(/\s+/).filter(Boolean);
+    cards.forEach(function(c){var b=sem(c.textContent);c.hidden=!t.every(function(x){return b.indexOf(x)>=0;});});});
+});
 
 </script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
