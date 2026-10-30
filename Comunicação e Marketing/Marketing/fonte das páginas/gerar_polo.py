@@ -40,17 +40,23 @@ corpo_polo = (cabecalho("Brand", []) + '<div class="wrap">'
     + '<p class="rodape">Tivio Capital · Comunicação &amp; Marketing</p></div>' + _lb)
 (EXTRA / "brand.html").write_text(pagina("Brand", corpo_polo, CSS_P), encoding="utf-8")
 
+FRENTES_E = [("Coordenação, Performance &amp; Automação", "Renan Chaves", ["Prioridades", "Materiais e fechamento", "Automação", "Dados e performance", "C&amp;M Hub", "Governança", "Interface com Enrico Trotta", "Mídia paga"]),
+             ("Conteúdo &amp; Comunicação", "Fernanda Acquati", ["Calendário editorial", "Redes sociais", "Tivio News", "Textos e legendas", "Publicação", "Moderação", "Aprovações", "Operação dos eventos"]),
+             ("Design &amp; Produção", "Gabriel Fiorilli", ["Identidade visual", "KVs", "Apresentações", "Social", "Materiais de eventos", "Vídeo e motion", "Templates"])]
+_org = ('<div class="org"><div class="org-n vidro"><span>Direção</span><b>Enrico Trotta</b></div><i class="org-l"></i>'
+        '<div class="org-n vidro"><span>Coordenação de C&amp;M</span><b>Renan Chaves</b></div><i class="org-l"></i>'
+        '<div class="org-3"><div class="org-n vidro"><span>Conteúdo &amp; Comunicação</span><b>Fernanda Acquati</b></div><div class="org-n vidro"><span>Design &amp; Produção</span><b>Gabriel Fiorilli</b></div><div class="org-n vidro"><span>Performance, Dados &amp; Automação</span><b>Renan Chaves</b></div></div>'
+        '<div class="org-t"><span>Eventos</span>Frente transversal, com as três áreas</div></div>')
+_fr = "".join(f'<section class="frente vidro"><h3>{n}</h3><p class="dono">{d}</p><ul>' + "".join(f"<li>{x}</li>" for x in l) + "</ul></section>" for n, d, l in FRENTES_E)
+_pap = "".join(f'<div class="papel vidro"><span>{a}</span><b>{b}</b></div>' for a, b in [("Coordenação", "Renan Chaves"), ("Operação", "Fernanda Acquati"), ("Peças", "Gabriel Fiorilli"), ("Aprovação estratégica", "Enrico Trotta")])
+_fl = "".join(f'<li class="vidro"><b>{a}</b><span>{b}</span></li>' for a, b in [("Demanda entra", "Pedido registrado em um lugar só"), ("Triagem", "Definição do responsável"), ("Produção", "Execução pela frente dona"), ("Aprovação técnica", "Revisão e Compliance"), ("Aprovação estratégica", "Quando necessária"), ("Publicação", "Publicação e mensuração")])
 corpo_est = (cabecalho("Estrutura", []) + '<div class="wrap">'
     + trilha(("index.html", "Início"), ("marketing.html", "Central de Marketing"), ("", "Estrutura"))
     + '<section class="topo-peer"><div><p class="eyebrow"><i></i>Comunicação &amp; Marketing</p><h1>Estrutura</h1><p class="lead">Direção, coordenação, três pilares operacionais e Eventos como frente transversal.</p></div></section>'
-    + '<div class="tab"><table><tr><th>Frente</th><th>Responsável</th><th>O que cobre</th></tr>'
-    + '<tr><td>Direção</td><td>Enrico Trotta</td><td>Prioridades e aprovação estratégica</td></tr>'
-    + '<tr><td>Coordenação de C&amp;M</td><td>Renan Chaves</td><td>Prioridades, governança e ligação entre as frentes</td></tr>'
-    + '<tr><td>Conteúdo &amp; Comunicação</td><td>Fernanda Acquati</td><td>Calendário editorial, redes sociais, Tivio News, textos, legendas e publicação</td></tr>'
-    + '<tr><td>Design &amp; Produção</td><td>Gabriel Fiorilli</td><td>Identidade visual, KVs, apresentações, social, vídeo, motion e templates</td></tr>'
-    + '<tr><td>Performance, Dados &amp; Automação</td><td>Renan Chaves</td><td>Materiais, fechamento, dados, performance, mídia paga e automação</td></tr>'
-    + '<tr><td>Eventos</td><td>Renan Chaves, Fernanda Acquati, Gabriel Fiorilli e Enrico Trotta</td><td>Coordenação (Renan), operação (Fernanda), peças (Gabriel) e aprovação estratégica (Enrico)</td></tr></table></div>'
-    + '<div class="analise"><div class="vidro"><h3>Fluxo</h3><ol><li>Demanda entra</li><li>Triagem e definição do responsável</li><li>Produção</li><li>Aprovação técnica e Compliance</li><li>Aprovação estratégica, quando necessária</li><li>Publicação e mensuração</li></ol></div></div>'
+    + '<h2>Quem responde <strong>por quê</strong></h2>' + _org
+    + '<h2>O que cada frente <strong>cobre</strong></h2><div class="frentes">' + _fr + '</div>'
+    + '<h2>Eventos, frente <strong>transversal</strong></h2><div class="papeis">' + _pap + '</div>'
+    + '<h2>Como uma demanda <strong>anda</strong></h2><ol class="roteiro r6">' + _fl + '</ol>'
     + '<p class="rodape">Tivio Capital · Comunicação &amp; Marketing</p></div>')
 (EXTRA / "estrutura.html").write_text(pagina("Estrutura", corpo_est, CSS_P), encoding="utf-8")
 
