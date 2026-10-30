@@ -155,3 +155,16 @@ inicio = (cabecalho("", []) + '<div class="wrap">'
           + '<h2>Times do <strong>AutomaTivio</strong></h2>' + cartoes([("automativio-gestao.html", "Gestão", "Comentários e tabela de spreads."), ("automativio-riscos.html", "Riscos", "Aprovação de cada material."), ("automativio-marketing.html", "Marketing", "Dados, rodada, decks, publicação e histórico.")])
           + "".join(secs) + '<p class="rodape">Tivio Capital · Comunicação &amp; Marketing</p></div>')
 (EXTRA / "index.html").write_text(pagina("Comunicação & Marketing", inicio, CSS_P), encoding="utf-8")
+
+# ---- Visão da diretoria: versão pública da análise, sem correções, riscos e decisões
+_a = ler("analise_corpo.html")
+_sec = {t: b for t, b in re.findall(r'(<h2>.*?</h2>)(.*?)(?=<h2>|<p class="rodape">)', _a, re.S)}
+def _pega(trecho):
+    return next(t + b for t, b in _sec.items() if trecho in t)
+visao = (cabecalho("", []) + '<div class="wrap">' + trilha(("index.html", "Início"), ("", "Visão da diretoria"))
+         + hero("Visão da diretoria", "Tivio Capital: <strong>2026 e 2027</strong>", "O ano em marcos, o mercado e o plano de marketing, em uma página.")
+         + _pega("o <strong>negócio</strong>") + _pega("uma página") + _pega("o <strong>plano</strong>")
+         + '<div class="subs">' + "".join(f'<a class="sub vidro" href="{h}"><b>{t}</b><span>{d}</span></a>' for h, t, d in [
+             ("m-sintese.html", "O que fazer", "O plano completo."), ("marketing.html#segmentos", "Segmentos", "O plano de cada área."), ("marketing.html#publicos", "Públicos", "Quem vamos atacar."), ("m-peers.html", "Peers", "Como o mercado se comunica.")]) + "</div>"
+         + '<p class="rodape">Fontes públicas, lidas em 30/10/2026. Plano em construção.</p></div>')
+(EXTRA / "visao.html").write_text(pagina("Visão da diretoria", visao, CSS_P), encoding="utf-8")

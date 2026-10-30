@@ -74,6 +74,7 @@ def barra_global():
 <a class="marca" href="index.html" aria-label="Comunicação &amp; Marketing">{LOGO}</a>
 <button type="button" class="menu-btn" aria-expanded="false" aria-controls="nav-global">Menu</button>
 <nav class="nav-global" id="nav-global" aria-label="Principal">{nav}</nav>
+<a class="btn-visao" href="visao.html">Visão da diretoria</a>
 {TEMA_HTML}</div></header>'''
 
 _ic = lambda d: f'<svg class="ic-rede" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">{d}</svg>'
