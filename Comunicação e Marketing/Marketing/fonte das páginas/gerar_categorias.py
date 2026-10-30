@@ -164,5 +164,5 @@ def _pega26(trecho):
     return next(t + b for t, b in _sec.items() if trecho in t)
 visao = (cabecalho("", []) + '<div class="wrap">' + trilha(("index.html", "Início"), ("", "Visão"))
          + hero("A conclusão de tudo", "<strong>Visão</strong>", "O que queremos para a Tivio Capital.")
-         + ler("visao_corpo.html").replace("{{BLOCO2026}}", '<section data-anos="2026">' + _pega26("o <strong>negócio</strong>") + _pega26("uma página") + "</section>") + '<p class="rodape">Tivio Capital · Comunicação &amp; Marketing</p></div>')
+         + ler("visao_corpo.html").replace("{{BLOCO2025}}", '<section data-anos="2025">' + _pega26("2025: o <strong>ano") + "</section>").replace("{{BLOCO2026}}", '<section data-anos="2026">' + _pega26("o <strong>negócio</strong>") + _pega26("uma página") + "</section>") + '<p class="rodape">Tivio Capital · Comunicação &amp; Marketing</p></div>')
 (EXTRA / "visao.html").write_text(pagina("Visão", visao, CSS_P), encoding="utf-8")
