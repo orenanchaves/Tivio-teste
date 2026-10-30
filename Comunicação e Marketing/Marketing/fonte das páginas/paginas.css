@@ -88,3 +88,44 @@
 .anos span{font-size:12px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin-right:6px}
 .anos button{font:600 14px var(--ff);color:var(--fg-2);background:transparent;border:0;border-radius:999px;padding:7px 14px;cursor:pointer}
 .anos button[aria-pressed="true"]{background:var(--accent);color:var(--on-accent)}
+
+.parte{display:flex;align-items:center;gap:18px;margin-top:56px;padding:20px 24px;border-radius:20px;background:var(--pill);break-before:page}
+.parte > span{flex:none;width:52px;height:52px;display:grid;place-items:center;border-radius:50%;background:var(--accent);color:var(--on-accent);font-size:22px;font-weight:700}
+.parte p{margin:0;color:var(--muted)}
+.parte .p-t{font-size:28px;font-weight:700;color:var(--fg);letter-spacing:-.015em;line-height:1.15}
+.tres{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+.tres > div{padding:18px 20px;min-width:0}
+.tres h3{margin:0 0 8px}
+.tres ul{margin:0;padding-left:18px;font-size:15px}
+@media (max-width:760px){.tres{grid-template-columns:1fr}}
+
+/* calendário */
+.camadas{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:16px}
+.camadas button{display:inline-flex;align-items:center;gap:8px;font:600 14px var(--ff);color:var(--muted);background:transparent;border:1px solid var(--line);border-radius:999px;padding:8px 14px;cursor:pointer}
+.camadas button[aria-pressed="true"]{color:var(--fg);border-color:var(--line-strong);background:var(--pill)}
+.camadas i{width:12px;height:12px;border-radius:50%}
+.k-f{background:var(--alerta)}.k-d{background:var(--verde-txt)}.k-t{background:var(--link);border:2px solid var(--fg)}
+.ano{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+.mes{padding:16px;min-width:0;display:flex;flex-direction:column;gap:8px}
+.mes header{display:flex;justify-content:space-between;align-items:center;gap:8px;min-height:28px}
+.mes h3{margin:0;font-size:18px}
+.sem,.dias{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:3px;text-align:center;font-variant-numeric:tabular-nums}
+.sem b{font-size:11px;font-weight:600;color:var(--muted)}
+.dias span{display:grid;place-items:center;aspect-ratio:1;border-radius:8px;font-size:13px;font-weight:400;color:var(--fg-2)}
+.dias span.fds{color:var(--muted)}
+.dias span.f{background:var(--alerta);color:var(--bg);font-weight:600}
+.dias span.d{background:var(--verde-txt);color:var(--bg);font-weight:700}
+.dias span.f.d{background:linear-gradient(135deg,var(--alerta) 50%,var(--verde-txt) 50%)}
+.ev{list-style:none;margin:4px 0 0;padding:0;display:grid;gap:3px;font-size:13px;line-height:1.35}
+.ev li{max-width:none;margin:0;padding-left:10px;border-left:3px solid var(--alerta)}
+.ev li.ld{border-left-color:var(--verde-txt)}
+.ev b{color:var(--fg);font-weight:600}
+.nd{margin:0;font-size:13px;line-height:1.4;color:var(--verde-txt)}
+.nt{margin:auto 0 0;padding-top:8px;border-top:1px solid var(--line);font-size:13px;line-height:1.4;color:var(--fg-2)}
+.nt::before{content:"Tivio: ";font-weight:600;color:var(--fg)}
+.sem-f .dias span.f{background:transparent;color:var(--fg-2);font-weight:400}.sem-f .lf{display:none}
+.sem-d .dias span.d{background:transparent;color:var(--fg-2);font-weight:400}.sem-d .ld,.sem-d .nd,.sem-d .mes .pill{display:none}
+.sem-t .nt{display:none}
+@media (max-width:980px){.ano{grid-template-columns:1fr 1fr}}
+@media (max-width:600px){.ano{grid-template-columns:1fr}}
+@media print{.tres{grid-template-columns:repeat(3,minmax(0,1fr))}}

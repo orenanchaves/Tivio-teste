@@ -1,0 +1,74 @@
+# -*- coding: utf-8 -*-
+# Calendário de 2027: feriados, datas de dinheiro e ações da Tivio.
+import calendar as _cal
+_MESES = ["Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho", "Julho", "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro"]
+FERIADOS = {(1, 1): "Confraternização Universal", (1, 25): "Aniversário de São Paulo", (2, 8): "Carnaval", (2, 9): "Carnaval", (2, 10): "Quarta-feira de Cinzas",
+            (3, 26): "Sexta-feira Santa", (4, 21): "Tiradentes", (5, 1): "Dia do Trabalho", (5, 27): "Corpus Christi", (7, 9): "Revolução Constitucionalista (SP)",
+            (9, 7): "Independência", (10, 12): "Nossa Senhora Aparecida", (11, 2): "Finados", (11, 15): "Proclamação da República", (11, 20): "Consciência Negra", (12, 25): "Natal"}
+DINHEIRO = {(1, 4): "Tesouro Prefixado 2027 vence em 01/01; pagamento no primeiro dia útil",
+            (2, 15): "Cupom de títulos com juros semestrais (conferir por título)",
+            (3, 1): "Tesouro Selic 2027 vence",
+            (5, 17): "Cupom de títulos com juros semestrais: dia 15 cai no sábado (conferir por título)",
+            (8, 16): "Cupom de títulos com juros semestrais: dia 15 cai no domingo (conferir por título)",
+            (11, 16): "Cupom de títulos com juros semestrais: dia 15 é feriado (conferir por título)",
+            (11, 30): "1ª parcela do 13º salário", (12, 20): "2ª parcela do 13º salário", (12, 31): "Último dia de aporte em PGBL para o IR do ano"}
+NOTAS = {1: ("quente", "Dinheiro do Prefixado 2027 chegando à conta.", "Edição trimestral na 2ª ou 3ª semana."),
+         2: ("", "PLR e bônus começam em algumas empresas (hipótese: varia por empresa).", "Cortes da edição. Evento antes do vencimento do Selic."),
+         3: ("quente", "Vencimento do Tesouro Selic 2027 em 1º de março. PLR e bônus (hipótese).", "Conteúdo de onde reinvestir e cortes."),
+         4: ("", "", "Edição trimestral na 2ª ou 3ª semana."),
+         5: ("", "Restituição do IR: pelo padrão de 2026, lotes de fim de maio a agosto (datas de 2027 a confirmar).", "Cortes e eventos."),
+         6: ("", "Restituição do IR, a confirmar.", "Cortes e eventos."),
+         7: ("", "Restituição do IR, a confirmar.", "Edição trimestral na 2ª ou 3ª semana."),
+         8: ("", "Restituição do IR, a confirmar.", "Cortes e eventos."),
+         9: ("", "", "Chamada para a próxima edição."),
+         10: ("", "", "Edição trimestral na 2ª ou 3ª semana."),
+         11: ("quente", "1ª parcela do 13º. Cupons de juros semestrais.", "Evento e conteúdo de previdência antes do fim do ano."),
+         12: ("quente", "2ª parcela do 13º e PGBL até 31/12. Atenção: dezembro de 2024 teve resgates fortes nos fundos.", "Previdência: HGD30 e HYD60 em foco.")}
+
+def _mes(m):
+    prim, dias = _cal.monthrange(2027, m)
+    vazio = (prim + 1) % 7  # coluna começa no domingo
+    cel = ["<i></i>"] * vazio
+    for d in range(1, dias + 1):
+        f, g = FERIADOS.get((m, d)), DINHEIRO.get((m, d))
+        cl = ("f " if f else "") + ("d " if g else "")
+        fim = "fds" if (vazio + d - 1) % 7 in (0, 6) else ""
+        tit = " · ".join(x for x in (f, g) if x)
+        cel.append(f'<span class="{cl}{fim}"' + (f' title="{tit}"' if tit else "") + f">{d}</span>")
+    itens = "".join(f'<li class="lf"><b>{d}</b> {t}</li>' for (mm, d), t in sorted(FERIADOS.items()) if mm == m)
+    itens += "".join(f'<li class="ld"><b>{d}</b> {t}</li>' for (mm, d), t in sorted(DINHEIRO.items()) if mm == m)
+    q, din, tiv = NOTAS[m]
+    selo = '<span class="pill ok"><i></i>Mês de dinheiro</span>' if q else ""
+    nota_d = f'<p class="nd">{din}</p>' if din else ""
+    return (f'<article class="mes vidro"><header><h3>{_MESES[m-1]}</h3>{selo}</header>'
+            '<div class="sem"><b>D</b><b>S</b><b>T</b><b>Q</b><b>Q</b><b>S</b><b>S</b></div>'
+            f'<div class="dias">{"".join(cel)}</div><ul class="ev">{itens}</ul>{nota_d}<p class="nt">{tiv}</p></article>')
+
+corpo_c = (cabecalho("", []) + '<div class="wrap">' + trilha(("index.html", "Início"), ("marketing.html", "Central de Marketing"), ("", "Calendário 2027"))
+  + '<section class="topo-peer"><div><p class="eyebrow"><i></i>Ano todo</p><h1>Calendário <strong>2027</strong></h1>'
+  + '<p class="lead">Feriados, períodos em que costuma entrar dinheiro e o que a Tivio faz em cada mês.</p></div></section>'
+  + '<div class="camadas" role="group" aria-label="Mostrar no calendário">'
+  + '<button type="button" data-c="f" aria-pressed="true"><i class="k-f"></i>Feriados</button>'
+  + '<button type="button" data-c="d" aria-pressed="true"><i class="k-d"></i>Dinheiro</button>'
+  + '<button type="button" data-c="t" aria-pressed="true"><i class="k-t"></i>Tivio</button></div>'
+  + '<div class="ano" id="ano">' + "".join(_mes(m) for m in range(1, 13)) + "</div>"
+  + '''<h2>O que está por trás do <strong>dinheiro</strong></h2>
+<div class="analise">
+  <div class="vidro"><h3>Confirmado</h3><ul>
+    <li>Tesouro Prefixado 2027 e Tesouro Selic 2027 têm vencimento em 01/01 e 01/03</li>
+    <li>13º: até 30/11 e até 20/12</li>
+    <li>PGBL: aporte até o fim do ano para deduzir no IR</li>
+    <li>Dezembro de 2024 teve R$ 147,6 bi de saídas líquidas nos fundos</li>
+  </ul></div>
+  <div class="vidro"><h3>Hipótese, a validar</h3><ul>
+    <li>Janeiro não tem padrão: +R$ 49,8 bi em 2024, -R$ 24,6 bi em 2023 e saída em 2025 (Anbima)</li>
+    <li>PLR e bônus variam por empresa</li>
+    <li>Datas de restituição de 2027 ainda não saíram</li>
+    <li>Quanto vence em cada título: pedir dados ao Tesouro e cruzar com a captação da Tivio</li>
+  </ul></div>
+</div>
+<p class="meta-txt">Feriados nacionais, com dois de São Paulo; confirmar os municipais onde houver evento. As datas dos 16 eventos com o Itaú ainda não existem: quando definidas, entram aqui.</p>
+<p class="fontes-peer"><b>Fontes</b><a href="https://www.tesourodireto.com.br/b/novo-rol-de-titulos-do-tesouro-direto-2025" target="_blank" rel="noopener">Tesouro Direto</a><a href="https://borainvestir.b3.com.br/noticias/imposto-de-renda/imposto-de-renda-2026-confira-o-calendario-de-restituicao/" target="_blank" rel="noopener">B3 Bora Investir</a><a href="https://capitalaberto.com.br/mercados/fundos-tem-captacao-liquida-negativa-em-janeiro-diz-anbima/" target="_blank" rel="noopener">Capital Aberto</a><a href="https://www.suno.com.br/noticias/fundos-de-investimento-melhor-mes-dois-anos-gpj" target="_blank" rel="noopener">Suno</a></p>
+<p class="rodape">Tivio Capital · Comunicação &amp; Marketing</p></div>
+<script>(function(){var a=document.getElementById('ano');[].forEach.call(document.querySelectorAll('.camadas button'),function(b){b.addEventListener('click',function(){var on=b.getAttribute('aria-pressed')!=='true';b.setAttribute('aria-pressed',on);a.classList.toggle('sem-'+b.dataset.c,!on);});});})();</script>''')
+(EXTRA / "calendario.html").write_text(pagina("Calendário 2027", corpo_c, CSS_P), encoding="utf-8")

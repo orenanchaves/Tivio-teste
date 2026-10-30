@@ -133,7 +133,8 @@ kpis_c = capa[capa.index('<div class="kpis">'):capa.index('<p class="meta-txt">'
 secs = [f'<h2 id="segmentos">Segmentos da <strong>Tivio</strong></h2>' + cartoes([(f"segmento-{s}.html", n, ", ".join(FUNDOS.get(n, ["Posts, eventos e marca"])[:3])) for _, s, n in SEGS]),
         f'<h2 id="publicos">Públicos que vamos <strong>atacar</strong></h2>' + cartoes([(f"publico-{p[0]}.html", p[1], p[3]) for p in PUBLICOS])]
 for cid, cnome, itens in CATS:
-    secs.append(f'<h2 id="{cid}">{cnome}</h2>' + cartoes([(f"m-{i}.html", n, d) for i, n, d in itens]))
+    extra_c = [("calendario.html", "Calendário 2027", "Feriados, datas de dinheiro e ações.")] if cid == "acoes" else []
+    secs.append(f'<h2 id="{cid}">{cnome}</h2>' + cartoes(extra_c + [(f"m-{i}.html", n, d) for i, n, d in itens]))
 abas_c = [("segmentos", "Segmentos"), ("publicos", "Públicos")] + [(c, n) for c, n, _ in CATS]
 corpo = (cabecalho("Central de Marketing", abas_c) + '<div class="wrap">' + trilha(("index.html", "Início"), ("", "Central de Marketing"))
          + hero_c + kpis_c + "".join(secs) + '<p class="rodape">Tivio Capital · Comunicação &amp; Marketing. Planos em construção.</p></div>')
@@ -158,7 +159,7 @@ inicio = (cabecalho("", []) + '<div class="wrap">'
 
 # ---- Visão: a conclusão de tudo, o que queremos para a Tivio
 _a = ler("analise_corpo.html")
-_sec = {t: b for t, b in re.findall(r'(<h2>.*?</h2>)(.*?)(?=<h2>|<p class="rodape">)', _a, re.S)}
+_sec = {t: b for t, b in re.findall(r'(<h2>.*?</h2>)(.*?)(?=<h2>|<div class="parte">|<p class="rodape">)', _a, re.S)}
 def _pega26(trecho):
     return next(t + b for t, b in _sec.items() if trecho in t)
 visao = (cabecalho("", []) + '<div class="wrap">' + trilha(("index.html", "Início"), ("", "Visão"))
