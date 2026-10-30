@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 # Executado no fim do montar.py: uma página por peer, por segmento da Tivio e por setor.
 exec(ler("dados_peers.py"))
+exec(ler("exemplos.py"))
 EXTRA = SAIDA / "extra"
 EXTRA.mkdir(exist_ok=True)
 CSS_P = ler("mkt.css") + "\n" + ler("paginas.css")
@@ -27,10 +28,22 @@ for i, p in enumerate(PEERS):
     fontes = "".join(f'<a href="{u}" target="_blank" rel="noopener">{n}</a>' for n, u in p["fontes"])
     nome_g = "Peers no Brasil" if p["grupo"] == "Brasil" else "Peers no exterior"
     ancora = "peers" if p["grupo"] == "Brasil" else "estrangeiras"
+    ex = EXEMPLOS[p["slug"]]
+    def _lista(itens):
+        return "".join(f'<a class="ex" href="{u}" target="_blank" rel="noopener"><span>{t}</span><em>Ver o original</em></a>' for t, u in itens)
+    foto = SAIDA / "sites" / f'{p["slug"]}.webp'
+    if ex["site"] and foto.exists():
+        vit = f'<a class="site-mini" href="{ex["site"]}" target="_blank" rel="noopener"><img src="sites/{p["slug"]}.webp" alt="Página pública de {p["nome"]}" loading="lazy"><span>Abrir o site original</span></a>'
+    elif ex["site"]:
+        vit = f'<a class="ex" href="{ex["site"]}" target="_blank" rel="noopener"><span>A página pede aceite de termos antes de abrir</span><em>Ver o original</em></a>'
+    else:
+        vit = '<p class="meta-txt">O site bloqueou a leitura automática. Veja os links de posts e ações ao lado.</p>'
+    exemplos = f'''<h2>Exemplos</h2><div class="exemplos"><section class="vidro bloco"><h3>Site</h3>{vit}</section><section class="vidro bloco"><h3>Posts</h3>{_lista(ex["posts"])}</section><section class="vidro bloco"><h3>Ações</h3>{_lista(ex["acoes"])}</section></div>'''
     corpo = f'''<div class="wrap">{navegar(lista, i, f"marketing.html#{ancora}", nome_g)}
 <section class="topo-peer">{logo(p["nome"])}<div><p class="eyebrow"><i></i>{nome_g}</p><h1>{p["nome"]}</h1><p class="lead">{p["frase"]}</p></div></section>
 <div class="kpis peer">{k}</div>
 <section class="destaque vidro"><p class="seg-nome"><i></i>O que faz muito bem</p><p class="grande">{p["bem"]}</p></section>
+{exemplos}
 <div class="blocos">{cards}</div>
 <section class="destaque aprende vidro"><p class="seg-nome"><i></i>O que a Tivio pode aprender</p><p class="grande">{p["aprender"]}</p></section>
 <p class="fontes-peer"><b>Fontes</b>{fontes}</p>

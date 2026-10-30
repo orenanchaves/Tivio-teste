@@ -55,3 +55,12 @@
 .atalhos span{font-size:14px;padding:7px 13px;border-radius:999px;border:1px solid var(--line)}
 .bloco ul{margin:0;padding-left:18px;font-size:15px}
 .bloco li{margin-bottom:6px}
+
+.exemplos{display:grid;grid-template-columns:1.25fr 1fr 1fr;gap:12px;margin-bottom:12px}
+.exemplos h3{margin:0 0 10px}
+.site-mini{display:block;text-decoration:none;font-size:13.5px;font-weight:600}
+.site-mini img{width:100%;height:auto;border-radius:10px;border:1px solid var(--line);display:block;margin-bottom:8px}
+.ex{display:grid;gap:2px;padding:9px 0;border-top:1px solid var(--line);text-decoration:none;color:var(--fg-2);font-size:14.5px;font-weight:300;line-height:1.4}
+.ex:first-of-type{border-top:0;padding-top:0}
+.ex em{font-style:normal;font-size:12.5px;font-weight:600;color:var(--link)}
+@media (max-width:820px){.exemplos{grid-template-columns:1fr}}
