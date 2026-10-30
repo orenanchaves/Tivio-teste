@@ -6,8 +6,9 @@
 **/agosto_peers.xlsx
 
 # decks gerados: pesados (~25 MB cada) e refeitos a cada rodada
-AutomaTivio/saida/_Historico/*/decks/
+AutomaTivio/saida/_Trabalho/*/decks/
 AutomaTivio/saida/_Atual/
+AutomaTivio/saida/_Historico/
 
 # material de apoio do AutomaTivio, local e pesado
 AutomaTivio/_revisao/

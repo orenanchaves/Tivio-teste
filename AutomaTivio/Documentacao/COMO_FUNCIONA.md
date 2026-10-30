@@ -49,16 +49,17 @@ planilha. Para forçar: `python run.py --data-base 2026-09-30`.
 
 ## 3. O que sai, e onde
 
-A rodada grava em **dois lugares**:
+A rodada grava em **três lugares**:
 
 - **`saida/_Atual/`**: o que sai da empresa, organizado por **área**, com **nome
   fixo (sem o mês)**. É sempre a edição mais recente, no mesmo caminho: ao
   publicar, o arquivo novo substitui o do mês anterior e nenhum link muda. É
   montada pelo `engine/publicacao.py` e refeita inteira a cada rodada completa
   (não é atualizada em rodada parcial com `--so`).
-- **`saida/_Historico/AAAA-MM/`**: a edição completa do mês (a Central, os
-  materiais interativos e tudo o que foi gerado), na estrutura de trabalho. Fica
-  como histórico, um mês por pasta.
+- **`saida/_Historico/AAAA-MM/`**: o mês guardado, na **mesma estrutura da
+  `_Atual`**, um mês por pasta.
+- **`saida/_Trabalho/AAAA-MM/`**: a edição completa do mês (a Central, os
+  materiais interativos e tudo o que foi gerado), na estrutura de trabalho.
 
 ```
 AutomaTivio/saida/_Atual/
@@ -86,7 +87,7 @@ AutomaTivio/saida/_Atual/
     ├── Conferência.xlsx             o que mudou, o que faltou, o que não bateu
     └── Log da rodada.log
 
-AutomaTivio/saida/_Historico/AAAA-MM/      a edição completa do mês
+AutomaTivio/saida/_Trabalho/AAAA-MM/      a edição completa do mês
 ├── index.html                    abre a Central
 ├── central/                      TODOS os HTML da edição, numa pasta só
 │   ├── tivio-central.html        índice com todos os cards
