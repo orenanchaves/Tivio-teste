@@ -192,7 +192,7 @@ miolo = re.sub(r"<h2>(\d\.)", lambda m: f'<h2 id="r-{ids.get(m.group(1), "x")}">
 SITE = SAIDA / "mkt_site.html"
 FINMKT = SAIDA / "mkt_finmkt.html"
 corpo_mkt = (ler("mkt_corpo.html")
-             .replace("{{GESTORES}}", ler("mkt_gestores.html")).replace("{{IDEIAS}}", ler("mkt_ideias.html")).replace("{{CASES}}", ler("mkt_cases.html")).replace("{{PEERS}}", ler("mkt_peers.html").replace("{{MUNDO}}", ler("mkt_mundo.html"))).replace("{{RELATORIO}}", miolo).replace("{{SUB}}", sub.group(1))
+             .replace("{{GESTORES}}", ler("mkt_gestores.html")).replace("{{VIDEO}}", ler("mkt_video.html")).replace("{{IDEIAS}}", ler("mkt_ideias.html")).replace("{{CASES}}", ler("mkt_cases.html")).replace("{{PEERS}}", ler("mkt_peers.html").replace("{{MUNDO}}", ler("mkt_mundo.html"))).replace("{{RELATORIO}}", miolo).replace("{{SUB}}", sub.group(1))
              .replace("{{SITE}}", SITE.read_text(encoding="utf-8") if SITE.exists() else "")
              .replace("{{FINMKT}}", FINMKT.read_text(encoding="utf-8") if FINMKT.exists() else ""))
 cab_mkt = cabecalho("Central de Marketing", [("posicionamento", "Estruturados"), ("posts", "Posts"),
