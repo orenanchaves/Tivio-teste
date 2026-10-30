@@ -505,7 +505,7 @@ function gravarRev(r){try{localStorage.setItem('tivio-revisao',JSON.stringify(r)
   if(st){var r=ler();if(r){st.innerHTML='<i></i>Enviada em '+r.quando;}return;}
   if(!ent)return;
   var caixa=document.getElementById('soltar'),txt=document.getElementById('soltar-txt'),msg=document.getElementById('spreads-msg');
-  function mostrar(r){txt.textContent=r.nome;msg.textContent='Enviada em '+r.quando+'.';msg.classList.add('ok-txt');msg.classList.remove('aviso-txt');}
+  function mostrar(r){txt.textContent='tabela_spreads.xlsx';msg.textContent=(r.nome==='tabela_spreads.xlsx'?'Enviada':r.nome+' enviada e renomeada')+' em '+r.quando+'.';msg.classList.add('ok-txt');msg.classList.remove('aviso-txt');}
   function receber(f){
     if(!f)return;
     if(!/\.xlsx$/i.test(f.name)){msg.textContent='Esse arquivo não é .xlsx. Envie a planilha da tabela de spreads.';msg.classList.add('aviso-txt');msg.classList.remove('ok-txt');return;}

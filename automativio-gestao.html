@@ -340,7 +340,7 @@ ol.passos li{margin:0 0 18px}
 </div></div></header><div class="wrap"><section class="hero hero-time"><div><h1>Comentários da <strong>Gestão</strong></h1><p class="lead">Os comentários que vão nos relatórios do mês, por segmento.</p></div></section><div class="app">
 <div class="app-barra"><span class="nome">Edição setembro/2026 <small>data base 30/09/2026</small></span></div>
     <section class="envio" id="spreads" aria-labelledby="spreads-t">
-    <div class="envio-txt"><h3 id="spreads-t">Tabela de spreads</h3><p class="meta-txt">Planilha do mês do Mercado de Crédito, em .xlsx. Ela vai para os relatórios como <code>tabela_spreads.xlsx</code>.</p></div>
+    <div class="envio-txt"><h3 id="spreads-t">Tabela de spreads</h3><p class="meta-txt">Planilha do mês do Mercado de Crédito, em .xlsx, com qualquer nome. Ela já entra como <code>tabela_spreads.xlsx</code>.</p></div>
     <label class="soltar" id="soltar" for="arq-spreads">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 16V5"/><path d="m7 10 5-5 5 5"/><path d="M5 20h14"/></svg>
       <span id="soltar-txt">Arraste a planilha aqui ou clique para escolher</span>
@@ -525,7 +525,7 @@ function gravarRev(r){try{localStorage.setItem('tivio-revisao',JSON.stringify(r)
   if(st){var r=ler();if(r){st.innerHTML='<i></i>Enviada em '+r.quando;}return;}
   if(!ent)return;
   var caixa=document.getElementById('soltar'),txt=document.getElementById('soltar-txt'),msg=document.getElementById('spreads-msg');
-  function mostrar(r){txt.textContent=r.nome;msg.textContent='Enviada em '+r.quando+'.';msg.classList.add('ok-txt');msg.classList.remove('aviso-txt');}
+  function mostrar(r){txt.textContent='tabela_spreads.xlsx';msg.textContent=(r.nome==='tabela_spreads.xlsx'?'Enviada':r.nome+' enviada e renomeada')+' em '+r.quando+'.';msg.classList.add('ok-txt');msg.classList.remove('aviso-txt');}
   function receber(f){
     if(!f)return;
     if(!/\.xlsx$/i.test(f.name)){msg.textContent='Esse arquivo não é .xlsx. Envie a planilha da tabela de spreads.';msg.classList.add('aviso-txt');msg.classList.remove('ok-txt');return;}
