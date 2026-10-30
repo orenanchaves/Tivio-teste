@@ -156,3 +156,12 @@
 #lb button{position:absolute;top:16px;right:16px;width:44px;height:44px;border-radius:999px;border:1px solid rgba(255,255,255,.3);background:rgba(10,15,20,.6);color:#FFF;display:flex;align-items:center;justify-content:center;cursor:pointer}
 @media (max-width:640px){.ds-logos{grid-template-columns:repeat(2,minmax(0,1fr))}.ds-logo{height:110px}.ds-raios{grid-template-columns:repeat(3,minmax(0,1fr))}}
 .ds-logo.escuro svg,.ds-logo.escuro svg *{color:#FFF;fill:#FFF}.ds-logo.claro svg,.ds-logo.claro svg *{color:#0A0F14;fill:#0A0F14}
+.ds-nav{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:8px}
+.ds-nav a{padding:7px 14px;border:1px solid var(--line-strong);border-radius:999px;font-size:14px;color:var(--fg);text-decoration:none}
+.ds-nav a:hover{border-color:var(--accent)}
+[id]{scroll-margin-top:84px}
+.feed{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin-bottom:32px}
+.feed-item{display:block;padding:8px;text-decoration:none;min-width:0}
+.feed-item img{display:block;width:100%;aspect-ratio:4/5;object-fit:cover;border-radius:8px}
+.feed-item span{display:block;margin-top:6px;font-size:14px;color:var(--muted)}
+@media (max-width:640px){.feed{grid-template-columns:repeat(2,minmax(0,1fr))}}

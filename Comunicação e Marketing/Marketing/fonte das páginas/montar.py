@@ -68,7 +68,7 @@ def barra_global():
         dd("Estrutura", [("estrutura.html", "Frentes e fluxo"), ("m-copilot.html", "Copilot")]),
         dd("Eventos", [("m-eventos.html", "Eventos Itaú"), ("calendario.html", "Calendário 2027")]),
         dd("Conteúdo", [("m-posts.html", "Posts"), ("m-captacao.html", "Captação")]),
-        dd("Brand", [("brand.html#polo", "Polo"), ("brand.html#design-system", "Design system")]),
+        dd("Brand", [("", "Design system"), ("brand.html#logo", "Logo"), ("brand.html#cores", "Cores"), ("brand.html#tipografia", "Tipografia"), ("brand.html#forma", "Forma"), ("", "Aplicações"), ("brand.html#polo", "Polo"), ("", "Redes"), ("brand.html#feed", "Feed do Instagram")], True),
         dd("Referências", [("", "Estudos"), ("m-cases.html", "Cases"), ("m-peers.html", "Peers no Brasil"), ("m-estrangeiras.html", "Peers no exterior"), ("m-mundo.html", "Mundo"), ("m-mercados.html", "Outros mercados")] + [(f"setor-{s}.html", n) for s, n, _, _ in SETORES] + [("m-relatorio.html", "Relatório 2027")] + peers, True),
     ])
     return f'''<header class="barra"><div class="barra-in">
