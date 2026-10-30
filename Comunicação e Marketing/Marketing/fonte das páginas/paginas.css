@@ -129,3 +129,8 @@
 @media (max-width:980px){.ano{grid-template-columns:1fr 1fr}}
 @media (max-width:600px){.ano{grid-template-columns:1fr}}
 @media print{.tres{grid-template-columns:repeat(3,minmax(0,1fr))}}
+
+.dias span.e{box-shadow:inset 0 0 0 2px var(--verde-txt);color:var(--fg);font-weight:600}
+.dias span.f.e{box-shadow:inset 0 0 0 2px var(--verde-txt)}
+.ev li.le{border-left-style:dashed;border-left-color:var(--verde-txt);color:var(--muted)}
+.sem-d .dias span.e{box-shadow:none;font-weight:400}.sem-d .le{display:none}
