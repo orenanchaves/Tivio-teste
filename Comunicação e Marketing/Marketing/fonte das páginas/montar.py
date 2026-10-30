@@ -74,7 +74,7 @@ def barra_global():
 <a class="marca" href="index.html" aria-label="Comunicação &amp; Marketing">{LOGO}</a>
 <button type="button" class="menu-btn" aria-expanded="false" aria-controls="nav-global">Menu</button>
 <nav class="nav-global" id="nav-global" aria-label="Principal">{nav}</nav>
-<a class="btn-filtro" href="buscar.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 6h16M7 12h10M10 18h4"/></svg>Filtrar</a>
+<a class="btn-filtro" href="buscar.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="6.5"/><path d="m20 20-4.2-4.2"/></svg>Pesquisar</a>
 <a class="btn-visao" href="visao.html">Visão</a>
 {TEMA_HTML}</div></header>'''
 
@@ -192,7 +192,7 @@ miolo = re.sub(r"<h2>(\d\.)", lambda m: f'<h2 id="r-{ids.get(m.group(1), "x")}">
 SITE = SAIDA / "mkt_site.html"
 FINMKT = SAIDA / "mkt_finmkt.html"
 corpo_mkt = (ler("mkt_corpo.html")
-             .replace("{{IDEIAS}}", ler("mkt_ideias.html")).replace("{{CASES}}", ler("mkt_cases.html")).replace("{{PEERS}}", ler("mkt_peers.html").replace("{{MUNDO}}", ler("mkt_mundo.html"))).replace("{{RELATORIO}}", miolo).replace("{{SUB}}", sub.group(1))
+             .replace("{{GESTORES}}", ler("mkt_gestores.html")).replace("{{IDEIAS}}", ler("mkt_ideias.html")).replace("{{CASES}}", ler("mkt_cases.html")).replace("{{PEERS}}", ler("mkt_peers.html").replace("{{MUNDO}}", ler("mkt_mundo.html"))).replace("{{RELATORIO}}", miolo).replace("{{SUB}}", sub.group(1))
              .replace("{{SITE}}", SITE.read_text(encoding="utf-8") if SITE.exists() else "")
              .replace("{{FINMKT}}", FINMKT.read_text(encoding="utf-8") if FINMKT.exists() else ""))
 cab_mkt = cabecalho("Central de Marketing", [("posicionamento", "Estruturados"), ("posts", "Posts"),

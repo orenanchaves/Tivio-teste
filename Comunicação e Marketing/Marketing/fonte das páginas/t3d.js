@@ -17,33 +17,39 @@
   var camera=new THREE.PerspectiveCamera(30,1,1,2000);
   camera.position.set(0,0,560);
 
-  // reflexo: placas claras em volta, como as placas emissivas do logo3d.py
+  // reflexo: faixas claras e escuras alternadas, é o contraste que faz o metal parecer metal
   var pm=new THREE.PMREMGenerator(renderer),amb=new THREE.Scene();
-  amb.background=new THREE.Color(0x16241e);
-  [[0,300,0,900,40,900,0xffffff,1.5],[-500,60,200,40,500,600,0xdfeee8,1.1],[500,0,-200,40,500,600,0xcfe8dc,0.8],[0,-60,520,700,260,40,0xffffff,1.0]].forEach(function(p){
-    var m=new THREE.Mesh(new THREE.BoxGeometry(p[3],p[4],p[5]),new THREE.MeshBasicMaterial({color:new THREE.Color(p[6]).multiplyScalar(p[7])}));
-    m.position.set(p[0],p[1],p[2]);amb.add(m);
-  });
-  cena.environment=pm.fromScene(amb,0.04).texture;
+  amb.background=new THREE.Color(0x05080a);
+  function placa(x,y,z,l,a,p,cor,forca){
+    var m=new THREE.Mesh(new THREE.BoxGeometry(l,a,p),new THREE.MeshBasicMaterial({color:new THREE.Color(cor).multiplyScalar(forca)}));
+    m.position.set(x,y,z);amb.add(m);
+  }
+  placa(0,420,0,1200,30,500,0xffffff,5);
+  placa(-520,120,260,60,700,220,0xffffff,4);
+  placa(520,60,300,50,700,160,0xdff5ea,3.2);
+  placa(0,-30,620,160,560,30,0xffffff,2.6);
+  placa(-300,-380,200,420,30,300,0x9fd8bf,1.6);
+  placa(320,240,-420,500,120,30,0xc1f4d4,2);
+  cena.environment=pm.fromScene(amb,0.012,1,3000).texture;
 
   // forma: y invertido antes de extrudar (o SVG cresce para baixo)
   var dados=new THREE.SVGLoader().parse('<svg xmlns="http://www.w3.org/2000/svg"><path d="'+D+'"/></svg>');
   var grupo=new THREE.Group();
-  var mat=new THREE.MeshStandardMaterial({color:0x3a6656,metalness:0.95,roughness:0.3});
+  var mat=new THREE.MeshPhysicalMaterial({color:0xb7d9c9,metalness:1,roughness:0.16,clearcoat:1,clearcoatRoughness:0.08,envMapIntensity:1.25});
   dados.paths.forEach(function(path){
     THREE.SVGLoader.createShapes(path).forEach(function(s){
       var pts=s.getPoints(32).map(function(v){return new THREE.Vector2(v.x,-v.y);});
       var forma=new THREE.Shape(pts);
       s.holes.forEach(function(h){forma.holes.push(new THREE.Path(h.getPoints(32).map(function(v){return new THREE.Vector2(v.x,-v.y);})));});
-      var g=new THREE.ExtrudeGeometry(forma,{depth:22,bevelEnabled:true,bevelThickness:2.2,bevelSize:1.6,bevelSegments:3,curveSegments:32});
+      var g=new THREE.ExtrudeGeometry(forma,{depth:22,bevelEnabled:true,bevelThickness:3,bevelSize:2.4,bevelSegments:6,curveSegments:32});
       grupo.add(new THREE.Mesh(g,mat));
     });
   });
   var bb=new THREE.Box3().setFromObject(grupo),c=bb.getCenter(new THREE.Vector3());
   grupo.children.forEach(function(m){m.geometry.translate(-c.x,-c.y,-c.z);});
   var pivo=new THREE.Group();pivo.add(grupo);pivo.rotation.x=-0.12;cena.add(pivo);
-  var luz=new THREE.DirectionalLight(0xffffff,0.9);luz.position.set(200,300,400);cena.add(luz);
-  cena.add(new THREE.AmbientLight(0xffffff,0.15));
+  var luz=new THREE.DirectionalLight(0xffffff,0.35);luz.position.set(200,300,400);cena.add(luz);
+  
 
   caixa.appendChild(renderer.domElement);
   caixa.classList.add('vivo');

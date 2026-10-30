@@ -30,15 +30,15 @@ for f in fontes_f:
 def _chips(grupo, vals):
     return "".join(f'<button type="button" class="fchip" data-g="{grupo}" data-v="{v}" aria-pressed="false">{v}</button>' for v in vals)
 tipos_v = [n for _, n in TIPOS]
-corpo_f = (cabecalho("", []) + '<div class="wrap">' + trilha(("index.html", "Início"), ("", "Filtrar"))
-  + '<section class="topo-peer"><div><p class="eyebrow"><i></i>Tudo em um lugar</p><h1>Filtrar <strong>tudo</strong></h1></div></section>'
-  + '<label class="busca" for="q"><span>Buscar</span><input id="q" type="search" placeholder="Escreva um nome ou assunto, como FIDC, Solis ou eventos" autocomplete="off"></label>'
+corpo_f = (cabecalho("", []) + '<div class="wrap">' + trilha(("index.html", "Início"), ("", "Pesquisar"))
+  + '<section class="topo-peer"><div><p class="eyebrow"><i></i>Tudo em um lugar</p><h1>Pesquisar <strong>tudo</strong></h1></div></section>'
+  + '<label class="busca" for="q"><span>Pesquisa</span><input id="q" type="search" placeholder="Escreva um nome ou assunto, como FIDC, Solis ou eventos" autocomplete="off"></label>'
   + f'<div class="fgrupo"><b>Tipo</b>{_chips("k", tipos_v)}</div>'
   + f'<div class="fgrupo"><b>Segmento</b>{_chips("s", list(SEG_T))}</div>'
   + f'<div class="fgrupo"><b>Público</b>{_chips("p", list(PUB_T))}</div>'
-  + '<div class="fbarra"><span id="fconta" role="status"></span><button type="button" class="flimpa" id="flimpa">Limpar filtros</button></div>'
+  + '<div class="fbarra"><span id="fconta" role="status"></span><button type="button" class="flimpa" id="flimpa">Limpar</button></div>'
   + '<div class="subs" id="fres"></div><p class="meta-txt" id="fvazio" hidden>Nada encontrado. Tire um filtro ou mude a busca.</p>'
   + '<p class="rodape">Tivio Capital · Comunicação &amp; Marketing</p></div>'
   + '<script>var ITENS=' + json.dumps(itens, ensure_ascii=False).replace("</", "<\\/") + ';</script><script>' + ler("filtro.js") + '</script>')
-(EXTRA / "buscar.html").write_text(pagina("Filtrar tudo", corpo_f, CSS_P), encoding="utf-8")
+(EXTRA / "buscar.html").write_text(pagina("Pesquisar", corpo_f, CSS_P), encoding="utf-8")
 print("filtro:", len(itens))
