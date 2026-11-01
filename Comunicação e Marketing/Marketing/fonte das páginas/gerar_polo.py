@@ -1,3 +1,4 @@
+import pathlib
 POLOS = [("musgo", "Verde musgo escuro", "#3F5249, bordado em off-white"), ("claro", "Verde claro", "#C1F4D4, bordado escuro"),
          ("clarinho", "Verde clarinho", "#B3BFBB, bordado escuro"), ("preta", "Preta", "Bordado branco")]
 _fig = "".join(
@@ -183,3 +184,14 @@ corpo_as = (cabecalho("Análise do site", []) + '<div class="wrap">'
     + '<p class="meta-txt">Leitura da home em telas de 1440px e 375px. A home carregou cerca de 500 KB e 277 imagens; desempenho e conversão precisam de dados do Analytics e do Search Console.</p>'
     + '<p class="rodape">Tivio Capital · Comunicação &amp; Marketing</p></div>')
 (EXTRA / "analise-site.html").write_text(pagina("Análise do site", corpo_as, CSS_P), encoding="utf-8")
+
+import markdown as _md
+_txt = (pathlib.Path(__file__).parent / "metodos_ia.md").read_text(encoding="utf-8")
+_h = _md.markdown(_txt, extensions=["tables", "fenced_code"])
+_h = _h.replace("<table>", '<div class="tab"><table>').replace("</table>", "</table></div>").replace(' align="left"', "")
+_mi = re.sub(r"<h2>(.*?)</h2>", lambda m: "<h2>" + re.sub(r"^(Módulo \\d\\.) (.*)$", r"\\1 <strong>\\2</strong>", m.group(1)) + "</h2>", _h)
+corpo_mi = (cabecalho("Como usar IA", []) + '<div class="wrap">'
+    + trilha(("index.html", "Início"), ("marketing.html", "Central de Marketing"), ("", "Como usar IA"))
+    + '<section class="topo-peer"><div><h1>Como usar IA</h1><p class="lead">Os melhores métodos para pedir, dar contexto, escrever a spec e conferir o resultado, com o case da Caqui Invest, empresa fictícia com dados sintéticos.</p></div></section>'
+    + '<div class="mi">' + _mi + '</div><p class="rodape">Tivio Capital · Comunicação &amp; Marketing</p></div>')
+(EXTRA / "metodos-ia.html").write_text(pagina("Como usar IA", corpo_mi, CSS_P), encoding="utf-8")
