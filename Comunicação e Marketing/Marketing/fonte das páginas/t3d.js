@@ -36,11 +36,17 @@
   var dados=new THREE.SVGLoader().parse('<svg xmlns="http://www.w3.org/2000/svg"><path d="'+D+'"/></svg>');
   var grupo=new THREE.Group();
   var mat=new THREE.MeshPhysicalMaterial({color:0xb7d9c9,metalness:1,roughness:0.16,clearcoat:1,clearcoatRoughness:0.08,envMapIntensity:1.25});
+  function limpa(l){
+    var o=[];
+    l.forEach(function(v){var p=new THREE.Vector2(v.x,-v.y);if(!o.length||o[o.length-1].distanceTo(p)>0.01)o.push(p);});
+    if(o.length>1&&o[0].distanceTo(o[o.length-1])<=0.01)o.pop();
+    return o;
+  }
   dados.paths.forEach(function(path){
     THREE.SVGLoader.createShapes(path).forEach(function(s){
-      var pts=s.getPoints(32).map(function(v){return new THREE.Vector2(v.x,-v.y);});
+      var pts=limpa(s.getPoints(32));
       var forma=new THREE.Shape(pts);
-      s.holes.forEach(function(h){forma.holes.push(new THREE.Path(h.getPoints(32).map(function(v){return new THREE.Vector2(v.x,-v.y);})));});
+      s.holes.forEach(function(h){forma.holes.push(new THREE.Path(limpa(h.getPoints(32))));});
       var g=new THREE.ExtrudeGeometry(forma,{depth:22,bevelEnabled:true,bevelThickness:3,bevelSize:2.4,bevelSegments:6,curveSegments:32});
       grupo.add(new THREE.Mesh(g,mat));
     });
