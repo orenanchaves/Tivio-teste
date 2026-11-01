@@ -69,17 +69,34 @@ _antes = ('<div class="org"><div class="org-n vidro"><span>Direção</span><b>En
           '<div class="tab"><table><tr><th>Quem</th><th>O que fazia</th></tr>'
           + "".join(f"<tr><td>{a}</td><td>{b}</td></tr>" for a, b in [("Cesar Medeiros", "Coordenação, prioridades, interface com Enrico Trotta, agência, fornecedores, aprovações e grandes eventos"), ("Renan Chaves", "Materiais, decks, relatórios, fechamento, dados, digital e automação"), ("Fernanda Acquati", "Conteúdo, pauta, redes sociais, aprovações, organização e eventos"), ("Gabriel Fiorilli", "Design, identidade visual, peças, materiais, vídeos e produção visual"), ("Agência ColaAí", "Peças, vídeo e motion, planejamento editorial, legendas, publicação, moderação, mídia paga, performance e relatório")]) + '</table></div>')
 def _col(tit, sub, nos):
-    return f'<section class="fase"><p class="fase-t">{tit}</p><p class="fase-s">{sub}</p>' + "".join(f'<div class="fase-n{" " + c if c else ""}"><span>{a}</span><b>{b}</b></div>' for a, b, c in nos) + '</section>'
+    return f'<section class="fase{" fase-antes" if tit == "Antes" else " fase-dest"}"><p class="fase-t">{tit}</p><p class="fase-s">{sub}</p>' + "".join(f'<div class="fase-n{" " + c if c else ""}"><span>{a}</span><b>{b}</b></div>' for a, b, c in nos) + '</section>'
 _fases = '<div class="fases">' + _col("Antes", "Coordenação central", [("Direção", "Enrico Trotta", ""), ("Hub da área", "Cesar Medeiros", "hub"), ("Materiais, dados e automação", "Renan Chaves", ""), ("Conteúdo e fluxo editorial", "Fernanda Acquati", ""), ("Design e produção visual", "Gabriel Fiorilli", ""), ("Agência parceira", "ColaAí", "ext")]) \
     + _col("Agora", "Frentes com responsáveis", [("Direção", "Enrico Trotta", ""), ("Coordenação e performance", "Renan Chaves", "hub"), ("Conteúdo &amp; Comunicação", "Fernanda Acquati", ""), ("Design &amp; Produção", "Gabriel Fiorilli", ""), ("Agência parceira", "ColaAí", "ext"), ("Tráfego pago", "Ewerton", "ext")]) \
     + _col("Futuro", "Frentes consolidadas", [("Direção", "Enrico Trotta", ""), ("Coordenação de C&amp;M", "Renan Chaves", "hub"), ("Conteúdo &amp; Comunicação", "Fernanda Acquati", ""), ("Design &amp; Produção", "Gabriel Fiorilli", ""), ("Performance, Dados &amp; Automação", "Renan Chaves", ""), ("Pessoa de apoio", "A definir", ""), ("Tráfego pago", "Ewerton", "ext"), ("Apoio externo", "A definir", "ext")]) + '</div>'
 _fr = "".join(f'<section class="frente vidro"><h3>{n}</h3><p class="dono">{d}</p><ul>' + "".join(f"<li>{x}</li>" for x in l) + "</ul></section>" for n, d, l in FRENTES_E)
 _pap = "".join(f'<div class="papel vidro"><span>{a}</span><b>{b}</b></div>' for a, b in [("Coordenação", "Renan Chaves"), ("Operação", "Fernanda Acquati"), ("Peças", "Gabriel Fiorilli"), ("Aprovação estratégica", "Enrico Trotta")])
 _fl = "".join(f'<li class="vidro"><b>{a}</b><span>{b}</span></li>' for a, b in [("Demanda entra", "Pedido registrado em um lugar só"), ("Triagem", "Definição do responsável"), ("Produção", "Execução pela frente dona"), ("Aprovação técnica", "Revisão e Compliance"), ("Aprovação estratégica", "Quando necessária"), ("Publicação", "Publicação e mensuração")])
+_mov_itens = [("Coordenação", "r"), ("Prioridades", "r"), ("Interface com Enrico Trotta", "r"), ("Aprovações", "f"), ("Eventos: coordenação", "r"), ("Eventos: operação", "f"), ("Eventos: peças", "g"), ("Agência", "x"), ("Fornecedores", "x")]
+_mov = ('<h2>O que o Cesar fazia, <strong>para onde foi</strong></h2><div class="mov" id="mov"><div class="mov-o vidro"><span>Antes</span><b>Cesar Medeiros</b><div class="mov-c" id="mov-o">'
+    + "".join(f'<i class="mov-i" data-d="{d}">{n}</i>' for n, d in _mov_itens) + '</div></div><div class="mov-d">'
+    + "".join(f'<div class="mov-p vidro" id="mov-{i}"><span>{c}</span><b>{n}</b><div class="mov-c"></div></div>' for i, n, c in [("r", "Renan Chaves", "Coordenação de C&amp;M"), ("f", "Fernanda Acquati", "Conteúdo &amp; Comunicação"), ("g", "Gabriel Fiorilli", "Design &amp; Produção")])
+    + '</div><div class="mov-p mov-def" id="mov-x"><span>Sem dono no material</span><b>A definir</b><div class="mov-c"></div></div><button type="button" class="mov-b" id="mov-b">Ver de novo</button></div>'
+    + """<script>(function(){var R=document.getElementById('mov');if(!R)return;var O=document.getElementById('mov-o'),I=[].slice.call(O.children),T=[],P=[];
+var parado=window.matchMedia&&matchMedia('(prefers-reduced-motion: reduce)').matches;
+function alvo(e){return document.querySelector('#mov-'+e.dataset.d+' .mov-c')}
+function limpa(){T.forEach(clearTimeout);T=[];P.forEach(function(x){x.remove()});P=[];I.forEach(function(e){O.appendChild(e);e.classList.remove('foi')})}
+function fixa(){[].forEach.call(R.querySelectorAll('.mov-c'),function(c){c.style.minHeight=''});I.forEach(function(e){alvo(e).appendChild(e)});[].forEach.call(R.querySelectorAll('.mov-p .mov-c'),function(c){c.style.minHeight=c.offsetHeight+'px'});I.forEach(function(e){e.classList.add('foi')})}
+function move(e){var f=document.createElement('i');f.className='mov-i mov-g';f.textContent=e.textContent;e.parentNode.insertBefore(f,e);P.push(f);var a=e.getBoundingClientRect();alvo(e).appendChild(e);e.classList.add('foi');var b=e.getBoundingClientRect();
+if(e.animate)e.animate([{transform:'translate('+(a.left-b.left)+'px,'+(a.top-b.top)+'px)'},{transform:'none'}],{duration:800,easing:'cubic-bezier(.3,.7,.2,1)'})}
+function roda(){limpa();fixa();if(parado)return;limpa();I.forEach(function(e,i){T.push(setTimeout(function(){move(e)},500+i*800))})}
+document.getElementById('mov-b').addEventListener('click',roda);
+fixa();if(!parado&&window.IntersectionObserver){var v=new IntersectionObserver(function(es){if(es[0].isIntersecting){v.disconnect();roda()}},{threshold:.35});v.observe(R)}
+})();</script>""")
 corpo_est = (cabecalho("Estrutura", []) + '<div class="wrap">'
     + trilha(("index.html", "Início"), ("marketing.html", "Central de Marketing"), ("", "Estrutura"))
     + '<section class="topo-peer"><div><h1>Estrutura</h1><p class="lead">Direção, coordenação, três pilares operacionais e Eventos como frente transversal.</p></div></section>'
     + '<h2>Antes, agora e <strong>futuro</strong></h2>' + _fases
+    + _mov
     + '<h2>Antes: quem fazia <strong>o quê</strong></h2>' + _antes[_antes.index('<div class="tab">'):]
     + '<h2>O que cada frente <strong>cobre</strong></h2><div class="frentes">' + _fr + '</div>'
     + '<h2>Eventos, frente <strong>transversal</strong></h2><div class="papeis">' + _pap + '</div>'
