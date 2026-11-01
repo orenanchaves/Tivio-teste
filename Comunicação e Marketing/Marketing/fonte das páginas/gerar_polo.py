@@ -233,11 +233,11 @@ _ord = [("Agora", "Corrigir a bio do Instagram"), ("Em seguida", "Juntar os card
 corpo_ap = (cabecalho("Análise das postagens", []) + '<div class="wrap">'
     + trilha(("index.html", "Início"), ("marketing.html", "Central de Marketing"), ("", "Análise das postagens"))
     + '<section class="topo-peer"><div><h1>Análise das postagens</h1><p class="lead">O que a Tivio publica com frequência e o que funciona. A constância é boa, mas o foco em estruturados aparece pouco.</p></div></section>'
-    + '<h2 id="series">Séries <strong>recorrentes</strong></h2><div class="tab"><table><tr><th>Série</th><th>Frequência real</th><th>Curtidas em outubro</th><th>Leitura</th></tr>'
-    + "".join(f"<tr><td>{a}</td><td>{b}</td><td>{c}</td><td>{d}</td></tr>" for a, b, c, d in _ser) + '</table></div>'
+    + '<h2 id="series">Séries <strong>recorrentes</strong></h2><div class="tab tab-pilha"><table><tr><th>Série</th><th>Frequência real</th><th>Curtidas em outubro</th><th>Leitura</th></tr>'
+    + "".join(f'<tr><td>{a}</td><td data-r="Frequência real">{b}</td><td data-r="Curtidas em outubro">{c}</td><td data-r="Leitura">{d}</td></tr>' for a, b, c, d in _ser) + '</table></div>'
     + '<h2 id="avulsos">Fora das <strong>séries</strong></h2><div class="tab"><table><tr><th>Post</th><th>Curtidas em outubro</th></tr>'
     + "".join(f"<tr><td>{a}</td><td>{b}</td></tr>" for a, b in _fora) + '</table></div>'
-    + '<h2 id="pontos">O que <strong>chama atenção</strong></h2><div class="tab"><table><tr><th>Ponto</th><th>O que vimos</th><th>O que fazer</th></tr>' + _rows(_atn) + '</table></div>'
+    + '<h2 id="pontos">O que <strong>chama atenção</strong></h2><div class="tab tab-pilha"><table><tr><th>Ponto</th><th>O que vimos</th><th>O que fazer</th></tr>' + "".join(f'<tr><td>{a}</td><td data-r="O que vimos">{b}</td><td data-r="O que fazer">{c}</td></tr>' for a, b, c in _atn) + '</table></div>'
     + '<h2 id="ordem">Por onde <strong>começar</strong></h2><ol class="roteiro r6 as-o">' + "".join(f'<li class="vidro"><b>{a}</b><span>{b}</span></li>' for a, b in _ord) + '</ol>'
     + '<p class="meta-txt">Leitura de 01/11/2026. No Instagram, sem login, entram só os 15 posts mais recentes dos 456: outubro e o fixado. Alcance, salvamentos e compartilhamentos não são públicos, e não dá para saber se algum post foi impulsionado. Os posts de 30/10 tinham 2 dias e ainda podem crescer. No LinkedIn, as reações são das 10 últimas publicações. Os vídeos vêm da página do site, porque o canal do YouTube não pôde ser lido.</p>'
     + '<p class="rodape">Tivio Capital · Comunicação &amp; Marketing</p></div>')
