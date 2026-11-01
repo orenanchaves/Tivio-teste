@@ -47,7 +47,7 @@ _lb = """<div id="lb" hidden><button type="button" aria-label="Fechar"><svg view
 l.addEventListener('click',f);document.addEventListener('keydown',function(e){if(e.key==='Escape')f()})})();</script>"""
 corpo_polo = (cabecalho("Brand", []) + '<div class="wrap">'
     + trilha(("index.html", "Início"), ("marketing.html", "Central de Marketing"), ("", "Brand"))
-    + '<section class="topo-peer"><div><p class="eyebrow"><i></i>Tivio Capital</p><h1>Brand</h1></div></section>' + _chips + _slogan + _ds + _dir
+    + '<section class="topo-peer"><div><h1>Brand</h1></div></section>' + _chips + _slogan + _ds + _dir
     + f'<h2 id="polo">Polo</h2><div class="polos">{_fig}</div>' + _feed_h
     + '<p class="rodape">Tivio Capital · Comunicação &amp; Marketing</p></div>' + _lb)
 (EXTRA / "brand.html").write_text(pagina("Brand", corpo_polo, CSS_P), encoding="utf-8")
@@ -71,13 +71,13 @@ def _col(tit, sub, nos):
     return f'<section class="fase"><p class="fase-t">{tit}</p><p class="fase-s">{sub}</p>' + "".join(f'<div class="fase-n{" " + c if c else ""}"><span>{a}</span><b>{b}</b></div>' for a, b, c in nos) + '</section>'
 _fases = '<div class="fases">' + _col("Antes", "Coordenação central", [("Direção", "Enrico Trotta", ""), ("Hub da área", "Cesar Medeiros", "hub"), ("Materiais, dados e automação", "Renan Chaves", ""), ("Conteúdo e fluxo editorial", "Fernanda Acquati", ""), ("Design e produção visual", "Gabriel Fiorilli", ""), ("Agência parceira", "ColaAí", "ext")]) \
     + _col("Agora", "Frentes com responsáveis", [("Direção", "Enrico Trotta", ""), ("Coordenação e performance", "Renan Chaves", "hub"), ("Conteúdo &amp; Comunicação", "Fernanda Acquati", ""), ("Design &amp; Produção", "Gabriel Fiorilli", ""), ("Agência parceira", "ColaAí", "ext"), ("Tráfego pago", "Ewerton", "ext")]) \
-    + _col("Futuro", "Frentes consolidadas", [("Direção", "Enrico Trotta", ""), ("Coordenação de C&amp;M", "Renan Chaves", "hub"), ("Conteúdo &amp; Comunicação", "Fernanda Acquati", ""), ("Design &amp; Produção", "Gabriel Fiorilli", ""), ("Performance, Dados &amp; Automação", "Renan Chaves", ""), ("Tráfego pago", "Ewerton", "ext"), ("Apoio externo", "A definir", "ext")]) + '</div>'
+    + _col("Futuro", "Frentes consolidadas", [("Direção", "Enrico Trotta", ""), ("Coordenação de C&amp;M", "Renan Chaves", "hub"), ("Conteúdo &amp; Comunicação", "Fernanda Acquati", ""), ("Design &amp; Produção", "Gabriel Fiorilli", ""), ("Performance, Dados &amp; Automação", "Renan Chaves", ""), ("Pessoa de apoio", "A definir", ""), ("Tráfego pago", "Ewerton", "ext"), ("Apoio externo", "A definir", "ext")]) + '</div>'
 _fr = "".join(f'<section class="frente vidro"><h3>{n}</h3><p class="dono">{d}</p><ul>' + "".join(f"<li>{x}</li>" for x in l) + "</ul></section>" for n, d, l in FRENTES_E)
 _pap = "".join(f'<div class="papel vidro"><span>{a}</span><b>{b}</b></div>' for a, b in [("Coordenação", "Renan Chaves"), ("Operação", "Fernanda Acquati"), ("Peças", "Gabriel Fiorilli"), ("Aprovação estratégica", "Enrico Trotta")])
 _fl = "".join(f'<li class="vidro"><b>{a}</b><span>{b}</span></li>' for a, b in [("Demanda entra", "Pedido registrado em um lugar só"), ("Triagem", "Definição do responsável"), ("Produção", "Execução pela frente dona"), ("Aprovação técnica", "Revisão e Compliance"), ("Aprovação estratégica", "Quando necessária"), ("Publicação", "Publicação e mensuração")])
 corpo_est = (cabecalho("Estrutura", []) + '<div class="wrap">'
     + trilha(("index.html", "Início"), ("marketing.html", "Central de Marketing"), ("", "Estrutura"))
-    + '<section class="topo-peer"><div><p class="eyebrow"><i></i>Comunicação &amp; Marketing</p><h1>Estrutura</h1><p class="lead">Direção, coordenação, três pilares operacionais e Eventos como frente transversal.</p></div></section>'
+    + '<section class="topo-peer"><div><h1>Estrutura</h1><p class="lead">Direção, coordenação, três pilares operacionais e Eventos como frente transversal.</p></div></section>'
     + '<h2>Antes, agora e <strong>futuro</strong></h2>' + _fases
     + '<h2>Antes: quem fazia <strong>o quê</strong></h2>' + _antes[_antes.index('<div class="tab">'):]
     + '<h2>O que cada frente <strong>cobre</strong></h2><div class="frentes">' + _fr + '</div>'
@@ -118,7 +118,7 @@ _fontes = [("Anbima, crédito privado", "https://www.anbima.com.br/pt_br/noticia
            ("Conecta Agro", "https://visitesaopaulo.com/evento/conecta-agro-2026-2026/")]
 corpo_ev = (cabecalho("Eventos do mercado", []) + '<div class="wrap">'
     + trilha(("index.html", "Início"), ("marketing.html", "Central de Marketing"), ("", "Eventos do mercado"))
-    + '<section class="topo-peer"><div><p class="eyebrow"><i></i>Eventos</p><h1>Eventos do mercado</h1><p class="lead">Onde cada segmento se encontra. A leitura serve para escolher poucos eventos e levar a mesma tese de estruturados.</p></div></section>'
+    + '<section class="topo-peer"><div><h1>Eventos do mercado</h1><p class="lead">Onde cada segmento se encontra. A leitura serve para escolher poucos eventos e levar a mesma tese de estruturados.</p></div></section>'
     + '<div class="analise"><div class="vidro"><h3>O que a análise mostra</h3><ul><li>Assessores têm a agenda mais cheia, e é onde a Tivio fala com quem indica</li><li>Crédito privado ganhou congresso próprio da Anbima em 2026</li><li>Nenhum evento dedicado a estruturados apareceu na pesquisa, o que abre espaço para os 16 encontros com o Itaú</li></ul></div>'
     + '<div class="vidro"><h3>Sugestão para 2027</h3><ul><li>Marcar presença em poucos eventos, com porta-voz e tese definidos</li><li>Priorizar Anbima, Advisor Talks e Abrapp</li><li>Evitar choque de data com os 16 encontros</li></ul></div></div>'
     + _ev + '<p class="meta-txt">As datas são da última edição encontrada. As de 2027 ainda precisam ser confirmadas com cada organizador, e as prioridades são proposta do time. Não foram encontradas datas de eventos da Uqbar, ANFIDC, Aneprem, Abipem ou Anbima para institucionais.</p>'
@@ -130,7 +130,7 @@ _passos = "".join(f'<li class="vidro"><b>{a}</b><span>{b}</span></li>' for a, b 
 _fontes_c = [("Canal e comunidade", "https://canaltech.com.br/apps/qual-a-diferenca-entre-canal-e-comunidade-no-whatsapp/"), ("Comunidades", "https://tecnoblog.net/responde/comunidade-do-whatsapp-o-que-e-e-como-funciona-a-ferramenta-que-reune-grupos/"), ("Canais para empresas", "https://www.infobip.com/pt/blog/canais-do-whatsapp"), ("Resolução CVM 160", "https://lefosse.com/noticias/resolucao-cvm-160-novo-arcabouco-regulatorio-de-ofertas-publicas/"), ("Período de silêncio", "https://renovainvest.com.br/blog/periodo-de-silencio-o-que-e-e-como-ele-funciona-no-mercado-financeiro/")]
 corpo_canal = (cabecalho("Canal de ofertas", []) + '<div class="wrap">'
     + trilha(("index.html", "Início"), ("marketing.html", "Central de Marketing"), ("", "Canal de ofertas"))
-    + '<section class="topo-peer"><div><p class="eyebrow"><i></i>Conteúdo</p><h1>Canal de ofertas</h1><p class="lead">Um canal de WhatsApp para assessores, no estilo dos canais de desconto: aviso curto, prazo claro e um link. Operado dentro da Tivio Capital.</p></div></section>'
+    + '<section class="topo-peer"><div><h1>Canal de ofertas</h1><p class="lead">Um canal de WhatsApp para assessores, no estilo dos canais de desconto: aviso curto, prazo claro e um link. Operado dentro da Tivio Capital.</p></div></section>'
     + '<div class="canal"><div class="zap vidro"><p class="zap-t">Tivio Ofertas</p><div class="zap-m"><span>Oferta aberta</span><b>[Nome do fundo]</b><p>Para [público da oferta]. Reservas até [data].</p><p>Material aprovado no link.</p><em>[link rastreado]</em></div><p class="zap-p">Exemplo de formato, sem oferta real</p></div>'
     + '<div class="analise canal-d"><div class="vidro"><h3>Por que funciona</h3><ul><li>O aviso chega onde o assessor já está</li><li>Mensagem curta, com prazo e uma ação só</li><li>Só entra quando existe oferta, então não vira ruído</li></ul></div><div class="vidro"><h3>Como medir</h3><ul><li>Assessores no canal</li><li>Cliques por oferta</li><li>Pedidos de material e de conversa</li><li>Reservas originadas, quando houver dado</li></ul></div></div></div>'
     + '<h2>Como <strong>anda</strong></h2><ol class="roteiro r5 canal-p">' + _passos + '</ol>'
@@ -151,7 +151,7 @@ _bars = _re.sub(r"<b>(\d+)\.(\d)%</b>", r"<b>\1,\2%</b>", _bars)
 _grupos = [("Eventos", "45,6%", "Plataformas e patrocínios institucionais"), ("Conteúdo", "28,7%", "Produção e edição"), ("Imprensa", "11,8%", "Assessoria"), ("Digital", "11,8%", "Site, ferramentas e mídia paga"), ("Materiais", "2,1%", "Brindes e impressos")]
 corpo_orc = (cabecalho("Orçamento", []) + '<div class="wrap">'
     + trilha(("index.html", "Início"), ("marketing.html", "Central de Marketing"), ("", "Orçamento"))
-    + '<section class="topo-peer"><div><p class="eyebrow"><i></i>2027</p><h1>Orçamento</h1><p class="lead">Como o orçamento de Marketing de 2027 se divide entre as frentes.</p></div></section>'
+    + '<section class="topo-peer"><div><h1>Orçamento</h1><p class="lead">Como o orçamento de Marketing de 2027 se divide entre as frentes.</p></div></section>'
     + '<div class="kpis">' + "".join(f'<div class="kpi vidro"><b>{p}</b><span>{n}: {d}</span></div>' for n, p, d in _grupos) + '</div>'
     + '<h2 id="frentes">Por <strong>frente</strong></h2><div class="o-bars">' + _bars + '</div>'
     + '<h2 id="decisoes">O que mais pode <strong>mudar o total</strong></h2><ol class="roteiro r5 canal-p">' + "".join(f'<li class="vidro"><b>{x}</b></li>' for x in ["Eventos de plataformas", "Agência e produção", "Assessoria de imprensa", "Patrocínios institucionais", "Site"]) + '</ol>'
@@ -175,7 +175,7 @@ _est = [("Posicionamento", "Título e descrição falam de crédito, imobiliári
 _pri = [("Agora", "Corrigir celular e avisos da primeira dobra"), ("Em seguida", "Abertura fixa e revisão dos textos institucionais"), ("Depois", "Hub de estruturados e caminhos por público"), ("Por fim", "Moldes de capa e cartões padronizados")]
 corpo_as = (cabecalho("Análise do site", []) + '<div class="wrap">'
     + trilha(("index.html", "Início"), ("marketing.html", "Central de Marketing"), ("", "Análise do site"))
-    + '<section class="topo-peer"><div><p class="eyebrow"><i></i>tivio.com, home em 30/10/2026</p><h1>Análise do site</h1><p class="lead">O que melhorar no visual e na estratégia.</p></div></section>'
+    + '<section class="topo-peer"><div><h1>Análise do site</h1><p class="lead">O que melhorar no visual e na estratégia.</p></div></section>'
     + '<div class="as-prints"><figure><img src="site-tivio/desktop.webp" alt="Abertura da home da Tivio Capital no desktop" loading="lazy"><figcaption>Desktop, 1440px</figcaption></figure><figure><img src="site-tivio/celular.webp" alt="Abertura da home da Tivio Capital no celular com avisos sobre a tela" loading="lazy"><figcaption>Celular, 375px</figcaption></figure></div>'
     + '<h2 id="visual">Melhorias <strong>visuais</strong></h2><div class="tab"><table><tr><th>Ponto</th><th>O que vimos</th><th>O que fazer</th></tr>' + _rows(_vis) + '</table></div>'
     + '<h2 id="estrategia">Melhorias de <strong>estratégia</strong></h2><div class="tab"><table><tr><th>Ponto</th><th>O que vimos</th><th>O que fazer</th></tr>' + _rows(_est) + '</table></div>'
