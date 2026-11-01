@@ -212,3 +212,33 @@ corpo_mi = (cabecalho("Como usar IA", []) + '<div class="wrap">'
     + '<section class="topo-peer"><div><h1>Como usar IA</h1><p class="lead">Os melhores métodos para pedir, dar contexto, escrever a spec e conferir o resultado, com o case da Caqui Invest, empresa fictícia com dados sintéticos.</p></div></section>'
     + '<div class="mi">' + _mi + '</div><p class="rodape">Tivio Capital · Comunicação &amp; Marketing</p></div>')
 (EXTRA / "metodos-ia.html").write_text(pagina("Como usar IA", corpo_mi, CSS_P), encoding="utf-8")
+
+_ser = [("Tivio Visita", "Irregular: 5 episódios em 2026", "49 e 4 comentários", "Melhor resultado do mês"),
+        ("Carta do Gestor", "10 edições em 10 meses de 2026", "13 e 23", "A série mais confiável"),
+        ("Dividendos de FIIs", "Mensal, no fim do mês", "16", "Serviço para quem já é cotista"),
+        ("Resumo mensal em Reels", "Mensal, um de crédito e um de imobiliário", "13 e 17", "Saem por volta do dia 15"),
+        ("Desempenho em card", "Mensal, nos primeiros dias", "5 e 10", "O pior resultado do feed"),
+        ("Deep Dive", "Irregular: nov/2025 e depois out/2026", "15", "Bom, mas 11 meses de intervalo"),
+        ("Tivio ao Quadrado", "Parada: só a 1ª edição, em mar/2026, e 4 cortes", "Sem post no período", "Série abandonada"),
+        ("Cortes da Carta", "Pararam em mar/2026", "Sem post no período", "Série abandonada"),
+        ("Tivio Think", "Uma edição, em jun/2025", "Sem post no período", "Série abandonada")]
+_atn = [("Foco", "3 dos 14 posts de outubro falam de crédito estruturado, e 1 das 10 Cartas de 2026 tem esse tema central, pelos títulos e resumos", "Uma edição de crédito estruturado por trimestre na Carta ou no Deep Dive"),
+        ("Bio do Instagram", "Ainda diz gestora de recursos independente; o site já mostra uma empresa Bradesco", "Corrigir primeiro"),
+        ("LinkedIn", "27.288 seguidores contra 3.432 no Instagram, com reações quase iguais: mediana de 12,5 contra 14 curtidas", "Levar o texto pronto dos gestores para o LinkedIn pessoal"),
+        ("Calendário", "3 posts em 30/10, depois de nenhum entre 23 e 29/10", "Distribuir as publicações no mês"),
+        ("Página de vídeos", "A lista do site para em 17/08/2026, embora os resumos de setembro estejam no Instagram", "Atualizar a página"),
+        ("Formato", "Tivio Visita rendeu de 2 a 10 vezes mais que os cards de tabela e de produto", "Dar calendário fixo ao Tivio Visita, mensal ou bimestral")]
+_fora = [("Encerramento da oferta do Tivio Malls", "22"), ("Evento The New Agro", "15"), ("Produto: Global Rates", "12"), ("Na Mídia: Eco Invest", "12"), ("Produto: Alpha DI", "10")]
+_ord = [("Agora", "Corrigir a bio do Instagram"), ("Em seguida", "Juntar os cards de desempenho em um só, ou deixá-los apenas no site"), ("Depois", "Dar calendário fixo ao Tivio Visita e firmar a casa de estruturados na Carta e no Deep Dive"), ("Por fim", "Encerrar ou retomar de vez o Tivio ao Quadrado, os cortes e o Tivio Think")]
+corpo_ap = (cabecalho("Análise das postagens", []) + '<div class="wrap">'
+    + trilha(("index.html", "Início"), ("marketing.html", "Central de Marketing"), ("", "Análise das postagens"))
+    + '<section class="topo-peer"><div><h1>Análise das postagens</h1><p class="lead">O que a Tivio publica com frequência e o que funciona. A constância é boa, mas o foco em estruturados aparece pouco.</p></div></section>'
+    + '<h2 id="series">Séries <strong>recorrentes</strong></h2><div class="tab"><table><tr><th>Série</th><th>Frequência real</th><th>Curtidas em outubro</th><th>Leitura</th></tr>'
+    + "".join(f"<tr><td>{a}</td><td>{b}</td><td>{c}</td><td>{d}</td></tr>" for a, b, c, d in _ser) + '</table></div>'
+    + '<h2 id="avulsos">Fora das <strong>séries</strong></h2><div class="tab"><table><tr><th>Post</th><th>Curtidas em outubro</th></tr>'
+    + "".join(f"<tr><td>{a}</td><td>{b}</td></tr>" for a, b in _fora) + '</table></div>'
+    + '<h2 id="pontos">O que <strong>chama atenção</strong></h2><div class="tab"><table><tr><th>Ponto</th><th>O que vimos</th><th>O que fazer</th></tr>' + _rows(_atn) + '</table></div>'
+    + '<h2 id="ordem">Por onde <strong>começar</strong></h2><ol class="roteiro r6 as-o">' + "".join(f'<li class="vidro"><b>{a}</b><span>{b}</span></li>' for a, b in _ord) + '</ol>'
+    + '<p class="meta-txt">Leitura de 01/11/2026. No Instagram, sem login, entram só os 15 posts mais recentes dos 456: outubro e o fixado. Alcance, salvamentos e compartilhamentos não são públicos, e não dá para saber se algum post foi impulsionado. Os posts de 30/10 tinham 2 dias e ainda podem crescer. No LinkedIn, as reações são das 10 últimas publicações. Os vídeos vêm da página do site, porque o canal do YouTube não pôde ser lido.</p>'
+    + '<p class="rodape">Tivio Capital · Comunicação &amp; Marketing</p></div>')
+(EXTRA / "analise-postagens.html").write_text(pagina("Análise das postagens", corpo_ap, CSS_P), encoding="utf-8")

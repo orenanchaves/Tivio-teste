@@ -64,7 +64,7 @@ def barra_global():
             ("publico-originador.html", "Originador"), ("publico-universitario.html", "Universitário"), ("publico-investidor.html", "Investidor")]
     nav = "".join([
         dd("AutomaTivio", [("automativio.html", "Visão geral"), ("automativio.html#logica", "Como funciona"), ("automativio.html#segmentos", "Por segmento"), ("automativio.html#fallback", "Quando algo falha"), ("automativio.html#baixar", "Como baixar"), ("", "Times"), ("automativio-gestao.html", "Gestão"), ("automativio-riscos.html", "Riscos"), ("automativio-marketing.html", "Marketing")]),
-        dd("Estratégia", [("", "Plano"), ("visao.html", "Visão"), ("marketing.html", "Central de Marketing"), ("m-posicionamento.html", "Casa de estruturados"), ("m-sintese.html", "O que fazer"), ("m-sugestoes.html", "Sugestões"), ("m-ideias.html", "Ideias na mesa"), ("analise-site.html", "Análise do site")] + [("", "Segmentos")] + segs + [("", "Públicos")] + pubs, True),
+        dd("Estratégia", [("", "Plano"), ("visao.html", "Visão"), ("marketing.html", "Central de Marketing"), ("m-posicionamento.html", "Casa de estruturados"), ("m-sintese.html", "O que fazer"), ("m-sugestoes.html", "Sugestões"), ("m-ideias.html", "Ideias na mesa"), ("analise-site.html", "Análise do site"), ("analise-postagens.html", "Análise das postagens")] + [("", "Segmentos")] + segs + [("", "Públicos")] + pubs, True),
         dd("Estrutura", [("estrutura.html", "Frentes e fluxo"), ("m-copilot.html", "Copilot")]),
         dd("Eventos", [("m-eventos.html", "Eventos Itaú"), ("eventos-mercado.html", "Eventos do mercado"), ("calendario.html", "Calendário 2027")]),
         dd("Conteúdo", [("m-posts.html", "Posts"), ("m-captacao.html", "Captação"), ("canal-ofertas.html", "Canal de ofertas")]),
