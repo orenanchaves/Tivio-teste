@@ -350,7 +350,7 @@ for _i, (_n, _s, _o, _l) in enumerate([(x[0], x[1], x[2], x[3]) for x in _fr27])
     _col = {"Automação": 1, "Eventos": 2, "Conteúdo": 3}.get(_n, 4)
     _c = (cabecalho(_n, []) + '<div class="wrap">' + trilha(("index.html", "Início"), ("plano-2027.html", "Plano 2027"), ("", _n))
         + f'<section class="topo-peer"><div><h1>{_n}</h1><p class="lead">{_o}</p></div></section>'
-        + '<h2>O que vamos <strong>fazer</strong></h2><ol class="roteiro r6">' + "".join(f'<li class="vidro"><b>{x}</b></li>' for x in _l) + '</ol>'
+        + '<h2>O que vamos <strong>fazer</strong></h2><ol class="roteiro r6' + (' as-o' if len(_l) == 4 else '') + '">' + "".join(f'<li class="vidro"><b>{x}</b></li>' for x in _l) + '</ol>'
         + (_site if _n.startswith("Digital") else _cont if _n == "Conteúdo" else _evt if _n == "Eventos" else "")
         + '<h2>Como se encaixa <strong>no todo</strong></h2>' + _lig_tab(_n)
         + '<h2>Os <strong>números</strong></h2><div class="tab tab-pilha"><table><tr><th>Número</th><th>Hoje</th></tr>' + "".join(f'<tr><td>{b}</td><td data-r="Hoje">{d}</td></tr>' for a, b, d in _num27 if a == _n) + '</table></div>'
