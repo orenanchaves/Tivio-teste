@@ -266,28 +266,28 @@ corpo_ap = (cabecalho("Análise das postagens", []) + '<div class="wrap">'
 _fr27 = [("Automação", "frente-automacao.html", "Facilitar o operacional para o time gastar tempo no que muda resultado.",
           ["Edição mensal em um comando", "Materiais, decks e relatórios sem retrabalho", "IA no dia a dia do time"]),
          ("Eventos", "frente-eventos.html", "Transformar presença em contato e reunião.",
-          ["16 eventos Itaú no escritório", "Eventos como trilha para quem indica", "Contato quente para o comercial em até 2 dias"]),
+          ["16 eventos Itaú no escritório", "Summit BTG, Conexão Bradesco e Expert XP", "Abrapp, Previpar, APEP e ASCPrev", "Contato quente para o comercial em até 2 dias"]),
          ("Conteúdo", "frente-conteudo.html", "Menos, com mais qualidade, para um nicho.",
           ["Casa de estruturados em toda série", "Executivos nas conversas do LinkedIn", "Colaboradores, Teams e WhatsApp", "Vídeo trimestral de crédito", "Tivio ao Quadrado", "Kit do assessor"]),
          ("Digital com estratégia", "frente-digital.html", "Remodelar o site e ranquear melhor no Google.",
           ["Site remodelado", "Artigos para ranquear no Google", "Landing por objetivo, com tráfego orgânico e pago"])]
 _num27 = [("Automação", "Horas do time por edição", "A medir"), ("Automação", "Materiais gerados por rodada", "81, em set/2026"), ("Automação", "Correções depois de publicar", "A medir"),
-          ("Eventos", "Eventos realizados", "16 no plano de 2027"), ("Eventos", "Inscritos, presentes e pedidos de contato", "A medir"), ("Eventos", "Captação de presentes em até 90 dias", "A medir"),
+          ("Eventos", "Eventos realizados", "23 no orçamento de 2027"), ("Eventos", "Inscritos, presentes e pedidos de contato", "A medir"), ("Eventos", "Captação de presentes em até 90 dias", "A medir"),
           ("Conteúdo", "Posts sobre estruturados", "3 de 14, em out/2026"), ("Conteúdo", "Contatos vindos de cada série", "A medir"), ("Conteúdo", "Executivos ativos no LinkedIn", "A medir"), ("Conteúdo", "Colaboradores que engajam nos posts", "A medir"), ("Conteúdo", "Cliques do WhatsApp até um contato", "A medir"),
           ("Digital com estratégia", "Contatos por landing e por origem", "A medir"), ("Digital com estratégia", "Custo por contato", "A medir"), ("Digital com estratégia", "Reuniões qualificadas", "A medir"), ("Digital com estratégia", "Posição no Google nos termos de estruturados", "A medir"), ("Digital com estratégia", "Visitas orgânicas ao site", "A medir")]
 _ano27 = [("Nov e dez/26", "Medir horas por edição; corrigir as falhas dos decks", "Definir a agenda com o Itaú", "Regra de aprovação com Riscos; kit do assessor piloto", "Plano de remodelação do site"),
           ("Janeiro", "", "1 evento: panorama de estruturados", "1º vídeo trimestral de crédito", "3 templates indexáveis; landing do evento"),
-          ("Fevereiro", "Decks sem ajuste manual", "1 evento: como ler um FIDC", "Executivos no LinkedIn; colaboradores e canal do Teams", "Novo layout do site"),
+          ("Fevereiro", "Decks sem ajuste manual", "1 evento: como ler um FIDC; Summit BTG", "Executivos no LinkedIn; colaboradores e canal do Teams", "Novo layout do site"),
           ("Março", "Balanço de horas e erros", "2 eventos: estruturados e FIDC", "Rotina semanal no WhatsApp", "Primeiros artigos: FIDC e crédito estruturado"),
           ("Abril", "Convite e balanço de evento em modelo", "1 evento: Família ALT", "2º vídeo de crédito; Gráfico da Semana", "Site remodelado no ar"),
           ("Maio", "", "1 evento: crédito privado e juros", "Tivio ao Quadrado", "Hub de estruturados"),
           ("Junho", "Automatizar o que ainda for manual", "2 eventos: Família ALT e juros", "Balanço das séries no semestre", "Artigos de crédito privado e previdência"),
-          ("Julho", "Números do mês nas páginas de fundo", "1 evento: previdência", "3º vídeo de crédito", "Panorama de Estruturados, em troca do contato"),
+          ("Julho", "Números do mês nas páginas de fundo", "1 evento: previdência; Expert XP", "3º vídeo de crédito", "Panorama de Estruturados, em troca do contato"),
           ("Agosto", "", "1 evento: curadoria de gestores", "Carta trimestral em PDF e áudio", "Novos artigos por termo"),
           ("Setembro", "Rever horas e erros do ano", "2 eventos: previdência e curadoria", "", "Rever posições no Google"),
-          ("Outubro", "", "2 eventos: balanço de estruturados", "4º vídeo de crédito", "Novos artigos por termo"),
+          ("Outubro", "", "2 eventos: balanço de estruturados; Congresso Abrapp", "4º vídeo de crédito", "Novos artigos por termo"),
           ("Novembro", "", "2 eventos: perspectivas para 2028", "", "Simulador de cascata com carteira fictícia"),
-          ("Dezembro", "Fechar o painel de números do ano", "Balanço dos 16 eventos", "Balanço das séries: manter, ajustar ou parar", "Balanço de site e artigos")]
+          ("Dezembro", "Fechar o painel de números do ano", "Balanço dos eventos do ano", "Balanço das séries: manter, ajustar ou parar", "Balanço de site e artigos")]
 _bm = [("Automação", "Constância vale mais que audiência", "Edição mensal em dia, sem esforço manual"),
        ("Eventos", "O gargalo é quem indica", "Trilha para assessores e gerentes"),
        ("Conteúdo", "Gente pesa mais que marca", "Gestores no LinkedIn pessoal"),
@@ -333,6 +333,11 @@ _site = ('<h2 id="site">Site e <strong>artigos</strong></h2><div class="tab tab-
     + "".join(f'<tr><td>{a}</td><td data-r="O que muda">{b}</td></tr>' for a, b in [("Abertura", "Casa de estruturados no título e no menu"), ("Hub", "Área própria de estruturados, fora de Fundos"), ("Fundos", "Uma página por fundo, com documentos em texto"), ("Google", "Liberar no robots.txt a pasta de lâminas e relatórios")])
     + '</table></div><h2 id="artigos">Artigos para <strong>ranquear no Google</strong></h2><div class="tab tab-pilha"><table><tr><th>Termo</th><th>Artigo</th></tr>'
     + "".join(f'<tr><td>{a}</td><td data-r="Artigo">{b}</td></tr>' for a, b in [("FIDC", "O que é um FIDC"), ("Crédito estruturado", "Como funciona o crédito estruturado"), ("Fundo de crédito privado", "Como escolher um fundo de crédito privado"), ("Previdência crédito privado", "Previdência com crédito privado: como funciona")]) + '</table></div>')
+_evt_l = [("Eventos Íon / Itaú", "Plataforma", "16 no ano, no escritório", "No orçamento"), ("Summit BTG", "Plataforma", "Fevereiro, na última edição", "No orçamento"), ("Conexão Bradesco", "Plataforma", "A confirmar", "No orçamento"), ("Expert XP", "Plataforma", "Julho, na última edição confirmada", "No orçamento, 5 ingressos"),
+          ("Seminário Abrapp e Congresso", "Previdência", "Congresso em outubro, na última edição", "No orçamento, com 2 convites"), ("Previpar", "Previdência", "A confirmar", "No orçamento"), ("APEP", "Previdência", "A confirmar", "No orçamento"), ("ASCPrev", "Previdência", "A confirmar", "No orçamento"),
+          ("WEW 2027", "Fora do orçamento", "A confirmar", "A aprovar"), ("Roadshow de oferta pública", "Fora do orçamento", "A confirmar", "A aprovar"), ("Roadshow em escritórios do Bradesco e plataformas", "Fora do orçamento", "A confirmar", "A aprovar"), ("FFA", "Fora do orçamento", "A confirmar", "A aprovar"), ("Eco Invest / Climate Week", "Fora do orçamento", "A confirmar", "A aprovar"), ("LAVCA", "Fora do orçamento", "A confirmar", "A aprovar"), ("GIIN Impact Forum", "Fora do orçamento", "A confirmar", "A aprovar")]
+_evt = ('<h2 id="todos">Todos os eventos <strong>de 2027</strong></h2><div class="tab tab-pilha"><table><tr><th>Evento</th><th>Tipo</th><th>Quando</th><th>Situação</th></tr>'
+    + "".join(f'<tr><td>{a}</td><td data-r="Tipo">{b}</td><td data-r="Quando">{d}</td><td data-r="Situação">{e}</td></tr>' for a, b, d, e in _evt_l) + '</table></div><p class="meta-txt">Datas de 2027 a confirmar com cada organizador.</p>')
 _exec = [("Rodrigo Freire", "CEO", "Tivio, mercado e casa de estruturados"), ("Sami Karlik", "CIO de Crédito", "Crédito privado e estruturado"), ("Huang Seen", "Head de renda fixa", "Juros globais e renda fixa"), ("Bruno Franco", "Infra e energia", "Ilíquidos de infraestrutura e energia"), ("Vitor Engelmann", "Imobiliário", "Fundos imobiliários e aquisições")]
 _acoes = [("Colaboradores", "Post da semana com sugestão de comentário, para quem quiser participar"), ("Canal do Teams", "Cada post novo no canal, com link direto e sugestão de comentário"),
           ("Canal de WhatsApp", "Mensagem curta com gráfico ou vídeo, enquete e aviso antecipado de carta e evento"),
@@ -346,7 +351,7 @@ for _i, (_n, _s, _o, _l) in enumerate([(x[0], x[1], x[2], x[3]) for x in _fr27])
     _c = (cabecalho(_n, []) + '<div class="wrap">' + trilha(("index.html", "Início"), ("plano-2027.html", "Plano 2027"), ("", _n))
         + f'<section class="topo-peer"><div><h1>{_n}</h1><p class="lead">{_o}</p></div></section>'
         + '<h2>O que vamos <strong>fazer</strong></h2><ol class="roteiro r6">' + "".join(f'<li class="vidro"><b>{x}</b></li>' for x in _l) + '</ol>'
-        + (_site if _n.startswith("Digital") else _cont if _n == "Conteúdo" else "")
+        + (_site if _n.startswith("Digital") else _cont if _n == "Conteúdo" else _evt if _n == "Eventos" else "")
         + '<h2>Como se encaixa <strong>no todo</strong></h2>' + _lig_tab(_n)
         + '<h2>Os <strong>números</strong></h2><div class="tab tab-pilha"><table><tr><th>Número</th><th>Hoje</th></tr>' + "".join(f'<tr><td>{b}</td><td data-r="Hoje">{d}</td></tr>' for a, b, d in _num27 if a == _n) + '</table></div>'
         + '<h2>O <strong>ano</strong></h2><div class="tab tab-pilha"><table><tr><th>Mês</th><th>O que acontece</th></tr>' + "".join(f'<tr><td>{r[0]}</td><td data-r="O que acontece">{r[_col]}</td></tr>' for r in _ano27 if r[_col]) + '</table></div>'
