@@ -311,10 +311,16 @@ corpo_p27 = (cabecalho("Plano 2027", []) + '<div class="wrap">'
     + '<h2 id="juntas">Estratégias que se <strong>entrelaçam</strong></h2>' + _lig_tab() + '<h2 id="benchmark">Benchmark <strong>conecta</strong> as frentes</h2>' + _bm_tab + '<p class="secao-sub"><a href="frente-benchmark.html">Ver o benchmark completo</a></p>'
     + '<h2 id="funil">O caminho do <strong>número</strong></h2><ol class="roteiro r6 as-o">'
     + "".join(f'<li class="vidro"><b>{a}</b><span>{b}</span></li>' for a, b in [("Alcance", "Quem viu a Tivio"), ("Contato", "Quem deixou nome e origem"), ("Reunião", "Quem pediu conversa qualificada"), ("Captação", "Quanto veio desse contato, em R$")]) + '</ol>'
-    + '<h2 id="numeros">Os números que a área <strong>vai trazer</strong></h2><div class="tab tab-pilha"><table><tr><th>Frente</th><th>Número</th><th>Hoje</th></tr>'
-    + "".join(f'<tr><td>{a}</td><td data-r="Número">{b}</td><td data-r="Hoje">{c}</td></tr>' for a, b, c in _num27) + '</table></div>'
-    + '<h2 id="ano">O ano <strong>mês a mês</strong></h2><div class="tab tab-pilha"><table><tr><th>Mês</th><th>Automação</th><th>Eventos</th><th>Conteúdo</th><th>Digital com estratégia</th></tr>'
-    + "".join(f'<tr><td>{t}</td><td data-r="Automação">{a}</td><td data-r="Eventos">{e}</td><td data-r="Conteúdo">{o}</td><td data-r="Digital com estratégia">{d}</td></tr>' for t, a, e, o, d in _ano27) + '</table></div>'
+    + '<h2 id="numeros">Os números que a área <strong>vai trazer</strong></h2><div class="acc">'
+    + "".join(f'<details{" open" if i == 0 else ""}><summary><b>{x[0]}</b><span>{sum(1 for n in _num27 if n[0] == x[0])} números</span></summary><div class="tab tab-pilha"><table><tr><th>Número</th><th>Hoje</th></tr>' + "".join(f'<tr><td>{b}</td><td data-r="Hoje">{d}</td></tr>' for a, b, d in _num27 if a == x[0]) + '</table></div></details>' for i, x in enumerate(_fr27)) + '</div>'
+    + '<h2 id="ano">O ano <strong>mês a mês</strong></h2><div class="pil" id="pil" role="group" aria-label="Filtrar por frente">'
+    + "".join(f'<button type="button" data-c="{i}" aria-pressed="{"true" if i == 0 else "false"}">{n}</button>' for i, n in enumerate(["Todas", "Automação", "Eventos", "Conteúdo", "Digital"]))
+    + '</div><div class="tab tab-pilha" id="meses"><table><tr><th>Mês</th><th data-c="1">Automação</th><th data-c="2">Eventos</th><th data-c="3">Conteúdo</th><th data-c="4">Digital com estratégia</th></tr>'
+    + "".join(f'<tr><td>{t}</td><td data-c="1" data-r="Automação">{a}</td><td data-c="2" data-r="Eventos">{e}</td><td data-c="3" data-r="Conteúdo">{o}</td><td data-c="4" data-r="Digital com estratégia">{d}</td></tr>' for t, a, e, o, d in _ano27)
+    + """</table></div><script>(function(){var B=[].slice.call(document.querySelectorAll('#pil button')),T=document.getElementById('meses');
+B.forEach(function(b){b.addEventListener('click',function(){var c=b.dataset.c;B.forEach(function(x){x.setAttribute('aria-pressed',x===b?'true':'false')});
+[].forEach.call(T.querySelectorAll('[data-c]'),function(e){e.hidden=c!=='0'&&e.dataset.c!==c});
+[].forEach.call(T.querySelectorAll('tr'),function(r,i){if(!i)return;var o=c==='0'?null:r.querySelector('[data-c="'+c+'"]');r.hidden=!!o&&!o.textContent})})})})();</script>"""
     + '<p class="meta-txt">Proposta do time de Comunicação &amp; Marketing. As metas ficam para definir com a diretoria depois de medir a base, e a captação por origem depende de registrar a origem do contato até o comercial.</p>'
     + '<p class="rodape">Tivio Capital · Comunicação &amp; Marketing</p></div>')
 (EXTRA / "plano-2027.html").write_text(pagina("Plano 2027", corpo_p27, CSS_P), encoding="utf-8")
