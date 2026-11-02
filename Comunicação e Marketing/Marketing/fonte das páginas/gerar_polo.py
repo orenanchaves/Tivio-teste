@@ -289,13 +289,13 @@ _ano27 = [("Nov e dez/26", "Medir horas por edição; corrigir as falhas dos dec
           ("Outubro", "", "2 eventos: balanço de estruturados; Congresso Abrapp", "4º vídeo de crédito", "Novos artigos por termo"),
           ("Novembro", "", "2 eventos: perspectivas para 2028", "", "Simulador de cascata com carteira fictícia"),
           ("Dezembro", "Fechar o painel de números do ano", "Balanço dos eventos do ano", "Balanço das séries: manter, ajustar ou parar", "Balanço de site e artigos")]
-_bm = [("Automação", "Constância vale mais que audiência", "Edição mensal em dia, sem esforço manual"),
-       ("Eventos", "O gargalo é quem indica", "Trilha para assessores e gerentes"),
-       ("Conteúdo", "Gente pesa mais que marca", "Gestores no LinkedIn pessoal"),
-       ("Conteúdo", "Quem explica o risco ganha", "Séries que mostram a estrutura e o que pode dar errado"),
-       ("Digital com estratégia", "Estruturados ainda não tem dona", "Site, hub e artigos para disputar o termo"),
-       ("Digital com estratégia", "Dado próprio cria autoridade", "Panorama de Estruturados para imprensa e IAs citarem")]
-_bm_tab = '<div class="tab tab-pilha"><table><tr><th>Frente</th><th>O que aprendemos</th><th>Como entra</th></tr>' + "".join(f'<tr><td>{a}</td><td data-r="O que aprendemos">{b}</td><td data-r="Como entra">{c}</td></tr>' for a, b, c in _bm) + '</table></div>'
+_bm = [("Automação", "Constância vale mais que audiência", "Kinea e Apollo", "Carta do Gestor com 10 edições em 10 meses de 2026; 81 materiais por rodada no AutomaTivio", "Edição mensal em dia, sem esforço manual"),
+       ("Eventos", "O gargalo é quem indica", "PIMCO e Ares", "16 eventos Itaú no orçamento de 2027; o site ainda fala com um visitante genérico", "Trilha para assessores e gerentes"),
+       ("Conteúdo", "Gente pesa mais que marca", "Solis e Ares", "Tivio Visita teve o melhor resultado de outubro, com 49 curtidas; executivos ativos no LinkedIn ainda a medir", "Gestores no LinkedIn pessoal"),
+       ("Conteúdo", "Quem explica o risco ganha", "Oaktree e Janus Henderson", "Deep Dive com 15 curtidas, mas 11 meses de intervalo; 1 das 10 Cartas de 2026 tem crédito estruturado como tema central", "Séries que mostram a estrutura e o que pode dar errado"),
+       ("Digital com estratégia", "Estruturados ainda não tem dona", "Solis, só em FIDC", "3 de 14 posts sobre estruturados em out/26; no site, Crédito Estruturado fica dentro de Fundos", "Site, hub e artigos para disputar o termo"),
+       ("Digital com estratégia", "Dado próprio cria autoridade", "Valora e Golub", "O site prova patrimônio, anos, fundos e equipe; ainda sem dado próprio de estruturados", "Panorama de Estruturados para imprensa e IAs citarem")]
+_bm_vis = '<div class="bm">' + "".join(f'<section class="bm-i vidro"><p class="bm-f">{ICO27[a]}{a.replace(" com estratégia", "")}</p><h3>{b}</h3><dl><dt>Quem faz bem</dt><dd>{q}</dd><dt class="bm-t">O que fazemos hoje</dt><dd class="bm-t">{h}</dd><dt>Como entra no plano</dt><dd>{d}</dd></dl></section>' for a, b, q, h, d in _bm) + '</div>'
 _lig = [("Automação + Conteúdo", {"Automação", "Conteúdo"}, "Já hoje", "A rodada do mês entrega posts e destaques prontos"),
         ("Evento + Digital", {"Eventos", "Digital com estratégia"}, "1º tri", "Landing de inscrição, replay em artigo e remarketing de quem veio"),
         ("Evento + Conteúdo", {"Eventos", "Conteúdo"}, "1º tri", "Executivo anuncia no LinkedIn, e os cortes viram posts e WhatsApp"),
@@ -396,13 +396,13 @@ for _i, (_n, _s, _o, _l) in enumerate([(x[0], x[1], x[2], x[3]) for x in _fr27])
         + '<h2>Como se encaixa <strong>no todo</strong></h2>' + _lig_tab(_n)
         + '<h2>Os <strong>números</strong></h2><div class="tab tab-pilha"><table><tr><th>Número</th><th>Hoje</th></tr>' + "".join(f'<tr><td>{b}</td><td data-r="Hoje">{d}</td></tr>' for a, b, d in _num27 if a == _n) + '</table></div>'
         + '<h2>O <strong>ano</strong></h2>' + _gantt(_n) + _tl(_col)
-        + '<h2>O que veio do <strong>benchmark</strong></h2><div class="tab tab-pilha"><table><tr><th>O que aprendemos</th><th>Como entra</th></tr>' + "".join(f'<tr><td><a href="frente-benchmark.html">{b}</a></td><td data-r="Como entra">{d}</td></tr>' for a, b, d in _bm if a == _n) + '</table></div>'
+        + '<h2>O que veio do <strong>benchmark</strong></h2><div class="tab tab-pilha"><table><tr><th>O que aprendemos</th><th>O que fazemos hoje</th><th>Como entra</th></tr>' + "".join(f'<tr><td><a href="frente-benchmark.html">{b}</a></td><td data-r="O que fazemos hoje">{h}</td><td data-r="Como entra">{d}</td></tr>' for a, b, q, h, d in _bm if a == _n) + '</table></div>'
         + '<h2>Onde <strong>ver</strong></h2>' + cartoes(_ver[_n])
         + '<p class="rodape">Tivio Capital · Comunicação &amp; Marketing</p></div>')
     (EXTRA / _s).write_text(pagina(_n, _c, CSS_P), encoding="utf-8")
 _c = (cabecalho("Benchmark", []) + '<div class="wrap">' + trilha(("index.html", "Início"), ("plano-2027.html", "Plano 2027"), ("", "Benchmark"))
-    + '<section class="topo-peer"><div><h1>Benchmark</h1><p class="lead">O que estudamos fora da Tivio e como isso entra nas quatro frentes.</p></div></section>'
-    + '<h2>Como se conecta <strong>ao plano</strong></h2>' + _bm_tab
+    + '<section class="topo-peer"><div><h1>Benchmark</h1><p class="lead">O que estudamos fora da Tivio, o que já fazemos e como isso entra nas quatro frentes.</p></div></section>'
+    + '<h2>O que vimos fora e o que <strong>fazemos</strong></h2>' + _bm_vis
     + '<h2>Onde <strong>ver</strong></h2>' + cartoes([("m-peers.html", "Peers no Brasil", "Gestoras brasileiras."), ("m-estrangeiras.html", "Peers no exterior", "Gestoras de fora."), ("m-cases.html", "Cases", "O que outros fizeram."), ("m-mundo.html", "Mundo", "Tendências lá fora."), ("m-mercados.html", "Outros mercados", "Referências de outros países."), ("m-setores.html", "Outros setores", "O que copiar de fora das finanças."), ("m-relatorio.html", "Relatório 2027", "Estudos de marketing para 2027.")])
     + '<p class="rodape">Tivio Capital · Comunicação &amp; Marketing</p></div>')
 (EXTRA / "frente-benchmark.html").write_text(pagina("Benchmark", _c, CSS_P), encoding="utf-8")
