@@ -53,7 +53,7 @@ corpo_polo = (cabecalho("Brand", []) + '<div class="wrap">'
     + '<p class="rodape">Tivio Capital · Comunicação &amp; Marketing</p></div>' + _lb)
 (EXTRA / "brand.html").write_text(pagina("Brand", corpo_polo, CSS_P), encoding="utf-8")
 
-FRENTES_E = [("Coordenação, Performance &amp; Automação", "Renan Chaves", ["Prioridades", "Materiais e fechamento", "Automação", "Dados e performance", "C&amp;M Hub", "Governança", "Interface com Enrico Trotta", "Apresentações e decks"]),
+FRENTES_E = [("Coordenação, Performance &amp; Automação", "Renan Chaves", ["Design", "Prioridades", "Materiais e fechamento", "Automação", "Dados e performance", "C&amp;M Hub", "Governança", "Interface com Enrico Trotta", "Apresentações e decks"]),
              ("Conteúdo &amp; Comunicação", "Fernanda Acquati", ["Calendário editorial", "Redes sociais", "Tivio News", "Textos e legendas", "Publicação", "Moderação", "Aprovações", "Operação dos eventos"]),
              ("Design &amp; Produção", "Gabriel Fiorilli", ["Identidade visual", "KVs", "Social", "Materiais de eventos", "Vídeo e motion", "Templates"]),
              ("Agência parceira", "ColaAí", ["Peças", "Vídeo e motion", "Planejamento editorial", "Legendas e publicação", "Moderação", "Tráfego pago, com Ewerton", "Performance e relatório"])]
@@ -71,26 +71,47 @@ _antes = ('<div class="org"><div class="org-n vidro"><span>Direção</span><b>En
 def _col(tit, sub, nos):
     return f'<section class="fase{" fase-antes" if tit == "Antes" else " fase-dest"}"><p class="fase-t">{tit}</p><p class="fase-s">{sub}</p>' + "".join(f'<div class="fase-n{" " + c if c else ""}"><span>{a}</span><b>{b}</b></div>' for a, b, c in nos) + '</section>'
 _fases = '<div class="fases">' + _col("Antes", "Coordenação central", [("Direção", "Enrico Trotta", ""), ("Hub da área", "Cesar Medeiros", "hub"), ("Materiais, dados e automação", "Renan Chaves", ""), ("Conteúdo e fluxo editorial", "Fernanda Acquati", ""), ("Design e produção visual", "Gabriel Fiorilli", ""), ("Agência parceira", "ColaAí", "ext")]) \
-    + _col("Agora", "Frentes com responsáveis", [("Direção", "Enrico Trotta", ""), ("Coordenação e performance", "Renan Chaves", "hub"), ("Conteúdo &amp; Comunicação", "Fernanda Acquati", ""), ("Design &amp; Produção", "Gabriel Fiorilli", ""), ("Agência parceira", "ColaAí", "ext"), ("Tráfego pago", "Ewerton", "ext")]) \
-    + _col("Futuro", "Frentes consolidadas", [("Direção", "Enrico Trotta", ""), ("Coordenação de C&amp;M", "Renan Chaves", "hub"), ("Conteúdo &amp; Comunicação", "Fernanda Acquati", ""), ("Design &amp; Produção", "Gabriel Fiorilli", ""), ("Performance, Dados &amp; Automação", "Renan Chaves", ""), ("Pessoa de apoio", "A definir", ""), ("Tráfego pago", "Ewerton", "ext"), ("Apoio externo", "A definir", "ext")]) + '</div>'
+    + _col("Agora", "Frentes com responsáveis", [("Direção", "Enrico Trotta", ""), ("Coordenação, performance e design", "Renan Chaves", "hub"), ("Conteúdo &amp; Comunicação", "Fernanda Acquati", ""), ("Design &amp; Produção", "Gabriel Fiorilli", ""), ("Agência parceira", "ColaAí", "ext"), ("Tráfego pago", "Ewerton", "ext")]) \
+    + _col("Futuro", "Frentes consolidadas", [("Direção", "Enrico Trotta", ""), ("Coordenação de C&amp;M e design", "Renan Chaves", "hub"), ("Conteúdo &amp; Comunicação", "Fernanda Acquati", ""), ("Design &amp; Produção", "Gabriel Fiorilli", ""), ("Performance, Dados &amp; Automação", "Renan Chaves", ""), ("Pessoa de apoio", "A definir", ""), ("Tráfego pago", "Ewerton", "ext"), ("Apoio externo", "A definir", "ext")]) + '</div>'
 _fr = "".join(f'<section class="frente vidro"><h3>{n}</h3><p class="dono">{d}</p><ul>' + "".join(f"<li>{x}</li>" for x in l) + "</ul></section>" for n, d, l in FRENTES_E)
 _pap = "".join(f'<div class="papel vidro"><span>{a}</span><b>{b}</b></div>' for a, b in [("Coordenação", "Renan Chaves"), ("Operação", "Fernanda Acquati"), ("Peças", "Gabriel Fiorilli"), ("Aprovação estratégica", "Enrico Trotta")])
 _fl = "".join(f'<li class="vidro"><b>{a}</b><span>{b}</span></li>' for a, b in [("Demanda entra", "Pedido registrado em um lugar só"), ("Triagem", "Definição do responsável"), ("Produção", "Execução pela frente dona"), ("Aprovação técnica", "Revisão e Compliance"), ("Aprovação estratégica", "Quando necessária"), ("Publicação", "Publicação e mensuração")])
-_mov_itens = [("Coordenação", "r"), ("Prioridades", "r"), ("Interface com Enrico Trotta", "r"), ("Aprovações", "f"), ("Eventos: coordenação", "r"), ("Eventos: operação", "f"), ("Eventos: peças", "g"), ("Agência", "x"), ("Fornecedores", "x")]
-_mov = ('<h2>O que o Cesar fazia, <strong>para onde foi</strong></h2><div class="mov" id="mov"><div class="mov-o vidro"><span>Antes</span><b>Cesar Medeiros</b><div class="mov-c" id="mov-o">'
-    + "".join(f'<i class="mov-i" data-d="{d}">{n}</i>' for n, d in _mov_itens) + '</div></div><div class="mov-d">'
-    + "".join(f'<div class="mov-p vidro" id="mov-{i}"><span>{c}</span><b>{n}</b><div class="mov-c"></div></div>' for i, n, c in [("r", "Renan Chaves", "Coordenação de C&amp;M"), ("f", "Fernanda Acquati", "Conteúdo &amp; Comunicação"), ("g", "Gabriel Fiorilli", "Design &amp; Produção")])
-    + '</div><div class="mov-p mov-def" id="mov-x"><span>Sem dono no material</span><b>A definir</b><div class="mov-c"></div></div><button type="button" class="mov-b" id="mov-b">Ver de novo</button></div>'
-    + """<script>(function(){var R=document.getElementById('mov');if(!R)return;var O=document.getElementById('mov-o'),I=[].slice.call(O.children),T=[],P=[];
+_dist_p = [("r", "Renan Chaves", "Coordenação e design", ["Design", "Materiais e decks", "Dados e automação"]),
+           ("f", "Fernanda Acquati", "Conteúdo &amp; Comunicação", ["Conteúdo", "Redes sociais"]),
+           ("g", "Gabriel Fiorilli", "Design &amp; Produção", ["Design", "Peças e vídeos"]),
+           ("x", "A definir", "Sem dono no material", [])]
+_dist_i = [("Coordenação", "r"), ("Prioridades", "r"), ("Interface com Enrico Trotta", "r"), ("Eventos: coordenação", "r"), ("Aprovações", "f"), ("Eventos: operação", "f"), ("Agência", "f"), ("Eventos: peças", "g"), ("Fornecedores", "x")]
+_mov = ('<h2>O que o Cesar fazia, <strong>para onde foi</strong></h2><div class="dist" id="dist"><svg class="dist-l" id="dist-l" aria-hidden="true"></svg>'
+    + '<div class="dist-o vidro" id="dist-o"><span>Antes</span><b>Cesar Medeiros</b><div class="dist-c" id="dist-oc">'
+    + "".join(f'<i class="dist-i" data-d="{d}">{n}</i>' for n, d in _dist_i) + '</div></div><div class="dist-d">'
+    + "".join(f'<div class="dist-p vidro{" dist-x" if i == "x" else ""}" id="dist-{i}"><div class="dist-t"><div><span>{c}</span><b>{n}</b></div><em class="dist-n"></em></div><div class="dist-c">'
+              + "".join(f'<i class="dist-i dist-b">{b}</i>' for b in bs) + '</div></div>' for i, n, c, bs in _dist_p)
+    + '</div><button type="button" class="mov-b" id="dist-b">Ver de novo</button></div>'
+    + """<script>(function(){var R=document.getElementById('dist');if(!R)return;
+var O=document.getElementById('dist-oc'),C=document.getElementById('dist-o'),L=document.getElementById('dist-l'),I=[].slice.call(O.children),G=['r','f','g','x'],T=[],A=[],F=[],fim=false;
 var parado=window.matchMedia&&matchMedia('(prefers-reduced-motion: reduce)').matches;
-function alvo(e){return document.querySelector('#mov-'+e.dataset.d+' .mov-c')}
-function limpa(){T.forEach(clearTimeout);T=[];P.forEach(function(x){x.remove()});P=[];I.forEach(function(e){O.appendChild(e);e.classList.remove('foi')})}
-function fixa(){[].forEach.call(R.querySelectorAll('.mov-c'),function(c){c.style.minHeight=''});I.forEach(function(e){alvo(e).appendChild(e)});[].forEach.call(R.querySelectorAll('.mov-p .mov-c'),function(c){c.style.minHeight=c.offsetHeight+'px'});I.forEach(function(e){e.classList.add('foi')})}
-function move(e){var f=document.createElement('i');f.className='mov-i mov-g';f.textContent=e.textContent;e.parentNode.insertBefore(f,e);P.push(f);var a=e.getBoundingClientRect();alvo(e).appendChild(e);e.classList.add('foi');var b=e.getBoundingClientRect();
-if(e.animate)e.animate([{transform:'translate('+(a.left-b.left)+'px,'+(a.top-b.top)+'px)'},{transform:'none'}],{duration:800,easing:'cubic-bezier(.3,.7,.2,1)'})}
-function roda(){limpa();fixa();if(parado)return;limpa();I.forEach(function(e,i){T.push(setTimeout(function(){move(e)},500+i*800))})}
-document.getElementById('mov-b').addEventListener('click',roda);
-fixa();if(!parado&&window.IntersectionObserver){var v=new IntersectionObserver(function(es){if(es[0].isIntersecting){v.disconnect();roda()}},{threshold:.35});v.observe(R)}
+function cx(i){return document.getElementById('dist-'+i)}
+function alvo(e){return cx(e.dataset.d).querySelector('.dist-c')}
+function dos(i){return I.filter(function(e){return e.dataset.d===i})}
+function estreito(){return getComputedStyle(R).gridTemplateColumns.split(' ').length<2}
+function caixa(e){var a=e.getBoundingClientRect(),b=R.getBoundingClientRect();return{l:a.left-b.left,t:a.top-b.top,r:a.right-b.left,b:a.bottom-b.top,x:(a.left+a.right)/2-b.left,y:(a.top+a.bottom)/2-b.top}}
+function curva(a,b){if(estreito())return[a,{x:6,y:a.y},{x:6,y:b.y},b];var d=Math.max(40,(b.x-a.x)*.5);return[a,{x:a.x+d,y:a.y},{x:b.x-d,y:b.y},b]}
+function ponto(c,t){var u=1-t,k=[u*u*u,3*u*u*t,3*u*t*t,t*t*t];return{x:k[0]*c[0].x+k[1]*c[1].x+k[2]*c[2].x+k[3]*c[3].x,y:k[0]*c[0].y+k[1]*c[1].y+k[2]*c[2].y+k[3]*c[3].y}}
+function linha(i){var o=caixa(C),p=caixa(cx(i)),a=estreito()?{x:6,y:o.b}:{x:o.r,y:o.y},b=estreito()?{x:p.l,y:p.y}:{x:p.l,y:p.y},c=curva(a,b),s=document.createElementNS('http://www.w3.org/2000/svg','path');
+s.setAttribute('d','M'+c[0].x+' '+c[0].y+'C'+c[1].x+' '+c[1].y+' '+c[2].x+' '+c[2].y+' '+c[3].x+' '+c[3].y);s.dataset.g=i;L.appendChild(s);return s}
+function limpa(){T.forEach(clearTimeout);T=[];A.forEach(function(a){a.cancel()});A=[];F.forEach(function(x){x.remove()});F=[];L.innerHTML='';fim=false;C.classList.remove('fim');I.forEach(function(e){O.appendChild(e);e.classList.remove('foi')});G.forEach(function(i){cx(i).classList.remove('ativo','feito');cx(i).querySelector('.dist-n').textContent=''})}
+function final(){I.forEach(function(e){alvo(e).appendChild(e);e.classList.add('foi')});G.forEach(function(i){cx(i).classList.add('feito');cx(i).querySelector('.dist-n').textContent='+'+dos(i).length;linha(i).classList.add('on')});C.classList.add('fim');fim=true}
+function trava(){[].forEach.call(R.querySelectorAll('.dist-p .dist-c,#dist-oc'),function(c){c.style.minHeight=''});I.forEach(function(e){alvo(e).appendChild(e)});[].forEach.call(R.querySelectorAll('.dist-p .dist-c'),function(c){c.style.minHeight=c.offsetHeight+'px'});I.forEach(function(e){O.appendChild(e)});O.style.minHeight=O.offsetHeight+'px'}
+function voa(e){var f=document.createElement('i');f.className='dist-i dist-v';f.textContent=e.textContent;e.parentNode.insertBefore(f,e);F.push(f);var a=caixa(e);alvo(e).appendChild(e);e.classList.add('foi');var b=caixa(e),c=curva({x:a.x,y:a.y},{x:b.x,y:b.y}),q=[],n=28;
+for(var k=0;k<=n;k++){var t=k/n,s=t<.5?4*t*t*t:1-Math.pow(-2*t+2,3)/2,p=ponto(c,s);q.push({transform:'translate('+(p.x-b.x)+'px,'+(p.y-b.y)+'px) scale('+(1+.1*Math.sin(Math.PI*t))+')'})}
+if(e.animate){var m=e.animate(q,{duration:850,easing:'linear'});A.push(m);m.onfinish=function(){var w=e.animate([{transform:'scale(1)'},{transform:'scale(1.08)'},{transform:'scale(1)'}],{duration:260});A.push(w)}}}
+function grupo(i,t){var E=dos(i),P=cx(i),n=P.querySelector('.dist-n');T.push(setTimeout(function(){P.classList.add('ativo');var s=linha(i),z=s.getTotalLength();s.classList.add('on');if(s.animate){var d=s.animate([{strokeDasharray:z,strokeDashoffset:z},{strokeDasharray:z,strokeDashoffset:0}],{duration:520,easing:'ease-out'});A.push(d)}},t));
+E.forEach(function(e,j){var u=t+320+j*280;T.push(setTimeout(function(){voa(e)},u));T.push(setTimeout(function(){n.textContent='+'+(j+1)},u+800))});
+var z=t+320+(E.length-1)*280+850+260;T.push(setTimeout(function(){P.classList.remove('ativo');P.classList.add('feito')},z));return z+160}
+function roda(){limpa();trava();if(parado){final();return}var t=450;G.forEach(function(i){t=grupo(i,t)});T.push(setTimeout(function(){C.classList.add('fim');fim=true},t))}
+document.getElementById('dist-b').addEventListener('click',roda);
+trava();final();if(!parado&&window.IntersectionObserver){var v=new IntersectionObserver(function(es){if(es[0].isIntersecting){v.disconnect();roda()}},{threshold:.3});v.observe(R)}
+var r;addEventListener('resize',function(){clearTimeout(r);r=setTimeout(function(){if(fim){limpa();trava();final()}},200)})
 })();</script>""")
 corpo_est = (cabecalho("Estrutura", []) + '<div class="wrap">'
     + trilha(("index.html", "Início"), ("marketing.html", "Central de Marketing"), ("", "Estrutura"))
