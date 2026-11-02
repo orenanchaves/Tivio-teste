@@ -78,17 +78,16 @@ _pap = "".join(f'<div class="papel vidro"><span>{a}</span><b>{b}</b></div>' for 
 _fl = "".join(f'<li class="vidro"><b>{a}</b><span>{b}</span></li>' for a, b in [("Demanda entra", "Pedido registrado em um lugar só"), ("Triagem", "Definição do responsável"), ("Produção", "Execução pela frente dona"), ("Aprovação técnica", "Revisão e Compliance"), ("Aprovação estratégica", "Quando necessária"), ("Publicação", "Publicação e mensuração")])
 _dist_p = [("r", "Renan Chaves", "Coordenação e design", ["Design", "Materiais e decks", "Dados e automação"]),
            ("f", "Fernanda Acquati", "Conteúdo &amp; Comunicação", ["Conteúdo", "Redes sociais"]),
-           ("g", "Gabriel Fiorilli", "Design &amp; Produção", ["Design", "Peças e vídeos"]),
-           ("x", "A definir", "Sem dono no material", [])]
-_dist_i = [("Coordenação", "r"), ("Prioridades", "r"), ("Interface com Enrico Trotta", "r"), ("Eventos: coordenação", "r"), ("Aprovações", "f"), ("Eventos: operação", "f"), ("Agência", "f"), ("Eventos: peças", "g"), ("Fornecedores", "x")]
+           ("g", "Gabriel Fiorilli", "Design &amp; Produção", ["Design", "Peças e vídeos"])]
+_dist_i = [("Coordenação", "r"), ("Prioridades", "r"), ("Interface com Enrico Trotta", "r"), ("Eventos: coordenação", "r"), ("Aprovações", "f"), ("Eventos: operação", "f"), ("Agência", "f"), ("Fornecedores", "f"), ("Eventos: peças", "g")]
 _mov = ('<h2>O que o Cesar fazia, <strong>para onde foi</strong></h2><div class="dist" id="dist"><svg class="dist-l" id="dist-l" aria-hidden="true"></svg>'
     + '<div class="dist-o vidro" id="dist-o"><span>Antes</span><b>Cesar Medeiros</b><div class="dist-c" id="dist-oc">'
     + "".join(f'<i class="dist-i" data-d="{d}">{n}</i>' for n, d in _dist_i) + '</div></div><div class="dist-d">'
-    + "".join(f'<div class="dist-p vidro{" dist-x" if i == "x" else ""}" id="dist-{i}"><div class="dist-t"><div><span>{c}</span><b>{n}</b></div><em class="dist-n"></em></div><div class="dist-c">'
+    + "".join(f'<div class="dist-p vidro" id="dist-{i}"><div class="dist-t"><div><span>{c}</span><b>{n}</b></div><em class="dist-n"></em></div><div class="dist-c">'
               + "".join(f'<i class="dist-i dist-b">{b}</i>' for b in bs) + '</div></div>' for i, n, c, bs in _dist_p)
     + '</div><button type="button" class="mov-b" id="dist-b">Ver de novo</button></div>'
     + """<script>(function(){var R=document.getElementById('dist');if(!R)return;
-var O=document.getElementById('dist-oc'),C=document.getElementById('dist-o'),L=document.getElementById('dist-l'),I=[].slice.call(O.children),G=['r','f','g','x'],T=[],A=[],F=[],fim=false;
+var O=document.getElementById('dist-oc'),C=document.getElementById('dist-o'),L=document.getElementById('dist-l'),I=[].slice.call(O.children),G=['r','f','g'],T=[],A=[],F=[],fim=false;
 var parado=window.matchMedia&&matchMedia('(prefers-reduced-motion: reduce)').matches;
 function cx(i){return document.getElementById('dist-'+i)}
 function alvo(e){return cx(e.dataset.d).querySelector('.dist-c')}
