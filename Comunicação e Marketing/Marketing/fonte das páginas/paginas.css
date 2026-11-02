@@ -232,4 +232,4 @@
 .acc{display:grid;gap:8px;interpolate-size:allow-keywords}.acc details{border:1px solid var(--line);border-radius:12px;background:var(--bg-elev);overflow:hidden}.acc summary{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:14px 16px;cursor:pointer;list-style:none}.acc summary::-webkit-details-marker{display:none}.acc summary b{font-weight:600;color:var(--fg)}.acc summary span{font-size:14px;color:var(--muted)}.acc summary::after{content:"";flex:none;width:8px;height:8px;margin-right:4px;border-right:2px solid var(--muted);border-bottom:2px solid var(--muted);transform:rotate(45deg);transition:transform .25s}.acc details[open] summary::after{transform:rotate(-135deg)}.acc .tab{margin:0;border:0;border-radius:0}
 .acc details::details-content{block-size:0;overflow:hidden;transition:block-size .28s ease,content-visibility .28s allow-discrete}.acc details[open]::details-content{block-size:auto}
 @media (prefers-reduced-motion:reduce){.acc details::details-content,.acc summary::after,.pil button{transition:none}}
-@media (max-width:720px){.acc summary span{margin-left:auto}}
+.acc summary span{margin-left:auto}
