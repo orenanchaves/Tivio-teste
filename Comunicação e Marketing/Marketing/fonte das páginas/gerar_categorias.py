@@ -161,10 +161,11 @@ print("total extras:", len(list(EXTRA.glob("*.html"))))
 
 # ---- página inicial: o todo em um lugar
 inicio = (cabecalho("", []) + '<div class="wrap">'
-          + hero("Tivio Capital", "Comunicação &amp; <strong>Marketing</strong>", "Tudo do time em um lugar: a automação mensal dos materiais e o plano de marketing de 2027.")
-          + cartoes([("automativio.html", "AutomaTivio", "A edição mensal em um comando, com download e como funciona."), ("marketing.html", "Central de Marketing", "Estratégia, ações e referências para 2027.")])
-          + '<h2>Times do <strong>AutomaTivio</strong></h2>' + cartoes([("automativio-gestao.html", "Gestão", "Comentários e tabela de spreads."), ("automativio-riscos.html", "Riscos", "Aprovação de cada material."), ("automativio-marketing.html", "Marketing", "Dados, rodada, decks, publicação e histórico.")])
-          + "".join(secs) + '<p class="rodape">Tivio Capital · Comunicação &amp; Marketing</p></div>')
+          + hero("Tivio Capital", "Comunicação &amp; <strong>Marketing</strong>", "O plano de 2027 em quatro frentes, com números de negócio além de awareness.")
+          + cartoes([("plano-2027.html", "Plano 2027", "A lógica do ano, os números e os trimestres.")])
+          + '<h2>Quatro <strong>frentes</strong></h2>'
+          + cartoes([("automativio.html", "Automação", "Facilitar o operacional."), ("m-eventos.html", "Eventos", "Transformar presença em contato e reunião."), ("m-posts.html", "Conteúdo", "Menos, com mais qualidade, para um nicho."), ("m-captacao.html", "Digital com estratégia", "Levar quem chega até um contato com origem conhecida.")])
+          + '<p class="rodape">Tivio Capital · Comunicação &amp; Marketing</p></div>')
 (EXTRA / "index.html").write_text(pagina("Comunicação & Marketing", inicio, CSS_P), encoding="utf-8")
 
 # ---- Visão: a conclusão de tudo, o que queremos para a Tivio

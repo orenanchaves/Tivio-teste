@@ -262,3 +262,34 @@ corpo_ap = (cabecalho("Análise das postagens", []) + '<div class="wrap">'
     + '<p class="meta-txt">Leitura de 01/11/2026. No Instagram, sem login, entram só os 15 posts mais recentes dos 456: outubro e o fixado. Alcance, salvamentos e compartilhamentos não são públicos, e não dá para saber se algum post foi impulsionado. Os posts de 30/10 tinham 2 dias e ainda podem crescer. No LinkedIn, as reações são das 10 últimas publicações. Os vídeos vêm da página do site, porque o canal do YouTube não pôde ser lido.</p>'
     + '<p class="rodape">Tivio Capital · Comunicação &amp; Marketing</p></div>')
 (EXTRA / "analise-postagens.html").write_text(pagina("Análise das postagens", corpo_ap, CSS_P), encoding="utf-8")
+
+_fr27 = [("Automação", "automativio.html", "Facilitar o operacional para o time gastar tempo no que muda resultado.",
+          ["Edição mensal em um comando", "Materiais, decks e relatórios sem retrabalho", "IA no dia a dia do time"]),
+         ("Eventos", "m-eventos.html", "Transformar presença em contato e reunião.",
+          ["16 eventos Itaú no escritório", "Eventos como trilha para quem indica", "Contato quente para o comercial em até 2 dias"]),
+         ("Conteúdo", "m-posts.html", "Menos, com mais qualidade, para um nicho.",
+          ["Casa de estruturados em toda série", "Gestores no LinkedIn pessoal", "Kit do assessor"]),
+         ("Digital com estratégia", "m-captacao.html", "Levar quem chega até um contato com origem conhecida.",
+          ["Landing por objetivo", "Tráfego orgânico e pago", "SEO, GEO e hub de estruturados"])]
+_num27 = [("Automação", "Horas do time por edição", "A medir"), ("Automação", "Materiais gerados por rodada", "81, em set/2026"), ("Automação", "Correções depois de publicar", "A medir"),
+          ("Eventos", "Eventos realizados", "16 no plano de 2027"), ("Eventos", "Inscritos, presentes e pedidos de contato", "A medir"), ("Eventos", "Captação de presentes em até 90 dias", "A medir"),
+          ("Conteúdo", "Posts sobre estruturados", "3 de 14, em out/2026"), ("Conteúdo", "Contatos vindos de cada série", "A medir"), ("Conteúdo", "Gestores publicando no LinkedIn", "A medir"),
+          ("Digital com estratégia", "Contatos por landing e por origem", "A medir"), ("Digital com estratégia", "Custo por contato", "A medir"), ("Digital com estratégia", "Reuniões qualificadas", "A medir")]
+_ano27 = [("1º tri", "Decks sem ajuste manual; medir horas por edição", "4 eventos: panorama de estruturados e como ler um FIDC", "Regra de aprovação com Riscos; kit do assessor piloto", "3 templates em páginas indexáveis; landing do evento"),
+          ("2º tri", "Automatizar o que ainda for manual", "4 eventos: Família ALT e crédito privado e juros", "Série Gráfico da Semana com dono", "Hub de estruturados"),
+          ("3º tri", "Rever horas e erros do semestre", "4 eventos: previdência e curadoria de gestores", "Carta trimestral em PDF e áudio", "Panorama de Estruturados, em troca do contato"),
+          ("4º tri", "Fechar o painel de números do ano", "4 eventos: balanço de estruturados e 2028", "Balanço das séries: manter, ajustar ou parar", "Simulador de cascata com carteira fictícia")]
+corpo_p27 = (cabecalho("Plano 2027", []) + '<div class="wrap">'
+    + trilha(("index.html", "Início"), ("", "Plano 2027"))
+    + '<section class="topo-peer"><div><h1>Plano 2027</h1><p class="lead">Ser a casa de estruturados, em quatro frentes, com números de negócio além de awareness.</p></div></section>'
+    + '<h2 id="frentes">O ano em <strong>quatro frentes</strong></h2><div class="frentes f2">'
+    + "".join(f'<section class="frente vidro"><h3><a href="{h}">{n}</a></h3><p class="dono">{d}</p><ul>' + "".join(f"<li>{x}</li>" for x in l) + "</ul></section>" for n, h, d, l in _fr27) + '</div>'
+    + '<h2 id="funil">O caminho do <strong>número</strong></h2><ol class="roteiro r6 as-o">'
+    + "".join(f'<li class="vidro"><b>{a}</b><span>{b}</span></li>' for a, b in [("Alcance", "Quem viu a Tivio"), ("Contato", "Quem deixou nome e origem"), ("Reunião", "Quem pediu conversa qualificada"), ("Captação", "Quanto veio desse contato, em R$")]) + '</ol>'
+    + '<h2 id="numeros">Os números que a área <strong>vai trazer</strong></h2><div class="tab tab-pilha"><table><tr><th>Frente</th><th>Número</th><th>Hoje</th></tr>'
+    + "".join(f'<tr><td>{a}</td><td data-r="Número">{b}</td><td data-r="Hoje">{c}</td></tr>' for a, b, c in _num27) + '</table></div>'
+    + '<h2 id="ano">O ano por <strong>trimestre</strong></h2><div class="tab tab-pilha"><table><tr><th>Trimestre</th><th>Automação</th><th>Eventos</th><th>Conteúdo</th><th>Digital com estratégia</th></tr>'
+    + "".join(f'<tr><td>{t}</td><td data-r="Automação">{a}</td><td data-r="Eventos">{e}</td><td data-r="Conteúdo">{o}</td><td data-r="Digital com estratégia">{d}</td></tr>' for t, a, e, o, d in _ano27) + '</table></div>'
+    + '<p class="meta-txt">Proposta do time de Comunicação &amp; Marketing. As metas ficam para definir com a diretoria depois de medir a base, e a captação por origem depende de registrar a origem do contato até o comercial.</p>'
+    + '<p class="rodape">Tivio Capital · Comunicação &amp; Marketing</p></div>')
+(EXTRA / "plano-2027.html").write_text(pagina("Plano 2027", corpo_p27, CSS_P), encoding="utf-8")
