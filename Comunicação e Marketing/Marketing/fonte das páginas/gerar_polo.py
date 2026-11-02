@@ -239,7 +239,7 @@ _ser = [("Tivio Visita", "Irregular: 5 episódios em 2026", "49 e 4 comentários
         ("Resumo mensal em Reels", "Mensal, um de crédito e um de imobiliário", "13 e 17", "Saem por volta do dia 15"),
         ("Desempenho em card", "Mensal, nos primeiros dias", "5 e 10", "O pior resultado do feed"),
         ("Deep Dive", "Irregular: nov/2025 e depois out/2026", "15", "Bom, mas 11 meses de intervalo"),
-        ("Tivio ao Quadrado", "Parada: só a 1ª edição, em mar/2026, e 4 cortes", "Sem post no período", "Série abandonada"),
+        ("Tivio ao Quadrado", "Parada: só a 1ª edição, em mar/2026, e 4 cortes", "Sem post no período", "Manter e retomar"),
         ("Cortes da Carta", "Pararam em mar/2026", "Sem post no período", "Série abandonada"),
         ("Tivio Think", "Uma edição, em jun/2025", "Sem post no período", "Série abandonada")]
 _atn = [("Foco", "3 dos 14 posts de outubro falam de crédito estruturado, e 1 das 10 Cartas de 2026 tem esse tema central, pelos títulos e resumos", "Uma edição de crédito estruturado por trimestre na Carta ou no Deep Dive"),
@@ -249,7 +249,7 @@ _atn = [("Foco", "3 dos 14 posts de outubro falam de crédito estruturado, e 1 d
         ("Página de vídeos", "A lista do site para em 17/08/2026, embora os resumos de setembro estejam no Instagram", "Atualizar a página"),
         ("Formato", "Tivio Visita rendeu de 2 a 10 vezes mais que os cards de tabela e de produto", "Dar calendário fixo ao Tivio Visita, mensal ou bimestral")]
 _fora = [("Encerramento da oferta do Tivio Malls", "22"), ("Evento The New Agro", "15"), ("Produto: Global Rates", "12"), ("Na Mídia: Eco Invest", "12"), ("Produto: Alpha DI", "10")]
-_ord = [("Agora", "Corrigir a bio do Instagram"), ("Em seguida", "Juntar os cards de desempenho em um só, ou deixá-los apenas no site"), ("Depois", "Dar calendário fixo ao Tivio Visita e firmar a casa de estruturados na Carta e no Deep Dive"), ("Por fim", "Encerrar ou retomar de vez o Tivio ao Quadrado, os cortes e o Tivio Think")]
+_ord = [("Agora", "Corrigir a bio do Instagram"), ("Em seguida", "Juntar os cards de desempenho em um só, ou deixá-los apenas no site"), ("Depois", "Dar calendário fixo ao Tivio Visita e firmar a casa de estruturados na Carta e no Deep Dive"), ("Por fim", "Retomar o Tivio ao Quadrado; encerrar ou retomar de vez os cortes e o Tivio Think")]
 corpo_ap = (cabecalho("Análise das postagens", []) + '<div class="wrap">'
     + trilha(("index.html", "Início"), ("marketing.html", "Central de Marketing"), ("", "Análise das postagens"))
     + '<section class="topo-peer"><div><h1>Análise das postagens</h1><p class="lead">O que a Tivio publica com frequência e o que funciona. A constância é boa, mas o foco em estruturados aparece pouco.</p></div></section>'
@@ -268,17 +268,17 @@ _fr27 = [("Automação", "frente-automacao.html", "Facilitar o operacional para 
          ("Eventos", "frente-eventos.html", "Transformar presença em contato e reunião.",
           ["16 eventos Itaú no escritório", "Eventos como trilha para quem indica", "Contato quente para o comercial em até 2 dias"]),
          ("Conteúdo", "frente-conteudo.html", "Menos, com mais qualidade, para um nicho.",
-          ["Casa de estruturados em toda série", "Gestores no LinkedIn pessoal", "Kit do assessor"]),
+          ["Casa de estruturados em toda série", "Executivos nas conversas do LinkedIn", "Colaboradores, Teams e WhatsApp", "Vídeo trimestral de crédito", "Tivio ao Quadrado", "Kit do assessor"]),
          ("Digital com estratégia", "frente-digital.html", "Remodelar o site e ranquear melhor no Google.",
           ["Site remodelado", "Artigos para ranquear no Google", "Landing por objetivo, com tráfego orgânico e pago"])]
 _num27 = [("Automação", "Horas do time por edição", "A medir"), ("Automação", "Materiais gerados por rodada", "81, em set/2026"), ("Automação", "Correções depois de publicar", "A medir"),
           ("Eventos", "Eventos realizados", "16 no plano de 2027"), ("Eventos", "Inscritos, presentes e pedidos de contato", "A medir"), ("Eventos", "Captação de presentes em até 90 dias", "A medir"),
-          ("Conteúdo", "Posts sobre estruturados", "3 de 14, em out/2026"), ("Conteúdo", "Contatos vindos de cada série", "A medir"), ("Conteúdo", "Gestores publicando no LinkedIn", "A medir"),
+          ("Conteúdo", "Posts sobre estruturados", "3 de 14, em out/2026"), ("Conteúdo", "Contatos vindos de cada série", "A medir"), ("Conteúdo", "Executivos ativos no LinkedIn", "A medir"), ("Conteúdo", "Colaboradores que engajam nos posts", "A medir"), ("Conteúdo", "Cliques do WhatsApp até um contato", "A medir"),
           ("Digital com estratégia", "Contatos por landing e por origem", "A medir"), ("Digital com estratégia", "Custo por contato", "A medir"), ("Digital com estratégia", "Reuniões qualificadas", "A medir"), ("Digital com estratégia", "Posição no Google nos termos de estruturados", "A medir"), ("Digital com estratégia", "Visitas orgânicas ao site", "A medir")]
-_ano27 = [("1º tri", "Decks sem ajuste manual; medir horas por edição", "4 eventos: panorama de estruturados e como ler um FIDC", "Regra de aprovação com Riscos; kit do assessor piloto", "Plano de remodelação do site; 3 templates indexáveis; landing do evento"),
-          ("2º tri", "Automatizar o que ainda for manual", "4 eventos: Família ALT e crédito privado e juros", "Série Gráfico da Semana com dono", "Site remodelado; hub de estruturados"),
-          ("3º tri", "Rever horas e erros do semestre", "4 eventos: previdência e curadoria de gestores", "Carta trimestral em PDF e áudio", "Artigos por termo; Panorama de Estruturados, em troca do contato"),
-          ("4º tri", "Fechar o painel de números do ano", "4 eventos: balanço de estruturados e 2028", "Balanço das séries: manter, ajustar ou parar", "Rever posições no Google; simulador de cascata com carteira fictícia")]
+_ano27 = [("1º tri", "Decks sem ajuste manual; medir horas por edição", "4 eventos: panorama de estruturados e como ler um FIDC", "Regra de aprovação com Riscos; kit do assessor piloto; 1º vídeo trimestral de crédito", "Plano de remodelação do site; 3 templates indexáveis; landing do evento"),
+          ("2º tri", "Automatizar o que ainda for manual", "4 eventos: Família ALT e crédito privado e juros", "Série Gráfico da Semana com dono; vídeo de crédito; Tivio ao Quadrado", "Site remodelado; hub de estruturados"),
+          ("3º tri", "Rever horas e erros do semestre", "4 eventos: previdência e curadoria de gestores", "Carta trimestral em PDF e áudio; vídeo de crédito", "Artigos por termo; Panorama de Estruturados, em troca do contato"),
+          ("4º tri", "Fechar o painel de números do ano", "4 eventos: balanço de estruturados e 2028", "Vídeo de crédito; balanço das séries: manter, ajustar ou parar", "Rever posições no Google; simulador de cascata com carteira fictícia")]
 _bm = [("Automação", "Constância vale mais que audiência", "Edição mensal em dia, sem esforço manual"),
        ("Eventos", "O gargalo é quem indica", "Trilha para assessores e gerentes"),
        ("Conteúdo", "Gente pesa mais que marca", "Gestores no LinkedIn pessoal"),
@@ -286,12 +286,20 @@ _bm = [("Automação", "Constância vale mais que audiência", "Edição mensal 
        ("Digital com estratégia", "Estruturados ainda não tem dona", "Site, hub e artigos para disputar o termo"),
        ("Digital com estratégia", "Dado próprio cria autoridade", "Panorama de Estruturados para imprensa e IAs citarem")]
 _bm_tab = '<div class="tab tab-pilha"><table><tr><th>Frente</th><th>O que aprendemos</th><th>Como entra</th></tr>' + "".join(f'<tr><td>{a}</td><td data-r="O que aprendemos">{b}</td><td data-r="Como entra">{c}</td></tr>' for a, b, c in _bm) + '</table></div>'
+_lig = [("Automação + Conteúdo", {"Automação", "Conteúdo"}, "Já hoje", "A rodada do mês entrega posts e destaques prontos"),
+        ("Evento + Digital", {"Eventos", "Digital com estratégia"}, "1º tri", "Landing de inscrição, replay em artigo e remarketing de quem veio"),
+        ("Evento + Conteúdo", {"Eventos", "Conteúdo"}, "1º tri", "Executivo anuncia no LinkedIn, e os cortes viram posts e WhatsApp"),
+        ("Conteúdo + Digital", {"Conteúdo", "Digital com estratégia"}, "2º tri", "Artigo ranqueia no Google, e LinkedIn e WhatsApp levam tráfego"),
+        ("Automação + Eventos", {"Automação", "Eventos"}, "2º tri", "Convite, lembrete e balanço do evento em modelo pronto"),
+        ("Automação + Digital", {"Automação", "Digital com estratégia"}, "3º tri", "Números do mês atualizam as páginas de fundo")]
+def _lig_tab(n=None):
+    return '<div class="tab tab-pilha"><table><tr><th>Estratégia</th><th>Quando</th><th>Como funciona</th></tr>' + "".join(f'<tr><td>{a}</td><td data-r="Quando">{q}</td><td data-r="Como funciona">{d}</td></tr>' for a, s, q, d in _lig if n is None or n in s) + '</table></div>'
 corpo_p27 = (cabecalho("Plano 2027", []) + '<div class="wrap">'
     + trilha(("index.html", "Início"), ("", "Plano 2027"))
     + '<section class="topo-peer"><div><h1>Plano 2027</h1><p class="lead">Ser a casa de estruturados, em quatro frentes, com números de negócio além de awareness.</p></div></section>'
     + '<h2 id="frentes">O ano em <strong>quatro frentes</strong></h2><div class="frentes f2">'
     + "".join(f'<section class="frente vidro"><h3><a href="{h}">{n}</a></h3><p class="dono">{d}</p><ul>' + "".join(f"<li>{x}</li>" for x in l) + "</ul></section>" for n, h, d, l in _fr27) + '</div>'
-    + '<h2 id="benchmark">Benchmark <strong>conecta</strong> as frentes</h2>' + _bm_tab + '<p class="secao-sub"><a href="frente-benchmark.html">Ver o benchmark completo</a></p>'
+    + '<h2 id="juntas">Estratégias que se <strong>entrelaçam</strong></h2>' + _lig_tab() + '<h2 id="benchmark">Benchmark <strong>conecta</strong> as frentes</h2>' + _bm_tab + '<p class="secao-sub"><a href="frente-benchmark.html">Ver o benchmark completo</a></p>'
     + '<h2 id="funil">O caminho do <strong>número</strong></h2><ol class="roteiro r6 as-o">'
     + "".join(f'<li class="vidro"><b>{a}</b><span>{b}</span></li>' for a, b in [("Alcance", "Quem viu a Tivio"), ("Contato", "Quem deixou nome e origem"), ("Reunião", "Quem pediu conversa qualificada"), ("Captação", "Quanto veio desse contato, em R$")]) + '</ol>'
     + '<h2 id="numeros">Os números que a área <strong>vai trazer</strong></h2><div class="tab tab-pilha"><table><tr><th>Frente</th><th>Número</th><th>Hoje</th></tr>'
@@ -310,12 +318,21 @@ _site = ('<h2 id="site">Site e <strong>artigos</strong></h2><div class="tab tab-
     + "".join(f'<tr><td>{a}</td><td data-r="O que muda">{b}</td></tr>' for a, b in [("Abertura", "Casa de estruturados no título e no menu"), ("Hub", "Área própria de estruturados, fora de Fundos"), ("Fundos", "Uma página por fundo, com documentos em texto"), ("Google", "Liberar no robots.txt a pasta de lâminas e relatórios")])
     + '</table></div><h2 id="artigos">Artigos para <strong>ranquear no Google</strong></h2><div class="tab tab-pilha"><table><tr><th>Termo</th><th>Artigo</th></tr>'
     + "".join(f'<tr><td>{a}</td><td data-r="Artigo">{b}</td></tr>' for a, b in [("FIDC", "O que é um FIDC"), ("Crédito estruturado", "Como funciona o crédito estruturado"), ("Fundo de crédito privado", "Como escolher um fundo de crédito privado"), ("Previdência crédito privado", "Previdência com crédito privado: como funciona")]) + '</table></div>')
+_exec = [("Rodrigo Freire", "CEO", "Tivio, mercado e casa de estruturados"), ("Sami Karlik", "CIO de Crédito", "Crédito privado e estruturado"), ("Huang Seen", "Head de renda fixa", "Juros globais e renda fixa"), ("Bruno Franco", "Infra e energia", "Ilíquidos de infraestrutura e energia"), ("Vitor Engelmann", "Imobiliário", "Fundos imobiliários e aquisições")]
+_acoes = [("Colaboradores", "Post da semana com sugestão de comentário, para quem quiser participar"), ("Canal do Teams", "Cada post novo no canal, com link direto e sugestão de comentário"),
+          ("Canal de WhatsApp", "Mensagem curta com gráfico ou vídeo, enquete e aviso antecipado de carta e evento"),
+          ("Vídeos de crédito", "Plano trimestral: o mercado como um todo, com a Vivi e o pessoal de crédito; imobiliário no mesmo formato"), ("Tivio ao Quadrado", "Série mantida, com nova edição no 2º tri")]
+_cont = ('<h2 id="executivos">Executivos nas <strong>conversas do LinkedIn</strong></h2><div class="tab tab-pilha"><table><tr><th>Executivo</th><th>Papel</th><th>Conversas para entrar</th></tr>'
+    + "".join(f'<tr><td>{a}</td><td data-r="Papel">{b}</td><td data-r="Conversas para entrar">{d}</td></tr>' for a, b, d in _exec) + '</table></div>'
+    + '<h2 id="engajar">Mais <strong>engajamento</strong></h2><div class="tab tab-pilha"><table><tr><th>Ação</th><th>Como funciona</th></tr>'
+    + "".join(f'<tr><td>{a}</td><td data-r="Como funciona">{b}</td></tr>' for a, b in _acoes) + '</table></div>')
 for _i, (_n, _s, _o, _l) in enumerate([(x[0], x[1], x[2], x[3]) for x in _fr27]):
     _col = {"Automação": 1, "Eventos": 2, "Conteúdo": 3}.get(_n, 4)
     _c = (cabecalho(_n, []) + '<div class="wrap">' + trilha(("index.html", "Início"), ("plano-2027.html", "Plano 2027"), ("", _n))
         + f'<section class="topo-peer"><div><h1>{_n}</h1><p class="lead">{_o}</p></div></section>'
         + '<h2>O que vamos <strong>fazer</strong></h2><ol class="roteiro r6">' + "".join(f'<li class="vidro"><b>{x}</b></li>' for x in _l) + '</ol>'
-        + (_site if _n.startswith("Digital") else "")
+        + (_site if _n.startswith("Digital") else _cont if _n == "Conteúdo" else "")
+        + '<h2>Como se encaixa <strong>no todo</strong></h2>' + _lig_tab(_n)
         + '<h2>Os <strong>números</strong></h2><div class="tab tab-pilha"><table><tr><th>Número</th><th>Hoje</th></tr>' + "".join(f'<tr><td>{b}</td><td data-r="Hoje">{d}</td></tr>' for a, b, d in _num27 if a == _n) + '</table></div>'
         + '<h2>O <strong>ano</strong></h2><div class="tab tab-pilha"><table><tr><th>Trimestre</th><th>O que acontece</th></tr>' + "".join(f'<tr><td>{r[0]}</td><td data-r="O que acontece">{r[_col]}</td></tr>' for r in _ano27) + '</table></div>'
         + '<h2>O que veio do <strong>benchmark</strong></h2><div class="tab tab-pilha"><table><tr><th>O que aprendemos</th><th>Como entra</th></tr>' + "".join(f'<tr><td><a href="frente-benchmark.html">{b}</a></td><td data-r="Como entra">{d}</td></tr>' for a, b, d in _bm if a == _n) + '</table></div>'
