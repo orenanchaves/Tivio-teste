@@ -255,6 +255,7 @@ corpo_ap = (cabecalho("Análise das postagens", []) + '<div class="wrap">'
     + '<section class="topo-peer"><div><h1>Análise das postagens</h1><p class="lead">O que a Tivio publica com frequência e o que funciona. A constância é boa, mas o foco em estruturados aparece pouco.</p></div></section>'
     + '<h2 id="series">Séries <strong>recorrentes</strong></h2><div class="tab tab-pilha"><table><tr><th>Série</th><th>Frequência real</th><th>Curtidas em outubro</th><th>Leitura</th></tr>'
     + "".join(f'<tr><td>{a}</td><td data-r="Frequência real">{b}</td><td data-r="Curtidas em outubro">{c}</td><td data-r="Leitura">{d}</td></tr>' for a, b, c, d in _ser) + '</table></div>'
+    + '<h2 id="grafico">Curtidas por <strong>tipo de post</strong></h2><p class="secao-sub">Média em outubro de 2026, no Instagram.</p>' + _bh(_curt)
     + '<h2 id="avulsos">Fora das <strong>séries</strong></h2><div class="tab"><table><tr><th>Post</th><th>Curtidas em outubro</th></tr>'
     + "".join(f"<tr><td>{a}</td><td>{b}</td></tr>" for a, b in _fora) + '</table></div>'
     + '<h2 id="pontos">O que <strong>chama atenção</strong></h2><div class="tab tab-pilha"><table><tr><th>Ponto</th><th>O que vimos</th><th>O que fazer</th></tr>' + "".join(f'<tr><td>{a}</td><td data-r="O que vimos">{b}</td><td data-r="O que fazer">{c}</td></tr>' for a, b, c in _atn) + '</table></div>'
@@ -359,7 +360,9 @@ _edit = [("3 semanas antes", "Tema do encontro e convite com inscrição", "Land
          ("No dia", "Fotos, vídeo curto e entrevista rápida com o porta-voz", "Stories e LinkedIn", "Gabriel Fiorilli"), ("No dia", "Material do tema, impresso ou por QR", "Presencial", "Gabriel Fiorilli"), ("Até 2 dias", "Resumo com 3 aprendizados e o material", "E-mail e post", "Fernanda Acquati"),
          ("Até 2 semanas", "Artigo a partir da palestra", "Site, para o Google", "Fernanda Acquati"), ("Até 2 semanas", "Cortes do evento", "Reels, LinkedIn e WhatsApp", "Gabriel Fiorilli"), ("No fim do mês", "Balanço: inscritos, presentes e pedidos de contato", "Plano 2027", "Renan Chaves")]
 _ang = [("Eventos Itaú", "Assessores e investidores da base Itaú", "Trilha de estruturados, um tema por encontro"), ("Summit BTG, Conexão Bradesco e Expert XP", "Assessores e plataformas", "O que levar ao cliente e como explicar o risco"), ("Abrapp, Previpar, APEP e ASCPrev", "Fundos de pensão e regimes próprios", "Processo, governança e fundos já enquadrados")]
-_evt = ('<h2 id="todos">Todos os eventos <strong>de 2027</strong></h2><div class="tab tab-pilha"><table><tr><th>Evento</th><th>Tipo</th><th>Quando</th><th>Situação</th></tr>'
+_evt = ('<h2 id="mix">Os 23 eventos <strong>por tipo</strong></h2>' + _st([("Itaú", 16), ("Previdência", 4), ("Plataformas", 3)])
+    + '<h2 id="meses">Eventos Itaú <strong>por mês</strong></h2>' + _bc([(r[0][:3], int(re.match(r"(\d+) evento", r[2]).group(1)) if re.match(r"\d+ evento", r[2]) else 0) for r in _ano27[1:]])
+    + '<h2 id="todos">Todos os eventos <strong>de 2027</strong></h2><div class="tab tab-pilha"><table><tr><th>Evento</th><th>Tipo</th><th>Quando</th><th>Situação</th></tr>'
     + "".join(f'<tr><td>{a}</td><td data-r="Tipo">{b}</td><td data-r="Quando">{d}</td><td data-r="Situação">{e}</td></tr>' for a, b, d, e in _evt_l) + '</table></div><p class="meta-txt">Datas de 2027 a confirmar com cada organizador.</p>'
     + '<h2 id="editorial">Conteúdo editorial dos <strong>eventos presenciais</strong></h2><div class="tab tab-pilha"><table><tr><th>Quando</th><th>Peça</th><th>Canal</th><th>Dono</th></tr>'
     + "".join(f'<tr><td>{a}</td><td data-r="Peça">{b}</td><td data-r="Canal">{d}</td><td data-r="Dono">{e}</td></tr>' for a, b, d, e in _edit)
@@ -369,7 +372,9 @@ _exec = [("Rodrigo Freire", "CEO", "Tivio, mercado e casa de estruturados"), ("S
 _acoes = [("Colaboradores", "Post da semana com sugestão de comentário, para quem quiser participar"), ("Canal do Teams", "Cada post novo no canal, com link direto e sugestão de comentário"),
           ("Canal de WhatsApp", "Mensagem curta com gráfico ou vídeo, enquete e aviso antecipado de carta e evento"),
           ("Vídeos de crédito", "Plano trimestral: o mercado como um todo, com a Vivi e o pessoal de crédito; imobiliário no mesmo formato"), ("Tivio ao Quadrado", "Série mantida, com nova edição no 2º tri")]
-_cont = ('<h2 id="executivos">Executivos nas <strong>conversas do LinkedIn</strong></h2><div class="tab tab-pilha"><table><tr><th>Executivo</th><th>Papel</th><th>Conversas para entrar</th></tr>'
+_cont = ('<h2 id="foco">O que publicamos <strong>hoje</strong></h2><p class="secao-sub">14 posts em outubro de 2026, no Instagram.</p>' + _st([("Crédito estruturado", 3), ("Outros temas", 11)])
+    + '<h2 id="curtidas">O que mais <strong>engaja</strong></h2><p class="secao-sub">Curtidas por tipo de post, média de outubro.</p>' + _bh(_curt[:6])
+    + '<h2 id="executivos">Executivos nas <strong>conversas do LinkedIn</strong></h2><div class="tab tab-pilha"><table><tr><th>Executivo</th><th>Papel</th><th>Conversas para entrar</th></tr>'
     + "".join(f'<tr><td>{a}</td><td data-r="Papel">{b}</td><td data-r="Conversas para entrar">{d}</td></tr>' for a, b, d in _exec) + '</table></div>'
     + '<h2 id="engajar">Mais <strong>engajamento</strong></h2><div class="tab tab-pilha"><table><tr><th>Ação</th><th>Como funciona</th></tr>'
     + "".join(f'<tr><td>{a}</td><td data-r="Como funciona">{b}</td></tr>' for a, b in _acoes) + '</table></div>')

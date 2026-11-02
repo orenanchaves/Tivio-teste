@@ -151,6 +151,18 @@ ICO27 = {"Automação": _ic27('<path d="M4 12a8 8 0 0 1 14-5.3L20 9M20 4v5h-5M20
          "Conteúdo": _ic27('<path d="M6 3.5h8l4.5 4.5v12.5H6z"/><path d="M14 3.5V8h4.5M9 12.5h6M9 16h6"/>'),
          "Digital com estratégia": _ic27('<circle cx="12" cy="12" r="8.5"/><path d="M3.5 12h17M12 3.5c2.4 2.4 3.6 5.2 3.6 8.5s-1.2 6.1-3.6 8.5c-2.4-2.4-3.6-5.2-3.6-8.5s1.2-6.1 3.6-8.5z"/>'),
          "Benchmark": _ic27('<circle cx="12" cy="12" r="8.5"/><circle cx="12" cy="12" r="4.5"/><path d="M12 11.9h.01"/>')}
+def _num_br(v):
+    return f"{v:g}".replace(".", ",")
+def _bh(itens, suf=""):
+    m = max(v for _, v in itens)
+    return '<div class="fig vidro">' + "".join(f'<div class="bh-r" title="{n}: {_num_br(v)}{suf}"><span>{n}</span><i><b style="width:{v / m * 100:.1f}%"></b></i><em>{_num_br(v)}{suf}</em></div>' for n, v in itens) + '</div>'
+def _bc(itens):
+    m = max(v for _, v in itens)
+    return '<div class="fig vidro bc">' + "".join(f'<div title="{n}: {v}"><em>{v or ""}</em><i><b style="height:{v / m * 100:.0f}%"></b></i><span>{n}</span></div>' for n, v in itens) + '</div>'
+def _st(itens):
+    t = sum(v for _, v in itens)
+    return '<div class="fig vidro"><div class="st">' + "".join(f'<i class="c{i}" style="width:{v / t * 100:.1f}%" title="{n}: {v}"></i>' for i, (n, v) in enumerate(itens)) + '</div><div class="st-l">' + "".join(f'<span><i class="c{i}"></i>{n}: <b>{v}</b></span>' for i, (n, v) in enumerate(itens)) + '</div></div>'
+_curt = [("Tivio Visita", 49), ("Oferta do Tivio Malls", 22), ("Carta do Gestor", 18), ("Dividendos de FIIs", 16), ("Resumo mensal em Reels", 15), ("Deep Dive", 15), ("Evento The New Agro", 15), ("Na Mídia", 12), ("Produto", 11), ("Desempenho em card", 7.5)]
 exec(ler("dados_peers.py"))
 _paginas = {p["nome"]: f'peer-{p["slug"]}.html' for p in PEERS}
 for _s, _n, _f, _cs in SETORES:
