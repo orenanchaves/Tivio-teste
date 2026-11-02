@@ -68,7 +68,7 @@ def barra_global():
         dd("Conteúdo", [("frente-conteudo.html", "Visão geral"), ("m-posts.html", "Posts"), ("analise-postagens.html", "Análise das postagens"), ("canal-ofertas.html", "Canal de ofertas")] + [("", "Segmentos")] + segs + [("", "Públicos")] + pubs, True),
         dd("Digital", [("frente-digital.html", "Visão geral"), ("analise-site.html", "Site"), ("frente-digital.html#artigos", "Artigos para o Google"), ("m-captacao.html", "Captação")]),
         dd("Benchmark", [("frente-benchmark.html", "Visão geral"), ("m-peers.html", "Peers no Brasil"), ("m-estrangeiras.html", "Peers no exterior"), ("m-cases.html", "Cases"), ("m-mundo.html", "Mundo"), ("m-mercados.html", "Outros mercados"), ("m-setores.html", "Outros setores"), ("m-relatorio.html", "Relatório 2027")]),
-        dd("Base", [("", "Estratégia"), ("visao.html", "Visão"), ("m-posicionamento.html", "Casa de estruturados"), ("m-sintese.html", "O que fazer"), ("m-sugestoes.html", "Sugestões"), ("m-ideias.html", "Ideias na mesa"), ("", "Área"), ("estrutura.html", "Estrutura"), ("orcamento.html", "Orçamento 2027"), ("brand.html", "Brand"), ("", "Tudo"), ("marketing.html", "Central completa")], True),
+        dd("Base", [("", "Estratégia"), ("visao.html", "Visão"), ("m-posicionamento.html", "Casa de estruturados"), ("m-sintese.html", "O que fazer"), ("m-sugestoes.html", "Sugestões"), ("m-ideias.html", "Ideias na mesa"), ("", "Área"), ("estrutura.html", "Estrutura"), ("transicao.html", "Transição"), ("orcamento.html", "Orçamento 2027"), ("brand.html", "Brand"), ("", "Tudo"), ("marketing.html", "Central completa")], True),
     ])
     return f'''<header class="barra"><div class="barra-in">
 <a class="marca" href="index.html" aria-label="Comunicação &amp; Marketing">{LOGO}</a>

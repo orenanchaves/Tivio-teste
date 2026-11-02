@@ -61,9 +61,10 @@ def casca(iv, ct):
 """
 for f in sorted(ORIG.glob("*.html")):
     h = f.read_text(encoding="utf-8")
-    if f.name == "orcamento.html":
+    fr = {"orcamento.html": "orc_frag.html", "transicao.html": "transicao_frag.html"}.get(f.name)
+    if fr:
         i = h.index('<div class="wrap">'); j = h.rindex('<p class="rodape">'); j = h.index("</div>", j) + 6
-        h = h[:i] + (S/"orc_frag.html").read_text(encoding="utf-8") + h[j:]
+        h = h[:i] + (S/fr).read_text(encoding="utf-8") + h[j:]
     h, n = re.subn(r'<p class="(?:eyebrow|sl-e)"[^>]*>.*?</p>', "", h, flags=re.S)
     if "favicon.ico" not in h: h = h.replace("</title>", '</title>\n<link rel="icon" href="favicon.ico" sizes="any">', 1)
     assert 'class="eyebrow' not in h and 'class="sl-e' not in h, f.name

@@ -275,10 +275,19 @@ _num27 = [("Automação", "Horas do time por edição", "A medir"), ("Automaçã
           ("Eventos", "Eventos realizados", "16 no plano de 2027"), ("Eventos", "Inscritos, presentes e pedidos de contato", "A medir"), ("Eventos", "Captação de presentes em até 90 dias", "A medir"),
           ("Conteúdo", "Posts sobre estruturados", "3 de 14, em out/2026"), ("Conteúdo", "Contatos vindos de cada série", "A medir"), ("Conteúdo", "Executivos ativos no LinkedIn", "A medir"), ("Conteúdo", "Colaboradores que engajam nos posts", "A medir"), ("Conteúdo", "Cliques do WhatsApp até um contato", "A medir"),
           ("Digital com estratégia", "Contatos por landing e por origem", "A medir"), ("Digital com estratégia", "Custo por contato", "A medir"), ("Digital com estratégia", "Reuniões qualificadas", "A medir"), ("Digital com estratégia", "Posição no Google nos termos de estruturados", "A medir"), ("Digital com estratégia", "Visitas orgânicas ao site", "A medir")]
-_ano27 = [("1º tri", "Decks sem ajuste manual; medir horas por edição", "4 eventos: panorama de estruturados e como ler um FIDC", "Regra de aprovação com Riscos; kit do assessor piloto; 1º vídeo trimestral de crédito", "Plano de remodelação do site; 3 templates indexáveis; landing do evento"),
-          ("2º tri", "Automatizar o que ainda for manual", "4 eventos: Família ALT e crédito privado e juros", "Série Gráfico da Semana com dono; vídeo de crédito; Tivio ao Quadrado", "Site remodelado; hub de estruturados"),
-          ("3º tri", "Rever horas e erros do semestre", "4 eventos: previdência e curadoria de gestores", "Carta trimestral em PDF e áudio; vídeo de crédito", "Artigos por termo; Panorama de Estruturados, em troca do contato"),
-          ("4º tri", "Fechar o painel de números do ano", "4 eventos: balanço de estruturados e 2028", "Vídeo de crédito; balanço das séries: manter, ajustar ou parar", "Rever posições no Google; simulador de cascata com carteira fictícia")]
+_ano27 = [("Nov e dez/26", "Medir horas por edição; corrigir as falhas dos decks", "Definir a agenda com o Itaú", "Regra de aprovação com Riscos; kit do assessor piloto", "Plano de remodelação do site"),
+          ("Janeiro", "", "1 evento: panorama de estruturados", "1º vídeo trimestral de crédito", "3 templates indexáveis; landing do evento"),
+          ("Fevereiro", "Decks sem ajuste manual", "1 evento: como ler um FIDC", "Executivos no LinkedIn; colaboradores e canal do Teams", "Novo layout do site"),
+          ("Março", "Balanço de horas e erros", "2 eventos: estruturados e FIDC", "Rotina semanal no WhatsApp", "Primeiros artigos: FIDC e crédito estruturado"),
+          ("Abril", "Convite e balanço de evento em modelo", "1 evento: Família ALT", "2º vídeo de crédito; Gráfico da Semana", "Site remodelado no ar"),
+          ("Maio", "", "1 evento: crédito privado e juros", "Tivio ao Quadrado", "Hub de estruturados"),
+          ("Junho", "Automatizar o que ainda for manual", "2 eventos: Família ALT e juros", "Balanço das séries no semestre", "Artigos de crédito privado e previdência"),
+          ("Julho", "Números do mês nas páginas de fundo", "1 evento: previdência", "3º vídeo de crédito", "Panorama de Estruturados, em troca do contato"),
+          ("Agosto", "", "1 evento: curadoria de gestores", "Carta trimestral em PDF e áudio", "Novos artigos por termo"),
+          ("Setembro", "Rever horas e erros do ano", "2 eventos: previdência e curadoria", "", "Rever posições no Google"),
+          ("Outubro", "", "2 eventos: balanço de estruturados", "4º vídeo de crédito", "Novos artigos por termo"),
+          ("Novembro", "", "2 eventos: perspectivas para 2028", "", "Simulador de cascata com carteira fictícia"),
+          ("Dezembro", "Fechar o painel de números do ano", "Balanço dos 16 eventos", "Balanço das séries: manter, ajustar ou parar", "Balanço de site e artigos")]
 _bm = [("Automação", "Constância vale mais que audiência", "Edição mensal em dia, sem esforço manual"),
        ("Eventos", "O gargalo é quem indica", "Trilha para assessores e gerentes"),
        ("Conteúdo", "Gente pesa mais que marca", "Gestores no LinkedIn pessoal"),
@@ -304,7 +313,7 @@ corpo_p27 = (cabecalho("Plano 2027", []) + '<div class="wrap">'
     + "".join(f'<li class="vidro"><b>{a}</b><span>{b}</span></li>' for a, b in [("Alcance", "Quem viu a Tivio"), ("Contato", "Quem deixou nome e origem"), ("Reunião", "Quem pediu conversa qualificada"), ("Captação", "Quanto veio desse contato, em R$")]) + '</ol>'
     + '<h2 id="numeros">Os números que a área <strong>vai trazer</strong></h2><div class="tab tab-pilha"><table><tr><th>Frente</th><th>Número</th><th>Hoje</th></tr>'
     + "".join(f'<tr><td>{a}</td><td data-r="Número">{b}</td><td data-r="Hoje">{c}</td></tr>' for a, b, c in _num27) + '</table></div>'
-    + '<h2 id="ano">O ano por <strong>trimestre</strong></h2><div class="tab tab-pilha"><table><tr><th>Trimestre</th><th>Automação</th><th>Eventos</th><th>Conteúdo</th><th>Digital com estratégia</th></tr>'
+    + '<h2 id="ano">O ano <strong>mês a mês</strong></h2><div class="tab tab-pilha"><table><tr><th>Mês</th><th>Automação</th><th>Eventos</th><th>Conteúdo</th><th>Digital com estratégia</th></tr>'
     + "".join(f'<tr><td>{t}</td><td data-r="Automação">{a}</td><td data-r="Eventos">{e}</td><td data-r="Conteúdo">{o}</td><td data-r="Digital com estratégia">{d}</td></tr>' for t, a, e, o, d in _ano27) + '</table></div>'
     + '<p class="meta-txt">Proposta do time de Comunicação &amp; Marketing. As metas ficam para definir com a diretoria depois de medir a base, e a captação por origem depende de registrar a origem do contato até o comercial.</p>'
     + '<p class="rodape">Tivio Capital · Comunicação &amp; Marketing</p></div>')
@@ -334,7 +343,7 @@ for _i, (_n, _s, _o, _l) in enumerate([(x[0], x[1], x[2], x[3]) for x in _fr27])
         + (_site if _n.startswith("Digital") else _cont if _n == "Conteúdo" else "")
         + '<h2>Como se encaixa <strong>no todo</strong></h2>' + _lig_tab(_n)
         + '<h2>Os <strong>números</strong></h2><div class="tab tab-pilha"><table><tr><th>Número</th><th>Hoje</th></tr>' + "".join(f'<tr><td>{b}</td><td data-r="Hoje">{d}</td></tr>' for a, b, d in _num27 if a == _n) + '</table></div>'
-        + '<h2>O <strong>ano</strong></h2><div class="tab tab-pilha"><table><tr><th>Trimestre</th><th>O que acontece</th></tr>' + "".join(f'<tr><td>{r[0]}</td><td data-r="O que acontece">{r[_col]}</td></tr>' for r in _ano27) + '</table></div>'
+        + '<h2>O <strong>ano</strong></h2><div class="tab tab-pilha"><table><tr><th>Mês</th><th>O que acontece</th></tr>' + "".join(f'<tr><td>{r[0]}</td><td data-r="O que acontece">{r[_col]}</td></tr>' for r in _ano27 if r[_col]) + '</table></div>'
         + '<h2>O que veio do <strong>benchmark</strong></h2><div class="tab tab-pilha"><table><tr><th>O que aprendemos</th><th>Como entra</th></tr>' + "".join(f'<tr><td><a href="frente-benchmark.html">{b}</a></td><td data-r="Como entra">{d}</td></tr>' for a, b, d in _bm if a == _n) + '</table></div>'
         + '<h2>Onde <strong>ver</strong></h2>' + cartoes(_ver[_n])
         + '<p class="rodape">Tivio Capital · Comunicação &amp; Marketing</p></div>')
@@ -345,3 +354,5 @@ _c = (cabecalho("Benchmark", []) + '<div class="wrap">' + trilha(("index.html", 
     + '<h2>Onde <strong>ver</strong></h2>' + cartoes([("m-peers.html", "Peers no Brasil", "Gestoras brasileiras."), ("m-estrangeiras.html", "Peers no exterior", "Gestoras de fora."), ("m-cases.html", "Cases", "O que outros fizeram."), ("m-mundo.html", "Mundo", "Tendências lá fora."), ("m-mercados.html", "Outros mercados", "Referências de outros países."), ("m-setores.html", "Outros setores", "O que copiar de fora das finanças."), ("m-relatorio.html", "Relatório 2027", "Estudos de marketing para 2027.")])
     + '<p class="rodape">Tivio Capital · Comunicação &amp; Marketing</p></div>')
 (EXTRA / "frente-benchmark.html").write_text(pagina("Benchmark", _c, CSS_P), encoding="utf-8")
+
+(EXTRA / "transicao.html").write_text(pagina("Transição", cabecalho("Transição", []) + '<div class="wrap"><p class="rodape">Tivio Capital</p></div>', CSS_P), encoding="utf-8")

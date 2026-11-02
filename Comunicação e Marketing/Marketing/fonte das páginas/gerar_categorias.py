@@ -162,7 +162,7 @@ print("total extras:", len(list(EXTRA.glob("*.html"))))
 # ---- página inicial: o todo em um lugar
 inicio = (cabecalho("", []) + '<div class="wrap">'
           + hero("Tivio Capital", "Comunicação &amp; <strong>Marketing</strong>", "O plano de 2027 em quatro frentes, com números de negócio além de awareness.")
-          + cartoes([("plano-2027.html", "Plano 2027", "A lógica do ano, os números e os trimestres.")])
+          + cartoes([("plano-2027.html", "Plano 2027", "A lógica do ano, os números e cada mês.")])
           + '<h2>Quatro <strong>frentes</strong></h2>'
           + cartoes([("frente-automacao.html", "Automação", "Facilitar o operacional."), ("frente-eventos.html", "Eventos", "Transformar presença em contato e reunião."), ("frente-conteudo.html", "Conteúdo", "Menos, com mais qualidade, para um nicho."), ("frente-digital.html", "Digital com estratégia", "Remodelar o site e ranquear melhor no Google.")])
           + '<h2>O que <strong>conecta</strong></h2>' + cartoes([("frente-benchmark.html", "Benchmark", "O que estudamos fora da Tivio e como entra em cada frente.")])

@@ -226,3 +226,4 @@
 .frentes.f2{grid-template-columns:repeat(2,minmax(0,1fr))}
 @media (max-width:720px){.frentes.f2{grid-template-columns:minmax(0,1fr)}}
 @media (max-width:1279px){.barra-in .marca{margin-right:auto}.barra-in .btn-filtro,.barra-in .btn-visao{margin-left:0}.barra-in .menu-btn{order:9;margin-left:0}.nav-global .dd-painel.grande{grid-template-columns:minmax(0,1fr)}}
+@media (max-width:720px){.tab-pilha td:empty{display:none}}
