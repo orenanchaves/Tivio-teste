@@ -164,7 +164,8 @@ inicio = (cabecalho("", []) + '<div class="wrap">'
           + hero("Tivio Capital", "Comunicação &amp; <strong>Marketing</strong>", "O plano de 2027 em quatro frentes, com números de negócio além de awareness.")
           + cartoes([("plano-2027.html", "Plano 2027", "A lógica do ano, os números e os trimestres.")])
           + '<h2>Quatro <strong>frentes</strong></h2>'
-          + cartoes([("automativio.html", "Automação", "Facilitar o operacional."), ("m-eventos.html", "Eventos", "Transformar presença em contato e reunião."), ("m-posts.html", "Conteúdo", "Menos, com mais qualidade, para um nicho."), ("m-captacao.html", "Digital com estratégia", "Levar quem chega até um contato com origem conhecida.")])
+          + cartoes([("frente-automacao.html", "Automação", "Facilitar o operacional."), ("frente-eventos.html", "Eventos", "Transformar presença em contato e reunião."), ("frente-conteudo.html", "Conteúdo", "Menos, com mais qualidade, para um nicho."), ("frente-digital.html", "Digital com estratégia", "Remodelar o site e ranquear melhor no Google.")])
+          + '<h2>O que <strong>conecta</strong></h2>' + cartoes([("frente-benchmark.html", "Benchmark", "O que estudamos fora da Tivio e como entra em cada frente.")])
           + '<p class="rodape">Tivio Capital · Comunicação &amp; Marketing</p></div>')
 (EXTRA / "index.html").write_text(pagina("Comunicação & Marketing", inicio, CSS_P), encoding="utf-8")
 
