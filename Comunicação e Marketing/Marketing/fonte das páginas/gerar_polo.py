@@ -307,7 +307,7 @@ def _lig_tab(n=None):
 _G_M = ["N/D", "J", "F", "M", "A", "M", "J", "J", "A", "S", "O", "N", "D"]
 def _gantt(so=None):
     nomes = [(1, "Automação"), (2, "Eventos"), (3, "Conteúdo"), (4, "Digital com estratégia")]
-    h = '<div class="gt-r gt-h"><span></span>' + "".join(f"<span>{x}</span>" for x in _G_M) + '</div>'
+    h = '<div class="gt-r gt-h"><span></span>' + "".join((f'<span><a href="#m{i}">{x}</a></span>' if not so else f"<span>{x}</span>") for i, x in enumerate(_G_M)) + '</div>'
     for i, n in nomes:
         if so and n != so:
             continue
@@ -318,6 +318,15 @@ def _gantt(so=None):
             cel += f'<span class="gt-c{" on" if t else ""}" title="{r[0]}: {t}">{q.group(1) if q else ""}</span>'
         h += f'<div class="gt-r"><b>{ICO27[n]}{n.replace(" com estratégia", "")}</b>{cel}</div>'
     return f'<div class="gt vidro" role="img" aria-label="Calendário de implementações por frente">{h}</div>'
+def _tl(col):
+    nomes = {1: "Automação", 2: "Eventos", 3: "Conteúdo", 4: "Digital com estratégia"}
+    h = ""
+    for m, r in enumerate(_ano27):
+        itens = [i for i in nomes if r[i] and (col is None or i == col)]
+        if not itens:
+            continue
+        h += f'<section class="tl-m" id="m{m}"><h3>{r[0]}</h3><div class="tl-c{" um" if col else ""}">' + "".join(f'<div class="tl-i vidro" data-c="{i}">{ICO27[nomes[i]]}<div><b>{nomes[i].replace(" com estratégia", "")}</b><span>{r[i]}</span></div></div>' for i in itens) + '</div></section>'
+    return f'<div class="tl" id="{"meses" if col is None else "linha"}">{h}</div>'
 def _lig_vis():
     def ic(t):
         return ICO27["Eventos" if t == "Evento" else "Digital com estratégia" if t == "Digital" else t]
@@ -335,12 +344,10 @@ corpo_p27 = (cabecalho("Plano 2027", []) + '<div class="wrap">'
     + "".join(f'<details{" open" if i == 0 else ""}><summary><b>{x[0]}</b><span>{sum(1 for n in _num27 if n[0] == x[0])} números</span></summary><div class="tab tab-pilha"><table><tr><th>Número</th><th>Hoje</th></tr>' + "".join(f'<tr><td>{b}</td><td data-r="Hoje">{d}</td></tr>' for a, b, d in _num27 if a == x[0]) + '</table></div></details>' for i, x in enumerate(_fr27)) + '</div>'
     + '<h2 id="ano">O ano <strong>mês a mês</strong></h2>' + _gantt() + '<div class="pil" id="pil" role="group" aria-label="Filtrar por frente">'
     + "".join(f'<button type="button" data-c="{i}" aria-pressed="{"true" if i == 0 else "false"}">{n}</button>' for i, n in enumerate(["Todas", "Automação", "Eventos", "Conteúdo", "Digital"]))
-    + '</div><div class="tab tab-pilha" id="meses"><table><tr><th>Mês</th><th data-c="1">Automação</th><th data-c="2">Eventos</th><th data-c="3">Conteúdo</th><th data-c="4">Digital com estratégia</th></tr>'
-    + "".join(f'<tr><td>{t}</td><td data-c="1" data-r="Automação">{a}</td><td data-c="2" data-r="Eventos">{e}</td><td data-c="3" data-r="Conteúdo">{o}</td><td data-c="4" data-r="Digital com estratégia">{d}</td></tr>' for t, a, e, o, d in _ano27)
-    + """</table></div><script>(function(){var B=[].slice.call(document.querySelectorAll('#pil button')),T=document.getElementById('meses');
+    + '</div>' + _tl(None) + """<script>(function(){var B=[].slice.call(document.querySelectorAll('#pil button')),T=document.getElementById('meses');
 B.forEach(function(b){b.addEventListener('click',function(){var c=b.dataset.c;B.forEach(function(x){x.setAttribute('aria-pressed',x===b?'true':'false')});
-[].forEach.call(T.querySelectorAll('[data-c]'),function(e){e.hidden=c!=='0'&&e.dataset.c!==c});
-[].forEach.call(T.querySelectorAll('tr'),function(r,i){if(!i)return;var o=c==='0'?null:r.querySelector('[data-c="'+c+'"]');r.hidden=!!o&&!o.textContent})})})})();</script>"""
+[].forEach.call(T.querySelectorAll('.tl-i'),function(e){e.hidden=c!=='0'&&e.dataset.c!==c});
+[].forEach.call(T.querySelectorAll('.tl-m'),function(m){m.hidden=!m.querySelector('.tl-i:not([hidden])')})})})})();</script>"""
     + '<p class="meta-txt">Proposta do time de Comunicação &amp; Marketing. As metas das redes estão em Digital; as de negócio ficam para definir depois de medir a base, e a captação por origem depende de registrar a origem do contato até o comercial.</p>'
     + '<p class="rodape">Tivio Capital · Comunicação &amp; Marketing</p></div>')
 (EXTRA / "plano-2027.html").write_text(pagina("Plano 2027", corpo_p27, CSS_P), encoding="utf-8")
@@ -388,7 +395,7 @@ for _i, (_n, _s, _o, _l) in enumerate([(x[0], x[1], x[2], x[3]) for x in _fr27])
         + (_site if _n.startswith("Digital") else _cont if _n == "Conteúdo" else _evt if _n == "Eventos" else "")
         + '<h2>Como se encaixa <strong>no todo</strong></h2>' + _lig_tab(_n)
         + '<h2>Os <strong>números</strong></h2><div class="tab tab-pilha"><table><tr><th>Número</th><th>Hoje</th></tr>' + "".join(f'<tr><td>{b}</td><td data-r="Hoje">{d}</td></tr>' for a, b, d in _num27 if a == _n) + '</table></div>'
-        + '<h2>O <strong>ano</strong></h2>' + _gantt(_n) + '<div class="tab tab-pilha"><table><tr><th>Mês</th><th>O que acontece</th></tr>' + "".join(f'<tr><td>{r[0]}</td><td data-r="O que acontece">{r[_col]}</td></tr>' for r in _ano27 if r[_col]) + '</table></div>'
+        + '<h2>O <strong>ano</strong></h2>' + _gantt(_n) + _tl(_col)
         + '<h2>O que veio do <strong>benchmark</strong></h2><div class="tab tab-pilha"><table><tr><th>O que aprendemos</th><th>Como entra</th></tr>' + "".join(f'<tr><td><a href="frente-benchmark.html">{b}</a></td><td data-r="Como entra">{d}</td></tr>' for a, b, d in _bm if a == _n) + '</table></div>'
         + '<h2>Onde <strong>ver</strong></h2>' + cartoes(_ver[_n])
         + '<p class="rodape">Tivio Capital · Comunicação &amp; Marketing</p></div>')
