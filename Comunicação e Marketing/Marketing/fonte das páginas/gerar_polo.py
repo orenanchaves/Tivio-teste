@@ -234,7 +234,7 @@ corpo_mi = (cabecalho("Como usar IA", []) + '<div class="wrap">'
 (EXTRA / "metodos-ia.html").write_text(pagina("Como usar IA", corpo_mi, CSS_P), encoding="utf-8")
 
 _ser = [("Tivio Visita", "Irregular: 5 episódios em 2026", "49 e 4 comentários", "Melhor resultado do mês"),
-        ("Carta do Gestor", "10 edições em 10 meses de 2026", "13 e 23", "A série mais confiável"),
+        ("Carta do Gestor", "Todo mês: 10 edições em 10 meses de 2026", "13 e 23", "A série mais confiável"),
         ("Dividendos de FIIs", "Mensal, no fim do mês", "16", "Serviço para quem já é cotista"),
         ("Resumo mensal em Reels", "Mensal, um de crédito e um de imobiliário", "13 e 17", "Saem por volta do dia 15"),
         ("Desempenho em card", "Mensal, nos primeiros dias", "5 e 10", "O pior resultado do feed"),
@@ -284,12 +284,13 @@ _ano27 = [("Nov e dez/26", "Medir horas por edição; corrigir as falhas dos dec
           ("Maio", "", "1 evento: crédito privado e juros", "Tivio ao Quadrado", "Hub de estruturados"),
           ("Junho", "Automatizar o que ainda for manual", "2 eventos: Família ALT e juros", "Balanço das séries no semestre", "Artigos de crédito privado e previdência"),
           ("Julho", "Números do mês nas páginas de fundo", "1 evento: previdência; Expert XP", "3º vídeo de crédito", "Panorama de Estruturados, em troca do contato"),
-          ("Agosto", "", "1 evento: curadoria de gestores", "Carta trimestral em PDF e áudio", "Novos artigos por termo"),
+          ("Agosto", "", "1 evento: curadoria de gestores", "Carta do Gestor em PDF e áudio", "Novos artigos por termo"),
           ("Setembro", "Rever horas e erros do ano", "2 eventos: previdência e curadoria", "", "Rever posições no Google"),
           ("Outubro", "", "2 eventos: balanço de estruturados; Congresso Abrapp", "4º vídeo de crédito", "Novos artigos por termo"),
           ("Novembro", "", "2 eventos: perspectivas para 2028", "", "Simulador de cascata com carteira fictícia"),
           ("Dezembro", "Fechar o painel de números do ano", "Balanço dos eventos do ano", "Balanço das séries: manter, ajustar ou parar", "Balanço de site e artigos")]
-_bm = [("Automação", "Constância vale mais que audiência", "Kinea e Apollo", "Carta do Gestor com 10 edições em 10 meses de 2026; 81 materiais por rodada no AutomaTivio", "Edição mensal em dia, sem esforço manual"),
+_ano27 = [(r[0], r[1], r[2], r[3] if "Carta do Gestor" in r[3] else "Carta do Gestor" + (f"; {r[3]}" if r[3] else ""), r[4]) for r in _ano27]
+_bm = [("Automação", "Constância vale mais que audiência", "Kinea e Apollo", "Carta do Gestor todo mês; 81 materiais por rodada no AutomaTivio", "Edição mensal em dia, sem esforço manual"),
        ("Eventos", "O gargalo é quem indica", "PIMCO e Ares", "16 eventos Itaú no orçamento de 2027; o site ainda fala com um visitante genérico", "Trilha para assessores e gerentes"),
        ("Conteúdo", "Gente pesa mais que marca", "Solis e Ares", "Tivio Visita teve o melhor resultado de outubro, com 49 curtidas; executivos ativos no LinkedIn ainda a medir", "Gestores no LinkedIn pessoal"),
        ("Conteúdo", "Quem explica o risco ganha", "Oaktree e Janus Henderson", "Deep Dive com 15 curtidas, mas 11 meses de intervalo; 1 das 10 Cartas de 2026 tem crédito estruturado como tema central", "Séries que mostram a estrutura e o que pode dar errado"),
