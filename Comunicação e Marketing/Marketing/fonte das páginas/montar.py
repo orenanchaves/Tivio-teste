@@ -144,6 +144,13 @@ def fichas(html):
         return "".join(out)
     return re.sub(r'<div class="tab"><table>.*?</table></div>', troca, html, flags=re.S)
 
+def _ic27(d):
+    return f'<svg class="ic27" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">{d}</svg>'
+ICO27 = {"Automação": _ic27('<path d="M4 12a8 8 0 0 1 14-5.3L20 9M20 4v5h-5M20 12a8 8 0 0 1-14 5.3L4 15M4 20v-5h5"/>'),
+         "Eventos": _ic27('<rect x="3.5" y="5" width="17" height="15.5" rx="3"/><path d="M3.5 10h17M8 3v4M16 3v4"/>'),
+         "Conteúdo": _ic27('<path d="M6 3.5h8l4.5 4.5v12.5H6z"/><path d="M14 3.5V8h4.5M9 12.5h6M9 16h6"/>'),
+         "Digital com estratégia": _ic27('<circle cx="12" cy="12" r="8.5"/><path d="M3.5 12h17M12 3.5c2.4 2.4 3.6 5.2 3.6 8.5s-1.2 6.1-3.6 8.5c-2.4-2.4-3.6-5.2-3.6-8.5s1.2-6.1 3.6-8.5z"/>'),
+         "Benchmark": _ic27('<circle cx="12" cy="12" r="8.5"/><circle cx="12" cy="12" r="4.5"/><path d="M12 11.9h.01"/>')}
 exec(ler("dados_peers.py"))
 _paginas = {p["nome"]: f'peer-{p["slug"]}.html' for p in PEERS}
 for _s, _n, _f, _cs in SETORES:

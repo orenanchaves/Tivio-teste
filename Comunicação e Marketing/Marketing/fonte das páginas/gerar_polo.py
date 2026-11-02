@@ -303,17 +303,36 @@ _lig = [("Automação + Conteúdo", {"Automação", "Conteúdo"}, "Já hoje", "A
         ("Automação + Digital", {"Automação", "Digital com estratégia"}, "3º tri", "Números do mês atualizam as páginas de fundo")]
 def _lig_tab(n=None):
     return '<div class="tab tab-pilha"><table><tr><th>Estratégia</th><th>Quando</th><th>Como funciona</th></tr>' + "".join(f'<tr><td>{a}</td><td data-r="Quando">{q}</td><td data-r="Como funciona">{d}</td></tr>' for a, s, q, d in _lig if n is None or n in s) + '</table></div>'
+_G_M = ["N/D", "J", "F", "M", "A", "M", "J", "J", "A", "S", "O", "N", "D"]
+def _gantt(so=None):
+    nomes = [(1, "Automação"), (2, "Eventos"), (3, "Conteúdo"), (4, "Digital com estratégia")]
+    h = '<div class="gt-r gt-h"><span></span>' + "".join(f"<span>{x}</span>" for x in _G_M) + '</div>'
+    for i, n in nomes:
+        if so and n != so:
+            continue
+        cel = ""
+        for r in _ano27:
+            t = r[i]
+            q = re.match(r"(\d+) eventos?:", t) if i == 2 else None
+            cel += f'<span class="gt-c{" on" if t else ""}" title="{r[0]}: {t}">{q.group(1) if q else ""}</span>'
+        h += f'<div class="gt-r"><b>{ICO27[n]}{n.replace(" com estratégia", "")}</b>{cel}</div>'
+    return f'<div class="gt vidro" role="img" aria-label="Calendário de implementações por frente">{h}</div>'
+def _lig_vis():
+    def ic(t):
+        return ICO27["Eventos" if t == "Evento" else "Digital com estratégia" if t == "Digital" else t]
+    return '<div class="lig">' + "".join(f'<div class="lig-i vidro"><div class="lig-t">{ic(a.split(" + ")[0])}<i>+</i>{ic(a.split(" + ")[1])}<em>{q}</em></div><b>{a}</b><span>{d}</span></div>' for a, s, q, d in _lig) + '</div>'
 corpo_p27 = (cabecalho("Plano 2027", []) + '<div class="wrap">'
     + trilha(("index.html", "Início"), ("", "Plano 2027"))
     + '<section class="topo-peer"><div><h1>Plano 2027</h1><p class="lead">Ser a casa de estruturados, em quatro frentes, com números de negócio além de awareness.</p></div></section>'
-    + '<h2 id="frentes">O ano em <strong>quatro frentes</strong></h2><div class="frentes f2">'
-    + "".join(f'<section class="frente vidro"><h3><a href="{h}">{n}</a></h3><p class="dono">{d}</p><ul>' + "".join(f"<li>{x}</li>" for x in l) + "</ul></section>" for n, h, d, l in _fr27) + '</div>'
-    + '<h2 id="juntas">Estratégias que se <strong>entrelaçam</strong></h2>' + _lig_tab() + '<h2 id="benchmark">Benchmark <strong>conecta</strong> as frentes</h2>' + _bm_tab + '<p class="secao-sub"><a href="frente-benchmark.html">Ver o benchmark completo</a></p>'
-    + '<h2 id="funil">O caminho do <strong>número</strong></h2><ol class="roteiro r6 as-o">'
-    + "".join(f'<li class="vidro"><b>{a}</b><span>{b}</span></li>' for a, b in [("Alcance", "Quem viu a Tivio"), ("Contato", "Quem deixou nome e origem"), ("Reunião", "Quem pediu conversa qualificada"), ("Captação", "Quanto veio desse contato, em R$")]) + '</ol>'
+    + '<div class="kpis">' + "".join(f'<div class="kpi vidro"><b>{a}</b><span>{b}</span></div>' for a, b in [("81", "materiais por rodada"), ("23", "eventos no orçamento"), ("3 de 14", "posts sobre estruturados em out/26"), ("4", "artigos para ranquear no Google")]) + '</div>'
+    + '<h2 id="frentes">O ano em <strong>quatro frentes</strong></h2><a class="tp" href="m-posicionamento.html">Casa de estruturados</a><div class="frentes f4">'
+    + "".join(f'<section class="frente vidro">{ICO27[n]}<h3><a href="{h}">{n}</a></h3><p class="dono">{d}</p><ul>' + "".join(f"<li>{x}</li>" for x in l) + "</ul></section>" for n, h, d, l in _fr27) + '</div><a class="tp tp-b" href="frente-benchmark.html">' + ICO27["Benchmark"] + 'Benchmark conecta as quatro frentes</a>'
+    + '<h2 id="juntas">Estratégias que se <strong>entrelaçam</strong></h2>' + _lig_vis()
+    + '<h2 id="funil">O caminho do <strong>número</strong></h2><div class="fu">'
+    + "".join(f'<div class="fu-i vidro" style="width:{w}%"><b>{a}</b><span>{b}</span></div>' for w, a, b in [(100, "Alcance", "Quem viu a Tivio"), (88, "Contato", "Quem deixou nome e origem"), (76, "Reunião", "Quem pediu conversa qualificada"), (64, "Captação", "Quanto veio, em R$")]) + '</div>'
     + '<h2 id="numeros">Os números que a área <strong>vai trazer</strong></h2><div class="acc">'
     + "".join(f'<details{" open" if i == 0 else ""}><summary><b>{x[0]}</b><span>{sum(1 for n in _num27 if n[0] == x[0])} números</span></summary><div class="tab tab-pilha"><table><tr><th>Número</th><th>Hoje</th></tr>' + "".join(f'<tr><td>{b}</td><td data-r="Hoje">{d}</td></tr>' for a, b, d in _num27 if a == x[0]) + '</table></div></details>' for i, x in enumerate(_fr27)) + '</div>'
-    + '<h2 id="ano">O ano <strong>mês a mês</strong></h2><div class="pil" id="pil" role="group" aria-label="Filtrar por frente">'
+    + '<h2 id="ano">O ano <strong>mês a mês</strong></h2>' + _gantt() + '<div class="pil" id="pil" role="group" aria-label="Filtrar por frente">'
     + "".join(f'<button type="button" data-c="{i}" aria-pressed="{"true" if i == 0 else "false"}">{n}</button>' for i, n in enumerate(["Todas", "Automação", "Eventos", "Conteúdo", "Digital"]))
     + '</div><div class="tab tab-pilha" id="meses"><table><tr><th>Mês</th><th data-c="1">Automação</th><th data-c="2">Eventos</th><th data-c="3">Conteúdo</th><th data-c="4">Digital com estratégia</th></tr>'
     + "".join(f'<tr><td>{t}</td><td data-c="1" data-r="Automação">{a}</td><td data-c="2" data-r="Eventos">{e}</td><td data-c="3" data-r="Conteúdo">{o}</td><td data-c="4" data-r="Digital com estratégia">{d}</td></tr>' for t, a, e, o, d in _ano27)
@@ -357,12 +376,12 @@ _cont = ('<h2 id="executivos">Executivos nas <strong>conversas do LinkedIn</stro
 for _i, (_n, _s, _o, _l) in enumerate([(x[0], x[1], x[2], x[3]) for x in _fr27]):
     _col = {"Automação": 1, "Eventos": 2, "Conteúdo": 3}.get(_n, 4)
     _c = (cabecalho(_n, []) + '<div class="wrap">' + trilha(("index.html", "Início"), ("plano-2027.html", "Plano 2027"), ("", _n))
-        + f'<section class="topo-peer"><div><h1>{_n}</h1><p class="lead">{_o}</p></div></section>'
+        + f'<section class="topo-peer"><div>{ICO27[_n]}<h1>{_n}</h1><p class="lead">{_o}</p></div></section>'
         + '<h2>O que vamos <strong>fazer</strong></h2><ol class="roteiro r6' + (' as-o' if len(_l) == 4 else '') + '">' + "".join(f'<li class="vidro"><b>{x}</b></li>' for x in _l) + '</ol>'
         + (_site if _n.startswith("Digital") else _cont if _n == "Conteúdo" else _evt if _n == "Eventos" else "")
         + '<h2>Como se encaixa <strong>no todo</strong></h2>' + _lig_tab(_n)
         + '<h2>Os <strong>números</strong></h2><div class="tab tab-pilha"><table><tr><th>Número</th><th>Hoje</th></tr>' + "".join(f'<tr><td>{b}</td><td data-r="Hoje">{d}</td></tr>' for a, b, d in _num27 if a == _n) + '</table></div>'
-        + '<h2>O <strong>ano</strong></h2><div class="tab tab-pilha"><table><tr><th>Mês</th><th>O que acontece</th></tr>' + "".join(f'<tr><td>{r[0]}</td><td data-r="O que acontece">{r[_col]}</td></tr>' for r in _ano27 if r[_col]) + '</table></div>'
+        + '<h2>O <strong>ano</strong></h2>' + _gantt(_n) + '<div class="tab tab-pilha"><table><tr><th>Mês</th><th>O que acontece</th></tr>' + "".join(f'<tr><td>{r[0]}</td><td data-r="O que acontece">{r[_col]}</td></tr>' for r in _ano27 if r[_col]) + '</table></div>'
         + '<h2>O que veio do <strong>benchmark</strong></h2><div class="tab tab-pilha"><table><tr><th>O que aprendemos</th><th>Como entra</th></tr>' + "".join(f'<tr><td><a href="frente-benchmark.html">{b}</a></td><td data-r="Como entra">{d}</td></tr>' for a, b, d in _bm if a == _n) + '</table></div>'
         + '<h2>Onde <strong>ver</strong></h2>' + cartoes(_ver[_n])
         + '<p class="rodape">Tivio Capital · Comunicação &amp; Marketing</p></div>')
