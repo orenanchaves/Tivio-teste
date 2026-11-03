@@ -31,8 +31,14 @@
     s += '<section class="sl capa"><h2>Casa de <strong>estruturados</strong></h2><p class="sl-l">Menos, com mais qualidade.</p></section>';
     [].forEach.call(A.querySelectorAll(".sl"), function (x) { x.remove() });
     A.querySelector(".ap-ctl").insertAdjacentHTML("beforebegin", s);
-    var ls = [].slice.call(A.querySelectorAll(".sl")), tot = ls.length;
-    ls.forEach(function (x, k) { x.insertAdjacentHTML("beforeend", '<div class="sl-rod"><span>Tivio Capital · Comunicação &amp; Marketing</span><span>Visão</span><i><u style="width:' + Math.round((k + 1) / tot * 100) + '%"></u></i><b>' + String(k + 1).padStart(2, "0") + " / " + String(tot).padStart(2, "0") + "</b></div>") });
+    var ls = [].slice.call(A.querySelectorAll(".sl"));
+    ls.forEach(function (x, k) {
+      var h = x.querySelector(":scope>h2, :scope>.sl-2>h2"), capa = x.classList.contains("capa"), corpo = document.createElement("div"); corpo.className = "sl-corpo";
+      if (!capa && h && h.parentNode === x) { var top = document.createElement("header"); top.className = "sl-top"; top.innerHTML = '<span class="sl-sec">Visão</span>'; top.appendChild(h); x.insertBefore(top, x.firstChild) }
+      [].slice.call(x.childNodes).forEach(function (c) { if (c.nodeType !== 1 || !c.classList.contains("sl-top")) corpo.appendChild(c) });
+      x.appendChild(corpo);
+      x.insertAdjacentHTML("beforeend", '<footer class="sl-pe"><span>Tivio Capital · Comunicação &amp; Marketing · Visão</span><b>' + String(k + 1).padStart(2, "0") + "</b></footer>");
+    });
     return ls;
   }
   var l = [], i = 0, n = document.getElementById("ap-n"); A.querySelector(".ap-logo").innerHTML = document.querySelector(".marca").innerHTML;

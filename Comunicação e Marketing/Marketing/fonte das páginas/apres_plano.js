@@ -45,9 +45,9 @@
     var sum = '<div class="sl-sum">' + ordem.map(function (k) { return "<div><b>" + esc(k) + "</b>" + grupos[k].map(function (x) { return '<button type="button" data-ir="' + x[0] + '">' + esc(x[1]) + "<i>" + (x[0] + 1) + "</i></button>" }).join("") + "</div>" }).join("") + "</div>";
     var tot = S.length;
     var html = S.map(function (s, i) {
-      var cab = s.capa ? "" : '<div class="sl-cab"><b>' + esc(s.sec) + "</b><i>" + (i + 1) + " / " + tot + "</i></div>";
-      cab += '<div class="sl-rod"><span>Tivio Capital · Comunicação &amp; Marketing</span><span>Plano 2027</span><i><u style="width:' + Math.round((i + 1) / tot * 100) + '%"></u></i><b>' + String(i + 1).padStart(2, "0") + " / " + String(tot).padStart(2, "0") + "</b></div>";
-      return '<section class="sl' + (s.capa ? " capa" : "") + '">' + cab + (s.capa ? "<h2>" + s.h + "</h2>" : '<h2 class="fr">' + s.h + "</h2>") + s.html.replace("<!--SUM-->", sum) + "</section>";
+      var pe = '<footer class="sl-pe"><span>Tivio Capital · Comunicação &amp; Marketing · Plano 2027</span><b>' + String(i + 1).padStart(2, "0") + "</b></footer>";
+      if (s.capa) return '<section class="sl capa"><div class="sl-corpo"><h2>' + s.h + "</h2>" + s.html + "</div>" + pe + "</section>";
+      return '<section class="sl"><header class="sl-top"><span class="sl-sec">' + esc(s.sec) + '</span><h2 class="fr">' + s.h + '</h2></header><div class="sl-corpo">' + s.html.replace("<!--SUM-->", sum) + "</div>" + pe + "</section>";
     }).join("");
     [].forEach.call(A.querySelectorAll(".sl"), function (x) { x.remove() });
     A.querySelector(".ap-sum").insertAdjacentHTML("beforebegin", html);

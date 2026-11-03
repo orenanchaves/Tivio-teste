@@ -329,3 +329,23 @@
 #apres .sl-g.cmp ul{font-size:clamp(12px,.92vw,15px)}#apres .sl-g.cmp li+li{margin-top:.35em}
 #apres .sl-g.cmp>div{padding:clamp(12px,1.2vw,20px)}}
 @media (min-width:761px){#apres .sl-rod{bottom:8%}#apres .ap-ctl{bottom:1.6%}#apres .ap-ctl button{height:32px;min-width:32px;font-size:13px}#apres .sl{padding-bottom:12%}}
+/* moldura das apresentações: título no alto à esquerda, logo no alto à direita, linha e número no rodapé */
+#apres .sl{padding:0!important;justify-content:flex-start;overflow:hidden}
+#apres .sl-cab,#apres .sl-rod{display:none}
+#apres .ap-logo{left:auto!important;right:6%;top:6.4%;width:clamp(84px,8.4vw,128px)}
+#apres .sl-top{position:absolute;left:6%;right:24%;top:6%}
+#apres .sl-sec{display:block;margin:0 0 .9vh;color:#C1F4D4;font-size:clamp(11px,.85vw,14px);font-weight:600;letter-spacing:.16em;text-transform:uppercase}
+#apres .sl-top h2.fr{margin:0!important;font-size:clamp(24px,2.7vw,46px);line-height:1.1}
+#apres .sl-corpo{position:absolute;left:6%;right:6%;top:23%;bottom:15%;display:flex;flex-direction:column;justify-content:center;overflow:auto}
+#apres .sl.capa .sl-corpo{top:8%}
+#apres .sl-pe{position:absolute;left:6%;right:6%;bottom:6.5%;display:flex;justify-content:space-between;align-items:center;padding-top:1.4vh;border-top:1px solid rgba(255,255,255,.22);color:#8A99A3;font-size:clamp(11px,.85vw,13px);letter-spacing:.06em}
+#apres .sl-pe b{color:#FFF;font-size:clamp(13px,1.05vw,17px);font-weight:600;font-variant-numeric:tabular-nums}
+#apres .ap-ctl{left:50%;right:auto!important;transform:translateX(-50%)!important;bottom:1.2%!important}
+#apres .sl-corpo .sl-2>h2.fr{font-size:clamp(24px,3vw,52px)}
+@media (max-width:760px){
+#apres .ap-logo{right:16px;top:18px;width:84px}
+#apres .sl-top{left:16px;right:116px;top:16px}#apres .sl-top h2.fr{font-size:22px}
+#apres .sl-corpo{left:16px;right:16px;top:112px;bottom:96px;justify-content:flex-start}
+#apres .sl.capa .sl-corpo{top:80px;justify-content:center}
+#apres .sl-pe{left:16px;right:16px;bottom:58px;font-size:10px;padding-top:8px}
+#apres .ap-ctl{bottom:10px!important}}
