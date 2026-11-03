@@ -269,7 +269,7 @@ _fr27 = [("Automação", "frente-automacao.html", "Facilitar o operacional para 
          ("Eventos", "frente-eventos.html", "Transformar presença em contato e reunião.",
           ["16 eventos Itaú no escritório", "Summit BTG, Conexão Bradesco e Expert XP", "Abrapp, Previpar, APEP e ASCPrev", "Contato quente para o comercial em até 2 dias"]),
          ("Conteúdo", "frente-conteudo.html", "Menos, com mais qualidade, para um nicho.",
-          ["Casa de estruturados em toda série", "Executivos nas conversas do LinkedIn", "Colaboradores, Teams e WhatsApp", "Newsletter como base própria", "Vídeo de crédito e Tivio ao Quadrado", "Kit do assessor"]),
+          ["Casa de estruturados em toda série", "Executivos nas conversas do LinkedIn", "Colaboradores, Teams e WhatsApp", "Newsletter como base própria", "Raio X do Mercado e Tivio ao Quadrado", "Kit do assessor"]),
          ("Digital com estratégia", "frente-digital.html", "Remodelar o site e ranquear melhor no Google.",
           ["Site remodelado", "Artigos para ranquear no Google", "Landing por objetivo, com tráfego orgânico e pago", "Metas das redes"])]
 _num27 = [("Automação", "Horas do time por edição", "A medir"), ("Automação", "Materiais gerados por rodada", "81, em set/2026"), ("Automação", "Correções depois de publicar", "A medir"),
@@ -277,16 +277,16 @@ _num27 = [("Automação", "Horas do time por edição", "A medir"), ("Automaçã
           ("Conteúdo", "Posts sobre estruturados", "3 de 14, em out/2026"), ("Conteúdo", "Contatos vindos de cada série", "A medir"), ("Conteúdo", "Executivos ativos no LinkedIn", "A medir"), ("Conteúdo", "Colaboradores que engajam nos posts", "A medir"), ("Conteúdo", "Cliques do WhatsApp até um contato", "A medir"), ("Conteúdo", "Inscritos, abertura e cliques da newsletter", "A medir"),
           ("Digital com estratégia", "Contatos por landing e por origem", "A medir"), ("Digital com estratégia", "Custo por contato", "A medir"), ("Digital com estratégia", "Reuniões qualificadas", "A medir"), ("Digital com estratégia", "Posição no Google nos termos de estruturados", "A medir"), ("Digital com estratégia", "Visitas orgânicas ao site", "A medir")]
 _ano27 = [("Nov e dez/26", "Medir horas por edição; corrigir as falhas dos decks", "Definir a agenda com o Itaú", "Regra de aprovação com Riscos; kit do assessor piloto", "Plano de remodelação do site; formulário curto da newsletter"),
-          ("Janeiro", "", "1 evento: panorama de estruturados", "1º vídeo trimestral de crédito; newsletter no novo formato", "3 templates indexáveis; landing do evento"),
+          ("Janeiro", "", "1 evento: panorama de estruturados", "1º Raio X do Mercado, quadro fixo de vídeo; newsletter no novo formato", "3 templates indexáveis; landing do evento"),
           ("Fevereiro", "Decks sem ajuste manual", "1 evento: como ler um FIDC; Summit BTG", "Executivos no LinkedIn; colaboradores e canal do Teams", "Novo layout do site"),
           ("Março", "Balanço de horas e erros", "2 eventos: estruturados e FIDC", "Rotina semanal no WhatsApp", "Primeiros artigos: FIDC e crédito estruturado"),
-          ("Abril", "Convite e balanço de evento em modelo", "1 evento: Família ALT", "2º vídeo de crédito; Gráfico da Semana", "Site remodelado no ar"),
+          ("Abril", "Convite e balanço de evento em modelo", "1 evento: Família ALT", "2º Raio X do Mercado; Gráfico da Semana", "Site remodelado no ar"),
           ("Maio", "", "1 evento: crédito privado e juros", "Tivio ao Quadrado", "Hub de estruturados"),
           ("Junho", "Automatizar o que ainda for manual", "2 eventos: Família ALT e juros", "Balanço das séries no semestre", "Artigos de crédito privado e previdência"),
-          ("Julho", "Números do mês nas páginas de fundo", "1 evento: previdência; Expert XP", "3º vídeo de crédito", "Panorama de Estruturados, em troca do contato"),
+          ("Julho", "Números do mês nas páginas de fundo", "1 evento: previdência; Expert XP", "3º Raio X do Mercado", "Panorama de Estruturados, em troca do contato"),
           ("Agosto", "", "1 evento: curadoria de gestores", "Carta do Gestor em PDF e áudio", "Novos artigos por termo"),
           ("Setembro", "Rever horas e erros do ano", "2 eventos: previdência e curadoria", "", "Rever posições no Google"),
-          ("Outubro", "", "2 eventos: balanço de estruturados; Congresso Abrapp", "4º vídeo de crédito", "Novos artigos por termo"),
+          ("Outubro", "", "2 eventos: balanço de estruturados; Congresso Abrapp", "4º Raio X do Mercado", "Novos artigos por termo"),
           ("Novembro", "", "2 eventos: perspectivas para 2028", "", "Simulador de cascata com carteira fictícia"),
           ("Dezembro", "Fechar o painel de números do ano", "Balanço dos eventos do ano", "Balanço das séries: manter, ajustar ou parar", "Balanço de site e artigos")]
 _ano27 = [(r[0], r[1], r[2], r[3] if "Carta do Gestor" in r[3] else "Carta do Gestor" + (f"; {r[3]}" if r[3] else ""), r[4]) for r in _ano27]
@@ -381,7 +381,7 @@ _evt = ('<h2 id="mix">Os 23 eventos <strong>por tipo</strong></h2>' + _st([("Ita
 _exec = [("Rodrigo Freire", "CEO", "Tivio, mercado e casa de estruturados"), ("Sami Karlik", "CIO de Crédito", "Crédito privado e estruturado"), ("Huang Seen", "Head de renda fixa", "Juros globais e renda fixa"), ("Bruno Franco", "Infra e energia", "Ilíquidos de infraestrutura e energia"), ("Vitor Engelmann", "Imobiliário", "Fundos imobiliários e aquisições")]
 _acoes = [("Colaboradores", "Post da semana com sugestão de comentário, para quem quiser participar"), ("Canal do Teams", "Cada post novo no canal, com link direto e sugestão de comentário"),
           ("Canal de WhatsApp", "Mensagem curta com gráfico ou vídeo, enquete e aviso antecipado de carta e evento"),
-          ("Vídeos de crédito", "Plano trimestral: o mercado como um todo, com a Vivi e o pessoal de crédito; imobiliário no mesmo formato"), ("Tivio ao Quadrado", "Série mantida, com nova edição no 2º tri")]
+          ("Raio X do Mercado", "Quadro fixo de vídeo, uma edição por trimestre: o mercado de crédito como um todo, com a Vivi e o pessoal de crédito, sempre na mesma estrutura; imobiliário no mesmo formato"), ("Tivio ao Quadrado", "Série mantida, com nova edição no 2º tri")]
 _cont = ('<h2 id="foco">O que publicamos <strong>hoje</strong></h2><p class="secao-sub">14 posts em outubro de 2026, no Instagram.</p>' + _st([("Crédito estruturado", 3), ("Outros temas", 11)])
     + '<h2 id="curtidas">O que mais <strong>engaja</strong></h2><p class="secao-sub">Curtidas por tipo de post, média de outubro.</p>' + _bh(_curt[:6])
     + '<h2 id="executivos">Executivos nas <strong>conversas do LinkedIn</strong></h2><div class="tab tab-pilha"><table><tr><th>Executivo</th><th>Papel</th><th>Conversas para entrar</th></tr>'
