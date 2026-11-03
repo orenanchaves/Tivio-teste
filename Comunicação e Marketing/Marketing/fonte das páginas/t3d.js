@@ -83,7 +83,7 @@
   var visivel=true;
   if(window.IntersectionObserver)new IntersectionObserver(function(es){visivel=es[0].isIntersecting;}).observe(caixa);
   (function quadro(){
-    requestAnimationFrame(quadro);
+    if(!caixa.isConnected)return;requestAnimationFrame(quadro);
     if(!visivel)return;
     if(!arr){vx*=0.95;pivo.rotation.y+=vx+(Math.abs(vx)<0.002?auto:0);pivo.rotation.x+=(inclina*0.98-pivo.rotation.x)*0.08;inclina+=(-0.12-inclina)*0.02;}
     else pivo.rotation.x+=(inclina-pivo.rotation.x)*0.2;

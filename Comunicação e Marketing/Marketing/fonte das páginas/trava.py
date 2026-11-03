@@ -32,7 +32,7 @@ css = fontes + """:root{--bg:#0A0F14;--bg-elev:linear-gradient(135deg,rgba(255,2
 @media (prefers-reduced-motion:reduce){.car path{animation:none;opacity:1}}
 """
 (OUT/"entrar.css").write_text(css, encoding="utf-8")
-shutil.copy(S/"favicon.ico", OUT/"favicon.ico"); shutil.copy(S/"editar.js", OUT/"editar.js")
+shutil.copy(S/"favicon.ico", OUT/"favicon.ico"); shutil.copy(S/"editar.js", OUT/"editar.js"); shutil.copy(S/"navegar.js", OUT/"navegar.js")
 JS = """(function(){try{var t=localStorage.getItem('tivio-tema');if(t==='light'||t==='dark')document.documentElement.setAttribute('data-theme',t)}catch(x){}
 var Q='tivio-chave',F=document.getElementById('f'),E=document.getElementById('e'),C=document.getElementById('c');function u(x){return Uint8Array.from(atob(x),function(c){return c.charCodeAt(0)})}
 async function abre(k,m){var p=await crypto.subtle.decrypt({name:'AES-GCM',iv:u(D.i)},k,u(D.c));var h=new TextDecoder().decode(p);if(m)await new Promise(function(r){setTimeout(r,Math.max(0,m-Date.now()))});if(document.readyState!=='complete')await new Promise(function(r){addEventListener('load',r)});document.open();document.write(h);document.close()}
@@ -40,7 +40,7 @@ async function chave(){var g=null;try{g=sessionStorage.getItem(Q)}catch(x){}if(!
 (async function(){var k=await chave();if(k){try{await abre(k);return}catch(x){try{sessionStorage.removeItem(Q)}catch(y){}}}F.hidden=false;document.getElementById('s').focus()})();
 document.getElementById('l').addEventListener('submit',async function(e){e.preventDefault();E.hidden=true;var B=this.querySelector('button'),M=Date.now()+1500;B.disabled=true;F.hidden=true;C.hidden=false;try{var kb=await crypto.subtle.importKey('raw',new TextEncoder().encode(document.getElementById('s').value),'PBKDF2',false,['deriveKey']);
 var k=await crypto.subtle.deriveKey({name:'PBKDF2',salt:u(D.s),iterations:D.n,hash:'SHA-256'},kb,{name:'AES-GCM',length:256},true,['decrypt']);var r=new Uint8Array(await crypto.subtle.exportKey('raw',k));try{sessionStorage.setItem(Q,btoa(String.fromCharCode.apply(null,r)))}catch(x){}await abre(k,M)}catch(x){try{sessionStorage.removeItem(Q)}catch(y){}C.hidden=true;F.hidden=false;E.hidden=false;B.disabled=false;document.getElementById('s').focus()}})})();"""
-TRANS = """<style>@keyframes tvIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}.wrap{animation:tvIn .32s ease-out}.wrap.tv-sai{opacity:0;transition:opacity .16s ease-in}@media (prefers-reduced-motion:reduce){.wrap{animation:none}.wrap.tv-sai{transition:none}}</style><script>document.addEventListener('click',function(e){var a=e.target.closest&&e.target.closest('a[href]');if(!a||e.defaultPrevented||e.button||e.metaKey||e.ctrlKey||e.shiftKey||a.target||a.hasAttribute('download'))return;var u=new URL(a.href,location.href);if(u.origin!==location.origin||u.pathname===location.pathname)return;var w=document.querySelector('.wrap');if(!w||matchMedia('(prefers-reduced-motion: reduce)').matches)return;e.preventDefault();w.classList.add('tv-sai');setTimeout(function(){location.href=a.href},160)});addEventListener('pageshow',function(e){if(e.persisted){var w=document.querySelector('.wrap');if(w)w.classList.remove('tv-sai')}})</script>"""
+TRANS = """<style>@keyframes tvIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}.wrap{animation:tvIn .32s ease-out}@media (prefers-reduced-motion:reduce){.wrap{animation:none}}</style><script src="navegar.js"></script>"""
 def casca(iv, ct):
     return f"""<!doctype html>
 <html lang="pt-BR">
@@ -66,7 +66,6 @@ for f in sorted(ORIG.glob("*.html")):
     if fr:
         i = h.index('<div class="wrap">'); j = h.rindex('<p class="rodape">'); j = h.index("</div>", j) + 6
         h = h[:i] + (S/fr).read_text(encoding="utf-8") + h[j:]
-    h = h.replace("</head>", TRANS + "</head>", 1)
     h = h.replace("<!--METAS-->", (S/"metas_frag.html").read_text(encoding="utf-8"))
     h = h.replace("<!--CEO1-->", "CEO; Tivio, mercado e casa de estruturados; ").replace("<!--CEO2-->", "CEO, ").replace("<!--CEO3-->", "Tivio, mercado e casa de estruturados; ")
     assert "<!--CEO" not in h, f.name
@@ -80,7 +79,7 @@ for f in sorted(ORIG.glob("*.html")):
     h, n = re.subn(r'<p class="(?:eyebrow|sl-e)"[^>]*>.*?</p>', "", h, flags=re.S)
     if "favicon.ico" not in h: h = h.replace("</title>", '</title>\n<link rel="icon" href="favicon.ico" sizes="any">', 1)
     assert 'class="eyebrow' not in h and 'class="sl-e' not in h, f.name
-    i = h.rfind("</body>"); i = len(h) if i < 0 else i; h = h[:i] + '<script src="editar.js"></script>' + h[i:]
+    i = h.rfind("</body>"); i = len(h) if i < 0 else i; h = h[:i] + TRANS + '<script src="editar.js"></script>' + h[i:]
     iv = os.urandom(12)
     (OUT/f.name).write_text(casca(iv, AESGCM(k).encrypt(iv, h.encode("utf-8"), None)), encoding="utf-8")
 print("cifradas", len(list(OUT.glob("*.html"))))

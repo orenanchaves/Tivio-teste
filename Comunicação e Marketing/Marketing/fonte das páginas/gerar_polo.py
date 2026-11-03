@@ -352,7 +352,8 @@ B.forEach(function(b){b.addEventListener('click',function(){var c=b.dataset.c;B.
 [].forEach.call(T.querySelectorAll('.tl-i'),function(e){e.hidden=c!=='0'&&e.dataset.c!==c});
 [].forEach.call(T.querySelectorAll('.tl-m'),function(m){m.hidden=!m.querySelector('.tl-i:not([hidden])')})})})})();</script>"""
     + '<p class="meta-txt">Proposta do time de Comunicação &amp; Marketing. As metas das redes estão em Digital; as de negócio ficam para definir depois de medir a base, e a captação por origem depende de registrar a origem do contato até o comercial.</p></section>'
-    + '<!--APRES-->' + _AP_JS + _ABAS_JS
+    + '<div id="apres" hidden role="dialog" aria-label="Modo apresentação"><div class="ap-logo"></div><div class="ap-ctl"><button type="button" id="ap-ant" aria-label="Anterior">‹</button><span id="ap-n"></span><button type="button" id="ap-prox" aria-label="Próximo">›</button><button type="button" id="ap-sair" aria-label="Sair">Sair</button></div></div>'
+    + '<script>' + (pathlib.Path(__file__).parent / "apres_plano.js").read_text(encoding="utf-8") + '</script>' + _ABAS_JS
     + '<p class="rodape">Tivio Capital · Comunicação &amp; Marketing</p></div>')
 (EXTRA / "plano-2027.html").write_text(pagina("Plano", corpo_p27, CSS_P), encoding="utf-8")
 
