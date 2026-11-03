@@ -118,8 +118,8 @@ corpo_est = (cabecalho("Estrutura", []) + '<div class="wrap">'
     + '<h2>Antes, agora e <strong>futuro</strong></h2>' + _fases
     + _mov
     + '<h2>Antes: quem fazia <strong>o quê</strong></h2>' + _antes[_antes.index('<div class="tab">'):]
-    + '<h2>O que cada frente <strong>cobre</strong></h2><div class="frentes f2">' + _fr + '</div>'
-    + '<h2>Design: estratégico e <strong>operacional</strong></h2><div class="frentes f2">' + "".join(f'<section class="frente vidro"><h3>{n}</h3><p class="dono">{d}</p><ul>' + "".join(f"<li>{x}</li>" for x in l) + "</ul></section>" for n, d, l in [("Design estratégico", "Renan Chaves", ["Direção de arte e linguagem visual da casa", "Identidade e design system", "KV de campanha e de evento", "Templates e padrões das peças", "Decks e apresentações", "Aprovação visual final"]), ("Design operacional", "Gabriel Fiorilli", ["Peças de social a partir do KV e dos templates", "Desdobramentos e formatos", "Materiais de eventos", "Vídeo e motion", "Ajustes e versões finais"])]) + '</div>'
+    + '<h2>O que cada frente <strong>cobre</strong></h2><div class="frentes linhas">' + _fr + '</div>'
+    + '<h2>Design: estratégico e <strong>operacional</strong></h2><div class="frentes linhas">' + "".join(f'<section class="frente vidro"><h3>{n}</h3><p class="dono">{d}</p><ul>' + "".join(f"<li>{x}</li>" for x in l) + "</ul></section>" for n, d, l in [("Design estratégico", "Renan Chaves", ["Direção de arte e linguagem visual da casa", "Identidade e design system", "KV de campanha e de evento", "Templates e padrões das peças", "Decks e apresentações", "Aprovação visual final"]), ("Design operacional", "Gabriel Fiorilli", ["Peças de social a partir do KV e dos templates", "Desdobramentos e formatos", "Materiais de eventos", "Vídeo e motion", "Ajustes e versões finais"])]) + '</div>'
     + '<h2>Eventos, frente <strong>transversal</strong></h2><div class="papeis">' + _pap + '</div>'
     + '<h2>Como uma demanda <strong>anda</strong></h2><ol class="roteiro r6">' + _fl + '</ol>'
     + '<p class="rodape">Tivio Capital · Comunicação &amp; Marketing</p></div>')
