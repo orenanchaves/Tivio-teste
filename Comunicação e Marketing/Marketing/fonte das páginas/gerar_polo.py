@@ -336,7 +336,7 @@ corpo_p27 = (cabecalho("Plano 2027", []) + '<div class="wrap">'
     + "".join(f'<div class="fu-i vidro" style="width:{w}%"><b>{a}</b><span>{b}</span></div>' for w, a, b in [(100, "Alcance", "Quem viu a Tivio"), (88, "Contato", "Quem deixou nome e origem"), (76, "Reunião", "Quem pediu conversa qualificada"), (64, "Captação", "Quanto veio, em R$")]) + '</div>'
     + '<h2 id="numeros">Os números que a área <strong>vai trazer</strong></h2><div class="acc">'
     + "".join(f'<details{" open" if i == 0 else ""}><summary><b>{x[0]}</b><span>{sum(1 for n in _num27 if n[0] == x[0])} números</span></summary><div class="tab tab-pilha"><table><tr><th>Número</th><th>Hoje</th></tr>' + "".join(f'<tr><td>{b}</td><td data-r="Hoje">{d}</td></tr>' for a, b, d in _num27 if a == x[0]) + '</table></div></details>' for i, x in enumerate(_fr27)) + '</div>'
-    + '<h2 id="ano">O ano <strong>mês a mês</strong></h2>' + _gantt() + '<div class="pil" id="pil" role="group" aria-label="Filtrar por frente">'
+    + '<h2 id="ano">O ano <strong>mês a mês</strong></h2><a class="tp tp-b" href="fim-de-ano.html">Antes de começar: o que fechar no fim de 2026</a>' + _gantt() + '<div class="pil" id="pil" role="group" aria-label="Filtrar por frente">'
     + "".join(f'<button type="button" data-c="{i}" aria-pressed="{"true" if i == 0 else "false"}">{n}</button>' for i, n in enumerate(["Todas", "Automação", "Eventos", "Conteúdo", "Digital"]))
     + '</div>' + _tl(None) + """<script>(function(){var B=[].slice.call(document.querySelectorAll('#pil button')),T=document.getElementById('meses');
 B.forEach(function(b){b.addEventListener('click',function(){var c=b.dataset.c;B.forEach(function(x){x.setAttribute('aria-pressed',x===b?'true':'false')});
@@ -414,4 +414,5 @@ _c = (cabecalho("Benchmark", []) + '<div class="wrap">' + trilha(("index.html", 
     + '<p class="rodape">Tivio Capital · Comunicação &amp; Marketing</p></div>')
 (EXTRA / "frente-benchmark.html").write_text(pagina("Benchmark", _c, CSS_P), encoding="utf-8")
 
+(EXTRA / "fim-de-ano.html").write_text(pagina("Fim de 2026", cabecalho("Fim de 2026", []) + '<div class="wrap"><p class="rodape">Tivio Capital</p></div>', CSS_P), encoding="utf-8")
 (EXTRA / "transicao.html").write_text(pagina("Transição", cabecalho("Transição", []) + '<div class="wrap"><p class="rodape">Tivio Capital</p></div>', CSS_P), encoding="utf-8")

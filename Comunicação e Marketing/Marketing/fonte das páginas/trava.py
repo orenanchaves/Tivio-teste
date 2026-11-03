@@ -62,7 +62,7 @@ def casca(iv, ct):
 """
 for f in sorted(ORIG.glob("*.html")):
     h = f.read_text(encoding="utf-8")
-    fr = {"orcamento.html": "orc_frag.html", "transicao.html": "transicao_frag.html"}.get(f.name)
+    fr = {"orcamento.html": "orc_frag.html", "transicao.html": "transicao_frag.html", "fim-de-ano.html": "fimano_frag.html"}.get(f.name)
     if fr:
         i = h.index('<div class="wrap">'); j = h.rindex('<p class="rodape">'); j = h.index("</div>", j) + 6
         h = h[:i] + (S/fr).read_text(encoding="utf-8") + h[j:]
