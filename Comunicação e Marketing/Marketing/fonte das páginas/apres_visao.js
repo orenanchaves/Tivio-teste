@@ -31,11 +31,13 @@
     s += '<section class="sl capa"><h2>Casa de <strong>estruturados</strong></h2><p class="sl-l">Menos, com mais qualidade.</p></section>';
     [].forEach.call(A.querySelectorAll(".sl"), function (x) { x.remove() });
     A.querySelector(".ap-ctl").insertAdjacentHTML("beforebegin", s);
-    return [].slice.call(A.querySelectorAll(".sl"));
+    var ls = [].slice.call(A.querySelectorAll(".sl")), tot = ls.length;
+    ls.forEach(function (x, k) { x.insertAdjacentHTML("beforeend", '<div class="sl-rod"><span>Tivio Capital · Comunicação &amp; Marketing</span><span>Visão</span><i><u style="width:' + Math.round((k + 1) / tot * 100) + '%"></u></i><b>' + String(k + 1).padStart(2, "0") + " / " + String(tot).padStart(2, "0") + "</b></div>") });
+    return ls;
   }
   var l = [], i = 0, n = document.getElementById("ap-n"); A.querySelector(".ap-logo").innerHTML = document.querySelector(".marca").innerHTML;
   function v(k) { i = Math.max(0, Math.min(l.length - 1, k)); l.forEach(function (s, j) { s.classList.toggle("ativa", j === i) }); n.textContent = (i + 1) + " / " + l.length }
-  function abrir() { l = monta(); A.hidden = false; document.body.style.overflow = "hidden"; v(0); if (A.requestFullscreen) A.requestFullscreen().catch(function () {}) }
+  function abrir() { l = monta(); A.hidden = false; document.body.style.overflow = "hidden"; v(0); var R = document.documentElement; if (R.requestFullscreen) R.requestFullscreen().catch(function () {}) }
   function sair() { A.hidden = true; document.body.style.overflow = ""; if (document.fullscreenElement) document.exitFullscreen() }
   BT.onclick = abrir; document.getElementById("ap-sair").onclick = sair;
   document.getElementById("ap-ant").onclick = function () { v(i - 1) }; document.getElementById("ap-prox").onclick = function () { v(i + 1) };

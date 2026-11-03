@@ -305,3 +305,17 @@
 .sl-dupla{display:grid;grid-template-columns:1fr 1fr;gap:3vw}.sl-dupla>div>b{display:block;margin-bottom:1.6vh;color:#C1F4D4;font-size:clamp(12px,1vw,16px);letter-spacing:.14em;text-transform:uppercase}.sl-dupla p{display:flex;justify-content:space-between;gap:16px;margin:0;padding:1.3vh 0;border-bottom:1px solid rgba(255,255,255,.14);font-size:clamp(14px,1.35vw,21px)}.sl-dupla p span{color:#8A99A3;text-align:right}@media (max-width:760px){.sl-dupla{grid-template-columns:1fr;gap:18px}.sl-dupla p{font-size:13px;padding:6px 0}}
 .sl h2.fr{margin:0 0 6vh!important}.sl h2.fr+*{margin-top:0!important}.sl-2>h2.fr{margin:0!important}
 @media (max-width:760px){.sl h2.fr{margin:0 0 22px!important}}
+.org-3.org-6{grid-template-columns:repeat(6,minmax(0,1fr));position:relative}.org-6>.org-n{width:100%;position:relative}.org-6>.org-n::before{content:"";position:absolute;left:50%;top:-23px;height:22px;border-left:1px solid var(--line-strong)}
+@media (max-width:1100px){.org-3.org-6{grid-template-columns:repeat(3,minmax(0,1fr))}}@media (max-width:820px){.org-3.org-6{grid-template-columns:1fr}.org-6>.org-n::before{display:none}}
+/* apresentação com cara de slide: quadro 16:9 no computador, rodapé e progresso */
+.sl-rod{position:absolute;left:4vw;right:4vw;bottom:3.2vh;display:flex;align-items:center;gap:18px;color:#8A99A3;font-size:clamp(11px,.85vw,13px);letter-spacing:.06em}.sl-rod span{white-space:nowrap}.sl-rod i{flex:1;height:2px;background:rgba(255,255,255,.12);border-radius:2px;overflow:hidden;position:relative}.sl-rod i u{position:absolute;left:0;top:0;bottom:0;background:#C1F4D4;border-radius:2px}.sl-rod b{color:#E6EDF1;font-weight:600;font-variant-numeric:tabular-nums}
+.sl.capa .sl-rod{color:#637881}
+.ap-ctl{opacity:.35;transition:opacity .2s}.ap-ctl:hover,.ap-ctl:focus-within{opacity:1}
+@media (min-width:761px){
+#apres{inset:0;margin:auto;width:min(100vw,177.78vh);height:min(56.25vw,100vh);border-radius:0;box-shadow:0 0 0 200vmax #05080B;overflow:hidden;background:radial-gradient(70% 60% at 0% 0%,rgba(117,157,180,.16),transparent 60%),#0A0F14}
+.sl{padding:15% 6.5% 11%}
+.ap-logo{top:5.5%;left:6.5%}.sl-cab{top:6.2%;right:6.5%}
+.sl-rod{left:6.5%;right:6.5%;bottom:5%}
+.ap-ctl{right:50%;transform:translateX(50%);bottom:1.4%}
+.sl-cab i{display:none}}
+@media (max-width:760px){.sl-rod{left:16px;right:16px;bottom:62px;font-size:10px}.sl-rod span:first-child{display:none}.sl{padding-bottom:96px}}

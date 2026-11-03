@@ -46,6 +46,7 @@
     var tot = S.length;
     var html = S.map(function (s, i) {
       var cab = s.capa ? "" : '<div class="sl-cab"><b>' + esc(s.sec) + "</b><i>" + (i + 1) + " / " + tot + "</i></div>";
+      cab += '<div class="sl-rod"><span>Tivio Capital · Comunicação &amp; Marketing</span><span>Plano 2027</span><i><u style="width:' + Math.round((i + 1) / tot * 100) + '%"></u></i><b>' + String(i + 1).padStart(2, "0") + " / " + String(tot).padStart(2, "0") + "</b></div>";
       return '<section class="sl' + (s.capa ? " capa" : "") + '">' + cab + (s.capa ? "<h2>" + s.h + "</h2>" : '<h2 class="fr">' + s.h + "</h2>") + s.html.replace("<!--SUM-->", sum) + "</section>";
     }).join("");
     [].forEach.call(A.querySelectorAll(".sl"), function (x) { x.remove() });
@@ -57,7 +58,7 @@
   A.querySelector(".ap-logo").innerHTML = document.querySelector(".marca").innerHTML;
   function menu(on) { SM.hidden = !on; MB.setAttribute("aria-expanded", on) }
   function v(k) { i = Math.max(0, Math.min(l.length - 1, k)); l.forEach(function (s, j) { s.classList.toggle("ativa", j === i) }); n.textContent = (i + 1) + " / " + l.length; [].forEach.call(SM.querySelectorAll("button"), function (b) { if (+b.dataset.ir === i) b.setAttribute("aria-current", "true"); else b.removeAttribute("aria-current") }) }
-  function abrir() { l = monta(); A.hidden = false; menu(false); document.body.style.overflow = "hidden"; v(0); if (A.requestFullscreen) A.requestFullscreen().catch(function () {}) }
+  function abrir() { l = monta(); A.hidden = false; menu(false); document.body.style.overflow = "hidden"; v(0); var R = document.documentElement; if (R.requestFullscreen) R.requestFullscreen().catch(function () {}) }
   function sair() { A.hidden = true; menu(false); document.body.style.overflow = ""; if (document.fullscreenElement) document.exitFullscreen() }
   BT.onclick = abrir; document.getElementById("ap-sair").onclick = sair; MB.onclick = function () { menu(SM.hidden) };
   document.getElementById("ap-ant").onclick = function () { v(i - 1) }; document.getElementById("ap-prox").onclick = function () { v(i + 1) };
