@@ -380,7 +380,7 @@ _imp_r = [("Pauta do mês", "Reunião mensal com a assessoria, a partir da Carta
           ("Aprovação", "Revisão e Compliance antes de qualquer resposta escrita"), ("Na Mídia", "Toda matéria volta como post, LinkedIn do porta-voz e newsletter"), ("Medição", "Clipping mensal com menções, porta-voz citado e tema")]
 _imp_m = ["Valor Econômico", "Pipeline", "NeoFeed", "Bloomberg Línea", "InfoMoney", "Estadão E-Investidor", "Investidor Institucional"]
 _imp = ('<h2 id="imprensa">Planejamento de <strong>imprensa</strong></h2><p class="secao-sub">Objetivo: a Tivio virar a fonte de estruturados na imprensa econômica. Dono: Fernanda Acquati, com a assessoria de imprensa.</p>'
-    + '<h3>Quem fala de quê</h3><div class="frentes linhas">' + "".join(f'<section class="frente vidro"><h3>{a}</h3><ul><li>{b}</li></ul></section>' for a, b in _imp_v) + '</div>'
+    + '<h3>Quem fala de quê</h3><div class="papeis pv5">' + "".join(f'<div class="papel vidro"><span>{b}</span><b>{a}</b></div>' for a, b in _imp_v) + '</div>'
     + '<h3>Uma pauta por trimestre</h3><div class="tab tab-pilha"><table><tr><th>Quando</th><th>Pauta</th><th>Gancho</th></tr>' + "".join(f'<tr><td>{a}</td><td data-r="Pauta">{b}</td><td data-r="Gancho">{d}</td></tr>' for a, b, d in _imp_t) + '</table></div>'
     + '<h3>Rotina</h3><div class="tab tab-pilha"><table><tr><th>O quê</th><th>Como funciona</th></tr>' + "".join(f'<tr><td>{a}</td><td data-r="Como funciona">{b}</td></tr>' for a, b in _imp_r) + '</table></div>'
     + '<h3>Onde aparecer</h3><div class="frentes linhas"><section class="frente vidro"><h3>Veículos</h3><p class="dono">Economia, mercado e previdência</p><ul>' + "".join(f"<li>{x}</li>" for x in _imp_m) + '</ul></section></div>')
