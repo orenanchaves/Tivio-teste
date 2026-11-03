@@ -48,7 +48,7 @@
   document.addEventListener("click", function (e) {
     var a = e.target.closest && e.target.closest("a[href]");
     if (!a || e.defaultPrevented || e.button || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey || a.target || a.hasAttribute("download")) return;
-    var u = new URL(a.href, location.href); if (u.origin !== location.origin || /\.(pdf|zip|png|jpe?g|webp|svg)$/i.test(u.pathname)) return;
+    var u = new URL(a.href, location.href); if (u.origin !== location.origin || /\.(pdf|zip|png|jpe?g|webp|svg)$/i.test(u.pathname) || /painel-mensal/.test(u.pathname + location.pathname)) return;
     if (u.pathname.replace(/\.html$/, "") === location.pathname.replace(/\.html$/, "")) return;
     if (window.__tvPend && window.__tvPend() && !confirm("Há mudanças sem salvar. Sair mesmo assim?")) { e.preventDefault(); return }
     e.preventDefault(); var d = a.closest("details[open]"); if (d) d.open = false; vai(u.href, true);
