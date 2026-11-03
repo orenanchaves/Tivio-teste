@@ -453,3 +453,6 @@
 #apres div.ap-sum button{display:flex;justify-content:space-between;width:100%;margin:0 0 6px;padding:10px 14px;border:1px solid rgba(255,255,255,.14);border-radius:12px;background:rgba(255,255,255,.04);color:#FFF;font:600 15px var(--ff);text-align:left;cursor:pointer}
 #apres div.ap-sum button[aria-current]{border-color:#C1F4D4}
 #apres div.ap-sum button i{font-style:normal;color:#8A99A3;font-weight:400}
+#apres .ap-palco .sl-g.cmp{gap:22px}#apres .ap-palco .sl-g.cmp>div{padding:24px 28px}#apres .ap-palco .sl-g.cmp b{font-size:27px}#apres .ap-palco .sl-g.cmp span{font-size:19px;margin-top:6px}#apres .ap-palco .sl-g.cmp ul{font-size:18.5px;margin-top:10px}#apres .ap-palco .sl-g.cmp li+li{margin-top:.3em}
+#apres .ap-palco .met>div{margin-bottom:14px}#apres .ap-palco .met span{font-size:21px;margin-bottom:8px}#apres .ap-palco .met em{font-size:18px;margin-top:6px}#apres .ap-palco .met-t{margin-bottom:16px}#apres .ap-palco .fun>div{padding:18px 26px;margin-bottom:12px}
+#apres .ap-palco .sl-sum button{padding:16px 22px;margin-bottom:10px;font-size:23px}#apres .ap-palco .sl-dupla p{padding:12px 0;font-size:24px}#apres .ap-palco .sl-t p{padding:15px 0;font-size:24px}#apres .ap-palco .sl-t.mini p{padding:9px 0;font-size:19px}#apres .ap-palco .sl-g.num b{font-size:50px}
