@@ -113,6 +113,7 @@ var r;addEventListener('resize',function(){clearTimeout(r);r=setTimeout(function
 corpo_est = (cabecalho("Estrutura", []) + '<div class="wrap">'
     + trilha(("index.html", "Início"), ("", "Estrutura"))
     + f'<section class="topo-peer"><div>{ICO27["Estrutura"]}<h1>Estrutura</h1><p class="lead">Direção, coordenação com design estratégico e automação, dois pilares operacionais e Eventos como frente transversal.</p></div></section>'
+    + '<h2>Como a área <strong>se organiza</strong></h2>' + _org
     + _mov
     + '<h2>Antes: quem fazia <strong>o quê</strong></h2>' + _antes[_antes.index('<div class="tab">'):]
     + '<h2>O que cada frente <strong>cobre</strong></h2><div class="frentes linhas">' + _fr + '</div>'
