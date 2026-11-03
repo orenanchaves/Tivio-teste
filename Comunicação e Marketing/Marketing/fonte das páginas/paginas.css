@@ -328,3 +328,4 @@
 #apres .sl-sum button{padding:1.1vh 16px;margin-bottom:.8vh;font-size:clamp(14px,1.15vw,19px)}
 #apres .sl-g.cmp ul{font-size:clamp(12px,.92vw,15px)}#apres .sl-g.cmp li+li{margin-top:.35em}
 #apres .sl-g.cmp>div{padding:clamp(12px,1.2vw,20px)}}
+@media (min-width:761px){#apres .sl-rod{bottom:8%}#apres .ap-ctl{bottom:1.6%}#apres .ap-ctl button{height:32px;min-width:32px;font-size:13px}#apres .sl{padding-bottom:12%}}
