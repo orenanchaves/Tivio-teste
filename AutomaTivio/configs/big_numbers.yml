@@ -42,6 +42,7 @@ fonte:
 
 numeros:
   # Crédito ("Credibilidade e performance")
+  ativos_sob_gestao_credito: "R$ 11 bi"  # HG + Estruturado, vale só sem o JSON do Informativo
   ativos_sob_gestao_credito_12: 3.5   # AuM captado nos últimos 12 meses, R$ bi
   emissores_bancarios: 30
   emissores_corporativos: 100

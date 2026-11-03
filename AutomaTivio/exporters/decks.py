@@ -296,7 +296,7 @@ class Preenchedor:
             if m:
                 ok |= _troca_trecho(par, m.start(), m.end(),
                                     f'{fmt.MESES[self.ed.db.month - 1]}-{self.ed.db:%y}')
-        ok |= _troca_grupo(par, r'Data ?base:\s*(\d{2}/\d{2}/\d{4})', self.ed.br)
+        ok |= _troca_grupo(par, r'Data[ -]?base:\s*(\d{2}/\d{2}/\d{4})', self.ed.br)
         if ctx is not None:
             ok |= _troca_grupo(par, r'Data de in[íi]cio:\s*(\d{2}/\d{2}/\d{4})', self._inicio(ctx))
             # PL por extenso (ALT) ou curto (Crédito)
@@ -1904,6 +1904,22 @@ def _estilo_post(slide, ctx=None):
 
 
 # ------------------------------------------------------------------ geral
+def _verificar(prs, edicao, nome, log):
+    """Depois de salvar: o que não pode sair num deck do mês. Vira erro na
+    rodada, para o resumo não dizer "0 erros" com material vencido."""
+    outros = '|'.join(m for i, m in enumerate(fmt.MESES) if i != edicao.db.month - 1)
+    regras = [(re.compile(r'lorem ipsum', re.I), 'texto provisório'),
+              (re.compile(r'\bm[êe]s de (' + outros + r')\b(?! de \d)', re.I), 'texto de outro mês'),
+              (re.compile(r'Data[ -]?base:\s*(?!' + re.escape(edicao.br) + r')\d{2}/\d{2}/\d{4}', re.I), 'data base vencida')]
+    for i, slide in enumerate(prs.slides, 1):
+        for sh, _ in _shapes(slide.shapes):
+            t = ' '.join(_texto(sh).split())
+            for rx, oque in regras:
+                m = rx.search(t)
+                if m:
+                    log.erro(nome, f'deck: {oque} no slide {i}: {m.group(0)}')
+
+
 def _taxas_prev(log):
     """entrada/taxas_prev.xlsx (caminho em configs/edicao.yml); None sem ela."""
     from loaders.taxas_prev import TaxasPrev, ler_taxas_prev
@@ -1952,76 +1968,96 @@ def exportar_decks(contextos, cadastro, edicao, destino, log, so=None, pdf=True,
             continue
         modelo = os.path.join(RAIZ, 'templates', 'decks', d['modelo'])
         if not os.path.exists(modelo):
-            log.aviso('decks', f'modelo não encontrado: {d["modelo"]}')
+            log.erro('decks', f'modelo não encontrado: {d["modelo"]}')
             continue
-        prs = Presentation(modelo)
-        pre = Preenchedor(edicao, contextos, cadastro, log)
-        con = Conecta(pre)
-        ext = Extras(edicao, log, tprev, indicadores=indicadores)
-        remover = set(d.get('remover') or [])
-        # slide -> fundo (e opções) quando o título não diz de quem é o slide
-        por_slide = {int(n): (v if isinstance(v, dict) else {'fundo': v})
-                     for n, v in (d.get('slides') or {}).items()}
-        largura = prs.slide_width
-        for i, slide in enumerate(list(prs.slides)):
-            opc = por_slide.get(i + 1) or {}
-            # deck de um fundo só (`fundo:` no deck): vale para todo slide que
-            # não diga o contrário. Nos decks novos o "Por que…?" vem quebrado
-            # em caixas e o nome do fundo é imagem: o título não identifica.
-            k = opc.get('fundo') or pre.fundo_do_slide(slide) or d.get('fundo')
-            if 'altlight' in remover and k == 'altlight':
-                _remove_slide(prs, slide)
-                continue
-            if 'altlight' in remover:
-                al = pre.ctx.get('altlight')
-                marcas = ['Previdência'] + ([str(al.f.cnpj)] if al is not None and al.f.cnpj else [])
-                _remove_cartao(slide, marcas)
-            ctx = pre.ctx.get(k) if k else None
-            pre._n = i + 1
-            if 'selo_xp' in remover:
-                _remove_selo_xp(slide)
-            if 'roa' in remover:
-                _remove_roa(slide)
-            for sh, _ in list(_shapes(slide.shapes)):
-                if getattr(sh, 'has_text_frame', False) and sh.has_text_frame:
-                    for p in sh.text_frame.paragraphs:
-                        pre.paragrafo(p, ctx, capa=(i == 0))
-                    pre.forma(sh, ctx)
-            pre.pares_cdi_mais(slide, ctx)
-            pre.alocacao(slide, ctx)
-            pre.grafico(slide, ctx, largura)
-            con.tabelas(slide, ctx)
-            con.pl_rotulado(slide, ctx)
-            con.graficos(slide, ctx, largura)
-            if opc.get('alocacao_hghy'):
-                con.hghy(slide, ctx)
-                ext.alocacao_lado(slide, ctx)
-            for velho, novo in (opc.get('textos') or {}).items():
-                _troca_texto(slide, velho, novo)
-            if opc.get('estilo') == 'post':
-                _estilo_post(slide, ctx)
-            # regras de outubro/2026 (exporters/decks_extras.py)
-            ext.big_numbers(slide)
-            ext.aum_vertical(slide)
-            ext.nomeados(slide, ctx)
-            ext.emissores(slide, ctx)
-            ext.retorno_12m(slide, ctx)
-            ext.periodo(slide, ctx)
-            ext.taxa_prev(slide, ctx)
-            ext.abas_is(slide, ctx, abas_is)
-            if d.get('mes_em_todos') and i > 0:
-                ext.mes(slide)
-            if d.get('comentario') in ('gestor', 'lorem'):
-                ext.comentario(slide, ctx)
-        pasta = os.path.join(destino, d.get('pasta', ''))
-        os.makedirs(pasta, exist_ok=True)
-        base = f'{d["nome"]} - {fmt.MESES[edicao.db.month - 1]} {edicao.db.year}'
-        pptx = os.path.join(pasta, base + '.pptx')
-        prs.save(pptx)
-        log.gerado(pptx, 'pptx')
-        arq_pdf = os.path.join(pasta, base + '.pdf')
-        if pdf and _pdf_powerpoint(os.path.abspath(pptx), os.path.abspath(arq_pdf), log):
-            log.gerado(arq_pdf, 'pdf')
-        log.info(f'  deck {d["nome"]}: {pre.trocas + ext.trocas} trocas')
-        feitos += 1
+        # um deck com problema não derruba os seguintes
+        try:
+            feitos += _um_deck(d, modelo, contextos, cadastro, edicao, destino, log, pdf, indicadores, tprev, abas_is)
+        except Exception as e:
+            log.erro(d['nome'], f'deck não gerado: {e!r}')
     return feitos
+
+
+def _um_deck(d, modelo, contextos, cadastro, edicao, destino, log, pdf, indicadores, tprev, abas_is):
+    from pptx import Presentation
+    from exporters.decks_extras import Extras
+    from exporters.previdencia import _pdf_powerpoint
+    prs = Presentation(modelo)
+    pre = Preenchedor(edicao, contextos, cadastro, log)
+    con = Conecta(pre)
+    ext = Extras(edicao, log, tprev, indicadores=indicadores)
+    remover = set(d.get('remover') or [])
+    # slide -> fundo (e opções) quando o título não diz de quem é o slide
+    por_slide = {int(n): (v if isinstance(v, dict) else {'fundo': v})
+                 for n, v in (d.get('slides') or {}).items()}
+    largura = prs.slide_width
+    for i, slide in enumerate(list(prs.slides)):
+        opc = por_slide.get(i + 1) or {}
+        if opc.get('remover'):           # slide sem dados automáticos: não sai vencido
+            _remove_slide(prs, slide)
+            continue
+        # deck de um fundo só (`fundo:` no deck): vale para todo slide que
+        # não diga o contrário. Nos decks novos o "Por que…?" vem quebrado
+        # em caixas e o nome do fundo é imagem: o título não identifica.
+        k = opc.get('fundo') or pre.fundo_do_slide(slide) or d.get('fundo')
+        if 'altlight' in remover and k == 'altlight':
+            _remove_slide(prs, slide)
+            continue
+        if 'altlight' in remover:
+            al = pre.ctx.get('altlight')
+            marcas = ['Previdência'] + ([str(al.f.cnpj)] if al is not None and al.f.cnpj else [])
+            _remove_cartao(slide, marcas)
+        ctx = pre.ctx.get(k) if k else None
+        pre._n = i + 1
+        if 'selo_xp' in remover:
+            _remove_selo_xp(slide)
+        if 'roa' in remover:
+            _remove_roa(slide)
+        for sh, _ in list(_shapes(slide.shapes)):
+            if getattr(sh, 'has_text_frame', False) and sh.has_text_frame:
+                for p in sh.text_frame.paragraphs:
+                    pre.paragrafo(p, ctx, capa=(i == 0))
+                pre.forma(sh, ctx)
+        pre.pares_cdi_mais(slide, ctx)
+        pre.alocacao(slide, ctx)
+        pre.grafico(slide, ctx, largura)
+        con.tabelas(slide, ctx)
+        con.pl_rotulado(slide, ctx)
+        con.graficos(slide, ctx, largura)
+        if opc.get('alocacao_hghy'):
+            con.hghy(slide, ctx)
+            ext.alocacao_lado(slide, ctx)
+        for velho, novo in (opc.get('textos') or {}).items():
+            _troca_texto(slide, velho, novo)
+        if opc.get('estilo') == 'post':
+            _estilo_post(slide, ctx)
+        # regras de outubro/2026 (exporters/decks_extras.py)
+        ext.big_numbers(slide)
+        ext.aum_vertical(slide)
+        ext.nomeados(slide, ctx)
+        ext.emissores(slide, ctx)
+        ext.retorno_12m(slide, ctx)
+        ext.periodo(slide, ctx)
+        ext.taxa_prev(slide, ctx)
+        ext.abas_is(slide, ctx, abas_is)
+        ext.familia(slide, pre.ctx)
+        if d.get('mes_em_todos') and i > 0:
+            ext.mes(slide)
+        # sem comentário do mês, os slides dele saem do deck
+        if d.get('comentario') == 'gestor' and ext.comentario(slide, ctx):
+            _remove_slide(prs, slide)
+    pasta = os.path.join(destino, d.get('pasta', ''))
+    os.makedirs(pasta, exist_ok=True)
+    base = f'{d["nome"]} - {fmt.MESES[edicao.db.month - 1]} {edicao.db.year}'
+    pptx = os.path.join(pasta, base + '.pptx')
+    prs.save(pptx)
+    log.gerado(pptx, 'pptx')
+    _verificar(prs, edicao, d['nome'], log)
+    arq_pdf = os.path.join(pasta, base + '.pdf')
+    if pdf:
+        if _pdf_powerpoint(os.path.abspath(pptx), os.path.abspath(arq_pdf), log):
+            log.gerado(arq_pdf, 'pdf')
+        else:
+            log.erro(d['nome'], 'deck sem PDF: o PowerPoint não exportou')
+    log.info(f'  deck {d["nome"]}: {pre.trocas + ext.trocas} trocas')
+    return 1

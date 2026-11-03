@@ -19,7 +19,8 @@ nome da caixa ou pelo rótulo ao lado, trocar SÓ o número e manter o desenho.
   taxa (previdência) . "Taxa de Adm & Gestão" e "Taxa Global" da
                        entrada/taxas_prev.xlsx (soma dos veículos FIE + FIFE)
   comentário ......... texto do gestor de entrada/comentarios.md (seção do
-                       fundo); sem seção, lorem ipsum
+                       fundo); sem seção, os slides do comentário saem do deck
+  família ............ composição dos três Institucionais lado a lado
                        (opção `comentario: gestor` no decks.yml)
 """
 import copy
@@ -36,23 +37,6 @@ from exporters.decks import (NUM, MESES_RE, _absoluta, _shapes, _texto,
 RAIZ = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 MESES_CURTOS = ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun',
                 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez']
-
-LOREM = [
-    'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer posuere erat a ante '
-    'venenatis dapibus posuere velit aliquet. Maecenas faucibus mollis interdum, nulla vitae '
-    'elit libero, a pharetra augue. Vivamus sagittis lacus vel augue laoreet rutrum faucibus '
-    'dolor auctor.',
-    'Cras mattis consectetur purus sit amet fermentum. Donec ullamcorper nulla non metus '
-    'auctor fringilla. Aenean lacinia bibendum nulla sed consectetur. Curabitur blandit '
-    'tempus porttitor, etiam porta sem malesuada magna mollis euismod.',
-    'Nullam quis risus eget urna mollis ornare vel eu leo. Sed posuere consectetur est at '
-    'lobortis. Morbi leo risus, porta ac consectetur ac, vestibulum at eros. Praesent '
-    'commodo cursus magna, vel scelerisque nisl consectetur et.',
-    'Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum '
-    'massa justo sit amet risus. Duis mollis, est non commodo luctus, nisi erat porttitor '
-    'ligula, eget lacinia odio sem nec elit.',
-]
-
 
 def _sem_acento(t):
     u = unicodedata.normalize('NFKD', str(t or ''))
@@ -234,6 +218,7 @@ class Extras:
         vert = self.ind.get('aum_verticais_valores') or {}
         aum = {cat: vert[v] for cat, v in ROSCA_PARA_VERTICAL.items() if v in vert}
         if not aum:
+            self._centro_da_rosca(slide)
             return
         # o centro é a soma das fatias desenhadas (mesma base do Informativo)
         total = sum(float(v) for v in aum.values())
@@ -286,6 +271,24 @@ class Extras:
             if re.fullmatch(r'\s*R\$\s*\d+(?:,\d)?\s*bi\s*', t):
                 # uma casa, como o Informativo escreve (R$ 29,8 bi)
                 _troca_grupo(sh.text_frame.paragraphs[0], r'R\$\s*(\d+(?:,\d)?)', fmt.num(total / 1e9, 1))
+
+    def _centro_da_rosca(self, slide):
+        """Sem o JSON, as fatias ficam as do modelo; o total do centro ao menos
+        é a soma delas, para o número não contradizer o gráfico."""
+        for sh, _ in _shapes(slide.shapes):
+            if not (getattr(sh, 'has_chart', False) and sh.has_chart):
+                continue
+            ch = sh.chart
+            if 'DOUGHNUT' not in str(ch.chart_type) and 'PIE' not in str(ch.chart_type):
+                continue
+            pl = ch.plots[0]
+            if not set(str(c) for c in pl.categories) & set(ROSCA_PARA_VERTICAL):
+                continue
+            total = sum(v or 0 for v in pl.series[0].values)
+            for caixa, _ in _shapes(slide.shapes):
+                if re.fullmatch(r'\s*R\$\s*\d+(?:,\d)?\s*bi\s*', _texto(caixa)):
+                    _troca_grupo(caixa.text_frame.paragraphs[0], r'R\$\s*(\d+(?:,\d)?)', fmt.num(total / 1e9, 1))
+            return
 
     # ------------------------------------- alocação HG / HY / Caixa lado a lado
     def alocacao_lado(self, slide, ctx):
@@ -485,11 +488,11 @@ class Extras:
     def comentario(self, slide, ctx):
         """O texto do gestor no slide de "Comentário do Gestor": a seção do
         fundo em entrada/comentarios.md (com os {marcadores} resolvidos). Sem
-        seção para o fundo, entra lorem ipsum, para o deck não sair com o
+        seção para o fundo devolve True: o slide sai do deck, para não ir o
         texto do mês passado. A formatação é a do primeiro parágrafo do modelo."""
         textos = _norm(' '.join(_texto(sh) for sh, _ in _shapes(slide.shapes)))
         if 'comentario do gestor' not in textos:
-            return
+            return False
         pars_gestor = []
         if ctx is not None:
             try:
@@ -498,6 +501,9 @@ class Extras:
             except Exception:
                 pars_gestor = []
         pars_gestor = [re.sub(r'\*\*(.+?)\*\*', r'\1', p).strip() for p in pars_gestor if p and p.strip()]
+        if not pars_gestor:
+            self.log.erro(ctx.key if ctx is not None else 'decks', 'deck: sem comentário em entrada/comentarios.md, os slides do comentário saíram')
+            return True
         import copy
         A = '{http://schemas.openxmlformats.org/drawingml/2006/main}'
         for sh, _ in _shapes(slide.shapes):
@@ -509,9 +515,9 @@ class Extras:
             pars = [p for p in tf.paragraphs if p.runs and ''.join(r.text for r in p.runs).strip()]
             if not pars:
                 continue
-            novos = pars_gestor or LOREM[:max(2, min(len(LOREM), len(pars)))]
-            if not pars_gestor and ctx is not None:
-                self.log.aviso(ctx.key, 'deck: sem comentário em entrada/comentarios.md, saiu lorem ipsum')
+            novos = pars_gestor
+            # linha em branco entre parágrafos só se o modelo usa: senão o texto estoura o slide
+            com_vazio = len(pars) < len(tf.paragraphs)
             modelo = copy.deepcopy(pars[0]._p)
             corpo = tf._txBody
             for p in list(corpo.findall(f'{A}p')):
@@ -525,17 +531,69 @@ class Extras:
                     p.remove(x)
                 runs[0].find(f'{A}t').text = texto
                 corpo.append(p)
-                if i < len(novos) - 1:                 # linha em branco entre parágrafos
+                if com_vazio and i < len(novos) - 1:
                     vazio = copy.deepcopy(modelo)
                     for x in vazio.findall(f'{A}r') + vazio.findall(f'{A}br'):
                         vazio.remove(x)
                     corpo.append(vazio)
             self.trocas += 1
             break
+        return False
 
-    def lorem(self, slide):
-        """Compatibilidade: `comentario: lorem` antigo = comentário sem fundo."""
-        self.comentario(slide, None)
+    # ---------------------------------------------- composição da Família Institucional
+    def familia(self, slide, contextos):
+        """Quadro comparativo dos três Institucionais: um treemap (chartEx) por
+        coluna, na ordem Institucional, 15 e 30. Treemap se reorganiza pelo
+        peso, então os rótulos soltos do modelo saem e o próprio gráfico mostra
+        nome e percentual."""
+        textos = _norm(' '.join(_texto(sh) for sh, _ in _shapes(slide.shapes)))
+        if 'composicao da carteira' not in textos or 'familia tivio institucional' not in textos:
+            return
+        from lxml import etree
+        CX = '{http://schemas.microsoft.com/office/drawing/2014/chartex}'
+        PN = '{http://schemas.openxmlformats.org/presentationml/2006/main}'
+        RN = '{http://schemas.openxmlformats.org/officeDocument/2006/relationships}'
+        AN = '{http://schemas.openxmlformats.org/drawingml/2006/main}'
+        nomes = {'caixa': 'caixa', 'corporativo': 'corporativo', 'bancario': 'bancário', 'fdic': 'fidc', 'fidc': 'fidc'}
+        comp = []
+        for k in ('institucional', 'inst15', 'inst30'):
+            c = contextos.get(k)
+            comp.append({n.lower(): v for n, _, v in c.composicao()} if c is not None and c.tem_dados else None)
+        molduras = []
+        for ch in slide._element.iter(f'{CX}chart'):
+            g = ch
+            while g is not None and g.tag != f'{PN}graphicFrame':
+                g = g.getparent()
+            off = g.find(f'{PN}xfrm/{AN}off') if g is not None else None
+            if off is not None:
+                molduras.append((int(off.get('x')), ch.get(f'{RN}id')))
+        if len(molduras) != 3:
+            self.log.aviso('decks', f'família Institucional: {len(molduras)} treemaps no slide, composição fica como no modelo')
+            return
+        for (_, rid), dados in zip(sorted(molduras), comp):
+            if not dados:
+                continue
+            parte = slide.part.rels[rid].target_part
+            x = etree.fromstring(parte.blob)
+            cats = x.find(f'.//{CX}strDim/{CX}lvl')
+            vals = x.find(f'.//{CX}numDim/{CX}lvl')
+            for pc, pv in zip(cats.findall(f'{CX}pt'), vals.findall(f'{CX}pt')):
+                k = nomes.get(_norm(pc.text))
+                if k:
+                    pc.text = {'fidc': 'FIDC'}.get(k, pc.text)
+                    pv.text = repr(float(dados.get(k) or 0) / 100)
+            serie = x.find(f'.//{CX}series')
+            for velho in serie.findall(f'{CX}dataLabels'):
+                serie.remove(velho)
+            rotulos = etree.fromstring(f'<cx:dataLabels xmlns:cx="{CX[1:-1]}" xmlns:a="{AN[1:-1]}" pos="inEnd"><cx:numFmt formatCode="0,0%" sourceLinked="0"/>'
+                                       '<cx:txPr><a:bodyPr/><a:lstStyle/><a:p><a:pPr><a:defRPr sz="700" b="1"><a:solidFill><a:srgbClr val="0A0F14"/></a:solidFill></a:defRPr></a:pPr><a:endParaRPr lang="pt-BR" sz="700" b="1"><a:solidFill><a:srgbClr val="0A0F14"/></a:solidFill></a:endParaRPr></a:p></cx:txPr>'
+                                       '<cx:visibility seriesName="0" categoryName="1" value="1"/><cx:separator> </cx:separator></cx:dataLabels>')
+            serie.find(f'{CX}dataId').addprevious(rotulos)
+            parte._blob = etree.tostring(x, xml_declaration=True, encoding='UTF-8', standalone=True)
+            self.trocas += 1
+        for sh, _ in list(_shapes(slide.shapes)):
+            if re.fullmatch(r'\s*\d+(?:,\d+)?\s*%\s*(caixa|corpo ?rativo|bancario|fdic|fidc)\s*', _norm(_texto(sh))):
+                sh._element.getparent().remove(sh._element)
 
     # ------------------------------------- abas de Investment Solutions (IS)
     def abas_is(self, slide, ctx, abas):

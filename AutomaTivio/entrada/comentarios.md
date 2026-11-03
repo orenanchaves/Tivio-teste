@@ -259,3 +259,37 @@ A gestão também <strong class="___1qwroh2 fl43uef f19n0e5" data-lexical-text="
 Os devedores desses recebíveis são os <strong class="___1qwroh2 fl43uef f19n0e5" data-lexical-text="true">bancos emissores dos cartões</strong> referentes às transações na modalidade crédito, limitadas às bandeiras <strong class="___1qwroh2 fl43uef f19n0e5" data-lexical-text="true">Visa, Mastercard, American Express, Elo e Hipercard</strong>.
 A gestão manteve uma <strong class="___1qwroh2 fl43uef f19n0e5" data-lexical-text="true">postura disciplinada e seletiva na alocação dos recursos</strong>, buscando capturar oportunidades geradas pela recente abertura dos spreads sem abrir mão da qualidade de crédito das carteiras.
 <br>
+
+## Tivio Prev Low Vol
+
+O mês de setembro foi marcado pela continuidade do movimento de alta nas taxas de juros globais. Nos Estados Unidos, o principal evento do período foi a decisão do Federal Reserve de elevar a taxa básica de juros em 25 pontos-base, movimento que refletiu a preocupação da autoridade monetária com a persistência das pressões inflacionárias, impulsionadas entre outros fatores pela alta dos preços de energia em meio à manutenção das tensões geopolíticas no Oriente Médio. Receios de um ciclo de aperto monetário mais intenso impulsionaram o dólar, levando a um aumento da aversão a risco nos mercados.
+
+No Brasil, os investidores acompanharam os desdobramentos do cenário eleitoral, que passou a exercer influência crescente sobre os preços dos ativos à medida que se aproxima o primeiro turno das eleições presidenciais. No campo econômico, o Copom deu continuidade ao ciclo de flexibilização monetária, reduzindo a taxa Selic e reforçando a percepção de desaceleração gradual da atividade doméstica. Entretanto, a divulgação de indicadores de inflação acima das expectativas e a persistência de desafios fiscais mantiveram maior cautela em relação ao espaço para cortes adicionais. Apesar da volatilidade observada ao longo do mês, o desempenho dos ativos brasileiros foi favorecido pela melhora do apetite global por risco na reta final do período, pela perspectiva de continuidade da queda dos juros domésticos e pelo alívio trazido pelos dados mais benignos de inflação nos Estados Unidos, permitindo recuperação expressiva da bolsa brasileira e valorização dos ativos de risco locais.
+
+O fundo teve performance acima do benchmark no mês passado, com contribuições positivas dos books de renda fixa, moedas, renda variável e crédito, e contribuição negativa do book offshore.
+
+No book de renda fixa, aproveitamos o fechamento das taxas durante o mês para reduzir na margem nossa exposição, aproveitando para migrar de volta parte de nossa exposição em juros nominais para reais. Entendemos que embora o processo de desaceleração da economia tende a se intensificar, mesmo considerando os inúmeros estímulos fiscais implementados pelo governo visando as eleições, as leituras de inflação devem voltar a acelerar por conta da reversão do bônus do Itaipu, do potencial impacto do El Nino e da sazonalidade, além de eventuais repasses nos preços da alta recente do petróleo. Nas estratégias de valor relativo, continuamos com as estratégias de venda de inflação implícita, de venda de inclinação na curva de juros nominais, e aplicada em taxas forwards (FRAs). Compramos também opções de Copom que se beneficiam de uma eventual aceleração no ritmo de cortes após as eleições.
+
+No book de moedas, continuamos com posições compradas no real e no iene, e vendidas no euro e peso mexicano.
+
+No book de renda variável, continuamos com uma posição comprada no Ibovespa via estrutura de opções.
+
+No book offshore, iniciamos uma posição tática aplicada nos Treasuries americanos.
+
+No book de crédito, continuamos com uma alocação estrutural menor, focada em bancários de melhor qualidade e mais reduzida em corporativos.
+
+## Tivio Prev Top Credit
+
+Em setembro, o mercado de crédito apresentou reabertura dos spreads e liquidez reduzida no mercado secundário. Os spreads médios dos títulos corporativos indexados ao CDI avançaram cerca de 5 bps, passando de CDI + 1,23% para CDI + 1,28% ao ano, interrompendo parcialmente o movimento de compressão observado nos últimos meses.
+
+No mercado secundário, a liquidez permaneceu limitada, especialmente em ativos corporativos, resultando em uma formação de preços mais seletiva. No mercado primário, as emissões bancárias seguiram registrando demanda consistente, embora com menor intensidade em comparação aos meses anteriores. Já o pipeline de emissões corporativas permaneceu restrito, mantendo a oferta de ativos em níveis reduzidos.
+
+Em relação aos fluxos, os fundos com alocação mínima de 15% em crédito e ao menos 1% em debêntures registraram resgates líquidos próximos de R$ 10 bilhões no período, movimento que contribuiu para a reabertura dos spreads e para uma piora da dinâmica técnica da classe.
+
+Apesar desse cenário, os fundamentos corporativos permanecem resilientes e os níveis de inadimplência seguem controlados. Sob a ótica da gestão, mantemos uma postura disciplinada e seletiva na alocação dos recursos, buscando capturar oportunidades geradas pela recente abertura dos spreads sem abrir mão da qualidade de crédito das carteiras.
+
+Nesse cenário, o Tivio Top Credit Prev apresentou rentabilidade de 1,01% no mês (93,65% do CDI), acumulando 13,52% (93,84% do CDI) em 12 meses.
+
+Na atribuição de performance, a carteira de FIDCs e títulos bancários foram os principais responsáveis pelo resultado do período, contribuindo com aproximadamente 2 bps de alfa em ambos.
+
+Por outro lado, a carteira de debêntures foi a principal detratora de performance, com impacto negativo de cerca de 1bp de alfa. Dentro da classe, os destaques positivos foram os papéis de GPA. Em contrapartida, Aegea e Localiza foram os principais detratores do mês, com contribuição combinada de aproximadamente 2,6 bps abaixo do CDI.

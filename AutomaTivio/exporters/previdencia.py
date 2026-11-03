@@ -525,8 +525,11 @@ def _pdf_powerpoint(pptx, pdf, log):
         "$ErrorActionPreference='Stop';"
         "$pp=New-Object -ComObject PowerPoint.Application;"
         f"$p=$pp.Presentations.Open('{t_pptx}',$false,$false,$false);"
-        + (f"$p.SaveAs('{t_pptx}',24,-1);" if embute else "")
-        + f"$p.SaveAs('{t_pdf}',32);$p.Close();$pp.Quit()")
+        # o PDF primeiro: embutir a fonte falha em alguns decks (0x80CD1001) e
+        # isso não pode custar o PDF
+        + f"$p.SaveAs('{t_pdf}',32);"
+        + (f"try{{$p.SaveAs('{t_pptx}',24,-1)}}catch{{}};" if embute else "")
+        + "$p.Close();$pp.Quit()")
     # o PDF da rodada anterior sai antes: se a exportação falhar, não fica um
     # PDF velho com cara de novo na pasta
     if os.path.exists(pdf):

@@ -25,7 +25,7 @@ taxas de previdência. Este arquivo lista só o que ainda não está fechado.
 | O que | Onde aparece | O que falta |
 |---|---|---|
 | JSON do Informativo (`tivio_summary.json`) | Rosca "AuM por vertical" (Prev Low Vol e Top Credit) e "Ativos sob gestão" do slide de crédito | Exportar com o login corporativo a cada mês. Sem ele, esses números ficam como no modelo |
-| Comentário do gestor do Prev Low Vol e do Top Credit | Slide "Comentário do Gestor" | Escrever as seções `## Tivio Prev Low Vol` e `## Tivio Prev Top Credit` no `entrada/comentarios.md`. Sem elas, sai lorem ipsum |
+| Comentário do gestor do Prev Low Vol e do Top Credit | Slide "Comentário do Gestor" | Escrever as seções `## Tivio Prev Low Vol` e `## Tivio Prev Top Credit` no `entrada/comentarios.md`. Sem elas, os slides do comentário saem do deck e a rodada acusa erro |
 
 ---
 

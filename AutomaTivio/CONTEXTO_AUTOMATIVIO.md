@@ -668,7 +668,7 @@ Cada uma destas custou uma rodada. Estão aqui para não custarem outra.
 | **Fonte Versos** no PDF | Os `.woff2` vêm do CDN da marca; sem rede o PDF usa a fonte de reserva e a métrica do texto muda | Colocar os arquivos em `assets/fontes/` |
 | **Tivio Atuarial** | Não está no DePara da planilha | Incluir no DePara |
 | **BVP** sem logo | Não há SVG em `assets/logos` | Adicionar `tivio_bvp.svg` |
-| **Comentário dos decks de IS** | Sai em lorem ipsum enquanto não houver seção no `comentarios.md` | Escrever `## Tivio Prev Low Vol` e `## Tivio Prev Top Credit` no `comentarios.md` |
+| **Comentário dos decks de IS** | Os slides do comentário saem do deck, com erro na rodada, enquanto não houver seção no `comentarios.md` | Escrever `## Tivio Prev Low Vol` e `## Tivio Prev Top Credit` no `comentarios.md` |
 
 Nenhuma delas impede a rodada: todas saem como **aviso** no log e na conferência,
 não como erro.

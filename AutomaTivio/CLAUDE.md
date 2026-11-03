@@ -149,7 +149,7 @@ passa aos geradores.
 `configs/decks.yml` lista os decks; `exporters/decks.py` troca os números nos
 PPTX do time e `exporters/decks_extras.py` tem as regras de outubro/2026 (big
 numbers de `get_indicadores_tivio()` e `configs/big_numbers.yml`, taxas de `entrada/taxas_prev.xlsx`,
-rentabilidade do HYD60, lorem ipsum nos comentários). Detalhes no guia.
+rentabilidade do HYD60, comentários do gestor). Detalhes no guia.
 
 ### Gráficos
 

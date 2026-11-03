@@ -21,7 +21,7 @@
 #          na capa (decks de Investment Solutions).
 # comentario: gestor  o slide "Comentário do Gestor" recebe a seção do fundo em
 #          entrada/comentarios.md (## Tivio Prev Low Vol, ## Tivio Prev Top
-#          Credit). Sem a seção, sai lorem ipsum e o log avisa.
+#          Credit). Sem a seção, os slides do comentário saem e a rodada acusa erro.
 #
 # area: onde o deck vai em saida/_Atual/ (Crédito Estruturado/Decks/<pasta>/ ou
 #       Multi-área/Decks/ para o que cruza áreas). Sem `area`, vai para Multi-área.
@@ -109,6 +109,7 @@ decks:
         fundo: infrapluscdi
         estilo: post
         textos: {"INFRA PLUS?": "INFRA PLUS CDI?"}
+      47: {remover: true}       # Imobiliário PGBL: sem dados na planilha; volta quando houver fundo em fundos.yml e comentário
       30: conexaoalt180         # Conexão ALT 180: tabela, PL e barras mensais
       31: alt180                # alocação do portfólio (blocos)
       32: alt180                # alocação por estratégia (setores)
