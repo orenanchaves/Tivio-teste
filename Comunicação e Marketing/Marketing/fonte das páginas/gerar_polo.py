@@ -122,6 +122,7 @@ corpo_est = (cabecalho("Estrutura", []) + '<div class="wrap">'
     + '<h2>Eventos, frente <strong>transversal</strong></h2><div class="papeis">' + _pap + '</div>'
     + '<h2>Como uma demanda <strong>anda</strong></h2><ol class="roteiro r6">' + _fl + '</ol>'
     + '<h3>Quando passa pela agência</h3><div class="frentes linhas"><section class="frente vidro"><h3>Operação da agência</h3><p class="dono">ColaAí, com Fernanda Acquati</p><ul><li>Pedido pela Fernanda Acquati</li><li>Produção na ColaAí: vídeo, carrossel da Carta e tráfego pago</li><li>Revisão e Compliance</li><li>Publicação</li><li>Relatório de tráfego para o Renan Chaves</li></ul></section></div>'
+    + '<!--REF-TIME-->'
     + '<p class="rodape">Tivio Capital · Comunicação &amp; Marketing</p></div>')
 (EXTRA / "estrutura.html").write_text(pagina("Estrutura", corpo_est, CSS_P), encoding="utf-8")
 
