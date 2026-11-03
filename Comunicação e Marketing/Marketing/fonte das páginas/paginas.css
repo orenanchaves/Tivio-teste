@@ -522,3 +522,4 @@
 #apres .ap-palco .sl-cu .cu-l{grid-template-columns:repeat(5,minmax(0,1fr));gap:22px}#apres .ap-palco .sl-cu .cu-i{grid-template-columns:20px 1fr;font-size:22px}#apres .ap-palco .sl-cu .cu-i>i{width:20px;height:20px;border-radius:5px;grid-row:span 2}#apres .ap-palco .sl-cu .cu-i span{color:#E6EDF1;font-weight:400}#apres .ap-palco .sl-cu .cu-i b{font-size:32px;color:#FFF}
 #apres .ap-palco .sl.ativa .sl-cu .cu-bar i{animation:tvCresceX .9s cubic-bezier(.2,.7,.2,1) both;transform-origin:left center}
 #apres .ap-palco.vert .sl-cu .cu-l{grid-template-columns:1fr 1fr}#apres .ap-palco.vert .sl-cu .cu-i{font-size:30px}#apres .ap-palco.vert .sl-cu .cu-i b{font-size:42px}
+.cu-l{grid-template-columns:repeat(4,minmax(0,1fr))}#apres .ap-palco .sl-cu .cu-l{grid-template-columns:repeat(4,minmax(0,1fr))}
