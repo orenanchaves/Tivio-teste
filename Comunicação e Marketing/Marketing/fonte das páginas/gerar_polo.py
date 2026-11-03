@@ -58,9 +58,8 @@ FRENTES_E = [("Coordenação, Design estratégico &amp; Automação", "Renan Cha
              ("Design operacional &amp; Produção", "Gabriel Fiorilli", ["Peças de social", "Desdobramento de KVs", "Materiais de eventos", "Vídeo e motion", "Aplicação dos templates"])]
 _org = ('<div class="org"><div class="org-n vidro"><span>Direção</span><b>Enrico Trotta</b></div><i class="org-l"></i>'
         '<div class="org-n vidro"><span>Coordenação, design estratégico, dados e automação</span><b>Renan Chaves</b></div><i class="org-l"></i>'
-        '<div class="org-3 org-2"><div class="org-n vidro"><span>Conteúdo &amp; Comunicação</span><b>Fernanda Acquati</b></div><div class="org-n vidro"><span>Design operacional &amp; Produção</span><b>Gabriel Fiorilli</b></div></div>'
-        '<div class="org-t"><span>Eventos</span>Frente transversal, com toda a área</div>'
-        '<div class="org-t"><span>Agência parceira</span>ColaAí: vídeo, carrossel da Carta e tráfego pago</div></div>')
+        '<div class="org-3 org-2"><div class="org-n vidro"><span>Conteúdo &amp; Comunicação</span><b>Fernanda Acquati</b></div><div class="org-col"><div class="org-n vidro"><span>Design operacional &amp; Produção</span><b>Gabriel Fiorilli</b></div><i class="org-l"></i><div class="org-n org-ext"><span>Agência parceira</span><b>ColaAí</b><em>Vídeo, carrossel da Carta e tráfego pago</em></div></div></div>'
+        '<div class="org-t"><span>Eventos</span>Frente transversal, com toda a área</div>'</div>')
 _antes = ('<div class="org"><div class="org-n vidro"><span>Direção</span><b>Enrico Trotta</b></div><i class="org-l"></i>'
           '<div class="org-n vidro org-hub"><span>Hub da área</span><b>Cesar Medeiros</b></div><i class="org-l"></i>'
           '<div class="org-3">' + "".join(f'<div class="org-n vidro"><span>{a}</span><b>{b}</b></div>' for a, b in [("Materiais, dados e automação", "Renan Chaves"), ("Conteúdo e fluxo editorial", "Fernanda Acquati"), ("Design e produção visual", "Gabriel Fiorilli")]) + '</div>'
@@ -79,8 +78,8 @@ _dist_p = [("r", "Renan Chaves", "Coordenação e design estratégico", ["Design
            ("f", "Fernanda Acquati", "Conteúdo &amp; Comunicação", ["Conteúdo", "Redes sociais"]),
            ("g", "Gabriel Fiorilli", "Design operacional &amp; Produção", ["Design operacional", "Peças e vídeos"])]
 _dist_i = [("Coordenação", "r"), ("Prioridades", "r"), ("Interface com Enrico Trotta", "r"), ("Eventos: coordenação", "r"), ("Aprovações", "f"), ("Eventos: operação", "f"), ("Agência", "f"), ("Fornecedores", "f"), ("Eventos: peças", "g")]
-_mov = ('<h2>O que o Cesar fazia, <strong>para onde foi</strong></h2><div class="dist" id="dist"><svg class="dist-l" id="dist-l" aria-hidden="true"></svg>'
-    + '<div class="dist-o vidro" id="dist-o"><span>Antes</span><b>Cesar Medeiros</b><div class="dist-c" id="dist-oc">'
+_mov = ('<h2>Para onde foi <strong>cada função</strong></h2><div class="dist" id="dist"><svg class="dist-l" id="dist-l" aria-hidden="true"></svg>'
+    + '<div class="dist-o vidro" id="dist-o"><span>O que o Cesar fazia</span><b>Cesar Medeiros</b><div class="dist-c" id="dist-oc">'
     + "".join(f'<i class="dist-i" data-d="{d}">{n}</i>' for n, d in _dist_i) + '</div></div><div class="dist-d">'
     + "".join(f'<div class="dist-p vidro" id="dist-{i}"><div class="dist-t"><div><span>{c}</span><b>{n}</b></div><em class="dist-n"></em></div><div class="dist-c">'
               + "".join(f'<i class="dist-i dist-b">{b}</i>' for b in bs) + '</div></div>' for i, n, c, bs in _dist_p)
@@ -408,7 +407,7 @@ for _i, (_n, _s, _o, _l) in enumerate([(x[0], x[1], x[2], x[3]) for x in _fr27])
 _c = (cabecalho("Benchmark", []) + '<div class="wrap">' + trilha(("index.html", "Início"), ("plano-2027.html", "Plano 2027"), ("", "Benchmark"))
     + '<section class="topo-peer"><div><h1>Benchmark</h1><p class="lead">O que estudamos fora da Tivio, o que já fazemos e como isso entra nas quatro frentes.</p></div></section>'
     + '<h2>O que vimos fora e o que <strong>fazemos</strong></h2>' + _bm_vis
-    + '<h2>Bases <strong>externas</strong></h2><div class="frentes linhas"><section class="frente vidro"><h3><a href="https://www.fnmkhub.com/" target="_blank" rel="noopener">fnmk</a></h3><p class="dono">Inteligência para o mercado de capitais</p><ul><li>Alocadores por segmento: assets, wealth, family offices e fundos de pensão</li><li>Insights e benchmarks para o discurso</li><li>Agenda curada de eventos e encontros</li><li>Entra em Eventos, Conteúdo e Benchmark</li></ul></section></div>'
+    + '<h2>Bases <strong>externas</strong></h2><div class="frentes linhas"><section class="frente vidro"><h3><a href="https://www.fnmkhub.com/" target="_blank" rel="noopener">fnmk</a></h3><p class="dono">Inteligência para o mercado de capitais</p><ul><li>Alocadores por segmento: assets, wealth, family offices e fundos de pensão</li><li>Insights e benchmarks para o discurso</li><li>Agenda curada de eventos e encontros</li><li>Entra em Eventos, Conteúdo e Benchmark</li></ul></section><section class="frente vidro"><h3><a href="https://www.notlistedclub.com/pt" target="_blank" rel="noopener">Not Listed</a></h3><p class="dono">Estudo de wealth da fnmk, 2ª edição</p><ul><li>1.202 casas de gestão e consultoria de patrimônio mapeadas, em 129 cidades</li><li>Dado público organizado: 555 formulários da CVM e ANBIMA</li><li>Entrevistas com UBS, Hamilton Lane e Christie's</li><li>Edição anual com cinco matérias e e-mail profissional para receber</li><li>Na Tivio: modelo para o Panorama de Estruturados</li></ul></section></div>'
     + '<h2>Onde <strong>ver</strong></h2>' + cartoes([("m-peers.html", "Peers no Brasil", "Gestoras brasileiras."), ("m-estrangeiras.html", "Peers no exterior", "Gestoras de fora."), ("m-cases.html", "Cases", "O que outros fizeram."), ("m-mundo.html", "Mundo", "Tendências lá fora."), ("m-mercados.html", "Outros mercados", "Referências de outros países."), ("m-setores.html", "Outros setores", "O que copiar de fora das finanças."), ("m-relatorio.html", "Relatório 2027", "Estudos de marketing para 2027.")])
     + '<p class="rodape">Tivio Capital · Comunicação &amp; Marketing</p></div>')
 (EXTRA / "frente-benchmark.html").write_text(pagina("Benchmark", _c, CSS_P), encoding="utf-8")
