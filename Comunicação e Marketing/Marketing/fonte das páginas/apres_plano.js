@@ -20,7 +20,7 @@
     var n = raiz ? [].filter.call(raiz.querySelectorAll(".org-n"), vis) : []; if (!n.length) return;
     sl(sec, tit, '<div class="sl-g ' + (n.length <= 5 ? "c" + n.length : "c4") + ' cmp">' + n.map(function (x) { return "<div><b>" + esc(t(x.querySelector("b"))) + "</b><span>" + esc([t(x.querySelector("span")), t(x.querySelector("em"))].filter(Boolean).join(" · ")) + "</span></div>" }).join("") + "</div>");
   }
-  function grade(sec, tit, bl, c) { if (bl.length) sl(sec, tit, '<div class="sl-g c' + (c || Math.min(4, bl.length)) + ' cmp">' + bl.map(function (f) { return "<div><b>" + esc(t(f.querySelector("h3"))) + "</b>" + (t(f.querySelector(".dono")) ? "<span>" + esc(t(f.querySelector(".dono"))) + "</span>" : "") + "<ul>" + itens(f.querySelector("ul"), 6) + "</ul></div>" }).join("") + "</div>") }
+  function grade(sec, tit, bl, c) { if (bl.length) sl(sec, tit, '<div class="sl-g c' + (c || Math.min(4, bl.length)) + ' cmp">' + bl.map(function (f) { return "<div><b>" + esc(t(f.querySelector("h3"))) + "</b>" + (t(f.querySelector(".dono")) ? "<span>" + esc(t(f.querySelector(".dono"))) + "</span>" : "") + "<ul>" + itens(f.querySelector("ul"), 4) + "</ul></div>" }).join("") + "</div>") }
   function monta() {
     S = [];
     var F = document.getElementById("fim-do-ano"), N = document.getElementById("ano-2027");
