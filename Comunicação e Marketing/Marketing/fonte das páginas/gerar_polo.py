@@ -121,6 +121,7 @@ corpo_est = (cabecalho("Estrutura", []) + '<div class="wrap">'
     + '<h2>Design: estratégico e <strong>operacional</strong></h2><div class="frentes linhas">' + "".join(f'<section class="frente vidro"><h3>{n}</h3><p class="dono">{d}</p><ul>' + "".join(f"<li>{x}</li>" for x in l) + "</ul></section>" for n, d, l in [("Design estratégico", "Renan Chaves", ["Direção de arte e linguagem visual da casa", "Identidade e design system", "KV de campanha e de evento", "Templates e padrões das peças", "Decks e apresentações", "Aprovação visual final"]), ("Design operacional", "Gabriel Fiorilli", ["Peças de social a partir do KV e dos templates", "Desdobramentos e formatos", "Materiais de eventos", "Vídeo e motion", "Ajustes e versões finais"])]) + '</div>'
     + '<h2>Eventos, frente <strong>transversal</strong></h2><div class="papeis">' + _pap + '</div>'
     + '<h2>Como uma demanda <strong>anda</strong></h2><ol class="roteiro r6">' + _fl + '</ol>'
+    + '<h3>Quando passa pela agência</h3><div class="frentes linhas"><section class="frente vidro"><h3>Operação da agência</h3><p class="dono">ColaAí, com Fernanda Acquati</p><ul><li>Pedido pela Fernanda Acquati</li><li>Produção na ColaAí: vídeo, carrossel da Carta e tráfego pago</li><li>Revisão e Compliance</li><li>Publicação</li><li>Relatório de tráfego para o Renan Chaves</li></ul></section></div>'
     + '<p class="rodape">Tivio Capital · Comunicação &amp; Marketing</p></div>')
 (EXTRA / "estrutura.html").write_text(pagina("Estrutura", corpo_est, CSS_P), encoding="utf-8")
 
@@ -373,7 +374,7 @@ _ang = [("Eventos Itaú", "Assessores e investidores da base Itaú", "Trilha de 
 _evt = ('<h2 id="mix">Os 23 eventos <strong>por tipo</strong></h2>' + _st([("Itaú", 16), ("Previdência", 4), ("Plataformas", 3)])
     + '<h2 id="meses">Eventos Itaú <strong>por mês</strong></h2>' + _bc([(r[0][:3], int(re.match(r"(\d+) evento", r[2]).group(1)) if re.match(r"\d+ evento", r[2]) else 0) for r in _ano27[1:]])
     + '<h2 id="todos">Todos os eventos <strong>de 2027</strong></h2><div class="tab tab-pilha"><table><tr><th>Evento</th><th>Tipo</th><th>Quando</th><th>Situação</th></tr>'
-    + "".join(f'<tr><td>{a}</td><td data-r="Tipo">{b}</td><td data-r="Quando">{d}</td><td data-r="Situação">{e}</td></tr>' for a, b, d, e in _evt_l) + '</table></div><p class="meta-txt">Datas de 2027 a confirmar com cada organizador.</p>'
+    + "".join(f'<tr><td>{a}</td><td data-r="Tipo">{b}</td><td data-r="Quando">{d}</td><td data-r="Situação">{e}</td></tr>' for a, b, d, e in _evt_l) + '</table></div><p class="meta-txt">Datas de 2027 a confirmar com cada organizador. Para achar mais eventos e alocadores por segmento, usar também a agenda curada e o mapeamento da <a href="https://www.fnmkhub.com/" target="_blank" rel="noopener">fnmk</a>.</p>'
     + '<h2 id="editorial">Conteúdo editorial dos <strong>eventos presenciais</strong></h2><div class="tab tab-pilha"><table><tr><th>Quando</th><th>Peça</th><th>Canal</th><th>Dono</th></tr>'
     + "".join(f'<tr><td>{a}</td><td data-r="Peça">{b}</td><td data-r="Canal">{d}</td><td data-r="Dono">{e}</td></tr>' for a, b, d, e in _edit)
     + '</table></div><h3>O ângulo de cada evento</h3><div class="tab tab-pilha"><table><tr><th>Eventos</th><th>Para quem</th><th>Ângulo editorial</th></tr>'
@@ -406,6 +407,7 @@ for _i, (_n, _s, _o, _l) in enumerate([(x[0], x[1], x[2], x[3]) for x in _fr27])
 _c = (cabecalho("Benchmark", []) + '<div class="wrap">' + trilha(("index.html", "Início"), ("plano-2027.html", "Plano 2027"), ("", "Benchmark"))
     + '<section class="topo-peer"><div><h1>Benchmark</h1><p class="lead">O que estudamos fora da Tivio, o que já fazemos e como isso entra nas quatro frentes.</p></div></section>'
     + '<h2>O que vimos fora e o que <strong>fazemos</strong></h2>' + _bm_vis
+    + '<h2>Bases <strong>externas</strong></h2><div class="frentes linhas"><section class="frente vidro"><h3><a href="https://www.fnmkhub.com/" target="_blank" rel="noopener">fnmk</a></h3><p class="dono">Inteligência para o mercado de capitais</p><ul><li>Alocadores por segmento: assets, wealth, family offices e fundos de pensão</li><li>Insights e benchmarks para o discurso</li><li>Agenda curada de eventos e encontros</li><li>Entra em Eventos, Conteúdo e Benchmark</li></ul></section></div>'
     + '<h2>Onde <strong>ver</strong></h2>' + cartoes([("m-peers.html", "Peers no Brasil", "Gestoras brasileiras."), ("m-estrangeiras.html", "Peers no exterior", "Gestoras de fora."), ("m-cases.html", "Cases", "O que outros fizeram."), ("m-mundo.html", "Mundo", "Tendências lá fora."), ("m-mercados.html", "Outros mercados", "Referências de outros países."), ("m-setores.html", "Outros setores", "O que copiar de fora das finanças."), ("m-relatorio.html", "Relatório 2027", "Estudos de marketing para 2027.")])
     + '<p class="rodape">Tivio Capital · Comunicação &amp; Marketing</p></div>')
 (EXTRA / "frente-benchmark.html").write_text(pagina("Benchmark", _c, CSS_P), encoding="utf-8")
