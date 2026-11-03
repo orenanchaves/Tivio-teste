@@ -292,3 +292,4 @@
 .sl-2 .sl-g>div,.sl-1 .sl-g>div{background:rgba(255,255,255,.04);backdrop-filter:none}
 .sl-t.mini p{font-size:clamp(14px,1.45vw,22px);padding-bottom:1.1vh}.sl-t.mini{gap:1.1vh}
 .sl-2>h2.fr{margin:0}
+@media (max-width:760px){.sl h2.fr{font-size:24px}.sl h2.fr+.sl-g,.sl h2.fr+.sl-t{margin-top:16px}.sl-g{gap:8px}.sl-g>div,.sl-g>a{padding:12px 14px;border-radius:14px}.sl-g b{font-size:16px}.sl-g span,.sl-g ul{font-size:13px;margin-top:4px}.sl-t{gap:8px}.sl-t p{font-size:14px;padding-bottom:8px}.sl-t.mini p{font-size:13px}}
