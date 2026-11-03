@@ -58,9 +58,9 @@ FRENTES_E = [("Coordenação, Design estratégico &amp; Automação", "Renan Cha
              ("Design operacional &amp; Produção", "Gabriel Fiorilli", ["Peças de social", "Desdobramento de KVs", "Materiais de eventos", "Vídeo e motion", "Aplicação dos templates"]),
              ("Agência parceira", "ColaAí", ["Peças", "Vídeo e motion", "Planejamento editorial", "Legendas e publicação", "Moderação", "Tráfego pago, com Ewerton", "Performance e relatório"])]
 _org = ('<div class="org"><div class="org-n vidro"><span>Direção</span><b>Enrico Trotta</b></div><i class="org-l"></i>'
-        '<div class="org-n vidro"><span>Coordenação de C&amp;M e design estratégico</span><b>Renan Chaves</b></div><i class="org-l"></i>'
-        '<div class="org-3"><div class="org-n vidro"><span>Conteúdo &amp; Comunicação</span><b>Fernanda Acquati</b></div><div class="org-n vidro"><span>Design operacional &amp; Produção</span><b>Gabriel Fiorilli</b></div><div class="org-n vidro"><span>Performance, Dados &amp; Automação</span><b>Renan Chaves</b></div></div>'
-        '<div class="org-t"><span>Eventos</span>Frente transversal, com as três áreas</div>'
+        '<div class="org-n vidro"><span>Coordenação, design estratégico, dados e automação</span><b>Renan Chaves</b></div><i class="org-l"></i>'
+        '<div class="org-3 org-2"><div class="org-n vidro"><span>Conteúdo &amp; Comunicação</span><b>Fernanda Acquati</b></div><div class="org-n vidro"><span>Design operacional &amp; Produção</span><b>Gabriel Fiorilli</b></div></div>'
+        '<div class="org-t"><span>Eventos</span>Frente transversal, com toda a área</div>'
         '<div class="org-t"><span>Agência parceira</span>ColaAí, tráfego pago</div></div>')
 _antes = ('<div class="org"><div class="org-n vidro"><span>Direção</span><b>Enrico Trotta</b></div><i class="org-l"></i>'
           '<div class="org-n vidro org-hub"><span>Hub da área</span><b>Cesar Medeiros</b></div><i class="org-l"></i>'
@@ -71,10 +71,10 @@ _antes = ('<div class="org"><div class="org-n vidro"><span>Direção</span><b>En
 def _col(tit, sub, nos):
     return f'<section class="fase{" fase-antes" if tit == "Antes" else " fase-dest"}"><p class="fase-t">{tit}</p><p class="fase-s">{sub}</p>' + "".join(f'<div class="fase-n{" " + c if c else ""}"><span>{a}</span><b>{b}</b></div>' for a, b, c in nos) + '</section>'
 _fases = '<div class="fases">' + _col("Antes", "Coordenação central", [("Direção", "Enrico Trotta", ""), ("Hub da área", "Cesar Medeiros", "hub"), ("Materiais, dados e automação", "Renan Chaves", ""), ("Conteúdo e fluxo editorial", "Fernanda Acquati", ""), ("Design e produção visual", "Gabriel Fiorilli", ""), ("Agência parceira", "ColaAí", "ext")]) \
-    + _col("Agora", "Frentes com responsáveis", [("Direção", "Enrico Trotta", ""), ("Coordenação, performance e design estratégico", "Renan Chaves", "hub"), ("Conteúdo &amp; Comunicação", "Fernanda Acquati", ""), ("Design operacional &amp; Produção", "Gabriel Fiorilli", ""), ("Agência parceira", "ColaAí", "ext"), ("Tráfego pago", "Ewerton", "ext")]) \
-    + _col("Futuro", "Frentes consolidadas", [("Direção", "Enrico Trotta", ""), ("Coordenação de C&amp;M e design estratégico", "Renan Chaves", "hub"), ("Conteúdo &amp; Comunicação", "Fernanda Acquati", ""), ("Design operacional &amp; Produção", "Gabriel Fiorilli", ""), ("Performance, Dados &amp; Automação", "Renan Chaves", ""), ("Pessoa de apoio", "A definir", ""), ("Tráfego pago", "Ewerton", "ext"), ("Apoio externo", "A definir", "ext")]) + '</div>'
+    + _col("Agora", "Frentes com responsáveis", [("Direção", "Enrico Trotta", ""), ("Coordenação, design estratégico, dados e automação", "Renan Chaves", "hub"), ("Conteúdo &amp; Comunicação", "Fernanda Acquati", ""), ("Design operacional &amp; Produção", "Gabriel Fiorilli", ""), ("Agência parceira", "ColaAí", "ext"), ("Tráfego pago", "Ewerton", "ext")]) \
+    + _col("Futuro", "Frentes consolidadas", [("Direção", "Enrico Trotta", ""), ("Coordenação, design estratégico, dados e automação", "Renan Chaves", "hub"), ("Conteúdo &amp; Comunicação", "Fernanda Acquati", ""), ("Design operacional &amp; Produção", "Gabriel Fiorilli", ""), ("Pessoa de apoio", "A definir", ""), ("Tráfego pago", "Ewerton", "ext"), ("Apoio externo", "A definir", "ext")]) + '</div>'
 _fr = "".join(f'<section class="frente vidro"><h3>{n}</h3><p class="dono">{d}</p><ul>' + "".join(f"<li>{x}</li>" for x in l) + "</ul></section>" for n, d, l in FRENTES_E)
-_pap = "".join(f'<div class="papel vidro"><span>{a}</span><b>{b}</b></div>' for a, b in [("Coordenação", "Renan Chaves"), ("Operação", "Fernanda Acquati"), ("Direção de arte", "Renan Chaves"), ("Peças", "Gabriel Fiorilli"), ("Aprovação estratégica", "Enrico Trotta")])
+_pap = "".join(f'<div class="papel vidro"><span>{a}</span><b>{b}</b></div>' for a, b in [("Coordenação e direção de arte", "Renan Chaves"), ("Operação", "Fernanda Acquati"), ("Peças", "Gabriel Fiorilli"), ("Aprovação estratégica", "Enrico Trotta")])
 _fl = "".join(f'<li class="vidro"><b>{a}</b><span>{b}</span></li>' for a, b in [("Demanda entra", "Pedido registrado em um lugar só"), ("Triagem", "Definição do responsável"), ("Produção", "Execução pela frente dona"), ("Aprovação técnica", "Revisão e Compliance"), ("Aprovação estratégica", "Quando necessária"), ("Publicação", "Publicação e mensuração")])
 _dist_p = [("r", "Renan Chaves", "Coordenação e design estratégico", ["Design estratégico", "Materiais e decks", "Dados e automação"]),
            ("f", "Fernanda Acquati", "Conteúdo &amp; Comunicação", ["Conteúdo", "Redes sociais"]),
@@ -114,7 +114,7 @@ var r;addEventListener('resize',function(){clearTimeout(r);r=setTimeout(function
 })();</script>""")
 corpo_est = (cabecalho("Estrutura", []) + '<div class="wrap">'
     + trilha(("index.html", "Início"), ("", "Estrutura"))
-    + f'<section class="topo-peer"><div>{ICO27["Estrutura"]}<h1>Estrutura</h1><p class="lead">Direção, coordenação, três pilares operacionais e Eventos como frente transversal.</p></div></section>'
+    + f'<section class="topo-peer"><div>{ICO27["Estrutura"]}<h1>Estrutura</h1><p class="lead">Direção, coordenação com design estratégico e automação, dois pilares operacionais e Eventos como frente transversal.</p></div></section>'
     + '<h2>Antes, agora e <strong>futuro</strong></h2>' + _fases
     + _mov
     + '<h2>Antes: quem fazia <strong>o quê</strong></h2>' + _antes[_antes.index('<div class="tab">'):]
