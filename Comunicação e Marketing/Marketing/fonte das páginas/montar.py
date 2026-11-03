@@ -70,14 +70,14 @@ def barra_global():
         '<a class="nav-top" href="imprensa.html">Imprensa</a>',
         dd("Digital", [("frente-digital.html", "Visão geral"), ("analise-site.html", "Site"), ("frente-digital.html#artigos", "Artigos para o Google"), ("m-captacao.html", "Captação")]),
         dd("Benchmark", [("frente-benchmark.html", "Visão geral"), ("m-peers.html", "Peers no Brasil"), ("m-estrangeiras.html", "Peers no exterior"), ("m-cases.html", "Cases"), ("m-mundo.html", "Mundo"), ("m-mercados.html", "Outros mercados"), ("m-setores.html", "Outros setores"), ("m-relatorio.html", "Relatório 2027")]),
-        dd("Base", [("", "Estratégia"), ("visao.html", "Visão"), ("m-posicionamento.html", "Casa de estruturados"), ("m-sintese.html", "O que fazer"), ("m-sugestoes.html", "Sugestões"), ("m-ideias.html", "Ideias na mesa"), ("", "Área"), ("fim-de-ano.html", "Fim de 2026"), ("transicao.html", "Transição"), ("orcamento.html", "Orçamento 2027"), ("brand.html", "Brand"), ("", "Tudo"), ("marketing.html", "Central completa")], True),
+        dd("Base", [("", "Estratégia"), ("visao.html", "Visão"), ("m-posicionamento.html", "Casa de estruturados"), ("m-sintese.html", "O que fazer"), ("m-sugestoes.html", "Sugestões"), ("m-ideias.html", "Ideias na mesa"), ("", "Área"), ("plano-2027.html#fim-do-ano", "Fim de 2026"), ("transicao.html", "Transição"), ("orcamento.html", "Orçamento 2027"), ("brand.html", "Brand"), ("", "Tudo"), ("marketing.html", "Central completa")], True),
     ])
     return f'''<header class="barra"><div class="barra-in">
 <a class="marca" href="index.html" aria-label="Comunicação &amp; Marketing">{LOGO}</a>
 <button type="button" class="menu-btn" aria-expanded="false" aria-controls="nav-global" aria-label="Menu"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button>
 <nav class="nav-global" id="nav-global" aria-label="Principal">{nav}</nav>
 <a class="btn-filtro" href="buscar.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="6.5"/><path d="m20 20-4.2-4.2"/></svg>Pesquisar</a>
-<a class="btn-visao" href="plano-2027.html">Plano 2027</a>
+<a class="btn-visao" href="plano-2027.html">Plano</a>
 {TEMA_HTML}</div></header>'''
 
 _ic = lambda d: f'<svg class="ic-rede" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">{d}</svg>'

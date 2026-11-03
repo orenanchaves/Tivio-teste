@@ -62,7 +62,7 @@ def casca(iv, ct):
 """
 for f in sorted(ORIG.glob("*.html")):
     h = f.read_text(encoding="utf-8")
-    fr = {"orcamento.html": "orc_frag.html", "transicao.html": "transicao_frag.html", "fim-de-ano.html": "fimano_frag.html"}.get(f.name)
+    fr = {"orcamento.html": "orc_frag.html", "transicao.html": "transicao_frag.html"}.get(f.name)
     if fr:
         i = h.index('<div class="wrap">'); j = h.rindex('<p class="rodape">'); j = h.index("</div>", j) + 6
         h = h[:i] + (S/fr).read_text(encoding="utf-8") + h[j:]
@@ -70,6 +70,10 @@ for f in sorted(ORIG.glob("*.html")):
     h = h.replace("<!--METAS-->", (S/"metas_frag.html").read_text(encoding="utf-8"))
     h = h.replace("<!--CEO1-->", "CEO; Tivio, mercado e casa de estruturados; ").replace("<!--CEO2-->", "CEO, ").replace("<!--CEO3-->", "Tivio, mercado e casa de estruturados; ")
     assert "<!--CEO" not in h, f.name
+    if "<!--FIMANO-->" in h:
+        _f = (S/"fimano_frag.html").read_text(encoding="utf-8")
+        h = h.replace("<!--FIMANO-->", _f[_f.index('<div class="kpis">'):_f.index('<p class="rodape">')])
+    h = h.replace("<!--FILM-->", "filmagem com o Martin")
     h = h.replace("<!--APRES-->", (S/"apres_frag.html").read_text(encoding="utf-8"))
     h = h.replace("<!--REF-TIME-->", (S/"ref_time_frag.html").read_text(encoding="utf-8"))
     h, n = re.subn(r'<p class="(?:eyebrow|sl-e)"[^>]*>.*?</p>', "", h, flags=re.S)
