@@ -54,11 +54,11 @@ corpo_polo = (cabecalho("Brand", []) + '<div class="wrap">'
 (EXTRA / "brand.html").write_text(pagina("Brand", corpo_polo, CSS_P), encoding="utf-8")
 
 FRENTES_E = [("Coordenação, Design estratégico &amp; Automação", "Renan Chaves", ["Design estratégico", "Prioridades", "Materiais e fechamento", "Automação", "Dados e performance", "C&amp;M Hub", "Governança", "Interface com Enrico Trotta", "Apresentações e decks"]),
-             ("Conteúdo &amp; Comunicação", "Fernanda Acquati", ["Calendário editorial", "Redes sociais", "Dashboard de redes sociais", "Comunicação interna", "Tivio News", "Textos e legendas", "Publicação", "Moderação", "Aprovações", "Eventos, de ponta a ponta"]),
+             ("Conteúdo &amp; Comunicação", "Fernanda Acquati", ["Calendário editorial", "Redes sociais", "Dashboard de redes sociais", "Comunicação interna", "Tivio News", "Textos e legendas", "Publicação", "Moderação", "Aprovações", "Eventos, de ponta a ponta", "Imprensa", "Gestão de orçamento"]),
              ("Design operacional &amp; Produção", "Gabriel Fiorilli", ["Peças de social", "Desdobramento de KVs", "Vídeo e motion", "Aplicação dos templates"])]
 _org = ('<div class="org"><div class="org-n vidro"><span>Direção</span><b>Enrico Trotta</b></div><i class="org-l"></i>'
-        '<div class="org-n vidro"><span>Coordenação, design estratégico, dados e automação</span><b>Renan Chaves</b></div><i class="org-l"></i>'
-        '<div class="org-3 org-2"><div class="org-n vidro"><span>Conteúdo &amp; Comunicação</span><b>Fernanda Acquati</b></div><div class="org-col"><div class="org-n vidro"><span>Design operacional &amp; Produção</span><b>Gabriel Fiorilli</b></div><i class="org-l"></i><div class="org-n org-ext"><span>Agência parceira</span><b>ColaAí</b><em>Vídeo, carrossel da Carta e tráfego pago</em></div></div></div>'
+        '<div class="org-n vidro"><span>Coordenação, Design estratégico &amp; Automação</span><b>Renan Chaves</b></div><i class="org-l"></i>'
+        '<div class="org-3 org-2"><div class="org-n vidro"><span>Conteúdo &amp; Comunicação</span><b>Fernanda Acquati</b></div><div class="org-col"><div class="org-n vidro"><span>Design operacional &amp; Produção</span><b>Gabriel Fiorilli</b></div><i class="org-l"></i><div class="org-n org-ext"><span>Agência parceira</span><b>ColaAí</b><em>Vídeo, carrosséis e tráfego pago</em></div></div></div>'
         '<div class="org-t"><span>Eventos</span>Fernanda Acquati, de ponta a ponta</div></div>')
 _antes = ('<div class="org"><div class="org-n vidro"><span>Direção</span><b>Enrico Trotta</b></div><i class="org-l"></i>'
           '<div class="org-n vidro org-hub"><span>Hub da área</span><b>Cesar Medeiros</b></div><i class="org-l"></i>'
@@ -74,7 +74,7 @@ _fases = '<div class="fases">' + _col("Antes", "Coordenação central", [("Dire�
 _fr = "".join(f'<section class="frente vidro"><h3>{n}</h3><p class="dono">{d}</p><ul>' + "".join(f"<li>{x}</li>" for x in l) + "</ul></section>" for n, d, l in FRENTES_E)
 _pap = "".join(f'<div class="papel vidro"><span>{a}</span><b>{b}</b></div>' for a, b in [("Eventos de ponta a ponta", "Fernanda Acquati"), ("Aprovação estratégica", "Enrico Trotta")])
 _fl = "".join(f'<li class="vidro"><b>{a}</b><span>{b}</span></li>' for a, b in [("Demanda entra", "Pedido registrado em um lugar só"), ("Triagem", "Definição do responsável"), ("Produção", "Execução pela frente dona"), ("Aprovação técnica", "Revisão e Compliance"), ("Aprovação estratégica", "Quando necessária"), ("Publicação", "Publicação e mensuração")])
-_dist_p = [("r", "Renan Chaves", "Coordenação e design estratégico", ["Design estratégico", "Materiais e decks", "Dados e automação"]),
+_dist_p = [("r", "Renan Chaves", "Coordenação, Design estratégico &amp; Automação", ["Design estratégico", "Materiais e decks", "Dados e automação"]),
            ("f", "Fernanda Acquati", "Conteúdo &amp; Comunicação", ["Conteúdo", "Redes sociais"]),
            ("g", "Gabriel Fiorilli", "Design operacional &amp; Produção", ["Design operacional", "Peças e vídeos"])]
 _dist_i = [("Coordenação", "r"), ("Prioridades", "r"), ("Interface com Enrico Trotta", "r"), ("Eventos: coordenação", "f"), ("Aprovações", "f"), ("Eventos: operação", "f"), ("Agência", "f"), ("Fornecedores", "f"), ("Eventos: peças", "f")]
@@ -117,11 +117,11 @@ corpo_est = (cabecalho("Estrutura", []) + '<div class="wrap">'
     + _mov
     + '<h2>Antes: quem fazia <strong>o quê</strong></h2>' + _antes[_antes.index('<div class="tab">'):]
     + '<h2>O que cada frente <strong>cobre</strong></h2><div class="frentes linhas">' + _fr + '</div>'
-    + '<h2>Agência <strong>parceira</strong></h2><div class="frentes linhas"><section class="frente vidro"><h3>Agência parceira</h3><p class="dono">ColaAí</p><ul><li>Vídeo</li><li>Carrossel da Carta do Gestor</li><li>Tráfego pago, com Ewerton</li></ul></section></div>'
+    + '<h2>Agência <strong>parceira</strong></h2><div class="frentes linhas"><section class="frente vidro"><h3>Agência parceira</h3><p class="dono">ColaAí</p><ul><li>Vídeo</li><li>Carrosséis, inclusive o da Carta do Gestor</li><li>Tráfego pago, com Ewerton</li></ul></section></div>'
     + '<h2>Design: estratégico e <strong>operacional</strong></h2><div class="frentes linhas">' + "".join(f'<section class="frente vidro"><h3>{n}</h3><p class="dono">{d}</p><ul>' + "".join(f"<li>{x}</li>" for x in l) + "</ul></section>" for n, d, l in [("Design estratégico", "Renan Chaves", ["Direção de arte e linguagem visual da casa", "Identidade e design system", "KV de campanha", "Templates e padrões das peças", "Decks e apresentações", "Aprovação visual final"]), ("Design operacional", "Gabriel Fiorilli", ["Peças de social a partir do KV e dos templates", "Desdobramentos e formatos", "Vídeo e motion", "Ajustes e versões finais"])]) + '</div>'
     + '<h2>Eventos com a <strong>Fernanda</strong></h2><div class="papeis pv2">' + _pap + '</div>'
     + '<h2>Como uma demanda <strong>anda</strong></h2><ol class="roteiro r6">' + _fl + '</ol>'
-    + '<h3>Quando passa pela agência</h3><div class="frentes linhas"><section class="frente vidro"><h3>Operação da agência</h3><p class="dono">ColaAí, com Fernanda Acquati</p><ul><li>Pedido pela Fernanda Acquati</li><li>Produção na ColaAí: vídeo, carrossel da Carta e tráfego pago</li><li>Revisão e Compliance</li><li>Publicação</li><li>Relatório de tráfego para o Renan Chaves</li></ul></section></div>'
+    + '<h3>Quando passa pela agência</h3><div class="frentes linhas"><section class="frente vidro"><h3>Operação da agência</h3><p class="dono">ColaAí, com Fernanda Acquati</p><ul><li>Pedido pela Fernanda Acquati</li><li>Produção na ColaAí: vídeo, carrosséis e tráfego pago</li><li>Revisão e Compliance</li><li>Publicação</li><li>Relatório de tráfego para o Renan Chaves</li></ul></section></div>'
     + '<!--REF-TIME-->'
     + '<p class="rodape">Tivio Capital · Comunicação &amp; Marketing</p></div>')
 (EXTRA / "estrutura.html").write_text(pagina("Estrutura", corpo_est, CSS_P), encoding="utf-8")
@@ -327,7 +327,7 @@ corpo_p27 = (cabecalho("Plano 2027", []) + '<div class="wrap">'
     + trilha(("index.html", "Início"), ("", "Plano 2027"))
     + '<section class="topo-peer"><div><h1>Plano 2027</h1><p class="lead">Parte da estrutura da área e de tudo o que estudamos para ser a casa de estruturados, em quatro frentes, com números de negócio além de awareness.</p></div></section>'
     + '<h2 id="estrutura">De onde o plano <strong>parte</strong></h2>' + _org + '<a class="tp tp-b" href="estrutura.html">' + ICO27["Estrutura"] + 'Ver a estrutura completa</a>'
-    + '<div class="pl-base">' + cartoes([("frente-benchmark.html", "Benchmark", "O que vimos fora e o que fazemos."), ("analise-postagens.html", "Análise das postagens", "O que funciona hoje."), ("analise-site.html", "Análise do site", "O que melhorar."), ("orcamento.html", "Orçamento 2027", "Com o que contamos.")]) + '</div>'
+    + '<div class="pl-base">' + cartoes([("frente-benchmark.html", "Benchmark", "O que vimos fora e o que fazemos."), ("analise-postagens.html", "Análise das postagens", "O que funciona hoje."), ("imprensa.html", "Imprensa", "Pauta, porta-vozes e filtro."), ("analise-site.html", "Análise do site", "O que melhorar."), ("orcamento.html", "Orçamento 2027", "Com o que contamos.")]) + '</div>'
     + '<div class="kpis">' + "".join(f'<div class="kpi vidro"><b>{a}</b><span>{b}</span></div>' for a, b in [("81", "materiais por rodada"), ("23", "eventos no orçamento"), ("3 de 14", "posts sobre estruturados em out/26"), ("4", "artigos para ranquear no Google")]) + '</div>'
     + '<h2 id="frentes">O ano em <strong>quatro frentes</strong></h2><a class="tp" href="m-posicionamento.html">Casa de estruturados</a><div class="frentes f4">'
     + "".join(f'<section class="frente vidro">{ICO27[n]}<h3><a href="{h}">{n}</a></h3><p class="dono">{d}</p><ul>' + "".join(f"<li>{x}</li>" for x in l) + "</ul></section>" for n, h, d, l in _fr27) + '</div><a class="tp tp-b" href="frente-benchmark.html">' + ICO27["Benchmark"] + 'Benchmark conecta as quatro frentes</a>'
@@ -377,20 +377,24 @@ _imp_v = [("Rodrigo Freire", "Tivio, mercado e casa de estruturados"), ("Sami Ka
 _imp_t = [("1º tri", "Perspectivas de estruturados para 2027", "Panorama do evento de janeiro e o Raio X do Mercado"), ("2º tri", "FIDC chega ao varejo: o que olhar antes de investir", "Contas de varejo em FIDC de 147,3 mil para 333,7 mil em cerca de um ano"),
           ("3º tri", "Panorama de Estruturados", "Dado próprio, lançado para a imprensa antes do site"), ("4º tri", "Balanço de estruturados e o que vem em 2028", "Evento de outubro e balanço do ano")]
 _imp_r = [("Pauta do mês", "Reunião mensal com a assessoria, a partir da Carta do Gestor e do Raio X do Mercado"), ("Release", "Só com dado novo, lançamento ou evento"), ("Porta-voz pronto", "Media training anual e uma página de apoio por tema"),
-          ("Aprovação", "Revisão e Compliance antes de qualquer resposta escrita"), ("Na Mídia", "Toda matéria volta como post, LinkedIn do porta-voz e newsletter"), ("Medição", "Clipping mensal com menções, porta-voz citado e tema")]
+          ("Aprovação", "Revisão e Compliance antes de qualquer resposta escrita"), ("Na Mídia", "Toda matéria volta como post, LinkedIn do porta-voz e newsletter"), ("Clipping por gestor", "Cada gestor recebe só as matérias do tema dele"), ("Medição", "Clipping mensal com menções, porta-voz citado e tema")]
 _imp_m = ["Valor Econômico", "Pipeline", "NeoFeed", "Bloomberg Línea", "InfoMoney", "Estadão E-Investidor", "Investidor Institucional"]
-_imp = ('<h2 id="imprensa">Planejamento de <strong>imprensa</strong></h2><p class="secao-sub">Objetivo: a Tivio virar a fonte de estruturados na imprensa econômica. Dono: Fernanda Acquati, com a assessoria de imprensa.</p>'
+_imp = ('<h2 id="plano">Planejamento de <strong>imprensa</strong></h2><p class="secao-sub">Objetivo: a Tivio virar a fonte de estruturados na imprensa econômica. Dono: Fernanda Acquati, com a assessoria de imprensa.</p>'
     + '<h3>Quem fala de quê</h3><div class="papeis pv5">' + "".join(f'<div class="papel vidro"><span>{b}</span><b>{a}</b></div>' for a, b in _imp_v) + '</div>'
+    + '<h3>Filtro antes dos gestores</h3><div class="frentes linhas"><section class="frente vidro"><h3>Pedido de imprensa</h3><p class="dono">Fernanda Acquati filtra antes</p><ul><li>Veículo e jornalista</li><li>Tema ligado a estruturados ou a um fundo da casa</li><li>Prazo que o gestor consegue cumprir</li><li>Risco de falar de fundo em oferta</li><li>Só então vai ao gestor, com briefing de uma página</li></ul></section></div>'
     + '<h3>Uma pauta por trimestre</h3><div class="tab tab-pilha"><table><tr><th>Quando</th><th>Pauta</th><th>Gancho</th></tr>' + "".join(f'<tr><td>{a}</td><td data-r="Pauta">{b}</td><td data-r="Gancho">{d}</td></tr>' for a, b, d in _imp_t) + '</table></div>'
     + '<h3>Rotina</h3><div class="tab tab-pilha"><table><tr><th>O quê</th><th>Como funciona</th></tr>' + "".join(f'<tr><td>{a}</td><td data-r="Como funciona">{b}</td></tr>' for a, b in _imp_r) + '</table></div>'
     + '<h3>Onde aparecer</h3><div class="frentes linhas"><section class="frente vidro"><h3>Veículos</h3><p class="dono">Economia, mercado e previdência</p><ul>' + "".join(f"<li>{x}</li>" for x in _imp_m) + '</ul></section></div>')
+corpo_imp = (cabecalho("Imprensa", []) + '<div class="wrap">' + trilha(("index.html", "Início"), ("", "Imprensa"))
+    + '<section class="topo-peer"><div><h1>Imprensa</h1><p class="lead">Pauta, porta-vozes e filtro para a Tivio virar fonte de estruturados.</p></div></section>' + _imp
+    + '<p class="meta-txt">Todas as respostas passam por Revisão e Compliance antes de sair.</p><p class="rodape">Tivio Capital · Comunicação &amp; Marketing</p></div>')
+(EXTRA / "imprensa.html").write_text(pagina("Imprensa", corpo_imp, CSS_P), encoding="utf-8")
 _cont = ('<h2 id="foco">O que publicamos <strong>hoje</strong></h2><p class="secao-sub">14 posts em outubro de 2026, no Instagram.</p>' + _st([("Crédito estruturado", 3), ("Outros temas", 11)])
     + '<h2 id="curtidas">O que mais <strong>engaja</strong></h2><p class="secao-sub">Curtidas por tipo de post, média de outubro.</p>' + _bh(_curt[:6])
     + '<h2 id="executivos">Executivos nas <strong>conversas do LinkedIn</strong></h2><div class="tab tab-pilha"><table><tr><th>Executivo</th><th>Papel</th><th>Conversas para entrar</th></tr>'
     + "".join(f'<tr><td>{a}</td><td data-r="Papel">{b}</td><td data-r="Conversas para entrar">{d}</td></tr>' for a, b, d in _exec) + '</table></div>'
     + '<h2 id="newsletter">Newsletter como <strong>base própria</strong></h2><p class="secao-sub">É o canal que não depende de algoritmo: cada inscrito vira um contato com perfil conhecido.</p><div class="tab tab-pilha"><table><tr><th>Ação</th><th>Como funciona</th></tr>'
     + "".join(f'<tr><td>{a}</td><td data-r="Como funciona">{b}</td></tr>' for a, b in [("Formulário curto", "De 6 campos para nome, e-mail e perfil"), ("Promessa clara", "O que muda em estruturados, uma vez por mês"), ("Edição", "Carta do mês, Gráfico da Semana, um vídeo e o próximo evento"), ("Por público", "Assessor, institucional e investidor recebem o destaque certo"), ("Onde convidar", "Bio do Instagram, LinkedIn, fim dos artigos, QR nos eventos, landings e WhatsApp"), ("Motivo para assinar", "Panorama de Estruturados e convites de evento primeiro para quem assina")]) + '</table></div>'
-    + _imp
     + '<h2 id="engajar">Mais <strong>engajamento</strong></h2><div class="tab tab-pilha"><table><tr><th>Ação</th><th>Como funciona</th></tr>'
     + "".join(f'<tr><td>{a}</td><td data-r="Como funciona">{b}</td></tr>' for a, b in _acoes) + '</table></div>')
 for _i, (_n, _s, _o, _l) in enumerate([(x[0], x[1], x[2], x[3]) for x in _fr27]):
