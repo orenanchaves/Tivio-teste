@@ -63,12 +63,13 @@ def barra_global():
     pubs = [("publico-assessor.html", "Assessor"), ("publico-gerente.html", "Gerente"), ("publico-institucional.html", "Institucional"),
             ("publico-originador.html", "Originador"), ("publico-universitario.html", "Universitário"), ("publico-investidor.html", "Investidor")]
     nav = "".join([
+        '<a class="nav-top" href="estrutura.html">Estrutura</a>',
         dd("Automação", [("frente-automacao.html", "Visão geral"), ("automativio.html", "AutomaTivio"), ("automativio.html#baixar", "Como baixar"), ("", "Times"), ("automativio-gestao.html", "Gestão"), ("automativio-riscos.html", "Riscos"), ("automativio-marketing.html", "Marketing"), ("", "IA"), ("m-copilot.html", "Copilot"), ("metodos-ia.html", "Como usar IA")]),
         dd("Eventos", [("frente-eventos.html", "Visão geral"), ("m-eventos.html", "Eventos Itaú"), ("eventos-mercado.html", "Eventos do mercado"), ("calendario.html", "Calendário 2027")]),
         dd("Conteúdo", [("frente-conteudo.html", "Visão geral"), ("m-posts.html", "Posts"), ("analise-postagens.html", "Análise das postagens"), ("canal-ofertas.html", "Canal de ofertas")] + [("", "Segmentos")] + segs + [("", "Públicos")] + pubs, True),
         dd("Digital", [("frente-digital.html", "Visão geral"), ("analise-site.html", "Site"), ("frente-digital.html#artigos", "Artigos para o Google"), ("m-captacao.html", "Captação")]),
         dd("Benchmark", [("frente-benchmark.html", "Visão geral"), ("m-peers.html", "Peers no Brasil"), ("m-estrangeiras.html", "Peers no exterior"), ("m-cases.html", "Cases"), ("m-mundo.html", "Mundo"), ("m-mercados.html", "Outros mercados"), ("m-setores.html", "Outros setores"), ("m-relatorio.html", "Relatório 2027")]),
-        dd("Base", [("", "Estratégia"), ("visao.html", "Visão"), ("m-posicionamento.html", "Casa de estruturados"), ("m-sintese.html", "O que fazer"), ("m-sugestoes.html", "Sugestões"), ("m-ideias.html", "Ideias na mesa"), ("", "Área"), ("estrutura.html", "Estrutura"), ("transicao.html", "Transição"), ("orcamento.html", "Orçamento 2027"), ("brand.html", "Brand"), ("", "Tudo"), ("marketing.html", "Central completa")], True),
+        dd("Base", [("", "Estratégia"), ("visao.html", "Visão"), ("m-posicionamento.html", "Casa de estruturados"), ("m-sintese.html", "O que fazer"), ("m-sugestoes.html", "Sugestões"), ("m-ideias.html", "Ideias na mesa"), ("", "Área"), ("transicao.html", "Transição"), ("orcamento.html", "Orçamento 2027"), ("brand.html", "Brand"), ("", "Tudo"), ("marketing.html", "Central completa")], True),
     ])
     return f'''<header class="barra"><div class="barra-in">
 <a class="marca" href="index.html" aria-label="Comunicação &amp; Marketing">{LOGO}</a>
@@ -150,6 +151,7 @@ ICO27 = {"Automação": _ic27('<path d="M4 12a8 8 0 0 1 14-5.3L20 9M20 4v5h-5M20
          "Eventos": _ic27('<rect x="3.5" y="5" width="17" height="15.5" rx="3"/><path d="M3.5 10h17M8 3v4M16 3v4"/>'),
          "Conteúdo": _ic27('<path d="M6 3.5h8l4.5 4.5v12.5H6z"/><path d="M14 3.5V8h4.5M9 12.5h6M9 16h6"/>'),
          "Digital com estratégia": _ic27('<circle cx="12" cy="12" r="8.5"/><path d="M3.5 12h17M12 3.5c2.4 2.4 3.6 5.2 3.6 8.5s-1.2 6.1-3.6 8.5c-2.4-2.4-3.6-5.2-3.6-8.5s1.2-6.1 3.6-8.5z"/>'),
+         "Estrutura": _ic27('<circle cx="9" cy="8" r="3.5"/><path d="M3 20c0-3.5 2.7-6 6-6s6 2.5 6 6M16 4.8a3.5 3.5 0 0 1 0 6.4M18 14.4c1.9.8 3 2.8 3 5.6"/>'),
          "Benchmark": _ic27('<circle cx="12" cy="12" r="8.5"/><circle cx="12" cy="12" r="4.5"/><path d="M12 11.9h.01"/>')}
 def _num_br(v):
     return f"{v:g}".replace(".", ",")
