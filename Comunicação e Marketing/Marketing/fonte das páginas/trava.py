@@ -70,6 +70,7 @@ for f in sorted(ORIG.glob("*.html")):
     h = h.replace("<!--METAS-->", (S/"metas_frag.html").read_text(encoding="utf-8"))
     h = h.replace("<!--CEO1-->", "CEO; Tivio, mercado e casa de estruturados; ").replace("<!--CEO2-->", "CEO, ").replace("<!--CEO3-->", "Tivio, mercado e casa de estruturados; ")
     assert "<!--CEO" not in h, f.name
+    h = h.replace("<!--APRES-->", (S/"apres_frag.html").read_text(encoding="utf-8"))
     h = h.replace("<!--REF-TIME-->", (S/"ref_time_frag.html").read_text(encoding="utf-8"))
     h, n = re.subn(r'<p class="(?:eyebrow|sl-e)"[^>]*>.*?</p>', "", h, flags=re.S)
     if "favicon.ico" not in h: h = h.replace("</title>", '</title>\n<link rel="icon" href="favicon.ico" sizes="any">', 1)
