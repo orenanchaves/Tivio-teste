@@ -75,6 +75,7 @@ for f in sorted(ORIG.glob("*.html")):
     _fm = (S/"film_frag.txt").read_text(encoding="utf-8"); h = h.replace("<!--FILMC-->", _fm[:1].upper() + _fm[1:])
     h = h.replace("<!--FILM-->", (S/"film_frag.txt").read_text(encoding="utf-8"))
     h = h.replace("<!--ORG27-->", (S/"org27_frag.html").read_text(encoding="utf-8"))
+    h = h.replace("<!--CUSTO27-->", (S/"custo_frag.html").read_text(encoding="utf-8"))
     h = h.replace("<!--APRES-->", (S/"apres_frag.html").read_text(encoding="utf-8"))
     h = h.replace("<!--REF-TIME-->", (S/"ref_time_frag.html").read_text(encoding="utf-8"))
     h, n = re.subn(r'<p class="(?:eyebrow|sl-e)"[^>]*>.*?</p>', "", h, flags=re.S)
