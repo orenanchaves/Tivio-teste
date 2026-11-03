@@ -2,17 +2,20 @@
 // Só aceita quem já passou pela senha: o navegador manda o SHA-256 da chave da trava.
 const json = (d, s = 200) => new Response(JSON.stringify(d), { status: s, headers: { "content-type": "application/json; charset=utf-8", "cache-control": "no-store" } });
 const curto = (x, n) => String(x ?? "").slice(0, n);
-const vazio = () => ({ edits: {}, novos: {}, ordem: {} });
+const vazio = () => ({ edits: {}, novos: {}, ordem: {}, blocos: {} });
 
 // Mesma regra do editar.js: cada mudança aplicada sobre o estado da página.
 function aplica(d, o, quem, quando) {
-  d.ordem = d.ordem || {};
+  d.ordem = d.ordem || {}; d.blocos = d.blocos || {};
   const t = curto(o.texto, 2000);
   if (o.tipo === "editar" || o.tipo === "remover") d.edits[curto(o.chave, 120)] = { t: o.tipo === "remover" ? null : t, antes: curto(o.antes, 2000), quem, quando };
   else if (o.tipo === "restaurar") delete d.edits[curto(o.chave, 120)];
   else if (o.tipo === "novo") { const pai = curto(o.pai, 120); (d.novos[pai] = d.novos[pai] || []).push({ id: curto(o.id, 60) || crypto.randomUUID(), t, quem, quando }); }
   else if (o.tipo === "mudar-novo" || o.tipo === "apagar-novo") {
     for (const l of Object.values(d.novos)) { const i = l.findIndex(x => x.id === o.id); if (i < 0) continue; if (o.tipo === "apagar-novo") l.splice(i, 1); else Object.assign(l[i], { t, quem, quando }); break; }
+  } else if (o.tipo === "novo-bloco") { const c = curto(o.cont, 120); (d.blocos[c] = d.blocos[c] || []).push({ id: curto(o.id, 60) || crypto.randomUUID(), titulo: t, dono: curto(o.dono, 300), quem, quando });
+  } else if (o.tipo === "mudar-bloco" || o.tipo === "apagar-bloco") {
+    for (const l of Object.values(d.blocos)) { const i = l.findIndex(x => x.id === o.id); if (i < 0) continue; if (o.tipo === "apagar-bloco") l.splice(i, 1); else l[i][o.campo === "dono" ? "dono" : "titulo"] = t; break; }
   } else if (o.tipo === "ordem") { for (const [k, v] of Object.entries(o.listas || {})) d.ordem[curto(k, 120)] = (Array.isArray(v) ? v : []).slice(0, 300).map(x => curto(x, 140)); }
   else return false;
   return true;

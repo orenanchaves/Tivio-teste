@@ -3,9 +3,10 @@
   var W = document.querySelector(".wrap"); if (!W || window.__tvEd) return; window.__tvEd = 1;
   var g = null; try { g = sessionStorage.getItem("tivio-chave") } catch (x) {} if (!g) return;
   var P = (location.pathname.split("/").pop() || "index").replace(/\.html$/, "") || "index";
-  var SEL = "li,td,h3,p.dono,p.lead,p.meta-txt,.kpi b,.kpi span,.sub b,.sub span,.org-n b,.org-n span,.org-n em,.org-t,.tl-i span,.frente>p,.bm-i dd,.bm-i h3";
+  var SEL = "li,td,h3,p.dono,p.lead,p.meta-txt,.kpi b,.kpi span,.sub b,.sub span,.org-n b,.org-n span,.org-n em,.org-t,.tl-i span,.frente>p,.bm-i dd,.bm-i h3,ol.roteiro li>b,ol.roteiro li>span,.lig-i>b,.lig-i>span";
+  var BLK = ".frentes>section.frente,.org-n,ol.roteiro>li,.subs>.sub,.kpis>.kpi,.lig>.lig-i,.bm>.bm-i";
   var DUV = /a definir|definir (esse|este) m[eê]s|a medir|a confirmar|em d[uú]vida|\?\s*$/i;
-  var TOKEN, BASE = { edits: {}, novos: {}, ordem: {} }, PEND = [], ED = false;
+  var TOKEN, BASE = { edits: {}, novos: {}, ordem: {}, blocos: {} }, PEND = [], ED = false;
   function hx(b) { return [].map.call(new Uint8Array(b), function (x) { return ("0" + x.toString(16)).slice(-2) }).join("") }
   function h32(s) { var h = 2166136261; for (var i = 0; i < s.length; i++) { h ^= s.charCodeAt(i); h = Math.imul(h, 16777619) } return (h >>> 0).toString(36) }
   function norm(s) { return (s || "").replace(/\s+/g, " ").trim() }
@@ -14,10 +15,12 @@
   function api(m, b, extra) { return fetch("api/edicoes" + (m === "GET" ? "?p=" + encodeURIComponent(P) + (extra || "") : ""), { method: m, headers: { "x-tivio": TOKEN, "content-type": "application/json" }, body: m === "POST" ? JSON.stringify(b) : undefined }).then(function (r) { if (!r.ok) throw r.status; return r.json() }) }
   // mesma regra do servidor (functions/api/edicoes.js)
   function aplicaOp(d, o) {
-    d.ordem = d.ordem || {};
+    d.ordem = d.ordem || {}; d.blocos = d.blocos || {};
     if (o.tipo === "editar" || o.tipo === "remover") d.edits[o.chave] = { t: o.tipo === "remover" ? null : o.texto, antes: o.antes };
     else if (o.tipo === "novo") (d.novos[o.pai] = d.novos[o.pai] || []).push({ id: o.id, t: o.texto });
     else if (o.tipo === "mudar-novo" || o.tipo === "apagar-novo") Object.keys(d.novos).forEach(function (k) { var l = d.novos[k], i = l.findIndex(function (x) { return x.id === o.id }); if (i >= 0) { if (o.tipo === "apagar-novo") l.splice(i, 1); else l[i].t = o.texto } });
+    else if (o.tipo === "novo-bloco") (d.blocos[o.cont] = d.blocos[o.cont] || []).push({ id: o.id, titulo: o.texto, dono: o.dono || "" });
+    else if (o.tipo === "mudar-bloco" || o.tipo === "apagar-bloco") Object.keys(d.blocos).forEach(function (k) { var l = d.blocos[k], i = l.findIndex(function (x) { return x.id === o.id }); if (i >= 0) { if (o.tipo === "apagar-bloco") l.splice(i, 1); else l[i][o.campo === "dono" ? "dono" : "titulo"] = o.texto } });
     else if (o.tipo === "ordem") Object.keys(o.listas).forEach(function (k) { d.ordem[k] = o.listas[k] });
   }
   function estado() { var d = JSON.parse(JSON.stringify(BASE)); PEND.forEach(function (o) { aplicaOp(d, o) }); return d }
@@ -31,6 +34,7 @@
     + ".ed-bar{position:fixed;left:16px;bottom:16px;z-index:150;display:flex;gap:8px;flex-wrap:wrap;max-width:calc(100% - 32px)}.ed-bar button{display:inline-flex;align-items:center;gap:8px;height:42px;padding:0 16px;border:1px solid var(--line-strong);border-radius:999px;background:var(--bg);color:var(--fg);font:600 14px var(--ff);cursor:pointer;box-shadow:0 4px 18px rgba(0,0,0,.18)}.ed-bar button[aria-pressed=true],.ed-bar .ed-s{background:var(--accent);color:var(--on-accent);border-color:var(--accent)}.ed-bar svg{width:16px;height:16px}.ed-bar .ed-h{display:none}.ed-on .ed-bar .ed-h{display:inline-flex}.ed-bar [hidden]{display:none!important}"
     + ".ed-msg{position:fixed;left:50%;bottom:72px;z-index:160;transform:translateX(-50%);padding:10px 18px;border-radius:999px;background:var(--accent);color:var(--on-accent);font:600 14px var(--ff);pointer-events:none;opacity:0;transition:opacity .2s;text-align:center}.ed-msg.v{opacity:1}"
     + ".ed-hist{position:fixed;inset:0;z-index:170;display:flex;align-items:center;justify-content:center;padding:16px;background:rgba(6,10,14,.6)}.ed-hist[hidden]{display:none}.ed-hist>div{width:100%;max-width:640px;max-height:80vh;overflow:auto;padding:24px;border:1px solid var(--line);border-radius:16px;background:var(--bg);color:var(--fg)}.ed-hist h2{margin:0 0 12px;font:600 22px var(--ff)}.ed-hist ol{margin:0;padding:0;list-style:none}.ed-hist li{padding:10px 0;border-top:1px solid var(--line);font-size:14px}.ed-hist small{display:block;color:var(--muted)}.ed-hist button{float:right;height:36px;padding:0 14px;border:1px solid var(--line-strong);border-radius:999px;background:transparent;color:var(--fg);font:600 14px var(--ff);cursor:pointer}"
+    + ".wrap [hidden]{display:none!important}.ed-on [data-edb],.ed-on .ed-nb{position:relative}.ed-xb{display:none;position:absolute;top:8px;right:8px;z-index:3;height:28px;padding:0 12px;border:1px solid var(--line-strong);border-radius:999px;background:var(--bg);color:var(--muted);font:600 12px var(--ff);cursor:pointer;align-items:center;gap:6px}.ed-on .ed-xb{display:inline-flex}.ed-xb:hover{color:var(--fg);border-color:var(--accent)}.ed-addb{display:none;margin:12px 0 4px;padding:9px 18px;border:1.5px dashed var(--accent);border-radius:999px;background:transparent;color:var(--fg);font:600 14px var(--ff);cursor:pointer}.ed-on .ed-addb{display:inline-block}.ed-on [data-edbc]{outline:1px dashed var(--line-strong);outline-offset:3px;border-radius:6px;cursor:text}"
     + "@media (max-width:600px){.ed-bar{left:12px;bottom:12px;gap:6px}.ed-bar button{height:38px;padding:0 12px;font-size:13px}.ed-msg{bottom:64px}}";
   var velho = document.getElementById("ed-css"); if (velho) velho.remove(); document.head.appendChild(css);
   var msg = document.createElement("div"); msg.className = "ed-msg"; msg.setAttribute("role", "status");
@@ -41,9 +45,20 @@
   els.forEach(function (e) { var t = norm(e.textContent), k = h32(t); conta[k] = (conta[k] || 0) + 1; e.dataset.ed = k + "." + conta[k]; e.dataset.orig = t });
   var listas = [].filter.call(W.querySelectorAll("ul"), function (u) { return !u.closest("#apres,nav,.ed-hist") && u.querySelector(":scope>li") });
   var cl = {}; listas.forEach(function (u) { var k = "ul." + h32(norm(u.textContent)); cl[k] = (cl[k] || 0) + 1; u.dataset.edl = k + "." + cl[k] });
+  var cb = {}, blocos = [].filter.call(W.querySelectorAll(BLK), function (b) { return !b.closest("#apres,nav") });
+  blocos.forEach(function (b) { var k = "b." + h32(norm(b.textContent)); cb[k] = (cb[k] || 0) + 1; b.dataset.edb = k + "." + cb[k] });
+  var cc = {}, conts = [].filter.call(W.querySelectorAll(".frentes"), function (c) { return !c.closest("#apres") });
+  conts.forEach(function (c) { var k = "c." + h32(norm(c.textContent)); cc[k] = (cc[k] || 0) + 1; c.dataset.edc = k + "." + cc[k] });
+  function xb(b) {
+    if (b.querySelector(":scope>.ed-xb")) return;
+    var x = document.createElement("button"); x.type = "button"; x.className = "ed-xb"; x.contentEditable = "false"; x.textContent = "× Excluir"; x.setAttribute("aria-label", "Excluir categoria");
+    x.onclick = function (ev) { ev.preventDefault(); ev.stopPropagation(); if (!confirm("Excluir esta categoria inteira?")) return; if (b.dataset.edbn) poe({ tipo: "apagar-bloco", id: b.dataset.edbn }); else poe({ tipo: "remover", chave: b.dataset.edb, antes: norm(b.textContent).replace(/× Excluir/g, "").slice(0, 300) }) };
+    b.appendChild(x);
+  }
+  function novoBloco(c) { var t = norm(prompt("Nome da nova categoria:") || ""); if (!t) return; var d = norm(prompt("Responsável (pode deixar em branco):") || ""); poe({ tipo: "novo-bloco", cont: c.dataset.edc, id: uid(), texto: t, dono: d }) }
   function tok(li) { return li.dataset.edn ? "n:" + li.dataset.edn : "o:" + li.dataset.ed }
   function porTok(t) { return W.querySelector(t.slice(0, 2) === "n:" ? 'li[data-edn="' + t.slice(2) + '"]' : '[data-ed="' + t.slice(2) + '"]') }
-  function txt(e) { var c = e.cloneNode(true); [].forEach.call(c.querySelectorAll(".ed-x,.ed-g"), function (x) { x.remove() }); return norm(c.textContent) }
+  function txt(e) { var c = e.cloneNode(true); [].forEach.call(c.querySelectorAll(".ed-x,.ed-g,.ed-xb"), function (x) { x.remove() }); return norm(c.textContent) }
   function marcaDuv(e) { e.classList.toggle("ed-duv", DUV.test(txt(e))) }
   function botoes(li) {
     if (li.querySelector(":scope>.ed-x")) return;
@@ -52,13 +67,25 @@
   }
   function render() {
     var d = estado();
+    blocos.forEach(function (b) { var x = d.edits[b.dataset.edb]; b.hidden = !!(x && x.t === null); xb(b) });
+    [].forEach.call(W.querySelectorAll(".ed-nb"), function (n) { n.remove() });
+    var todas = listas.slice();
+    conts.forEach(function (c) {
+      (d.blocos[c.dataset.edc] || []).forEach(function (nb) {
+        var s = document.createElement("section"); s.className = "frente vidro ed-nb"; s.dataset.edbn = nb.id;
+        var h = document.createElement("h3"); h.dataset.edbc = "titulo"; h.textContent = nb.titulo; s.appendChild(h);
+        var dn = document.createElement("p"); dn.className = "dono"; dn.dataset.edbc = "dono"; dn.textContent = nb.dono || "Responsável"; s.appendChild(dn);
+        var u = document.createElement("ul"); u.dataset.edl = "nb." + nb.id; s.appendChild(u); todas.push(u); xb(s); c.appendChild(s);
+      });
+      var nx = c.nextElementSibling; if (!nx || !nx.classList.contains("ed-addb")) { var b = document.createElement("button"); b.type = "button"; b.className = "ed-addb"; b.textContent = "+ Adicionar categoria"; b.onclick = function () { novoBloco(c) }; c.after(b) }
+    });
     els.forEach(function (e) {
       var x = d.edits[e.dataset.ed], t = x ? x.t : null, kids = [].slice.call(e.querySelectorAll(":scope>.ed-x,:scope>.ed-g"));
       if (x && t === null) e.hidden = true; else { e.hidden = false; if (x && txt(e) !== t) { e.textContent = t; kids.forEach(function (k) { e.appendChild(k) }); var gr = e.querySelector(":scope>.ed-g"); if (gr) e.insertBefore(gr, e.firstChild) } }
       marcaDuv(e);
     });
     [].forEach.call(W.querySelectorAll("li.ed-novo"), function (n) { n.remove() });
-    listas.forEach(function (u) {
+    todas.forEach(function (u) {
       if (!u.querySelector(":scope>.ed-add")) { var b = document.createElement("button"); b.type = "button"; b.className = "ed-add"; b.textContent = "+ Adicionar item"; b.onclick = function () { novo(u) }; u.appendChild(b) }
       (d.novos[u.dataset.edl] || []).forEach(function (n) { var li = document.createElement("li"); li.className = "ed-novo"; li.dataset.edn = n.id; li.textContent = n.t; u.insertBefore(li, u.querySelector(":scope>.ed-add")) });
     });
@@ -81,7 +108,8 @@
     function fim(cancela) {
       e.removeEventListener("blur", sai); e.removeEventListener("keydown", tecla); e.removeAttribute("contenteditable");
       var t = txt(e); if (cancela || !t || t === antes) { render(); return }
-      if (e.dataset.edn) poe({ tipo: "mudar-novo", id: e.dataset.edn, texto: t });
+      if (e.dataset.edbc) poe({ tipo: "mudar-bloco", id: e.closest("[data-edbn]").dataset.edbn, campo: e.dataset.edbc, texto: t });
+      else if (e.dataset.edn) poe({ tipo: "mudar-novo", id: e.dataset.edn, texto: t });
       else poe({ tipo: "editar", chave: e.dataset.ed, antes: e.dataset.orig, texto: t });
     }
     function sai() { fim(false) }
@@ -111,7 +139,7 @@
     document.addEventListener("pointermove", move); document.addEventListener("pointerup", solta); document.addEventListener("pointercancel", solta);
   }
   W.addEventListener("click", function (ev) {
-    var e = ev.target.closest && ev.target.closest("[data-ed],li.ed-novo"); if (!e || ev.target.closest(".ed-x,.ed-add,.ed-g")) return;
+    var e = ev.target.closest && ev.target.closest("[data-ed],li.ed-novo,[data-edbc]"); if (!e || ev.target.closest(".ed-x,.ed-add,.ed-g,.ed-xb,.ed-addb")) return;
     if (ED || e.classList.contains("ed-duv")) { ev.preventDefault(); ev.stopPropagation(); edita(e) }
   }, true);
 
@@ -133,7 +161,7 @@
   hist.onclick = function (ev) { if (ev.target === hist || ev.target.closest(".ed-fecha")) hist.hidden = true };
   bar.querySelector(".ed-h").onclick = function () {
     api("GET", null, "&historico=1").then(function (l) {
-      var esc = function (s) { var d = document.createElement("div"); d.textContent = s || ""; return d.innerHTML }, nome = { editar: "Mudou", remover: "Removeu", novo: "Adicionou", "mudar-novo": "Mudou", "apagar-novo": "Removeu", restaurar: "Restaurou", ordem: "Reorganizou" };
+      var esc = function (s) { var d = document.createElement("div"); d.textContent = s || ""; return d.innerHTML }, nome = { editar: "Mudou", remover: "Removeu", novo: "Adicionou", "mudar-novo": "Mudou", "apagar-novo": "Removeu", restaurar: "Restaurou", ordem: "Reorganizou", "novo-bloco": "Criou a categoria", "mudar-bloco": "Mudou a categoria", "apagar-bloco": "Excluiu a categoria" };
       hist.innerHTML = '<div><button type="button" class="ed-fecha">Fechar</button><h2>Histórico</h2><ol>' + (l.length ? l.slice(0, 100).map(function (x) { return "<li>" + esc(nome[x.tipo] || x.tipo) + (x.tipo === "ordem" ? " itens" : ": " + esc(x.texto)) + (x.antes && x.tipo === "editar" ? " <small>Antes: " + esc(x.antes) + "</small>" : "") + "<small>" + esc(x.quem) + " · " + esc(x.p) + " · " + new Date(x.quando).toLocaleString("pt-BR") + "</small></li>" }).join("") : "<li>Nenhuma mudança ainda.</li>") + "</ol></div>";
       hist.hidden = false;
     }).catch(function () { aviso("Não carregou o histórico") });
@@ -142,5 +170,5 @@
 
   crypto.subtle.digest("SHA-256", Uint8Array.from(atob(g), function (c) { return c.charCodeAt(0) })).then(function (b) {
     TOKEN = hx(b); return api("GET");
-  }).then(function (d) { BASE = Object.assign({ edits: {}, novos: {}, ordem: {} }, d); document.body.appendChild(bar); document.body.appendChild(hist); document.body.appendChild(msg); render(); document.dispatchEvent(new Event("tv-editado")) }).catch(function () {});
+  }).then(function (d) { BASE = Object.assign({ edits: {}, novos: {}, ordem: {}, blocos: {} }, d); document.body.appendChild(bar); document.body.appendChild(hist); document.body.appendChild(msg); render(); document.dispatchEvent(new Event("tv-editado")) }).catch(function () {});
 })();
