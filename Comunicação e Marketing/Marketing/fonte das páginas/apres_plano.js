@@ -14,6 +14,8 @@
     S.push({ sec: "Sumário", h: "O que vamos <strong>ver</strong>", sum: true });
     var pes = function (raiz) { return raiz ? [].filter.call(raiz.querySelectorAll(".org-n"), vis).map(function (x) { return "<p><b>" + esc(t(x.querySelector("b"))) + "</b><span>" + esc(t(x.querySelector("em")) || t(x.querySelector("span"))) + "</span></p>" }).join("") : "" };
     S.push({ sec: "Estrutura", h: "Quem <strong>faz</strong>", html: '<div class="sl-dupla"><div><b>Até o fim do ano</b>' + pes(F && F.querySelector(".org")) + '</div><div><b>Em 2027</b>' + pes(N && N.querySelector(".org")) + "</div></div>" });
+    var te = N ? blocos(N.querySelector(".teses")) : [];
+    if (te.length) S.push({ sec: "Por que", h: "Por que <strong>assim</strong>", html: '<div class="sl-g c3 cmp tes">' + te.map(function (f) { return "<div><b>" + esc(t(f.querySelector("h3"))) + "</b><span>" + esc(t(f.querySelector(".dono"))) + "</span><ul>" + itens(f.querySelector("ul"), 3) + "</ul></div>" }).join("") + "</div>" });
     var fe = blocos(F && F.querySelector(".frentes"));
     if (fe.length) S.push({ sec: "Até o fim do ano", h: "O que <strong>fechar</strong>", html: '<div class="sl-g c3 cmp">' + fe.map(function (f) { return card(f, 5) }).join("") + "</div>" });
     var fr = N ? blocos(N.querySelector(".fr-vis")) : [];

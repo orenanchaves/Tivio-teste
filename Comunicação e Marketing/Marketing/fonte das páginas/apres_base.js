@@ -7,7 +7,7 @@ window.tvDeck = function (nome, monta) {
   A.innerHTML = '<div class="ap-palco"><div class="ap-logo"></div></div><nav class="ap-ctl" aria-label="Controles da apresentação"><button type="button" class="ap-menu" aria-expanded="false">Sumário</button><button type="button" class="ap-ant" aria-label="Anterior">‹</button><span class="ap-n"></span><button type="button" class="ap-prox" aria-label="Próximo">›</button><button type="button" class="ap-sair">Sair</button></nav><div class="ap-sum" hidden></div>';
   var PAL = A.querySelector(".ap-palco"), SM = A.querySelector(".ap-sum"), MB = A.querySelector(".ap-menu"), N = A.querySelector(".ap-n"), l = [], i = 0;
   var marca = document.querySelector(".marca"); if (marca) A.querySelector(".ap-logo").innerHTML = marca.innerHTML;
-  function escala() { PAL.style.setProperty("--k", Math.min(innerWidth / 1920, innerHeight / 1080)) }
+  function escala() { var ve = innerHeight > innerWidth; PAL.classList.toggle("vert", ve); PAL.style.setProperty("--k", ve ? Math.min(innerWidth / 1080, innerHeight / 1920) : Math.min(innerWidth / 1920, innerHeight / 1080)) }
   function monte() {
     var S = monta(), tot = S.length, grupos = [], idx = {};
     S.forEach(function (s, k) { if (!s.sec || s.sum) return; var g = s.sec.split(" · ")[0]; if (!(g in idx)) { idx[g] = grupos.length; grupos.push([g, []]) } grupos[idx[g]][1].push([k, s.h.replace(/<[^>]+>/g, "")]) });
@@ -35,6 +35,9 @@ window.tvDeck = function (nome, monta) {
   A.querySelector(".ap-ant").onclick = function () { v(i - 1) }; A.querySelector(".ap-prox").onclick = function () { v(i + 1) };
   A.addEventListener("click", function (e) { var b = e.target.closest && e.target.closest("[data-ir]"); if (b) { v(+b.dataset.ir); menu(false) } });
   addEventListener("resize", function () { if (A.isConnected) escala() });
+  var tx = null, ty = 0;
+  PAL.addEventListener("touchstart", function (e) { tx = e.touches[0].clientX; ty = e.touches[0].clientY }, { passive: true });
+  PAL.addEventListener("touchend", function (e) { if (tx === null) return; var dx = e.changedTouches[0].clientX - tx, dy = e.changedTouches[0].clientY - ty; tx = null; if (Math.abs(dx) > 50 && Math.abs(dx) > Math.abs(dy) * 1.3) v(i + (dx < 0 ? 1 : -1)) });
   document.addEventListener("keydown", function (e) {
     if (A.hidden || !A.isConnected) return;
     if (e.key === "ArrowRight" || e.key === " " || e.key === "PageDown") { e.preventDefault(); v(i + 1) }

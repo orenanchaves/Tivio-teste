@@ -457,3 +457,55 @@
 #apres .ap-palco .met>div{margin-bottom:14px}#apres .ap-palco .met span{font-size:21px;margin-bottom:8px}#apres .ap-palco .met em{font-size:18px;margin-top:6px}#apres .ap-palco .met-t{margin-bottom:16px}#apres .ap-palco .fun>div{padding:18px 26px;margin-bottom:12px}
 #apres .ap-palco .sl-sum button{padding:16px 22px;margin-bottom:10px;font-size:23px}#apres .ap-palco .sl-dupla p{padding:12px 0;font-size:24px}#apres .ap-palco .sl-t p{padding:15px 0;font-size:24px}#apres .ap-palco .sl-t.mini p{padding:9px 0;font-size:19px}#apres .ap-palco .sl-g.num b{font-size:50px}
 #apres .ap-palco .sl-ano .sl-t.mini p{padding:7px 0;font-size:18px}#apres .ap-palco .sl-ano .sl-g.num>div{padding:20px 24px}
+
+/* ===== Apresentação em pé (celular): quadro 1080x1920, conteúdo empilhado ===== */
+#apres .ap-palco.vert{width:1080px;height:1920px}
+#apres .ap-palco.vert .ap-logo{top:92px;right:72px;width:200px}
+#apres .ap-palco.vert .sl-top{left:72px;right:320px;top:80px}
+#apres .ap-palco.vert .sl-sec{font-size:26px;margin-bottom:16px}
+#apres .ap-palco.vert .sl-top h2.fr{font-size:72px;line-height:1.08}
+#apres .ap-palco.vert .sl-corpo{left:72px;right:72px;top:380px;bottom:230px;justify-content:flex-start;overflow-y:auto;overflow-x:hidden;-webkit-overflow-scrolling:touch}
+#apres .ap-palco.vert .sl.capa .sl-corpo{top:260px;justify-content:center}
+#apres .ap-palco.vert .sl.capa h2{font-size:150px}
+#apres .ap-palco.vert .sl-l{font-size:46px}
+#apres .ap-palco.vert .sl-s{font-size:56px}
+#apres .ap-palco.vert .sl-pe{left:72px;right:72px;bottom:100px;font-size:24px;padding-top:26px}
+#apres .ap-palco.vert .sl-pe b{font-size:34px}
+#apres .ap-palco.vert .sl-g{gap:26px}
+#apres .ap-palco.vert .sl-g.c3,#apres .ap-palco.vert .sl-g.c4{grid-template-columns:1fr 1fr}
+#apres .ap-palco.vert .sl-g.c5{grid-template-columns:1fr 1fr}
+#apres .ap-palco.vert .sl-g.c3.cmp:not(.seg){grid-template-columns:1fr}
+#apres .ap-palco.vert .sl-g.cmp>div,#apres .ap-palco.vert .sl-g>div{padding:30px 32px}
+#apres .ap-palco.vert .sl-g b,#apres .ap-palco.vert .sl-g.cmp b{font-size:38px}
+#apres .ap-palco.vert .sl-g span,#apres .ap-palco.vert .sl-g.cmp span{font-size:28px}
+#apres .ap-palco.vert .sl-g ul,#apres .ap-palco.vert .sl-g.cmp ul{font-size:28px}
+#apres .ap-palco.vert .sl-g.num b{font-size:64px}
+#apres .ap-palco.vert .sl-g .th{height:260px}
+#apres .ap-palco.vert .sl-dupla{grid-template-columns:1fr;gap:50px}
+#apres .ap-palco.vert .sl-dupla>div>b{font-size:26px}
+#apres .ap-palco.vert .sl-dupla p{font-size:30px;padding:14px 0}
+#apres .ap-palco.vert .sl-sum{grid-template-columns:1fr;gap:34px}
+#apres .ap-palco.vert .sl-sum>div>b{font-size:26px}
+#apres .ap-palco.vert .sl-sum button{font-size:34px;padding:24px 28px}
+#apres .ap-palco.vert .gb em{font-size:26px}
+#apres .ap-palco.vert .gc{height:900px;gap:14px}
+#apres .ap-palco.vert .gc b{font-size:40px}
+#apres .ap-palco.vert .gc span{font-size:26px}
+#apres .ap-palco.vert .sl-nota{font-size:30px;margin-top:90px}
+#apres .ap-palco.vert .sl-med{grid-template-columns:1fr;gap:60px}
+#apres .ap-palco.vert .fun b{font-size:36px}#apres .ap-palco.vert .fun span{font-size:26px}
+#apres .ap-palco.vert .met-t{font-size:26px}#apres .ap-palco.vert .met span{font-size:30px}#apres .ap-palco.vert .met em{font-size:26px}
+#apres .ap-palco.vert .sl-frase{grid-template-columns:1fr;gap:60px}
+#apres .ap-palco.vert .sl-frase>p{font-size:58px}
+#apres .ap-palco.vert .sl-im{justify-content:flex-start}
+#apres .ap-palco.vert .sl-im img{height:620px}
+#apres .ap-palco.vert .sl-im figcaption{font-size:24px}
+#apres .ap-palco.vert .sl-t.duas{grid-template-columns:1fr}
+#apres .ap-palco.vert .sl-t p{font-size:30px;grid-template-columns:1fr;gap:6px}
+#apres .ap-palco.vert .sl-t.mini p{font-size:26px}
+#apres .ap-palco.vert .sl-ano{grid-template-columns:1fr;gap:40px}
+#apres .ap-palco.vert .sl{transform:translateX(50px)}
+#apres .ap-palco.vert .sl.antes{transform:translateX(-50px)}
+#apres .ap-palco.vert .sl.ativa{transform:none}
+@media (max-width:600px){#apres nav.ap-ctl{top:8px!important;gap:4px;padding:4px;opacity:.75}#apres nav.ap-ctl button{height:30px;min-width:30px;padding:0 10px;font-size:12px}#apres nav.ap-ctl .ap-n{min-width:52px;font-size:12px}#apres div.ap-sum{top:48px!important}}
+.teses .dono{font-weight:400;color:var(--fg-2);font-size:14px;line-height:1.45}

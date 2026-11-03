@@ -250,13 +250,13 @@ corpo_ap = (cabecalho("Análise das postagens", []) + '<div class="wrap">'
 (EXTRA / "analise-postagens.html").write_text(pagina("Análise das postagens", corpo_ap, CSS_P), encoding="utf-8")
 
 _fr27 = [("Automação", "frente-automacao.html", "Facilitar o operacional para o time gastar tempo no que muda resultado.",
-          ["Edição mensal em um comando", "Imobiliário automatizado a partir de março", "Materiais, decks e relatórios sem retrabalho", "IA no dia a dia do time"]),
+          ["Edição mensal em um comando", "Imobiliário automatizado a partir de março", "Materiais, decks e relatórios sem retrabalho", "IA no dia a dia do time, com trilha de aprendizado e Claude Max"]),
          ("Eventos", "frente-eventos.html", "Transformar presença em contato e reunião.",
-          ["16 eventos Itaú no escritório", "Summit BTG, Conexão Bradesco e Expert XP", "Abrapp, Previpar, APEP e ASCPrev", "Contato quente para o comercial em até 2 dias"]),
+          ["16 eventos Itaú no escritório", "Summit BTG, Conexão Bradesco e Expert XP", "Abrapp, Previpar, APEP e ASCPrev", "Convites a partir dos alocadores mapeados pela fnmk", "Contato quente para o comercial em até 2 dias"]),
          ("Conteúdo", "frente-conteudo.html", "Menos, com mais qualidade, para um nicho.",
           ["Casa de estruturados em toda série", "Executivos nas conversas do LinkedIn", "Colaboradores, Teams e WhatsApp", "Newsletter como base própria", "Raio X do Mercado e Tivio ao Quadrado", "Imprensa com pauta por trimestre", "Kit do assessor"]),
          ("Digital com estratégia", "frente-digital.html", "Remodelar o site, ranquear no Google e aparecer nas IAs.",
-          ["Site remodelado", "SEO: artigos e termos para ranquear no Google", "GEO: a Tivio citada nas respostas das IAs", "Landing por objetivo, com tráfego orgânico e pago", "Metas das redes"])]
+          ["Site remodelado", "SEO: artigos e termos para ranquear no Google", "GEO: a Tivio citada nas respostas das IAs", "Landing por objetivo, com tráfego orgânico e pago", "Gráfico interativo de rentabilidade e perguntas em acordeão nos artigos", "Metas das redes"])]
 _num27 = [("Automação", "Horas do time por edição", "A medir"), ("Automação", "Materiais gerados por rodada", "81, em set/2026"), ("Automação", "Correções depois de publicar", "A medir"),
           ("Eventos", "Eventos realizados", "23 no orçamento de 2027"), ("Eventos", "Inscritos, presentes e pedidos de contato", "A medir"), ("Eventos", "Captação de presentes em até 90 dias", "A medir"),
           ("Conteúdo", "Posts sobre estruturados", "3 de 14, em out/2026"), ("Conteúdo", "Contatos vindos de cada série", "A medir"), ("Conteúdo", "Executivos ativos no LinkedIn", "A medir"), ("Conteúdo", "Colaboradores que engajam nos posts", "A medir"), ("Conteúdo", "Cliques do WhatsApp até um contato", "A medir"), ("Conteúdo", "Inscritos, abertura e cliques da newsletter", "A medir"), ("Conteúdo", "Menções na imprensa com porta-voz da Tivio", "A medir"),
@@ -265,7 +265,7 @@ _ano27 = [("Nov e dez/26", "Medir horas por edição; corrigir as falhas dos dec
           ("Janeiro", "", "1 evento: panorama de estruturados", "1º Raio X do Mercado, quadro fixo de vídeo; newsletter no novo formato", "3 templates indexáveis; landing do evento"),
           ("Fevereiro", "Decks sem ajuste manual", "1 evento: como ler um FIDC; Summit BTG", "Executivos no LinkedIn; colaboradores e canal do Teams", "Novo layout do site"),
           ("Março", "Foco em automatizar o imobiliário; balanço de horas e erros", "2 eventos: estruturados e FIDC", "Rotina semanal no WhatsApp", "Primeiros artigos: FIDC e crédito estruturado; SEO dos termos de estruturados"),
-          ("Abril", "Imobiliário: relatórios e destaques do mês; convite e balanço de evento em modelo", "1 evento: Família ALT", "2º Raio X do Mercado; Gráfico da Semana", "Site remodelado no ar"),
+          ("Abril", "Imobiliário: relatórios e destaques do mês; convite e balanço de evento em modelo", "1 evento: Família ALT", "2º Raio X do Mercado; Gráfico da Semana", "Site remodelado no ar, com gráfico interativo de rentabilidade"),
           ("Maio", "Imobiliário na edição mensal em um comando", "1 evento: crédito privado e juros", "Tivio ao Quadrado", "Hub de estruturados; GEO: perguntas e respostas para as IAs citarem"),
           ("Junho", "Automatizar o que ainda for manual", "2 eventos: Família ALT e juros", "Balanço das séries no semestre", "Artigos de crédito privado e previdência"),
           ("Julho", "Números do mês nas páginas de fundo", "1 evento: previdência; Expert XP", "3º Raio X do Mercado", "Panorama de Estruturados, em troca do contato"),
@@ -336,6 +336,12 @@ _SEG = [("Crédito Estruturado", "credito-estruturado", "Mostrar como a casa est
         ("Investment Solutions", "investment-solutions", "Curadoria de gestores explicada", "4 posts por mês"),
         ("Previdência", "previdencia", "HGD30 e HYD60 para quem planeja o longo prazo", "3 posts por mês"),
         ("Marca e eventos", "marca-e-eventos", "A Tivio como lugar de encontro do mercado de estruturados", "4 posts por mês")]
+_TESES = [("O espaço existe", "No site, Crédito Estruturado fica dentro de Fundos; 3 de 14 posts de out/26 falaram de estruturados; a Solis ocupa só FIDC", ["Crédito Estruturado como foco do ano", "Hub de estruturados no site", "SEO e GEO para disputar o termo", "Casa de estruturados em toda série"]),
+          ("Quem explica o risco ganha", "Oaktree e Janus Henderson explicam o risco antes; o Deep Dive teve 15 curtidas, mas 11 meses de intervalo; 1 das 10 Cartas de 2026 teve estruturados como tema", ["Raio X do Mercado a cada trimestre", "Deep Dive e Tivio Explica em calendário", "Simulador de cascata com carteira fictícia"]),
+          ("O gargalo é quem indica", "PIMCO e Ares ensinam primeiro quem indica; o Not Listed mapeou 1.202 casas de wealth; o site fala com um visitante genérico", ["16 eventos Itaú para assessores e gerentes", "Convites a partir dos alocadores da fnmk", "Kit do assessor e canal de ofertas no WhatsApp"]),
+          ("Gente pesa mais que marca", "O Tivio Visita, com gente da casa, foi o melhor post de outubro, com 49 curtidas; Solis e Ares põem os gestores na frente", ["Executivos nas conversas do LinkedIn", "Porta-vozes com pauta por trimestre e media training", "Gestor no vídeo do Raio X do Mercado"]),
+          ("Dado próprio cria autoridade", "Valora e Golub viraram fonte com números próprios; o Not Listed organiza dado público da CVM e da ANBIMA em edição anual", ["Panorama de Estruturados em troca do contato", "Raio X como número recorrente", "Pauta de imprensa com dado e GEO para as IAs citarem"]),
+          ("Constância vale mais que audiência", "Kinea e Apollo publicam sempre no mesmo ritmo; a Carta do Gestor saiu em 10 dos 10 meses de 2026; o AutomaTivio gera 81 materiais por rodada", ["Edição mensal em um comando", "Ritmo fixo: Carta todo mês, Raio X e eventos todo trimestre", "Imobiliário automatizado a partir de março"])]
 _AP_BTN = '<button type="button" id="ap-abrir" class="ap-b"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="18" height="12" rx="2"/><path d="M12 16v4M8 20h8"/></svg>Modo apresentação</button>'
 _AP_JS = """<script>(function(){var a=document.getElementById('apres');if(!a)return;var l=[].slice.call(a.querySelectorAll('.sl')),i=0,n=document.getElementById('ap-n');a.querySelector('.ap-logo').innerHTML=document.querySelector('.marca').innerHTML;
 function v(k){i=Math.max(0,Math.min(l.length-1,k));l.forEach(function(s,j){s.classList.toggle('ativa',j===i)});n.textContent=(i+1)+' / '+l.length}
@@ -352,6 +358,8 @@ corpo_p27 = (cabecalho("Plano", []) + '<div class="wrap">'
     + _AP_BTN + '<div class="abas abas-pl" role="tablist"><button type="button" role="tab" data-aba="fim-do-ano" aria-selected="true">Até o fim do ano</button><button type="button" role="tab" data-aba="ano-2027" aria-selected="false">2027</button></div>'
     + '<section class="painel-pl" id="fim-do-ano"><h2 id="estrutura-fim">Estrutura até o fim <strong>do ano</strong></h2>' + _org + '<!--FIMANO--></section><section class="painel-pl" id="ano-2027" hidden>'
     + '<h2 id="estrutura">Estrutura em <strong>2027</strong></h2><!--ORG27-->' + '<a class="tp tp-b" href="estrutura.html">' + ICO27["Estrutura"] + 'Ver a estrutura completa</a>'
+    + '<h2 id="porque">Por que <strong>assim</strong></h2><p class="secao-sub">Cada tese, a evidência que temos e o que o plano faz com ela.</p><div class="frentes linhas teses">'
+    + "".join(f'<section class="frente vidro"><h3>{a}</h3><p class="dono">{b}</p><ul>' + "".join(f"<li>{x}</li>" for x in l) + "</ul></section>" for a, b, l in _TESES) + '</div>'
     + '<h2 id="frentes">O ano em <strong>quatro frentes</strong></h2><div class="frentes f4 fr-vis">'
     + "".join(f'<section class="frente vidro"><img class="fr-img" src="{_IMG27[n][0]}" alt="{_IMG27[n][1]}" loading="lazy">{ICO27[n]}<h3><a href="{h}">{n}</a></h3><p class="dono">{_DONO27[n]}</p><p class="fr-m">{d}</p><ul>' + "".join(f"<li>{x}</li>" for x in l) + "</ul></section>" for n, h, d, l in _fr27) + '</div>'
     + '<h2 id="segmentos">Cada segmento em <strong>uma linha</strong></h2><div class="subs seg6">' + "".join(f'<a class="sub vidro" href="segmento-{h}.html"><b>{n}</b><span>{d}</span><em>{q}</em></a>' for n, h, d, q in _SEG) + '</div>'
