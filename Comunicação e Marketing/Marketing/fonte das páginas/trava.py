@@ -74,6 +74,7 @@ for f in sorted(ORIG.glob("*.html")):
         _f = (S/"fimano_frag.html").read_text(encoding="utf-8")
         h = h.replace("<!--FIMANO-->", _f[_f.index('<div class="kpis">'):_f.index('<p class="rodape">')])
     h = h.replace("<!--FILM-->", (S/"film_frag.txt").read_text(encoding="utf-8"))
+    h = h.replace("<!--ORG27-->", (S/"org27_frag.html").read_text(encoding="utf-8"))
     h = h.replace("<!--APRES-->", (S/"apres_frag.html").read_text(encoding="utf-8"))
     h = h.replace("<!--REF-TIME-->", (S/"ref_time_frag.html").read_text(encoding="utf-8"))
     h, n = re.subn(r'<p class="(?:eyebrow|sl-e)"[^>]*>.*?</p>', "", h, flags=re.S)

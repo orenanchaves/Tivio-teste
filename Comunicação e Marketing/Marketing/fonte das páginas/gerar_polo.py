@@ -250,7 +250,7 @@ corpo_ap = (cabecalho("Análise das postagens", []) + '<div class="wrap">'
 (EXTRA / "analise-postagens.html").write_text(pagina("Análise das postagens", corpo_ap, CSS_P), encoding="utf-8")
 
 _fr27 = [("Automação", "frente-automacao.html", "Facilitar o operacional para o time gastar tempo no que muda resultado.",
-          ["Edição mensal em um comando", "Materiais, decks e relatórios sem retrabalho", "IA no dia a dia do time"]),
+          ["Edição mensal em um comando", "Imobiliário automatizado a partir de março", "Materiais, decks e relatórios sem retrabalho", "IA no dia a dia do time"]),
          ("Eventos", "frente-eventos.html", "Transformar presença em contato e reunião.",
           ["16 eventos Itaú no escritório", "Summit BTG, Conexão Bradesco e Expert XP", "Abrapp, Previpar, APEP e ASCPrev", "Contato quente para o comercial em até 2 dias"]),
          ("Conteúdo", "frente-conteudo.html", "Menos, com mais qualidade, para um nicho.",
@@ -264,9 +264,9 @@ _num27 = [("Automação", "Horas do time por edição", "A medir"), ("Automaçã
 _ano27 = [("Nov e dez/26", "Medir horas por edição; corrigir as falhas dos decks", "Definir a agenda com o Itaú", "Regra de aprovação com Riscos; kit do assessor piloto", "Plano de remodelação do site; formulário curto da newsletter"),
           ("Janeiro", "", "1 evento: panorama de estruturados", "1º Raio X do Mercado, quadro fixo de vídeo; newsletter no novo formato", "3 templates indexáveis; landing do evento"),
           ("Fevereiro", "Decks sem ajuste manual", "1 evento: como ler um FIDC; Summit BTG", "Executivos no LinkedIn; colaboradores e canal do Teams", "Novo layout do site"),
-          ("Março", "Balanço de horas e erros", "2 eventos: estruturados e FIDC", "Rotina semanal no WhatsApp", "Primeiros artigos: FIDC e crédito estruturado; SEO dos termos de estruturados"),
-          ("Abril", "Convite e balanço de evento em modelo", "1 evento: Família ALT", "2º Raio X do Mercado; Gráfico da Semana", "Site remodelado no ar"),
-          ("Maio", "", "1 evento: crédito privado e juros", "Tivio ao Quadrado", "Hub de estruturados; GEO: perguntas e respostas para as IAs citarem"),
+          ("Março", "Foco em automatizar o imobiliário; balanço de horas e erros", "2 eventos: estruturados e FIDC", "Rotina semanal no WhatsApp", "Primeiros artigos: FIDC e crédito estruturado; SEO dos termos de estruturados"),
+          ("Abril", "Imobiliário: relatórios e destaques do mês; convite e balanço de evento em modelo", "1 evento: Família ALT", "2º Raio X do Mercado; Gráfico da Semana", "Site remodelado no ar"),
+          ("Maio", "Imobiliário na edição mensal em um comando", "1 evento: crédito privado e juros", "Tivio ao Quadrado", "Hub de estruturados; GEO: perguntas e respostas para as IAs citarem"),
           ("Junho", "Automatizar o que ainda for manual", "2 eventos: Família ALT e juros", "Balanço das séries no semestre", "Artigos de crédito privado e previdência"),
           ("Julho", "Números do mês nas páginas de fundo", "1 evento: previdência; Expert XP", "3º Raio X do Mercado", "Panorama de Estruturados, em troca do contato"),
           ("Agosto", "", "1 evento: curadoria de gestores", "Carta do Gestor em PDF e áudio", "Novos artigos por termo"),
@@ -334,8 +334,8 @@ corpo_p27 = (cabecalho("Plano", []) + '<div class="wrap">'
     + trilha(("index.html", "Início"), ("", "Plano"))
     + '<section class="topo-peer"><div><h1>Plano</h1><p class="lead">O que fechar até o fim do ano e o que fazer em 2027 para ser a casa de estruturados.</p></div></section>'
     + _AP_BTN + '<div class="abas abas-pl" role="tablist"><button type="button" role="tab" data-aba="fim-do-ano" aria-selected="true">Até o fim do ano</button><button type="button" role="tab" data-aba="ano-2027" aria-selected="false">2027</button></div>'
-    + '<section class="painel-pl" id="fim-do-ano"><!--FIMANO--></section><section class="painel-pl" id="ano-2027" hidden>'
-    + '<h2 id="estrutura">De onde o plano <strong>parte</strong></h2>' + _org + '<a class="tp tp-b" href="estrutura.html">' + ICO27["Estrutura"] + 'Ver a estrutura completa</a>'
+    + '<section class="painel-pl" id="fim-do-ano"><h2 id="estrutura-fim">Estrutura até o fim <strong>do ano</strong></h2>' + _org + '<!--FIMANO--></section><section class="painel-pl" id="ano-2027" hidden>'
+    + '<h2 id="estrutura">Estrutura em <strong>2027</strong></h2><!--ORG27-->' + '<a class="tp tp-b" href="estrutura.html">' + ICO27["Estrutura"] + 'Ver a estrutura completa</a>'
     + '<div class="pl-base">' + cartoes([("frente-benchmark.html", "Benchmark", "O que vimos fora e o que fazemos."), ("analise-postagens.html", "Análise das postagens", "O que funciona hoje."), ("imprensa.html", "Imprensa", "Pauta, porta-vozes e filtro."), ("analise-site.html", "Análise do site", "O que melhorar."), ("orcamento.html", "Orçamento 2027", "Com o que contamos.")]) + '</div>'
     + '<div class="kpis">' + "".join(f'<div class="kpi vidro"><b>{a}</b><span>{b}</span></div>' for a, b in [("81", "materiais por rodada"), ("23", "eventos no orçamento"), ("3 de 14", "posts sobre estruturados em out/26"), ("4", "artigos para ranquear no Google")]) + '</div>'
     + '<h2 id="frentes">O ano em <strong>quatro frentes</strong></h2><a class="tp" href="m-posicionamento.html">Casa de estruturados</a><div class="frentes f4">'
