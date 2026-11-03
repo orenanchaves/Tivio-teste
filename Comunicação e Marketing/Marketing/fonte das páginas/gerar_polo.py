@@ -320,6 +320,22 @@ def _lig_vis():
     def ic(t):
         return ICO27["Eventos" if t == "Evento" else "Digital com estratégia" if t == "Digital" else t]
     return '<div class="lig">' + "".join(f'<div class="lig-i vidro"><div class="lig-t">{ic(a.split(" + ")[0])}<i>+</i>{ic(a.split(" + ")[1])}<em>{q}</em></div><b>{a}</b><span>{d}</span></div>' for a, s, q, d in _lig) + '</div>'
+_IMG27 = {"Automação": ("pecas/ce1.webp", "Destaque de Crédito Estruturado gerado pelo AutomaTivio"), "Eventos": ("feed/08.webp", "Gestor da Tivio no palco do TheNewAgro"),
+          "Conteúdo": ("feed/02.webp", "Capa da Carta do Gestor O Cálculo de Tolstói"), "Digital com estratégia": ("site-tivio/desktop.webp", "Site da Tivio Capital no desktop")}
+_DONO27 = {"Automação": "Renan Chaves", "Eventos": "Fernanda Acquati", "Conteúdo": "Fernanda Acquati e Gabriel Fiorilli", "Digital com estratégia": "Renan Chaves"}
+_RITMO = [("Todo mês", "Ritmo mensal", ["Carta do Gestor", "Newsletter", "Edição mensal em um comando", "Pauta do mês com a assessoria"]),
+          ("Todo trimestre", "Ritmo trimestral", ["Raio X do Mercado", "<!--FILMC-->", "Pauta de imprensa do trimestre", "4 eventos Itaú no escritório"]),
+          ("No ano", "Marcos fixos", ["Summit BTG, Conexão Bradesco e Expert XP", "Congresso Abrapp", "Media training", "Balanço: manter, ajustar ou parar"])]
+_TRI = [("1º trimestre", "Janeiro a março", ["4 eventos Itaú e Summit BTG", "1º Raio X do Mercado", "Executivos no LinkedIn", "Novo layout do site e primeiros artigos", "Foco em automatizar o imobiliário"]),
+        ("2º trimestre", "Abril a junho", ["4 eventos Itaú, com a Família ALT", "2º Raio X, Gráfico da Semana e Tivio ao Quadrado", "Site remodelado no ar", "Hub de estruturados e GEO", "Imobiliário na edição mensal"]),
+        ("3º trimestre", "Julho a setembro", ["4 eventos Itaú e Expert XP", "3º Raio X do Mercado", "Carta do Gestor em PDF e áudio", "Panorama de Estruturados", "Números do mês nas páginas de fundo"]),
+        ("4º trimestre", "Outubro a dezembro", ["4 eventos Itaú e Congresso Abrapp", "4º Raio X do Mercado", "Simulador de cascata", "Balanço do ano: manter, ajustar ou parar"])]
+_SEG = [("Crédito Estruturado", "credito-estruturado", "Mostrar como a casa estrutura, não só quanto rendeu", "Foco do ano · 8 posts por mês"),
+        ("Crédito Privado", "credito-privado", "Leitura de mercado com cara de gente", "5 posts por mês"),
+        ("Imobiliário", "imobiliario", "Automatizar a partir de março, com o carrossel dos FIIs", "A partir de março"),
+        ("Investment Solutions", "investment-solutions", "Curadoria de gestores explicada", "4 posts por mês"),
+        ("Previdência", "previdencia", "HGD30 e HYD60 para quem planeja o longo prazo", "3 posts por mês"),
+        ("Marca e eventos", "marca-e-eventos", "A Tivio como lugar de encontro do mercado de estruturados", "4 posts por mês")]
 _AP_BTN = '<button type="button" id="ap-abrir" class="ap-b"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="18" height="12" rx="2"/><path d="M12 16v4M8 20h8"/></svg>Modo apresentação</button>'
 _AP_JS = """<script>(function(){var a=document.getElementById('apres');if(!a)return;var l=[].slice.call(a.querySelectorAll('.sl')),i=0,n=document.getElementById('ap-n');a.querySelector('.ap-logo').innerHTML=document.querySelector('.marca').innerHTML;
 function v(k){i=Math.max(0,Math.min(l.length-1,k));l.forEach(function(s,j){s.classList.toggle('ativa',j===i)});n.textContent=(i+1)+' / '+l.length}
@@ -336,23 +352,27 @@ corpo_p27 = (cabecalho("Plano", []) + '<div class="wrap">'
     + _AP_BTN + '<div class="abas abas-pl" role="tablist"><button type="button" role="tab" data-aba="fim-do-ano" aria-selected="true">Até o fim do ano</button><button type="button" role="tab" data-aba="ano-2027" aria-selected="false">2027</button></div>'
     + '<section class="painel-pl" id="fim-do-ano"><h2 id="estrutura-fim">Estrutura até o fim <strong>do ano</strong></h2>' + _org + '<!--FIMANO--></section><section class="painel-pl" id="ano-2027" hidden>'
     + '<h2 id="estrutura">Estrutura em <strong>2027</strong></h2><!--ORG27-->' + '<a class="tp tp-b" href="estrutura.html">' + ICO27["Estrutura"] + 'Ver a estrutura completa</a>'
-    + '<div class="pl-base">' + cartoes([("frente-benchmark.html", "Benchmark", "O que vimos fora e o que fazemos."), ("analise-postagens.html", "Análise das postagens", "O que funciona hoje."), ("imprensa.html", "Imprensa", "Pauta, porta-vozes e filtro."), ("analise-site.html", "Análise do site", "O que melhorar."), ("orcamento.html", "Orçamento 2027", "Com o que contamos.")]) + '</div>'
-    + '<div class="kpis">' + "".join(f'<div class="kpi vidro"><b>{a}</b><span>{b}</span></div>' for a, b in [("81", "materiais por rodada"), ("23", "eventos no orçamento"), ("3 de 14", "posts sobre estruturados em out/26"), ("4", "artigos para ranquear no Google")]) + '</div>'
-    + '<h2 id="frentes">O ano em <strong>quatro frentes</strong></h2><a class="tp" href="m-posicionamento.html">Casa de estruturados</a><div class="frentes f4">'
-    + "".join(f'<section class="frente vidro">{ICO27[n]}<h3><a href="{h}">{n}</a></h3><p class="dono">{d}</p><ul>' + "".join(f"<li>{x}</li>" for x in l) + "</ul></section>" for n, h, d, l in _fr27) + '</div><a class="tp tp-b" href="frente-benchmark.html">' + ICO27["Benchmark"] + 'Benchmark conecta as quatro frentes</a>'
+    + '<h2 id="frentes">O ano em <strong>quatro frentes</strong></h2><div class="frentes f4 fr-vis">'
+    + "".join(f'<section class="frente vidro"><img class="fr-img" src="{_IMG27[n][0]}" alt="{_IMG27[n][1]}" loading="lazy">{ICO27[n]}<h3><a href="{h}">{n}</a></h3><p class="dono">{_DONO27[n]}</p><p class="fr-m">{d}</p><ul>' + "".join(f"<li>{x}</li>" for x in l) + "</ul></section>" for n, h, d, l in _fr27) + '</div>'
+    + '<h2 id="segmentos">Cada segmento em <strong>uma linha</strong></h2><div class="subs seg6">' + "".join(f'<a class="sub vidro" href="segmento-{h}.html"><b>{n}</b><span>{d}</span><em>{q}</em></a>' for n, h, d, q in _SEG) + '</div>'
+    + '<h2 id="ritmo">O que <strong>se repete</strong></h2><div class="frentes linhas">'
+    + "".join(f'<section class="frente vidro"><h3>{a}</h3><p class="dono">{b}</p><ul>' + "".join(f"<li>{x}</li>" for x in l) + "</ul></section>" for a, b, l in _RITMO) + '</div>'
+    + '<h2 id="trimestres">O ano por <strong>trimestre</strong></h2><div class="frentes linhas">'
+    + "".join(f'<section class="frente vidro"><h3>{a}</h3><p class="dono">{b}</p><ul>' + "".join(f"<li>{x}</li>" for x in l) + "</ul></section>" for a, b, l in _TRI) + '</div>'
     + '<h2 id="juntas">Estratégias que se <strong>entrelaçam</strong></h2>' + _lig_vis()
-    + '<h2 id="funil">O caminho do <strong>número</strong></h2><div class="fu">'
+    + '<h2 id="medir">Como vamos <strong>medir</strong></h2><div class="fu">'
     + "".join(f'<div class="fu-i vidro" style="width:{w}%"><b>{a}</b><span>{b}</span></div>' for w, a, b in [(100, "Alcance", "Quem viu a Tivio"), (88, "Contato", "Quem deixou nome e origem"), (76, "Reunião", "Quem pediu conversa qualificada"), (64, "Captação", "Quanto veio, em R$")]) + '</div>'
-    + '<h2 id="numeros">Os números que a área <strong>vai trazer</strong></h2><div class="acc">'
-    + "".join(f'<details{" open" if i == 0 else ""}><summary><b>{x[0]}</b><span>{sum(1 for n in _num27 if n[0] == x[0])} números</span></summary><div class="tab tab-pilha"><table><tr><th>Número</th><th>Hoje</th></tr>' + "".join(f'<tr><td>{b}</td><td data-r="Hoje">{d}</td></tr>' for a, b, d in _num27 if a == x[0]) + '</table></div></details>' for i, x in enumerate(_fr27)) + '</div>'
-    + '<h2 id="ano">O ano <strong>mês a mês</strong></h2>' + _gantt() + '<div class="pil" id="pil" role="group" aria-label="Filtrar por frente">'
+    + '<!--METAS--><div class="acc" id="numeros">'
+    + "".join(f'<details><summary><b>{x[0]}</b><span>{sum(1 for n in _num27 if n[0] == x[0])} números</span></summary><div class="tab tab-pilha"><table><tr><th>Número</th><th>Hoje</th></tr>' + "".join(f'<tr><td>{b}</td><td data-r="Hoje">{d}</td></tr>' for a, b, d in _num27 if a == x[0]) + '</table></div></details>' for i, x in enumerate(_fr27)) + '</div>'
+    + '<details class="det-ano" id="ano"><summary>Ver o ano <strong>mês a mês</strong></summary>' + _gantt() + '<div class="pil" id="pil" role="group" aria-label="Filtrar por frente">'
     + "".join(f'<button type="button" data-c="{i}" aria-pressed="{"true" if i == 0 else "false"}">{n}</button>' for i, n in enumerate(["Todas", "Automação", "Eventos", "Conteúdo", "Digital"]))
-    + '</div>' + _tl(None) + """<script>(function(){var B=[].slice.call(document.querySelectorAll('#pil button')),T=document.getElementById('meses');
+    + '</div>' + _tl(None) + """</details><script>(function(){var B=[].slice.call(document.querySelectorAll('#pil button')),T=document.getElementById('meses');
 B.forEach(function(b){b.addEventListener('click',function(){var c=b.dataset.c;B.forEach(function(x){x.setAttribute('aria-pressed',x===b?'true':'false')});
 [].forEach.call(T.querySelectorAll('.tl-i'),function(e){e.hidden=c!=='0'&&e.dataset.c!==c});
 [].forEach.call(T.querySelectorAll('.tl-m'),function(m){m.hidden=!m.querySelector('.tl-i:not([hidden])')})})})})();</script>"""
-    + '<p class="meta-txt">Proposta do time de Comunicação &amp; Marketing. As metas das redes estão em Digital; as de negócio ficam para definir depois de medir a base, e a captação por origem depende de registrar a origem do contato até o comercial.</p></section>'
-    + '<div id="apres" hidden role="dialog" aria-label="Modo apresentação"><div class="ap-logo"></div><div class="ap-ctl"><button type="button" id="ap-ant" aria-label="Anterior">‹</button><span id="ap-n"></span><button type="button" id="ap-prox" aria-label="Próximo">›</button><button type="button" id="ap-sair" aria-label="Sair">Sair</button></div></div>'
+    + '<h2 id="bases">Onde o plano <strong>se apoia</strong></h2><div class="pl-base">' + cartoes([("frente-benchmark.html", "Benchmark", "O que vimos fora e o que fazemos."), ("analise-postagens.html", "Análise das postagens", "O que funciona hoje."), ("imprensa.html", "Imprensa", "Pauta, porta-vozes e filtro."), ("analise-site.html", "Análise do site", "O que melhorar."), ("orcamento.html", "Orçamento 2027", "Com o que contamos.")]) + '</div>'
+    + '<p class="meta-txt">Proposta do time de Comunicação &amp; Marketing. As metas de negócio ficam para definir depois de medir a base, e a captação por origem depende de registrar a origem do contato até o comercial.</p></section>'
+    + '<div id="apres" hidden role="dialog" aria-label="Modo apresentação"><div class="ap-logo"></div><div class="ap-sum" id="ap-sum" hidden></div><div class="ap-ctl"><button type="button" id="ap-menu" aria-label="Sumário" aria-expanded="false">Sumário</button><button type="button" id="ap-ant" aria-label="Anterior">‹</button><span id="ap-n"></span><button type="button" id="ap-prox" aria-label="Próximo">›</button><button type="button" id="ap-sair" aria-label="Sair">Sair</button></div></div>'
     + '<script>' + (pathlib.Path(__file__).parent / "apres_plano.js").read_text(encoding="utf-8") + '</script>' + _ABAS_JS
     + '<p class="rodape">Tivio Capital · Comunicação &amp; Marketing</p></div>')
 (EXTRA / "plano-2027.html").write_text(pagina("Plano", corpo_p27, CSS_P), encoding="utf-8")

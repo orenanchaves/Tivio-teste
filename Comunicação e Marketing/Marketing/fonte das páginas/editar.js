@@ -3,7 +3,7 @@
   var W = document.querySelector(".wrap"); if (!W || window.__tvEd) return; window.__tvEd = 1;
   var g = null; try { g = sessionStorage.getItem("tivio-chave") } catch (x) {} if (!g) return;
   var P = (location.pathname.split("/").pop() || "index").replace(/\.html$/, "") || "index";
-  var SEL = "li,td,h3,p.dono,p.lead,p.meta-txt,.kpi b,.kpi span,.sub b,.sub span,.org-n b,.org-n span,.org-n em,.org-t,.tl-i span,.frente>p,.bm-i dd,.bm-i h3,ol.roteiro li>b,ol.roteiro li>span,.lig-i>b,.lig-i>span";
+  var SEL = "li,td,h3,p.dono,p.lead,p.meta-txt,.kpi b,.kpi span,.sub b,.sub span,.sub em,.fr-m,.org-n b,.org-n span,.org-n em,.org-t,.tl-i span,.frente>p,.bm-i dd,.bm-i h3,ol.roteiro li>b,ol.roteiro li>span,.lig-i>b,.lig-i>span";
   var BLK = ".frentes>section.frente,.org-n,ol.roteiro>li,.subs>.sub,.kpis>.kpi,.lig>.lig-i,.bm>.bm-i";
   var DUV = /a definir|definir (esse|este) m[eê]s|a medir|a confirmar|em d[uú]vida|\?\s*$/i;
   var TOKEN, BASE = { edits: {}, novos: {}, ordem: {}, blocos: {} }, PEND = [], ED = false;
