@@ -59,7 +59,7 @@ FRENTES_E = [("Coordenação, Design estratégico &amp; Automação", "Renan Cha
 _org = ('<div class="org"><div class="org-n vidro"><span>Direção</span><b>Enrico Trotta</b></div><i class="org-l"></i>'
         '<div class="org-n vidro"><span>Coordenação, design estratégico, dados e automação</span><b>Renan Chaves</b></div><i class="org-l"></i>'
         '<div class="org-3 org-2"><div class="org-n vidro"><span>Conteúdo &amp; Comunicação</span><b>Fernanda Acquati</b></div><div class="org-col"><div class="org-n vidro"><span>Design operacional &amp; Produção</span><b>Gabriel Fiorilli</b></div><i class="org-l"></i><div class="org-n org-ext"><span>Agência parceira</span><b>ColaAí</b><em>Vídeo, carrossel da Carta e tráfego pago</em></div></div></div>'
-        '<div class="org-t"><span>Eventos</span>Frente transversal, com toda a área</div>'</div>')
+        '<div class="org-t"><span>Eventos</span>Frente transversal, com toda a área</div></div>')
 _antes = ('<div class="org"><div class="org-n vidro"><span>Direção</span><b>Enrico Trotta</b></div><i class="org-l"></i>'
           '<div class="org-n vidro org-hub"><span>Hub da área</span><b>Cesar Medeiros</b></div><i class="org-l"></i>'
           '<div class="org-3">' + "".join(f'<div class="org-n vidro"><span>{a}</span><b>{b}</b></div>' for a, b in [("Materiais, dados e automação", "Renan Chaves"), ("Conteúdo e fluxo editorial", "Fernanda Acquati"), ("Design e produção visual", "Gabriel Fiorilli")]) + '</div>'
