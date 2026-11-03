@@ -4,10 +4,16 @@
 window.tvDeck = function (nome, monta) {
   var A = document.getElementById("apres"), BT = document.getElementById("ap-abrir"); if (!A || !BT) return;
   function esc(s) { var d = document.createElement("div"); d.textContent = s; return d.innerHTML }
-  A.innerHTML = '<div class="ap-palco"><div class="ap-logo"></div></div><nav class="ap-ctl" aria-label="Controles da apresentação"><button type="button" class="ap-menu" aria-expanded="false">Sumário</button><button type="button" class="ap-ant" aria-label="Anterior">‹</button><span class="ap-n"></span><button type="button" class="ap-prox" aria-label="Próximo">›</button><button type="button" class="ap-sair">Sair</button></nav><div class="ap-sum" hidden></div>';
-  var PAL = A.querySelector(".ap-palco"), SM = A.querySelector(".ap-sum"), MB = A.querySelector(".ap-menu"), N = A.querySelector(".ap-n"), l = [], i = 0;
+  A.innerHTML = '<div class="ap-palco"><div class="ap-logo"></div></div><nav class="ap-ctl" aria-label="Controles da apresentação"><button type="button" class="ap-menu" aria-expanded="false">Sumário</button><button type="button" class="ap-ant" aria-label="Anterior">‹</button><span class="ap-n"></span><button type="button" class="ap-prox" aria-label="Próximo">›</button><button type="button" class="ap-sair">Sair</button></nav><div class="ap-sum" hidden></div><div class="ap-leg" aria-live="polite"></div>';
+  var PAL = A.querySelector(".ap-palco"), LG = A.querySelector(".ap-leg"), SM = A.querySelector(".ap-sum"), MB = A.querySelector(".ap-menu"), N = A.querySelector(".ap-n"), l = [], i = 0;
   var marca = document.querySelector(".marca"); if (marca) A.querySelector(".ap-logo").innerHTML = marca.innerHTML;
-  function escala() { var ve = innerHeight > innerWidth; PAL.classList.toggle("vert", ve); PAL.style.setProperty("--k", ve ? Math.min(innerWidth / 1080, innerHeight / 1920) : Math.min(innerWidth / 1920, innerHeight / 1080)) }
+  // celular em pé: o slide inteiro no alto, pequeno, e uma legenda legível embaixo com o mesmo conteúdo
+  function escala() { var re = innerHeight > innerWidth; A.classList.toggle("retrato", re); PAL.classList.remove("vert"); var k = re ? innerWidth / 1920 : Math.min(innerWidth / 1920, innerHeight / 1080); PAL.style.setProperty("--k", k); if (re) LG.style.top = Math.round(52 + 1080 * k + 8) + "px" }
+  function legenda(s) {
+    var c = s.cloneNode(true); [].forEach.call(c.querySelectorAll("img,svg,figure,.cu-bar,.sl-pe,.gb i,.met i,.gc i,.sl-sec"), function (x) { x.remove() });
+    var h = c.querySelector("h2"), corpo = c.querySelector(".sl-corpo"); if (h && corpo && corpo.contains(h)) h.remove();
+    LG.innerHTML = '<p class="lg-sec">' + esc(s.querySelector(".sl-sec") ? s.querySelector(".sl-sec").textContent : nome) + "</p>" + (h ? "<h3>" + h.innerHTML + "</h3>" : "") + (corpo ? '<div class="lg-c">' + corpo.innerHTML + "</div>" : ""); LG.scrollTop = 0;
+  }
   function monte() {
     var S = monta(), tot = S.length, grupos = [], idx = {};
     S.forEach(function (s, k) { if (!s.sec || s.sum) return; var g = s.sec.split(" · ")[0]; if (!(g in idx)) { idx[g] = grupos.length; grupos.push([g, []]) } grupos[idx[g]][1].push([k, s.h.replace(/<[^>]+>/g, "")]) });
@@ -26,6 +32,7 @@ window.tvDeck = function (nome, monta) {
   function v(k) {
     i = Math.max(0, Math.min(l.length - 1, k));
     l.forEach(function (s, j) { s.classList.toggle("ativa", j === i); s.classList.toggle("antes", j < i) });
+    if (l[i]) legenda(l[i]);
     N.textContent = String(i + 1).padStart(2, "0") + " / " + String(l.length).padStart(2, "0");
     [].forEach.call(SM.querySelectorAll("button"), function (b) { if (+b.dataset.ir === i) b.setAttribute("aria-current", "true"); else b.removeAttribute("aria-current") });
   }
@@ -36,8 +43,10 @@ window.tvDeck = function (nome, monta) {
   A.addEventListener("click", function (e) { var b = e.target.closest && e.target.closest("[data-ir]"); if (b) { v(+b.dataset.ir); menu(false) } });
   addEventListener("resize", function () { if (A.isConnected) escala() });
   var tx = null, ty = 0;
-  PAL.addEventListener("touchstart", function (e) { tx = e.touches[0].clientX; ty = e.touches[0].clientY }, { passive: true });
-  PAL.addEventListener("touchend", function (e) { if (tx === null) return; var dx = e.changedTouches[0].clientX - tx, dy = e.changedTouches[0].clientY - ty; tx = null; if (Math.abs(dx) > 50 && Math.abs(dx) > Math.abs(dy) * 1.3) v(i + (dx < 0 ? 1 : -1)) });
+  [PAL, LG].forEach(function (z) {
+    z.addEventListener("touchstart", function (e) { tx = e.touches[0].clientX; ty = e.touches[0].clientY }, { passive: true });
+    z.addEventListener("touchend", function (e) { if (tx === null) return; var dx = e.changedTouches[0].clientX - tx, dy = e.changedTouches[0].clientY - ty; tx = null; if (Math.abs(dx) > 50 && Math.abs(dx) > Math.abs(dy) * 1.3) v(i + (dx < 0 ? 1 : -1)) });
+  });
   document.addEventListener("keydown", function (e) {
     if (A.hidden || !A.isConnected) return;
     if (e.key === "ArrowRight" || e.key === " " || e.key === "PageDown") { e.preventDefault(); v(i + 1) }
