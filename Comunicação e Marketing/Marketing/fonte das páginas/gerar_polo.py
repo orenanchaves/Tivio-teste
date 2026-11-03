@@ -54,7 +54,7 @@ corpo_polo = (cabecalho("Brand", []) + '<div class="wrap">'
 (EXTRA / "brand.html").write_text(pagina("Brand", corpo_polo, CSS_P), encoding="utf-8")
 
 FRENTES_E = [("Coordenação, Design estratégico &amp; Automação", "Renan Chaves", ["Design estratégico", "Prioridades", "Materiais e fechamento", "Automação", "Dados e performance", "C&amp;M Hub", "Governança", "Interface com Enrico Trotta", "Apresentações e decks"]),
-             ("Conteúdo &amp; Comunicação", "Fernanda Acquati", ["Calendário editorial", "Redes sociais", "Tivio News", "Textos e legendas", "Publicação", "Moderação", "Aprovações", "Operação dos eventos"]),
+             ("Conteúdo &amp; Comunicação", "Fernanda Acquati", ["Calendário editorial", "Redes sociais", "Comunicação interna", "Tivio News", "Textos e legendas", "Publicação", "Moderação", "Aprovações", "Operação dos eventos"]),
              ("Design operacional &amp; Produção", "Gabriel Fiorilli", ["Peças de social", "Desdobramento de KVs", "Materiais de eventos", "Vídeo e motion", "Aplicação dos templates"])]
 _org = ('<div class="org"><div class="org-n vidro"><span>Direção</span><b>Enrico Trotta</b></div><i class="org-l"></i>'
         '<div class="org-n vidro"><span>Coordenação, design estratégico, dados e automação</span><b>Renan Chaves</b></div><i class="org-l"></i>'
