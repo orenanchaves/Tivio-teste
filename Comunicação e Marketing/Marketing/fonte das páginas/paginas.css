@@ -319,3 +319,12 @@
 .ap-ctl{right:50%;transform:translateX(50%);bottom:1.4%}
 .sl-cab i{display:none}}
 @media (max-width:760px){.sl-rod{left:16px;right:16px;bottom:62px;font-size:10px}.sl-rod span:first-child{display:none}.sl{padding-bottom:96px}}
+.org-6>.org-n{min-width:0;max-width:none;padding:14px 10px;box-sizing:border-box}.org-6>.org-n span{font-size:12px}.org-6>.org-n b{font-size:15px}.org-6>.org-n em{font-size:12px}
+@media (min-width:761px){
+#apres .sl{padding:12.5% 6.5% 8.5%}
+#apres .sl h2.fr{font-size:clamp(24px,3.1vw,50px);margin:0 0 4.5vh!important}
+#apres .sl.capa h2{font-size:clamp(40px,6.4vw,104px)}
+#apres .sl-dupla p{padding:.9vh 0;font-size:clamp(13px,1.1vw,18px)}
+#apres .sl-sum button{padding:1.1vh 16px;margin-bottom:.8vh;font-size:clamp(14px,1.15vw,19px)}
+#apres .sl-g.cmp ul{font-size:clamp(12px,.92vw,15px)}#apres .sl-g.cmp li+li{margin-top:.35em}
+#apres .sl-g.cmp>div{padding:clamp(12px,1.2vw,20px)}}
