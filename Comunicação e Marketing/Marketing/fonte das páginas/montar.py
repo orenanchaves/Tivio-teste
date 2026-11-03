@@ -152,6 +152,7 @@ ICO27 = {"Automação": _ic27('<path d="M4 12a8 8 0 0 1 14-5.3L20 9M20 4v5h-5M20
          "Conteúdo": _ic27('<path d="M6 3.5h8l4.5 4.5v12.5H6z"/><path d="M14 3.5V8h4.5M9 12.5h6M9 16h6"/>'),
          "Digital com estratégia": _ic27('<circle cx="12" cy="12" r="8.5"/><path d="M3.5 12h17M12 3.5c2.4 2.4 3.6 5.2 3.6 8.5s-1.2 6.1-3.6 8.5c-2.4-2.4-3.6-5.2-3.6-8.5s1.2-6.1 3.6-8.5z"/>'),
          "Estrutura": _ic27('<circle cx="9" cy="8" r="3.5"/><path d="M3 20c0-3.5 2.7-6 6-6s6 2.5 6 6M16 4.8a3.5 3.5 0 0 1 0 6.4M18 14.4c1.9.8 3 2.8 3 5.6"/>'),
+         "Plano 2027": _ic27('<path d="M5 21V4M5 4.5c4-2.5 7 2 14 0v9c-7 2-10-2.500-14 0"/>'),
          "Benchmark": _ic27('<circle cx="12" cy="12" r="8.5"/><circle cx="12" cy="12" r="4.5"/><path d="M12 11.9h.01"/>')}
 def _num_br(v):
     return f"{v:g}".replace(".", ",")

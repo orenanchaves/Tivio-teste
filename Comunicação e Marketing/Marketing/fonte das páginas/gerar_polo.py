@@ -334,10 +334,12 @@ def _lig_vis():
     return '<div class="lig">' + "".join(f'<div class="lig-i vidro"><div class="lig-t">{ic(a.split(" + ")[0])}<i>+</i>{ic(a.split(" + ")[1])}<em>{q}</em></div><b>{a}</b><span>{d}</span></div>' for a, s, q, d in _lig) + '</div>'
 corpo_p27 = (cabecalho("Plano 2027", []) + '<div class="wrap">'
     + trilha(("index.html", "Início"), ("", "Plano 2027"))
-    + '<section class="topo-peer"><div><h1>Plano 2027</h1><p class="lead">Ser a casa de estruturados, em quatro frentes, com números de negócio além de awareness.</p></div></section>'
+    + '<section class="topo-peer"><div><h1>Plano 2027</h1><p class="lead">Parte da estrutura da área e de tudo o que estudamos para ser a casa de estruturados, em quatro frentes, com números de negócio além de awareness.</p></div></section>'
+    + '<h2 id="estrutura">De onde o plano <strong>parte</strong></h2>' + _org + '<a class="tp tp-b" href="estrutura.html">' + ICO27["Estrutura"] + 'Ver a estrutura completa</a>'
+    + '<div class="pl-base">' + cartoes([("frente-benchmark.html", "Benchmark", "O que vimos fora e o que fazemos."), ("analise-postagens.html", "Análise das postagens", "O que funciona hoje."), ("analise-site.html", "Análise do site", "O que melhorar."), ("orcamento.html", "Orçamento 2027", "Com o que contamos.")]) + '</div>'
     + '<div class="kpis">' + "".join(f'<div class="kpi vidro"><b>{a}</b><span>{b}</span></div>' for a, b in [("81", "materiais por rodada"), ("23", "eventos no orçamento"), ("3 de 14", "posts sobre estruturados em out/26"), ("4", "artigos para ranquear no Google")]) + '</div>'
     + '<h2 id="frentes">O ano em <strong>quatro frentes</strong></h2><a class="tp" href="m-posicionamento.html">Casa de estruturados</a><div class="frentes f4">'
-    + "".join(f'<section class="frente vidro">{ICO27[n]}<h3><a href="{h}">{n}</a></h3><p class="dono">{d}</p><ul>' + "".join(f"<li>{x}</li>" for x in l) + "</ul></section>" for n, h, d, l in _fr27) + '</div><a class="tp tp-b" href="frente-benchmark.html">' + ICO27["Benchmark"] + 'Benchmark conecta as quatro frentes</a><a class="tp tp-b" href="estrutura.html">' + ICO27["Estrutura"] + 'Estrutura: quem faz cada frente</a>'
+    + "".join(f'<section class="frente vidro">{ICO27[n]}<h3><a href="{h}">{n}</a></h3><p class="dono">{d}</p><ul>' + "".join(f"<li>{x}</li>" for x in l) + "</ul></section>" for n, h, d, l in _fr27) + '</div><a class="tp tp-b" href="frente-benchmark.html">' + ICO27["Benchmark"] + 'Benchmark conecta as quatro frentes</a>'
     + '<h2 id="juntas">Estratégias que se <strong>entrelaçam</strong></h2>' + _lig_vis()
     + '<h2 id="funil">O caminho do <strong>número</strong></h2><div class="fu">'
     + "".join(f'<div class="fu-i vidro" style="width:{w}%"><b>{a}</b><span>{b}</span></div>' for w, a, b in [(100, "Alcance", "Quem viu a Tivio"), (88, "Contato", "Quem deixou nome e origem"), (76, "Reunião", "Quem pediu conversa qualificada"), (64, "Captação", "Quanto veio, em R$")]) + '</div>'
