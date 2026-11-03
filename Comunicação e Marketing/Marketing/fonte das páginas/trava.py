@@ -32,7 +32,7 @@ css = fontes + """:root{--bg:#0A0F14;--bg-elev:linear-gradient(135deg,rgba(255,2
 @media (prefers-reduced-motion:reduce){.car path{animation:none;opacity:1}}
 """
 (OUT/"entrar.css").write_text(css, encoding="utf-8")
-shutil.copy(S/"favicon.ico", OUT/"favicon.ico")
+shutil.copy(S/"favicon.ico", OUT/"favicon.ico"); shutil.copy(S/"editar.js", OUT/"editar.js")
 JS = """(function(){try{var t=localStorage.getItem('tivio-tema');if(t==='light'||t==='dark')document.documentElement.setAttribute('data-theme',t)}catch(x){}
 var Q='tivio-chave',F=document.getElementById('f'),E=document.getElementById('e'),C=document.getElementById('c');function u(x){return Uint8Array.from(atob(x),function(c){return c.charCodeAt(0)})}
 async function abre(k,m){var p=await crypto.subtle.decrypt({name:'AES-GCM',iv:u(D.i)},k,u(D.c));var h=new TextDecoder().decode(p);if(m)await new Promise(function(r){setTimeout(r,Math.max(0,m-Date.now()))});if(document.readyState!=='complete')await new Promise(function(r){addEventListener('load',r)});document.open();document.write(h);document.close()}
@@ -80,6 +80,8 @@ for f in sorted(ORIG.glob("*.html")):
     h, n = re.subn(r'<p class="(?:eyebrow|sl-e)"[^>]*>.*?</p>', "", h, flags=re.S)
     if "favicon.ico" not in h: h = h.replace("</title>", '</title>\n<link rel="icon" href="favicon.ico" sizes="any">', 1)
     assert 'class="eyebrow' not in h and 'class="sl-e' not in h, f.name
+    i = h.rfind("</body>"); i = len(h) if i < 0 else i; h = h[:i] + '<script src="editar.js"></script>' + h[i:]
     iv = os.urandom(12)
     (OUT/f.name).write_text(casca(iv, AESGCM(k).encrypt(iv, h.encode("utf-8"), None)), encoding="utf-8")
 print("cifradas", len(list(OUT.glob("*.html"))))
+import hashlib; (S/"token.txt").write_text(hashlib.sha256(k).hexdigest())
