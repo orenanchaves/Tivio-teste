@@ -41,8 +41,8 @@
       + (mt.length ? '<div class="sl-g c' + Math.min(5, mt.length) + ' cmp num" style="margin-top:2vh">' + mt.slice(0, 5).map(function (x) { var e = t(x.querySelector("em")).split(" a "); return "<div><b>" + esc(e[1] || e[0]) + "</b><span>" + esc(t(x.querySelector("span"))) + (e[1] ? ", hoje " + esc(e[0]) : "") + "</span></div>" }).join("") + "</div>" : ""));
     sl("", "Casa de <strong>estruturados</strong>", '<p class="sl-l">Menos, com mais qualidade.</p>', true);
     // sumário clicável: cada seção leva ao primeiro slide dela
-    var grupos = {}; S.forEach(function (s, i) { if (!s.sec || s.sec === "Sumário") return; var gk = s.sec.split(" · ")[0]; (grupos[gk] = grupos[gk] || []).push([i, s.tit]) });
-    var sum = '<div class="sl-sum">' + Object.keys(grupos).map(function (k) { return "<div><b>" + esc(k) + "</b>" + grupos[k].map(function (x) { return '<button type="button" data-ir="' + x[0] + '">' + esc(x[1]) + "<i>" + (x[0] + 1) + "</i></button>" }).join("") + "</div>" }).join("") + "</div>";
+    var grupos = {}, ordem = []; S.forEach(function (s, i) { if (!s.sec || s.sec === "Sumário") return; var gk = s.sec.split(" · ")[0]; if (!grupos[gk]) { grupos[gk] = []; ordem.push(gk) } grupos[gk].push([i, s.tit]) });
+    var sum = '<div class="sl-sum">' + ordem.map(function (k) { return "<div><b>" + esc(k) + "</b>" + grupos[k].map(function (x) { return '<button type="button" data-ir="' + x[0] + '">' + esc(x[1]) + "<i>" + (x[0] + 1) + "</i></button>" }).join("") + "</div>" }).join("") + "</div>";
     var tot = S.length;
     var html = S.map(function (s, i) {
       var cab = s.capa ? "" : '<div class="sl-cab"><b>' + esc(s.sec) + "</b><i>" + (i + 1) + " / " + tot + "</i></div>";
@@ -50,7 +50,7 @@
     }).join("");
     [].forEach.call(A.querySelectorAll(".sl"), function (x) { x.remove() });
     A.querySelector(".ap-sum").insertAdjacentHTML("beforebegin", html);
-    A.querySelector(".ap-sum").innerHTML = Object.keys(grupos).map(function (k) { return "<p>" + esc(k) + "</p>" + grupos[k].map(function (x) { return '<button type="button" data-ir="' + x[0] + '">' + esc(x[1]) + "<i>" + (x[0] + 1) + "</i></button>" }).join("") }).join("");
+    A.querySelector(".ap-sum").innerHTML = ordem.map(function (k) { return "<p>" + esc(k) + "</p>" + grupos[k].map(function (x) { return '<button type="button" data-ir="' + x[0] + '">' + esc(x[1]) + "<i>" + (x[0] + 1) + "</i></button>" }).join("") }).join("");
     return [].slice.call(A.querySelectorAll(".sl"));
   }
   var l = [], i = 0, n = document.getElementById("ap-n"), SM = document.getElementById("ap-sum"), MB = document.getElementById("ap-menu");
