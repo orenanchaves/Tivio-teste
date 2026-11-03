@@ -373,7 +373,7 @@ B.forEach(function(b){b.addEventListener('click',function(){var c=b.dataset.c;B.
     + '<h2 id="bases">Onde o plano <strong>se apoia</strong></h2><div class="pl-base">' + cartoes([("frente-benchmark.html", "Benchmark", "O que vimos fora e o que fazemos."), ("analise-postagens.html", "Análise das postagens", "O que funciona hoje."), ("imprensa.html", "Imprensa", "Pauta, porta-vozes e filtro."), ("analise-site.html", "Análise do site", "O que melhorar."), ("orcamento.html", "Orçamento 2027", "Com o que contamos.")]) + '</div>'
     + '<p class="meta-txt">Proposta do time de Comunicação &amp; Marketing. As metas de negócio ficam para definir depois de medir a base, e a captação por origem depende de registrar a origem do contato até o comercial.</p></section>'
     + '<div id="apres" hidden role="dialog" aria-label="Modo apresentação"><div class="ap-logo"></div><div class="ap-sum" id="ap-sum" hidden></div><div class="ap-ctl"><button type="button" id="ap-menu" aria-label="Sumário" aria-expanded="false">Sumário</button><button type="button" id="ap-ant" aria-label="Anterior">‹</button><span id="ap-n"></span><button type="button" id="ap-prox" aria-label="Próximo">›</button><button type="button" id="ap-sair" aria-label="Sair">Sair</button></div></div>'
-    + '<script>' + (pathlib.Path(__file__).parent / "apres_plano.js").read_text(encoding="utf-8") + '</script>' + _ABAS_JS
+    + '<script>' + (pathlib.Path(__file__).parent / "apres_base.js").read_text(encoding="utf-8") + (pathlib.Path(__file__).parent / "apres_plano.js").read_text(encoding="utf-8") + '</script>' + _ABAS_JS
     + '<p class="rodape">Tivio Capital · Comunicação &amp; Marketing</p></div>')
 (EXTRA / "plano-2027.html").write_text(pagina("Plano", corpo_p27, CSS_P), encoding="utf-8")
 
