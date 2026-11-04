@@ -330,7 +330,7 @@ def _lig_vis():
     def ic(t):
         return ICO27["Eventos" if t == "Evento" else "Digital com estratégia" if t == "Digital" else t]
     return '<div class="lig">' + "".join(f'<div class="lig-i vidro"><div class="lig-t">{ic(a.split(" + ")[0])}<i>+</i>{ic(a.split(" + ")[1])}<em>{q}</em></div><b>{a}</b><span>{d}</span></div>' for a, s, q, d in _lig) + '</div>'
-_IMG27 = {"Automação": ("pecas/ce1.webp", "Destaque de Crédito Estruturado gerado pelo AutomaTivio"), "Eventos": ("feed/08.webp", "Gestor da Tivio no palco do TheNewAgro"),
+_IMG27 = {"Automação": ("pecas/ce1.webp", "Destaque de Crédito Estruturado gerado pelo AutomaTivio"), "Eventos": ("feed/evento.webp", "Plateia assistindo a uma palestra"),
           "Conteúdo": ("feed/02.webp", "Capa da Carta do Gestor O Cálculo de Tolstói"), "Digital com estratégia": ("site-tivio/desktop.webp", "Site da Tivio Capital no desktop")}
 _DONO27 = {"Automação": "Renan Chaves", "Eventos": "Fernanda Acquati", "Conteúdo": "Fernanda Acquati e Gabriel Fiorilli", "Digital com estratégia": "Renan Chaves"}
 _RITMO = [("Todo mês", "Ritmo mensal", ["Carta do Gestor", "Newsletter", "Edição mensal em um comando", "Pauta do mês com a assessoria"]),
