@@ -53,8 +53,8 @@ corpo_polo = (cabecalho("Brand", []) + '<div class="wrap">'
     + '<p class="rodape">Tivio Capital · Comunicação &amp; Marketing</p></div>' + _lb)
 (EXTRA / "brand.html").write_text(pagina("Brand", corpo_polo, CSS_P), encoding="utf-8")
 
-FRENTES_E = [("Coordenação, Design estratégico &amp; Automação", "Renan Chaves", ["Direção de arte", "Identidade e design system", "KV de campanha", "Templates", "Decks e apresentações", "Aprovação visual final", "Prioridades", "Materiais e fechamento", "Automação", "Dados e performance", "C&amp;M Hub", "Governança", "Interface com Enrico Trotta"]),
-             ("Conteúdo &amp; Comunicação", "Fernanda Acquati", ["Calendário editorial", "Redes sociais", "Dashboard de redes sociais", "Comunicação interna", "Tivio News", "Textos e legendas", "Publicação", "Moderação", "Aprovações", "Eventos, de ponta a ponta", "Imprensa", "Gestão de orçamento"]),
+FRENTES_E = [("Coordenação, Design estratégico &amp; Automação", "Renan Chaves", ["Coordenação", "Direção de arte", "Identidade e design system", "KV de campanha", "Templates", "Decks e apresentações", "Aprovação visual final", "Prioridades", "Materiais e fechamento", "Automação", "Dados e performance", "C&amp;M Hub", "Governança", "Interface com Enrico Trotta"]),
+             ("Conteúdo &amp; Comunicação", "Fernanda Acquati", ["Calendário editorial", "Redes sociais", "Dashboard de redes sociais", "Comunicação interna", "Tivio News", "Textos e legendas", "Publicação", "Moderação", "Aprovações", "Eventos, de ponta a ponta", "Agência e fornecedores", "Imprensa", "Gestão de orçamento"]),
              ("Design operacional &amp; Produção", "Gabriel Fiorilli", ["Peças de social a partir do KV e dos templates", "Desdobramentos e formatos", "Vídeo e motion", "Ajustes e versões finais"])]
 _org = ('<div class="org"><div class="org-n vidro"><span>Direção</span><b>Enrico Trotta</b></div><i class="org-l"></i>'
         '<div class="org-n vidro"><span>Coordenação, Design estratégico &amp; Automação</span><b>Renan Chaves</b></div><i class="org-l"></i>'
@@ -74,10 +74,11 @@ _fases = '<div class="fases">' + _col("Antes", "Coordenação central", [("Dire�
 _fr = "".join(f'<section class="frente vidro"><h3>{n}</h3><p class="dono">{d}</p><ul>' + "".join(f"<li>{x}</li>" for x in l) + "</ul></section>" for n, d, l in FRENTES_E)
 _pap = "".join(f'<div class="papel vidro"><span>{a}</span><b>{b}</b></div>' for a, b in [("Eventos de ponta a ponta", "Fernanda Acquati"), ("Aprovação estratégica", "Enrico Trotta")])
 _fl = "".join(f'<li class="vidro"><b>{a}</b><span>{b}</span></li>' for a, b in [("Demanda entra", "Pedido registrado em um lugar só"), ("Triagem", "Definição do responsável"), ("Produção", "Execução pela frente dona"), ("Aprovação técnica", "Revisão e Compliance"), ("Aprovação estratégica", "Quando necessária"), ("Publicação", "Publicação e mensuração")])
-_dist_p = [("r", "Renan Chaves", "Coordenação, Design estratégico &amp; Automação", ["Design estratégico", "Materiais e decks", "Dados e automação"]),
-           ("f", "Fernanda Acquati", "Conteúdo &amp; Comunicação", ["Conteúdo", "Redes sociais"]),
-           ("g", "Gabriel Fiorilli", "Design operacional &amp; Produção", ["Design operacional", "Peças e vídeos"])]
-_dist_i = [("Coordenação", "r"), ("Prioridades", "r"), ("Interface com Enrico Trotta", "r"), ("Eventos: coordenação", "f"), ("Aprovações", "f"), ("Eventos: operação", "f"), ("Agência", "f"), ("Fornecedores", "f"), ("Eventos: peças", "f")]
+# "Para onde foi cada função" termina igual a "O que cada frente cobre": cada caixa mostra a lista
+# da frente, e o que era do Cesar sai da caixa dele e entra na de quem assumiu
+_dist_de = {"r": ["Coordenação", "Prioridades", "Interface com Enrico Trotta"], "f": ["Aprovações", "Eventos, de ponta a ponta", "Agência e fornecedores"], "g": []}
+_dist_p = [(i, n, c, [x for x in l if x not in _dist_de[i]]) for i, (c, n, l) in zip("rfg", FRENTES_E)]
+_dist_i = [(x, i) for i in "rfg" for x in _dist_de[i]]
 _mov = ('<h2>Para onde foi <strong>cada função</strong></h2><div class="dist" id="dist"><svg class="dist-l" id="dist-l" aria-hidden="true"></svg>'
     + '<div class="dist-o vidro" id="dist-o"><span>O que o Cesar fazia</span><b>Cesar Medeiros</b><div class="dist-c" id="dist-oc">'
     + "".join(f'<i class="dist-i" data-d="{d}">{n}</i>' for n, d in _dist_i) + '</div></div><div class="dist-d">'
