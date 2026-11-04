@@ -1,219 +1,231 @@
-## Relatório
+### Relatório
 
-### Tivio Banks
+#### Tivio Banks
 
 O Fundo Tivio Banks obteve retorno de {mes} ({pct_mes} do CDI) no mês e acumula {ano} ({pct_ano} do CDI) em 2026. A alocação em crédito era de {credito}, integralmente concentrada em emissores do setor bancário. O carrego da carteira encontra-se em CDI + {carrego}, com duration média de {duration}.
 
-Em {mes_nome}, o mercado de crédito apresentou reabertura dos spreads e liquidez reduzida no mercado secundário. Os spreads médios dos títulos corporativos indexados ao CDI avançaram cerca de 5 bps, passando de CDI + 1,23% para CDI + 1,28% ao ano, interrompendo parcialmente o movimento de compressão observado nos últimos meses.
+Em {mes_nome}, lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
 
-No mercado secundário, a liquidez permaneceu limitada, especialmente em ativos corporativos, resultando em uma formação de preços mais seletiva. No mercado primário, as emissões bancárias seguiram registrando demanda consistente, embora com menor intensidade em comparação aos meses anteriores. Já o pipeline de emissões corporativas permaneceu restrito, mantendo a oferta de ativos em níveis reduzidos.
+Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
 
-Em relação aos fluxos, os fundos com alocação mínima de 15% em crédito e ao menos 1% em debêntures registraram resgates líquidos próximos de R$ 10 bilhões no período, movimento que contribuiu para a reabertura dos spreads e para uma piora da dinâmica técnica da classe.
+Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.
 
-Apesar desse cenário, os fundamentos corporativos permanecem resilientes e os níveis de inadimplência seguem controlados. Sob a ótica da gestão, mantemos uma postura disciplinada e seletiva na alocação dos recursos, buscando capturar oportunidades geradas pela recente abertura dos spreads sem abrir mão da qualidade de crédito das carteiras.
+Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet.
 
-### Tivio Institucional
+Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam, nisi ut aliquid ex ea commodi consequatur. Quis autem vel eum iure reprehenderit qui in ea voluptate velit esse quam nihil molestiae consequatur.
 
-Em {mes_nome}, o mercado de crédito apresentou reabertura dos spreads e liquidez reduzida no mercado secundário. Os spreads médios dos títulos corporativos indexados ao CDI avançaram cerca de 5 bps, passando de CDI + 1,23% para CDI + 1,28% ao ano, interrompendo parcialmente o movimento de compressão observado nos últimos meses.
+#### Tivio Institucional
 
-No mercado secundário, a liquidez permaneceu limitada, especialmente em ativos corporativos, resultando em uma formação de preços mais seletiva. No mercado primário, as emissões bancárias seguiram registrando demanda consistente, embora com menor intensidade em comparação aos meses anteriores. Já o pipeline de emissões corporativas permaneceu restrito, mantendo a oferta de ativos em níveis reduzidos.
+Em {mes_nome}, lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
 
-Em relação aos fluxos, os fundos com alocação mínima de 15% em crédito e ao menos 1% em debêntures registraram resgates líquidos próximos de R$ 10 bilhões no período, movimento que contribuiu para a reabertura dos spreads e para uma piora da dinâmica técnica da classe.
+Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
 
-Apesar desse cenário, os fundamentos corporativos permanecem resilientes e os níveis de inadimplência seguem controlados. Sob a ótica da gestão, mantemos uma postura disciplinada e seletiva na alocação dos recursos, buscando capturar oportunidades geradas pela recente abertura dos spreads sem abrir mão da qualidade de crédito das carteiras.
+Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.
 
-Nesse cenário, o Fundo Tivio Institucional apresentou rentabilidade de {mes} no mês ({pct_mes} do CDI), acumulando {ano} ({pct_ano} do CDI) no ano. Na parcela de corporativos, os maiores contribuidores para o resultado foram Randon e Vix, enquanto Aegea foi o maior detrator.
+Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet.
 
-### Tivio Legacy Prev
+Nesse cenário, o Tivio Institucional apresentou rentabilidade de {mes} no mês ({pct_mes} do CDI), acumulando {ano} ({pct_ano} do CDI) no ano. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
 
-Em {mes_nome}, o mercado de crédito apresentou reabertura dos spreads e liquidez reduzida no mercado secundário. Os spreads médios dos títulos corporativos indexados ao CDI avançaram cerca de 5 bps, passando de CDI + 1,23% para CDI + 1,28% ao ano, interrompendo parcialmente o movimento de compressão observado nos últimos meses.
+#### Tivio Legacy Prev
 
-No mercado secundário, a liquidez permaneceu limitada, especialmente em ativos corporativos, resultando em uma formação de preços mais seletiva. No mercado primário, as emissões bancárias seguiram registrando demanda consistente, embora com menor intensidade em comparação aos meses anteriores. Já o pipeline de emissões corporativas permaneceu restrito, mantendo a oferta de ativos em níveis reduzidos.
+Em {mes_nome}, lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
 
-Em relação aos fluxos, os fundos com alocação mínima de 15% em crédito e ao menos 1% em debêntures registraram resgates líquidos próximos de R$ 10 bilhões no período, movimento que contribuiu para a reabertura dos spreads e para uma piora da dinâmica técnica da classe.
+Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
 
-Apesar desse cenário, os fundamentos corporativos permanecem resilientes e os níveis de inadimplência seguem controlados. Sob a ótica da gestão, mantemos uma postura disciplinada e seletiva na alocação dos recursos, buscando capturar oportunidades geradas pela recente abertura dos spreads sem abrir mão da qualidade de crédito das carteiras.
+Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.
 
-Nesse cenário, o Tivio Legacy Prev apresentou rentabilidade de {mes} no mês ({pct_mes} do CDI), acumulando {ano} ({pct_ano} do CDI) no ano. Na parcela de corporativos, os maiores contribuidores para o resultado foram Tupy e Randon, enquanto Hapvida foi o maior detrator.
+Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet.
 
-### Tivio RF CP
+Nesse cenário, o Tivio Legacy Prev apresentou rentabilidade de {mes} no mês ({pct_mes} do CDI), acumulando {ano} ({pct_ano} do CDI) no ano. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
 
-Em {mes_nome}, o mercado de crédito apresentou reabertura dos spreads e liquidez reduzida no mercado secundário. Os spreads médios dos títulos corporativos indexados ao CDI avançaram cerca de 5 bps, passando de CDI + 1,23% para CDI + 1,28% ao ano, interrompendo parcialmente o movimento de compressão observado nos últimos meses.
+#### Tivio RF CP
 
-No mercado secundário, a liquidez permaneceu limitada, especialmente em ativos corporativos, resultando em uma formação de preços mais seletiva. No mercado primário, as emissões bancárias seguiram registrando demanda consistente, embora com menor intensidade em comparação aos meses anteriores. Já o pipeline de emissões corporativas permaneceu restrito, mantendo a oferta de ativos em níveis reduzidos.
+Em {mes_nome}, lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
 
-Em relação aos fluxos, os fundos com alocação mínima de 15% em crédito e ao menos 1% em debêntures registraram resgates líquidos próximos de R$ 10 bilhões no período, movimento que contribuiu para a reabertura dos spreads e para uma piora da dinâmica técnica da classe.
+Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
 
-Apesar desse cenário, os fundamentos corporativos permanecem resilientes e os níveis de inadimplência seguem controlados. Sob a ótica da gestão, mantemos uma postura disciplinada e seletiva na alocação dos recursos, buscando capturar oportunidades geradas pela recente abertura dos spreads sem abrir mão da qualidade de crédito das carteiras.
+Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.
 
-Nesse cenário, o Tivio RF CP apresentou rentabilidade de {mes} no mês ({pct_mes} do CDI), acumulando {ano} ({pct_ano} do CDI) no ano. Na parcela de corporativos, os maiores contribuidores para o resultado foram Tupy e YDUQS, enquanto Hapvida foi o maior detrator.
+Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet.
 
-### Tivio BVP
+Nesse cenário, o Tivio RF CP apresentou rentabilidade de {mes} no mês ({pct_mes} do CDI), acumulando {ano} ({pct_ano} do CDI) no ano. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
 
-Em {mes_nome}, o mercado de crédito apresentou reabertura dos spreads e liquidez reduzida no mercado secundário. Os spreads médios dos títulos corporativos indexados ao CDI avançaram cerca de 5 bps, passando de CDI + 1,23% para CDI + 1,28% ao ano, interrompendo parcialmente o movimento de compressão observado nos últimos meses.
+#### Tivio BVP
 
-No mercado secundário, a liquidez permaneceu limitada, especialmente em ativos corporativos, resultando em uma formação de preços mais seletiva. No mercado primário, as emissões bancárias seguiram registrando demanda consistente, embora com menor intensidade em comparação aos meses anteriores. Já o pipeline de emissões corporativas permaneceu restrito, mantendo a oferta de ativos em níveis reduzidos.
+Em {mes_nome}, lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
 
-Em relação aos fluxos, os fundos com alocação mínima de 15% em crédito e ao menos 1% em debêntures registraram resgates líquidos próximos de R$ 10 bilhões no período, movimento que contribuiu para a reabertura dos spreads e para uma piora da dinâmica técnica da classe.
+Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
 
-Apesar desse cenário, os fundamentos corporativos permanecem resilientes e os níveis de inadimplência seguem controlados. Sob a ótica da gestão, mantemos uma postura disciplinada e seletiva na alocação dos recursos, buscando capturar oportunidades geradas pela recente abertura dos spreads sem abrir mão da qualidade de crédito das carteiras.
+Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.
 
-Nesse cenário, o Tivio BVP apresentou rentabilidade de {mes} no mês ({pct_mes} do CDI), acumulando {ano} ({pct_ano} do CDI) no ano. Na parcela de corporativos, os maiores contribuidores para o resultado foram Tupy e Randon, enquanto Hapvida foi o maior detrator.
+Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet.
 
-### Tivio Institucional 15
+Nesse cenário, o Tivio BVP apresentou rentabilidade de {mes} no mês ({pct_mes} do CDI), acumulando {ano} ({pct_ano} do CDI) no ano. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
 
-Em {mes_nome}, o mercado de crédito apresentou reabertura dos spreads e liquidez reduzida no mercado secundário. Os spreads médios dos títulos corporativos indexados ao CDI avançaram cerca de 5 bps, passando de CDI + 1,23% para CDI + 1,28% ao ano, interrompendo parcialmente o movimento de compressão observado nos últimos meses.
+#### Tivio Institucional 15
 
-No mercado secundário, a liquidez permaneceu limitada, especialmente em ativos corporativos, resultando em uma formação de preços mais seletiva. No mercado primário, as emissões bancárias seguiram registrando demanda consistente, embora com menor intensidade em comparação aos meses anteriores. Já o pipeline de emissões corporativas permaneceu restrito, mantendo a oferta de ativos em níveis reduzidos.
+Em {mes_nome}, lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
 
-Em relação aos fluxos, os fundos com alocação mínima de 15% em crédito e ao menos 1% em debêntures registraram resgates líquidos próximos de R$ 10 bilhões no período, movimento que contribuiu para a reabertura dos spreads e para uma piora da dinâmica técnica da classe.
+Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
 
-Apesar desse cenário, os fundamentos corporativos permanecem resilientes e os níveis de inadimplência seguem controlados. Sob a ótica da gestão, mantemos uma postura disciplinada e seletiva na alocação dos recursos, buscando capturar oportunidades geradas pela recente abertura dos spreads sem abrir mão da qualidade de crédito das carteiras.
+Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.
 
-Nesse cenário, o Tivio Institucional 15 apresentou rentabilidade de {mes} no mês ({pct_mes} do CDI), acumulando {ano} ({pct_ano} do CDI) no ano. Na parcela de corporativos, os maiores contribuidores para o resultado foram Tupy e Randon, enquanto Hapvida foi o maior detrator.
+Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet.
 
-### Tivio Institucional 30
+Nesse cenário, o Tivio Institucional 15 apresentou rentabilidade de {mes} no mês ({pct_mes} do CDI), acumulando {ano} ({pct_ano} do CDI) no ano. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
 
-Em {mes_nome}, o mercado de crédito apresentou reabertura dos spreads e liquidez reduzida no mercado secundário. Os spreads médios dos títulos corporativos indexados ao CDI avançaram cerca de 5 bps, passando de CDI + 1,23% para CDI + 1,28% ao ano, interrompendo parcialmente o movimento de compressão observado nos últimos meses.
+#### Tivio Institucional 30
 
-No mercado secundário, a liquidez permaneceu limitada, especialmente em ativos corporativos, resultando em uma formação de preços mais seletiva. No mercado primário, as emissões bancárias seguiram registrando demanda consistente, embora com menor intensidade em comparação aos meses anteriores. Já o pipeline de emissões corporativas permaneceu restrito, mantendo a oferta de ativos em níveis reduzidos.
+Em {mes_nome}, lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
 
-Em relação aos fluxos, os fundos com alocação mínima de 15% em crédito e ao menos 1% em debêntures registraram resgates líquidos próximos de R$ 10 bilhões no período, movimento que contribuiu para a reabertura dos spreads e para uma piora da dinâmica técnica da classe.
+Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
 
-Apesar desse cenário, os fundamentos corporativos permanecem resilientes e os níveis de inadimplência seguem controlados. Sob a ótica da gestão, mantemos uma postura disciplinada e seletiva na alocação dos recursos, buscando capturar oportunidades geradas pela recente abertura dos spreads sem abrir mão da qualidade de crédito das carteiras.
+Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.
 
-Nesse cenário, o Tivio Institucional 30 apresentou rentabilidade de {mes} no mês ({pct_mes} do CDI), acumulando {ano} ({pct_ano} do CDI) no ano. Na parcela de corporativos, os maiores contribuidores para o resultado foram Tupy e Randon, enquanto Hapvida foi o maior detrator.
+Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet.
 
-### Tivio Infra Plus
+Nesse cenário, o Tivio Institucional 30 apresentou rentabilidade de {mes} no mês ({pct_mes} do CDI), acumulando {ano} ({pct_ano} do CDI) no ano. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
 
-Em {mes_nome}, o mercado de crédito incentivado foi marcado por uma reprecificação relevante dos ativos. Os spreads médios dos títulos indexados ao IPCA registraram abertura próxima de 45 bps, refletindo um ambiente técnico menos favorável e o aumento da pressão vendedora no mercado secundário. Apesar disso, o forte fechamento da curva real de juros mitigou parte desse movimento, fazendo com que as taxas finais dos ativos apresentassem abertura mais moderada, de aproximadamente 5 bps no período.
+#### Tivio Infra Plus
 
-No mercado secundário, observou-se predominância de fluxos vendedores, em um contexto de resgates líquidos próximos de R$ 7 bilhões nos fundos de infraestrutura. Esse movimento contribuiu para a ampliação dos spreads e para uma maior seletividade na formação dos preços.
+Em {mes_nome}, lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
 
-Já no mercado primário, a atividade permaneceu limitada, com pipeline bastante reduzido de emissões corporativas incentivadas, restringindo as oportunidades de alocação e mantendo a oferta de ativos em níveis baixos.
+Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
 
-Sob a ótica da gestão, seguimos adotando uma postura cautelosa e seletiva. Embora a recente abertura dos spreads tenha tornado algumas oportunidades mais atrativas, entendemos que a volatilidade dos fluxos e a baixa liquidez do mercado secundário ainda justificam uma abordagem disciplinada na alocação dos recursos, priorizando operações com adequada relação entre risco e retorno.
+Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.
 
-Nesse cenário, o Tivio Infra Plus apresentou rentabilidade, isenta de imposto de renda, de {mes} no mês, acumulando {ano} no ano. Na atribuição de performance, destacaram-se positivamente as debêntures de Localiza e Urbia, enquanto as de Rumo foram as maiores detratoras.
+Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet.
 
-### Tivio Atuarial
+Nesse cenário, o Tivio Infra Plus apresentou rentabilidade, isenta de imposto de renda, de {mes} no mês, acumulando {ano} no ano. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
 
-Em {mes_nome}, o mercado de crédito incentivado foi marcado por uma reprecificação relevante dos ativos. Os spreads médios dos títulos indexados ao IPCA registraram abertura próxima de 45 bps, refletindo um ambiente técnico menos favorável e o aumento da pressão vendedora no mercado secundário. Apesar disso, o forte fechamento da curva real de juros mitigou parte desse movimento, fazendo com que as taxas finais dos ativos apresentassem abertura mais moderada, de aproximadamente 5 bps no período.
+#### Tivio Atuarial
 
-No mercado secundário, observou-se predominância de fluxos vendedores, em um contexto de resgates líquidos próximos de R$ 7 bilhões nos fundos de infraestrutura. Esse movimento contribuiu para a ampliação dos spreads e para uma maior seletividade na formação dos preços.
+Em {mes_nome}, lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
 
-Já no mercado primário, a atividade permaneceu limitada, com pipeline bastante reduzido de emissões corporativas incentivadas, restringindo as oportunidades de alocação e mantendo a oferta de ativos em níveis baixos.
+Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
 
-Sob a ótica da gestão, seguimos adotando uma postura cautelosa e seletiva. Embora a recente abertura dos spreads tenha tornado algumas oportunidades mais atrativas, entendemos que a volatilidade dos fluxos e a baixa liquidez do mercado secundário ainda justificam uma abordagem disciplinada na alocação dos recursos, priorizando operações com adequada relação entre risco e retorno.
+Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.
 
-Nesse cenário, o Tivio Atuarial apresentou rentabilidade de {mes} no mês, acumulando {ano} no ano. Na atribuição de performance, destacaram-se positivamente as debêntures de Engie e Localiza, enquanto as de Neoenergia foram as maiores detratoras.
+Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet.
 
-### Tivio Esplanada
+Nesse cenário, o Tivio Atuarial apresentou rentabilidade de {mes} no mês, acumulando {ano} no ano. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
 
-Em {mes_nome}, o mercado de crédito incentivado foi marcado por uma reprecificação relevante dos ativos. Os spreads médios dos títulos indexados ao IPCA registraram abertura próxima de 45 bps, refletindo um ambiente técnico menos favorável e o aumento da pressão vendedora no mercado secundário. Apesar disso, o forte fechamento da curva real de juros mitigou parte desse movimento, fazendo com que as taxas finais dos ativos apresentassem abertura mais moderada, de aproximadamente 5 bps no período.
+#### Tivio Esplanada
 
-No mercado secundário, observou-se predominância de fluxos vendedores, em um contexto de resgates líquidos próximos de R$ 7 bilhões nos fundos de infraestrutura. Esse movimento contribuiu para a ampliação dos spreads e para uma maior seletividade na formação dos preços.
+Em {mes_nome}, lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
 
-Já no mercado primário, a atividade permaneceu limitada, com pipeline bastante reduzido de emissões corporativas incentivadas, restringindo as oportunidades de alocação e mantendo a oferta de ativos em níveis baixos.
+Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
 
-Sob a ótica da gestão, seguimos adotando uma postura cautelosa e seletiva. Embora a recente abertura dos spreads tenha tornado algumas oportunidades mais atrativas, entendemos que a volatilidade dos fluxos e a baixa liquidez do mercado secundário ainda justificam uma abordagem disciplinada na alocação dos recursos, priorizando operações com adequada relação entre risco e retorno.
+Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.
 
-Nesse cenário, o Tivio Esplanada apresentou rentabilidade, isenta de imposto de renda, de {mes} no mês, acumulando {ano} no ano. Na atribuição de performance, destacaram-se positivamente as debêntures de Engie e Localiza, enquanto as de Sabesp foram as maiores detratoras.
+Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet.
 
-### Tivio Infra Plus CDI
+Nesse cenário, o Tivio Esplanada apresentou rentabilidade, isenta de imposto de renda, de {mes} no mês, acumulando {ano} no ano. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
 
-Em {mes_nome}, o mercado de crédito incentivado foi marcado por uma reprecificação relevante dos ativos. Os spreads médios dos títulos indexados ao IPCA registraram abertura próxima de 45 bps, refletindo um ambiente técnico menos favorável e o aumento da pressão vendedora no mercado secundário. Apesar disso, o forte fechamento da curva real de juros mitigou parte desse movimento, fazendo com que as taxas finais dos ativos apresentassem abertura mais moderada, de aproximadamente 5 bps no período.
+#### Tivio Infra Plus CDI
 
-No mercado secundário, observou-se predominância de fluxos vendedores, em um contexto de resgates líquidos próximos de R$ 7 bilhões nos fundos de infraestrutura. Esse movimento contribuiu para a ampliação dos spreads e para uma maior seletividade na formação dos preços.
+Em {mes_nome}, lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
 
-Já no mercado primário, a atividade permaneceu limitada, com pipeline bastante reduzido de emissões corporativas incentivadas, restringindo as oportunidades de alocação e mantendo a oferta de ativos em níveis baixos.
+Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
 
-Sob a ótica da gestão, seguimos adotando uma postura cautelosa e seletiva. Embora a recente abertura dos spreads tenha tornado algumas oportunidades mais atrativas, entendemos que a volatilidade dos fluxos e a baixa liquidez do mercado secundário ainda justificam uma abordagem disciplinada na alocação dos recursos, priorizando operações com adequada relação entre risco e retorno.
+Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.
 
-Nesse cenário, o Infra Plus CDI apresentou rentabilidade, isenta de imposto de renda, de {mes} no mês ({pct_mes} do CDI), acumulando {ano} ({pct_ano} do CDI) no ano. Na atribuição de performance, destacaram-se positivamente as debêntures de Unifique e Urbia, enquanto as de Copel foram as maiores detratoras.
+Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet.
 
-### Tivio ALT Light
+Nesse cenário, o Infra Plus CDI apresentou rentabilidade, isenta de imposto de renda, de {mes} no mês ({pct_mes} do CDI), acumulando {ano} ({pct_ano} do CDI) no ano. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+
+#### Tivio ALT Light
 
 O Tivio ALT Light registrou rentabilidade de {mes} no mês, equivalente a {pct_mes} do CDI no período. Desde o início da estratégia, o fundo acumula retorno de {inicio}, frente a {bench_inicio} do CDI, o que corresponde a um desempenho anualizado de {pct_inicio} do CDI.
 
-Em {mes_nome}, o mercado de crédito apresentou reabertura dos spreads e liquidez reduzida no mercado secundário. Os spreads médios dos títulos corporativos indexados ao CDI avançaram cerca de 5 bps, passando de CDI + 1,23% para CDI + 1,28% ao ano, interrompendo parcialmente o movimento de compressão observado nos últimos meses.
+Em {mes_nome}, lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
 
-No mercado secundário, a liquidez permaneceu limitada, especialmente em ativos corporativos, resultando em uma formação de preços mais seletiva. No mercado primário, as emissões bancárias seguiram registrando demanda consistente, embora com menor intensidade em comparação aos meses anteriores. Já o pipeline de emissões corporativas permaneceu restrito, mantendo a oferta de ativos em níveis reduzidos.
+Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
 
-Em relação aos fluxos, os fundos com alocação mínima de 15% em crédito e ao menos 1% em debêntures registraram resgates líquidos próximos de R$ 10 bilhões no período, movimento que contribuiu para a reabertura dos spreads e para uma piora da dinâmica técnica da classe.
+Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.
 
-Apesar desse cenário, os fundamentos corporativos permanecem resilientes e os níveis de inadimplência seguem controlados. Sob a ótica da gestão, mantemos uma postura disciplinada e seletiva na alocação dos recursos, buscando capturar oportunidades geradas pela recente abertura dos spreads sem abrir mão da qualidade de crédito das carteiras.
+Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet.
 
-Em relação à parcela de crédito estruturado, ao longo do mês, a carteira manteve-se praticamente inalterada, com apenas ajustes pontuais associados à gestão cotidiana do portfólio. Seguimos investidos em operações com sólidos fundamentos de crédito, preservando uma diversificação adequada entre setores, emissores e diferentes estratégias de investimento.
+Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam, nisi ut aliquid ex ea commodi consequatur. Quis autem vel eum iure reprehenderit qui in ea voluptate velit esse quam nihil molestiae consequatur.
 
-### Tivio ALT 180
+#### Tivio ALT 180
 
 O Tivio ALT 180 registrou rentabilidade de {mes} no mês, equivalente a {pct_mes} do CDI no período. Desde o início da estratégia, o fundo acumula retorno de {inicio}, frente a {bench_inicio} do CDI, o que corresponde a um desempenho anualizado de {pct_inicio} do CDI.
 
-Em {mes_nome}, iniciamos posição em uma cota sênior de FIDC com exposição ao setor de telecomunicações. A tese de investimento está fundamentada na atuação consolidada do originador, que possui mais de 23 anos de experiência no segmento, bem como nas características estruturais do mercado em que atua, marcado por elevada pulverização, baixa bancarização, receitas recorrentes e oferta restrita de crédito. Adicionalmente, a operação apresenta carteira de recebíveis amplamente diversificada entre cedentes e sacados, além de mecanismos de proteção que incluem overcollateral mínimo de 25% sobre os ativos cedidos ao fundo.
+O mercado de FIDCs segue apresentando forte crescimento em 2026. Até setembro, a classe registrou captação líquida de R$ 56 bilhões, consolidando-se como a segunda principal categoria da indústria de fundos em termos de fluxo de recursos, atrás apenas da renda fixa.
 
-A nova alocação reforça nossa estratégia de buscar operações com perfil defensivo, adequada relação entre risco e retorno e estruturas robustas de mitigação de risco. Seguimos priorizando ativos com forte alinhamento de interesses entre as partes envolvidas, qualidade na originação dos créditos e mecanismos de proteção compatíveis com o cenário de mercado. Mantemos uma postura seletiva na alocação de capital, avaliando continuamente oportunidades que possam contribuir para a geração consistente de retornos ajustados ao risco para os cotistas.
+O avanço também é refletido pelo crescimento do patrimônio líquido do setor, que alcançou R$ 819 bilhões no período, representando expansão de 9% no ano. Além disso, o número de fundos em operação aumentou de 3.785 para 4.270 veículos, reforçando o crescente interesse dos investidores pela classe e a importância dos FIDCs como instrumento de financiamento da economia real.
 
-### Tivio ALT 90
+Apesar do ambiente favorável e do aumento da competição por ativos, seguimos mantendo uma postura disciplinada na originação e seleção de investimentos. Nossa prioridade continua sendo a preservação do perfil de risco do fundo, por meio de um acompanhamento próximo das teses investidas, monitoramento contínuo dos créditos e uma gestão prudente da liquidez. Dessa forma, buscamos manter flexibilidade para capturar oportunidades que ofereçam retornos atrativos ajustados ao risco, sem abrir mão dos critérios de qualidade e proteção que norteiam o processo de investimento do fundo.
+
+#### Tivio ALT 90
 
 O Tivio ALT 90 registrou rentabilidade de {mes} no mês, equivalente a {pct_mes} do CDI no período. Desde o início da estratégia, o fundo acumula retorno de {inicio}, frente a {bench_inicio} do CDI, o que corresponde a um desempenho anualizado de {pct_inicio} do CDI.
 
-Em {mes_nome}, iniciamos posição em uma cota sênior de FIDC com exposição ao setor de telecomunicações. A tese de investimento está fundamentada na atuação consolidada do originador, que possui mais de 23 anos de experiência no segmento, bem como nas características estruturais do mercado em que atua, marcado por elevada pulverização, baixa bancarização, receitas recorrentes e oferta restrita de crédito. Adicionalmente, a operação apresenta carteira de recebíveis amplamente diversificada entre cedentes e sacados, além de mecanismos de proteção que incluem overcollateral mínimo de 25% sobre os ativos cedidos ao fundo.
+O mercado de FIDCs segue apresentando forte crescimento em 2026. Até setembro, a classe registrou captação líquida de R$ 56 bilhões, consolidando-se como a segunda principal categoria da indústria de fundos em termos de fluxo de recursos, atrás apenas da renda fixa.
 
-A nova alocação reforça nossa estratégia de buscar operações com perfil defensivo, adequada relação entre risco e retorno e estruturas robustas de mitigação de risco. Seguimos priorizando ativos com forte alinhamento de interesses entre as partes envolvidas, qualidade na originação dos créditos e mecanismos de proteção compatíveis com o cenário de mercado. Mantemos uma postura seletiva na alocação de capital, avaliando continuamente oportunidades que possam contribuir para a geração consistente de retornos ajustados ao risco para os cotistas.
+O avanço também é refletido pelo crescimento do patrimônio líquido do setor, que alcançou R$ 819 bilhões no período, representando expansão de 9% no ano. Além disso, o número de fundos em operação aumentou de 3.785 para 4.270 veículos, reforçando o crescente interesse dos investidores pela classe e a importância dos FIDCs como instrumento de financiamento da economia real.
 
-### Institucional Incentivado CDI
+Apesar do ambiente favorável e do aumento da competição por ativos, seguimos mantendo uma postura disciplinada na originação e seleção de investimentos. Nossa prioridade continua sendo a preservação do perfil de risco do fundo, por meio de um acompanhamento próximo das teses investidas, monitoramento contínuo dos créditos e uma gestão prudente da liquidez. Dessa forma, buscamos manter flexibilidade para capturar oportunidades que ofereçam retornos atrativos ajustados ao risco, sem abrir mão dos critérios de qualidade e proteção que norteiam o processo de investimento do fundo.
 
-Em {mes_nome}, os títulos de crédito indexados ao IPCA precificados pela ANBIMA apresentaram desempenho positivo, refletindo principalmente o movimento de fechamento da curva real de juros observado ao longo do período. Embora os spreads de crédito tenham registrado abertura média de aproximadamente 5 bps em relação a julho, a redução das taxas reais ao longo da estrutura a termo mais do que compensou esse movimento. Como resultado, as taxas médias dos títulos incentivados precificados pela ANBIMA encerraram o mês com fechamento próximo de 16 bps, proporcionando valorização dos ativos no mercado secundário.
+#### Institucional Incentivado CDI
 
-No mercado primário, manteve-se o cenário de oferta restrita de ativos, com parcela relevante das emissões sendo absorvida diretamente pelos balanços dos bancos distribuidores. Já no mercado secundário, observou-se um nível de liquidez inferior à média observada ao longo de 2025, contribuindo para um ambiente de maior equilíbrio entre oferta e demanda dos ativos negociados.
+Em {mes_nome}, lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
 
-Sob a ótica da gestão, mantivemos uma postura cautelosa ao longo do período, priorizando o encurtamento da duration da carteira como forma de mitigar a volatilidade e reduzir a sensibilidade do portfólio a eventuais movimentos adversos nos spreads de crédito. Apesar da melhora observada no desempenho dos ativos incentivados no mês, seguimos avaliando que os níveis atuais de prêmio ainda oferecem pouca margem de segurança frente aos riscos inerentes à classe. Dessa forma, permanecemos atentos à evolução das condições de mercado e à dinâmica de precificação dos ativos, buscando identificar oportunidades mais atrativas para aumentar a exposição ao risco de crédito de forma gradual e criteriosa, quando a relação risco-retorno se mostrar mais favorável.
+Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
 
-Nesse cenário, o Institucional Incentivado CDI apresentou rentabilidade, isenta de imposto de renda, de {mes} no mês ({pct_mes} do CDI), acumulando {ano} ({pct_ano} do CDI) no ano. Na atribuição de performance, destacaram-se positivamente as debêntures de Copel e CPFL, enquanto as de Energisa foram as maiores detratoras.
+Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.
 
-### Tivio HGD30
+Nesse cenário, o Institucional Incentivado CDI apresentou rentabilidade, isenta de imposto de renda, de {mes} no mês ({pct_mes} do CDI), acumulando {ano} ({pct_ano} do CDI) no ano. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
 
-Na atribuição de performance, a carteira de títulos bancários foi a principal responsável pelo resultado do período, contribuindo com aproximadamente 3 bps de alfa, com destaque para a parcela de LFs perpétuas.
+#### Tivio HGD30
 
-Por outro lado, a carteira de debêntures foi a principal detratora de performance, com impacto negativo de cerca de 1,3 bps de alfa. Dentro da classe, os destaques positivos foram os papéis de Tupy e Randon, que conjuntamente adicionaram 2,3 bps de rentabilidade acima do CDI. Em contrapartida, Hapvida e Sendas foram os principais detratores do mês, com contribuição combinada de aproximadamente 2,5 bps abaixo do CDI.
+Em {mes_nome}, o mercado de crédito privado deu continuidade ao movimento de reabertura dos spreads observado no mês anterior, com o ajuste sendo mais intenso ao longo da primeira quinzena. Os spreads médios dos títulos corporativos indexados ao CDI avançaram cerca de 8 bps, passando de CDI + 1,23% para CDI + 1,31% ao ano.
 
-Na parcela de crédito estruturado, avançamos na diversificação da carteira, com a inclusão de novas posições em FIDCs. Destaca-se o investimento em um FIDC de antecipação de recebíveis de cartões de crédito, caracterizado por prazo médio reduzido, elevada pulverização da carteira, com mais de 125 mil contratos, e baixo valor médio por operação.
+No mercado secundário, a liquidez permaneceu reduzida, especialmente nos ativos corporativos, resultando em menor volume de negociações e maior seletividade na formação de preços. A abertura observada ao longo do mês refletiu principalmente a dinâmica de fluxos da indústria e fatores técnicos de mercado, com movimentações pontuais de investidores entre títulos corporativos e ativos incentivados contribuindo para esse comportamento.
 
-Os investimentos contam com elevados níveis de subordinação e ampla diversificação em diferentes teses, setores e emissores, contribuindo para a mitigação da concentração de risco e reduzindo a dependência de nomes específicos. A gestão segue acompanhando de perto a evolução dos fundamentos dos emissores, com atenção especial aos indicadores operacionais, à geração de caixa e à preservação de estruturas de capital adequadas.
+No mercado primário, a atividade seguiu bastante limitada, com um pipeline reduzido tanto para emissões corporativas quanto bancárias. Diante desse cenário, não participamos de novas ofertas nesses segmentos durante o período. Por outro lado, identificamos oportunidades atrativas no mercado estruturado e realizamos investimentos em três operações de FIDC, todas respaldadas por sacados de elevada qualidade de crédito e robustas estruturas de garantia.
 
-O ambiente técnico para o crédito segue favorável, com forte demanda pela classe, mas os spreads permanecem historicamente comprimidos. Mantemos disciplina na alocação dos recursos, priorizando operações com adequada relação entre risco e retorno e preservando flexibilidade para capturar oportunidades em eventuais momentos de maior volatilidade do mercado.
+Em relação aos fluxos da indústria, os fundos com alocação mínima de 15% em crédito e ao menos 1% em debêntures registraram resgates líquidos próximos de R$ 19 bilhões no mês. Em contrapartida, os fundos dedicados a ativos bancários captaram aproximadamente R$ 5 bilhões, movimento que contribuiu para mitigar parcialmente a pressão vendedora observada no mercado de crédito.
 
-### Tivio Prev Top Credit
+Sob a ótica da gestão, seguimos adotando uma postura disciplinada e seletiva na alocação dos recursos. A recente abertura dos spreads ampliou o conjunto de oportunidades de investimento, permitindo a originação de posições em níveis de retorno mais atrativos, sempre preservando o foco na qualidade de crédito e na resiliência das carteiras.
 
-Em {mes_nome}, o mercado de crédito apresentou reabertura dos spreads e liquidez reduzida no mercado secundário. Os spreads médios dos títulos corporativos indexados ao CDI avançaram cerca de 5 bps, passando de CDI + 1,23% para CDI + 1,28% ao ano, interrompendo parcialmente o movimento de compressão observado nos últimos meses.
+Na atribuição de performance, as carteiras de títulos bancários e de FIDCs foram as principais responsáveis pelo resultado do período, contribuindo com aproximadamente 3 bps de alfa.
 
-No mercado secundário, a liquidez permaneceu limitada, especialmente em ativos corporativos, resultando em uma formação de preços mais seletiva. No mercado primário, as emissões bancárias seguiram registrando demanda consistente, embora com menor intensidade em comparação aos meses anteriores. Já o pipeline de emissões corporativas permaneceu restrito, mantendo a oferta de ativos em níveis reduzidos.
+Por outro lado, a carteira de debêntures foi a principal detratora de performance, com impacto negativo de cerca de 12,3 bps de alfa. Dentro da classe, os destaques positivos foram os papéis de Sendas e Aegea, que conjuntamente adicionaram 0,7 bp de rentabilidade acima do CDI. Em contrapartida, Hapvida foi o principal detrator do mês, com contribuição de aproximadamente 10 bps abaixo do CDI.
 
-Em relação aos fluxos, os fundos com alocação mínima de 15% em crédito e ao menos 1% em debêntures registraram resgates líquidos próximos de R$ 10 bilhões no período, movimento que contribuiu para a reabertura dos spreads e para uma piora da dinâmica técnica da classe.
+#### Tivio Prev Top Credit
 
-Apesar desse cenário, os fundamentos corporativos permanecem resilientes e os níveis de inadimplência seguem controlados. Sob a ótica da gestão, mantemos uma postura disciplinada e seletiva na alocação dos recursos, buscando capturar oportunidades geradas pela recente abertura dos spreads sem abrir mão da qualidade de crédito das carteiras.
+Em {mes_nome}, o mercado de crédito privado deu continuidade ao movimento de reabertura dos spreads observado no mês anterior, com o ajuste sendo mais intenso ao longo da primeira quinzena. Os spreads médios dos títulos corporativos indexados ao CDI avançaram cerca de 8 bps, passando de CDI + 1,23% para CDI + 1,31% ao ano.
+
+No mercado secundário, a liquidez permaneceu reduzida, especialmente nos ativos corporativos, resultando em menor volume de negociações e maior seletividade na formação de preços. A abertura observada ao longo do mês refletiu principalmente a dinâmica de fluxos da indústria e fatores técnicos de mercado, com movimentações pontuais de investidores entre títulos corporativos e ativos incentivados contribuindo para esse comportamento.
+
+No mercado primário, a atividade seguiu bastante limitada, com um pipeline reduzido tanto para emissões corporativas quanto bancárias. Diante desse cenário, não participamos de novas ofertas nesses segmentos durante o período. Por outro lado, identificamos oportunidades atrativas no mercado estruturado e realizamos investimentos em três operações de FIDC, todas respaldadas por sacados de elevada qualidade de crédito e robustas estruturas de garantia.
+
+Em relação aos fluxos da indústria, os fundos com alocação mínima de 15% em crédito e ao menos 1% em debêntures registraram resgates líquidos próximos de R$ 19 bilhões no mês. Em contrapartida, os fundos dedicados a ativos bancários captaram aproximadamente R$ 5 bilhões, movimento que contribuiu para mitigar parcialmente a pressão vendedora observada no mercado de crédito.
+
+Sob a ótica da gestão, seguimos adotando uma postura disciplinada e seletiva na alocação dos recursos. A recente abertura dos spreads ampliou o conjunto de oportunidades de investimento, permitindo a originação de posições em níveis de retorno mais atrativos, sempre preservando o foco na qualidade de crédito e na resiliência das carteiras.
 
 Nesse cenário, o Tivio Top Credit Prev apresentou rentabilidade de {mes} no mês ({pct_mes} do CDI), acumulando {12m} ({pct_12m} do CDI) em 12 meses.
 
-Na atribuição de performance, as carteiras de FIDCs e de títulos bancários foram as principais responsáveis pelo resultado do período, contribuindo com aproximadamente 2 bps de alfa cada.
+Na atribuição de performance, as carteiras de FIDCs e de títulos bancários foram as principais responsáveis pelo resultado do período, contribuindo com aproximadamente 3,5 bps de alfa cada.
 
-Por outro lado, a carteira de debêntures foi a principal detratora de performance, com impacto negativo de cerca de 1 bp de alfa. Dentro da classe, os destaques positivos foram os papéis de GPA. Em contrapartida, Aegea e Localiza foram os principais detratores do mês, com contribuição combinada de aproximadamente 2,6 bps abaixo do CDI.
+Por outro lado, a carteira de debêntures foi a principal detratora de performance, com impacto negativo de cerca de 0,7 bp de alfa. Dentro da classe, os destaques positivos foram os papéis de BRK Ambiental e Cemig. Em contrapartida, Energisa e Localiza foram os principais detratores do mês, com contribuição combinada de aproximadamente 0,9 bp abaixo do CDI.
 
-### Tivio Prev Low Vol
+#### Tivio Prev Low Vol
 
-O mês de setembro foi marcado pela continuidade do movimento de alta nas taxas de juros globais. Nos Estados Unidos, o principal evento do período foi a decisão do Federal Reserve de elevar a taxa básica de juros em 25 pontos-base, movimento que refletiu a preocupação da autoridade monetária com a persistência das pressões inflacionárias, impulsionadas, entre outros fatores, pela alta dos preços de energia em meio à manutenção das tensões geopolíticas no Oriente Médio. Receios de um ciclo de aperto monetário mais intenso impulsionaram o dólar, levando a um aumento da aversão a risco nos mercados.
+O mês de outubro foi marcado pela continuidade de um ambiente externo desafiador que prejudicou o desempenho dos ativos de risco, com preços de petróleo ainda pressionados pelas tensões geopolíticas no Oriente Médio, e uma maior cautela dos investidores em relação à sustentabilidade dos investimentos na infraestrutura de IA. Com o aumento da aversão a risco nos mercados, vimos um alívio nas taxas de juros globais, embora em casos específicos como na França e outros países da zona do Euro as taxas continuaram subindo com um ceticismo crescente em relação às respectivas políticas fiscais. Nos Estados Unidos, após a alta de juros promovida em setembro o Federal Reserve manteve uma postura cautelosa apesar dos riscos inflacionários, optando por manter a taxa básica inalterada e preferindo observar mais dados antes de definir os próximos passos.
 
-No Brasil, os investidores acompanharam os desdobramentos do cenário eleitoral, que passou a exercer influência crescente sobre os preços dos ativos à medida que se aproxima o primeiro turno das eleições presidenciais. No campo econômico, o Copom deu continuidade ao ciclo de flexibilização monetária, reduzindo a taxa Selic e reforçando a percepção de desaceleração gradual da atividade doméstica. Entretanto, a divulgação de indicadores de inflação acima das expectativas e a persistência de desafios fiscais mantiveram maior cautela em relação ao espaço para cortes adicionais. Apesar da volatilidade observada ao longo do mês, o desempenho dos ativos brasileiros foi favorecido pela melhora do apetite global por risco na reta final do período, pela perspectiva de continuidade da queda dos juros domésticos e pelo alívio trazido pelos dados mais benignos de inflação nos Estados Unidos, permitindo recuperação expressiva da bolsa brasileira e valorização dos ativos de risco locais.
+No Brasil, as eleições presidenciais dominaram o comportamento dos mercados, provocando movimentos expressivos nos preços dos ativos ao longo do mês. Após uma reação inicialmente bastante positiva ao resultado do primeiro turno, com forte valorização da bolsa e fechamento das curvas de juros, esse movimento foi revertido na sequência e se intensificou após a definição do segundo turno. O resultado do segundo turno elevou as incertezas em relação à condução da política econômica, especialmente no que diz respeito à trajetória fiscal e à composição da futura equipe econômica, provocando forte abertura das curvas de juros, desvalorização do real acima de 5% e correção significativa da bolsa com queda próxima de 10%. Nesse contexto, apesar dos sinais de desaceleração da atividade e do processo de flexibilização monetária iniciado pelo Copom, a combinação de maior prêmio de risco fiscal, desvalorização cambial e piora das expectativas de inflação aumentou significativamente a cautela quanto ao espaço de cortes adicionais da Selic.
 
-O fundo teve performance acima do benchmark no mês passado, com contribuições positivas dos books de renda fixa, moedas, renda variável e crédito, e contribuição negativa do *book offshore*.
+O fundo teve performance similar ao benchmark no mês passado, com contribuições positivas dos books de renda fixa, moedas, _offshore_ e crédito, e contribuição negativa do book de renda variável.
 
-No book de renda fixa, aproveitamos o fechamento das taxas durante o mês para reduzir, na margem, nossa exposição e migrar de volta parte da exposição em juros nominais para reais. Entendemos que, embora o processo de desaceleração da economia tenda a se intensificar, mesmo considerando os inúmeros estímulos fiscais implementados pelo governo visando às eleições, as leituras de inflação devem voltar a acelerar por conta da reversão do bônus de Itaipu, do potencial impacto do El Niño e da sazonalidade, além de eventuais repasses nos preços da alta recente do petróleo. Nas estratégias de valor relativo, continuamos com as estratégias de venda de inflação implícita, de venda de inclinação na curva de juros nominais e aplicada em taxas *forwards* (FRAs). Compramos também opções de Copom que se beneficiam de uma eventual aceleração no ritmo de cortes após as eleições.
+No book de renda fixa, aproveitamos o forte fechamento das taxas após o primeiro turno para reduzir significativamente nossa posição aplicada, principalmente nos juros nominais com o maior risco atualmente nos juros reais. Embora nossa visão de que a vitória da oposição era o cenário mais provável não tivesse se alterado, avaliamos que (1) houve uma piora significativa na assimetria entre os resultados possíveis, e (2) a probabilidade do cenário alternativo estaria acima do precificado pelo mercado e pelos sites de previsão. Nas estratégias de valor relativo, zeramos a venda de inclinação na curva de juros nominais, e mantivemos a venda de inflação implícita e a posição aplicada em taxas _forwards_.
 
-No book de moedas, continuamos com posições compradas no real e no iene, e vendidas no euro e no peso mexicano.
+No book de moedas, zeramos as posições compradas no real, e as posições vendidas no euro e peso mexicano, mantendo apenas a posição comprada no iene contra o dólar.
 
-No book de renda variável, continuamos com uma posição comprada no Ibovespa via estrutura de opções.
+No book de renda variável, compramos proteção via opções de venda (_puts_) de Ibovespa ao longo do mês; já a posição comprada no Ibovespa via estrutura de opções deverá vencer fora do dinheiro.
 
-No *book offshore*, iniciamos uma posição tática aplicada nos *Treasuries* americanos.
+No _book offshore_, mantivemos a posição tática aplicada nos _Treasuries_ americanos.
 
-No book de crédito, continuamos com uma alocação estrutural menor, focada em bancários de melhor qualidade e mais reduzida em corporativos.
+No book de crédito, continuamos com uma alocação estrutural focada em bancários de melhor qualidade com exposição em corporativos mais reduzida.

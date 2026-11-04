@@ -73,11 +73,14 @@ class Comentarios:
 
 
 def _do_markdown(texto):
-    """Divide por `# Título` e devolve {chave_normalizada: [parágrafos]}."""
+    """Divide por `# Título` e devolve {chave_normalizada: [parágrafos]}.
+
+    Aceita de `#` a `######`: o título do fundo pode vir com qualquer nível
+    (em nov/2026 o arquivo chegou com `####` e nenhum fundo foi achado)."""
     out, atual = {}, None
     buf = []
     for linha in texto.splitlines():
-        m = re.match(r'^#{1,3}\s+(.+?)\s*$', linha)
+        m = re.match(r'^#{1,6}\s+(.+?)\s*$', linha)
         if m:
             if atual:
                 out[atual] = [p for p in buf if p]

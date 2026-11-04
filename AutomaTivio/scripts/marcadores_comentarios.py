@@ -94,7 +94,7 @@ def marcar(texto):
 
 def _secoes(texto):
     """[(título da seção, início, fim)] pelos cabeçalhos ## e ###."""
-    marcas = [(m.group(2).strip(), m.start()) for m in re.finditer(r'(?m)^(#{2,3})\s+(.+)$', texto)]
+    marcas = [(m.group(2).strip(), m.start()) for m in re.finditer(r'(?m)^(#{1,6})\s+(.+)$', texto)]
     return [(t, ini, marcas[i + 1][1] if i + 1 < len(marcas) else len(texto)) for i, (t, ini) in enumerate(marcas)]
 
 

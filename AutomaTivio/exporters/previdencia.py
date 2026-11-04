@@ -248,13 +248,77 @@ def _duration(shape, d):
     _troca_runs(p, [d['duration_num'], ' ', 'anos' if (d['duration'] or 0) >= 1 else 'ano'])
 
 
+CLASSES = ('Crédito High Grade', 'Crédito High Yield', 'Caixa')
+
+
+def _containers(shapes):
+    """O slide e cada grupo dentro dele: as linhas da alocação vivem num grupo."""
+    yield shapes
+    for sh in shapes:
+        if sh.shape_type == 6:
+            yield from _containers(sh.shapes)
+
+
+def _linhas_alocacao(slide):
+    """{classe: [shapes da linha]}: a barra com o nome e tudo que está na mesma
+    faixa de altura (quadrado da cor, percentual, retorno estimado)."""
+    for cont in _containers(slide.shapes):
+        lista = list(cont)
+        # HGD30: cada linha é um grupo próprio (quadrado, barra e percentual)
+        grupos = {}
+        for g in lista:
+            if g.shape_type == 6:
+                nomes = [x.text_frame.text.strip() for x in _shapes(g.shapes)
+                         if getattr(x, 'has_text_frame', False) and x.has_text_frame and x.text_frame.text.strip() in CLASSES]
+                if len(nomes) == 1:
+                    grupos[nomes[0]] = [g]
+        if len(grupos) >= 2:
+            return grupos
+        barras = {sh.text_frame.text.strip(): sh for sh in lista
+                  if getattr(sh, 'has_text_frame', False) and sh.has_text_frame
+                  and sh.text_frame.text.strip() in CLASSES}
+        if len(barras) < 2:
+            continue
+        linhas = {}
+        for nome, b in barras.items():
+            ini, fim = b.top - b.height * 0.3, b.top + b.height * 1.3
+            linhas[nome] = [sh for sh in lista if sh.height < b.height * 2
+                            and ini <= sh.top + sh.height / 2 <= fim]
+        return linhas
+    return {}
+
+
 def _alocacao(slide, nomes, d):
-    # classe sem posição no mês sai como 0,0%, não como "%" sozinho
-    alvo = [d['aloc_mapa'].get(n) or fmt.pct(0, 1) for n in ('Crédito High Grade', 'Crédito High Yield', 'Caixa')]
+    """Põe o percentual de cada classe. Classe sem posição no mês sai do slide:
+    a linha inteira é apagada e as que sobram se juntam no centro do bloco."""
+    alvo = [d['aloc_mapa'].get(n) for n in CLASSES]
     for nome, valor in zip(nomes, alvo):
+        if not valor:
+            continue
         for sh in _acha(slide, nome, lambda s: s.has_text_frame and '%' in s.text_frame.text
                         and 'CDI' not in s.text_frame.text):
             _troca_runs(sh.text_frame.paragraphs[0], [valor[:-1], '%'])
+    faltam = [n for n, v in zip(CLASSES, alvo) if not v]
+    if not faltam:
+        return
+    linhas = _linhas_alocacao(slide)
+    if not linhas:
+        return
+    ordem = sorted(linhas, key=lambda n: min(sh.top for sh in linhas[n]))
+    topos = [min(sh.top for sh in linhas[n]) for n in ordem]
+    passo = (topos[-1] - topos[0]) / (len(topos) - 1) if len(topos) > 1 else 0
+    for n in faltam:
+        for sh in linhas.pop(n, []):
+            sh._element.getparent().remove(sh._element)
+    fica = [n for n in ordem if n in linhas]
+    if not fica:
+        return
+    # centraliza as linhas que sobraram na altura que as três ocupavam
+    inicio = topos[0] + passo * (len(ordem) - len(fica)) / 2
+    for j, n in enumerate(fica):
+        delta = int(inicio + passo * j - min(sh.top for sh in linhas[n]))
+        for sh in linhas[n]:
+            sh.top = sh.top + delta
 
 
 def _grafico(shape, categorias, valores):
@@ -281,19 +345,28 @@ def _grafico(shape, categorias, valores):
 
 
 def _rotulos_cabem(shape, n):
-    """Com muitas barras (rating com 13 notas), o rótulo de 9 pt passa da largura
-    da barra e encosta no vizinho ("3,38%3,64%"). Diminui o corpo até caber, até 6 pt."""
+    """Com muitas barras (rating com 12 ou 13 notas), o rótulo "3,38%" passa da
+    largura da barra e encosta no vizinho. Primeiro diminui o corpo; se ainda não
+    couber, mostra uma casa decimal ("3,4%"). Nunca abaixo de 6,5 pt."""
     if not n:
         return
     vao = shape.width / 12700 * 0.85 / n            # pt por barra
-    sz = max(600, min(900, int(vao / 2.9 * 100)))
-    if sz >= 900:
+    if vao >= 30:
         return
+    C = '{http://schemas.openxmlformats.org/drawingml/2006/chart}'
     cs = shape.chart._chartSpace
-    for d in cs.iter('{http://schemas.openxmlformats.org/drawingml/2006/chart}dLbls'):
+    curto = vao < 24
+    sz = max(650, min(900, int(vao / (2.8 if curto else 2.9) * 100)))
+    for d in cs.iter(C + 'dLbls'):
         for r in d.iter('{http://schemas.openxmlformats.org/drawingml/2006/main}defRPr'):
             r.set('sz', str(sz))
-
+        if curto:
+            nf = d.find(C + 'numFmt')
+            if nf is None:
+                from lxml import etree
+                nf = etree.SubElement(d, C + 'numFmt')
+                d.remove(nf); d.insert(0, nf)
+            nf.set('formatCode', '0.0%'); nf.set('sourceLinked', '0')
 
 def _troca_imagem(shape, png):
     rid = shape._element.blipFill.find(A + 'blip').get(
