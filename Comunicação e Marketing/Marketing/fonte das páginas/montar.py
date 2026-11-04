@@ -191,10 +191,25 @@ corpo_dl = (ler("dl_corpo.html").replace("{{HEADER}}", cab_dl).replace("{{HERO}}
 (SAIDA / "automativio.html").write_text(pagina("AutomaTivio", corpo_dl, ler("dl.css")), encoding="utf-8")
 
 # páginas de cada time: públicos diferentes, cada uma só com o que aquele time usa
+# comentários do mês, por fundo, lidos do AutomaTivio para a página da Gestão abrir preenchida
+def _comentarios_md():
+    import json
+    p = RAIZ / "AutomaTivio/entrada/comentarios.md"
+    if not p.exists():
+        return "{}"
+    t = re.sub(r"<!--.*?-->", "", p.read_text(encoding="utf-8"), flags=re.S)
+    cab = list(re.finditer(r"(?m)^#{2,3}[ 	]+(.+?)[ 	]*$", t))
+    out = {}
+    for i, m in enumerate(cab):
+        nome = m.group(1).strip()
+        corpo = t[m.end():cab[i + 1].start() if i + 1 < len(cab) else len(t)].strip()
+        if corpo and not re.match(r"(?i)(relat[óo]rio|e-?mail)$", nome):
+            out[nome] = corpo
+    return json.dumps(out, ensure_ascii=False).replace("</", "<\/")
 def pagina_time(arq, titulo, h1, texto, parte):
     corpo = (cabecalho(titulo, [], False) + '<div class="wrap"><section class="hero hero-time"><div>'
              f'<h1>{h1}</h1><p class="lead">{texto}</p></div></section>' + ler(parte)
-             + '</div><script>\n' + ler("app.js") + '</script>')
+             + '</div><script>\n' + ler("app.js").replace("/*COMENTARIOS*/{}", _comentarios_md()) + '</script>')
     (SAIDA / arq).write_text(pagina(titulo, corpo, ler("dl.css")), encoding="utf-8")
 pagina_time("automativio-gestao.html", "Gestão", "Comentários da <strong>Gestão</strong>",
             "Os comentários que vão nos relatórios do mês, por segmento.", "p_gestao.html")
