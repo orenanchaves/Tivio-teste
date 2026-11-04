@@ -1046,6 +1046,39 @@ def _remove_selo_xp(slide):
     return n
 
 
+_SELO_DIST = []
+
+
+def _remove_selo_distribuicao(slide):
+    """Tira o selo ANBIMA de Distribuição de Produtos de Investimento.
+
+    Compara a imagem com assets/selos/anbima1.png, não pelo nome do shape: no
+    PPTX o shape `anbima-gestao-de-recursos` é o que contém o selo de Distribuição.
+    """
+    import io
+    from PIL import Image
+    if not _SELO_DIST:
+        ref = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), 'assets', 'selos', 'anbima1.png')
+        _SELO_DIST.append(list(Image.open(ref).convert('RGB').resize((40, 30)).getdata()))
+    ref = _SELO_DIST[0]
+    st = slide.shapes._spTree
+    n = 0
+    for sh, _ in list(_shapes(slide.shapes)):
+        if sh.shape_type != 13:
+            continue
+        try:
+            im = Image.open(io.BytesIO(sh.image.blob)).convert('RGB').resize((40, 30))
+        except Exception:
+            continue
+        dif = sum(abs(a - b) for p, q in zip(im.getdata(), ref) for a, b in zip(p, q)) / (40 * 30 * 3)
+        if dif < 12:
+            el = sh._element
+            if el.getparent() is not None:
+                el.getparent().remove(el)
+                n += 1
+    return n
+
+
 def _remove_roa(slide):
     st = slide.shapes._spTree
     for sh, _ in list(_shapes(slide.shapes)):
@@ -2013,6 +2046,7 @@ def _um_deck(d, modelo, contextos, cadastro, edicao, destino, log, pdf, indicado
             _remove_selo_xp(slide)
         if 'roa' in remover:
             _remove_roa(slide)
+        _remove_selo_distribuicao(slide)
         for sh, _ in list(_shapes(slide.shapes)):
             if getattr(sh, 'has_text_frame', False) and sh.has_text_frame:
                 for p in sh.text_frame.paragraphs:

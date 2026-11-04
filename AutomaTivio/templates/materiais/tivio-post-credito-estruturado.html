@@ -738,7 +738,6 @@ FUNDS.forEach(f=>{const usadas=new Set();f.alloc.forEach(a=>{let c=colorOf(a.n);
   if(usadas.has(c))c=CORES_RESERVA.find(x=>!usadas.has(x))||c;usadas.add(c);a.c=c})});
 
 const SEALS={
-  anbima1:'https://www.tivio.com/wp-content/uploads/sites/1532/2026/07/selo-distribuicao.png',
   anbima2:'https://www.tivio.com/wp-content/uploads/sites/1532/2026/07/selo-02-scaled.png',
   qr:'https://www.tivio.com/wp-content/uploads/sites/1532/2026/10/QR-Code-Redes-Tivio-Capital.png',
   pri:'https://www.tivio.com/wp-content/uploads/sites/1532/2026/08/PRI.png'
@@ -855,7 +854,7 @@ const DISCLAIMER_HTML=
        '<div><div class="t" contenteditable="true">Visite o nosso site</div><div class="s" contenteditable="true"><b>tivio.com</b></div></div></div>'+
    '</div>'+
    '<div class="seals">'+
-     '<div class="anb"><img data-seal="anbima1" alt="Selo ANBIMA"><img data-seal="anbima2" alt="Selo ANBIMA"></div>'+
+     '<div class="anb"><img data-seal="anbima2" alt="Selo ANBIMA"></div>'+
      '<div class="rt"><div class="k" contenteditable="true">Rating S&amp;P</div><div class="v" contenteditable="true">brAMP1</div></div>'+
      '<div class="pri"><img data-seal="pri" alt="Signatory of PRI"></div>'+
    '</div>'+
