@@ -8,11 +8,20 @@ window.tvDeck = function (nome, monta) {
   var PAL = A.querySelector(".ap-palco"), LG = A.querySelector(".ap-leg"), SM = A.querySelector(".ap-sum"), MB = A.querySelector(".ap-menu"), N = A.querySelector(".ap-n"), l = [], i = 0;
   var marca = document.querySelector(".marca"); if (marca) A.querySelector(".ap-logo").innerHTML = marca.innerHTML;
   // celular em pé: o slide inteiro no alto, pequeno, e uma legenda legível embaixo com o mesmo conteúdo
-  function escala() { var re = innerHeight > innerWidth; A.classList.toggle("retrato", re); PAL.classList.remove("vert"); var k = re ? innerWidth / 1920 : Math.min(innerWidth / 1920, innerHeight / 1080); PAL.style.setProperty("--k", k); if (re) LG.style.top = Math.round(52 + 1080 * k + 8) + "px" }
+  // celular em pé: tela cheia legível, com a mesma moldura; deitado: o quadro 16:9
+  function escala() { var re = innerHeight > innerWidth; A.classList.toggle("retrato", re); PAL.classList.remove("vert"); PAL.style.setProperty("--k", Math.min(innerWidth / 1920, innerHeight / 1080)); if (re && l[i]) legenda(l[i]) }
   function legenda(s) {
-    var c = s.cloneNode(true); [].forEach.call(c.querySelectorAll("img,svg,figure,.cu-bar,.sl-pe,.gb i,.met i,.gc i,.sl-sec"), function (x) { x.remove() });
+    if (!A.classList.contains("retrato")) return;
+    var c = s.cloneNode(true), capa = s.classList.contains("capa");
+    [].forEach.call(c.querySelectorAll("svg,.cu-bar,.cu-wrap,.sl-pe,.gb i,.met i,.gc i,.sl-sec"), function (x) { x.remove() });
     var h = c.querySelector("h2"), corpo = c.querySelector(".sl-corpo"); if (h && corpo && corpo.contains(h)) h.remove();
-    LG.innerHTML = '<p class="lg-sec">' + esc(s.querySelector(".sl-sec") ? s.querySelector(".sl-sec").textContent : nome) + "</p>" + (h ? "<h3>" + h.innerHTML + "</h3>" : "") + (corpo ? '<div class="lg-c">' + corpo.innerHTML + "</div>" : ""); LG.scrollTop = 0;
+    var n = String(l.indexOf(s) + 1).padStart(2, "0"), sec = s.querySelector(".sl-sec") ? s.querySelector(".sl-sec").textContent : "";
+    var logo = A.querySelector(".ap-logo") ? A.querySelector(".ap-logo").innerHTML : "";
+    LG.className = "ap-leg" + (capa ? " lg-capa" : "");
+    LG.innerHTML = '<header class="lg-top"><div>' + (sec ? '<p class="lg-sec">' + esc(sec) + "</p>" : "") + (h && !capa ? "<h3>" + h.innerHTML + "</h3>" : "") + '</div><div class="lg-logo">' + logo + "</div></header>"
+      + '<div class="lg-c">' + (capa && h ? "<h2>" + h.innerHTML + "</h2>" : "") + (corpo ? corpo.innerHTML : "") + "</div>"
+      + '<footer class="lg-pe"><span>Tivio Capital · Comunicação &amp; Marketing · ' + esc(nome) + "</span><b>" + n + "</b></footer>";
+    LG.scrollTop = 0; LG.classList.remove("entra"); void LG.offsetWidth; LG.classList.add("entra");
   }
   function monte() {
     var S = monta(), tot = S.length, grupos = [], idx = {};
@@ -33,6 +42,13 @@ window.tvDeck = function (nome, monta) {
     i = Math.max(0, Math.min(l.length - 1, k));
     l.forEach(function (s, j) { s.classList.toggle("ativa", j === i); s.classList.toggle("antes", j < i) });
     if (l[i]) legenda(l[i]);
+    // números que contam do zero quando o slide entra
+    if (l[i] && !matchMedia("(prefers-reduced-motion: reduce)").matches) [].forEach.call(l[i].querySelectorAll("[data-conta]"), function (e) {
+      var fim = +e.dataset.conta, suf = e.dataset.suf || "", t0 = null, atraso = e.closest(".cu-l") ? 1200 : 300;
+      var fmt = function (n) { return "R$ " + Math.round(n).toLocaleString("pt-BR") + suf };
+      e.textContent = fmt(0);
+      setTimeout(function () { requestAnimationFrame(function passo(ts) { if (t0 === null) t0 = ts; var q = Math.min(1, (ts - t0) / 1100); e.textContent = fmt(fim * (1 - Math.pow(1 - q, 3))); if (q < 1) requestAnimationFrame(passo) }) }, atraso);
+    });
     N.textContent = String(i + 1).padStart(2, "0") + " / " + String(l.length).padStart(2, "0");
     [].forEach.call(SM.querySelectorAll("button"), function (b) { if (+b.dataset.ir === i) b.setAttribute("aria-current", "true"); else b.removeAttribute("aria-current") });
   }

@@ -13,14 +13,28 @@
     S.push({ capa: true, h: "Plano <strong>2027</strong>", html: '<p class="sl-l">O que vamos fazer até o fim do ano e ao longo de 2027</p>' });
     S.push({ sec: "Sumário", h: "O que vamos <strong>ver</strong>", sum: true });
     var pes = function (raiz) { return raiz ? [].filter.call(raiz.querySelectorAll(".org-n"), vis).map(function (x) { return "<p><b>" + esc(t(x.querySelector("b"))) + "</b><span>" + esc(t(x.querySelector("em")) || t(x.querySelector("span"))) + "</span></p>" }).join("") : "" };
-    S.push({ sec: "Estrutura", h: "Quem <strong>faz</strong>", html: '<div class="sl-dupla"><div><b>Até o fim do ano</b>' + pes(F && F.querySelector(".org")) + '</div><div><b>Em 2027</b>' + pes(N && N.querySelector(".org")) + "</div></div>" });
+    var nos = function (raiz) { return raiz ? [].filter.call(raiz.querySelectorAll(".org-n"), vis).map(function (x) { return { b: t(x.querySelector("b")), s: t(x.querySelector("em")) || t(x.querySelector("span")) } }) : [] };
+    var hoje = nos(F && F.querySelector(".org")), novo = nos(N && N.querySelector(".org"));
+    if (hoje.length && novo.length) {
+      var topo = novo.slice(0, 2), nomesH = hoje.map(function (x) { return x.b }), nomesN = novo.map(function (x) { return x.b });
+      var linha = hoje.slice(2).map(function (x) { return [x, nomesN.indexOf(x.b) >= 0 ? "fica" : "sai"] }).concat(novo.slice(2).filter(function (x) { return nomesH.indexOf(x.b) < 0 }).map(function (x) { return [x, "entra"] }));
+      var ne = 0, no = function (x, c) { return '<div class="og-n og-' + c + '"' + (c === "entra" ? ' style="--d:' + (0.22 * ne++) + 's"' : "") + "><span>" + esc(x.s) + "</span><b>" + esc(x.b) + "</b></div>" };
+      S.push({ sec: "Estrutura", h: "Como a área <strong>muda</strong>", html: '<div class="og"><p class="og-fase"><span class="og-f1">Até o fim do ano</span><span class="og-f2">Em 2027</span></p>' + no(topo[0], "topo") + '<i class="og-v"></i>' + no(topo[1], "topo") + '<i class="og-v"></i><div class="og-row">' + linha.map(function (x) { return no(x[0], x[1]) }).join("") + "</div></div>" });
+    }
     var cu = N && N.querySelector(".cu");
-    if (cu) { var ks = [].slice.call(N.querySelectorAll("#custo ~ .kpis .kpi")).slice(0, 4);
-      S.push({ sec: "Estrutura", h: "O custo da agência, <strong>diluído</strong>", html: '<div class="sl-cu"><div class="sl-g c4 cmp num">' + ks.map(function (k) { return "<div><b>" + esc(t(k.querySelector("b"))) + "</b><span>" + esc(t(k.querySelector("span"))) + "</span></div>" }).join("") + '</div><div class="cu-bar">' + [].map.call(cu.querySelectorAll(".cu-bar i"), function (i) { return '<i class="' + i.className + '" style="' + i.getAttribute("style") + '"></i>' }).join("") + '</div><div class="cu-l">' + [].map.call(cu.querySelectorAll(".cu-i"), function (x) { return '<div class="cu-i"><i class="' + x.querySelector("i").className + '"></i><span>' + esc(t(x.querySelector("span"))) + "</span><b>" + esc(t(x.querySelector("b"))) + "</b></div>" }).join("") + "</div></div>" }); }
+    if (cu) {
+      var ks = [].slice.call(N.querySelectorAll("#custo ~ .kpis .kpi")).slice(0, 4);
+      var conta = function (txt) { var m = txt.match(/^R\$ ([\d.]+)( mil)?$/); return m ? ' data-conta="' + m[1].replace(/\./g, "") + '" data-suf="' + (m[2] || "") + '"' : "" };
+      S.push({ sec: "Estrutura", h: "O custo da agência, <strong>diluído</strong>", html: '<div class="sl-cu"><div class="sl-g c4 cmp num">' + ks.map(function (k) { var b = t(k.querySelector("b")); return "<div><b" + conta(b) + ">" + esc(b) + "</b><span>" + esc(t(k.querySelector("span"))) + "</span></div>" }).join("")
+        + '</div><div class="cu-wrap"><div class="cu-bar">' + [].map.call(cu.querySelectorAll(".cu-bar i"), function (x) { return '<i class="' + x.className + '" style="' + x.getAttribute("style") + '"></i>' }).join("") + '</div><div class="cu-ag"><b>Agência hoje</b><span>R$ 32 mil por mês</span></div></div>'
+        + '<div class="cu-l">' + [].map.call(cu.querySelectorAll(".cu-i"), function (x) { var b = t(x.querySelector("b")); return '<div class="cu-i"><i class="' + x.querySelector("i").className + '"></i><span>' + esc(t(x.querySelector("span"))) + "</span><b" + conta(b) + ">" + esc(b) + "</b></div>" }).join("") + "</div></div>" });
+    }
     var te = N ? blocos(N.querySelector(".teses")) : [];
     if (te.length) S.push({ sec: "Por que", h: "Por que <strong>assim</strong>", html: '<div class="sl-g c3 cmp tes">' + te.map(function (f) { return "<div><b>" + esc(t(f.querySelector("h3"))) + "</b><span>" + esc(t(f.querySelector(".dono"))) + "</span><ul>" + itens(f.querySelector("ul"), 3) + "</ul></div>" }).join("") + "</div>" });
     var fe = blocos(F && F.querySelector(".frentes"));
     if (fe.length) S.push({ sec: "Até o fim do ano", h: "O que <strong>fechar</strong>", html: '<div class="sl-g c3 cmp">' + fe.map(function (f) { return card(f, 5) }).join("") + "</div>" });
+    var nd = blocos(F && F.querySelector(".fr-nd"));
+    if (nd.length) S.push({ sec: "Até o fim do ano", h: "O que já começa <strong>nas frentes</strong>", html: '<div class="sl-g c4 cmp">' + nd.map(function (f) { return card(f, 5) }).join("") + "</div>" });
     var fr = N ? blocos(N.querySelector(".fr-vis")) : [];
     if (fr.length) S.push({ sec: "2027", h: "O ano em <strong>quatro frentes</strong>", html: '<div class="sl-g c4 cmp">' + fr.map(function (f) { var im = f.querySelector(".fr-img"); return "<div>" + (im ? '<img class="th" src="' + im.getAttribute("src") + '" alt="">' : "") + "<b>" + esc(t(f.querySelector("h3")).replace(" com estratégia", "")) + "</b><span>" + esc(t(f.querySelector(".fr-m"))) + "</span><span><em>" + esc(t(f.querySelector(".dono"))) + "</em></span></div>" }).join("") + "</div>" });
     // gráfico: posts por mês de cada segmento
