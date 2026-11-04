@@ -64,7 +64,8 @@ def exportar_destaques(pasta_central, destino, log, pasta_pdf=None, sufixo=''):
     from playwright.sync_api import sync_playwright
     total = 0
     with sync_playwright() as p:
-        op = {'args': ['--no-sandbox', '--font-render-hinting=none']}
+        op = {'args': ['--no-sandbox', '--font-render-hinting=none',
+                      '--disable-gpu', '--disable-software-rasterizer']}
         exe = achar_chromium()
         if exe:
             op['executable_path'] = exe

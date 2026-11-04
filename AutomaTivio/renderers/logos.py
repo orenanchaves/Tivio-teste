@@ -114,7 +114,7 @@ def _recortar(logos):
                    for i, (_, v) in enumerate(itens))
     try:
         with sync_playwright() as p:
-            op = {'args': ['--no-sandbox']}
+            op = {'args': ['--no-sandbox', '--disable-gpu', '--disable-software-rasterizer']}
             exe = achar_chromium()
             if exe:
                 op['executable_path'] = exe

@@ -7,3 +7,7 @@ python-pptx>=0.6.23
 playwright>=1.40
 pypdf>=4.0
 requests>=2.31
+azure-identity>=1.15        # token da API TLDR (fonte: api); sem ele usa o az login
+lxml>=5.0                   # edição dos XMLs dos PPTX (decks, previdência)
+Pillow>=10.0                # scripts/comprimir_pptx.py
+# opcional: PyMuPDF>=1.23   # miniaturas dos PDFs dos destaques (sem ele, só avisa)

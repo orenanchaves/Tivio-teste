@@ -1,0 +1,190 @@
+# ============================================================================
+# De-para API TLDR -> planilha (Base Carteira)
+# ----------------------------------------------------------------------------
+# A API classifica as posições com nomes próprios (Banco de Varejo, Banco de
+# Atacado…); a planilha usa os do relatório publicado (Financeiro…). Este
+# arquivo traduz. Foi gerado cruzando as posições da API com a Base Carteira de
+# 30/09/2026 (todos os fundos), pegando o valor mais frequente de cada nome.
+#
+# Nome da API que não estiver aqui passa sem tradução e vira AVISO no log:
+# acrescente a linha. Onde a planilha tinha mais de um destino, os comentários
+# mostram as contagens — o mapa escolhe o mais frequente e erra o resto.
+# `hghy` não existe na API: vale `hghy_padrao` (afeta só HGD30/HYD60).
+# ============================================================================
+#
+# COMO LER — cada bloco é "nome na API: nome na planilha":
+#   setor_hg   coluna Setor        (campo `sector` da API)            fundos HG
+#   setor_aj   coluna Setor Aj.    (campo `sector` da API)            fundos HY e IS
+#   tipo_hg    coluna Tipo         (campo `instrument_class` da API)  fundos HG
+#   tipo_aj    coluna Tipo aj.     (campo `instrument_class` da API)  todos os fundos
+# hg = relatório de alto grau; aj = coluna "ajustada" usada nos demais.
+# ============================================================================
+hghy_padrao: HG
+
+
+# Setor (mesa HG) — API sector -> Setor
+# Ambíguos na planilha (a analista escolhe ativo a ativo); vale o mais frequente:
+#   Bens de Capital: {'Indústria e Comércio': 29, 'Metalurgia e Siderurgia': 9}
+#   Educação: {'Educação': 13, 'Empreendimentos e participações': 6, 'Crédito PF': 1}
+#   Energia Elétrica - Distribuição: {'Energia Elétrica': 120, 'Distribuição': 5}
+#   Energia Elétrica - Integrado: {'Energia Elétrica': 33, 'Energia': 8}
+#   Energia Elétrica - Transmissão: {'Energia Elétrica': 31, 'Transmissão': 1}
+#   Indústria e Comércio: {'Indústria e Comércio': 31, 'Financeiro': 2}
+#   Locação de veículos: {'Locação de veículos': 74, 'Transporte e Logística': 24}
+#   N/A: {'Outros': 18, 'DAP': 11}
+#   Outras Concessões: {'Outros': 3, 'Outras Concessões': 3}
+#   Outros financeiros: {'Financeiro Corp': 7, 'Energia Elétrica': 3}
+#   Varejo Vestuário: {'Comércio atacadista e varejista': 34, 'Têxtil e Calçados': 3}
+#   Água e Esgoto: {'Saneamento': 110, 'Empreendimentos e participações': 3}
+setor_hg:
+  Caixa: Caixa
+  Academias: Outros
+  Agrícola: Agrícola
+  Assistência médica: Assistência médica
+  Açúcar, Álcool e Cana: Açúcar, Álcool e Cana
+  Banco Completo: Financeiro
+  Banco Público: Financeiro
+  Banco de Atacado: Financeiro
+  Banco de Controle Estrangeiro: Financeiro
+  Banco de Cooperativa: Financeiro
+  Banco de Montadora: Financeiro
+  Banco de Varejo: Financeiro
+  Bens de Capital: Indústria e Comércio
+  Big Telco: TI e Telecomunicações
+  Consignados: Consignados
+  Crédito PF: Crédito PF
+  Diagnósticos: Assistência médica
+  Distribuição de Gás: Petróleo e Gás
+  E&P: Petróleo e Gás
+  Educação: Educação
+  Energia Elétrica - Distribuição: Energia Elétrica
+  Energia Elétrica - Geração: Energia Elétrica
+  Energia Elétrica - Integrado: Energia Elétrica
+  Energia Elétrica - Transmissão: Energia Elétrica
+  Farmacêutica: Indústria e Comércio
+  Ferrovias: Transporte e Logística
+  Financeiro: Crédito PF
+  Frigorífico: Alimentos e bebidas
+  Fundo Interno: Fundo Interno
+  Gestão de Resíduos: Saneamento
+  Governo: Caixa
+  Holding: Financeiro
+  ISP: TI e Telecomunicações
+  Indústria e Comércio: Indústria e Comércio
+  Insumos: Açúcar, Álcool e Cana
+  Locação de veículos: Locação de veículos
+  N/A: Outros
+  Outras Concessões: Outros
+  Outros Serviços: Indústria e Comércio
+  Outros financeiros: Financeiro Corp
+  Rodovias: Transporte e Logística
+  Shopping: Serviços Imobiliários
+  TI e Tech: TI e Tech
+  Telecom: Outros
+  Varejo Alimentar: Comércio atacadista e varejista
+  Varejo Eletrodoméstico: Varejo Eletrodoméstico
+  Varejo Outros: Crédito PF
+  Varejo Vestuário: Comércio atacadista e varejista
+  Água e Esgoto: Saneamento
+
+# Setor Aj. (mesas HY e IS) — API sector -> Setor Aj.
+# Ambíguos na planilha (a analista escolhe ativo a ativo); vale o mais frequente:
+#   Agrícola: {'Agropecuária': 5, 'Agrícola': 4}
+#   Fundo Interno: {'Outros': 5, 'Fundo Interno': 2}
+#   Indústria e Comércio: {'Indústria e Comércio': 28, 'Financeiro': 1}
+#   Locação de veículos: {'Locação de veículos': 4, 'Transporte e Logística': 1}
+#   Varejo Outros: {'Comércio atacadista e varejista': 2, 'Crédito PF': 1}
+setor_aj:
+  Caixa: Caixa
+  Agrícola: Agropecuária
+  Assistência médica: Assistência médica
+  Açúcar, Álcool e Cana: Açúcar, Álcool e Cana
+  Banco Público: Financeiro
+  Banco de Atacado: Financeiro
+  Banco de Varejo: Financeiro
+  Bens de Capital: Indústria e Comércio
+  Consignados: Consignados
+  Crédito PF: Crédito PF
+  Educação: Educação
+  Energia Elétrica - Distribuição: Energia Elétrica
+  Energia Elétrica - Geração: Energia Elétrica
+  Farmacêutica: Indústria e Comércio
+  Frigorífico: Alimentos e bebidas
+  Fundo Externo: Outros
+  Fundo Interno: Outros
+  Governo: Caixa
+  ISP: TI e Telecomunicações
+  Indústria e Comércio: Indústria e Comércio
+  Locação de veículos: Locação de veículos
+  N/A: Outros
+  Outros Serviços: Indústria e Comércio
+  Precatórios: Precatórios
+  Rodovias: Transporte e Logística
+  Serviços Imobiliários: Serviços Imobiliários
+  Telecom: Outros
+  Transporte e Logística: Transporte e Logística
+  Varejo Alimentar: Comércio atacadista e varejista
+  Varejo Eletrodoméstico: Varejo Eletrodoméstico
+  Varejo Outros: Comércio atacadista e varejista
+  Varejo Vestuário: Comércio atacadista e varejista
+  Água e Esgoto: Saneamento
+
+# Tipo aj. — API instrument_class -> Tipo aj.
+# Ambíguos na planilha (a analista escolhe ativo a ativo); vale o mais frequente:
+#   FIDC Sr: {'FIDC Sr': 217, 'FIDC Mez/Sub': 4}
+#   Outros fundos: {'Outros fundos': 27, 'Fiagro Sr': 4, 'Fiagro Mz': 2}
+tipo_aj:
+  CDB: CDB
+  CRA: CRA
+  Caixa: Caixa
+  DAP: DAP
+  DI1: DI1
+  DPGE: DPGE
+  Debênture: Debênture
+  EUP: EUP
+  FIDC Mez/Sub: FIDC Mez/Sub
+  FIDC Sr: FIDC Sr
+  JAP: JAP
+  LF: LF
+  LFSC: LFSC
+  LFSN: LFSN
+  LTN: LTN
+  MEX: MEX
+  NC: NC
+  NTN-B: NTN-B
+  Outros fundos: Outros fundos
+  Precatório: Precatório
+  T10: T10
+  WDO: WDO
+  ação: ordinária
+  opção: Caixa
+  termo de ação: Caixa
+
+# Tipo (mesa HG) — API instrument_class -> Tipo
+# Ambíguos na planilha (a analista escolhe ativo a ativo); vale o mais frequente:
+#   FIDC Sr: {'FIDC Sr': 150, 'FIDC Mez/Sub': 4}
+tipo_hg:
+  opção: Caixa
+  termo de ação: Caixa
+  CDB: CDB
+  CRA: CRA
+  Caixa: Caixa
+  DAP: DAP
+  DI1: DI1
+  DPGE: DPGE
+  Debênture: Debênture
+  EUP: EUP
+  FIDC Mez/Sub: FIDC Mez/Sub
+  FIDC Sr: FIDC Sr
+  JAP: JAP
+  LF: LF
+  LFSC: LFSC
+  LFSN: LFSN
+  LTN: LTN
+  MEX: MEX
+  NC: NC
+  NTN-B: NTN-B
+  Outros fundos: Fiagro Sr
+  T10: T10
+  WDO: WDO
+  ação: ordinária

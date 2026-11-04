@@ -19,6 +19,7 @@ Os valores vêm em dois sabores, de propósito:
 import pandas as pd
 
 from calculators import formatos as fmt
+from calculators.metricas import RATINGS
 
 PERIODOS = ['mes', 'ano', '12m', '24m', '36m', 'inicio']
 ROTULO_PERIODO = {'mes': 'Mês', 'ano': 'Ano', '12m': '12M', '24m': '24M',
@@ -249,11 +250,12 @@ class ContextoFundo:
 
     @property
     def rating_relatorio(self):
-        """Rating do maior para o menor peso, todas as notas, duas casas."""
+        """Rating na escala de crédito (AAA → B-), todas as notas, duas casas."""
         if not self.cart:
             return []
         rt = self.cart['rating']
-        rt = rt[rt > 0].sort_values(ascending=False)
+        rt = rt[rt > 0]
+        rt = rt.reindex([n for n in RATINGS if n in rt.index])
         return [(n, fmt.pct(v, 2), round(v * 100, 4)) for n, v in rt.items()]
 
     @property
@@ -270,7 +272,9 @@ class ContextoFundo:
         if not self.cart:
             return []
         rt = self.cart['rating']
-        rt = rt[rt > 0].head(6)
+        # as 6 maiores posições, exibidas na escala de crédito (AAA → B-)
+        rt = rt[rt > 0].sort_values(ascending=False).head(6)
+        rt = rt.reindex([n for n in RATINGS if n in rt.index])
         mx = rt.max() if len(rt) else 1
         return [(n, fmt.pct(v, 1), max(1, round(v / mx * 100))) for n, v in rt.items()]
 

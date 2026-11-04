@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<title>Banks: setor na API x relatório</title>
+<style>
+  body { font-family: Segoe UI, Arial, sans-serif; font-size: 14px; margin: 24px; }
+  table { border-collapse: collapse; }
+  th, td { border: 1px solid #999; padding: 6px 12px; }
+  th { background: #1B3A36; color: #fff; text-align: left; }
+  td.n { text-align: right; }
+  tr.t td { font-weight: bold; background: #E6F4EC; }
+</style>
+</head>
+<body>
+<p><b>Banks: setor na API x setor no relatório</b><br>
+Fundo Banks (código 940), data base 30/09/2026, signoff=false.<br>
+Endpoint: <code>GET /v1/carteira/fundos/940/posicoes?data=2026-09-30&amp;visao=expandida&amp;signoff=false</code> (campo <code>sector</code>), traduzido pelo <code>setor_hg</code> do <code>de_para_api.yml</code>.</p>
+<table>
+<tr><th>Setor na API</th><th>Vira, no relatório</th><th>% do fundo</th></tr>
+<tr><td>Banco de Varejo</td><td>Financeiro</td><td class="n">22,3%</td></tr>
+<tr><td>Banco de Atacado</td><td>Financeiro</td><td class="n">18,1%</td></tr>
+<tr><td>Banco de Montadora</td><td>Financeiro</td><td class="n">13,5%</td></tr>
+<tr><td>Banco Completo</td><td>Financeiro</td><td class="n">12,1%</td></tr>
+<tr><td>Banco Público</td><td>Financeiro</td><td class="n">4,8%</td></tr>
+<tr><td>Banco de Cooperativa</td><td>Financeiro</td><td class="n">2,1%</td></tr>
+<tr><td>Banco de Controle Estrangeiro</td><td>Financeiro</td><td class="n">1,7%</td></tr>
+<tr><td>Governo</td><td>Caixa</td><td class="n">17,0%</td></tr>
+<tr><td>Caixa</td><td>Caixa</td><td class="n">8,4%</td></tr>
+<tr class="t"><td>Total Financeiro</td><td></td><td class="n">74,6%</td></tr>
+<tr class="t"><td>Total Caixa</td><td></td><td class="n">25,4%</td></tr>
+</table>
+<p>Conferência: a Base Carteira da planilha dá Financeiro 74,6% e Caixa 25,4%, com o mesmo total (R$ 1.829.026.095,73).</p>
+</body>
+</html>

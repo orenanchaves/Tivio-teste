@@ -70,7 +70,10 @@ class ExportadorPDF:
         from playwright.sync_api import sync_playwright
         self._pw = sync_playwright().start()
         exe = achar_chromium()
-        opcoes = {'args': ['--no-sandbox', '--font-render-hinting=none']}
+        # sem GPU: no Chromium do Linux/WSL (snap) o screenshot trava sem estas flags
+        # e o PPTX cai no modo antigo
+        opcoes = {'args': ['--no-sandbox', '--font-render-hinting=none',
+                           '--disable-gpu', '--disable-software-rasterizer']}
         if exe:
             opcoes['executable_path'] = exe
             self.log.info(f'Chromium: {exe}')

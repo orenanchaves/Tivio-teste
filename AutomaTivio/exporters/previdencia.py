@@ -572,7 +572,8 @@ def exportar_informativos(fundos, destino, rend_email, log):
     macros = rend_email.r.env.get_template('previdencia/blocos.html').module
     n = 0
     with sync_playwright() as pw:
-        op = {'args': ['--no-sandbox', '--font-render-hinting=none']}
+        op = {'args': ['--no-sandbox', '--font-render-hinting=none',
+                      '--disable-gpu', '--disable-software-rasterizer']}
         exe = achar_chromium()
         if exe:
             op['executable_path'] = exe
@@ -690,7 +691,8 @@ def exportar_email(pasta_central, destino, rend_email, fundos, log, oft=False):
         return 0
     total = 0
     with sync_playwright() as pw:
-        op = {'args': ['--no-sandbox', '--font-render-hinting=none']}
+        op = {'args': ['--no-sandbox', '--font-render-hinting=none',
+                      '--disable-gpu', '--disable-software-rasterizer']}
         exe = achar_chromium()
         if exe:
             op['executable_path'] = exe

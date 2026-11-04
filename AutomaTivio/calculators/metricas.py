@@ -89,12 +89,34 @@ class Calc:
                 'pct': (f / b) if b else np.nan,
                 'bench_mais': ((1 + f) ** (252 / n) / (1 + b) ** (252 / n) - 1) if n > 0 else np.nan,
             }
+        self._aplicar_rent_api(quantum, out, refs, cota, idx)
         # PL
         pl = sf['pl']
         out['pl'] = self.asof(pl, self.db)
         out['pl_medio_12m'] = float(pl[pl.index >= refs['12m']].mean())
         out['pl_medio_inicio'] = float(pl.mean())
         return out
+
+    def _aplicar_rent_api(self, quantum, out, refs, cota, idx):
+        """Fonte API: todos os períodos (inclusive 36m e desde o início) vêm
+        prontos do visao-geral; o que a API não calcula (fundo mais novo que o
+        período) fica nulo."""
+        api = (self.d.get('rent_api') or {}).get(quantum)
+        if not api:
+            return
+        for p in PERIODOS:
+            a = api.get(p)
+            if not a or a.get('fundo') is None:
+                out[p] = None
+                continue
+            f = float(a['fundo'])
+            pct = a.get('pct')
+            b = f / float(pct) if pct else np.nan
+            n = self.du(refs[p], self.db)
+            out[p] = {'fundo': f, 'bench': b, 'alfa': f - b,
+                      'pct': float(pct) if pct else np.nan,
+                      'bench_mais': ((1 + f) ** (252 / n) / (1 + b) ** (252 / n) - 1)
+                      if n > 0 and b == b else np.nan}
 
     # ---------- histórico mensal (aba Dados W:Y) ----------
     def historico(self, quantum, bench, cota_inicial=1.0, data_inicial=None, janela_meses=None):

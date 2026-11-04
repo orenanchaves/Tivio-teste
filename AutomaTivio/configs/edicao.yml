@@ -8,7 +8,7 @@
 # data_base vazia = usa o último mês fechado disponível na planilha.
 # ============================================================================
 
-data_base:            # ex.: 2026-08-31   (vazio = último mês fechado)
+data_base: 2026-09-30 # ex.: 2026-08-31   (vazio = último mês fechado)
 
 # ---------------------------------------------------------------- o que gerar
 saidas:
@@ -34,6 +34,12 @@ materiais:
 
 # ------------------------------------------------------------------- entradas
 entradas:
+  # primeira fonte (cotas, PL, carteira, benchmarks): planilha | api
+  # api = API TLDR (token do `az login`); se falhar, cai na planilha. Os fundos e
+  # seus ids vêm do configs/fundos.yml (`id_portfolio`).
+  fonte: api
+  signoff: false      # false mostra o fechamento mesmo sem aprovação do Risco; no futuro, true
+  de_para_taxonomia: configs/de_para_api.yml   # setores/tipos da API -> Base Carteira
   dados: entrada/dados_mensais.xlsx
   taxas: entrada/taxas_global.xlsx
   # taxas dos fundos de previdência por veículo (FIE I, FIE II, FIFE) e a
