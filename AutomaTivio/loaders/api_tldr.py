@@ -101,6 +101,25 @@ def _serie_benchmark(api, simbolo, fundo, signoff):
                          'valor': pd.to_numeric(s['valor'], errors='coerce')})
 
 
+_NOTAS = ['AAA', 'AA+', 'AA', 'AA-', 'A+', 'A', 'A-', 'BBB+', 'BBB', 'BBB-', 'BB+', 'BB', 'BB-', 'B+', 'B', 'B-']
+
+
+def _hghy(rating, classe):
+    """High Grade / High Yield de cada posição (só o slide de alocação dos Informativos
+    do HGD30 e HYD60; os demais materiais seguem a coluna HGHY).
+
+    Regra do analista (a mesma da coluna HGHY da planilha):
+      FIDC            -> HG só se o rating for AAA; senão HY
+      demais ativos   -> HY se o rating for BB+ ou pior; senão HG
+    Sem nota (caixa, título público) fica HG: o caixa sai do HG/HY na alocação.
+    """
+    def uma(nota, tipo):
+        if str(tipo).upper().startswith('FIDC'):
+            return 'HG' if nota == 'AAA' else 'HY'
+        return 'HY' if nota in _NOTAS and _NOTAS.index(nota) >= _NOTAS.index('BB+') else 'HG'
+    return [uma(n, t) for n, t in zip(rating, classe)]
+
+
 def _carteira(api, cod, nome, mesa, db, signoff, mapas, nao_mapeados):
     pos = api.get(f'/v1/carteira/fundos/{cod}/posicoes', data=db, visao='expandida', signoff=signoff)
     p = pd.DataFrame(pos.get('positions') or [])
@@ -136,6 +155,7 @@ def _carteira(api, cod, nome, mesa, db, signoff, mapas, nao_mapeados):
         'Emissor': p['issuer'],
         'Rating Externo': p['issuer'].map(rating).fillna('NA'),
         'HGHY': mapas.get('hghy_padrao', 'HG'),
+        'HGHY Informativo': _hghy(p['issuer'].map(rating), classe),
         'FIDC': classe.fillna('').str.upper().str.startswith('FIDC'),
         'Setor Aj.': [traduz(s, setor_hg if hg else setor_aj, 'setor_hg' if hg else 'setor_aj')
                       for s in sector],

@@ -291,7 +291,7 @@ def _linhas_alocacao(slide):
 def _alocacao(slide, nomes, d):
     """Põe o percentual de cada classe. Classe sem posição no mês sai do slide:
     a linha inteira é apagada e as que sobram se juntam no centro do bloco."""
-    alvo = [d['aloc_mapa'].get(n) for n in CLASSES]
+    alvo = [d.get('aloc_mapa_informativo', d['aloc_mapa']).get(n) for n in CLASSES]
     for nome, valor in zip(nomes, alvo):
         if not valor:
             continue

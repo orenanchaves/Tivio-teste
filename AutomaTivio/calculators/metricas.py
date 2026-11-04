@@ -196,6 +196,9 @@ class Calc:
         hghy_tipo = None
         if 'HGHY' in c.columns and 'Tipo aj.' in c.columns:
             hghy_tipo = c.groupby(['HGHY', 'Tipo aj.'], dropna=False)['Exposição'].sum() / pl
+        hghy_info = None
+        if 'HGHY Informativo' in c.columns and 'Tipo aj.' in c.columns:
+            hghy_info = c.groupby(['HGHY Informativo', 'Tipo aj.'], dropna=False)['Exposição'].sum() / pl
         tipo_aj = grupo('Tipo aj.', c) if 'Tipo aj.' in c.columns else None
         # (Tipo aj., Setor, FIDC): a "Composição da carteira" dos materiais de
         # previdência chama de Bancário tudo o que é de emissor financeiro,
@@ -212,7 +215,7 @@ class Calc:
         return {
             'emissores': emissores, 'setores': setores, 'tipos': tipos, 'rating': rating,
             'estrategia': estrategia, 'book_tipo': book_tipo,
-            'hghy_tipo': hghy_tipo, 'tipo_aj': tipo_aj, 'rating_book': rating_book,
+            'hghy_tipo': hghy_tipo, 'hghy_info': hghy_info, 'tipo_aj': tipo_aj, 'rating_book': rating_book,
             'tipo_setor': tipo_setor,
             'carrego': float((c['Taxa'] * exp).sum() / pl),
             'duration': float((c['duration'] * exp).sum() / pl / 252),

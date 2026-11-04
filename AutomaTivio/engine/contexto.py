@@ -337,7 +337,17 @@ class ContextoFundo:
         O caixa vem marcado como HG na coluna HGHY; aqui ele sai do HG e vira
         linha própria, como na página publicada do HGD30.
         """
-        bt = self.cart.get('hghy_tipo') if self.cart else None
+        return self._alocacao_hghy(self.cart.get('hghy_tipo') if self.cart else None)
+
+    @property
+    def alocacao_hghy_informativo(self):
+        """Mesma alocação, pela regra do analista (coluna `HGHY Informativo`).
+        Só o slide de alocação do Informativo usa; sem a coluna, cai na padrão."""
+        bt = self.cart.get('hghy_info') if self.cart else None
+        return self._alocacao_hghy(bt) if bt is not None else self.alocacao_hghy
+
+    @staticmethod
+    def _alocacao_hghy(bt):
         if bt is None:
             return []
         junto = {'Crédito High Grade': 0.0, 'Crédito High Yield': 0.0, 'Caixa': 0.0}

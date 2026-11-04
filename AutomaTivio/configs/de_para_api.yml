@@ -9,7 +9,9 @@
 # Nome da API que não estiver aqui passa sem tradução e vira AVISO no log:
 # acrescente a linha. Onde a planilha tinha mais de um destino, os comentários
 # mostram as contagens — o mapa escolhe o mais frequente e erra o resto.
-# `hghy` não existe na API: vale `hghy_padrao` (afeta só HGD30/HYD60).
+# `hghy` não existe na API: vale `hghy_padrao`. A regra do analista (FIDC: HG só se AAA;
+# demais: HY se BB+ ou pior) vai na coluna `HGHY Informativo`, usada só no slide de
+# alocação dos Informativos HGD30/HYD60 (loaders/api_tldr.py::_hghy).
 # ============================================================================
 #
 # COMO LER — cada bloco é "nome na API: nome na planilha":

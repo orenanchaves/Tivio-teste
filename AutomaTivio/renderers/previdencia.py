@@ -69,6 +69,7 @@ def dados_fundo(chave, pg, ctx, edicao, textos, log=None, por_key=None):
         return fmt.num(v * 100, casas) + '%' if v is not None else fmt.MINUS
     rent_email = [r if r[0] != '%' else ('%', pct('mes'), pct('inicio')) for r in rent]
     aloc = {n: r for n, r, _ in ctx.alocacao_hghy}
+    aloc_info = {n: r for n, r, _ in ctx.alocacao_hghy_informativo}
     retornos = {a['nome']: a.get('retorno') for a in pg.get('previsao_alocacao') or []}
     alocacao = [{'nome': n, 'pct': r, 'retorno': retornos.get(n)}
                 for n, r, _ in ctx.alocacao_hghy]
@@ -96,6 +97,7 @@ def dados_fundo(chave, pg, ctx, edicao, textos, log=None, por_key=None):
         'rent_email': rent_email,
         'alocacao': alocacao,
         'aloc_mapa': aloc,
+        'aloc_mapa_informativo': aloc_info,
         'setores': setores,
         'rating': list(ctx.rating_relatorio),
         'composicao': ctx.composicao(),
