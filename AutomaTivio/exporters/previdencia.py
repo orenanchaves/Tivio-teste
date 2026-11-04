@@ -249,7 +249,8 @@ def _duration(shape, d):
 
 
 def _alocacao(slide, nomes, d):
-    alvo = [d['aloc_mapa'].get(n, fmt.MINUS) for n in ('Crédito High Grade', 'Crédito High Yield', 'Caixa')]
+    # classe sem posição no mês sai como 0,0%, não como "%" sozinho
+    alvo = [d['aloc_mapa'].get(n) or fmt.pct(0, 1) for n in ('Crédito High Grade', 'Crédito High Yield', 'Caixa')]
     for nome, valor in zip(nomes, alvo):
         for sh in _acha(slide, nome, lambda s: s.has_text_frame and '%' in s.text_frame.text
                         and 'CDI' not in s.text_frame.text):
@@ -276,6 +277,22 @@ def _grafico(shape, categorias, valores):
     cd.categories = categorias
     cd.add_series(shape.chart.plots[0].series[0].name or '', valores)
     shape.chart.replace_data(cd)
+    _rotulos_cabem(shape, len(categorias))
+
+
+def _rotulos_cabem(shape, n):
+    """Com muitas barras (rating com 13 notas), o rótulo de 9 pt passa da largura
+    da barra e encosta no vizinho ("3,38%3,64%"). Diminui o corpo até caber, até 6 pt."""
+    if not n:
+        return
+    vao = shape.width / 12700 * 0.85 / n            # pt por barra
+    sz = max(600, min(900, int(vao / 2.9 * 100)))
+    if sz >= 900:
+        return
+    cs = shape.chart._chartSpace
+    for d in cs.iter('{http://schemas.openxmlformats.org/drawingml/2006/chart}dLbls'):
+        for r in d.iter('{http://schemas.openxmlformats.org/drawingml/2006/main}defRPr'):
+            r.set('sz', str(sz))
 
 
 def _troca_imagem(shape, png):
