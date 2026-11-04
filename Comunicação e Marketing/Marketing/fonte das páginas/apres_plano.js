@@ -57,7 +57,7 @@
     var te = N ? blocos(N.querySelector(".teses")) : [];
     // por que: três teses por slide, cada uma com o que quer dizer, o que vimos e o que puxamos
     var tese = function (f, n) { var tg = function (c) { return t(f.querySelector(c)) }; return '<div class="ts" style="--n:' + n + '"><p class="ts-n">' + String(n + 1).padStart(2, "0") + "</p><h3>" + esc(tg("h3")) + '</h3><p class="ts-q">' + esc(tg(".tes-q")) + '</p><p class="ts-r">O que vimos</p><p class="ts-v">' + esc(tg(".dono")) + '</p><p class="ts-r ts-f">Por isso puxamos</p><ul>' + itens(f.querySelector("ul"), 3) + "</ul></div>" };
-    [te.slice(0, 3), te.slice(3, 6)].forEach(function (g, p) { if (g.length) S.push({ sec: "Por que", fora: p ? 1 : 0, h: "Por que o plano é <strong>assim</strong>", html: '<div class="tss">' + g.map(function (f, n) { return tese(f, n + p * 3) }).join("") + "</div>" }) });
+    // "Por que o plano é assim" saiu da apresentação (continua na página do Plano)
     var fe = blocos(F && F.querySelector(".frentes"));
     if (fe.length) S.push({ sec: "Até o fim do ano", h: "O que <strong>fechar</strong>", html: '<div class="sl-g c3 cmp">' + fe.map(function (f) { return card(f, 5) }).join("") + "</div>" });
     var nd = blocos(F && F.querySelector(".fr-nd"));
