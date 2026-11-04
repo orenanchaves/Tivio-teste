@@ -705,6 +705,10 @@ def exportar_informativos(fundos, destino, rend_email, log):
                 if mapa.get('pagina_rentabilidade'):
                     _pagina_rentabilidade(prs, mapa['pagina_rentabilidade'], d)
 
+                # selo ANBIMA de Distribuição sai de todo material (nov/2026)
+                from exporters.decks import _remove_selo_distribuicao
+                for sl in prs.slides:
+                    _remove_selo_distribuicao(sl)
                 base = f'Informativo - {d["nome_curto"].replace("TIVIO ", "")}'
                 pptx = os.path.join(destino, base + '.pptx')
                 prs.save(pptx)

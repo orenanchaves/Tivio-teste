@@ -109,6 +109,12 @@ class Pipeline:
                       f'{sum(1 for f in self.cadastro if f.resolvido)} resolvidos na DePara')
         self.log.info(f'comentários: {len(self.comentarios)} fundos em '
                       f'{self.comentarios.origem}')
+        # texto provisório esquecido no comentarios.md: sai no relatório se ninguém vê
+        import re as _re
+        for nome, pars in getattr(self.comentarios, '_rel', {}).items():
+            n = sum(1 for p in pars if _re.search(r'lorem|ipsum|perspiciatis|voluptatem', p, _re.I))
+            if n:
+                self.log.aviso(nome, f'comentário com texto provisório (lorem ipsum) em {n} parágrafo(s): trocar antes de publicar')
         for key, msg in self.cadastro.nao_resolvidos:
             self.log.aviso(key, msg)
 
