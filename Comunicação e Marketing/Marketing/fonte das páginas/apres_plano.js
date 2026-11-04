@@ -74,10 +74,6 @@
         + '<div class="fx-t"><p class="fx-m">' + esc(t(f.querySelector(".fr-m"))) + '</p><p class="fx-d">' + esc(t(f.querySelector(".dono"))) + '</p>' + (t(f.querySelector(".fr-x")) ? '<p class="fx-x">' + esc(t(f.querySelector(".fr-x"))) + "</p>" : "") + '<ol class="fx-l">' + [].filter.call(f.querySelectorAll("ul>li"), function (li) { return !li.hidden && t(li) }).slice(0, 5).map(function (li) { var ex = li.querySelector(".fr-ex"), c = li.cloneNode(true); [].forEach.call(c.querySelectorAll(".fr-ex,.ed-x,.ed-g,.ed-r"), function (x) { x.remove() }); return "<li><div>" + esc(t(c)) + (ex ? "<small>" + esc(t(ex)) + "</small>" : "") + "</div></li>" }).join("") + "</ol>"
         + (meses.length ? '<div class="fx-tira" aria-label="Meses com entrega">' + tira + "</div>" : "") + "</div></div>" });
     });
-    // sugestão de site novo: o que muda e o botão que abre a página com o site reorganizado
-    var muda = [["Menu por tema e por público", "Crédito Estruturado vira o primeiro item; hoje ele fica dentro de Fundos"], ["Um caminho para cada público", "Assessor, investidor e institucional, cada um com o que procura"],
-      ["Hub de estruturados", "Guias de FIDC, CRI e cascata para disputar o Google e as IAs"], ["Panorama e eventos com inscrição", "Dado próprio em troca do contato e página para onde o tráfego pago leva"]];
-    S.push({ sec: "2027 · Digital", fora: 1, h: "Sugestão de <strong>site novo</strong>", html: '<div class="sn2"><div class="sl-g c4 cmp">' + muda.map(function (m) { return "<div><b>" + m[0] + "</b><span>" + m[1] + "</span></div>" }).join("") + '</div><a class="sn2-b" href="site-novo.html">Abrir a sugestão de site novo <span aria-hidden="true">›</span></a></div>' });
     // gráfico: posts por mês de cada segmento
     var sg = N ? [].filter.call(N.querySelectorAll(".seg6>.sub"), vis) : [];
     if (sg.length) {
