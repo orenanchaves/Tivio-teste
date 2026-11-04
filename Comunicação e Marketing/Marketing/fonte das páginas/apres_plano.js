@@ -18,8 +18,17 @@
     if (hoje.length && novo.length) {
       var topo = novo.slice(0, 2), nomesH = hoje.map(function (x) { return x.b }), nomesN = novo.map(function (x) { return x.b });
       var linha = hoje.slice(2).map(function (x) { return [x, nomesN.indexOf(x.b) >= 0 ? "fica" : "sai"] }).concat(novo.slice(2).filter(function (x) { return nomesH.indexOf(x.b) < 0 }).map(function (x) { return [x, "entra"] }));
-      var ne = 0, no = function (x, c) { return '<div class="og-n og-' + c + '"' + (c === "entra" ? ' style="--d:' + (0.22 * ne++) + 's"' : "") + "><span>" + esc(x.s) + "</span><b>" + esc(x.b) + "</b></div>" };
-      S.push({ sec: "Estrutura", h: "Como a área <strong>muda</strong>", html: '<div class="og"><p class="og-fase"><span class="og-f1">Até o fim do ano</span><span class="og-f2">Em 2027</span></p>' + no(topo[0], "topo") + '<i class="og-v"></i>' + no(topo[1], "topo") + '<i class="og-v"></i><div class="og-row">' + linha.map(function (x) { return no(x[0], x[1]) }).join("") + "</div></div>" });
+      // valores: a agência sai com o custo de hoje; quem entra mostra a sua parte da diluição
+      var cuN = N && N.querySelector(".cu"), kN = N ? [].slice.call(N.querySelectorAll("#custo ~ .kpis .kpi b")).map(t) : [];
+      var vals = cuN ? [].map.call(cuN.querySelectorAll(".cu-i"), function (x) { return [t(x.querySelector("span")), t(x.querySelector("b"))] }) : [];  // já vem com "aprox."
+      var valor = function (x, c) {
+        if (c === "sai") return kN[0] ? kN[0] + " por mês" : "";
+        var v = vals.filter(function (y) { return y[0].indexOf(x.b) >= 0 })[0]; return v ? v[1] : "";
+      };
+      var ne = 0, no = function (x, c) { var v = c === "topo" ? "" : valor(x, c); return '<div class="og-n og-' + c + '"' + (c === "entra" ? ' style="--d:' + (0.22 * ne++) + 's"' : "") + "><span>" + esc(x.s) + "</span><b>" + esc(x.b) + "</b>" + (v ? '<small class="og-r">' + esc(v) + "</small>" : "") + "</div>" };
+      var livre = vals.filter(function (y) { return /^livre/i.test(y[0]) })[0];
+      S.push({ sec: "Estrutura", h: "Como a área <strong>muda</strong>", html: '<div class="og"><div class="og-tg" role="group" aria-label="Estrutura"><button type="button" data-og="0" aria-pressed="true">Atual</button><button type="button" data-og="1" aria-pressed="false">Em 2027</button></div>' + no(topo[0], "topo") + '<i class="og-v"></i>' + no(topo[1], "topo") + '<i class="og-v"></i><div class="og-row">' + linha.map(function (x) { return no(x[0], x[1]) }).join("") + "</div>" + (kN[1] ? '<p class="og-nota"><b>' + esc(kN[0] || "") + "</b> por mês da agência viram <b>" + esc(kN[1]) + "</b> nas pessoas e ferramentas" + (livre ? ", e <b>" + esc(livre[1]) + "</b> ficam livres" : "") + "</p>" : "") + "</div>" });
+      if (!window.__tvOg) { window.__tvOg = 1; document.addEventListener("click", function (ev) { var b = ev.target.closest && ev.target.closest(".og-tg button"); if (!b) return; ev.stopPropagation(); var og = b.closest(".og"), on = b.dataset.og === "1"; og.classList.toggle("og-27", on); [].forEach.call(og.querySelectorAll(".og-tg button"), function (x) { x.setAttribute("aria-pressed", String(x === b)) }) }, true) }
     }
     var cu = N && N.querySelector(".cu");
     if (cu) {
@@ -30,7 +39,7 @@
       var pc = function (x) { return parseFloat(x.getAttribute("style").replace(/[^\d.]/g, "")) || 0 };
       var usa = seg.filter(function (x) { return !x.classList.contains("cu-5") }).reduce(function (a, x) { return a + pc(x) }, 0);
       var kt = function (n) { var b = ks[n] ? t(ks[n].querySelector("b")) : ""; return "<b" + conta(b) + ">" + esc(b) + "</b> " + esc(ks[n] ? t(ks[n].querySelector("span")) : "") };
-      var item = function (x) { var b = t(x.querySelector("b")); return '<div class="cu-i"><i class="' + x.querySelector("i").className + '"></i><span>' + esc(t(x.querySelector("span"))) + "</span><b" + conta(b) + ">" + esc(b) + "</b></div>" };
+      var item = function (x) { var b = t(x.querySelector("b")).replace(/^aprox\. /, ""), ap = !x.querySelector("i.cu-5"); return '<div class="cu-i"><i class="' + x.querySelector("i").className + '"></i><span>' + esc(t(x.querySelector("span"))) + "</span>" + (ap ? '<small class="cu-ap">aprox.</small>' : "") + "<b" + conta(b) + ">" + esc(b) + "</b></div>" };
       var livre = its.filter(function (x) { return x.querySelector("i.cu-5") }), pagos = its.filter(function (x) { return !x.querySelector("i.cu-5") });
       S.push({ sec: "Estrutura", h: "O custo da agência, <strong>diluído</strong>", html: '<div class="sl-cu2">'
         + '<div class="cu-lin cu-hoje"><p class="cu-rot">Hoje</p><div class="cu-barra"><i class="cu-ag2"><b>Agência</b><span>' + kt(0) + "</span></i></div></div>"
@@ -41,14 +50,28 @@
         + "</div></div>"
         + '<p class="cu-tot">' + kt(3) + "</p></div>" });
     }
+    // logo depois da estrutura: o que queremos para o ano, uma meta por frente
+    var qf = N ? [].slice.call(N.querySelectorAll(".fr-vis>section.frente")).filter(vis) : [];
+    if (qf.length) S.push({ sec: "2027", h: "O que queremos <strong>em 2027</strong>", html: '<div class="quer"><p class="quer-f">Ser a <strong>casa de estruturados</strong> do mercado: quem explica o risco, com dado próprio e presença constante.</p><div class="sl-g c4 cmp">'
+      + qf.map(function (f) { return "<div><b>" + esc(t(f.querySelector("h3")).replace(" com estratégia", "")) + "</b><span>" + esc(t(f.querySelector(".fr-m"))) + "</span></div>" }).join("") + "</div></div>" });
     var te = N ? blocos(N.querySelector(".teses")) : [];
-    if (te.length) S.push({ sec: "Por que", h: "Por que <strong>assim</strong>", html: '<div class="sl-g c3 cmp tes">' + te.map(function (f) { return "<div><b>" + esc(t(f.querySelector("h3"))) + "</b><span>" + esc(t(f.querySelector(".dono"))) + "</span><ul>" + itens(f.querySelector("ul"), 3) + "</ul></div>" }).join("") + "</div>" });
+    if (te.length) S.push({ sec: "Por que", h: "Por que o plano é <strong>assim</strong>", html: '<p class="tes-lead">Seis coisas que o mercado e os nossos números mostram. Cada uma vira uma decisão de 2027.</p><div class="sl-g c3 cmp tes">' + te.map(function (f) { return "<div><b>" + esc(t(f.querySelector("h3"))) + '</b><p class="tes-r">O que vimos</p><span>' + esc(t(f.querySelector(".dono"))) + '</span><p class="tes-r tes-f">O que fazemos</p><ul>' + itens(f.querySelector("ul"), 3) + "</ul></div>" }).join("") + "</div>" });
     var fe = blocos(F && F.querySelector(".frentes"));
     if (fe.length) S.push({ sec: "Até o fim do ano", h: "O que <strong>fechar</strong>", html: '<div class="sl-g c3 cmp">' + fe.map(function (f) { return card(f, 5) }).join("") + "</div>" });
     var nd = blocos(F && F.querySelector(".fr-nd"));
     if (nd.length) S.push({ sec: "Até o fim do ano", h: "O que já começa <strong>nas frentes</strong>", html: '<div class="sl-g c4 cmp">' + nd.map(function (f) { return card(f, 5) }).join("") + "</div>" });
+    S.push({ sec: "Até o fim do ano", h: "Como o AutomaTivio <strong>funciona</strong>", html: '<div class="at"><div class="at-fluxo"><div class="at-col at-in"><p class="at-t">Entra</p><div class="at-c" style="--i:0"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 3h7l4 4v14H7z"/><path d="M14 3v4h4M10 12h5M10 16h5"/></svg><div><b>Comentários da Gestão</b><span>um texto por fundo</span></div></div><div class="at-c" style="--i:1"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="4" width="16" height="16" rx="2"/><path d="M4 10h16M4 15h16M10 4v16"/></svg><div><b>Dados mensais</b><span>a planilha do mês</span></div></div></div><div class="at-lig at-l1"><i></i><i></i><i></i></div><div class="at-core"><span class="at-gira"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3M4.9 4.9l2.1 2.1M17 17l2.1 2.1M4.9 19.1 7 17M17 7l2.1-2.1"/></svg></span><b>AutomaTivio</b><code>python run.py</code><div class="at-prog"><i></i></div><small>um comando, os mesmos números em tudo</small></div><div class="at-lig at-l2"><i></i><i></i><i></i></div><div class="at-col at-out"><p class="at-t">Sai pronto</p><div class="at-c" style="--i:0"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 3h10v18H7z"/><path d="M10 15v2M13 12v5M16 9v8"/></svg><div><b>Relatórios de gestão</b><span>HTML, PDF e PPTX</span></div></div><div class="at-c" style="--i:1"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="18" height="12" rx="2"/><path d="M12 16v4M8 20h8"/></svg><div><b>Decks</b><span>números trocados no modelo</span></div></div><div class="at-c" style="--i:2"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="4" width="16" height="16" rx="4"/><circle cx="12" cy="12" r="3.5"/><path d="M16.5 7.5h.01"/></svg><div><b>Posts</b><span>por vertical</span></div></div><div class="at-c" style="--i:3"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/></svg><div><b>E-mail</b><span>da edição do mês</span></div></div></div></div><div class="at-st"><div><b>84 arquivos</b><span>na rodada de setembro, em cerca de 10 minutos</span></div><div><b>0 erros</b><span>18 avisos conhecidos no log</span></div><div><b>Em 2027</b><span>Crédito e Investment Solutions totalmente automatizados; a partir de janeiro, o imobiliário</span></div></div></div>' });
     var fr = N ? blocos(N.querySelector(".fr-vis")) : [];
     if (fr.length) S.push({ sec: "2027", h: "O ano em <strong>quatro frentes</strong>", html: '<div class="sl-g c4 cmp">' + fr.map(function (f) { var im = f.querySelector(".fr-img"); return "<div>" + (im ? '<img class="th" src="' + im.getAttribute("src") + '" alt="">' : "") + "<b>" + esc(t(f.querySelector("h3")).replace(" com estratégia", "")) + "</b><span>" + esc(t(f.querySelector(".fr-m"))) + "</span><span><em>" + esc(t(f.querySelector(".dono"))) + "</em></span></div>" }).join("") + "</div>" });
+    // depois do resumo, um slide por frente: imagem, meta, dono, o que fazemos e em que meses
+    var meses = N ? [].slice.call(N.querySelectorAll("#meses section.tl-m")) : [];
+    fr.forEach(function (f, k) {
+      var im = f.querySelector(".fr-img"), nome = t(f.querySelector("h3")).replace(" com estratégia", "");
+      var tira = meses.map(function (m) { var i = m.querySelector('.tl-i[data-c="' + (k + 1) + '"] span'); return '<i class="' + (i ? "on" : "") + '"' + (i ? ' title="' + esc(t(i)) + '"' : "") + "><b>" + esc(t(m.querySelector("h3")).slice(0, 3)) + "</b></i>" }).join("");
+      S.push({ fora: 1, sec: "2027 · Frente " + String(k + 1).padStart(2, "0"), h: esc(nome), html: '<div class="fx">' + (im ? '<figure class="fx-im"><img src="' + im.getAttribute("src") + '" alt=""></figure>' : "")
+        + '<div class="fx-t"><p class="fx-m">' + esc(t(f.querySelector(".fr-m"))) + '</p><p class="fx-d">' + esc(t(f.querySelector(".dono"))) + '</p>' + (t(f.querySelector(".fr-x")) ? '<p class="fx-x">' + esc(t(f.querySelector(".fr-x"))) + "</p>" : "") + '<ol class="fx-l">' + itens(f.querySelector("ul"), 5) + "</ol>"
+        + (meses.length ? '<div class="fx-tira" aria-label="Meses com entrega">' + tira + "</div>" : "") + "</div></div>" });
+    });
     // gráfico: posts por mês de cada segmento
     var sg = N ? [].filter.call(N.querySelectorAll(".seg6>.sub"), vis) : [];
     if (sg.length) {
@@ -57,19 +80,36 @@
         return "<div><b>" + esc(t(x.querySelector("b"))) + "</b><span>" + esc(t(x.querySelector("span"))) + '</span><div class="gb"><i style="--w:' + Math.round(ps[k] / mx * 100) + '%"></i><em>' + (ps[k] ? ps[k] + " posts por mês" : esc(t(x.querySelector("em")))) + "</em></div></div>";
       }).join("") + "</div>" });
     }
-    var ri = blocos(sec("ritmo")); if (ri.length) S.push({ sec: "2027", h: "O que <strong>se repete</strong>", html: '<div class="sl-g c3 cmp">' + ri.map(function (f) { return card(f) }).join("") + "</div>" });
-    var tr = blocos(sec("trimestres")); if (tr.length) S.push({ sec: "2027", h: "O ano por <strong>trimestre</strong>", html: '<div class="sl-g c4 cmp">' + tr.map(function (f) { return card(f, 5) }).join("") + "</div>" });
+
+    // linha do tempo: as quatro frentes em raias, os trimestres em colunas, com o ícone de cada frente
+    var mT = N ? [].slice.call(N.querySelectorAll("#meses .tl-m")).filter(function (m) { return !/nov e dez/i.test(t(m.querySelector("h3"))) }) : [];
+    if (mT.length) {
+      var raias = [1, 2, 3, 4].map(function (c) {
+        var ex = N.querySelector('#meses .tl-i[data-c="' + c + '"]'), ic = ex && ex.querySelector("svg") ? ex.querySelector("svg").outerHTML : "", nm = ex ? t(ex.querySelector("b")) : "";
+        var tri = [0, 1, 2, 3].map(function (q) { var l = []; mT.slice(q * 3, q * 3 + 3).forEach(function (m) { var s = m.querySelector('.tl-i[data-c="' + c + '"] span'); if (s) t(s).split("; ").forEach(function (x) { x = x.replace(/^\d+ eventos?: /, "Itaú: "); if (x && l.length < 3 && !/^Carta do Gestor$/.test(x)) l.push(x) }) }); return l });
+        return { ic: ic, nm: nm, tri: tri };
+      });
+      S.push({ sec: "2027", h: "A linha do tempo <strong>de 2027</strong>", html: '<div class="lt"><div class="lt-h"><span></span>' + ["1º tri", "2º tri", "3º tri", "4º tri"].map(function (x, q) { return '<b style="--q:' + q + '">' + x + "<i></i></b>" }).join("") + "</div>"
+        + raias.map(function (r, n) { return '<div class="lt-r" style="--n:' + n + '"><p class="lt-f">' + r.ic + "<span>" + esc(r.nm) + "</span></p>" + r.tri.map(function (l, q) { return '<ul style="--q:' + q + '">' + l.map(function (x) { return "<li>" + esc(x.charAt(0).toUpperCase() + x.slice(1)) + "</li>" }).join("") + "</ul>" }).join("") + "</div>" }).join("") + "</div>" });
+    }
     // gráfico: eventos Itaú mês a mês, lidos da linha do tempo
     var ms = N ? [].slice.call(N.querySelectorAll("#meses .tl-m")).filter(function (m) { return !/nov e dez/i.test(t(m.querySelector("h3"))) }) : [];
     var ev = ms.map(function (m) { var e = m.querySelector('.tl-i[data-c="2"] span'), q = e && t(e).match(/^(\d+) eventos?/); return [t(m.querySelector("h3")).slice(0, 3), q ? +q[1] : 0] });
     var tot = ev.reduce(function (s, x) { return s + x[1] }, 0);
-    if (tot) S.push({ sec: "2027 · Eventos", h: tot + " eventos Itaú <strong>no ano</strong>", html: '<div class="gc" role="img" aria-label="Eventos Itaú por mês">' + ev.map(function (x) { return '<div><b>' + (x[1] || "") + '</b><i style="height:' + Math.round(x[1] / 2 * 330) + 'px"></i><span>' + esc(x[0]) + "</span></div>" }).join("") + '</div><p class="sl-nota">No escritório da Tivio, quatro por trimestre, além de Summit BTG, Expert XP e Congresso Abrapp.</p>' });
     // gráfico: caminho do número e metas das redes (hoje até a meta)
+    var COMO = ["Impressões, visitas e seguidores, no painel mensal das redes e do site", "Formulário das landings, dos eventos e da newsletter, sempre com a origem", "Pedido de conversa que o comercial recebe em até 2 dias", "Quanto os contatos aplicaram em até 90 dias, em R$, com o comercial"];
     var fu = N ? [].slice.call(N.querySelectorAll(".fu-i")) : [], mt = N ? [].slice.call(N.querySelectorAll(".mt-r")) : [];
-    if (fu.length || mt.length) S.push({ sec: "2027", h: "Como vamos <strong>medir</strong>", html: '<div class="sl-med"><div class="fun">' + fu.map(function (x, k) { return '<div style="--w:' + (100 - k * 14) + '%"><b>' + esc(t(x.querySelector("b"))) + "</b><span>" + esc(t(x.querySelector("span"))) + "</span></div>" }).join("") + '</div><div class="met"><b class="met-t">Metas das redes até dez/27</b>' + mt.slice(0, 5).map(function (x) {
+    if (fu.length || mt.length) S.push({ sec: "2027", h: "Como vamos <strong>medir</strong>", html: '<p class="med-lead">Todo mês, no painel: quantos viram, quantos deixaram contato, quantos pediram reunião e quanto foi captado.</p><div class="sl-med"><div class="fun">' + fu.map(function (x, k) { return '<div style="--w:' + (100 - k * 14) + '%"><b>' + esc(t(x.querySelector("b"))) + "</b><span>" + esc(t(x.querySelector("span"))) + "</span>" + (COMO[k] ? "<small>" + COMO[k] + "</small>" : "") + "</div>" }).join("") + '</div><div class="met"><b class="met-t">Metas das redes até dez/27</b>' + mt.slice(0, 5).map(function (x) {
       var e = t(x.querySelector("em")).split(" a "), h0 = num(e[0]), m1 = num(e[1]); var pc = h0 !== null && m1 ? Math.min(100, Math.round(h0 / m1 * 100)) : 0;
       return '<div><span>' + esc(t(x.querySelector("span"))) + '</span><i style="--w:' + pc + '%"></i><em>' + esc(e[0]) + " → <strong>" + esc(e[1] || "") + "</strong></em></div>";
     }).join("") + "</div></div>" });
+    // resumo de tudo
+    var rs = [];
+    var kR = N ? [].slice.call(N.querySelectorAll("#custo ~ .kpis .kpi b")).map(t) : [];
+    if (kR[1]) rs.push(["Estrutura", "A agência sai. " + kR[1] + " por mês vão para pessoas e ferramentas" + (kR[2] ? " e " + kR[2] + " ficam livres" : "")]);
+    (N ? [].slice.call(N.querySelectorAll(".fr-vis>section.frente")).filter(vis) : []).forEach(function (f) { rs.push([t(f.querySelector("h3")).replace(" com estratégia", ""), t(f.querySelector(".fr-m"))]) });
+    if (fu.length) rs.push(["Medir", fu.map(function (x) { return t(x.querySelector("b")) }).join(", ") + ", todo mês no painel"]);
+    if (rs.length) S.push({ sec: "Resumo", h: "Em <strong>resumo</strong>", html: '<div class="rs">' + rs.map(function (x, n) { return '<div style="--n:' + n + '"><b>' + esc(x[0]) + "</b><span>" + esc(x[1]) + "</span></div>" }).join("") + "</div>" });
     S.push({ capa: true, h: "Casa de <strong>estruturados</strong>", html: '<p class="sl-l">Menos, com mais qualidade.</p>' });
     return S;
   });

@@ -25,7 +25,7 @@ window.tvDeck = function (nome, monta) {
   }
   function monte() {
     var S = monta(), tot = S.length, grupos = [], idx = {};
-    S.forEach(function (s, k) { if (!s.sec || s.sum) return; var g = s.sec.split(" · ")[0]; if (!(g in idx)) { idx[g] = grupos.length; grupos.push([g, []]) } grupos[idx[g]][1].push([k, s.h.replace(/<[^>]+>/g, "")]) });
+    S.forEach(function (s, k) { if (!s.sec || s.sum || s.fora) return; var g = s.sec.split(" · ")[0]; if (!(g in idx)) { idx[g] = grupos.length; grupos.push([g, []]) } grupos[idx[g]][1].push([k, s.h.replace(/<[^>]+>/g, "")]) });
     var botoes = function (lst) { return lst.map(function (x) { return '<button type="button" data-ir="' + x[0] + '">' + esc(x[1]) + "<i>" + String(x[0] + 1).padStart(2, "0") + "</i></button>" }).join("") };
     var sum = '<div class="sl-sum">' + grupos.map(function (g) { return "<div><b>" + esc(g[0]) + "</b>" + botoes(g[1]) + "</div>" }).join("") + "</div>";
     SM.innerHTML = grupos.map(function (g) { return "<p>" + esc(g[0]) + "</p>" + botoes(g[1]) }).join("");

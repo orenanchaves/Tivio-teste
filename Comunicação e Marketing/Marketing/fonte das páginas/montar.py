@@ -180,7 +180,7 @@ def logos_inline(html):
 URL_ZIP = "https://github.com/orenanchaves/Tivio-teste/releases/download/AutomaTivio_v2/AutomaTivio.zip"
 URL_REL = "https://github.com/orenanchaves/Tivio-teste/releases/tag/AutomaTivio_v2"
 cab_dl = cabecalho("", [("logica", "Como funciona"), ("ambiente", "Ambiente interno"),
-                                   ("segmentos", "Segmentos"), ("fallback", "Quando falha"),
+                                   ("segmentos", "Segmentos"), ("status", "Decks"), ("fallback", "Quando falha"),
                                    ("baixar", "Como baixar"), ("comecar", "Começar")])
 hero_dl = hero("Versão de 28/10/2026", "Automa<strong>Tivio</strong>",
                "A edição mensal da Central de Materiais em um comando: lê as planilhas do mês e gera os "
@@ -229,8 +229,8 @@ corpo_mkt = logos_inline(fichas(corpo_mkt))
 (SAIDA / "marketing.html").write_text(pagina("Central de Marketing Tivio", corpo_mkt, ler("mkt.css")), encoding="utf-8")
 exec(ler("gerar_paginas.py"))
 exec(ler("gerar_categorias.py"))
-exec(ler("gerar_calendario.py"))
 exec(ler("gerar_polo.py"))
+exec(ler("gerar_calendario.py"))
 exec(ler("gerar_filtro.py"))
 _an = '<header class="barra"><div class="barra-in"><span class="marca">' + LOGO + '</span></div></header>' + ler("analise_corpo.html")
 (SAIDA / "analise.html").write_text('<!doctype html><html lang="pt-BR"><head><meta charset="utf-8">' + pagina("Tivio 2026 e 2027", _an, CSS_P + "@media print{.barra{position:static}.vidro,.tab,tr,.kpi{break-inside:avoid}h2{break-after:avoid}}") + "</html>", encoding="utf-8")

@@ -6,7 +6,7 @@
   var SEL = "li,td,h3,p.dono,p.lead,p.meta-txt,.kpi b,.kpi span,.sub b,.sub span,.sub em,.fr-m,.org-n b,.org-n span,.org-n em,.org-t,.tl-i span,.frente>p,.bm-i dd,.bm-i h3,ol.roteiro li>b,ol.roteiro li>span,.lig-i>b,.lig-i>span";
   var BLK = ".frentes>section.frente,.org-n,ol.roteiro>li,.subs>.sub,.kpis>.kpi,.lig>.lig-i,.bm>.bm-i";
   var DUV = /a definir|definir (esse|este) m[eê]s|a medir|a confirmar|em d[uú]vida|\?\s*$/i;
-  var TOKEN, BASE = { edits: {}, novos: {}, ordem: {}, blocos: {} }, PEND = [], ED = false;
+  var TOKEN, BASE = { edits: {}, novos: {}, ordem: {}, blocos: {}, resp: {} }, PEND = [], ED = false;
   function hx(b) { return [].map.call(new Uint8Array(b), function (x) { return ("0" + x.toString(16)).slice(-2) }).join("") }
   function h32(s) { var h = 2166136261; for (var i = 0; i < s.length; i++) { h ^= s.charCodeAt(i); h = Math.imul(h, 16777619) } return (h >>> 0).toString(36) }
   function norm(s) { return (s || "").replace(/\s+/g, " ").trim() }
@@ -21,6 +21,7 @@
     else if (o.tipo === "mudar-novo" || o.tipo === "apagar-novo") Object.keys(d.novos).forEach(function (k) { var l = d.novos[k], i = l.findIndex(function (x) { return x.id === o.id }); if (i >= 0) { if (o.tipo === "apagar-novo") l.splice(i, 1); else l[i].t = o.texto } });
     else if (o.tipo === "novo-bloco") (d.blocos[o.cont] = d.blocos[o.cont] || []).push({ id: o.id, titulo: o.texto, dono: o.dono || "" });
     else if (o.tipo === "mudar-bloco" || o.tipo === "apagar-bloco") Object.keys(d.blocos).forEach(function (k) { var l = d.blocos[k], i = l.findIndex(function (x) { return x.id === o.id }); if (i >= 0) { if (o.tipo === "apagar-bloco") l.splice(i, 1); else l[i][o.campo === "dono" ? "dono" : "titulo"] = o.texto } });
+    else if (o.tipo === "resposta") { d.resp = d.resp || {}; if (o.texto) d.resp[o.chave] = { t: o.texto, quem: "você, não salvo" }; else delete d.resp[o.chave] }
     else if (o.tipo === "ordem") Object.keys(o.listas).forEach(function (k) { d.ordem[k] = o.listas[k] });
   }
   function estado() { var d = JSON.parse(JSON.stringify(BASE)); PEND.forEach(function (o) { aplicaOp(d, o) }); return d }
@@ -35,6 +36,9 @@
     + ".ed-msg{position:fixed;left:50%;bottom:72px;z-index:160;transform:translateX(-50%);padding:10px 18px;border-radius:999px;background:var(--accent);color:var(--on-accent);font:600 14px var(--ff);pointer-events:none;opacity:0;transition:opacity .2s;text-align:center}.ed-msg.v{opacity:1}"
     + ".ed-hist{position:fixed;inset:0;z-index:170;display:flex;align-items:center;justify-content:center;padding:16px;background:rgba(6,10,14,.6)}.ed-hist[hidden]{display:none}.ed-hist>div{width:100%;max-width:640px;max-height:80vh;overflow:auto;padding:24px;border:1px solid var(--line);border-radius:16px;background:var(--bg);color:var(--fg)}.ed-hist h2{margin:0 0 12px;font:600 22px var(--ff)}.ed-hist ol{margin:0;padding:0;list-style:none}.ed-hist li{padding:10px 0;border-top:1px solid var(--line);font-size:14px}.ed-hist small{display:block;color:var(--muted)}.ed-hist button{float:right;height:36px;padding:0 14px;border:1px solid var(--line-strong);border-radius:999px;background:transparent;color:var(--fg);font:600 14px var(--ff);cursor:pointer}"
     + ".wrap [hidden]{display:none!important}.ed-on [data-edb],.ed-on .ed-nb{position:relative}.ed-xb{display:none;position:absolute;top:8px;right:8px;z-index:3;height:28px;padding:0 12px;border:1px solid var(--line-strong);border-radius:999px;background:var(--bg);color:var(--muted);font:600 12px var(--ff);cursor:pointer;align-items:center;gap:6px}.ed-on .ed-xb{display:inline-flex}.ed-xb:hover{color:var(--fg);border-color:var(--accent)}.ed-addb{display:none;margin:12px 0 4px;padding:9px 18px;border:1.5px dashed var(--accent);border-radius:999px;background:transparent;color:var(--fg);font:600 14px var(--ff);cursor:pointer}.ed-on .ed-addb{display:inline-block}.ed-on [data-edbc]{outline:1px dashed var(--line-strong);outline-offset:3px;border-radius:6px;cursor:text}"
+    + ".perguntas ul{display:flex!important;flex-direction:column;align-items:stretch;gap:10px}.perguntas ul>li{display:flex!important;flex-wrap:wrap;align-items:center;border-radius:14px!important;padding:10px 14px!important;max-width:none!important}"
+    + ".ed-r{flex:1 1 100%;display:block;margin-top:8px}.ed-r textarea{display:block;box-sizing:border-box;width:100%;min-height:38px;padding:8px 12px;border:1px dashed var(--line-strong);border-radius:10px;background:transparent;color:var(--fg);font:400 14px/1.45 var(--ff);resize:none;overflow:hidden}.ed-r textarea:focus{outline:0;border-style:solid;border-color:var(--accent)}.ed-r textarea::placeholder{color:var(--muted)}"
+    + ".ed-resp-ok .ed-r textarea{border-style:solid;border-color:var(--accent)}.ed-r[data-q]:not([data-q=''])::after{content:attr(data-q);display:block;margin-top:4px;color:var(--muted);font:400 12px var(--ff)}.ed-on .perguntas .ed-x{margin-left:auto}"
     + "@media (max-width:600px){.ed-bar{left:12px;bottom:12px;gap:6px}.ed-bar button{height:38px;padding:0 12px;font-size:13px}.ed-msg{bottom:64px}}";
   var velho = document.getElementById("ed-css"); if (velho) velho.remove(); document.head.appendChild(css);
   var msg = document.createElement("div"); msg.className = "ed-msg"; msg.setAttribute("role", "status");
@@ -58,7 +62,7 @@
   function novoBloco(c) { var t = norm(prompt("Nome da nova categoria:") || ""); if (!t) return; var d = norm(prompt("Responsável (pode deixar em branco):") || ""); poe({ tipo: "novo-bloco", cont: c.dataset.edc, id: uid(), texto: t, dono: d }) }
   function tok(li) { return li.dataset.edn ? "n:" + li.dataset.edn : "o:" + li.dataset.ed }
   function porTok(t) { return W.querySelector(t.slice(0, 2) === "n:" ? 'li[data-edn="' + t.slice(2) + '"]' : '[data-ed="' + t.slice(2) + '"]') }
-  function txt(e) { var c = e.cloneNode(true); [].forEach.call(c.querySelectorAll(".ed-x,.ed-g,.ed-xb"), function (x) { x.remove() }); return norm(c.textContent) }
+  function txt(e) { var c = e.cloneNode(true); [].forEach.call(c.querySelectorAll(".ed-x,.ed-g,.ed-xb,.ed-r"), function (x) { x.remove() }); return norm(c.textContent) }
   function marcaDuv(e) { e.classList.toggle("ed-duv", DUV.test(txt(e))) }
   function botoes(li) {
     if (li.querySelector(":scope>.ed-x")) return;
@@ -80,7 +84,7 @@
       var nx = c.nextElementSibling; if (!nx || !nx.classList.contains("ed-addb")) { var b = document.createElement("button"); b.type = "button"; b.className = "ed-addb"; b.textContent = "+ Adicionar categoria"; b.onclick = function () { novoBloco(c) }; c.after(b) }
     });
     els.forEach(function (e) {
-      var x = d.edits[e.dataset.ed], t = x ? x.t : null, kids = [].slice.call(e.querySelectorAll(":scope>.ed-x,:scope>.ed-g"));
+      var x = d.edits[e.dataset.ed], t = x ? x.t : null, kids = [].slice.call(e.querySelectorAll(":scope>.ed-x,:scope>.ed-g,:scope>.ed-r"));
       if (x && t === null) e.hidden = true; else { e.hidden = false; if (x && txt(e) !== t) { e.textContent = t; kids.forEach(function (k) { e.appendChild(k) }); var gr = e.querySelector(":scope>.ed-g"); if (gr) e.insertBefore(gr, e.firstChild) } }
       marcaDuv(e);
     });
@@ -93,8 +97,23 @@
       var u = W.querySelector('ul[data-edl="' + k + '"]'); if (!u) return;
       d.ordem[k].forEach(function (t) { var li = porTok(t); if (li) u.insertBefore(li, u.querySelector(":scope>.ed-add")) });
     });
-    [].forEach.call(W.querySelectorAll("ul[data-edl]>li"), function (li) { botoes(li); marcaDuv(li) });
+    [].forEach.call(W.querySelectorAll("ul[data-edl]>li"), function (li) { botoes(li); marcaDuv(li); if (li.closest(".perguntas")) resposta(li, d) });
     barra();
+  }
+  // listas de perguntas: cada item tem um campo de resposta, visível sempre, que entra no Salvar
+  function resposta(li, d) {
+    var r = li.querySelector(":scope>.ed-r"), k = tok(li), x = (d.resp || {})[k];
+    if (!r) {
+      r = document.createElement("span"); r.className = "ed-r"; r.contentEditable = "false";
+      var a = document.createElement("textarea"); a.rows = 1; a.placeholder = "Escreva a resposta"; a.setAttribute("aria-label", "Resposta para: " + txt(li));
+      a.addEventListener("input", function () { a.style.height = "auto"; a.style.height = a.scrollHeight + "px" });
+      a.addEventListener("change", function () { var v = norm(a.value), y = (estado().resp || {})[tok(li)]; if (v !== (y ? y.t : "")) poe({ tipo: "resposta", chave: tok(li), texto: v }) });
+      a.addEventListener("keydown", function (ev) { if (ev.key === "Enter" && !ev.shiftKey) { ev.preventDefault(); a.blur() } });
+      r.appendChild(a); li.appendChild(r);
+    }
+    var t = r.querySelector("textarea"); if (document.activeElement !== t) { t.value = x ? x.t : ""; t.style.height = "auto"; if (t.value) t.style.height = t.scrollHeight + "px" }
+    r.dataset.q = x && x.quem ? x.quem + (x.quando ? " · " + new Date(x.quando).toLocaleDateString("pt-BR") : "") : "";
+    li.classList.toggle("ed-resp-ok", !!(x && x.t));
   }
   function poe(o) { PEND.push(o); render(); aviso("Mudança pendente: clique em Salvar") }
   function remove(li) {
@@ -139,7 +158,7 @@
     document.addEventListener("pointermove", move); document.addEventListener("pointerup", solta); document.addEventListener("pointercancel", solta);
   }
   W.addEventListener("click", function (ev) {
-    var e = ev.target.closest && ev.target.closest("[data-ed],li.ed-novo,[data-edbc]"); if (!e || ev.target.closest(".ed-x,.ed-add,.ed-g,.ed-xb,.ed-addb")) return;
+    var e = ev.target.closest && ev.target.closest("[data-ed],li.ed-novo,[data-edbc]"); if (!e || ev.target.closest(".ed-x,.ed-add,.ed-g,.ed-xb,.ed-addb,.ed-r")) return;
     if (ED || e.classList.contains("ed-duv")) { ev.preventDefault(); ev.stopPropagation(); edita(e) }
   }, true);
 
@@ -161,7 +180,7 @@
   hist.onclick = function (ev) { if (ev.target === hist || ev.target.closest(".ed-fecha")) hist.hidden = true };
   bar.querySelector(".ed-h").onclick = function () {
     api("GET", null, "&historico=1").then(function (l) {
-      var esc = function (s) { var d = document.createElement("div"); d.textContent = s || ""; return d.innerHTML }, nome = { editar: "Mudou", remover: "Removeu", novo: "Adicionou", "mudar-novo": "Mudou", "apagar-novo": "Removeu", restaurar: "Restaurou", ordem: "Reorganizou", "novo-bloco": "Criou a categoria", "mudar-bloco": "Mudou a categoria", "apagar-bloco": "Excluiu a categoria" };
+      var esc = function (s) { var d = document.createElement("div"); d.textContent = s || ""; return d.innerHTML }, nome = { editar: "Mudou", remover: "Removeu", novo: "Adicionou", "mudar-novo": "Mudou", "apagar-novo": "Removeu", restaurar: "Restaurou", resposta: "Respondeu", ordem: "Reorganizou", "novo-bloco": "Criou a categoria", "mudar-bloco": "Mudou a categoria", "apagar-bloco": "Excluiu a categoria" };
       hist.innerHTML = '<div><button type="button" class="ed-fecha">Fechar</button><h2>Histórico</h2><ol>' + (l.length ? l.slice(0, 100).map(function (x) { return "<li>" + esc(nome[x.tipo] || x.tipo) + (x.tipo === "ordem" ? " itens" : ": " + esc(x.texto)) + (x.antes && x.tipo === "editar" ? " <small>Antes: " + esc(x.antes) + "</small>" : "") + "<small>" + esc(x.quem) + " · " + esc(x.p) + " · " + new Date(x.quando).toLocaleString("pt-BR") + "</small></li>" }).join("") : "<li>Nenhuma mudança ainda.</li>") + "</ol></div>";
       hist.hidden = false;
     }).catch(function () { aviso("Não carregou o histórico") });
@@ -170,5 +189,5 @@
 
   crypto.subtle.digest("SHA-256", Uint8Array.from(atob(g), function (c) { return c.charCodeAt(0) })).then(function (b) {
     TOKEN = hx(b); return api("GET");
-  }).then(function (d) { BASE = Object.assign({ edits: {}, novos: {}, ordem: {}, blocos: {} }, d); document.body.appendChild(bar); document.body.appendChild(hist); document.body.appendChild(msg); render(); document.dispatchEvent(new Event("tv-editado")) }).catch(function () {});
+  }).then(function (d) { BASE = Object.assign({ edits: {}, novos: {}, ordem: {}, blocos: {}, resp: {} }, d); document.body.appendChild(bar); document.body.appendChild(hist); document.body.appendChild(msg); render(); document.dispatchEvent(new Event("tv-editado")) }).catch(function () {});
 })();
