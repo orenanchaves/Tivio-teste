@@ -20,6 +20,16 @@ taxas de previdência. Este arquivo lista só o que ainda não está fechado.
 
 ---
 
+## 1b. Atualizar todos os PPTs
+
+- [ ] Rodar a edição completa (`python run.py`) e conferir **todos os PPTs** do mês:
+      os 18 decks, os 13 relatórios de gestão em PPTX e os Informativos do HGD30 e do HYD60.
+- [ ] Tivio Conecta e Conexão ALT 180: puxar a rentabilidade pelas cotas diárias da
+      CVM (CNPJ 60.173.255/0001-88); hoje o slide mantém os números do modelo.
+- [ ] Deck do Conexão Bradesco (HGD30 PGBL/VGBL, CNPJ 59.888.171/0001-41): mesma fonte.
+- [ ] Trocar o texto provisório (lorem ipsum) do `comentarios.md` antes de publicar:
+      a rodada avisa no log quais fundos estão com ele.
+
 ## 2. Dados que ainda não chegam na automação
 
 | O que | Onde aparece | O que falta |
