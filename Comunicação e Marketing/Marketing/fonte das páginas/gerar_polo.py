@@ -58,7 +58,7 @@ FRENTES_E = [("Coordenação, Design estratégico &amp; Automação", "Renan Cha
              ("Design operacional &amp; Produção", "Gabriel Fiorilli", ["Peças de social a partir do KV e dos templates", "Desdobramentos e formatos", "Vídeo e motion", "Ajustes e versões finais"])]
 _org = ('<div class="org"><div class="org-n vidro"><span>Direção</span><b>Enrico Trotta</b></div><i class="org-l"></i>'
         '<div class="org-n vidro"><span>Coordenação, Design estratégico &amp; Automação</span><b>Renan Chaves</b></div><i class="org-l"></i>'
-        '<div class="org-3 org-2"><div class="org-n vidro"><span>Conteúdo &amp; Comunicação</span><b>Fernanda Acquati</b></div><div class="org-col"><div class="org-n vidro"><span>Design operacional &amp; Produção</span><b>Gabriel Fiorilli</b></div><i class="org-l"></i><div class="org-n org-ext"><span>Agência parceira</span><b>ColaAí</b><em>Vídeo, carrosséis e tráfego pago</em></div></div></div>'
+        '<div class="org-3 org-fim"><div class="org-n vidro"><span>Design operacional &amp; Produção</span><b>Gabriel Fiorilli</b></div><div class="org-n vidro"><span>Conteúdo &amp; Comunicação</span><b>Fernanda Acquati</b></div><div class="org-n org-ext"><span>Agência parceira</span><b>ColaAí</b><em>Vídeo, carrosséis e tráfego pago</em></div></div>'
         '<div class="org-t"><span>Eventos</span>Fernanda Acquati, de ponta a ponta</div></div>')
 _antes = ('<div class="org"><div class="org-n vidro"><span>Direção</span><b>Enrico Trotta</b></div><i class="org-l"></i>'
           '<div class="org-n vidro org-hub"><span>Hub da área</span><b>Cesar Medeiros</b></div><i class="org-l"></i>'

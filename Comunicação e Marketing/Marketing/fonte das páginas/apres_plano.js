@@ -25,9 +25,21 @@
     if (cu) {
       var ks = [].slice.call(N.querySelectorAll("#custo ~ .kpis .kpi")).slice(0, 4);
       var conta = function (txt) { var m = txt.match(/^R\$ ([\d.]+)( mil)?$/); return m ? ' data-conta="' + m[1].replace(/\./g, "") + '" data-suf="' + (m[2] || "") + '"' : "" };
-      S.push({ sec: "Estrutura", h: "O custo da agência, <strong>diluído</strong>", html: '<div class="sl-cu"><div class="sl-g c4 cmp num">' + ks.map(function (k) { var b = t(k.querySelector("b")); return "<div><b" + conta(b) + ">" + esc(b) + "</b><span>" + esc(t(k.querySelector("span"))) + "</span></div>" }).join("")
-        + '</div><div class="cu-wrap"><div class="cu-bar">' + [].map.call(cu.querySelectorAll(".cu-bar i"), function (x) { return '<i class="' + x.className + '" style="' + x.getAttribute("style") + '"></i>' }).join("") + '</div><div class="cu-ag"><b>Agência hoje</b><span>R$ 32 mil por mês</span></div></div>'
-        + '<div class="cu-l">' + [].map.call(cu.querySelectorAll(".cu-i"), function (x) { var b = t(x.querySelector("b")); return '<div class="cu-i"><i class="' + x.querySelector("i").className + '"></i><span>' + esc(t(x.querySelector("span"))) + "</span><b" + conta(b) + ">" + esc(b) + "</b></div>" }).join("") + "</div></div>" });
+      // hoje: uma barra só da agência; 2027: a mesma barra dividida, com chave em cima e legenda alinhada embaixo
+      var seg = [].slice.call(cu.querySelectorAll(".cu-bar i")), its = [].slice.call(cu.querySelectorAll(".cu-i"));
+      var pc = function (x) { return parseFloat(x.getAttribute("style").replace(/[^\d.]/g, "")) || 0 };
+      var usa = seg.filter(function (x) { return !x.classList.contains("cu-5") }).reduce(function (a, x) { return a + pc(x) }, 0);
+      var kt = function (n) { var b = ks[n] ? t(ks[n].querySelector("b")) : ""; return "<b" + conta(b) + ">" + esc(b) + "</b> " + esc(ks[n] ? t(ks[n].querySelector("span")) : "") };
+      var item = function (x) { var b = t(x.querySelector("b")); return '<div class="cu-i"><i class="' + x.querySelector("i").className + '"></i><span>' + esc(t(x.querySelector("span"))) + "</span><b" + conta(b) + ">" + esc(b) + "</b></div>" };
+      var livre = its.filter(function (x) { return x.querySelector("i.cu-5") }), pagos = its.filter(function (x) { return !x.querySelector("i.cu-5") });
+      S.push({ sec: "Estrutura", h: "O custo da agência, <strong>diluído</strong>", html: '<div class="sl-cu2">'
+        + '<div class="cu-lin cu-hoje"><p class="cu-rot">Hoje</p><div class="cu-barra"><i class="cu-ag2"><b>Agência</b><span>' + kt(0) + "</span></i></div></div>"
+        + '<div class="cu-lin cu-novo"><p class="cu-rot">Em 2027</p><div class="cu-col">'
+        + '<div class="cu-chave"><div style="width:' + usa + '%"><p>' + kt(1) + '</p></div><div style="width:' + (100 - usa) + '%"><p>' + kt(2) + "</p></div></div>"
+        + '<div class="cu-barra">' + seg.map(function (x) { return '<i class="' + x.className + '" style="width:' + pc(x) + '%"></i>' }).join("") + "</div>"
+        + '<div class="cu-leg"><div style="width:' + usa + '%">' + pagos.map(item).join("") + '</div><div style="width:' + (100 - usa) + '%">' + livre.map(item).join("") + "</div></div>"
+        + "</div></div>"
+        + '<p class="cu-tot">' + kt(3) + "</p></div>" });
     }
     var te = N ? blocos(N.querySelector(".teses")) : [];
     if (te.length) S.push({ sec: "Por que", h: "Por que <strong>assim</strong>", html: '<div class="sl-g c3 cmp tes">' + te.map(function (f) { return "<div><b>" + esc(t(f.querySelector("h3"))) + "</b><span>" + esc(t(f.querySelector(".dono"))) + "</span><ul>" + itens(f.querySelector("ul"), 3) + "</ul></div>" }).join("") + "</div>" });
