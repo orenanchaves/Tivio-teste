@@ -74,14 +74,10 @@
         + '<div class="fx-t"><p class="fx-m">' + esc(t(f.querySelector(".fr-m"))) + '</p><p class="fx-d">' + esc(t(f.querySelector(".dono"))) + '</p>' + (t(f.querySelector(".fr-x")) ? '<p class="fx-x">' + esc(t(f.querySelector(".fr-x"))) + "</p>" : "") + '<ol class="fx-l">' + [].filter.call(f.querySelectorAll("ul>li"), function (li) { return !li.hidden && t(li) }).slice(0, 5).map(function (li) { var ex = li.querySelector(".fr-ex"), c = li.cloneNode(true); [].forEach.call(c.querySelectorAll(".fr-ex,.ed-x,.ed-g,.ed-r"), function (x) { x.remove() }); return "<li><div>" + esc(t(c)) + (ex ? "<small>" + esc(t(ex)) + "</small>" : "") + "</div></li>" }).join("") + "</ol>"
         + (meses.length ? '<div class="fx-tira" aria-label="Meses com entrega">' + tira + "</div>" : "") + "</div></div>" });
     });
-    // sugestão de site novo: menu por tema e por público, estruturados primeiro
-    var lg = document.querySelector("header .logo"), lgH = lg ? lg.outerHTML : "<b>TIVIO</b>";
-    var menu = ["Crédito Estruturado", "Fundos", "Para assessores", "Para investidores", "Conteúdo", "Eventos", "Sobre"];
-    S.push({ sec: "2027 · Digital", fora: 1, h: "Sugestão de <strong>site novo</strong>", html: '<div class="sn"><div class="sn-nav"><i></i><i></i><i></i><span>tiviocapital.com.br</span></div>'
-      + '<header class="sn-h"><span class="sn-logo">' + lgH + '</span><nav>' + menu.map(function (x, n) { return '<a style="--n:' + n + '"' + (n === 0 ? ' class="on"' : "") + ">" + x + "</a>" }).join("") + '</nav><b class="sn-cta">Fale com a gente</b></header>'
-      + '<div class="sn-hero"><div><p class="sn-e">Crédito estruturado</p><p class="sn-t">O risco explicado <strong>antes do retorno</strong></p><p class="sn-s">FIDC, CRI e crédito privado por quem estrutura, com dado próprio e o gestor na frente.</p><p class="sn-b"><b>Conhecer os fundos</b><span>Sou assessor</span></p></div>'
-      + '<div class="sn-cards"><div><small>Hub</small><b>Estruturados de A a Z</b></div><div><small>Panorama</small><b>O mercado de estruturados no trimestre</b></div><div><small>Próximo evento</small><b>Como ler um FIDC</b></div></div></div></div>'
-      + '<p class="sn-nota">Hoje Crédito Estruturado fica dentro de Fundos. A sugestão leva estruturados para o primeiro item do menu e abre caminhos por público.</p>' });
+    // sugestão de site novo: o que muda e o botão que abre a página com o site reorganizado
+    var muda = [["Menu por tema e por público", "Crédito Estruturado vira o primeiro item; hoje ele fica dentro de Fundos"], ["Um caminho para cada público", "Assessor, investidor e institucional, cada um com o que procura"],
+      ["Hub de estruturados", "Guias de FIDC, CRI e cascata para disputar o Google e as IAs"], ["Panorama e eventos com inscrição", "Dado próprio em troca do contato e página para onde o tráfego pago leva"]];
+    S.push({ sec: "2027 · Digital", fora: 1, h: "Sugestão de <strong>site novo</strong>", html: '<div class="sn2"><div class="sl-g c4 cmp">' + muda.map(function (m) { return "<div><b>" + m[0] + "</b><span>" + m[1] + "</span></div>" }).join("") + '</div><a class="sn2-b" href="site-novo.html" target="_blank">Abrir a sugestão de site novo <span aria-hidden="true">↗</span></a></div>' });
     // gráfico: posts por mês de cada segmento
     var sg = N ? [].filter.call(N.querySelectorAll(".seg6>.sub"), vis) : [];
     if (sg.length) {
@@ -107,12 +103,17 @@
     var ev = ms.map(function (m) { var e = m.querySelector('.tl-i[data-c="2"] span'), q = e && t(e).match(/^(\d+) eventos?/); return [t(m.querySelector("h3")).slice(0, 3), q ? +q[1] : 0] });
     var tot = ev.reduce(function (s, x) { return s + x[1] }, 0);
     // gráfico: caminho do número e metas das redes (hoje até a meta)
-    var COMO = ["Impressões, visitas e seguidores, no painel mensal das redes e do site", "Formulário das landings, dos eventos e da newsletter, sempre com a origem", "Pedido de conversa que o comercial recebe em até 2 dias", "Quanto os contatos aplicaram em até 90 dias, em R$, com o comercial"];
     var fu = N ? [].slice.call(N.querySelectorAll(".fu-i")) : [], mt = N ? [].slice.call(N.querySelectorAll(".mt-r")) : [];
-    if (fu.length || mt.length) S.push({ sec: "2027", h: "Como vamos <strong>medir</strong>", html: '<p class="med-lead">Todo mês, no painel: quantos viram, quantos deixaram contato, quantos pediram reunião e quanto foi captado.</p><div class="sl-med"><div class="fun">' + fu.map(function (x, k) { return '<div style="--w:' + (100 - k * 14) + '%"><b>' + esc(t(x.querySelector("b"))) + "</b><span>" + esc(t(x.querySelector("span"))) + "</span>" + (COMO[k] ? "<small>" + COMO[k] + "</small>" : "") + "</div>" }).join("") + '</div><div class="met"><b class="met-t">Metas das redes até dez/27</b>' + mt.slice(0, 5).map(function (x) {
+    var ETAPA = [["Impressões, visitas ao site e novos seguidores", "Painel mensal das redes e do site", "Saber se o conteúdo chega ao assessor e ao investidor certo"],
+      ["Formulários das landings, inscrições de evento e newsletter", "Formulário que guarda a origem: post, campanha ou evento", "Saber qual ação traz gente de verdade, e não só curtida"],
+      ["Pedidos de conversa que o comercial aceita", "Repasse ao comercial em até 2 dias, com o histórico do contato", "Medir se o contato vira oportunidade"],
+      ["Aplicações dos contatos em até 90 dias, em R$", "Cruzamento mensal com o comercial", "Mostrar quanto o marketing trouxe de dinheiro"]];
+    if (fu.length) S.push({ sec: "2027", h: "Como vamos <strong>medir</strong>", html: '<p class="med-lead">Cada pessoa passa por quatro etapas. Todo mês, no painel, contamos quantas chegaram a cada uma.</p><div class="fn"><div class="fn-h"><span></span><b>O que conta</b><b>Onde medimos</b><b>Para que serve</b></div>'
+      + fu.map(function (x, k) { var e = ETAPA[k] || ["", "", ""]; return '<div class="fn-r" style="--k:' + k + '"><p class="fn-e" style="--w:' + (100 - k * 13) + '%"><b>' + esc(t(x.querySelector("b"))) + "</b><span>" + esc(t(x.querySelector("span"))) + "</span></p><p>" + e[0] + "</p><p>" + e[1] + "</p><p>" + e[2] + "</p></div>" }).join("") + "</div>" });
+    if (mt.length) S.push({ sec: "2027", fora: 1, h: "Metas das redes <strong>até dez/27</strong>", html: '<div class="sl-med met-2"><div class="met met-so"><b class="met-t">De hoje até a meta</b>' + mt.slice(0, 7).map(function (x) {
       var e = t(x.querySelector("em")).split(" a "), h0 = num(e[0]), m1 = num(e[1]); var pc = h0 !== null && m1 ? Math.min(100, Math.round(h0 / m1 * 100)) : 0;
       return '<div><span>' + esc(t(x.querySelector("span"))) + '</span><i style="--w:' + pc + '%"></i><em>' + esc(e[0]) + " → <strong>" + esc(e[1] || "") + "</strong></em></div>";
-    }).join("") + "</div></div>" });
+    }).join("") + '</div></div><p class="sl-nota">Proposta do time de Comunicação &amp; Marketing, a validar.</p>' });
     // resumo de tudo
     var rs = [];
     var kR = N ? [].slice.call(N.querySelectorAll("#custo ~ .kpis .kpi b")).map(t) : [];
