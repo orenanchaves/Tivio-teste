@@ -264,7 +264,7 @@ _FX27 = {"Automação": "Até o fim do ano, tudo automatizado em código. No com
 _EX27 = {"Landing pages por demanda específica, com tráfego pago": "Página só de FIDC para assessores, com anúncio no LinkedIn para quem trabalha com renda fixa",
          "Tráfego para atrair gente aos eventos": "Anúncio do encontro com o Itaú para assessores da região, levando para a inscrição",
          "Fundos da Tivio espalhados no mercado, para varejo e assessores": "Página do HGD30 e do HYD60 com material pronto para o assessor mandar ao cliente",
-         "GEO e SEO: a Tivio nas IAs e nas buscas do Google": "O ChatGPT citar a Tivio ao explicar crédito estruturado, e a Tivio aparecer entre os primeiros resultados para o que é FIDC",
+         "GEO e SEO: a Tivio nas IAs e nas buscas do Google": "O ChatGPT citar a Tivio sobre crédito estruturado e a Tivio no topo do Google para o que é FIDC",
          "Plano de otimizar o site, com subida e atualização de arquivos automatizada": "Relatórios, lâminas e materiais do mês sobem para o site direto do AutomaTivio, sem envio manual"}
 _num27 = [("Automação", "Horas do time por edição", "A medir"), ("Automação", "Materiais gerados por rodada", "81, em set/2026"), ("Automação", "Correções depois de publicar", "A medir"),
           ("Eventos", "Eventos realizados", "23 no orçamento de 2027"), ("Eventos", "Inscritos, presentes e pedidos de contato", "A medir"), ("Eventos", "Captação de presentes em até 90 dias", "A medir"),
