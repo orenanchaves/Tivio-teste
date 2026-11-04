@@ -347,7 +347,7 @@ _SEG = [("Crédito Estruturado", "credito-estruturado", "Mostrar como a casa est
         ("Previdência", "previdencia", "HGD30 e HYD60 para quem planeja o longo prazo", "3 posts por mês"),
         ("Marca e eventos", "marca-e-eventos", "A Tivio como lugar de encontro do mercado de estruturados", "4 posts por mês")]
 _TESES = [("O espaço existe", "Ninguém é dono do tema crédito estruturado na cabeça do assessor e do investidor. Quem ocupar primeiro vira a referência.",
-           "Só 3 de 14 posts de outubro falaram de estruturados; no nosso site o tema fica escondido dentro de Fundos; a Solis só fala de FIDC", ["Estruturados como foco do ano", "Hub de estruturados no site", "SEO e GEO para disputar o termo"]),
+           "Só 3 de 14 posts de outubro falaram de estruturados; no nosso site o tema fica escondido dentro de Fundos", ["Estruturados como foco do ano", "Hub de estruturados no site", "SEO e GEO para disputar o termo"]),
           ("Quem explica o risco ganha", "Estruturado assusta porque parece complexo. Quem explica o risco com clareza ganha a confiança antes de falar de retorno.",
            "Oaktree e Janus Henderson abrem pelo risco; o nosso Deep Dive foi bem, com 15 curtidas, mas ficou 11 meses sem nova edição; só 1 das 10 Cartas de 2026 falou de estruturados", ["Raio X do Mercado a cada trimestre", "Deep Dive e Tivio Explica em calendário", "Simulador de cascata com carteira fictícia"]),
           ("O gargalo é quem indica", "O investidor chega pelo assessor e pelo gerente. Se eles não entendem o fundo, não indicam.",
