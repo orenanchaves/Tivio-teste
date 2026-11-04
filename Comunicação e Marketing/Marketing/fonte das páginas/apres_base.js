@@ -4,7 +4,7 @@
 window.tvDeck = function (nome, monta) {
   var A = document.getElementById("apres"), BT = document.getElementById("ap-abrir"); if (!A || !BT) return;
   function esc(s) { var d = document.createElement("div"); d.textContent = s; return d.innerHTML }
-  A.innerHTML = '<div class="ap-palco"><div class="ap-logo"></div></div><nav class="ap-ctl" aria-label="Controles da apresentação"><button type="button" class="ap-menu" aria-expanded="false">Sumário</button><button type="button" class="ap-ant" aria-label="Anterior">‹</button><span class="ap-n"></span><button type="button" class="ap-prox" aria-label="Próximo">›</button><button type="button" class="ap-sair">Sair</button></nav><div class="ap-sum" hidden></div><div class="ap-leg" aria-live="polite"></div>';
+  A.innerHTML = '<div class="ap-palco"><div class="ap-logo"></div></div><nav class="ap-ctl" aria-label="Controles da apresentação"><button type="button" class="ap-menu" aria-expanded="false">Sumário</button><button type="button" class="ap-ant" aria-label="Anterior">‹</button><span class="ap-n"></span><button type="button" class="ap-prox" aria-label="Próximo">›</button><button type="button" class="ap-tema" aria-pressed="false">Versão branca</button><button type="button" class="ap-sair">Sair</button></nav><div class="ap-sum" hidden></div><div class="ap-leg" aria-live="polite"></div>';
   var PAL = A.querySelector(".ap-palco"), LG = A.querySelector(".ap-leg"), SM = A.querySelector(".ap-sum"), MB = A.querySelector(".ap-menu"), N = A.querySelector(".ap-n"), l = [], i = 0;
   var marca = document.querySelector(".marca"); if (marca) A.querySelector(".ap-logo").innerHTML = marca.innerHTML;
   // celular em pé: o slide inteiro no alto, pequeno, e uma legenda legível embaixo com o mesmo conteúdo
@@ -54,6 +54,12 @@ window.tvDeck = function (nome, monta) {
   }
   function abrir() { l = monte(); escala(); A.hidden = false; menu(false); document.body.style.overflow = "hidden"; v(0); var R = document.documentElement; if (R.requestFullscreen) R.requestFullscreen().catch(function () {}) }
   function sair() { A.hidden = true; menu(false); document.body.style.overflow = ""; if (document.fullscreenElement) document.exitFullscreen() }
+  // versão branca: o mesmo deck com as cores do tema claro; a escolha fica guardada neste navegador
+  var TM = A.querySelector(".ap-tema");
+  function tema(claro) { A.classList.toggle("ap-claro", claro); TM.setAttribute("aria-pressed", String(claro)); TM.textContent = claro ? "Versão escura" : "Versão branca"; try { localStorage.setItem("tivio-apres-tema", claro ? "claro" : "escuro") } catch (x) {} }
+  var guardado = null; try { guardado = localStorage.getItem("tivio-apres-tema") } catch (x) {}
+  tema(guardado === "claro");
+  TM.onclick = function () { tema(!A.classList.contains("ap-claro")) };
   BT.onclick = abrir; A.querySelector(".ap-sair").onclick = sair; MB.onclick = function () { menu(SM.hidden) };
   A.querySelector(".ap-ant").onclick = function () { v(i - 1) }; A.querySelector(".ap-prox").onclick = function () { v(i + 1) };
   A.addEventListener("click", function (e) { var b = e.target.closest && e.target.closest("[data-ir]"); if (b) { v(+b.dataset.ir); menu(false) } });
