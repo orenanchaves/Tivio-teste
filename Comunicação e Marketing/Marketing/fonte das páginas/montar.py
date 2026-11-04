@@ -198,7 +198,7 @@ def _comentarios_md():
     if not p.exists():
         return "{}"
     t = re.sub(r"<!--.*?-->", "", p.read_text(encoding="utf-8"), flags=re.S)
-    cab = list(re.finditer(r"(?m)^#{2,3}[ 	]+(.+?)[ 	]*$", t))
+    cab = list(re.finditer(r"(?m)^#{1,6}[ 	]+(.+?)[ 	]*$", t))
     out = {}
     for i, m in enumerate(cab):
         nome = m.group(1).strip()
