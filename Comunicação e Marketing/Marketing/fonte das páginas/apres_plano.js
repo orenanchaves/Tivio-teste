@@ -77,7 +77,7 @@
     // sugestão de site novo: o que muda e o botão que abre a página com o site reorganizado
     var muda = [["Menu por tema e por público", "Crédito Estruturado vira o primeiro item; hoje ele fica dentro de Fundos"], ["Um caminho para cada público", "Assessor, investidor e institucional, cada um com o que procura"],
       ["Hub de estruturados", "Guias de FIDC, CRI e cascata para disputar o Google e as IAs"], ["Panorama e eventos com inscrição", "Dado próprio em troca do contato e página para onde o tráfego pago leva"]];
-    S.push({ sec: "2027 · Digital", fora: 1, h: "Sugestão de <strong>site novo</strong>", html: '<div class="sn2"><div class="sl-g c4 cmp">' + muda.map(function (m) { return "<div><b>" + m[0] + "</b><span>" + m[1] + "</span></div>" }).join("") + '</div><a class="sn2-b" href="site-novo.html" target="_blank">Abrir a sugestão de site novo <span aria-hidden="true">↗</span></a></div>' });
+    S.push({ sec: "2027 · Digital", fora: 1, h: "Sugestão de <strong>site novo</strong>", html: '<div class="sn2"><div class="sl-g c4 cmp">' + muda.map(function (m) { return "<div><b>" + m[0] + "</b><span>" + m[1] + "</span></div>" }).join("") + '</div><a class="sn2-b" href="site-novo.html">Abrir a sugestão de site novo <span aria-hidden="true">›</span></a></div>' });
     // gráfico: posts por mês de cada segmento
     var sg = N ? [].filter.call(N.querySelectorAll(".seg6>.sub"), vis) : [];
     if (sg.length) {
