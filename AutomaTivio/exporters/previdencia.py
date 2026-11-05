@@ -6,7 +6,7 @@ INFORMATIVO (PPTX + PDF)
   um desenho novo: aqui só se trocam os números, o mês e o texto do gestor,
   com a formatação de cada caixa preservada. Gráficos nativos (rating,
   composição) recebem os dados novos; a imagem de setores é redesenhada no
-  mesmo estilo. O HYD60 ganha a página de rentabilidade (tabela + histórico).
+  mesmo estilo. O HGD30 e o HYD60 ganham a página de rentabilidade (tabela + histórico).
   O PDF sai do próprio PowerPoint (Windows com Office); sem ele, só o PPTX.
 
       saida/AAAA-MM/informativos/Informativo - HGD30 - Setembro 2026.pptx / .pdf
@@ -44,6 +44,7 @@ MAPAS = {
         'rating': (5, 'Chart 6'),
         'composicao': (5, 'Chart 10'),
         'setorial': (5, 'Imagem 20'),
+        'pagina_rentabilidade': 5,        # entra logo depois desta página
     },
     'hyd60': {
         'texto': (2, 'CaixaDeTexto 1'),
@@ -437,7 +438,14 @@ def _pagina_rentabilidade(prs, depois_de, d, larg_pt=540):
         ch.font.size = Pt(8)
         ch.font.name = 'Versos'
         ch.font.color.rgb = RGBColor(0x59, 0x59, 0x59)
-        for se, cor, w in zip(ch.plots[0].series, (RGBColor(0x4B, 0x9D, 0x74), RGBColor(0x92, 0xD3, 0xAB)), (2.25, 1.75)):
+        from pptx.enum.chart import XL_LABEL_POSITION
+        # rótulos do fim: o maior acima da linha e o menor abaixo, para os dois
+        # números não ficarem um em cima do outro quando fundo e CDI andam juntos
+        fins = [h['f'][-1], h['c'][-1]]
+        posicoes = [XL_LABEL_POSITION.ABOVE if v >= min(fins) and v == max(fins) else XL_LABEL_POSITION.BELOW for v in fins]
+        if fins[0] == fins[1]:
+            posicoes = [XL_LABEL_POSITION.ABOVE, XL_LABEL_POSITION.BELOW]
+        for se, cor, w, pos in zip(ch.plots[0].series, (RGBColor(0x4B, 0x9D, 0x74), RGBColor(0x92, 0xD3, 0xAB)), (2.25, 1.75), posicoes):
             se.format.line.color.rgb = cor
             se.format.line.width = Pt(w)
             se.smooth = False
@@ -447,8 +455,7 @@ def _pagina_rentabilidade(prs, depois_de, d, larg_pt=540):
             pt.data_label.font.size = Pt(8)
             pt.data_label.font.bold = True
             pt.data_label.font.color.rgb = cor
-            from pptx.enum.chart import XL_LABEL_POSITION
-            pt.data_label.position = XL_LABEL_POSITION.RIGHT
+            pt.data_label.position = pos
         va = ch.value_axis
         va.has_major_gridlines = True
         va.major_gridlines.format.line.color.rgb = RGBColor(0xD9, 0xD9, 0xD9)

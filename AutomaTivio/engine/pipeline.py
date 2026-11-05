@@ -145,9 +145,10 @@ class Pipeline:
     # ------------------------------------------------------------------ saída
     @property
     def pasta_saida(self):
-        # a edição completa (Central, materiais interativos, tudo) fica no
-        # histórico do mês; _Atual é montada a partir dela (engine/publicacao.py)
-        return os.path.join(RAIZ, 'saida', '_Historico', self.edicao.competencia)
+        # a edição completa (Central, materiais interativos, tudo) fica em
+        # _Trabalho; _Atual e _Historico/AAAA-MM saem dela com a mesma estrutura
+        # por área (engine/publicacao.py)
+        return os.path.join(RAIZ, 'saida', '_Trabalho', self.edicao.competencia)
 
     def _destino(self, *partes):
         return os.path.join(self.pasta_saida, *partes)
@@ -551,6 +552,14 @@ class Pipeline:
         destino = self._destino(f'conferencia_{self.edicao.competencia}.xlsx')
         self.conf.gravar(contextos, self.cadastro, self.taxas, destino)
         self.log.gerado(destino, 'xlsx')
+        # portal de conferência: todos os dados da edição num HTML (exporters/portal_dados.py)
+        try:
+            from exporters.portal_dados import gerar_portal
+            portal = self._destino(f'portal_dados_{self.edicao.competencia}.html')
+            gerar_portal(contextos, self.conf, self.log, self.edicao, self.cfg, portal)
+            self.log.gerado(portal, 'html')
+        except Exception as e:
+            self.log.aviso('portal', f'portal de dados não gerado: {e!r}')
         caminho = self.log.gravar()
         # o log também vai para a pasta da edição, junto do material
         try:
@@ -562,7 +571,7 @@ class Pipeline:
     def _atual(self):
         """saida/_Atual/: a edição do mês por área e com nome fixo, sempre no
         mesmo caminho (engine/publicacao.py). A edição completa continua em
-        saida/_Historico/AAAA-MM/ e a Central abre por Interno/Abrir a Central.html."""
+        saida/_Trabalho/AAAA-MM/ e a Central abre por Interno/Abrir a Central.html."""
         if not self.cfg['saidas'].get('atual', True):
             return
         if self.so_fundos:
@@ -575,3 +584,10 @@ class Pipeline:
             print(f'  _Atual: {n} arquivos em saida/_Atual/ ({self.edicao.mes_ano})')
         except Exception as e:
             print(f'  AVISO: saida/_Atual/ não atualizada ({e!r}); feche arquivos abertos dela e rode de novo')
+        # o histórico do mês: a mesma estrutura da _Atual, guardada por mês
+        hist = os.path.join(RAIZ, 'saida', '_Historico', self.edicao.competencia)
+        try:
+            n = montar_atual(self.pasta_saida, hist, self.cadastro, self.edicao, self.log, limpar='estrutura')
+            print(f'  _Historico: {n} arquivos em saida/_Historico/{self.edicao.competencia}/')
+        except Exception as e:
+            print(f'  AVISO: saida/_Historico/{self.edicao.competencia}/ não atualizada ({e!r})')

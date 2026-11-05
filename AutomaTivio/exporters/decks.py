@@ -1410,6 +1410,89 @@ def _poe_formato_categoria(chart, formato):
         el.text = formato
 
 
+def _sem_rotulo(chart, pontos):
+    """Apaga o rótulo de dados dos `pontos` (índices) da 1ª série do gráfico."""
+    from lxml import etree
+    C = '{http://schemas.openxmlformats.org/drawingml/2006/chart}'
+    ser = chart._chartSpace.find(f'.//{C}ser')
+    if ser is None or not pontos:
+        return
+    dl = ser.find(f'{C}dLbls')
+    if dl is None:
+        return
+    for k in sorted(pontos, reverse=True):
+        velho = [x for x in dl.findall(f'{C}dLbl') if x.find(f'{C}idx') is not None and x.find(f'{C}idx').get('val') == str(k)]
+        for x in velho:
+            dl.remove(x)
+        novo = etree.SubElement(dl, f'{C}dLbl')
+        etree.SubElement(novo, f'{C}idx').set('val', str(k))
+        etree.SubElement(novo, f'{C}delete').set('val', '1')
+        dl.remove(novo)
+        dl.insert(0, novo)                 # dLbl vem antes das opções gerais
+
+
+def _rotulos_negativos(slide):
+    """Barras com valor negativo: o modelo põe o rótulo do negativo acima do zero
+    com uma linha de chamada, que fica solta e embola com o vizinho. Sai a linha
+    e o deslocamento manual: o rótulo fica colado na barra, como os outros."""
+    C = '{http://schemas.openxmlformats.org/drawingml/2006/chart}'
+    for sh, _ in _shapes(slide.shapes):
+        if not (getattr(sh, 'has_chart', False) and sh.has_chart):
+            continue
+        ch = sh.chart
+        if not any(t in str(ch.chart_type) for t in ('BAR', 'COLUMN')):
+            continue
+        for ser in ch._chartSpace.findall(f'.//{C}ser'):
+            vals = {}
+            for pt in ser.findall(f'{C}val//{C}pt'):
+                try:
+                    vals[pt.get('idx')] = float(pt.findtext(f'{C}v'))
+                except (TypeError, ValueError):
+                    pass
+            dl = ser.find(f'{C}dLbls')
+            if dl is None or not any(v < 0 for v in vals.values()):
+                continue
+            # o deslocamento manual do modelo fica (o rótulo acima do zero, longe
+            # do nome da categoria); só a linha de chamada sai
+            for sl in dl.iter():               # c: e c15: (extensão do Office 2013)
+                if isinstance(sl.tag, str) and sl.tag.endswith('}showLeaderLines'):
+                    sl.set('val', '0')
+    _pct_duas_casas(slide)
+
+
+def _pct_duas_casas(slide):
+    """Gráfico em %: todo rótulo de dados com duas casas ("6,08%", "73,00%").
+    O código do formato usa ponto; o PowerPoint em português mostra a vírgula."""
+    from lxml import etree
+    C = '{http://schemas.openxmlformats.org/drawingml/2006/chart}'
+    for sh, _ in _shapes(slide.shapes):
+        if not (getattr(sh, 'has_chart', False) and sh.has_chart):
+            continue
+        cs = sh.chart._chartSpace
+        for ser in cs.findall(f'.//{C}ser'):
+            dl = ser.find(f'{C}dLbls')
+            if dl is None:
+                continue
+            fmts = [n.get('formatCode') or '' for n in ser.iter(f'{C}numFmt')] + \
+                   [(x.text or '') for x in ser.iter(f'{C}formatCode')]
+            pct = any(x.get('val') == '1' for x in dl.iter(f'{C}showPercent'))
+            if not (pct or any('%' in f for f in fmts)):
+                continue
+            alvos = [dl] + [x for x in dl.findall(f'{C}dLbl') if x.find(f'{C}delete') is None]
+            for a in alvos:
+                nf = a.find(f'{C}numFmt')
+                if nf is None:
+                    nf = etree.Element(f'{C}numFmt')
+                    # numFmt vem logo depois do idx/delete/layout/tx no dLbl e primeiro no dLbls
+                    pos = 0
+                    for i, filho in enumerate(a):
+                        if filho.tag in (f'{C}idx', f'{C}layout', f'{C}tx'):
+                            pos = i + 1
+                    a.insert(pos, nf)
+                nf.set('formatCode', '0.00%')
+                nf.set('sourceLinked', '0')
+
+
 def _sem_vinculo(chart):
     """replace_data não aceita gráfico com a planilha externa vinculada."""
     cs = chart._chartSpace
@@ -1951,6 +2034,19 @@ def _verificar(prs, edicao, nome, log):
                 m = rx.search(t)
                 if m:
                     log.erro(nome, f'deck: {oque} no slide {i}: {m.group(0)}')
+    # selo "<Mês> de <ano>" que mora no layout e aparece nos slides que o usam
+    mes_ok = f'{fmt.MESES[edicao.db.month - 1]} de {edicao.db.year}'.lower()
+    selo = re.compile(r'\s*(' + '|'.join(fmt.MESES) + r')\s+de\s+\d{4}\s*', re.I)
+    vistos = set()
+    for i, slide in enumerate(prs.slides, 1):
+        lay = slide.slide_layout
+        if id(lay) in vistos:
+            continue
+        vistos.add(id(lay))
+        for sh, _ in _shapes(lay.shapes):
+            t = ' '.join(_texto(sh).split())
+            if selo.fullmatch(t) and t.lower() != mes_ok:
+                log.erro(nome, f'deck: mês vencido no layout "{lay.name}" (slide {i} em diante): {t}')
 
 
 def _taxas_prev(log):
@@ -2003,6 +2099,65 @@ def _abas_is(cadastro, edicao, log):
     return abas
 
 
+# o que cada deck recebeu, slide a slide (lido pelo portal de conferência, exporters/portal_dados.py)
+REGISTRO = []
+
+
+def _foto_slide(slide):
+    """{chave: (onde, texto)} de tudo que tem número ou data no slide: caixas de
+    texto, células de tabela e o resumo dos gráficos (última categoria e valores)."""
+    import datetime as _dt
+    out = {}
+    tem = re.compile(r'\d')
+    for sh, _ in _shapes(slide.shapes):
+        nome = sh.name or ''
+        sid = getattr(sh, 'shape_id', 0)
+        try:                                   # número da página não é dado
+            if sh.is_placeholder and 'SLIDE_NUMBER' in str(sh.placeholder_format.type):
+                continue
+        except Exception:
+            pass
+        if getattr(sh, 'has_text_frame', False) and sh.has_text_frame:
+            t = ' '.join(_texto(sh).split())
+            if tem.search(t):
+                out[(sid, nome)] = (nome, t)
+        if getattr(sh, 'has_table', False) and sh.has_table:
+            for r, row in enumerate(sh.table.rows):
+                cel = [' '.join(c.text.split()) for c in row.cells]
+                if any(tem.search(c) for c in cel):
+                    out[(sid, nome, r)] = (f'{nome} · linha {r + 1}', ' | '.join(cel))
+        if getattr(sh, 'has_chart', False) and sh.has_chart:
+            # direto no XML: o acesso por categoria do python-pptx é lento em
+            # gráfico diário (milhares de pontos)
+            try:
+                C = '{http://schemas.openxmlformats.org/drawingml/2006/chart}'
+                cs = sh.chart._chartSpace
+                series = cs.findall(f'.//{C}ser')
+                ult, n, vals = '', 0, []
+                for k, se in enumerate(series):
+                    pts = [pt for pt in se.findall(f'{C}cat//{C}pt') if (pt.findtext(f'{C}v') or '').strip()]
+                    if k == 0 and pts:
+                        n, ult = len(pts), pts[-1].findtext(f'{C}v')
+                    vp = se.findall(f'{C}val//{C}pt')
+                    sn = (se.findtext(f'{C}tx//{C}v') or '').strip()
+                    if vp:
+                        try:
+                            fv = float(vp[-1].findtext(f"{C}v"))
+                            vals.append(f'{sn}: ' + (fmt.num(fv, 0) if abs(fv) >= 1e5 else fmt.num(fv, 4).rstrip('0').rstrip(',')))
+                        except (TypeError, ValueError):
+                            pass
+                try:
+                    f = float(ult)
+                    if 30000 < f < 60000:
+                        ult = (_dt.date(1899, 12, 30) + _dt.timedelta(days=int(f))).strftime('%d/%m/%Y')
+                except (TypeError, ValueError):
+                    pass
+                out[(sid, nome, 'g')] = (f'{sh.name} (gráfico)', f'{n} pontos, último {ult}; ' + '; '.join(vals))
+            except Exception:
+                pass
+    return out
+
+
 def exportar_decks(contextos, cadastro, edicao, destino, log, so=None, pdf=True, indicadores=None):
     from pptx import Presentation
     from exporters.decks_extras import Extras
@@ -2044,6 +2199,7 @@ def _um_deck(d, modelo, contextos, cadastro, edicao, destino, log, pdf, indicado
         if opc.get('remover'):           # slide sem dados automáticos: não sai vencido
             _remove_slide(prs, slide)
             continue
+        foto0 = _foto_slide(slide)
         # deck de um fundo só (`fundo:` no deck): vale para todo slide que
         # não diga o contrário. Nos decks novos o "Por que…?" vem quebrado
         # em caixas e o nome do fundo é imagem: o título não identifica.
@@ -2089,9 +2245,17 @@ def _um_deck(d, modelo, contextos, cadastro, edicao, destino, log, pdf, indicado
         ext.periodo(slide, ctx)
         ext.taxa_prev(slide, ctx)
         ext.abas_is(slide, ctx, abas_is)
+        _rotulos_negativos(slide)
         ext.familia(slide, pre.ctx)
         if d.get('mes_em_todos') and i > 0:
             ext.mes(slide)
+        foto1 = _foto_slide(slide)
+        for k in list(foto0) + [k for k in foto1 if k not in foto0]:
+            onde = (foto0.get(k) or foto1.get(k))[0]
+            antes = foto0.get(k, (onde, ''))[1]
+            depois = foto1.get(k, (onde, '(saiu)'))[1]
+            REGISTRO.append({'deck': d['nome'], 'slide': i + 1, 'onde': onde, 'antes': antes,
+                             'depois': depois, 'estado': 'trocado' if antes != depois else 'igual ao modelo'})
         # sem comentário do mês, os slides dele saem do deck
         if d.get('comentario') == 'gestor' and ext.comentario(slide, ctx):
             _remove_slide(prs, slide)

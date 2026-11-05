@@ -63,6 +63,7 @@ def exportar_destaques(pasta_central, destino, log, pasta_pdf=None, sufixo=''):
     """
     from playwright.sync_api import sync_playwright
     total = 0
+    todos = []                     # (vertical, páginas em 4x) para o PDF único
     with sync_playwright() as p:
         op = {'args': ['--no-sandbox', '--font-render-hinting=none',
                       '--disable-gpu', '--disable-software-rasterizer']}
@@ -103,6 +104,7 @@ def exportar_destaques(pasta_central, destino, log, pasta_pdf=None, sufixo=''):
                     total += 1
                 try:
                     import fitz
+                    todos.append((vertical, paginas_pdf))
                     pdf = fitz.open()
                     for _, b64 in paginas_pdf:
                         pagina = pdf.new_page(width=1080, height=1440)
@@ -119,4 +121,29 @@ def exportar_destaques(pasta_central, destino, log, pasta_pdf=None, sufixo=''):
                 log.info(f'  JPG+PDF  destaques/{vertical}/ ({len(cartoes)} páginas)')
         finally:
             nav.close()
+    _pdf_unico(todos, destino, log, pasta_pdf, sufixo)
     return total
+
+
+def _pdf_unico(todos, destino, log, pasta_pdf=None, sufixo=''):
+    """Todos os carrosséis num PDF só, na ordem Crédito Privado, Crédito
+    Estruturado, Investment Solutions: destaques/tivio-destaques-todos.pdf e,
+    com `pasta_pdf`, "Destaques - Todos - <Mês> <ano>.pdf"."""
+    if not todos:
+        return
+    try:
+        import fitz
+        pdf = fitz.open()
+        for _, paginas in todos:
+            for _, b64 in paginas:
+                pagina = pdf.new_page(width=1080, height=1440)
+                pagina.insert_image(pagina.rect, stream=base64.b64decode(b64))
+        os.makedirs(destino, exist_ok=True)
+        pdf.save(os.path.join(destino, 'tivio-destaques-todos.pdf'), deflate=True)
+        if pasta_pdf:
+            nome_pdf = f'Destaques - Todos{sufixo}.pdf'
+            pdf.save(os.path.join(pasta_pdf, nome_pdf), deflate=True)
+            log.info(f'  PDF  pdf/{nome_pdf} ({pdf.page_count} páginas)')
+        pdf.close()
+    except Exception as e:
+        log.aviso('destaques', f'PDF único dos destaques não gerado: {e!r}')

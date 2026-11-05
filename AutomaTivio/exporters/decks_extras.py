@@ -32,7 +32,7 @@ import yaml
 
 from calculators import formatos as fmt
 from exporters.decks import (NUM, MESES_RE, _absoluta, _shapes, _texto,
-                             _troca_grupo, _troca_trecho, _sem_vinculo)
+                             _troca_grupo, _troca_trecho, _sem_vinculo, _sem_rotulo)
 
 RAIZ = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 MESES_CURTOS = ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun',
@@ -443,7 +443,14 @@ class Extras:
     # --------------------------------------------- "Setembro de 2026" em todo slide
     def mes(self, slide):
         novo = f'{fmt.MESES[self.ed.db.month - 1]} de {self.ed.db.year}'
-        for sh, _ in _shapes(slide.shapes):
+        # o selo "Setembro de 2026" dos slides internos mora no layout ("3_Slide de
+        # Título"): sem trocar lá, os slides que não têm cópia própria mostram o mês velho
+        lay = slide.slide_layout
+        for colecao in (slide.shapes, lay.shapes, lay.slide_master.shapes):
+            self._mes_em(colecao, novo)
+
+    def _mes_em(self, colecao, novo):
+        for sh, _ in _shapes(colecao):
             if getattr(sh, 'has_text_frame', False) and sh.has_text_frame:
                 for p in sh.text_frame.paragraphs:
                     t = ''.join(r.text for r in p.runs)
@@ -653,12 +660,27 @@ class Extras:
         n = max((i + 1 for i, c in enumerate(dados[0][1]) if c not in (None, '')), default=0)
         if not n:
             return
+        idx = list(range(n))
+        pizza = any(t in str(sh.chart.chart_type) for t in ('PIE', 'DOUGHNUT'))
+        if pizza:
+            # pizza não mostra negativo: a posição vendida (FX, juros) virava uma
+            # fatia positiva e os rótulos se amontoavam no topo. Fica fora da pizza
+            # (continua na tabela e no gráfico de exposições).
+            v0 = dados[0][2]
+            idx = [i for i in idx if isinstance(v0[i], (int, float)) and v0[i] > 0]
+            if not idx:
+                return
         cd = CategoryChartData(number_format=dados[0][3])
-        cd.categories = [str(c) for c in dados[0][1][:n]]
+        cd.categories = [str(dados[0][1][i]) for i in idx]
         for nome, _, vals, _ in dados:
-            cd.add_series(str(nome), [float(v) if isinstance(v, (int, float)) else None for v in vals[:n]])
+            cd.add_series(str(nome), [float(vals[i]) if isinstance(vals[i], (int, float)) else None for i in idx])
         _sem_vinculo(sh.chart)
         sh.chart.replace_data(cd)
+        if pizza:
+            vals = [float(dados[0][2][i]) for i in idx]
+            tot = sum(vals) or 1
+            # rótulo só nas fatias de 2% ou mais; as menores ficam na legenda
+            _sem_rotulo(sh.chart, [k for k, v in enumerate(vals) if v / tot < 0.02])
         self.trocas += 1
 
     def _cascatas_is(self, slide, abas, ais):

@@ -71,8 +71,10 @@ def dados_fundo(chave, pg, ctx, edicao, textos, log=None, por_key=None):
     aloc = {n: r for n, r, _ in ctx.alocacao_hghy}
     aloc_info = {n: r for n, r, _ in ctx.alocacao_hghy_informativo}
     retornos = {a['nome']: a.get('retorno') for a in pg.get('previsao_alocacao') or []}
+    # o e-mail sai com a mesma alocação do Informativo (regra do analista na
+    # coluna `HGHY Informativo`; sem ela, a alocação de sempre)
     alocacao = [{'nome': n, 'pct': r, 'retorno': retornos.get(n)}
-                for n, r, _ in ctx.alocacao_hghy]
+                for n, r, _ in ctx.alocacao_hghy_informativo]
 
     setores = [x for x in ctx.setores_relatorio if x[0] != 'Caixa'] + \
               [x for x in ctx.setores_relatorio if x[0] == 'Caixa']

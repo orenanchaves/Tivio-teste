@@ -1,9 +1,10 @@
 # -*- coding: utf-8 -*-
 """Monta saida/_Atual/: a edição do mês organizada por área, com nome fixo.
 
-A rodada gera a edição completa em `saida/_Historico/AAAA-MM/` (a estrutura de
+A rodada gera a edição completa em `saida/_Trabalho/AAAA-MM/` (a estrutura de
 trabalho: é onde a Central e os materiais interativos se enxergam por caminho
-relativo). Esta etapa copia de lá só o que sai da empresa, por área:
+relativo). Esta etapa copia de lá só o que sai da empresa, por área, para
+`saida/_Atual/` e, com a mesma estrutura, para `saida/_Historico/AAAA-MM/`:
 
     _Atual/
       LEIA-ME.txt
@@ -12,7 +13,7 @@ relativo). Esta etapa copia de lá só o que sai da empresa, por área:
       Investment Solutions/ Redes sociais/
       Previdência/          HGD30/ HYD60/  (E-mail, Informativo, Site (Saiba mais))
       Multi-área/           E-mails de Fundos de Crédito/  Decks/
-      Interno/              Abrir a Central.html, Conferência.xlsx, Log da rodada.log
+      Interno/              Abrir a Central.html, Conferência.xlsx, Portal de dados.html, Log da rodada.log
 
 Os nomes de arquivo perdem o mês ("Tivio Banks - Relatório de Gestão.pdf"): o
 upload substitui o arquivo do mês anterior e nenhum link precisa mudar. O mês
@@ -88,12 +89,23 @@ def _vertical_por_nome(cadastro):
     return out
 
 
-def montar_atual(origem, destino, cadastro, edicao, log=None):
-    """Recria `destino` a partir da edição completa em `origem`. Devolve o nº de arquivos."""
+def montar_atual(origem, destino, cadastro, edicao, log=None, limpar='tudo'):
+    """Recria `destino` a partir da edição completa em `origem`. Devolve o nº de arquivos.
+
+    limpar='tudo' apaga `destino` inteiro (a _Atual); 'estrutura' apaga só as
+    pastas e o LEIA-ME que esta etapa cria (o histórico do mês: o que mais houver
+    lá, de rodadas antigas, fica)."""
     from exporters.decks import carregar_config
-    if os.path.isdir(destino):
+    if limpar == 'tudo' and os.path.isdir(destino):
         shutil.rmtree(destino)
-    os.makedirs(destino)
+    elif os.path.isdir(destino):
+        for nome in list(AREAS.values()) + [MULTI, 'Previdência', 'Interno', 'LEIA-ME.txt']:
+            alvo = os.path.join(destino, nome)
+            if os.path.isdir(alvo):
+                shutil.rmtree(alvo)
+            elif os.path.isfile(alvo):
+                os.remove(alvo)
+    os.makedirs(destino, exist_ok=True)
     m = _Montador(origem, destino)
     area_de = _vertical_por_nome(cadastro)
 
@@ -127,6 +139,11 @@ def montar_atual(origem, destino, cadastro, edicao, log=None):
         for nome in sorted(os.listdir(base)) if os.path.isdir(base) else []:
             if nome.startswith(f'Destaques - {area} - '):
                 m.arquivo(('pdf', nome), area, 'Redes sociais', sem_mes(nome))
+    # os três carrosséis num PDF só
+    base = os.path.join(origem, 'pdf')
+    for nome in sorted(os.listdir(base)) if os.path.isdir(base) else []:
+        if nome.startswith('Destaques - Todos - '):
+            m.arquivo(('pdf', nome), MULTI, 'Redes sociais', sem_mes(nome))
 
     # ---- e-mails de Fundos de Crédito: atravessam as áreas
     for pasta, nome in EMAILS.items():
@@ -159,6 +176,7 @@ def montar_atual(origem, destino, cadastro, edicao, log=None):
     comp = edicao.competencia
     m.arquivo((f'conferencia_{comp}.xlsx',), 'Interno', 'Conferência.xlsx')
     m.arquivo((f'{comp}-processamento.log',), 'Interno', 'Log da rodada.log')
+    m.arquivo((f'portal_dados_{comp}.html',), 'Interno', 'Portal de dados.html')
     index = os.path.join(origem, 'index.html')
     if os.path.isfile(index):
         rel = os.path.relpath(index, os.path.join(destino, 'Interno')).replace(os.sep, '/')
@@ -182,9 +200,12 @@ def montar_atual(origem, destino, cadastro, edicao, log=None):
 
 
 def _leia_me(destino, edicao, origem):
+    eh_hist = os.path.basename(os.path.dirname(destino)) == '_Historico'
+    abre = ('Esta pasta guarda a edição de ' + edicao.mes_ano + ' com a mesma estrutura da _Atual.'
+            if eh_hist else 'Esta pasta (_Atual) é sempre a edição mais recente, no mesmo caminho.')
     txt = f"""AUTOMATIVIO  |  EDIÇÃO {edicao.mes_ano.upper()}  |  DATA BASE {edicao.br}
 
-Esta pasta (_Atual) é sempre a edição mais recente, no mesmo caminho. Os nomes
+{abre} Os nomes
 dos arquivos não têm o mês: ao publicar, o arquivo novo substitui o do mês
 anterior e os links continuam valendo. A edição completa (Central, materiais
 interativos, tudo o que foi gerado) fica em:
