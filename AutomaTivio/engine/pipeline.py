@@ -390,6 +390,8 @@ class Pipeline:
                 except Exception as e:
                     self.log.erro(nome, f'{e!r} — copiado sem alteração')
                     novo = original
+            if nome.startswith('tivio-post-'):
+                novo = _imagens_embutidas(novo, self.log)
             destino = self._destino('central', nome)
             exp_html.gravar(novo, destino, self.log)
             if atualiza and novo == original and chave:
@@ -624,3 +626,33 @@ def _replace_api(competencia):
                 nome, f = conv[campo]
                 out.setdefault(str(chave), {})[nome] = f(valor)
     return out
+
+
+def _imagens_embutidas(html, log=None):
+    """Fundos e selos dos posts de Destaques (tivio.com) embutidos no HTML.
+
+    O navegador só desenha imagem de outro site no canvas com CORS liberado; a
+    página tentava o tivio.com e depois três proxies públicos. Numa rede que
+    bloqueia os proxies, a capa saía sem o grafismo no Pacote JPG/PDF. Com a
+    cópia local em assets/destaques/ (mesmo nome de arquivo), a imagem vai no
+    próprio HTML e não depende de rede nenhuma."""
+    import base64, mimetypes, re as _re
+    pasta = os.path.join(RAIZ, 'assets', 'destaques')
+    if not os.path.isdir(pasta):
+        return html
+    trocas = 0
+    padrao = r'https://www\.tivio\.com/wp-content/uploads/[^\'"\s)]+\.(?:png|jpe?g|webp)'
+    for url in sorted(set(_re.findall(padrao, html))):
+        local = os.path.join(pasta, os.path.basename(url))
+        if not os.path.isfile(local):
+            if log:
+                log.aviso('destaques', f'imagem sem cópia local em assets/destaques: {os.path.basename(url)}')
+            continue
+        tipo = mimetypes.guess_type(local)[0] or 'image/png'
+        with open(local, 'rb') as f:
+            dado = f'data:{tipo};base64,' + base64.b64encode(f.read()).decode()
+        html = html.replace(url, dado)
+        trocas += 1
+    if log and trocas:
+        log.info(f'  {trocas} imagens do tivio.com embutidas no HTML (sem depender de rede)')
+    return html
