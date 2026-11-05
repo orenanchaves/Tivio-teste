@@ -89,6 +89,24 @@ def _vertical_por_nome(cadastro):
     return out
 
 
+def _tira_leitura(func, caminho, _exc):
+    """O OneDrive marca pasta e arquivo como somente leitura: sem isto o rmtree
+    falha com "Acesso negado" e a _Atual fica pela metade."""
+    import stat
+    try:
+        os.chmod(caminho, stat.S_IWRITE | stat.S_IREAD)
+        func(caminho)
+    except FileNotFoundError:
+        pass
+
+
+def _apagar(caminho):
+    if os.path.isdir(caminho):
+        shutil.rmtree(caminho, onerror=_tira_leitura)
+    elif os.path.exists(caminho):
+        _tira_leitura(os.remove, caminho, None)
+
+
 def montar_atual(origem, destino, cadastro, edicao, log=None, limpar='tudo'):
     """Recria `destino` a partir da edição completa em `origem`. Devolve o nº de arquivos.
 
@@ -97,7 +115,7 @@ def montar_atual(origem, destino, cadastro, edicao, log=None, limpar='tudo'):
     lá, de rodadas antigas, fica)."""
     from exporters.decks import carregar_config
     if limpar == 'tudo' and os.path.isdir(destino):
-        shutil.rmtree(destino)
+        _apagar(destino)
     elif os.path.isdir(destino):
         for nome in list(AREAS.values()) + [MULTI, 'Previdência', 'Interno', 'LEIA-ME.txt']:
             alvo = os.path.join(destino, nome)
@@ -106,18 +124,17 @@ def montar_atual(origem, destino, cadastro, edicao, log=None, limpar='tudo'):
                 for x in os.listdir(alvo):
                     if x.startswith('Edição completa'):
                         continue
-                    y = os.path.join(alvo, x)
-                    shutil.rmtree(y) if os.path.isdir(y) else os.remove(y)
-            elif os.path.isdir(alvo):
-                shutil.rmtree(alvo)
-            elif os.path.isfile(alvo):
-                os.remove(alvo)
+                    _apagar(os.path.join(alvo, x))
+            else:
+                _apagar(alvo)
     os.makedirs(destino, exist_ok=True)
     m = _Montador(origem, destino)
     area_de = _vertical_por_nome(cadastro)
 
     # ---- relatórios de gestão: PDF e PPTX por fundo + a página HTML da vertical
-    pad = re.compile(r'^(.*) - Relatório de Gestão - .+\.(pdf|pptx)$')
+    # com ou sem o mês no nome: desde nov/2026 o arquivo sai sem o mês
+    # ("Tivio Banks - Relatório de Gestão.pdf"), por causa dos 260 caracteres
+    pad = re.compile(r'^(.*) - Relatório de Gestão(?: - .+)?\.(pdf|pptx)$')
     for pasta in ('pdf', 'pptx'):
         base = os.path.join(origem, pasta)
         for nome in sorted(os.listdir(base)) if os.path.isdir(base) else []:
@@ -131,7 +148,7 @@ def montar_atual(origem, destino, cadastro, edicao, log=None, limpar='tudo'):
                 log.aviso(mm.group(1), 'publicação: fundo sem vertical em fundos.yml, relatório fora de _Atual')
     central = os.path.join(origem, 'central')
     for nome in sorted(os.listdir(central)) if os.path.isdir(central) else []:
-        mm = re.match(r'^Relatório de Gestão - (.+?) - .+\.html$', nome)
+        mm = re.match(r'^Relatório de Gestão - (.+?)(?: - (?:' + _MES + r') \d{4})?\.html$', nome)
         if mm and mm.group(1) in AREAS.values():
             m.arquivo(('central', nome), mm.group(1), 'Relatórios', sem_mes(nome))
             m.pasta(('central', 'vendor'), mm.group(1), 'Relatórios', 'vendor', renomear=lambda x: x)
@@ -144,12 +161,12 @@ def montar_atual(origem, destino, cadastro, edicao, log=None, limpar='tudo'):
                 m.arquivo(('destaques', slug, nome), area, 'Redes sociais', nome)
         base = os.path.join(origem, 'pdf')
         for nome in sorted(os.listdir(base)) if os.path.isdir(base) else []:
-            if nome.startswith(f'Destaques - {area} - '):
+            if re.match(rf'^Destaques - {re.escape(area)}( - .+)?\.pdf$', nome):
                 m.arquivo(('pdf', nome), area, 'Redes sociais', sem_mes(nome))
     # os três carrosséis num PDF só
     base = os.path.join(origem, 'pdf')
     for nome in sorted(os.listdir(base)) if os.path.isdir(base) else []:
-        if nome.startswith('Destaques - Todos - '):
+        if re.match(r'^Destaques - Todos( - .+)?\.pdf$', nome):
             m.arquivo(('pdf', nome), MULTI, 'Redes sociais', sem_mes(nome))
 
     # ---- e-mails de Fundos de Crédito: atravessam as áreas
