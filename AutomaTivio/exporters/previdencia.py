@@ -249,7 +249,7 @@ def _pl(shape, d):
 
 def _duration(shape, d):
     p = [p for p in shape.text_frame.paragraphs if p.runs][-1]
-    _troca_runs(p, [d['duration_num'], ' ', 'anos' if (d['duration'] or 0) >= 1 else 'ano'])
+    _troca_runs(p, [d['duration_num'], ' ', 'ano' if (d['duration'] or 0) < 2 else 'anos'])
 
 
 CLASSES = ('Crédito High Grade', 'Crédito High Yield', 'Caixa')

@@ -25,7 +25,7 @@
 {% if d.estilo == 'hg' %}
 <div class="b-kpis hg">
   {% for k in d.kpis %}
-  <div class="kb"><div class="kl" contenteditable="true">{{ k.rotulo }}</div><div class="kv" contenteditable="true">{% if k.valor.startswith('R$') %}<small>R$</small>{{ k.valor[3:] }}{% elif k.valor.endswith('%') %}{{ k.valor[:-1] }}<small>%</small>{% else %}{{ k.valor }}{% endif %}{% if k.unidade %} <small>{{ 'anos' if k.rotulo == 'Duration' else k.unidade }}</small>{% endif %}</div></div>
+  <div class="kb"><div class="kl" contenteditable="true">{{ k.rotulo }}</div><div class="kv" contenteditable="true">{% if k.valor.startswith('R$') %}<small>R$</small>{{ k.valor[3:] }}{% elif k.valor.endswith('%') %}{{ k.valor[:-1] }}<small>%</small>{% else %}{{ k.valor }}{% endif %}{% if k.unidade %} <small>{{ k.unidade }}</small>{% endif %}</div></div>
   {% endfor %}
 </div>
 <div class="b-nota" contenteditable="true">Data base: {{ d.data_base }}</div>
@@ -40,7 +40,7 @@
     <div class="kt {{ 'kg' if verde else 'kd' }}" style="grid-column:span {{ span }}">
       {% if k[i].destaque %}<div class="kt-dest" contenteditable="true">{{ item.rotulo }}</div><span class="kt-linha"></span>
       {% else %}<div class="kt-l" contenteditable="true">{{ item.rotulo }}{{ ':' if i in [1, 3] }}</div>
-      <div class="kt-v" contenteditable="true">{% if item.valor.startswith('R$') %}{{ item.valor.rsplit(' ', 1)[0] }} <small>{{ item.valor.rsplit(' ', 1)[1] }}</small>{% elif item.valor.startswith('CDI') %}CDI +<br>{{ item.valor[6:] }} <small>{{ item.unidade }}</small>{% else %}{{ item.valor }}{% if item.unidade %}<small class="un">{{ 'anos' if item.rotulo == 'Duration' else item.unidade }}</small>{% endif %}{% endif %}</div>{% endif %}
+      <div class="kt-v" contenteditable="true">{% if item.valor.startswith('R$') %}{{ item.valor.rsplit(' ', 1)[0] }} <small>{{ item.valor.rsplit(' ', 1)[1] }}</small>{% elif item.valor.startswith('CDI') %}CDI +<br>{{ item.valor[6:] }} <small>{{ item.unidade }}</small>{% else %}{{ item.valor }}{% if item.unidade %}<small class="un">{{ item.unidade }}</small>{% endif %}{% endif %}</div>{% endif %}
     </div>
     {% if i == 1 %}<div class="kt kd kt-t" style="grid-column:span 2">{{ t_svg|safe }}</div>{% endif %}
   {% endfor %}
