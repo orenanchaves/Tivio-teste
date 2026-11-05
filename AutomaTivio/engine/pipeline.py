@@ -91,6 +91,10 @@ class Pipeline:
             if not chave or not campo or chave.startswith('#'):
                 continue
             overrides.setdefault(chave, {})[campo] = r['valor']
+        # configs/replace_api.yaml: sobrescrita manual por mês (paliativo); vale
+        # só para o mês da data base e tem prioridade sobre a aba Overrides
+        for chave, campos in _replace_api(self.edicao.competencia).items():
+            overrides.setdefault(chave, {}).update(campos)
         self.taxas = Taxas(ler_taxas(_caminho(ent['taxas'])),
                            performance_fixa=self.cadastro.performance_fixa,
                            overrides=overrides)
@@ -591,3 +595,29 @@ class Pipeline:
             print(f'  _Historico: {n} arquivos em saida/_Historico/{self.edicao.competencia}/')
         except Exception as e:
             print(f'  AVISO: saida/_Historico/{self.edicao.competencia}/ não atualizada ({e!r})')
+
+
+def _replace_api(competencia):
+    """{fundo: {campo: valor}} de configs/replace_api.yaml para o mês `competencia`
+    ("2026-10"). Converte para a unidade do Contexto: carrego e alocação de
+    crédito em fração (0.66 -> 0.0066; 90.23 -> 0.9023), duration em anos."""
+    for rel in ('configs/replace_api.yaml', 'config/replace_api.yaml'):
+        caminho = os.path.join(RAIZ, rel)
+        if os.path.exists(caminho):
+            break
+    else:
+        return {}
+    with open(caminho, encoding='utf-8') as f:
+        dados = yaml.safe_load(f) or {}
+    mes = dados.get(competencia) or dados.get(str(competencia)) or {}
+    pct = lambda v: float(str(v).replace('%', '').replace(',', '.').replace('CDI', '').replace('+', '').strip()) / 100
+    conv = {'duration': ('duration', lambda v: float(str(v).replace(',', '.'))),
+            'carrego': ('carrego', pct),
+            'alocacao_credito': ('credito', pct)}
+    out = {}
+    for chave, campos in mes.items():
+        for campo, valor in (campos or {}).items():
+            if campo in conv and valor is not None:
+                nome, f = conv[campo]
+                out.setdefault(str(chave), {})[nome] = f(valor)
+    return out

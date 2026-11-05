@@ -598,7 +598,7 @@ class Contexto:
     # criada pela própria ferramenta de correção.
     OVERRIDES = {
         'taxa': str, 'perf': str,
-        'carrego': float, 'duration': float,
+        'carrego': float, 'duration': float, 'credito': float,
         'pl': float, 'pl_medio': float,
     }
 
@@ -750,7 +750,7 @@ class Contexto:
             if campo in ('taxa', 'perf'):
                 antes = getattr(ctx, campo)
                 setattr(ctx, campo, novo)
-            elif campo in ('carrego', 'duration'):
+            elif campo in ('carrego', 'duration', 'credito'):
                 if not ctx.cart:
                     ctx.avisos.append(f'override de "{campo}" ignorado — o fundo não '
                                       f'tem carteira nesta edição')

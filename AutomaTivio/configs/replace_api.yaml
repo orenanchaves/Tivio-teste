@@ -1,0 +1,26 @@
+# ============================================================================
+# Sobrescrita manual de dados da API (solução paliativa)
+# ----------------------------------------------------------------------------
+# A rodada busca os dados normalmente (API ou planilha). Depois, se houver aqui
+# um valor para o MÊS da data base, o FUNDO e o CAMPO, ele entra no lugar do que
+# veio; sem valor aqui, fica o da API. Cada troca vira aviso no log e na
+# Conferência, com o valor que foi substituído.
+#
+# Mês: "AAAA-MM" da data base (python run.py --data-base 2026-10-30 -> "2026-10").
+#      Um bloco de mês não vale para nenhum outro mês.
+# Fundo: a chave do fundo em configs/fundos.yml (inst15, inst30, infrapluscdi...).
+# Campos:
+#   duration           em anos (1.63)
+#   carrego            em % a.a. sobre o CDI ("CDI + 0.66%" -> 0.66)
+#   alocacao_credito   em % do PL (90.23)
+# ============================================================================
+
+"2026-10":
+  inst15:            # Tivio Institucional 15
+    duration: 1.63
+  inst30:            # Tivio Institucional 30
+    duration: 1.68
+  infrapluscdi:      # Tivio Infra Plus CDI
+    carrego: 0.66
+    duration: 3.24
+    alocacao_credito: 90.23
