@@ -36,6 +36,7 @@ from renderers.relatorio import RenderizadorRelatorio
 from validations.conferencia import Conferencia
 
 RAIZ = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+EDICAO_COMPLETA = 'Edição completa'
 
 
 def _caminho(p):
@@ -149,10 +150,12 @@ class Pipeline:
     # ------------------------------------------------------------------ saída
     @property
     def pasta_saida(self):
-        # a edição completa (Central, materiais interativos, tudo) fica em
-        # _Trabalho; _Atual e _Historico/AAAA-MM saem dela com a mesma estrutura
-        # por área (engine/publicacao.py)
-        return os.path.join(RAIZ, 'saida', '_Trabalho', self.edicao.competencia)
+        # a edição completa (Central, materiais interativos, tudo) fica dentro do
+        # histórico do mês, em Interno/Edição completa/; _Atual e o resto do
+        # _Historico/AAAA-MM saem dela com a mesma estrutura por área
+        # (engine/publicacao.py). Na saída só há pastas com a estrutura da _Atual.
+        return os.path.join(RAIZ, 'saida', '_Historico', self.edicao.competencia,
+                            'Interno', EDICAO_COMPLETA)
 
     def _destino(self, *partes):
         return os.path.join(self.pasta_saida, *partes)
@@ -575,7 +578,7 @@ class Pipeline:
     def _atual(self):
         """saida/_Atual/: a edição do mês por área e com nome fixo, sempre no
         mesmo caminho (engine/publicacao.py). A edição completa continua em
-        saida/_Trabalho/AAAA-MM/ e a Central abre por Interno/Abrir a Central.html."""
+        saida/_Historico/AAAA-MM/Interno/Edição completa/ e a Central abre por Interno/Abrir a Central.html."""
         if not self.cfg['saidas'].get('atual', True):
             return
         if self.so_fundos:

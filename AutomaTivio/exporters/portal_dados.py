@@ -2,7 +2,7 @@
 """Portal de conferência: todos os dados da edição num HTML só.
 
 Para bater o que cada material puxou antes de publicar. Sai em
-saida/_Trabalho/AAAA-MM/portal_dados_AAAA-MM.html (e Interno/Portal de dados.html, no fim da rodada, junto da
+saida/_Historico/AAAA-MM/Interno/Edição completa/portal_dados_AAAA-MM.html (e Interno/Portal de dados.html, no fim da rodada, junto da
 conferencia_AAAA-MM.xlsx. Lê o que a rodada já calculou; não calcula nada novo:
 
   · cabeçalho: data base, de onde vieram os dados (API ou planilha), resumo

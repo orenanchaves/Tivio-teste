@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 """Monta saida/_Atual/: a edição do mês organizada por área, com nome fixo.
 
-A rodada gera a edição completa em `saida/_Trabalho/AAAA-MM/` (a estrutura de
+A rodada gera a edição completa em `saida/_Historico/AAAA-MM/Interno/Edição completa/` (a estrutura de
 trabalho: é onde a Central e os materiais interativos se enxergam por caminho
 relativo). Esta etapa copia de lá só o que sai da empresa, por área, para
 `saida/_Atual/` e, com a mesma estrutura, para `saida/_Historico/AAAA-MM/`:
@@ -101,7 +101,14 @@ def montar_atual(origem, destino, cadastro, edicao, log=None, limpar='tudo'):
     elif os.path.isdir(destino):
         for nome in list(AREAS.values()) + [MULTI, 'Previdência', 'Interno', 'LEIA-ME.txt']:
             alvo = os.path.join(destino, nome)
-            if os.path.isdir(alvo):
+            if nome == 'Interno' and os.path.isdir(alvo):
+                # a edição completa do mês mora em Interno/Edição completa*: fica
+                for x in os.listdir(alvo):
+                    if x.startswith('Edição completa'):
+                        continue
+                    y = os.path.join(alvo, x)
+                    shutil.rmtree(y) if os.path.isdir(y) else os.remove(y)
+            elif os.path.isdir(alvo):
                 shutil.rmtree(alvo)
             elif os.path.isfile(alvo):
                 os.remove(alvo)
