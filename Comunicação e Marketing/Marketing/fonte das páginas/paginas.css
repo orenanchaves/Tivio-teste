@@ -1190,6 +1190,10 @@ h1,h2,h3{text-wrap:balance}p,li{text-wrap:pretty}
 .pf-cont{font-size:13px;color:var(--verde-txt);font-weight:600}.pf[hidden]{display:none}
 .pf-esc{display:inline-flex;align-items:center;gap:6px;margin-top:10px;font-size:13px;color:var(--fg-2);cursor:pointer}.pf-esc input{width:16px;height:16px;accent-color:var(--verde-txt)}
 .pf.pf-ok{border-color:var(--verde-txt)}.pf.pf-ok .pf-esc{color:var(--verde-txt);font-weight:600}
+/* estrutura: proposta de escopo de cada freela */
+.esc-grade{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+.esc-b{padding:16px 18px}.esc-b h4{margin:0 0 8px;font-size:15px}.esc-b ul{margin:0;padding-left:18px}.esc-b li{font-size:14px;line-height:1.45;color:var(--fg-2);margin:3px 0}
+@media (max-width:900px){.esc-grade{grid-template-columns:minmax(0,1fr)}}
 
 /* ==== versão branca (gerado por claro.py) ==== */
 #apres.ap-claro .ap-b{background:#3C4A60;color:#0A0F14}
