@@ -251,7 +251,7 @@ corpo_ap = (cabecalho("Análise das postagens", []) + '<div class="wrap">'
 (EXTRA / "analise-postagens.html").write_text(pagina("Análise das postagens", corpo_ap, CSS_P), encoding="utf-8")
 
 _fr27 = [("Automação", "frente-automacao.html", "Facilitar o operacional para o time gastar tempo no que muda resultado.",
-          ["Crédito e Investment Solutions já totalmente automatizados", "Imobiliário: começa em janeiro, com meta de concluir até abril pela complexidade", "Portal com os dados de fechamento de todas as áreas até o meio do ano", "Janelas específicas de crédito geradas no portal", "IA no dia a dia do time, com trilha de aprendizado e Claude Max"]),
+          ["Crédito e Investment Solutions já totalmente automatizados", "Imobiliário: começa em janeiro, com meta de concluir até abril pela complexidade", "Portal com os dados de fechamento de todas as áreas até o meio do ano", "Janelas específicas de crédito geradas no portal", "IA no dia a dia do time, com trilha de aprendizado e ferramenta de IA para o time"]),
          ("Eventos", "frente-eventos.html", "Eventos qualificados para diversos segmentos, que viram contato e reunião.",
           ["16 encontros com o Itaú no ano", "Summit BTG, Conexão Bradesco e Expert XP", "Abrapp, Previpar, APEP e ASCPrev", "Convites a partir dos alocadores mapeados pela fnmk", "Contato quente para o comercial em até 2 dias"]),
          ("Conteúdo", "frente-conteudo.html", "Ser mais engajado nos posts: menos conteúdos, mas mais qualidade, para um nicho.",

@@ -1138,6 +1138,27 @@ h1,h2,h3{text-wrap:balance}p,li{text-wrap:pretty}
 #apres .ap-palco .fc li::before{content:"";position:absolute;left:0;top:27px;width:10px;height:10px;border-radius:50%;background:#C1F4D4}
 #apres .ap-palco .sl.ativa .fc li{animation:tvFoco .6s both!important}
 #apres .ap-leg .fc ul{margin:0;padding-left:18px}#apres .ap-leg .fc li{margin:0 0 8px;font-size:14px}
+/* rótulo da linha dos freelancers */
+.org-rot{margin:0 auto 8px;padding:3px 12px;border-radius:999px;background:var(--pill);color:var(--fg-2);font-size:12px;font-weight:600;letter-spacing:.12em;text-transform:uppercase}
+#apres .ap-palco .og-rot{margin:2px 0 -8px;padding:4px 14px;border-radius:999px;background:rgba(193,244,212,.1);color:#C1F4D4;font-size:14px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;opacity:0;transition:opacity .4s .6s}
+#apres .ap-palco .og.og-27 .og-rot{opacity:1}
+#apres .ap-leg .og-rot{display:none;margin:10px 0 4px 56px;font-size:11px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:#C1F4D4}
+#apres .ap-leg .og.og-27 .og-rot{display:block}
+/* organograma com o rótulo dos freelancers: cabe com a frase de baixo */
+#apres .ap-palco .og-tg{margin-bottom:8px}#apres .ap-palco .og-tg button{height:36px}
+#apres .ap-palco .og .og-n{padding-top:7px!important;padding-bottom:7px!important}
+#apres .ap-palco .og .og-v{height:14px}
+#apres .ap-palco .og-row{padding-top:16px}
+#apres .ap-palco .og-row .og-n::before{top:-17px;height:16px}
+#apres .ap-palco .og-row .og-n::after{top:-17px}
+#apres .ap-palco .og-n span{font-size:15px}
+#apres .ap-palco .og-n b{font-size:21px;margin-top:2px}
+#apres .ap-palco .og-r{font-size:16px;margin-top:2px}
+#apres .ap-palco .og-nota{margin-top:8px;font-size:18px}
+#apres .ap-palco .og-r2 .og-n{max-width:380px!important}
+#apres .ap-palco .og-r2 .og-n b{white-space:nowrap}
+@keyframes ogEntra4{0%{opacity:0;max-width:0;max-height:0;flex-grow:0;padding-left:0;padding-right:0;border-width:0;transform:translateY(24px)}1%{max-height:300px}40%{max-width:380px;flex-grow:1;padding-left:26px;padding-right:26px;border-width:1.5px}100%{opacity:1;max-width:380px;max-height:300px;flex-grow:1;transform:none}}
+#apres .ap-palco .sl.ativa .og.og-27 .og-r2 .og-entra{animation-name:ogEntra4!important}
 
 /* ==== versão branca (gerado por claro.py) ==== */
 #apres.ap-claro .ap-b{background:#3C4A60;color:#0A0F14}
@@ -1494,6 +1515,8 @@ h1,h2,h3{text-wrap:balance}p,li{text-wrap:pretty}
 #apres.ap-claro .ap-leg .fn-r>p:nth-child(4){color:#337F51}
 #apres.ap-claro .ap-palco .fc li{border-top-color:rgba(10,15,20,.14);color:#1B2A36}
 #apres.ap-claro .ap-palco .fc li::before{background:#337F51}
+#apres.ap-claro .ap-palco .og-rot{background:rgba(51,127,81,.1);color:#337F51}
+#apres.ap-claro .ap-leg .og-rot{color:#337F51}
 #apres.ap-claro .ap-ctl button,#apres.ap-claro .ap-ctl span{color:#1B2A36}
 #apres.ap-claro .cu-ag2,#apres.ap-claro .cu-ag2 *,#apres.ap-claro .cu-ag2 span b{color:#FFFFFF!important}
 #apres.ap-claro .ap-ctl .ap-tema[aria-pressed=true]{background:#1B2A36;color:#FFFFFF;border-color:#1B2A36}
