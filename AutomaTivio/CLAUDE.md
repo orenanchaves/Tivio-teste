@@ -37,6 +37,8 @@ python run.py --so banks alt180              # só estes fundos
 python run.py --saidas html                  # pula PDF e PPTX (iterar rápido)
 python run.py --conferir                     # calcula e valida, não escreve nada
 python run.py --data-base 2026-08-31         # força a data base
+python run.py --data-base 2026-10-30         # edição de outubro/2026 (último dia útil)
+python ./scripts/status_signoff.py --data 2026-10-30   # confere se os fundos estão aprovados (sign-off na API)
 python run.py --silencioso                   # só grava o log
 
 # números de rentabilidade dos comentários viram {marcadores} (mostra; --gravar grava)

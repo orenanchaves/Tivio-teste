@@ -22,6 +22,8 @@ taxas de previdência. Este arquivo lista só o que ainda não está fechado.
 
 ## 1b. Atualizar todos os PPTs
 
+- [ ] Conferir o sign-off: `python ./scripts/status_signoff.py --data 2026-10-30`
+- [ ] Gerar o material: `python run.py --data-base 2026-10-30`
 - [ ] Rodar a edição completa (`python run.py`) e conferir **todos os PPTs** do mês:
       os 18 decks, os 13 relatórios de gestão em PPTX e os Informativos do HGD30 e do HYD60.
 - [ ] Tivio Conecta e Conexão ALT 180: puxar a rentabilidade pelas cotas diárias da
