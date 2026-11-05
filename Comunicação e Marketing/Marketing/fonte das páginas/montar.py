@@ -182,7 +182,7 @@ URL_REL = "https://github.com/orenanchaves/Tivio-teste/releases/tag/AutomaTivio_
 cab_dl = cabecalho("", [("logica", "Como funciona"), ("ambiente", "Ambiente interno"),
                                    ("segmentos", "Segmentos"), ("status", "Decks"), ("fallback", "Quando falha"),
                                    ("baixar", "Como baixar"), ("comecar", "Começar")])
-hero_dl = hero("Versão de 05/11/2026 às 14h53", "Automa<strong>Tivio</strong>",
+hero_dl = hero("Versão de 05/11/2026 às 15h15", "Automa<strong>Tivio</strong>",
                "A edição mensal da Central de Materiais em um comando: lê as planilhas do mês e gera os "
                "relatórios de gestão, as páginas por vertical, os posts, o e-mail e a Central, com os mesmos números em todos.")
 corpo_dl = (ler("dl_corpo.html").replace("{{HEADER}}", cab_dl).replace("{{HERO}}", hero_dl)
