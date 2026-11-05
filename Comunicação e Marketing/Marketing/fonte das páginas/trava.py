@@ -74,6 +74,7 @@ for f in sorted(ORIG.glob("*.html")):
         h = h.replace("<!--FIMANO-->", _f[_f.index('<div class="kpis">'):_f.index('<p class="rodape">')])
     _fm = (S/"film_frag.txt").read_text(encoding="utf-8"); h = h.replace("<!--FILMC-->", _fm[:1].upper() + _fm[1:])
     h = h.replace("<!--FILM-->", (S/"film_frag.txt").read_text(encoding="utf-8"))
+    h = h.replace("<!--FREELAS-->", (S/"freela_frag.html").read_text(encoding="utf-8"))
     h = h.replace("<!--ORG27-->", (S/"org27_frag.html").read_text(encoding="utf-8"))
     h = h.replace("<!--CUSTO27-->", (S/"custo_frag.html").read_text(encoding="utf-8"))
     h = h.replace("<!--APRES-->", (S/"apres_frag.html").read_text(encoding="utf-8"))

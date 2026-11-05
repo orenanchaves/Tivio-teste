@@ -114,10 +114,12 @@ var r;addEventListener('resize',function(){clearTimeout(r);r=setTimeout(function
 corpo_est = (cabecalho("Estrutura", []) + '<div class="wrap">'
     + trilha(("index.html", "Início"), ("", "Estrutura"))
     + f'<section class="topo-peer"><div>{ICO27["Estrutura"]}<h1>Estrutura</h1><p class="lead">Quem faz o quê em Comunicação &amp; Marketing e como uma demanda anda.</p></div></section>'
-    + '<h2>Como a área <strong>se organiza</strong></h2>' + _org
+    + '<h2>Como a área <strong>se organiza</strong></h2><!--ORG27-->'
     + _mov
     + '<h2>O que cada frente <strong>cobre</strong></h2><div class="frentes linhas">' + _fr + '</div>'
-    + '<h2>Agência <strong>parceira</strong></h2><div class="frentes linhas"><section class="frente vidro"><h3>Agência parceira</h3><p class="dono">ColaAí</p><ul><li>Vídeo</li><li>Carrosséis, inclusive o da Carta do Gestor</li><li>Tráfego pago, com Ewerton</li></ul></section><section class="frente vidro"><h3>Como pedir</h3><p class="dono">Pela Fernanda Acquati</p><ul><li>Pedido pela Fernanda Acquati</li><li>Produção na ColaAí</li><li>Revisão e Compliance</li><li>Publicação</li><li>Relatório de tráfego para o Renan Chaves</li></ul></section></div>'
+    + '<h2>Quem apoia <strong>o time</strong></h2><div class="abas abas-pl abas-est" role="tablist"><button type="button" role="tab" data-est="est-freela" aria-selected="true">Freelancers</button><button type="button" role="tab" data-est="est-agencia" aria-selected="false">Agência parceira</button></div>'
+    + '<section class="painel-est" id="est-freela"><!--FREELAS--></section><section class="painel-est" id="est-agencia" hidden><p class="secao-sub">Até o fim de 2026.</p><div class="frentes linhas"><section class="frente vidro"><h3>Agência parceira</h3><p class="dono">ColaAí</p><ul><li>Vídeo</li><li>Carrosséis, inclusive o da Carta do Gestor</li><li>Tráfego pago, com Ewerton</li></ul></section><section class="frente vidro"><h3>Como pedir</h3><p class="dono">Pela Fernanda Acquati</p><ul><li>Pedido pela Fernanda Acquati</li><li>Produção na ColaAí</li><li>Revisão e Compliance</li><li>Publicação</li><li>Relatório de tráfego para o Renan Chaves</li></ul></section></div></section>'
+    + "<script>(function(){var B=[].slice.call(document.querySelectorAll('.abas-est button'));B.forEach(function(b){b.addEventListener('click',function(){B.forEach(function(x){x.setAttribute('aria-selected',x===b)});[].forEach.call(document.querySelectorAll('.painel-est'),function(s){s.hidden=s.id!==b.dataset.est})})})})();</script>"
     + '<h2>Como uma demanda <strong>anda</strong></h2><ol class="roteiro r6">' + _fl + '</ol>'
     + ''
     + '<p class="rodape">Tivio Capital · Comunicação &amp; Marketing</p></div>')

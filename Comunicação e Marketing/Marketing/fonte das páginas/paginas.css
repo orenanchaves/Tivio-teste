@@ -1159,6 +1159,9 @@ h1,h2,h3{text-wrap:balance}p,li{text-wrap:pretty}
 #apres .ap-palco .og-r2 .og-n b{white-space:nowrap}
 @keyframes ogEntra4{0%{opacity:0;max-width:0;max-height:0;flex-grow:0;padding-left:0;padding-right:0;border-width:0;transform:translateY(24px)}1%{max-height:300px}40%{max-width:380px;flex-grow:1;padding-left:26px;padding-right:26px;border-width:1.5px}100%{opacity:1;max-width:380px;max-height:300px;flex-grow:1;transform:none}}
 #apres .ap-palco .sl.ativa .og.og-27 .og-r2 .og-entra{animation-name:ogEntra4!important}
+/* estrutura: subabas Freelancers e Agência parceira */
+.painel-est[hidden]{display:none}
+.painel-est .frente .tp{margin-top:16px}
 
 /* ==== versão branca (gerado por claro.py) ==== */
 #apres.ap-claro .ap-b{background:#3C4A60;color:#0A0F14}
