@@ -1176,6 +1176,14 @@ h1,h2,h3{text-wrap:balance}p,li{text-wrap:pretty}
 @media (max-width:820px){.org-b3:has(> :nth-child(4)){grid-template-columns:1fr}}
 .painel-est .linhas .frente li a{color:inherit;text-decoration:underline;text-underline-offset:3px}
 .painel-fr[hidden]{display:none}.abas-fr{margin:4px 0 14px}
+/* estrutura: perfis dos freelancers em vista */
+.pf-tit{margin:18px 0 10px;font-size:16px}.pf-grade{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.pf{display:flex;gap:16px;align-items:flex-start;padding:16px 18px}.pf-foto{flex:0 0 72px;width:72px;height:72px;border-radius:50%;object-fit:cover;border:1px solid var(--line)}
+.pf-ini{display:flex;align-items:center;justify-content:center;background:var(--pill);color:var(--fg-2);font-weight:600;font-size:22px}
+.pf-txt{min-width:0}.pf-txt b{display:block;font-size:16px}.pf-papel{display:block;margin:2px 0 8px;font-size:13px;color:var(--verde-txt);font-weight:600}
+.pf-txt p{margin:0;font-size:14px;line-height:1.45;color:var(--fg-2)}.pf-links{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}
+.pf-links a{padding:4px 12px;border-radius:999px;border:1px solid var(--line-strong);color:var(--fg);font-size:13px;text-decoration:none}.pf-links a:hover{border-color:var(--verde-txt)}
+@media (max-width:820px){.pf-grade{grid-template-columns:minmax(0,1fr)}.pf{padding:14px}.pf-foto{flex-basis:56px;width:56px;height:56px}}
 
 /* ==== versão branca (gerado por claro.py) ==== */
 #apres.ap-claro .ap-b{background:#3C4A60;color:#0A0F14}
@@ -1538,3 +1546,4 @@ h1,h2,h3{text-wrap:balance}p,li{text-wrap:pretty}
 #apres.ap-claro .cu-ag2,#apres.ap-claro .cu-ag2 *,#apres.ap-claro .cu-ag2 span b{color:#FFFFFF!important}
 #apres.ap-claro .ap-ctl .ap-tema[aria-pressed=true]{background:#1B2A36;color:#FFFFFF;border-color:#1B2A36}
 /* ==== fim da versão branca ==== */
+.painel-fr .linhas .frente:not(:has(ul)){grid-template-columns:minmax(0,1fr)}
