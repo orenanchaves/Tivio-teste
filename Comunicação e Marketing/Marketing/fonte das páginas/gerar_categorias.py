@@ -15,6 +15,7 @@ CATS = [
    ("cases", "Cases", "Avenue e AUVP."),
    ("peers", "Peers no Brasil", "Nove casas, cada uma com página."),
    ("estrangeiras", "Peers no exterior", "Oito casas, cada uma com página."),
+   ("instagram", "Instagram orgânico", "5 posts de gestoras brasileiras e 5 de fora."),
    ("mercados", "Outros mercados", "Produtos digitais, educação e B2B técnico."),
    ("setores", "Outros setores", "Consultoria, M&amp;A, farmacêutica e mais."),
    ("mundo", "Mundo", "Mercados que sonhamos e parecidos com o Brasil.")]),

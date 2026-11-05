@@ -69,7 +69,7 @@ def barra_global():
         dd("Conteúdo", [("frente-conteudo.html", "Visão geral"), ("m-posts.html", "Posts"), ("analise-postagens.html", "Análise das postagens"), ("painel-mensal.html", "Painel mensal"), ("imprensa.html", "Imprensa"), ("canal-ofertas.html", "Canal de ofertas")] + [("", "Segmentos")] + segs + [("", "Públicos")] + pubs, True),
         '<a class="nav-top" href="imprensa.html">Imprensa</a>',
         dd("Digital", [("frente-digital.html", "Visão geral"), ("analise-site.html", "Site"), ("frente-digital.html#artigos", "Artigos para o Google"), ("m-captacao.html", "Captação")]),
-        dd("Benchmark", [("frente-benchmark.html", "Visão geral"), ("m-peers.html", "Peers no Brasil"), ("m-estrangeiras.html", "Peers no exterior"), ("m-cases.html", "Cases"), ("m-mundo.html", "Mundo"), ("m-mercados.html", "Outros mercados"), ("m-setores.html", "Outros setores"), ("m-relatorio.html", "Relatório 2027")]),
+        dd("Benchmark", [("frente-benchmark.html", "Visão geral"), ("m-peers.html", "Peers no Brasil"), ("m-estrangeiras.html", "Peers no exterior"), ("m-instagram.html", "Instagram orgânico"), ("m-cases.html", "Cases"), ("m-mundo.html", "Mundo"), ("m-mercados.html", "Outros mercados"), ("m-setores.html", "Outros setores"), ("m-relatorio.html", "Relatório 2027")]),
         dd("Base", [("", "Estratégia"), ("visao.html", "Visão"), ("m-posicionamento.html", "Casa de estruturados"), ("m-sintese.html", "O que fazer"), ("m-sugestoes.html", "Sugestões"), ("m-ideias.html", "Ideias na mesa"), ("", "Área"), ("plano-2027.html#fim-do-ano", "Fim de 2026"), ("transicao.html", "Transição"), ("orcamento.html", "Orçamento 2027"), ("brand.html", "Brand"), ("", "Tudo"), ("marketing.html", "Central completa")], True),
     ])
     return f'''<header class="barra"><div class="barra-in">
@@ -230,11 +230,11 @@ miolo = re.sub(r"<h2>(\d\.)", lambda m: f'<h2 id="r-{ids.get(m.group(1), "x")}">
 SITE = SAIDA / "mkt_site.html"
 FINMKT = SAIDA / "mkt_finmkt.html"
 corpo_mkt = (ler("mkt_corpo.html")
-             .replace("{{GESTORES}}", ler("mkt_gestores.html")).replace("{{VIDEO}}", ler("mkt_video.html")).replace("{{IDEIAS}}", ler("mkt_ideias.html")).replace("{{CASES}}", ler("mkt_cases.html")).replace("{{PEERS}}", ler("mkt_peers.html").replace("{{MUNDO}}", ler("mkt_mundo.html"))).replace("{{RELATORIO}}", miolo).replace("{{SUB}}", sub.group(1))
+             .replace("{{GESTORES}}", ler("mkt_gestores.html")).replace("{{VIDEO}}", ler("mkt_video.html")).replace("{{IDEIAS}}", ler("mkt_ideias.html")).replace("{{CASES}}", ler("mkt_cases.html")).replace("{{INSTA}}", ler("mkt_insta.html")).replace("{{PEERS}}", ler("mkt_peers.html").replace("{{MUNDO}}", ler("mkt_mundo.html"))).replace("{{RELATORIO}}", miolo).replace("{{SUB}}", sub.group(1))
              .replace("{{SITE}}", SITE.read_text(encoding="utf-8") if SITE.exists() else "")
              .replace("{{FINMKT}}", FINMKT.read_text(encoding="utf-8") if FINMKT.exists() else ""))
 cab_mkt = cabecalho("Central de Marketing", [("posicionamento", "Estruturados"), ("posts", "Posts"),
-                                             ("eventos", "Eventos Itaú"), ("captacao", "Captação"), ("ideias", "Ideias"), ("cases", "Cases"), ("peers", "Peers"), ("mercados", "Outros mercados"), ("setores", "Setores"), ("mundo", "Mundo"), ("sugestoes", "Sugestões"), ("sintese", "O que fazer"),
+                                             ("eventos", "Eventos Itaú"), ("captacao", "Captação"), ("ideias", "Ideias"), ("cases", "Cases"), ("peers", "Peers"), ("instagram", "Instagram"), ("mercados", "Outros mercados"), ("setores", "Setores"), ("mundo", "Mundo"), ("sugestoes", "Sugestões"), ("sintese", "O que fazer"),
                                              ] + ([("site", "Site")] if SITE.exists() else []) + ([("finmkt", "Finmkt")] if FINMKT.exists() else []) + [("copilot", "Copilot"), ("relatorio", "Relatório 2027")])
 hero_mkt = hero("Plano de 2027", "Central de <strong>Marketing</strong>",
                 "O que a Tivio vai publicar, em que segmento e com qual objetivo: posts, eventos com o Itaú, "
