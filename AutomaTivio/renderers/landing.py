@@ -296,7 +296,9 @@ class RenderizadorLanding:
 
     # ------------------------------------------------------------- dados
     def _kpis(self, pg, ctx):
+        tg = taxa_global_max(ctx)
         dados = {
+            'taxa_global': (tg, 'a.a.') if tg else (fmt.MINUS, ''),
             'duration': (ctx.duration_fmt.split(' ')[0],
                          ctx.duration_fmt.split(' ')[1] if ' ' in ctx.duration_fmt else ''),
             'pl_curto': tuple(_valor_curto(ctx.pl).rsplit(' ', 1)) if ctx.pl else (fmt.MINUS, ''),
@@ -341,6 +343,7 @@ class RenderizadorLanding:
                 and str(ctx.data_inicio) != 'NaT' else None)),
             'pl': ('Patrimônio líquido', ctx.pl_fmt.split(',')[0] if ctx.pl else None),
             'pl_medio': ('PL médio (12M)', ctx.pl_medio_fmt.split(',')[0] if ctx.pl_medio else None),
+            'taxa_global': ('Taxa Global Máx.', (taxa_global_max(ctx) + ' a.a.') if taxa_global_max(ctx) else None),
             'publico': ('Público alvo', pg.get('publico')),
             'taxas': ('Taxas', pg.get('taxas')),
         }
@@ -358,7 +361,7 @@ class RenderizadorLanding:
         pl_mi = (ctx.pl or 0) / 1e6
         return {
             'veiculo': c.get('veiculo', 'Fundo de Previdência'), 'chips': c.get('chips', []),
-            'resgate': c.get('resgate', ''), 'taxa': c.get('taxa', ''),
+            'resgate': c.get('resgate', ''), 'taxa': taxa_global_max(ctx) or c.get('taxa', ''),
             'perf': c.get('performance', ''), 'perf_sobre': c.get('performance_sobre', ''),
             'duration': dur[0], 'duration_un': dur[1] if len(dur) > 1 else '',
             'mes_ano': f'{fmt.MESES[self.edicao.db.month - 1]} {self.edicao.db.year}',
@@ -481,3 +484,31 @@ class RenderizadorLanding:
             kx=self._kx(pg, ctx),
             css_marca=self.r.css_marca, css_pagina=self.r.css_pagina,
             echarts_src=self.r.ECHARTS)
+
+
+_TAXAS_PREV = None
+
+
+def taxa_global_max(ctx):
+    """Taxa Global Máx. da Previdência: a "Taxa Final" do bloco do fundo na
+    entrada/taxas_prev.xlsx (a soma da coluna Taxa Global Máxima, FIE + FIFE),
+    a mesma dos decks. "0,80%"; None sem o bloco ou sem a planilha."""
+    global _TAXAS_PREV
+    bloco = ctx.f.cfg.get('bloco_taxas_prev') if ctx is not None else None
+    if not bloco:
+        return None
+    if _TAXAS_PREV is None:
+        import yaml
+        from loaders.taxas_prev import TaxasPrev, ler_taxas_prev
+        raiz = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+        with open(os.path.join(raiz, 'configs', 'edicao.yml'), encoding='utf-8') as f:
+            ent = (yaml.safe_load(f) or {}).get('entradas') or {}
+        cam = os.path.join(raiz, ent.get('taxas_prev') or 'entrada/taxas_prev.xlsx')
+        try:
+            _TAXAS_PREV = TaxasPrev(ler_taxas_prev(cam))
+        except Exception:
+            _TAXAS_PREV = False
+    if not _TAXAS_PREV:
+        return None
+    v = _TAXAS_PREV.taxa_final(bloco)
+    return fmt.num(v * 100, 2) + '%' if v else None

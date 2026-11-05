@@ -110,6 +110,7 @@ def dados_fundo(chave, pg, ctx, edicao, textos, log=None, por_key=None):
         'caracteristicas': lp._caracteristicas(pg, ctx),
         # "TIVIO HGD30" / "TIVIO HYD60", como no texto do e-mail
         'nome_curto': 'TIVIO ' + ''.join((pg.get('marca') or ['', '', ''])[1:]),
+        'taxa_global': lp_taxa(ctx),
     }
     return d
 
@@ -184,3 +185,8 @@ class RenderizadorEmailPrevidencia:
                                                 'blocos': d['blocos'], 'titulo': d['titulo'],
                                                 'disparo': self.disparo(d)}
                                    for d, _ in fundos}, ensure_ascii=False).replace('</', '<' + chr(92) + '/'))
+
+
+def lp_taxa(ctx):
+    from renderers.landing import taxa_global_max
+    return taxa_global_max(ctx)

@@ -305,17 +305,14 @@ class Preenchedor:
                 if m.group(2):
                     ok |= _troca_trecho(par, m.start(1), m.end(2), _curto(ctx.pl, True))
                 else:
-                    cent = ',' in m.group(1)
-                    v = fmt.brl(ctx.pl)[3:] if cent else fmt.brl(ctx.pl)[3:].split(',')[0]
-                    ok |= _troca_trecho(par, m.start(1), m.end(1), v)
+                    # PL curto nos decks ("R$ 1,83 bi"), pedido de 05/11/2026
+                    ok |= _troca_trecho(par, m.start(1), m.end(1), fmt.brl_curto(ctx.pl)[3:])
             m = re.search(r'PL\s+m[ée]dio(?:\s*\(12 meses\))?:\s*(?:R\$\s*)?([\d.,]+)(\s*(bilh|milh)\w*)?', t, re.I)
             if m and ctx.pl_medio:
                 if m.group(2):
                     ok |= _troca_trecho(par, m.start(1), m.end(2), _curto(ctx.pl_medio, False))
                 else:
-                    cent = ',' in m.group(1)
-                    v = fmt.brl(ctx.pl_medio)[3:] if cent else fmt.brl(ctx.pl_medio)[3:].split(',')[0]
-                    ok |= _troca_trecho(par, m.start(1), m.end(1), v)
+                    ok |= _troca_trecho(par, m.start(1), m.end(1), fmt.brl_curto(ctx.pl_medio)[3:])
             # fundo em % do CDI no deck (sem Alfa): a nota do asterisco sai
             if ctx.f.cfg.get('deck_pct_cdi') and t.strip().startswith('*Benchmark'):
                 for r in par.runs:
@@ -1957,7 +1954,7 @@ def _destaque_pl(slide, ctx, x, y, w, h):
     for i, (rotulo, v) in enumerate(itens):
         cx = x + pad
         y0 = 9 + i * 32                                   # um embaixo do outro, valor por extenso
-        for texto, corpo, negrito, cor, dy in ((rotulo, 7.5, True, 'C8D7E0', y0), (fmt.brl(v), 12.5, True, 'FFFFFF', y0 + 10)):
+        for texto, corpo, negrito, cor, dy in ((rotulo, 7.5, True, 'C8D7E0', y0), (fmt.brl_curto(v), 12.5, True, 'FFFFFF', y0 + 10)):
             tb = slide.shapes.add_textbox(int(cx), int(y + dy * 12700), int(wc), int(18 * 12700))
             tb.name = 'post pl texto'
             tf = tb.text_frame

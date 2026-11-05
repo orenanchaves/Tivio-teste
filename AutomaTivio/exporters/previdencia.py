@@ -40,6 +40,7 @@ MAPAS = {
         'texto': (2, 'CaixaDeTexto 4'),
         'pl': (3, 'object 5'),
         'duration': (3, 'Rectangle: Rounded Corners 113'),
+        'taxa_texto': (3, 'TextBox 117'),         # "Taxa de Adm & Gestão: 0,8%" -> Taxa Global Máx.
         'alocacao': (5, ['TextBox 54', 'TextBox 51', 'TextBox 48']),
         'rating': (5, 'Chart 6'),
         'composicao': (5, 'Chart 10'),
@@ -48,6 +49,8 @@ MAPAS = {
     },
     'hyd60': {
         'texto': (2, 'CaixaDeTexto 1'),
+        'taxa_rotulo': (3, 'object 49'),          # "Taxa de Adm & Gestão" -> "Taxa Global Máx."
+        'taxa_valor': (3, 'object 68'),           # "1,0% a.a." 
         'alocacao': (5, ['TextBox 54', 'TextBox 51', 'TextBox 48']),
         'rating': (5, 'Chart 6'),
         'setorial': (5, 'Imagem 6'),
@@ -709,6 +712,21 @@ def exportar_informativos(fundos, destino, rend_email, log):
                     png = _png_setorial(d, sh.width / 12700, sh.height / 12700, css,
                                         str(macros.setorial(d)), nav)
                     _troca_imagem(sh, png)
+                if d.get('taxa_global'):
+                    tg = d['taxa_global']
+                    if 'taxa_texto' in mapa:
+                        for sh in _acha(S(mapa['taxa_texto'][0]), mapa['taxa_texto'][1]):
+                            _troca_runs(sh.text_frame.paragraphs[0], [f'Taxa Global Máx.: {tg}'])
+                    if 'taxa_rotulo' in mapa:
+                        for sh in _acha(S(mapa['taxa_rotulo'][0]), mapa['taxa_rotulo'][1]):
+                            _troca_runs(sh.text_frame.paragraphs[0], ['Taxa Global Máx.'])
+                    if 'taxa_valor' in mapa:
+                        for sh in _acha(S(mapa['taxa_valor'][0]), mapa['taxa_valor'][1]):
+                            # só o número: a quebra de linha e o "a.a." do modelo ficam
+                            for r in (r for p in sh.text_frame.paragraphs for r in p.runs):
+                                if re.search(r'\d+(?:,\d+)?\s*%', r.text):
+                                    r.text = re.sub(r'\d+(?:,\d+)?\s*%', tg, r.text, count=1)
+                                    break
                 if mapa.get('pagina_rentabilidade'):
                     _pagina_rentabilidade(prs, mapa['pagina_rentabilidade'], d)
 

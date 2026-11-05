@@ -382,7 +382,7 @@ class Extras:
                 p = sh.text_frame.paragraphs[0]
                 t = ''.join(r.text for r in p.runs)
                 m = re.search(r'R\$\s*[\d.,]+', t)
-                if m and _troca_trecho(p, m.start(), m.end(), fmt.brl(valores[k])):
+                if m and _troca_trecho(p, m.start(), m.end(), fmt.brl_curto(valores[k])):
                     self.trocas += 1
 
     # -------------------------------------------- "100% do CDI" + "Retorno 12 M"

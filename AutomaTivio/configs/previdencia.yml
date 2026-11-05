@@ -47,7 +47,7 @@ paginas:
       - {rotulo: Meta de retorno, valor: "CDI + 1,0%"}
       - {rotulo: Duration, dado: duration}
       - {rotulo: Patrimônio Líquido, dado: pl_curto}
-    caracteristicas: [nome, cnpj, inicio, pl_medio, publico, taxas]
+    caracteristicas: [nome, cnpj, inicio, pl_medio, taxa_global, publico, taxas]
     # texto do gestor automático: mercado do comentário do Institucional
     # (entrada/comentarios.md) + a frase com os números + complemento manual
     # (seção "## Tivio HGD30" de entrada/comentarios.md, se houver)
@@ -86,7 +86,7 @@ paginas:
       - {rotulo: "Carrego ({mes_ano})", dado: carrego}
       - {rotulo: Capacity limitada, valor: "R$ 500 milhões"}
       - {rotulo: Duration, dado: duration}
-      - {rotulo: "Taxas de Adm & Gestão", valor: "1% a.a."}
+      - {rotulo: "Taxa Global Máx.", dado: taxa_global}
       - {rotulo: Taxa de Performance, valor: "20% do que exceder 100% do CDI"}
     # cartões de indicadores (desenho de 06/10/2026); números da planilha
     cartoes:
@@ -139,7 +139,7 @@ paginas:
         destaque: >-
           A menor volatilidade dos fundos de crédito estruturado é resultado de
           uma combinação de fatores resultantes da gestão ativa do fundo.
-    caracteristicas: [nome, cnpj, inicio, pl, pl_medio, publico, taxas]
+    caracteristicas: [nome, cnpj, inicio, pl, pl_medio, taxa_global, publico, taxas]
     comentario:
       sobre:
         - "O **Tivio HYD60** combina **duas estratégias complementares de geração de alfa**, apoiadas na ampla expertise da área de crédito da Tivio Capital."

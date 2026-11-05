@@ -160,8 +160,9 @@ class RenderizadorLegado:
                         self.set(k, f, f'a{i}', '*Alfa: ' + ctx.texto(per, 'alfa'))
                     else:
                         self.set(k, f, f'v{i}', self.rent_post(ctx, per, 'pct'))
-                self.set(k, f, 'pl', ctx.pl_fmt)
-                self.set(k, f, 'plm', ctx.pl_medio_fmt)
+                # PL curto nos posts ("R$ 1,83 bi"), como em Investment Solutions
+                self.set(k, f, 'pl', fmt.brl_curto(ctx.pl) if ctx.pl else fmt.MINUS)
+                self.set(k, f, 'plm', fmt.brl_curto(ctx.pl_medio) if ctx.pl_medio else fmt.MINUS)
                 if ctx.cart:
                     st = ctx.cart['setores']
                     top = st[st.index != 'Caixa'].head(3)
@@ -190,10 +191,10 @@ class RenderizadorLegado:
                 if not ctx:
                     self.log.aviso(k, 'sem dados — mantido')
                     continue
-                self.set(k, f, 'b1val', ctx.pl_fmt)
+                self.set(k, f, 'b1val', fmt.brl_curto(ctx.pl) if ctx.pl else fmt.MINUS)
                 desde = 'início' in (f.get('b2lab') or '')
                 pl_medio = ctx.rent.get('pl_medio_inicio') if desde else ctx.pl_medio
-                self.set(k, f, 'b2val', fmt.brl(pl_medio) if pl_medio else fmt.MINUS)
+                self.set(k, f, 'b2val', fmt.brl_curto(pl_medio) if pl_medio else fmt.MINUS)
                 p1 = 'inicio' if f.get('k1') == 'Desde o início' else '12m'
                 if p1 == '12m' and not ctx.rent.get('12m'):
                     # fundo com menos de 12 meses: o rótulo vira "Desde o início"

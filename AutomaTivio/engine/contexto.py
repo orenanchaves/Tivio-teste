@@ -681,11 +681,21 @@ class Contexto:
         if taxa is None:
             avisos.append('taxa global não encontrada na taxas_global.xlsx')
 
-        coment = self.com.relatorio(key, f.nome)
-        for apelido in f.apelidos:
-            if coment:
-                break
-            coment = self.com.relatorio(key, apelido)
+        # o mesmo fundo pode vir com mais de um título no comentarios.md (o Infra
+        # Plus CDI aparece também como "Institucional Incentivado CDI"): vale a
+        # seção com texto de verdade, não a que ficou com o "lorem ipsum"
+        import re as _re
+        provisorio = lambda c: any(_re.search(r'lorem|ipsum|perspiciatis|voluptatem', p or '', _re.I) for p in (c or []))
+        achados = []
+        for nome in [f.nome] + list(f.apelidos):
+            c = self.com.relatorio(key, nome)
+            if c and all(c != x for _, x in achados):
+                achados.append((nome, c))
+        coment = next((c for _, c in achados if not provisorio(c)), achados[0][1] if achados else None)
+        if len(achados) > 1:
+            usado = next(n for n, c in achados if c is coment)
+            avisos.append('comentário em mais de uma seção do comentarios.md ('
+                          + ', '.join(f'"{n}"' for n, _ in achados) + f'); usada: "{usado}"')
 
         ctx = ContextoFundo(f, self.edicao, rent, cart, hist, hist12, taxa, perf,
                             coment, avisos, self.calc)
