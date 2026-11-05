@@ -603,8 +603,10 @@ class RenderizadorRelatorio:
         f = ctx.f
         ve = self.ve(f)
         inicio = self._inicio_exibido(f) or self._inicio(ctx)
+        # padrão único de "Características gerais do fundo" (relatórios e
+        # e-mails, 05/11/2026): mesmos rótulos e mesma ordem em todo material
         esq = [('Gestor', 'Tivio Capital'),
-               ('Público Alvo', f.cfg.get('publico', 'Investidores em geral'))]
+               ('Público alvo', f.cfg.get('publico', 'Investidores em geral'))]
         if inicio is not None:
             esq.append(('Data de início', f'{inicio:%d/%m/%Y}'))
         # "Taxa global" em todos os fundos, inclusive nos ALT (pedido de 05/10/2026)
@@ -614,10 +616,9 @@ class RenderizadorRelatorio:
         dir_ = []
         # sem `operacional` no fundos.yml o bloco sairia só com o título
         if f.cfg.get('operacional'):
-            dir_.append(('Informações Operacionais', None))
+            dir_.append(('Informações operacionais', None))
         dir_ += [('Patrimônio líquido', ctx.pl_fmt),
-                 ('Patrimônio líquido médio ' + ('(12M)' if ve == 'ce' else '(12 meses)'),
-                  ctx.pl_medio_fmt)]
+                 ('Patrimônio líquido médio (12 meses)', ctx.pl_medio_fmt)]
         return esq, dir_
 
     @staticmethod

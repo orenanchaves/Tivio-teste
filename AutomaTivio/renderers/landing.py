@@ -335,14 +335,16 @@ class RenderizadorLanding:
         return [(n, r, max(0.8, v / mx * 100), n == 'Caixa') for n, r, v in itens]
 
     def _caracteristicas(self, pg, ctx):
+        # mesmos rótulos das "Características gerais do fundo" dos relatórios
         mapa = {
             'nome': ('Nome', pg.get('nome_caracteristicas') or pg.get('nome')),
             'cnpj': ('CNPJ', pg.get('cnpj')),
-            'inicio': ('Data de início do fundo', pg.get('data_inicio') or (
+            'gestor': ('Gestor', 'Tivio Capital'),
+            'inicio': ('Data de início', pg.get('data_inicio') or (
                 f'{ctx.data_inicio:%d/%m/%Y}' if ctx.data_inicio is not None
                 and str(ctx.data_inicio) != 'NaT' else None)),
-            'pl': ('Patrimônio líquido', ctx.pl_fmt.split(',')[0] if ctx.pl else None),
-            'pl_medio': ('PL médio (12M)', ctx.pl_medio_fmt.split(',')[0] if ctx.pl_medio else None),
+            'pl': ('Patrimônio líquido', ctx.pl_fmt if ctx.pl else None),
+            'pl_medio': ('Patrimônio líquido médio (12 meses)', ctx.pl_medio_fmt if ctx.pl_medio else None),
             'taxa_global': ('Taxa Global Máx.', (taxa_global_max(ctx) + ' a.a.') if taxa_global_max(ctx) else None),
             'publico': ('Público alvo', pg.get('publico')),
             'taxas': ('Taxas', pg.get('taxas')),
