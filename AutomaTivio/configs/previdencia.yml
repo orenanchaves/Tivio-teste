@@ -139,7 +139,7 @@ paginas:
         destaque: >-
           A menor volatilidade dos fundos de crédito estruturado é resultado de
           uma combinação de fatores resultantes da gestão ativa do fundo.
-    caracteristicas: [nome, cnpj, inicio, pl, publico, taxas]
+    caracteristicas: [nome, cnpj, inicio, pl, pl_medio, publico, taxas]
     comentario:
       sobre:
         - "O **Tivio HYD60** combina **duas estratégias complementares de geração de alfa**, apoiadas na ampla expertise da área de crédito da Tivio Capital."
@@ -153,6 +153,6 @@ paginas:
       produto: "/ / BRADESCO TIVIO HYD60 PGBL/VGBL FIF"
       nota_rating: "*Não incluindo a parte de crédito estruturado"
       casas_pct: 2                    # "98,12% do CDI" na tabela do e-mail
-      blocos: [cabecalho, texto, kpis, rentabilidade, alocacao, setorial, rating, historico, beneficios]
+      blocos: [cabecalho, texto, kpis, rentabilidade, alocacao, setorial, rating, historico, beneficios, caracteristicas]
     informativo: templates/informativos/hyd60.pptx
     secoes: [texto, kpis, rentabilidade, previsao_alocacao, setorial, rating, historico, beneficios, caracteristicas]
