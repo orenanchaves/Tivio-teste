@@ -1162,6 +1162,8 @@ h1,h2,h3{text-wrap:balance}p,li{text-wrap:pretty}
 /* estrutura: subabas Freelancers e Agência parceira */
 .painel-est[hidden]{display:none}
 .painel-est .frente .tp{margin-top:16px}
+.painel-est .frente .em-vista,.painel-est .frente .esc{grid-column:1;margin:6px 0 0;font-size:14px;line-height:1.4;color:var(--fg-2)}.painel-est .frente .em-vista{color:var(--fg);font-weight:600}.painel-est .linhas .frente ul{grid-row:1/6}.painel-est .linhas .frente{grid-template-rows:auto auto auto auto 1fr}.painel-est .frente .tp{grid-column:1}
+@media (max-width:820px){.painel-est .linhas .frente ul{grid-row:auto}}
 
 /* ==== versão branca (gerado por claro.py) ==== */
 #apres.ap-claro .ap-b{background:#3C4A60;color:#0A0F14}
