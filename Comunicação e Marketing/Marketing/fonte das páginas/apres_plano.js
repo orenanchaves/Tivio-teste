@@ -109,10 +109,10 @@
       ["Aplicações dos contatos em até 90 dias, em R$", "Cruzamento mensal com o comercial", "Mostrar quanto o marketing trouxe de dinheiro"]];
     if (fu.length) S.push({ sec: "2027", h: "Como vamos <strong>medir</strong>", html: '<p class="med-lead">Cada pessoa passa por quatro etapas. Todo mês, no painel, contamos quantas chegaram a cada uma.</p><div class="fn"><div class="fn-h"><span></span><b>O que conta</b><b>Onde medimos</b><b>Para que serve</b></div>'
       + fu.map(function (x, k) { var e = ETAPA[k] || ["", "", ""]; return '<div class="fn-r" style="--k:' + k + '"><p class="fn-e" style="--w:' + (100 - k * 13) + '%"><b>' + esc(t(x.querySelector("b"))) + "</b><span>" + esc(t(x.querySelector("span"))) + "</span></p><p>" + e[0] + "</p><p>" + e[1] + "</p><p>" + e[2] + "</p></div>" }).join("") + "</div>" });
-    if (mt.length) S.push({ sec: "2027", fora: 1, h: "Metas das redes <strong>até dez/27</strong>", html: '<div class="sl-med met-2"><div class="met met-so"><b class="met-t">De hoje até a meta</b>' + mt.slice(0, 7).map(function (x) {
+    if (mt.length) S.push({ sec: "2027", fora: 1, h: "Metas das redes <strong>até dez/27</strong>", html: '<div class="mtl"><div class="mtl-h"><span>Indicador</span><span>Caminho até a meta</span><span>Hoje</span><span>Meta</span></div>' + mt.slice(0, 7).map(function (x) {
       var e = t(x.querySelector("em")).split(" a "), h0 = num(e[0]), m1 = num(e[1]); var pc = h0 !== null && m1 ? Math.min(100, Math.round(h0 / m1 * 100)) : 0;
-      return '<div><span>' + esc(t(x.querySelector("span"))) + '</span><i style="--w:' + pc + '%"></i><em>' + esc(e[0]) + " → <strong>" + esc(e[1] || "") + "</strong></em></div>";
-    }).join("") + '</div></div><p class="sl-nota">Proposta do time de Comunicação &amp; Marketing, a validar.</p>' });
+      return '<div class="mtl-r"><span>' + esc(t(x.querySelector("span"))) + '</span><i style="--w:' + pc + '%"><small>' + pc + '%</small></i><em>' + esc(e[0]) + '</em><strong>' + esc(e[1] || "") + "</strong></div>";
+    }).join("") + '</div><p class="sl-nota">Proposta do time de Comunicação &amp; Marketing, a validar. A barra mostra quanto do caminho já foi feito.</p>' });
     // resumo de tudo
     var rs = [];
     var kR = N ? [].slice.call(N.querySelectorAll("#custo ~ .kpis .kpi b")).map(t) : [];
