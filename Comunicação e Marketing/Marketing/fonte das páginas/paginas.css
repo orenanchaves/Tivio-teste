@@ -1186,7 +1186,7 @@ h1,h2,h3{text-wrap:balance}p,li{text-wrap:pretty}
 @media (max-width:820px){.pf-grade{grid-template-columns:minmax(0,1fr)}.pf{padding:14px}.pf-foto{flex-basis:56px;width:56px;height:56px}}
 .painel-fr .linhas .frente:not(:has(ul)){grid-template-columns:minmax(0,1fr)}
 .pf-topo{display:flex;flex-wrap:wrap;align-items:center;gap:10px 16px;margin:18px 0 10px}.pf-topo .pf-tit{margin:0}
-.pf-sel{display:flex;align-items:center;gap:8px;font-size:14px;color:var(--fg-2)}.pf-sel select{padding:6px 12px;border-radius:999px;border:1px solid var(--line-strong);background:var(--pill);color:var(--fg);font:inherit;font-size:14px;max-width:100%}
+.pf-sel{display:flex;align-items:center;gap:8px;font-size:14px;color:var(--fg-2)}.pf-sel select{padding:6px 12px;border-radius:999px;border:1px solid var(--line-strong);background:var(--pill);color:var(--fg);font:inherit;font-size:14px;max-width:100%}.pf-sel select{color-scheme:dark;cursor:pointer}.pf-sel select option{background:#121a26;color:#f3f5f8}.pf-sel select option:checked{background:#2a3a52;color:#fff}
 .pf-cont{font-size:13px;color:var(--verde-txt);font-weight:600}.pf[hidden]{display:none}
 .pf-esc{display:inline-flex;align-items:center;gap:6px;margin-top:10px;font-size:13px;color:var(--fg-2);cursor:pointer}.pf-esc input{width:16px;height:16px;accent-color:var(--verde-txt)}
 .pf.pf-ok{border-color:var(--verde-txt)}.pf.pf-ok .pf-esc{color:var(--verde-txt);font-weight:600}
