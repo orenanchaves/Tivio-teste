@@ -50,6 +50,9 @@
         + "</div></div>"
         + '<p class="cu-tot">' + kt(3) + "</p></div>" });
     }
+    // a saída da agência: o aviso já foi dado e o que ela entrega até o fim
+    var AG = ["Templates preparados", "Artigos para o site, para SEO e GEO", "Tivio Visita", "Templates de vídeo"];
+    S.push({ sec: "Estrutura", h: "A saída da <strong>agência</strong>", html: '<p class="med-lead">Na sexta-feira, 6 de novembro, enviamos um e-mail à agência anunciando o encerramento, com previsão para dezembro. Até lá, eles entregam:</p><div class="fc"><ul>' + AG.map(function (x) { return "<li>" + esc(x) + "</li>" }).join("") + "</ul></div>" });
     // logo depois da estrutura: o que queremos para o ano, uma meta por frente
     var qf = N ? [].slice.call(N.querySelectorAll(".fr-vis>section.frente")).filter(vis) : [];
     if (qf.length) S.push({ sec: "2027", h: "O que queremos <strong>em 2027</strong>", html: '<div class="quer"><p class="quer-f">Ser a <strong>casa de estruturados</strong> do mercado: quem explica o risco, com dado próprio e presença constante.</p><div class="sl-g c4 cmp">'
