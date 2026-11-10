@@ -64,7 +64,9 @@ main{max-width:1400px;margin:0 auto;padding-block:36px 64px}
 h1{font-size:34px;font-weight:300;letter-spacing:-.01em;line-height:1.15;text-wrap:balance}
 h1 strong{font-weight:600}
 h2{font-size:20px;font-weight:600;line-height:1.3;text-wrap:balance}
-h3{font-size:16px;font-weight:600}
+h3{font-size:16px;font-weight:600;text-wrap:balance}
+h4,.fcard b,.cfundo b,.item b,.revisor b,.feito b,.trava b,.coluna-cab b{text-wrap:balance}
+p,small,li,.sub,.o,.q,.alerta span,.perm,.vazio,.previa,.folha-caixa,.folha-caixa p,.trava,.feito span,.obs{text-wrap:pretty}
 .sub{color:var(--text-muted);font-size:15px}
 .cab{display:flex;align-items:flex-end;justify-content:space-between;gap:16px 24px;flex-wrap:wrap;margin-bottom:28px}
 .cab>.tit{display:grid;gap:6px;min-width:0}
@@ -213,6 +215,60 @@ textarea.mot{width:100%;min-height:90px;background:var(--input-bg);border:1px so
 .arq .st{margin-left:auto}
 .bloco{display:grid;gap:14px;margin-top:24px}
 
+/* prévia da folha do relatório (cores fixas: imita a folha impressa) */
+.folha-area{display:grid;gap:10px}
+.folha{max-width:720px;background:#EEF3F6;color:#1B2A36;border-radius:10px;overflow:hidden;box-shadow:0 18px 44px rgba(0,0,0,.32);border:1px solid var(--line)}
+.folha-topo{background:#0A0F14;color:#FFF;padding:24px 30px 16px;display:grid;gap:14px;border-bottom-right-radius:28px}
+.folha-marca{display:flex;justify-content:space-between;align-items:flex-start;gap:12px}
+.folha-tivio{display:block;font-size:12px;letter-spacing:.18em;font-weight:600;color:#C8D7E0}
+.folha-nome{display:block;font-size:30px;font-weight:700;line-height:1.05;color:#C1F4D4;letter-spacing:-.01em}
+.folha-mes{font-size:14px;color:#E6EDF1;white-space:nowrap;padding-top:4px}
+.folha-tab{width:100%;border-collapse:collapse;font-size:13px;font-variant-numeric:tabular-nums}
+.folha-tab th{font-weight:600;color:#AFC1CC;text-align:right;padding:6px 0;border-bottom:1px solid rgba(255,255,255,.14)}
+.folha-tab td{padding:7px 0;text-align:right;border-bottom:1px solid rgba(255,255,255,.08);color:#E6EDF1}
+.folha-tab td:first-child,.folha-tab th:first-child{text-align:left}
+.folha-tab td.v{color:#C1F4D4;font-weight:600}
+.folha-db{font-size:10.5px;text-align:right;color:#AFC1CC;font-weight:600}
+.folha-com{padding:22px 30px 26px}
+.folha-com h4{text-align:center;font-weight:300;font-size:17px;color:#3C4A60;margin-bottom:14px}
+.folha-caixa{height:250px;overflow:hidden;padding:10px 12px;font-size:12.5px;line-height:1.55;text-align:justify;hyphens:auto;color:#1B2A36;border-radius:6px;transition:box-shadow .2s}
+.folha-caixa p+p,.folha-caixa div+div{margin-top:8px}
+.folha-caixa strong{font-weight:600}
+.folha-caixa.medida{position:absolute;left:-10000px;top:0;width:660px;height:auto;overflow:visible;visibility:hidden}
+.dif-folha{white-space:pre-wrap}
+.folha-caixa.editando{overflow:auto;background:#FFF;box-shadow:0 0 0 2px #759DB4;cursor:text;outline:none}
+.folha-caixa.estoura{box-shadow:0 0 0 2px #CC092F}
+.folha-caixa ins{background:rgba(51,127,81,.16);color:#1F5E39;text-decoration:none;border-radius:3px;padding:0 2px}
+.folha-caixa del{background:rgba(204,9,47,.12);color:#A30725;border-radius:3px;padding:0 2px}
+.medidor{display:flex;align-items:center;gap:12px;font-size:13px;color:var(--text-muted)}
+.medidor .barra{flex:0 0 140px;height:6px;border-radius:3px;background:var(--line-strong);overflow:hidden}
+.medidor .barra i{display:block;height:100%;width:0;background:var(--ok);transition:width .2s}
+.medidor.cheio .barra i{background:var(--and)}
+.medidor.estoura .barra i{background:var(--err)}
+.medidor.estoura .txt{color:var(--err);font-weight:600}
+
+/* logos dos fundos */
+.lg{display:block;width:auto;max-width:100%;object-fit:contain;object-position:left center}
+.lg-card{min-width:0;flex:0 1 auto}
+.lg-cla{display:none}
+:root[data-theme="light"] .lg-esc{display:none}
+:root[data-theme="light"] .lg-cla{display:block}
+.lg-card{height:30px}
+.lg-card.vert{height:46px}
+.lg-cab{height:52px;margin-bottom:6px}
+.lg-cab.vert{height:76px}
+.lg-folha{height:58px}
+.lg-folha.vert{height:84px}
+
+/* aprovação em lote (Riscos) */
+.lote{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:14px}
+.coluna .bt[data-lote]{justify-self:start}
+.lote-lista{display:grid;gap:6px;max-height:50vh;overflow:auto}
+.lote-item{display:flex;gap:12px;align-items:center;padding:10px 12px;border:1px solid var(--line);border-radius:var(--r-md);cursor:pointer}
+.lote-item input{width:18px;height:18px;accent-color:var(--tv-azul);flex:none}
+.lote-item b{display:block;font-size:14px}
+.lote-item small{font-size:12.5px;color:var(--text-muted)}
+
 /* histórico e auditoria */
 .hist{margin-top:20px}
 .hist summary{cursor:pointer;color:var(--text-muted);font-size:14px;padding:8px 0;list-style:none;display:inline-flex;gap:6px;align-items:center}
@@ -278,6 +334,15 @@ textarea.mot{width:100%;min-height:90px;background:var(--input-bg);border:1px so
   .item{grid-template-columns:1fr}
   .item .bt{grid-row:auto;grid-column:auto;margin-top:6px}
   .pecas{grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+  .folha-topo{padding:18px 16px 12px}
+  .folha-nome{font-size:22px}
+  .lg-folha{height:44px}
+  .lg-cab{height:42px}
+  .folha-com{padding:18px 16px 20px}
+  .folha-caixa{height:auto;min-height:120px}
+  .folha-caixa.editando{max-height:none}
+  .medidor{flex-wrap:wrap}
+  .medidor .barra{flex:1 1 100%}
   .aud thead{display:none}
   .aud,.aud tbody,.aud tr,.aud td{display:block;width:100%}
   .aud tr{border-bottom:1px solid var(--line);padding:10px 0}
@@ -305,6 +370,12 @@ textarea.mot{width:100%;min-height:90px;background:var(--input-bg);border:1px so
 (function(){
 "use strict";
 var PECAS=/*PECAS*/{};
+var LOGOS=/*LOGOS*/{};
+/* logo oficial do fundo: branco no escuro, preto no claro; sem logo, o nome escrito */
+function logoFundo(f,cls,fixo){var l=LOGOS[f.id];if(!l)return '';
+  if(fixo)return '<img class="lg '+cls+(l.vertical?' vert':'')+'" src="'+l.branco+'" alt="'+esc(f.nome)+'">';
+  return '<img class="lg lg-esc '+cls+(l.vertical?' vert':'')+'" src="'+l.branco+'" alt="'+esc(f.nome)+'"><img class="lg lg-cla '+cls+(l.vertical?' vert':'')+'" src="'+l.preto+'" alt="" aria-hidden="true">'}
+function nomeOuLogo(f,cls){return LOGOS[f.id]?logoFundo(f,cls):'<b>'+esc(f.nome.replace(/^Tivio /,''))+'</b>'}
 var I={
   ok:'<path d="M5 12.5l4.5 4.5L19 7.5"/>',rel:'<circle cx="12" cy="12" r="8.5"/><path d="M12 7.5V12l3 2"/>',
   cad:'<rect x="5" y="10.5" width="14" height="9.5" rx="2"/><path d="M8.5 10.5V7.5a3.5 3.5 0 0 1 7 0v3"/>',
@@ -348,6 +419,9 @@ function seed(){
   /* id, nome, área, dados, riscos, comentário, revisão Comercial, revisão Gestão, materiais, SharePoint, motivo */
   var F=[
     ['banks','Tivio Banks','credito_privado','ok','aguardando','nao',null,null,'nao','nao'],
+    ['infraplus','Tivio Infra Plus','credito_privado','ok','aguardando','nao',null,null,'nao','nao'],
+    ['rf-cp','Tivio RF CP','credito_privado','ok','aguardando','nao',null,null,'nao','nao'],
+    ['alt-light','Tivio ALT Light','credito_estruturado','ok','aguardando','nao',null,null,'nao','nao'],
     ['institucional','Tivio Institucional','credito_privado','ok','correcao','nao',null,null,'nao','nao','O PL da planilha não bate com o da API TLDR (diferença de R$ 4,2 mi). Conferir a cota de 30/10.'],
     ['institucional-15','Tivio Institucional 15','credito_privado','aguardando','semdados','nao',null,null,'nao','nao'],
     ['esplanada','Tivio Esplanada','credito_privado','ok','reprovado','nao',null,null,'nao','nao','Carteira de 30/09 carregada no lugar da de 30/10.'],
@@ -402,7 +476,7 @@ function arquivosDe(f,st){
   return out;
 }
 
-var CHAVE='automativio-esteira-v3',S=null;
+var CHAVE='automativio-esteira-v4',S=null;
 function carregar(){
   try{var j=localStorage.getItem(CHAVE);if(j)S=JSON.parse(j)}catch(e){}
   if(!S||!S.fundos)S=seed();
@@ -481,11 +555,11 @@ function telaEsteira(){
   h+='<div class="esteira">';
   ETAPAS.forEach(function(et,k){
     var L=F.filter(function(f){return k===4?concluido(f)||etapa(f)===4:etapa(f)===k&&!concluido(f)});
-    h+='<section class="coluna" aria-label="'+et.nome+'"><div class="coluna-cab"><div class="l1"><b>'+(k+1)+'. '+et.nome+'</b><span class="n">'+L.length+'</span></div><small>'+et.quem+'</small></div>';
+    h+='<section class="coluna" aria-label="'+et.nome+'"><div class="coluna-cab"><div class="l1"><b>'+(k+1)+'. '+et.nome+'</b><span class="n">'+L.length+'</span></div><small>'+et.quem+'</small></div>'+(k===0&&S.perfil==='riscos'&&pendRiscos().length?'<button type="button" class="bt pri peq" data-lote="riscos">'+ic('ok')+'Aprovar todos ('+pendRiscos().length+')</button>':'');
     if(!L.length)h+='<p class="vazio">Nenhum fundo nesta etapa.</p>';
     L.forEach(function(f){
       var s=situacao(f),vez=comigo(f)&&S.perfil!=='admin';
-      h+='<button type="button" class="cfundo'+(vez?' vez':'')+'" data-abrir="'+f.id+'"><span class="lin2"><b>'+esc(f.nome.replace(/^Tivio /,''))+'</b>'+(vez?'<span class="vez-chip">Com você</span>':'')+'</span>'+
+      h+='<button type="button" class="cfundo'+(vez?' vez':'')+'" data-abrir="'+f.id+'"><span class="lin2">'+nomeOuLogo(f,'lg-card')+(vez?'<span class="vez-chip">Com você</span>':'')+'</span>'+
         (k===2?revChips(f):'<span>'+pill(s)+'</span>')+'<small>'+AREA[f.area]+'</small></button>';
     });
     h+='</section>';
@@ -496,8 +570,9 @@ function telaFila(){
   var L=S.fundos.filter(comigo);
   var h='<div class="cab"><div class="tit"><h1>Minha fila</h1><p class="sub">'+(S.perfil==='admin'?'Tudo que espera por alguém agora.':'O que está com '+(S.perfil==='riscos'?'Riscos':S.perfil==='gestao'?'a Gestão':'o Comercial')+' agora. Ao terminar, o fundo passa para a próxima pessoa.')+'</p></div></div>';
   if(!L.length)return h+'<div class="trava">'+ic('ok')+'<div><b>Nada com você agora</b>Quando um fundo chegar na sua etapa, ele aparece aqui.</div></div>';
+  if(S.perfil==='riscos')h+=loteHtml(L.length);
   return h+'<div class="fila">'+L.map(function(f){var o=oQueFazer(f),q=comQuem(f).map(function(x){return NOME[x]}).join(' e ');
-    return '<button type="button" class="item" data-abrir="'+f.id+'"><b>'+esc(f.nome)+'</b><span class="o">'+esc(o[0])+'</span><span class="q">'+AREA[f.area]+(S.perfil==='admin'?'. Com: '+q:'')+(etapa(f)===2?'. '+esc(situacao(f)[0])+'.':'')+'</span><span class="bt pri peq">'+o[1]+ic('ava')+'</span></button>'}).join('')+'</div>';
+    return '<button type="button" class="item" data-abrir="'+f.id+'">'+(LOGOS[f.id]?'<span>'+logoFundo(f,'lg-card')+'</span>':'<b>'+esc(f.nome)+'</b>')+'<span class="o">'+esc(o[0])+'</span><span class="q">'+AREA[f.area]+(S.perfil==='admin'?'. Com: '+q:'')+(etapa(f)===2?'. '+esc(situacao(f)[0])+'.':'')+'</span><span class="bt pri peq">'+o[1]+ic('ava')+'</span></button>'}).join('')+'</div>';
 }
 
 function passagem(f){
@@ -521,7 +596,7 @@ function telaFundo(){
   if(ui.fundo!==f.id){ui.fundo=f.id;ui.ver=null;ui.editando=false;ui.modo='ver'}
   var e=etapa(f);
   var h='<a class="voltar" href="#'+(comigo(f)?'fila':'esteira')+'">'+ic('vol')+(comigo(f)?'Minha fila':'Esteira')+'</a>';
-  h+='<div class="cab"><div class="tit"><h1>'+esc(f.nome)+'</h1><p class="sub">'+AREA[f.area]+'. Data base '+f.dataBase+'.</p></div>'+pill(situacao(f))+'</div>';
+  h+='<div class="cab"><div class="tit">'+(LOGOS[f.id]?'<span>'+logoFundo(f,'lg-cab')+'</span>':'')+'<h1>'+esc(f.nome)+'</h1><p class="sub">'+AREA[f.area]+'. Data base '+f.dataBase+'.</p></div>'+pill(situacao(f))+'</div>';
   h+=passagem(f);
   if(concluido(f)||e>=3)h+=painelMateriais(f);
   else h+=[painelRiscos,painelComentario,painelRevisao][e](f);
@@ -550,33 +625,72 @@ function painelRiscos(f){
   else pe='<button type="button" class="bt neg" data-acao="reprovar">Reprovar dados</button><button type="button" class="bt" data-acao="corrigir">Solicitar correção</button><button type="button" class="bt pri" data-acao="aprovar-dados">'+ic('ok')+'Aprovar dados</button>';
   return painel('Riscos confere os dados do mês','Ao aprovar, a IA gera o comentário com estes dados.',c,pe);
 }
+/* a folha do relatório: o comentário aparece onde vai sair, e edita ali mesmo */
+function folhaHtml(f,texto,modo,ant){
+  var r=f.ind,editavel=modo==='editar';
+  var sem=function(t){return String(t||'').replace(/\*\*/g,'')};
+  var caixa=modo==='comparar'&&ant?'<div class="dif-folha">'+difHtml(sem(ant),sem(texto))+'</div>':mdHtml(texto);
+  return '<div class="folha-area"><div class="folha" aria-label="Prévia da folha do relatório">'+
+    '<div class="folha-topo"><div class="folha-marca"><div>'+(LOGOS[f.id]?logoFundo(f,'lg-folha',true):'<span class="folha-tivio">TIVIO</span><span class="folha-nome">'+esc(f.nome.replace(/^Tivio /,''))+'</span>')+'</div><span class="folha-mes">Outubro de 2026</span></div>'+
+    '<table class="folha-tab"><thead><tr><th></th><th>Mês</th><th>Ano</th><th>12M</th></tr></thead><tbody>'+
+    '<tr><td>Fundo</td><td class="v">'+r[0][1]+'</td><td class="v">'+r[2][1]+'</td><td class="v">'+r[3][1]+'</td></tr>'+
+    '<tr><td>% do CDI</td><td>'+r[1][1]+'</td><td>-</td><td>-</td></tr></tbody></table><p class="folha-db">Data base: '+f.dataBase+'</p></div>'+
+    '<div class="folha-com"><h4>Comentário do Gestor e Análise de Mercado</h4>'+
+    '<div class="folha-caixa'+(editavel?' editando':'')+'" id="caixa"'+(editavel?' contenteditable="true" role="textbox" aria-multiline="true" aria-label="Comentário do gestor" spellcheck="true"':'')+'>'+caixa+'</div></div></div>'+
+    '<div class="medidor" id="medidor"><span class="barra"><i></i></span><span class="txt"></span></div></div>';
+}
+function lerCaixa(c){
+  var bl=c.querySelectorAll('p,div');
+  var partes=bl.length?[].map.call(bl,function(p){return p.innerHTML}):[c.innerHTML];
+  return partes.map(function(h){
+    h=h.replace(/<(strong|b)>([\s\S]*?)<\/\1>/gi,'**$2**').replace(/<br\s*\/?>/gi,'\n').replace(/<[^>]+>/g,'');
+    var t=document.createElement('textarea');t.innerHTML=h;return t.value.replace(/\u00a0/g,' ').trim();
+  }).filter(Boolean).join('\n\n');
+}
+var CAIXA_LARG=660,CAIXA_ALT=230;
+function medir(){
+  var c=document.getElementById('caixa'),m=document.getElementById('medidor');if(!c||!m)return;
+  m.hidden=!!c.querySelector('.dif-folha');if(m.hidden)return;
+  var d=document.getElementById('medida');
+  if(!d){d=document.createElement('div');d.id='medida';d.className='folha-caixa medida';d.setAttribute('aria-hidden','true');document.body.appendChild(d)}
+  d.innerHTML=c.innerHTML;
+  var rg=document.createRange();rg.selectNodeContents(d);
+  var usado=d.textContent.trim()?rg.getBoundingClientRect().height:0;
+  var pct=Math.round(usado/CAIXA_ALT*100);
+  m.className='medidor'+(pct>100?' estoura':pct>90?' cheio':'');
+  m.querySelector('i').style.width=Math.min(pct,100)+'%';
+  m.querySelector('.txt').textContent=pct>100?'Não cabe na caixa do relatório: passou '+(pct-100)+'% do espaço. Corte o texto.':'Espaço na caixa do relatório: '+pct+'% usado';
+  c.classList.toggle('estoura',pct>100);
+}
+function modoHtml(){return '<div class="modo" role="group" aria-label="Modo">'+[['ver','Comentário'],['comparar','Comparar versões']].map(function(m){return '<button type="button" data-modo="'+m[0]+'" class="'+(ui.modo===m[0]?'on':'')+'">'+m[1]+'</button>'}).join('')+'</div>'}
+function blocoFolha(f,podeEditar){
+  var sv=selVersao(f),atual=sv[1],ant=sv[2],ed=ui.editando&&podeEditar;
+  var modo=ed?'editar':ui.modo==='comparar'?'comparar':'ver';
+  var topo=ed?'<p class="perm">'+ic('lapis')+'Editando na folha. Clique no texto e escreva.</p>':modoHtml();
+  var nota=modo==='comparar'?(ant?'<p class="perm">'+ic('info')+'v'+atual.v+' comparada com v'+ant.v+'. Em verde o que entrou, em vermelho o que saiu.</p>':'<p class="perm">'+ic('info')+'Esta é a primeira versão. Não há versão anterior para comparar.</p>'):'';
+  return '<div class="duas"><div class="pilha">'+topo+folhaHtml(f,atual?atual.texto:'',modo,ant?ant.texto:'')+nota+'</div><div class="pilha"><h3>Versões</h3>'+versoesHtml(f,sv[0])+'</div></div>';
+}
 function painelComentario(f){
   if(f.com==='gerando')return painel('A IA está escrevendo o comentário','Usa só os dados aprovados por Riscos e os comentários anteriores do fundo.','<div class="gerando"><span class="roda"></span>Gerando o comentário: rentabilidade do mês no começo e a carteira em relação a setembro no restante</div>','');
-  var meu=f.pediu===S.perfil,sv=selVersao(f),atual=sv[1];
-  var c='<div class="alerta err">'+ic('ex')+'<span><b>'+(f.pediu==='gestao'?'A Gestão':'O Comercial')+' pediu alterações:</b> '+esc(f.motivo)+'</span></div>';
-  c+='<div class="duas"><div>'+(ui.editando&&meu?'<textarea class="md" id="editor" aria-label="Comentário">'+esc(atual?atual.texto:'')+'</textarea>':'<div class="previa">'+mdHtml(atual?atual.texto:'')+'</div>')+'</div><div class="pilha"><h3>Versões</h3>'+versoesHtml(f,sv[0])+'</div></div>';
+  var meu=f.pediu===S.perfil;
+  var c='<div class="alerta err">'+ic('ex')+'<span><b>'+(f.pediu==='gestao'?'A Gestão':'O Comercial')+' pediu alterações:</b> '+esc(f.motivo)+'</span></div>'+blocoFolha(f,meu);
   var pe;
   if(!meu)pe=semVez('Está com '+(f.pediu==='gestao'?'a Gestão':'o Comercial')+', que pediu a alteração.');
   else if(ui.editando)pe='<button type="button" class="bt" data-acao="cancelar">Cancelar</button><button type="button" class="bt pri" data-acao="salvar">Salvar e mandar para revisão'+ic('ava')+'</button>';
-  else pe='<label class="bt">'+ic('sub')+'Importar .md<input type="file" accept=".md,.txt,text/markdown" id="importar" hidden></label><button type="button" class="bt" data-acao="editar">'+ic('lapis')+'Editar eu mesmo</button><button type="button" class="bt pri" data-acao="regerar">'+ic('ia')+'Pedir nova versão à IA</button>';
+  else pe='<label class="bt">'+ic('sub')+'Importar .md<input type="file" accept=".md,.txt,text/markdown" id="importar" hidden></label><button type="button" class="bt" data-acao="editar">'+ic('lapis')+'Editar na folha</button><button type="button" class="bt pri" data-acao="regerar">'+ic('ia')+'Pedir nova versão à IA</button>';
   return painel('Ajustar o comentário','A nova versão volta para o Comercial e a Gestão revisarem.',c,pe);
 }
 function painelRevisao(f){
-  var sv=selVersao(f),atual=sv[1],ant=sv[2],eu=S.perfil==='comercial'||S.perfil==='gestao'?S.perfil:null,jaFiz=eu&&f.rev[eu]==='aprovado';
+  var eu=S.perfil==='comercial'||S.perfil==='gestao'?S.perfil:null,jaFiz=eu&&f.rev[eu]==='aprovado';
   var c='<div class="revisores">'+[['comercial','Comercial'],['gestao','Gestão']].map(function(r){var s=f.rev[r[0]],q=f.quando[r[0]];
     return '<div class="revisor'+(eu===r[0]?' eu':'')+'"><div class="l1"><b>'+r[1]+(eu===r[0]?' (você)':'')+'</b>'+pill(s==='aprovado'?['Aprovou','ok','ok']:['Pendente','and','rel'])+'</div><small>'+(q?esc(q[0])+', '+q[1]:'Ainda não revisou')+'</small></div>'}).join('')+'</div>';
-  c+='<p class="perm">'+ic('info')+'Com o OK dos dois, os materiais são gerados na hora.</p>';
-  c+='<div class="duas"><div class="pilha"><div class="modo" role="group" aria-label="Modo">'+[['ver','Comentário'],['comparar','Comparar versões']].map(function(m){return '<button type="button" data-modo="'+m[0]+'" class="'+(ui.modo===m[0]?'on':'')+'">'+m[1]+'</button>'}).join('')+'</div>';
-  if(ui.editando&&eu)c+='<textarea class="md" id="editor" aria-label="Comentário">'+esc(atual?atual.texto:'')+'</textarea>';
-  else if(ui.modo==='comparar')c+=ant?'<div class="dif">'+difHtml(ant.texto,atual.texto)+'</div><p class="perm">'+ic('info')+'v'+atual.v+' comparada com v'+ant.v+'. Em verde o que entrou, em vermelho o que saiu.</p>':'<div class="trava">'+ic('info')+'<div><b>Esta é a primeira versão</b>Não há versão anterior para comparar.</div></div>';
-  else c+='<div class="previa">'+mdHtml(atual?atual.texto:'')+'</div>';
-  c+='</div><div class="pilha"><h3>Versões</h3>'+versoesHtml(f,sv[0])+'</div></div>';
+  c+='<p class="perm">'+ic('info')+'Com o OK dos dois, os materiais são gerados na hora.</p>'+blocoFolha(f,eu&&!jaFiz);
   var pe;
   if(!eu)pe=semVez('Está com o Comercial e a Gestão. Troque o perfil no topo para revisar.');
   else if(jaFiz)pe=semVez('Você já aprovou. Falta '+(eu==='comercial'?'a Gestão':'o Comercial')+'.');
   else if(ui.editando)pe='<button type="button" class="bt" data-acao="cancelar">Cancelar</button><button type="button" class="bt pri" data-acao="salvar">Salvar nova versão</button>';
-  else pe='<button type="button" class="bt" data-acao="editar">'+ic('lapis')+'Editar</button><button type="button" class="bt neg" data-acao="alterar">Solicitar alterações</button><button type="button" class="bt pri" data-acao="aprovar-com">'+ic('ok')+'Aprovar comentário</button>';
-  return painel('Revisão do comentário','O Comercial e a Gestão revisam o texto que a IA escreveu.',c,pe);
+  else pe='<button type="button" class="bt" data-acao="editar">'+ic('lapis')+'Editar na folha</button><button type="button" class="bt neg" data-acao="alterar">Solicitar alterações</button><button type="button" class="bt pri" data-acao="aprovar-com">'+ic('ok')+'Aprovar comentário</button>';
+  return painel('Revisão do comentário','O comentário aparece na folha do relatório, no lugar onde vai sair.',c,pe);
 }
 function painelMateriais(f){
   var c;
@@ -626,6 +740,28 @@ function registrar(f,op,de,para,versao,obs,usuario,area){
   S.aud.unshift({fundo:f.id,comp:'Outubro 2026',op:op,usuario:usuario||USUARIO[S.perfil],area:area||NOME[S.perfil],quando:agora(),versao:versao||'-',de:de,para:para,obs:obs||''});
 }
 function novaVersao(f,tipo,texto,autor){var v=(f.versoes.length?ultima(f).v:0)+1;f.versoes.push({v:v,tipo:tipo,texto:texto,autor:autor||USUARIO[S.perfil],quando:agora()});ui.ver={f:f.id,v:v};return v}
+/* Riscos aprova tudo de uma vez: confirma a lista antes, e dá para desmarcar um fundo */
+function pendRiscos(){return S.fundos.filter(function(f){return f.dados==='ok'&&f.riscos==='aguardando'})}
+function loteHtml(n){return '<div class="lote"><span class="perm">'+ic('info')+'Confira a lista e aprove todos os dados de uma vez.</span><button type="button" class="bt pri" data-lote="riscos">'+ic('ok')+'Aprovar todos os dados ('+n+')</button></div>'}
+function confirmarLote(){
+  var L=pendRiscos();if(!L.length){avisar('Nenhum fundo aguardando Riscos.');return}
+  var m=document.getElementById('modal'),c=document.getElementById('modal-c');
+  c.innerHTML='<h2>Aprovar os dados de '+L.length+(L.length===1?' fundo':' fundos')+'</h2><p>Desmarque o fundo que ainda precisa de conferência. Os aprovados seguem para a IA gerar o comentário.</p>'+
+    '<div class="lote-lista">'+L.map(function(f){var a=f.alertas.filter(function(x){return x[0]==='err'}).length,i=f.alertas.length;
+      return '<label class="lote-item"><input type="checkbox" value="'+f.id+'" checked><span><b>'+esc(f.nome)+'</b><small>'+(a?a+' alerta'+(a>1?'s':'')+' de erro':i?i+' aviso'+(i>1?'s':''):'Sem alertas')+'</small></span></label>'}).join('')+'</div>'+
+    '<div style="display:flex;gap:10px;justify-content:flex-end;flex-wrap:wrap"><button type="button" class="bt" id="m-c">Cancelar</button><button type="button" class="bt pri" id="m-ok">'+ic('ok')+'Aprovar selecionados</button></div>';
+  m.classList.add('on');
+  document.getElementById('m-c').onclick=function(){m.classList.remove('on')};
+  document.getElementById('m-ok').onclick=function(){
+    var ids=[].map.call(c.querySelectorAll('input:checked'),function(x){return x.value});
+    if(!ids.length){avisar('Nenhum fundo selecionado.');return}
+    m.classList.remove('on');
+    ids.forEach(function(id,k){var f=fundo(id);f.riscos='aprovado';f.motivo='';f.quando.riscos=[USUARIO.riscos,agora()];
+      registrar(f,'Dados aprovados','Aguardando Riscos','Dados aprovados','-','Aprovação em lote ('+ids.length+' fundos).');
+      setTimeout(function(){iaGera(f,'Dados aprovados')},k*150)});
+    avisar(ids.length+(ids.length===1?' fundo aprovado':' fundos aprovados')+'. A IA está gerando os comentários.');fim();
+  };
+}
 function pedirMotivo(titulo,texto,cb){
   var m=document.getElementById('modal'),c=document.getElementById('modal-c');
   c.innerHTML='<h2>'+esc(titulo)+'</h2><p>'+esc(texto)+'</p><textarea class="mot" id="mot" aria-label="Motivo"></textarea><div style="display:flex;gap:10px;justify-content:flex-end"><button type="button" class="bt" id="m-c">Cancelar</button><button type="button" class="bt pri" id="m-ok">Confirmar</button></div>';
@@ -658,11 +794,11 @@ function acao(nome){
   if(nome==='corrigir')return pedirMotivo('Solicitar correção','O que precisa ser corrigido nos dados?',function(m){var d=sr[f.riscos];f.riscos='correcao';f.motivo=m;registrar(f,'Correção solicitada',d,'Correção solicitada','',m);fim()});
   if(nome==='reprovar')return pedirMotivo('Reprovar dados','Por que os dados foram reprovados?',function(m){var d=sr[f.riscos];f.riscos='reprovado';f.motivo=m;registrar(f,'Dados reprovados',d,'Dados reprovados','',m);fim()});
   if(nome==='reenviar'){var d2=sr[f.riscos];f.riscos='aguardando';f.motivo='';f.alertas=[];f.atual=agora();registrar(f,'Dados corrigidos',d2,'Aguardando Riscos','','Enviado de volta para Riscos.');avisar('Enviado para Riscos.')}
-  if(nome==='editar'){ui.editando=true;render();var e=document.getElementById('editor');if(e)e.focus();return}
+  if(nome==='editar'){ui.editando=true;ui.ver=null;render();var e=document.getElementById('caixa');if(e){try{document.execCommand('defaultParagraphSeparator',false,'p')}catch(x){}e.focus();var r=document.createRange();r.selectNodeContents(e);r.collapse(false);var sl=getSelection();sl.removeAllRanges();sl.addRange(r)}return}
   if(nome==='cancelar'){ui.editando=false}
   if(nome==='regerar'){registrar(f,'Nova versão pedida à IA','Alterações solicitadas','IA gerando','v'+ultima(f).v);iaGera(f,'Alterações solicitadas');return}
   if(nome==='salvar'){
-    var t=document.getElementById('editor').value.trim();if(!t){avisar('O comentário está vazio.');return}
+    var t=lerCaixa(document.getElementById('caixa'));if(!t){avisar('O comentário está vazio.');return}
     ui.editando=false;
     if(ultima(f).texto===t){avisar('Nada mudou desde a última versão.');render();return}
     var v=novaVersao(f,'Editado por '+NOME[S.perfil],t);f.com='revisao';f.pediu=null;f.motivo='';
@@ -702,11 +838,13 @@ function render(){
   else if(rota.tela==='auditoria')h=telaAuditoria();
   else h=telaEsteira();
   document.getElementById('app').innerHTML=h;
+  medir();
 }
 document.addEventListener('click',function(e){
-  var t=e.target.closest('[data-abrir],[data-acao],[data-modo],[data-ver],[data-peca],[data-visor]');
+  var t=e.target.closest('[data-lote],[data-abrir],[data-acao],[data-modo],[data-ver],[data-peca],[data-visor]');
   if(!t||t.disabled)return;
   var d=t.dataset;
+  if(d.lote){confirmarLote();return}
   if(d.abrir){ui.fundo=null;ir('f--'+d.abrir);window.scrollTo(0,0);return}
   if(d.modo){ui.modo=d.modo;render();return}
   if(d.ver){ui.ver={f:rota.id,v:+d.ver};render();return}
@@ -724,6 +862,7 @@ document.addEventListener('change',function(e){
     r.readAsText(arq);
   }
 });
+document.addEventListener('input',function(e){if(e.target.id==='caixa')medir()});
 document.addEventListener('keydown',function(e){
   if(!document.getElementById('visor').classList.contains('on'))return;
   if(e.key==='Escape')fecharVisor();if(e.key==='ArrowRight')abrirVisor(visorI+1);if(e.key==='ArrowLeft')abrirVisor(visorI-1);

@@ -34,6 +34,11 @@ PECAS = {
                       ("Post", "JPG", f"{CP}/Redes sociais/08-tivio-infrapluscdi.jpg"),
                       ("Deck", "PDF · PPTX", f"{CP}/Decks/Infra Plus CDI/Deck - Tivio Infra Plus CDI.pdf")],
     "esplanada": [(REL, "PDF · PPTX", f"{CP}/Relatórios/Tivio Esplanada - Relatório de Gestão.pdf")],
+    "infraplus": [(REL, "PDF · PPTX", f"{CP}/Relatórios/Tivio Infra Plus - Relatório de Gestão.pdf"),
+                  ("Post", "JPG", f"{CP}/Redes sociais/07-tivio-infraplus.jpg")],
+    "rf-cp": [(REL, "PDF · PPTX", f"{CP}/Relatórios/Tivio RF CP - Relatório de Gestão.pdf")],
+    "alt-light": [(REL, "PDF · PPTX", f"{CE}/Relatórios/Tivio ALT Light - Relatório de Gestão.pdf"),
+                  ("Post", "JPG", f"{CE}/Redes sociais/05-tivio-altlight.jpg")],
     "alt180": [(REL, "PDF · PPTX", f"{CE}/Relatórios/Tivio ALT 180 - Relatório de Gestão.pdf"),
                ("Post", "JPG", f"{CE}/Redes sociais/03-tivio-alt180.jpg"),
                ("Deck", "PDF · PPTX", f"{CE}/Decks/ALT 180/Deck - Tivio ALT 180 - Sem ROA.pdf")],
@@ -76,6 +81,55 @@ for fundo, itens in PECAS.items():
         saida.setdefault(fundo, []).append({"t": titulo, "fmt": fmt, "arq": p.name, "w": w, "h": h, "img": src})
 
 (AQUI / "pecas.json").write_text(json.dumps(saida, ensure_ascii=False), encoding="utf-8")
+
+# logos oficiais dos fundos (assets/logos): versão branca para fundo escuro, preta para fundo claro
+import re
+LOGOS_DIR = AQUI.parent / "AutomaTivio" / "assets" / "logos"
+LOGOS = {
+    "banks": ("credito_privado/_Banks - Horizontal - Branco.svg", "credito_privado/_Banks - Horizontal - Preto.svg"),
+    "institucional": ("credito_privado/_Institucional - Vertical - Branco.svg", "credito_privado/_Institucional - Horizontal - Preto.svg"),
+    "institucional-15": ("credito_privado/_Institucional 15 - Horizontal - Branco.svg", "credito_privado/_Institucional 15 - Horizontal - Preto.svg"),
+    "institucional-30": ("credito_privado/_Institucional 30 - Horizontal - Branco.svg", "credito_privado/_Institucional 30 - Horizontal - Preto.svg"),
+    "infraplus-cdi": ("credito_privado/_Infra Plus CDI - Horizontal - Branco.svg", "credito_privado/_Infra Plus CDI - Horizontal - Preto.svg"),
+    "esplanada": ("credito_privado/_Esplanada - Horizontal - Branco.svg", "credito_privado/_Esplanada - Horizontal - Preto.svg"),
+    "alt180": ("credito_estruturado/ALT_180_horizontal_branco_01.svg", "credito_estruturado/ALT_180_horizontal_preto_01.svg"),
+    "alt90": ("credito_estruturado/ALT_90_horizontal_branco_01.svg", "credito_estruturado/ALT_90_horizontal_preto_01.svg"),
+    "infraplus": ("credito_privado/_Infra Plus - Horizontal - Branco.svg", "credito_privado/_Infra Plus - Horizontal - Preto.svg"),
+    "rf-cp": ("credito_privado/_RF CP - Horizontal - Branco.svg", "credito_privado/_RF CP - Horizontal - Preto.svg"),
+    "alt-light": ("credito_estruturado/ALT_LIGHT_horizontal_branco.svg", "credito_estruturado/ALT_LIGHT_horizontal_preto.svg"),
+}
+
+
+def svg_limpo(caminho):
+    """Tira a chapa de fundo do Illustrator (rect do tamanho do quadro, sem cor), que pinta de preto."""
+    s = caminho.read_text(encoding="utf-8")
+    s = re.sub(r'<g id="Background">.*?</g>', "", s, flags=re.S)
+    s = re.sub(r"<rect(?![^>]*\b(?:class|fill|style)=)[^>]*/>", "", s, count=1)
+    # recorta o viewBox no limite do desenho (os arquivos vêm com muita margem)
+    vb = re.search(r'viewBox="\s*([\d.+-]+)\s+([\d.+-]+)\s+([\d.]+)\s+([\d.]+)"', s)
+    if vb:
+        x0, y0, w, h = map(float, vb.groups())
+        esc = 4
+        pix = fitz.open(stream=s.encode("utf-8"), filetype="svg")[0].get_pixmap(matrix=fitz.Matrix(esc, esc), alpha=True)
+        im = Image.frombytes("RGBA", (pix.width, pix.height), pix.samples)
+        caixa = im.getchannel("A").getbbox()
+        if caixa:
+            kx, ky = w / pix.width, h / pix.height
+            a, b, c, d = caixa
+            novo = f'viewBox="{x0 + a * kx - 1:.1f} {y0 + b * ky - 1:.1f} {(c - a) * kx + 2:.1f} {(d - b) * ky + 2:.1f}"'
+            s = s.replace(vb.group(0), novo, 1)
+    return "data:image/svg+xml;base64," + base64.b64encode(s.encode("utf-8")).decode()
+
+
+logos = {}
+for fundo, (branco, preto) in LOGOS.items():
+    if (LOGOS_DIR / branco).exists() and (LOGOS_DIR / preto).exists():
+        logos[fundo] = {"branco": svg_limpo(LOGOS_DIR / branco), "preto": svg_limpo(LOGOS_DIR / preto),
+                        "vertical": "Vertical" in branco}
+    else:
+        faltou.append(branco)
+(AQUI / "logos.json").write_text(json.dumps(logos, ensure_ascii=False), encoding="utf-8")
+print("logos", len(logos))
 print("peças", sum(len(v) for v in saida.values()), "tamanho", round(total / 1e6, 2), "MB")
 if faltou:
     print("faltou:", *faltou, sep="\n  ")
