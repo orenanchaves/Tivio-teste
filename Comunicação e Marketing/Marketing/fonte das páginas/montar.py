@@ -64,7 +64,7 @@ def barra_global():
             ("publico-originador.html", "Originador"), ("publico-universitario.html", "Universitário"), ("publico-investidor.html", "Investidor")]
     nav = "".join([
         '<a class="nav-top" href="estrutura.html">Estrutura</a>',
-        dd("Automação", [("frente-automacao.html", "Visão geral"), ("automativio.html", "AutomaTivio"), ("automativio.html#baixar", "Como baixar"), ("", "Times"), ("automativio-gestao.html", "Gestão"), ("automativio-riscos.html", "Riscos"), ("automativio-marketing.html", "Marketing"), ("", "IA"), ("m-copilot.html", "Copilot"), ("metodos-ia.html", "Como usar IA")]),
+        dd("Automação", [("frente-automacao.html", "Visão geral"), ("automativio.html", "AutomaTivio"), ("automativio.html#baixar", "Como baixar"), ("automativio-portal.html", "Portal de aprovação"), ("", "Times"), ("automativio-gestao.html", "Gestão"), ("automativio-riscos.html", "Riscos"), ("automativio-marketing.html", "Marketing"), ("", "IA"), ("m-copilot.html", "Copilot"), ("metodos-ia.html", "Como usar IA")]),
         dd("Eventos", [("frente-eventos.html", "Visão geral"), ("m-eventos.html", "Eventos Itaú"), ("eventos-mercado.html", "Eventos do mercado"), ("calendario.html", "Calendário 2027")]),
         dd("Conteúdo", [("frente-conteudo.html", "Visão geral"), ("m-posts.html", "Posts"), ("analise-postagens.html", "Análise das postagens"), ("painel-mensal.html", "Painel mensal"), ("imprensa.html", "Imprensa"), ("canal-ofertas.html", "Canal de ofertas")] + [("", "Segmentos")] + segs + [("", "Públicos")] + pubs, True),
         '<a class="nav-top" href="imprensa.html">Imprensa</a>',
@@ -249,4 +249,9 @@ exec(ler("gerar_calendario.py"))
 exec(ler("gerar_filtro.py"))
 _an = '<header class="barra"><div class="barra-in"><span class="marca">' + LOGO + '</span></div></header>' + ler("analise_corpo.html")
 (SAIDA / "analise.html").write_text('<!doctype html><html lang="pt-BR"><head><meta charset="utf-8">' + pagina("Tivio 2026 e 2027", _an, CSS_P + "@media print{.barra{position:static}.vidro,.tab,tr,.kpi{break-inside:avoid}h2{break-after:avoid}}") + "</html>", encoding="utf-8")
+# portal de aprovação do AutomaTivio (passo a passo por fundo), fonte em "FrontEnd - AutomaTivio/"
+_pf = RAIZ / "FrontEnd - AutomaTivio"
+_ns = {"__name__": "portal_central", "__file__": str(_pf / "gerar.py")}
+exec((_pf / "gerar.py").read_text(encoding="utf-8"), _ns)
+(SAIDA / "extra" / "automativio-portal.html").write_text(_ns["portal"](FACES, "frente-automacao.html", LOGO), encoding="utf-8")
 print("ok", [(p.name, p.stat().st_size) for p in SAIDA.glob("*.html") if p.name in ("automativio.html", "marketing.html")])
