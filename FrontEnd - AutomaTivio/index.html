@@ -7,21 +7,22 @@
 <meta name="robots" content="noindex">
 <meta name="claude:viewport-fit-sides" content="cover">
 <style>
-/* Portal AutomaTivio: passo a passo por fundo (Dados, Riscos, Comentário, Comercial, Materiais, SharePoint).
+/* Portal AutomaTivio: a esteira do fechamento, passando de pessoa para pessoa.
+   Riscos aprova os dados > IA gera o comentário > Comercial e Gestão revisam > materiais > SharePoint.
    Tokens da marca Tivio (_marca.css): casca escura com radial, vidro, menta como acento. */
 @font-face{font-family:Versos;font-weight:300;font-display:swap;src:url(fontes/Versos-ExtraLight.woff2) format("woff2")}
 @font-face{font-family:Versos;font-weight:400;font-display:swap;src:url(fontes/Versos-Regular.woff2) format("woff2")}
 @font-face{font-family:Versos;font-weight:600;font-display:swap;src:url(fontes/Versos-SemiBold.woff2) format("woff2")}
 @font-face{font-family:Versos;font-weight:700;font-display:swap;src:url(fontes/Versos-Bold.woff2) format("woff2")}
 :root{
-  --tv-verde:#C1F4D4;--tv-verde-escuro:#92D3AB;--tv-azul:#759DB4;--tv-azul-escuro:#3C4A60;
+  --tv-verde:#C1F4D4;--tv-azul:#759DB4;
   --bg-base:#0A0F14;--bg-elev-1:#12181F;
   --bg-glass:linear-gradient(135deg,rgba(255,255,255,.06),rgba(255,255,255,.015));
   --bg-radial:radial-gradient(1200px 800px at 15% -10%,rgba(117,157,180,.14),transparent 60%),radial-gradient(900px 700px at 110% 10%,rgba(200,215,224,.08),transparent 60%);
   --text-primary:#FFF;--text-secondary:#E6EDF1;--text-muted:#8A99A3;
   --line:rgba(255,255,255,.10);--line-strong:rgba(255,255,255,.18);
   --header-bg:rgba(10,15,20,.72);--input-bg:rgba(255,255,255,.03);--overlay:rgba(6,10,14,.9);
-  --pill-bg:rgba(117,157,180,.14);
+  --pill-bg:rgba(117,157,180,.14);--coluna-bg:rgba(255,255,255,.025);
   --ok:#C1F4D4;--ok-bg:rgba(193,244,212,.12);--and:#9DBDD0;--and-bg:rgba(117,157,180,.16);
   --blq:#8A99A3;--blq-bg:rgba(255,255,255,.05);--err:#FF8A9B;--err-bg:rgba(204,9,47,.18);
   --pri-bg:#C1F4D4;--pri-fg:#0A0F14;--pri-hover:#92D3AB;--acento:#C1F4D4;--peca-bg:#E6EDF1;
@@ -36,7 +37,7 @@
   --text-primary:#0A0F14;--text-secondary:#12181F;--text-muted:#4a5a66;
   --line:rgba(10,15,20,.09);--line-strong:rgba(10,15,20,.18);
   --header-bg:rgba(255,255,255,.82);--input-bg:rgba(10,15,20,.02);--overlay:rgba(226,234,239,.94);
-  --pill-bg:rgba(60,74,96,.10);
+  --pill-bg:rgba(60,74,96,.10);--coluna-bg:rgba(60,74,96,.04);
   --ok:#337F51;--ok-bg:rgba(51,127,81,.12);--and:#3C4A60;--and-bg:rgba(60,74,96,.10);
   --blq:#4a5a66;--blq-bg:rgba(10,15,20,.05);--err:#CC092F;--err-bg:rgba(204,9,47,.08);
   --pri-bg:#3C4A60;--pri-fg:#FFF;--pri-hover:#2E3A4C;--acento:#337F51;--peca-bg:#D4E0E6;
@@ -52,100 +53,108 @@ svg.i{width:16px;height:16px;flex:none;fill:none;stroke:currentColor;stroke-widt
 
 /* cabeçalho */
 .topo{position:sticky;top:env(safe-area-inset-top,0px);z-index:20;background:var(--header-bg);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border-bottom:1px solid var(--line)}
-.topo-in{max-width:1240px;margin:0 auto;padding-block:14px;display:flex;align-items:center;gap:24px}
+.topo-in{max-width:1400px;margin:0 auto;padding-block:14px;display:flex;align-items:center;gap:24px}
 .marca{display:flex;align-items:center;gap:14px;text-decoration:none;color:var(--text-primary)}
 .marca svg{height:34px;width:auto}
 .marca span{font-size:13px;color:var(--text-muted);border-left:1px solid var(--line-strong);padding-left:14px}
 .nav{display:flex;gap:4px}
-.nav a{padding:8px 14px;border-radius:var(--r-full);color:var(--text-muted);text-decoration:none;font-size:14px}
+.nav a{padding:8px 14px;border-radius:var(--r-full);color:var(--text-muted);text-decoration:none;font-size:14px;display:inline-flex;gap:6px;align-items:center}
 .nav a.on{background:var(--pill-bg);color:var(--text-primary)}
+.nav .cont{font-size:11.5px;font-weight:700;background:var(--pri-bg);color:var(--pri-fg);border-radius:var(--r-full);padding:1px 7px;font-variant-numeric:tabular-nums}
 .topo-dir{margin-left:auto;display:flex;align-items:center;gap:10px}
 .sel{display:flex;align-items:center;gap:8px;font-size:13px;color:var(--text-muted)}
 .sel select{background:var(--input-bg);border:1px solid var(--line-strong);border-radius:var(--r-full);padding:7px 30px 7px 14px;appearance:none;-webkit-appearance:none;color:var(--text-primary);background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M1 1l4 4 4-4' stroke='%238A99A3' fill='none' stroke-width='1.5'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 12px center}
 .sel select option{background:var(--bg-elev-1)}
 .icone-bt{width:36px;height:36px;border-radius:50%;border:1px solid var(--line-strong);background:transparent;display:grid;place-items:center;cursor:pointer;color:var(--text-muted)}
 
-main{max-width:1240px;margin:0 auto;padding-block:36px 64px}
+main{max-width:1400px;margin:0 auto;padding-block:36px 64px}
 h1{font-size:34px;font-weight:300;letter-spacing:-.01em;line-height:1.15;text-wrap:balance}
 h1 strong{font-weight:600}
 h2{font-size:20px;font-weight:600;line-height:1.3;text-wrap:balance}
 h3{font-size:16px;font-weight:600}
 .sub{color:var(--text-muted);font-size:15px}
 .cab{display:flex;align-items:flex-end;justify-content:space-between;gap:16px 24px;flex-wrap:wrap;margin-bottom:28px}
-.cab>div:not(.filtro){display:grid;gap:6px;min-width:0}
+.cab>.tit{display:grid;gap:6px;min-width:0}
 .cartao{background:var(--bg-glass);border:1px solid var(--line);border-radius:var(--r-lg);padding:24px}
 
-/* botões */
+/* botões e status */
 .bt{display:inline-flex;align-items:center;justify-content:center;gap:8px;border-radius:var(--r-full);padding:11px 20px;font-size:14px;font-weight:600;cursor:pointer;border:1px solid var(--line-strong);background:transparent;color:var(--text-primary);white-space:nowrap;text-decoration:none;transition:background .2s var(--ease),opacity .2s}
 .bt:hover:not(:disabled){background:var(--pill-bg)}
 .bt.pri{background:var(--pri-bg);color:var(--pri-fg);border-color:var(--pri-bg)}
 .bt.pri:hover:not(:disabled){background:var(--pri-hover)}
 .bt.neg{color:var(--err);border-color:color-mix(in srgb,var(--err) 50%,transparent)}
 .bt.peq{padding:7px 14px;font-size:13px}
-.bt.link{border-color:transparent;padding-left:6px;padding-right:6px;color:var(--text-muted)}
 .bt:disabled{opacity:.38;cursor:not-allowed}
-.bt:focus-visible,.nav a:focus-visible,.passo:focus-visible,.fcard:focus-visible,.peca:focus-visible{outline:none;box-shadow:0 0 0 3px color-mix(in srgb,var(--tv-azul) 50%,transparent)}
-
-/* status */
+.bt:focus-visible,.nav a:focus-visible,.cfundo:focus-visible,.peca:focus-visible,.item:focus-visible{outline:none;box-shadow:0 0 0 3px color-mix(in srgb,var(--tv-azul) 50%,transparent)}
 .st{display:inline-flex;align-items:center;gap:6px;padding:4px 10px 4px 8px;border-radius:var(--r-full);font-size:12.5px;font-weight:600;white-space:nowrap;line-height:1.3}
 .st svg.i{width:13px;height:13px;stroke-width:2}
 .st.ok{color:var(--ok);background:var(--ok-bg)}
 .st.and{color:var(--and);background:var(--and-bg)}
 .st.blq{color:var(--blq);background:var(--blq-bg)}
 .st.err{color:var(--err);background:var(--err-bg)}
-
-/* início: um cartão por fundo */
-.filtro{display:inline-flex;border:1px solid var(--line-strong);border-radius:var(--r-full);padding:3px;flex-wrap:wrap}
-.filtro button{border:0;background:none;padding:7px 14px;border-radius:var(--r-full);cursor:pointer;font-size:13.5px;color:var(--text-muted)}
-.filtro button.on{background:var(--pill-bg);color:var(--text-primary)}
-.fundos{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}
-.fcard{display:grid;gap:14px;align-content:start;text-align:left;background:var(--bg-glass);border:1px solid var(--line);border-radius:var(--r-lg);padding:20px;cursor:pointer;color:inherit;transition:border-color .2s}
-.fcard:hover{border-color:var(--line-strong)}
-.fcard.vez{border-color:color-mix(in srgb,var(--acento) 55%,transparent)}
-.fcard-top{display:flex;justify-content:space-between;align-items:flex-start;gap:10px}
-.fcard-top b{font-size:16.5px;font-weight:600;line-height:1.3;display:block}
-.fcard-top small{color:var(--text-muted);font-size:13px}
-.vez-chip{font-size:12px;font-weight:700;color:var(--pri-fg);background:var(--pri-bg);padding:3px 10px;border-radius:var(--r-full);white-space:nowrap}
-.trilho{display:grid;grid-template-columns:repeat(6,1fr);gap:4px}
-.trilho i{height:5px;border-radius:3px;background:var(--line-strong)}
-.trilho i.ok{background:var(--ok)}
-.trilho i.and{background:var(--and)}
-.trilho i.err{background:var(--err)}
-.fcard-et{display:flex;justify-content:space-between;align-items:center;gap:10px;font-size:13.5px}
-.fcard-et span{color:var(--text-muted)}
-.fcard-et b{font-weight:600}
-.fcard-pq{font-size:13.5px;color:var(--text-secondary);line-height:1.4;min-height:38px}
-
-/* tela do fundo */
-.voltar{display:inline-flex;align-items:center;gap:6px;color:var(--text-muted);text-decoration:none;font-size:14px;margin-bottom:14px}
-.passos{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:8px;margin-bottom:20px;counter-reset:p}
-.passo{display:grid;gap:8px;text-align:left;background:none;border:0;padding:0;cursor:pointer;color:inherit;min-width:0}
-.passo:disabled{cursor:default}
-.passo .barra{height:4px;border-radius:2px;background:var(--line-strong)}
-.passo .nome{display:flex;align-items:center;gap:8px;font-size:13.5px;font-weight:600;color:var(--text-muted)}
-.passo .num{width:22px;height:22px;border-radius:50%;display:grid;place-items:center;font-size:12px;border:1px solid var(--line-strong);flex:none;font-variant-numeric:tabular-nums}
-.passo .num svg{width:12px;height:12px;stroke-width:2.4}
-.passo small{font-size:12.5px;color:var(--text-muted);line-height:1.3;padding-left:30px}
-.passo.ok .barra{background:var(--ok)}
-.passo.ok .num{background:var(--ok-bg);border-color:var(--ok);color:var(--ok)}
-.passo.and .barra{background:var(--and)}
-.passo.and .num{border-color:var(--and);color:var(--and)}
-.passo.err .barra{background:var(--err)}
-.passo.err .num{border-color:var(--err);color:var(--err)}
-.passo.ok .nome,.passo.and .nome,.passo.err .nome{color:var(--text-primary)}
-.passo.vendo .nome{color:var(--text-primary)}
-.passo.vendo .barra{box-shadow:0 0 0 2px color-mix(in srgb,var(--acento) 45%,transparent)}
-.passo-m{display:none}
-
-.etapa{background:var(--bg-glass);border:1px solid var(--line);border-radius:var(--r-lg);overflow:hidden}
-.etapa-cab{padding:24px 28px 0;display:flex;justify-content:space-between;gap:16px;align-items:flex-start;flex-wrap:wrap}
-.etapa-cab>div{display:grid;gap:4px;min-width:0}
-.etapa-cab .quem{font-size:13px;color:var(--text-muted)}
-.etapa-corpo{padding:22px 28px 28px;display:grid;gap:20px}
-.etapa-pe{border-top:1px solid var(--line);padding:16px 28px;display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;background:color-mix(in srgb,var(--bg-base) 35%,transparent)}
-.etapa-pe .acoes{display:flex;gap:10px;flex-wrap:wrap;justify-content:flex-end;margin-left:auto}
 .perm{font-size:13px;color:var(--text-muted);display:flex;gap:6px;align-items:center}
+
+/* esteira: uma coluna por etapa, com quem está com a bola */
+.com-voce{display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;padding:16px 20px;border-radius:var(--r-lg);border:1px solid color-mix(in srgb,var(--acento) 45%,transparent);background:var(--ok-bg);margin-bottom:22px}
+.com-voce b{font-size:16px}
+.com-voce span{color:var(--text-secondary);font-size:14px}
+.esteira{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:12px;align-items:start}
+.coluna{background:var(--coluna-bg);border:1px solid var(--line);border-radius:var(--r-lg);padding:14px;display:grid;gap:10px;min-width:0}
+.coluna-cab{display:grid;gap:2px;padding:2px 4px 6px}
+.coluna-cab .l1{display:flex;justify-content:space-between;align-items:center;gap:8px}
+.coluna-cab b{font-size:15px;font-weight:600}
+.coluna-cab .n{font-size:13px;color:var(--text-muted);font-variant-numeric:tabular-nums;border:1px solid var(--line-strong);border-radius:var(--r-full);padding:0 8px}
+.coluna-cab small{font-size:12.5px;color:var(--text-muted)}
+.seta-col{display:none}
+.cfundo{display:grid;gap:8px;text-align:left;background:var(--bg-glass);border:1px solid var(--line);border-radius:var(--r-md);padding:12px 13px;cursor:pointer;color:inherit;min-width:0}
+.cfundo:hover{border-color:var(--line-strong)}
+.cfundo.vez{border-color:color-mix(in srgb,var(--acento) 60%,transparent)}
+.cfundo b{font-size:14px;font-weight:600;line-height:1.3}
+.cfundo .lin2{display:flex;justify-content:space-between;align-items:center;gap:6px;flex-wrap:wrap}
+.cfundo small{font-size:12.5px;color:var(--text-muted)}
+.vez-chip{font-size:11.5px;font-weight:700;color:var(--pri-fg);background:var(--pri-bg);padding:2px 9px;border-radius:var(--r-full);white-space:nowrap}
+.revs{display:flex;gap:6px;flex-wrap:wrap}
+.rev{display:inline-flex;align-items:center;gap:4px;font-size:12px;font-weight:600;padding:2px 8px 2px 6px;border-radius:var(--r-full);background:var(--blq-bg);color:var(--blq)}
+.rev svg.i{width:12px;height:12px;stroke-width:2.2}
+.rev.ok{background:var(--ok-bg);color:var(--ok)}
+.rev.err{background:var(--err-bg);color:var(--err)}
+.vazio{font-size:13px;color:var(--text-muted);padding:10px 4px}
+
+/* minha fila */
+.fila{display:grid;gap:10px}
+.item{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:6px 16px;align-items:center;background:var(--bg-glass);border:1px solid var(--line);border-radius:var(--r-md);padding:16px 18px;text-align:left;color:inherit;cursor:pointer}
+.item:hover{border-color:var(--line-strong)}
+.item b{font-size:15.5px;font-weight:600}
+.item .o{font-size:14px;color:var(--text-secondary)}
+.item .q{font-size:12.5px;color:var(--text-muted)}
+.item .bt{grid-row:1/4;grid-column:2}
+.trava{display:flex;gap:12px;align-items:flex-start;padding:18px;border-radius:var(--r-md);border:1px dashed var(--line-strong);color:var(--text-muted);font-size:14px;line-height:1.45}
+.trava svg{width:20px;height:20px;margin-top:1px}
+.trava b{color:var(--text-primary);display:block;margin-bottom:2px}
+
+/* tela do fundo: a linha do tempo da passagem + o que fazer agora */
+.voltar{display:inline-flex;align-items:center;gap:6px;color:var(--text-muted);text-decoration:none;font-size:14px;margin-bottom:14px}
+.passagem{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:0;margin-bottom:24px}
+.mao{position:relative;display:grid;grid-template-columns:30px minmax(0,1fr);gap:10px;padding-right:12px;align-items:start}
+.mao::after{content:"";position:absolute;left:38px;right:8px;top:15px;height:1px;background:var(--line-strong)}
+.mao:last-child::after{display:none}
+.mao .bola{width:30px;height:30px;border-radius:50%;display:grid;place-items:center;border:1px solid var(--line-strong);background:var(--bg-elev-1);color:var(--blq);position:relative;z-index:1}
+.mao .bola svg{width:14px;height:14px}
+.mao.ok .bola{border-color:var(--ok);color:var(--ok);background:var(--ok-bg)}
+.mao.and .bola{border-color:var(--and);color:var(--and);background:var(--and-bg)}
+.mao.err .bola{border-color:var(--err);color:var(--err);background:var(--err-bg)}
+.mao .txt{display:grid;gap:1px;padding-top:4px;background:var(--bg-base);padding-right:8px;position:relative;z-index:1;justify-self:start;max-width:100%}
+.mao b{font-size:13.5px}
+.mao small{font-size:12.5px;color:var(--text-muted);line-height:1.35}
+.painel{background:var(--bg-glass);border:1px solid var(--line);border-radius:var(--r-lg);overflow:hidden}
+.painel-cab{padding:22px 26px 0;display:flex;justify-content:space-between;gap:16px;align-items:flex-start;flex-wrap:wrap}
+.painel-cab>div{display:grid;gap:4px;min-width:0}
+.painel-cab .quem{font-size:13px;color:var(--text-muted)}
+.painel-corpo{padding:20px 26px 26px;display:grid;gap:18px}
+.painel-pe{border-top:1px solid var(--line);padding:16px 26px;display:flex;justify-content:flex-end;align-items:center;gap:10px;flex-wrap:wrap;background:color-mix(in srgb,var(--bg-base) 35%,transparent)}
+.painel-pe .perm{margin-right:auto}
 .duas{display:grid;grid-template-columns:minmax(0,1.6fr) minmax(0,1fr);gap:20px;align-items:start}
+.pilha{display:grid;gap:10px;align-content:start}
 .fichas{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
 .ficha{border:1px solid var(--line);border-radius:var(--r-md);padding:13px 15px;min-width:0}
 .ficha span{display:block;font-size:12px;color:var(--text-muted)}
@@ -162,47 +171,44 @@ h3{font-size:16px;font-weight:600}
 .alerta svg{margin-top:2px;color:var(--and)}
 .alerta.err svg{color:var(--err)}
 .alerta.ok svg{color:var(--ok)}
-.pilha{display:grid;gap:8px}
-.trava{display:flex;gap:12px;align-items:flex-start;padding:18px;border-radius:var(--r-md);border:1px dashed var(--line-strong);color:var(--text-muted);font-size:14px;line-height:1.45}
-.trava svg{width:20px;height:20px;margin-top:1px}
-.trava b{color:var(--text-primary);display:block;margin-bottom:2px}
+.revisores{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.revisor{border:1px solid var(--line);border-radius:var(--r-md);padding:13px 15px;display:grid;gap:6px;align-content:start}
+.revisor.eu{border-color:color-mix(in srgb,var(--acento) 55%,transparent)}
+.revisor .l1{display:flex;justify-content:space-between;gap:8px;align-items:center}
+.revisor b{font-size:14px}
+.revisor small{font-size:12.5px;color:var(--text-muted);line-height:1.35}
 .registro{font-size:13.5px;display:grid;gap:6px}
 .registro div{display:flex;justify-content:space-between;gap:12px;border-bottom:1px solid var(--line);padding-bottom:6px}
 .registro div:last-child{border-bottom:0}
 .registro span:first-child{color:var(--text-muted)}
 .registro span:last-child{text-align:right}
-textarea.md{width:100%;min-height:300px;resize:vertical;background:var(--input-bg);border:1px solid var(--line-strong);border-radius:var(--r-md);padding:16px;font-size:14.5px;line-height:1.6;font-family:ui-monospace,Menlo,Consolas,monospace}
+textarea.md{width:100%;min-height:280px;resize:vertical;background:var(--input-bg);border:1px solid var(--line-strong);border-radius:var(--r-md);padding:16px;font-size:14.5px;line-height:1.6;font-family:ui-monospace,Menlo,Consolas,monospace}
 textarea.mot{width:100%;min-height:90px;background:var(--input-bg);border:1px solid var(--line-strong);border-radius:var(--r-md);padding:12px;font-size:14px}
-.previa{border:1px solid var(--line);border-radius:var(--r-md);padding:22px 24px;font-size:15.5px;line-height:1.7;color:var(--text-secondary);max-width:72ch}
+.previa{border:1px solid var(--line);border-radius:var(--r-md);padding:22px 24px;font-size:15.5px;line-height:1.7;color:var(--text-secondary)}
 .previa p+p{margin-top:12px}
-.dif{border:1px solid var(--line);border-radius:var(--r-md);padding:22px 24px;font-size:15px;line-height:1.75;white-space:pre-wrap;max-width:72ch}
+.dif{border:1px solid var(--line);border-radius:var(--r-md);padding:22px 24px;font-size:15px;line-height:1.75;white-space:pre-wrap}
 .dif ins{background:var(--ok-bg);color:var(--ok);text-decoration:none;border-radius:3px;padding:0 2px}
 .dif del{background:var(--err-bg);color:var(--err);border-radius:3px;padding:0 2px}
-.modo{display:inline-flex;border:1px solid var(--line-strong);border-radius:var(--r-full);padding:3px;flex-wrap:wrap}
+.modo{display:inline-flex;border:1px solid var(--line-strong);border-radius:var(--r-full);padding:3px;justify-self:start}
 .modo button{border:0;background:none;padding:6px 14px;border-radius:var(--r-full);cursor:pointer;font-size:13px;color:var(--text-muted)}
 .modo button.on{background:var(--pill-bg);color:var(--text-primary)}
-.ferr{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap}
-.ferr .grupo{display:flex;gap:8px;flex-wrap:wrap}
 .versoes{display:grid;gap:8px}
 .versao{display:block;border:1px solid var(--line);border-radius:var(--r-md);padding:10px 14px;cursor:pointer;background:none;text-align:left;width:100%}
 .versao.on{border-color:var(--tv-azul);background:var(--and-bg)}
 .versao b{font-size:14px}
 .versao small{display:block;color:var(--text-muted);font-size:12px}
-.gerando{display:flex;align-items:center;gap:12px;padding:40px 22px;justify-content:center;color:var(--text-muted);border:1px solid var(--line);border-radius:var(--r-md);min-height:200px;text-align:center}
+.gerando{display:flex;align-items:center;gap:12px;padding:36px 22px;justify-content:center;color:var(--text-muted);border:1px solid var(--line);border-radius:var(--r-md);min-height:160px;text-align:center}
 .roda{width:20px;height:20px;border-radius:50%;border:2px solid var(--line-strong);border-top-color:var(--acento);animation:gira .8s linear infinite;flex:none}
 @keyframes gira{to{transform:rotate(360deg)}}
-.crit{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:0 24px}
-.crit div{display:flex;align-items:center;gap:10px;padding:9px 0;border-bottom:1px solid var(--line);font-size:14px}
-.crit div.ok svg{color:var(--ok)}
-.crit div.nao{color:var(--text-muted)}
-.crit div.nao svg{color:var(--err)}
-.pronto{font-size:13px;font-weight:700;letter-spacing:.06em;color:var(--ok)}
-.pronto.nao{color:var(--text-muted)}
+.feito{display:flex;gap:16px;align-items:center;padding:18px 20px;border-radius:var(--r-md);background:var(--ok-bg)}
+.feito>svg{width:26px;height:26px;color:var(--ok);flex:none}
+.feito b{display:block;font-size:16px}
+.feito span{color:var(--text-secondary);font-size:14px}
 
 /* peças prontas, como na Central de Materiais */
-.pecas{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:16px}
+.pecas{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:16px}
 .peca{display:grid;gap:10px;text-align:left;background:none;border:0;padding:0;cursor:zoom-in;color:inherit}
-.peca .moldura{aspect-ratio:4/5;border-radius:var(--r-md);background:var(--peca-bg);overflow:hidden;border:1px solid var(--line);display:grid;place-items:start center}
+.peca .moldura{aspect-ratio:4/5;border-radius:var(--r-md);background:var(--peca-bg);overflow:hidden;border:1px solid var(--line)}
 .peca img{width:100%;height:100%;object-fit:cover;object-position:top;display:block;transition:transform .4s var(--ease)}
 .peca:hover img{transform:scale(1.03)}
 .peca b{font-size:14px;font-weight:600;display:block}
@@ -212,10 +218,7 @@ textarea.mot{width:100%;min-height:90px;background:var(--input-bg);border:1px so
 .arq>div{min-width:0}
 .arq small{color:var(--text-muted);font-size:12.5px;display:block;overflow-wrap:anywhere}
 .arq .st{margin-left:auto}
-.feito{display:flex;gap:16px;align-items:center;padding:20px;border-radius:var(--r-md);background:var(--ok-bg)}
-.feito>svg{width:28px;height:28px;color:var(--ok);flex:none}
-.feito b{display:block;font-size:16px}
-.feito span{color:var(--text-secondary);font-size:14px}
+.bloco{display:grid;gap:14px;margin-top:24px}
 
 /* histórico e auditoria */
 .hist{margin-top:20px}
@@ -230,10 +233,6 @@ textarea.mot{width:100%;min-height:90px;background:var(--input-bg);border:1px so
 .aud td.q{white-space:nowrap;color:var(--text-muted);font-variant-numeric:tabular-nums}
 .seta{color:var(--text-muted);margin:0 4px}
 .obs{display:block;color:var(--text-muted);font-size:12.5px;margin-top:3px}
-.grade3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:20px}
-.lin{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:11px 0;border-bottom:1px solid var(--line);font-size:14px}
-.lin:last-child{border-bottom:0}
-.lin small{display:block;color:var(--text-muted);font-size:12.5px}
 
 /* modal, visualizador e aviso */
 .fundo-modal{position:fixed;inset:0;background:var(--overlay);display:none;align-items:center;justify-content:center;z-index:50;padding:16px}
@@ -250,43 +249,41 @@ textarea.mot{width:100%;min-height:90px;background:var(--input-bg);border:1px so
 .visor-nav{display:flex;gap:8px}
 .aviso{position:fixed;left:50%;bottom:calc(24px + env(safe-area-inset-bottom,0px));transform:translateX(-50%) translateY(20px);opacity:0;background:var(--bg-elev-1);border:1px solid var(--line-strong);padding:12px 18px;border-radius:var(--r-full);font-size:14px;transition:.3s var(--ease);z-index:60;pointer-events:none;max-width:calc(100% - 32px);text-align:center}
 .aviso.on{opacity:1;transform:translateX(-50%)}
-.rodape{max-width:1240px;margin:0 auto;padding-block:0 40px;color:var(--text-muted);font-size:12.5px;display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap}
+.rodape{max-width:1400px;margin:0 auto;padding-block:0 40px;color:var(--text-muted);font-size:12.5px;display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap}
 .rodape button{background:none;border:0;color:var(--text-muted);text-decoration:underline;cursor:pointer;font-size:12.5px;padding:0}
 
 @media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
-@media (max-width:1080px){
-  .fundos{grid-template-columns:repeat(2,minmax(0,1fr))}
-  .duas,.grade3{grid-template-columns:1fr}
-  .passo small{display:none}
+@media (max-width:1180px){
+  .esteira{grid-template-columns:repeat(3,minmax(0,1fr))}
+  .duas{grid-template-columns:1fr}
 }
 @media (max-width:760px){
   .lado{padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
   .topo-in{padding-block:12px;gap:10px 12px;flex-wrap:wrap}
   .marca svg{height:26px}
   .marca span{display:none}
+  .nav{margin-left:auto}
+  .nav a{padding:7px 10px;font-size:13.5px}
   .topo-dir{width:100%;margin-left:0;gap:8px}
   .topo-dir .sel{flex:1;min-width:0}
   .topo-dir .sel>span{display:none}
   .topo-dir .sel select{width:100%;font-size:13px;padding:6px 26px 6px 12px}
-  .nav{margin-left:auto}
-  .nav a{padding:7px 11px;font-size:13.5px}
   main{padding-block:22px 48px}
   h1{font-size:26px}
-  .fundos{grid-template-columns:1fr}
-  .passos{gap:4px;margin-bottom:10px}
-  .passo .nome{display:none}
-  .passo-m{display:flex;justify-content:space-between;gap:10px;font-size:14px;margin-bottom:16px}
-  .passo-m b{font-weight:600}
-  .passo-m span{color:var(--text-muted)}
-  .etapa-cab{padding:18px 16px 0}
-  .etapa-corpo{padding:18px 16px 20px}
-  .etapa-pe{padding:14px 16px}
-  .etapa-pe .acoes{width:100%}
-  .etapa-pe .acoes .bt{flex:1 1 100%}
-  .etapa-pe>.bt{order:2}
-  .fichas{grid-template-columns:1fr 1fr}
+  .esteira{grid-template-columns:1fr}
+  .passagem{grid-template-columns:1fr;gap:0}
+  .mao{padding:0 0 14px}
+  .mao::after{left:15px;top:30px;bottom:0;right:auto;width:1px;height:auto}
+  .mao .txt{padding-top:3px}
+  .painel-cab{padding:18px 16px 0}
+  .painel-corpo{padding:18px 16px 20px}
+  .painel-pe{padding:14px 16px}
+  .painel-pe .bt{flex:1 1 100%}
+  .painel-pe .perm{margin-right:0}
+  .fichas,.revisores{grid-template-columns:1fr}
   .ind .ori{display:none}
-  .crit{grid-template-columns:1fr}
+  .item{grid-template-columns:1fr}
+  .item .bt{grid-row:auto;grid-column:auto;margin-top:6px}
   .pecas{grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
   .aud thead{display:none}
   .aud,.aud tbody,.aud tr,.aud td{display:block;width:100%}
@@ -301,7 +298,7 @@ textarea.mot{width:100%;min-height:90px;background:var(--input-bg);border:1px so
   <nav class="nav" id="nav"></nav>
   <div class="topo-dir">
     <label class="sel"><span>Competência</span><select id="comp"><option>Outubro 2026</option></select></label>
-    <label class="sel"><span>Perfil</span><select id="perfil"><option value="riscos">Riscos</option><option value="comercial">Comercial</option><option value="admin">Administrador</option></select></label>
+    <label class="sel"><span>Você é</span><select id="perfil"><option value="riscos">Riscos</option><option value="comercial">Comercial</option><option value="gestao">Gestão</option><option value="admin">Administrador</option></select></label>
     <button class="icone-bt" id="tema" type="button" aria-label="Trocar tema"><svg class="i" viewBox="0 0 24 24"><path d="M20 14.5A8 8 0 0 1 9.5 4a8 8 0 1 0 10.5 10.5z"/></svg></button>
   </div>
 </div></header>
@@ -324,26 +321,25 @@ var I={
   nuv:'<path d="M7.5 18.5a4.5 4.5 0 0 1-.6-9 6 6 0 0 1 11.4 1.6 3.8 3.8 0 0 1-.8 7.4z"/><path d="M12 11v6M9.5 13.5L12 11l2.5 2.5"/>',
   vol:'<path d="M14.5 5.5L8 12l6.5 6.5"/>',ava:'<path d="M9.5 5.5L16 12l-6.5 6.5"/>',
   ia:'<path d="M12 3.5l1.8 4.7 4.7 1.8-4.7 1.8L12 16.5l-1.8-4.7L5.5 10l4.7-1.8z"/><path d="M18 15.5l.8 2 2 .8-2 .8-.8 2-.8-2-2-.8 2-.8z"/>',
+  esc:'<path d="M12 3l7.5 3v5.5c0 4.6-3.2 8-7.5 9.5-4.3-1.5-7.5-4.9-7.5-9.5V6z"/>',
+  pes:'<circle cx="9" cy="8.5" r="3"/><path d="M3.5 19c.6-3 2.8-4.6 5.5-4.6s4.9 1.6 5.5 4.6"/><circle cx="16.5" cy="9.5" r="2.4"/><path d="M15.5 14.6c2.4 0 4.3 1.4 4.9 4"/>',
   sub:'<path d="M12 15.5V4M7.5 8.5L12 4l4.5 4.5M5 15v4.5h14V15"/>',info:'<circle cx="12" cy="12" r="8.5"/><path d="M12 11v5M12 7.9v.1"/>',
-  lapis:'<path d="M4 20l1-4.5L15.5 5a2.1 2.1 0 0 1 3 3L8 18.5z"/><path d="M13.5 7l3 3"/>'
+  lapis:'<path d="M4 20l1-4.5L15.5 5a2.1 2.1 0 0 1 3 3L8 18.5z"/><path d="M13.5 7l3 3"/>',ponto:'<circle cx="12" cy="12" r="3"/>'
 };
 function ic(n){return '<svg class="i" viewBox="0 0 24 24" aria-hidden="true">'+I[n]+'</svg>'}
 function esc(s){return String(s==null?'':s).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]})}
 
 var AREA={credito_privado:'Crédito Privado',credito_estruturado:'Crédito Estruturado',investment_solutions:'Investment Solutions',previdencia:'Previdência'};
-var USUARIO={riscos:'Analista de Riscos',comercial:'Analista Comercial',admin:'Administrador'};
-var AREA_PERFIL={riscos:'Riscos',comercial:'Comercial',admin:'Administração'};
-var PODE={riscos:['validar_dados'],comercial:['gerar_comentario','editar_comentario','aprovar_comentario','gerar_material'],admin:['configurar']};
-function pode(a){return PODE[S.perfil].indexOf(a)>=0}
+var NOME={riscos:'Riscos',comercial:'Comercial',gestao:'Gestão',admin:'Administrador'};
+var USUARIO={riscos:'Analista de Riscos',comercial:'Analista Comercial',gestao:'Gestor',admin:'Administrador'};
 
-/* as seis etapas, na ordem da esteira */
+/* a esteira: cada etapa tem quem está com a bola */
 var ETAPAS=[
-  {id:'dados',nome:'Dados',dono:null,quem:'Automação'},
-  {id:'riscos',nome:'Riscos',dono:'riscos',quem:'Riscos'},
-  {id:'comentario',nome:'Comentário',dono:'comercial',quem:'Comercial'},
-  {id:'comercial',nome:'Aprovação',dono:'comercial',quem:'Comercial'},
-  {id:'materiais',nome:'Materiais',dono:'comercial',quem:'Comercial'},
-  {id:'sharepoint',nome:'SharePoint',dono:null,quem:'Automação'}
+  {id:'riscos',nome:'Dados',quem:'Riscos aprova',ico:'esc'},
+  {id:'comentario',nome:'Comentário',quem:'IA gera a partir dos dados aprovados',ico:'ia'},
+  {id:'revisao',nome:'Revisão',quem:'Comercial e Gestão',ico:'pes'},
+  {id:'materiais',nome:'Materiais',quem:'Gerados após a aprovação',ico:'cx'},
+  {id:'sharepoint',nome:'SharePoint',quem:'Publicação automática',ico:'nuv'}
 ];
 
 function textoIA(f,n){
@@ -356,19 +352,20 @@ function textoIA(f,n){
 }
 function seed(){
   var base={dataBase:'30/10/2026',carteira:'dados_mensais.xlsx, aba Carteira (30/10/2026)',atual:'06/11/2026 09:42',origem:'Planilha mensal e API TLDR'};
+  /* id, nome, área, dados, riscos, comentário, revisão Comercial, revisão Gestão, materiais, SharePoint, motivo */
   var F=[
-    ['infraplus-cdi','Tivio Infra Plus CDI','credito_privado','atualizados','aprovado','aguardando','nao','nao'],
-    ['banks','Tivio Banks','credito_privado','atualizados','aguardando','nao','nao','nao'],
-    ['top-credit','Tivio Prev Top Credit Itaú','investment_solutions','atualizados','aprovado','aprovado','nao','nao'],
-    ['institucional','Tivio Institucional','credito_privado','atualizados','correcao','nao','nao','nao','O PL da planilha não bate com o da API TLDR (diferença de R$ 4,2 mi). Conferir a cota de 30/10.'],
-    ['alt180','Tivio ALT 180','credito_estruturado','atualizados','aprovado','alteracoes','nao','nao','Citar a nova operação de recebíveis no segundo parágrafo.'],
-    ['hgd30','Tivio HGD30','previdencia','atualizados','aprovado','rascunho','nao','nao'],
-    ['institucional-30','Tivio Institucional 30','credito_privado','atualizados','aprovado','nao','nao','nao'],
-    ['alt90','Tivio ALT 90','credito_estruturado','atualizados','aprovado','aprovado','gerado','publicado'],
-    ['low-vol','Tivio Prev Low Vol Itaú','investment_solutions','atualizados','aprovado','aprovado','nao','nao'],
-    ['esplanada','Tivio Esplanada','credito_privado','atualizados','reprovado','nao','nao','nao','Carteira de 30/09 carregada no lugar da de 30/10.'],
-    ['institucional-15','Tivio Institucional 15','credito_privado','aguardando','semdados','nao','nao','nao']
-  ].map(function(x){return {id:x[0],nome:x[1],area:x[2],dados:x[3],riscos:x[4],com:x[5],mat:x[6],sp:x[7],motivo:x[8]||''}});
+    ['banks','Tivio Banks','credito_privado','ok','aguardando','nao',null,null,'nao','nao'],
+    ['institucional','Tivio Institucional','credito_privado','ok','correcao','nao',null,null,'nao','nao','O PL da planilha não bate com o da API TLDR (diferença de R$ 4,2 mi). Conferir a cota de 30/10.'],
+    ['institucional-15','Tivio Institucional 15','credito_privado','aguardando','semdados','nao',null,null,'nao','nao'],
+    ['esplanada','Tivio Esplanada','credito_privado','ok','reprovado','nao',null,null,'nao','nao','Carteira de 30/09 carregada no lugar da de 30/10.'],
+    ['alt180','Tivio ALT 180','credito_estruturado','ok','aprovado','alteracoes',null,'alteracoes','nao','nao','Citar a nova operação de recebíveis no segundo parágrafo.'],
+    ['institucional-30','Tivio Institucional 30','credito_privado','ok','aprovado','revisao',null,null,'nao','nao'],
+    ['infraplus-cdi','Tivio Infra Plus CDI','credito_privado','ok','aprovado','revisao','aprovado',null,'nao','nao'],
+    ['hgd30','Tivio HGD30','previdencia','ok','aprovado','revisao',null,'aprovado','nao','nao'],
+    ['alt90','Tivio ALT 90','credito_estruturado','ok','aprovado','aprovado','aprovado','aprovado','gerado','publicado'],
+    ['low-vol','Tivio Prev Low Vol Itaú','investment_solutions','ok','aprovado','aprovado','aprovado','aprovado','gerado','publicado'],
+    ['top-credit','Tivio Prev Top Credit Itaú','investment_solutions','ok','aprovado','aprovado','aprovado','aprovado','gerado','publicado']
+  ].map(function(x){return {id:x[0],nome:x[1],area:x[2],dados:x[3],riscos:x[4],com:x[5],rev:{comercial:x[6],gestao:x[7]},mat:x[8],sp:x[9],motivo:x[10]||'',pediu:x[7]==='alteracoes'?'gestao':x[6]==='alteracoes'?'comercial':null}});
   var ex=[['1,12%','108,4%','10,9%','13,2%','R$ 1,56 bi','42','CDI+1,38%',['1,05%','104,1%','R$ 1,52 bi','41','CDI+1,41%']],
           ['1,08%','104,6%','10,4%','12,7%','R$ 312 mi','35','CDI+1,22%',['1,01%','100,2%','R$ 298 mi','33','CDI+1,25%']]];
   F.forEach(function(f,k){
@@ -380,31 +377,27 @@ function seed(){
     if(f.id==='institucional')f.alertas=[['err','PL da planilha diferente do PL da API TLDR.']];
     if(f.id==='esplanada')f.alertas=[['err','A data da carteira (30/09/2026) é anterior à data base.']];
     if(f.dados==='aguardando'){f.atual='Sem carteira';f.carteira='Carteira de 30/10 ainda não chegou';f.alertas=[['err','Falta a carteira do mês na planilha.']]}
-    f.versoes=[];f.aprov=null;f.arquivos=[];
-    if(['aguardando','alteracoes','rascunho','aprovado'].indexOf(f.com)>=0)f.versoes.push({v:1,tipo:'Gerado por IA',texto:textoIA(f,1),autor:'IA (rascunho)',quando:'07/11/2026 10:15'});
-    if(f.id==='alt180')f.versoes.push({v:2,tipo:'Regenerado',texto:textoIA(f,2),autor:'IA (rascunho)',quando:'07/11/2026 16:02'});
-    if(f.com==='aprovado'){
-      var t=f.versoes[0].texto.replace('Seguimos','Mantemos');
-      f.versoes.push({v:2,tipo:'Editado manualmente',texto:t,autor:USUARIO.comercial,quando:'07/11/2026 15:30'});
-      f.versoes.push({v:3,tipo:'Aprovado pelo Comercial',texto:t,autor:USUARIO.comercial,quando:'07/11/2026 15:34'});
-      f.aprov={usuario:USUARIO.comercial,quando:'07/11/2026 15:34',versao:3};
-    }
-    if(f.mat==='gerado')f.arquivos=arquivosDe(f,'publicado');
+    f.versoes=[];f.arquivos=[];f.quando={};
+    if(f.riscos==='aprovado')f.quando.riscos=['Analista de Riscos','06/11/2026 11:20'];
+    if(f.com!=='nao'){f.versoes.push({v:1,tipo:'Gerado por IA',texto:textoIA(f,1),autor:'IA',quando:'07/11/2026 08:05'});f.quando.comentario=['IA','07/11/2026 08:05']}
+    if(f.id==='alt180')f.versoes.push({v:2,tipo:'Regenerado',texto:textoIA(f,2),autor:'IA',quando:'07/11/2026 16:02'});
+    if(f.rev.comercial==='aprovado')f.quando.comercial=['Analista Comercial','07/11/2026 10:40'];
+    if(f.rev.gestao==='aprovado')f.quando.gestao=['Gestor','07/11/2026 11:15'];
+    if(f.mat==='gerado'){f.quando.materiais=['AutomaTivio','07/11/2026 16:20'];f.arquivos=arquivosDe(f,'publicado')}
+    if(f.sp==='publicado')f.quando.sharepoint=['AutomaTivio','07/11/2026 16:24'];
   });
-  var A=[
-    ['alt90','Dados aprovados','Analista de Riscos','Riscos','06/11/2026 11:02','-','Aguardando Riscos','Dados aprovados',''],
-    ['infraplus-cdi','Dados aprovados','Analista de Riscos','Riscos','06/11/2026 11:20','-','Aguardando Riscos','Dados aprovados',''],
-    ['institucional','Correção solicitada','Analista de Riscos','Riscos','06/11/2026 11:41','-','Aguardando Riscos','Correção solicitada','PL da planilha não bate com a API.'],
-    ['esplanada','Dados reprovados','Analista de Riscos','Riscos','06/11/2026 11:55','-','Aguardando Riscos','Dados reprovados','Carteira de 30/09 no lugar da de 30/10.'],
-    ['infraplus-cdi','Comentário gerado','IA (rascunho)','Comercial','07/11/2026 10:15','v1','Não gerado','Rascunho',''],
-    ['infraplus-cdi','Enviado para aprovação','Analista Comercial','Comercial','07/11/2026 10:40','v1','Rascunho','Aguardando Comercial',''],
-    ['alt180','Alterações solicitadas','Analista Comercial','Comercial','07/11/2026 14:10','v1','Aguardando Comercial','Alterações solicitadas','Citar a nova operação de recebíveis.'],
-    ['alt180','Nova versão gerada','IA (rascunho)','Comercial','07/11/2026 16:02','v2','Alterações solicitadas','Alterações solicitadas',''],
-    ['alt90','Comentário aprovado','Analista Comercial','Comercial','07/11/2026 15:34','v3','Aguardando Comercial','Aprovado pelo Comercial',''],
-    ['alt90','Materiais gerados','Analista Comercial','Comercial','07/11/2026 16:20','v3','Pronto para gerar','Gerados',''],
-    ['alt90','Publicado no SharePoint','AutomaTivio','Automação','07/11/2026 16:24','v3','Enviando','Publicado no SharePoint','Arquivos conferidos.']
-  ].map(function(x){return {fundo:x[0],comp:'Outubro 2026',op:x[1],usuario:x[2],area:x[3],quando:x[4],versao:x[5],de:x[6],para:x[7],obs:x[8]}});
-  return {perfil:'comercial',fundos:F,aud:A.reverse(),filtro:'todos',tema:null};
+  var A=[];
+  function a(fu,op,us,ar,q,v,de,pa,ob){A.push({fundo:fu,comp:'Outubro 2026',op:op,usuario:us,area:ar,quando:q,versao:v,de:de,para:pa,obs:ob||''})}
+  ['alt90','low-vol','top-credit','infraplus-cdi','hgd30','institucional-30','alt180'].forEach(function(id){a(id,'Dados aprovados','Analista de Riscos','Riscos','06/11/2026 11:20','-','Aguardando Riscos','Dados aprovados');a(id,'Comentário gerado','IA','Automação','07/11/2026 08:05','v1','Dados aprovados','Em revisão')});
+  a('institucional','Correção solicitada','Analista de Riscos','Riscos','06/11/2026 11:41','-','Aguardando Riscos','Correção solicitada','PL da planilha não bate com a API.');
+  a('esplanada','Dados reprovados','Analista de Riscos','Riscos','06/11/2026 11:55','-','Aguardando Riscos','Dados reprovados','Carteira de 30/09 no lugar da de 30/10.');
+  ['alt90','low-vol','top-credit','infraplus-cdi'].forEach(function(id){a(id,'Comentário aprovado','Analista Comercial','Comercial','07/11/2026 10:40','v1','Em revisão','Aprovado pelo Comercial')});
+  ['alt90','low-vol','top-credit','hgd30'].forEach(function(id){a(id,'Comentário aprovado','Gestor','Gestão','07/11/2026 11:15','v1','Em revisão','Aprovado pela Gestão')});
+  a('alt180','Alterações solicitadas','Gestor','Gestão','07/11/2026 14:10','v1','Em revisão','Alterações solicitadas','Citar a nova operação de recebíveis.');
+  a('alt180','Nova versão gerada','IA','Automação','07/11/2026 16:02','v2','Alterações solicitadas','Alterações solicitadas');
+  ['alt90','low-vol','top-credit'].forEach(function(id){a(id,'Materiais gerados','AutomaTivio','Automação','07/11/2026 16:20','v1','Comentário aprovado','Gerados');a(id,'Publicado no SharePoint','AutomaTivio','Automação','07/11/2026 16:24','v1','Gerados','Publicado','Arquivos conferidos.')});
+  A.sort(function(x,y){return x.quando<y.quando?1:-1});
+  return {perfil:'comercial',fundos:F,aud:A,tema:null};
 }
 function arquivosDe(f,st){
   var ar=AREA[f.area],out=[];
@@ -416,160 +409,198 @@ function arquivosDe(f,st){
   return out;
 }
 
-var CHAVE='automativio-portal-v2',S=null;
+var CHAVE='automativio-esteira-v3',S=null;
 function carregar(){
   try{var j=localStorage.getItem(CHAVE);if(j)S=JSON.parse(j)}catch(e){}
   if(!S||!S.fundos)S=seed();
-  S.fundos.forEach(function(f){if(f.com==='gerando')f.com=f.versoes.length?'rascunho':'nao';if(f.mat==='gerando')f.mat='nao';if(f.sp==='enviando'){f.sp='publicado';f.arquivos.forEach(function(a){a.st='publicado'})}});
+  S.fundos.forEach(function(f){
+    if(f.com==='gerando'){f.com='revisao';if(!f.versoes.length)f.versoes.push({v:1,tipo:'Gerado por IA',texto:textoIA(f,1),autor:'IA',quando:agora()})}
+    if(f.mat==='gerando'){f.mat='gerado';f.arquivos=arquivosDe(f,'publicado')}
+    if(f.sp==='enviando'||f.mat==='gerado'){f.sp='publicado';f.arquivos.forEach(function(a){a.st='publicado'})}
+  });
 }
 function salvar(){try{localStorage.setItem(CHAVE,JSON.stringify(S))}catch(e){}}
 function agora(){var d=new Date();function z(n){return(n<10?'0':'')+n}return '10/11/2026 '+z(d.getHours())+':'+z(d.getMinutes())}
 function fundo(id){for(var i=0;i<S.fundos.length;i++)if(S.fundos[i].id===id)return S.fundos[i]}
 function ultima(f){return f.versoes[f.versoes.length-1]}
-
-var ST_RISCOS={semdados:['Aguardando dados','blq','rel'],aguardando:['Aguardando Riscos','and','rel'],aprovado:['Dados aprovados','ok','ok'],correcao:['Correção solicitada','err','ex'],reprovado:['Dados reprovados','err','x']};
-var ST_COM={nao:['Não gerado','blq','rel'],gerando:['Gerando','and','ia'],rascunho:['Rascunho','and','doc'],aguardando:['Aguardando Comercial','and','rel'],alteracoes:['Alterações solicitadas','err','ex'],aprovado:['Aprovado pelo Comercial','ok','ok']};
 function pill(t){return '<span class="st '+t[1]+'">'+ic(t[2])+esc(t[0])+'</span>'}
 
-/* em que etapa o fundo está (0 a 5) e o estado de cada etapa */
-function etapaAtual(f){
-  if(f.dados!=='atualizados')return 0;
-  if(f.riscos!=='aprovado')return 1;
-  if(f.com!=='aguardando'&&f.com!=='aprovado')return 2;
-  if(f.com==='aguardando')return 3;
-  if(f.mat!=='gerado')return 4;
-  return 5;
+/* onde o fundo está e quem tem de agir */
+function etapa(f){
+  if(f.dados!=='ok'||f.riscos!=='aprovado')return 0;
+  if(f.com==='gerando'||f.com==='alteracoes'||f.com==='nao')return 1;
+  if(f.com==='revisao')return 2;
+  if(f.mat!=='gerado')return 3;
+  return 4;
 }
 function concluido(f){return f.sp==='publicado'}
-function estado(f,k){
-  var a=etapaAtual(f);
-  if(concluido(f))return ['ok','Concluído'];
-  if(k<a)return ['ok',['Atualizados','Aprovado','Enviado','Aprovado','Gerados',''][k]];
-  if(k>a)return ['','Bloqueado'];
-  if(k===0)return ['and','Aguardando carteira'];
-  if(k===1)return f.riscos==='correcao'?['err','Correção solicitada']:f.riscos==='reprovado'?['err','Reprovado']:['and','Aguardando Riscos'];
-  if(k===2)return f.com==='alteracoes'?['err','Alterações solicitadas']:f.com==='rascunho'?['and','Rascunho']:f.com==='gerando'?['and','Gerando']:['and','Não gerado'];
-  if(k===3)return ['and','Aguardando aprovação'];
-  if(k===4)return f.mat==='gerando'?['and','Gerando']:['and','Pronto para gerar'];
-  return f.sp==='enviando'?['and','Enviando']:['and','Aguardando envio'];
+function situacao(f){
+  if(concluido(f))return ['Publicado','ok','ok'];
+  var e=etapa(f);
+  if(e===0){
+    if(f.dados!=='ok')return ['Aguardando carteira','blq','rel'];
+    if(f.riscos==='correcao')return ['Correção solicitada','err','ex'];
+    if(f.riscos==='reprovado')return ['Dados reprovados','err','x'];
+    return ['Aguardando Riscos','and','rel'];
+  }
+  if(e===1)return f.com==='alteracoes'?[(f.pediu==='comercial'?'Comercial pediu alterações':'Gestão pediu alterações'),'err','ex']:['IA gerando','and','ia'];
+  if(e===2){var falta=[];if(f.rev.comercial!=='aprovado')falta.push('Comercial');if(f.rev.gestao!=='aprovado')falta.push('Gestão');return ['Falta '+falta.join(' e '),'and','rel']}
+  if(e===3)return ['Gerando','and','cx'];
+  return ['Enviando','and','nuv'];
 }
-function porque(f){
-  if(concluido(f))return 'Publicado no SharePoint.';
-  if(f.dados!=='atualizados')return 'Falta a carteira do mês.';
-  if(f.riscos==='aguardando')return 'Falta Riscos aprovar os dados.';
-  if(f.riscos==='correcao')return 'Riscos pediu correção nos dados.';
-  if(f.riscos==='reprovado')return 'Riscos reprovou os dados.';
-  if(f.com==='nao')return 'Falta gerar o comentário.';
-  if(f.com==='gerando')return 'O comentário está sendo gerado.';
-  if(f.com==='rascunho')return 'Falta enviar o comentário para aprovação.';
-  if(f.com==='alteracoes')return 'O Comercial pediu alterações no comentário.';
-  if(f.com==='aguardando')return 'Falta o Comercial aprovar o comentário.';
-  if(f.mat!=='gerado')return 'Pronto para gerar os materiais.';
-  return 'Enviando ao SharePoint.';
+/* quem está com a bola, para a "Minha fila" */
+function comQuem(f){
+  if(concluido(f))return [];
+  var e=etapa(f);
+  if(e===0)return f.dados==='ok'&&f.riscos==='aguardando'?['riscos']:[];
+  if(e===1)return f.com==='alteracoes'&&f.pediu?[f.pediu]:[];
+  if(e===2){var q=[];if(f.rev.comercial!=='aprovado')q.push('comercial');if(f.rev.gestao!=='aprovado')q.push('gestao');return q}
+  return [];
 }
-function suaVez(f){if(concluido(f))return false;var d=ETAPAS[etapaAtual(f)].dono;if(d!==S.perfil)return false;return !(etapaAtual(f)===1&&f.riscos!=='aguardando')}
-function criterios(f){
-  return [['Carteira disponível',f.dados==='atualizados'],['Dados atualizados',f.dados==='atualizados'],['Dados aprovados por Riscos',f.riscos==='aprovado'],
-          ['Comentário gerado',f.versoes.length>0&&f.com!=='gerando'],['Comentário aprovado pelo Comercial',f.com==='aprovado'],['Template disponível',true],['Configuração válida',true]];
+function comigo(f){return S.perfil==='admin'?comQuem(f).length>0:comQuem(f).indexOf(S.perfil)>=0}
+function oQueFazer(f){
+  var e=etapa(f);
+  if(e===0)return ['Conferir e aprovar os dados','Conferir dados'];
+  if(e===1)return ['Ajustar o comentário que você pediu para mudar','Ajustar comentário'];
+  return ['Revisar o comentário gerado pela IA','Revisar comentário'];
 }
-function pronto(f){return criterios(f).every(function(c){return c[1]})}
 
-/* ---------- rotas: #inicio, #f--<fundo>--<etapa>, #auditoria, #administracao ---------- */
-var rota={tela:'inicio'},ui={fundo:null,modo:'ver',ver:null,editando:false};
-function lerRota(){
-  var h=(location.hash||'#inicio').slice(1).split('--');
-  rota={tela:h[0]||'inicio',id:h[1]||null,etapa:h[2]||null};
-}
+/* ---------- rotas: #esteira, #fila, #f--<fundo>, #auditoria ---------- */
+var rota={tela:'esteira'},ui={fundo:null,modo:'ver',ver:null,editando:false};
+function lerRota(){var h=(location.hash||'#esteira').slice(1).split('--');rota={tela:h[0]||'esteira',id:h[1]||null}}
 function ir(h){if(location.hash==='#'+h)render();else location.hash=h}
 
 function navHtml(){
-  var it=[['inicio','Fundos'],['auditoria','Auditoria']];
-  if(S.perfil==='admin')it.push(['administracao','Administração']);
-  return it.map(function(x){var on=rota.tela===x[0]||(rota.tela==='f'&&x[0]==='inicio');return '<a href="#'+x[0]+'" class="'+(on?'on':'')+'">'+x[1]+'</a>'}).join('');
+  var n=S.fundos.filter(comigo).length;
+  var it=[['esteira','Esteira',''],['fila','Minha fila',n?'<span class="cont">'+n+'</span>':''],['auditoria','Auditoria','']];
+  return it.map(function(x){var on=rota.tela===x[0]||(rota.tela==='f'&&x[0]==='esteira');return '<a href="#'+x[0]+'" class="'+(on?'on':'')+'">'+x[1]+x[2]+'</a>'}).join('');
 }
-
-function telaInicio(){
-  var F=S.fundos,minha=F.filter(suaVez);
-  var lista=F.filter(function(f){
-    if(S.filtro==='vez')return suaVez(f);
-    if(S.filtro==='andamento')return !concluido(f);
-    if(S.filtro==='concluidos')return concluido(f);
-    return true;
+function revChips(f){
+  return '<span class="revs">'+[['comercial','Comercial'],['gestao','Gestão']].map(function(r){var s=f.rev[r[0]];return '<span class="rev '+(s==='aprovado'?'ok':s==='alteracoes'?'err':'')+'">'+ic(s==='aprovado'?'ok':s==='alteracoes'?'ex':'ponto')+r[1]+'</span>'}).join('')+'</span>';
+}
+function telaEsteira(){
+  var F=S.fundos,meus=F.filter(comigo);
+  var h='<div class="cab"><div class="tit"><h1>Fechamento de <strong>outubro de 2026</strong></h1><p class="sub">Data base 30/10/2026. Cada fundo passa por Riscos, ganha o comentário da IA, é revisado pelo Comercial e pela Gestão e só então gera os materiais.</p></div></div>';
+  if(S.perfil!=='admin'){
+    h+=meus.length?'<div class="com-voce"><div><b>'+(meus.length===1?'1 fundo está com você':meus.length+' fundos estão com você')+'</b><br><span>'+esc(meus.map(function(f){return f.nome.replace(/^Tivio /,'')}).join(', ').replace(/, ([^,]*)$/,' e $1'))+'.</span></div><a class="bt pri" href="#fila">Abrir minha fila'+ic('ava')+'</a></div>'
+      :'<div class="com-voce" style="background:var(--blq-bg);border-color:var(--line)"><div><b>Nada com você agora</b><br><span>Quando um fundo chegar na sua etapa, ele aparece aqui e na sua fila.</span></div></div>';
+  }
+  h+='<div class="esteira">';
+  ETAPAS.forEach(function(et,k){
+    var L=F.filter(function(f){return k===4?concluido(f)||etapa(f)===4:etapa(f)===k&&!concluido(f)});
+    h+='<section class="coluna" aria-label="'+et.nome+'"><div class="coluna-cab"><div class="l1"><b>'+(k+1)+'. '+et.nome+'</b><span class="n">'+L.length+'</span></div><small>'+et.quem+'</small></div>';
+    if(!L.length)h+='<p class="vazio">Nenhum fundo nesta etapa.</p>';
+    L.forEach(function(f){
+      var s=situacao(f),vez=comigo(f)&&S.perfil!=='admin';
+      h+='<button type="button" class="cfundo'+(vez?' vez':'')+'" data-abrir="'+f.id+'"><span class="lin2"><b>'+esc(f.nome.replace(/^Tivio /,''))+'</b>'+(vez?'<span class="vez-chip">Com você</span>':'')+'</span>'+
+        (k===2?revChips(f):'<span>'+pill(s)+'</span>')+'<small>'+AREA[f.area]+'</small></button>';
+    });
+    h+='</section>';
   });
-  var perfil={riscos:'Riscos',comercial:'Comercial',admin:'Administrador'}[S.perfil];
-  var h='<div class="cab"><div><h1>Edição de <strong>outubro de 2026</strong></h1><p class="sub">Data base 30/10/2026. Escolha um fundo e siga as etapas.'+
-    (S.perfil==='admin'?'':' Com o perfil '+perfil+', '+(minha.length?(minha.length===1?'1 fundo espera por você.':minha.length+' fundos esperam por você.'):'nenhum fundo espera por você agora.'))+'</p></div>'+
-    '<div class="filtro" role="group" aria-label="Filtrar fundos">'+[['todos','Todos'],['vez','Sua vez'],['andamento','Em andamento'],['concluidos','Concluídos']].map(function(x){return '<button type="button" data-filtro="'+x[0]+'" class="'+(S.filtro===x[0]?'on':'')+'">'+x[1]+'</button>'}).join('')+'</div></div>';
-  h+='<div class="fundos">';
-  lista.forEach(function(f){
-    var a=etapaAtual(f),e=estado(f,a),vez=suaVez(f);
-    h+='<button type="button" class="fcard'+(vez?' vez':'')+'" data-abrir="'+f.id+'">'+
-      '<div class="fcard-top"><div><b>'+esc(f.nome)+'</b><small>'+AREA[f.area]+'</small></div>'+(vez?'<span class="vez-chip">Sua vez</span>':'')+'</div>'+
-      '<div class="trilho" aria-hidden="true">'+ETAPAS.map(function(x,k){return '<i class="'+estado(f,k)[0]+'"></i>'}).join('')+'</div>'+
-      '<div class="fcard-et"><span>'+(concluido(f)?'Etapas concluídas':'Etapa '+(a+1)+' de 6')+'</span><b>'+(concluido(f)?'6 de 6':ETAPAS[a].nome)+'</b></div>'+
-      '<p class="fcard-pq">'+esc(porque(f))+'</p></button>';
-  });
-  if(!lista.length)h+='<div class="trava" style="grid-column:1/-1">'+ic('ok')+'<div><b>Nada por aqui</b>Nenhum fundo neste filtro.</div></div>';
   return h+'</div>';
 }
+function telaFila(){
+  var L=S.fundos.filter(comigo);
+  var h='<div class="cab"><div class="tit"><h1>Minha fila</h1><p class="sub">'+(S.perfil==='admin'?'Tudo que espera por alguém agora.':'O que está com '+(S.perfil==='riscos'?'Riscos':S.perfil==='gestao'?'a Gestão':'o Comercial')+' agora. Ao terminar, o fundo passa para a próxima pessoa.')+'</p></div></div>';
+  if(!L.length)return h+'<div class="trava">'+ic('ok')+'<div><b>Nada com você agora</b>Quando um fundo chegar na sua etapa, ele aparece aqui.</div></div>';
+  return h+'<div class="fila">'+L.map(function(f){var o=oQueFazer(f),q=comQuem(f).map(function(x){return NOME[x]}).join(' e ');
+    return '<button type="button" class="item" data-abrir="'+f.id+'"><b>'+esc(f.nome)+'</b><span class="o">'+esc(o[0])+'</span><span class="q">'+AREA[f.area]+(S.perfil==='admin'?'. Com: '+q:'')+(etapa(f)===2?'. '+esc(situacao(f)[0])+'.':'')+'</span><span class="bt pri peq">'+o[1]+ic('ava')+'</span></button>'}).join('')+'</div>';
+}
 
+function passagem(f){
+  var e=etapa(f),fim=concluido(f);
+  var linhas=[
+    ['Riscos',f.quando.riscos],['IA',f.quando.comentario],['Comercial e Gestão',null],['Materiais',f.quando.materiais],['SharePoint',f.quando.sharepoint]
+  ];
+  return '<div class="passagem" role="list">'+ETAPAS.map(function(et,k){
+    var c=fim||k<e?'ok':k===e?(situacao(f)[1]==='err'?'err':'and'):'';
+    var det;
+    if(k===2){det=(f.quando.comercial?'Comercial aprovou':'Comercial: pendente')+'<br>'+(f.quando.gestao?'Gestão aprovou':'Gestão: pendente');if(f.rev.gestao==='alteracoes')det='Gestão pediu alterações';if(f.rev.comercial==='alteracoes')det='Comercial pediu alterações'}
+    else if(c==='ok'&&linhas[k][1])det=esc(linhas[k][1][0])+', '+linhas[k][1][1].slice(0,5);
+    else if(c==='ok')det='Feito';
+    else if(k===e)det=esc(situacao(f)[0]);
+    else det='Depois';
+    return '<div class="mao '+c+'" role="listitem"><span class="bola">'+ic(c==='ok'?'ok':c==='err'?'ex':et.ico)+'</span><span class="txt"><b>'+et.nome+'</b><small>'+det+'</small></span></div>';
+  }).join('')+'</div>';
+}
 function telaFundo(){
   var f=fundo(rota.id);if(!f)return '<p class="sub">Fundo não encontrado.</p>';
   if(ui.fundo!==f.id){ui.fundo=f.id;ui.ver=null;ui.editando=false;ui.modo='ver'}
-  var a=etapaAtual(f),k=0;
-  ETAPAS.forEach(function(x,i){if(x.id===rota.etapa)k=i});
-  if(!rota.etapa)k=a;
-  if(k>a)k=a;
-  var h='<a class="voltar" href="#inicio">'+ic('vol')+'Todos os fundos</a>';
-  h+='<div class="cab"><div><h1>'+esc(f.nome)+'</h1><p class="sub">'+AREA[f.area]+'. Data base '+f.dataBase+'.</p></div></div>';
-  h+='<div class="passos" role="list">'+ETAPAS.map(function(x,i){var e=estado(f,i);return '<button type="button" role="listitem" class="passo '+e[0]+(i===k?' vendo':'')+'" data-etapa="'+x.id+'"'+(i>a?' disabled':'')+' aria-current="'+(i===k?'step':'false')+'">'+
-    '<span class="barra"></span><span class="nome"><span class="num">'+(e[0]==='ok'?ic('ok'):i+1)+'</span>'+x.nome+'</span><small>'+esc(e[1])+'</small></button>'}).join('')+'</div>';
-  h+='<div class="passo-m"><b>Etapa '+(k+1)+' de 6: '+ETAPAS[k].nome+'</b><span>'+esc(estado(f,k)[1])+'</span></div>';
-  h+=[etapaDados,etapaRiscos,etapaComentario,etapaAprovacao,etapaMateriais,etapaSharepoint][k](f,k);
+  var e=etapa(f);
+  var h='<a class="voltar" href="#'+(comigo(f)?'fila':'esteira')+'">'+ic('vol')+(comigo(f)?'Minha fila':'Esteira')+'</a>';
+  h+='<div class="cab"><div class="tit"><h1>'+esc(f.nome)+'</h1><p class="sub">'+AREA[f.area]+'. Data base '+f.dataBase+'.</p></div>'+pill(situacao(f))+'</div>';
+  h+=passagem(f);
+  if(concluido(f)||e>=3)h+=painelMateriais(f);
+  else h+=[painelRiscos,painelComentario,painelRevisao][e](f);
   var L=S.aud.filter(function(x){return x.fundo===f.id});
-  h+='<details class="hist"><summary>'+ic('ava')+'Histórico do fundo ('+L.length+')</summary><div class="cartao rola">'+audTabela(L,false)+'</div></details>';
+  h+='<details class="hist"><summary>'+ic('ava')+'Quem fez o quê neste fundo ('+L.length+')</summary><div class="cartao rola">'+audTabela(L,false)+'</div></details>';
   return h;
 }
-function moldura(f,k,titulo,corpo,pe){
-  var x=ETAPAS[k];
-  return '<section class="etapa"><div class="etapa-cab"><div><h2>'+titulo+'</h2><span class="quem">Responsável: '+x.quem+'</span></div>'+pill(stEtapa(f,k))+'</div>'+
-    '<div class="etapa-corpo">'+corpo+'</div><div class="etapa-pe">'+(k>0?'<button type="button" class="bt link" data-etapa="'+ETAPAS[k-1].id+'">'+ic('vol')+'Etapa anterior</button>':'<span></span>')+'<div class="acoes">'+pe+'</div></div></section>';
+function painel(titulo,quem,corpo,pe){
+  return '<section class="painel"><div class="painel-cab"><div><h2>'+titulo+'</h2><span class="quem">'+quem+'</span></div></div><div class="painel-corpo">'+corpo+'</div>'+(pe?'<div class="painel-pe">'+pe+'</div>':'')+'</section>';
 }
-function stEtapa(f,k){var e=estado(f,k);return [e[1]||'Concluído',e[0]||'blq',e[0]==='ok'?'ok':e[0]==='err'?'ex':'rel']}
-function semPerm(quem){return '<span class="perm">'+ic('cad')+'Esta etapa é '+(quem==='Riscos'?'de Riscos':'do Comercial')+'. Troque o perfil no topo para agir.</span>'}
-function seguir(k,txt){return '<button type="button" class="bt pri" data-etapa="'+ETAPAS[k+1].id+'">'+(txt||'Próxima etapa')+ic('ava')+'</button>'}
-
-function etapaDados(f,k){
-  var c='<div class="fichas"><div class="ficha"><span>Data base</span><b>'+f.dataBase+'</b></div><div class="ficha"><span>Última atualização</span><b>'+f.atual+'</b></div><div class="ficha"><span>Origem dos dados</span><b>'+esc(f.origem)+'</b></div>'+
-    '<div class="ficha" style="grid-column:1/-1"><span>Carteira utilizada</span><b>'+esc(f.carteira)+'</b></div></div>';
-  if(f.dados!=='atualizados')c+='<div class="trava">'+ic('rel')+'<div><b>Aguardando a carteira do mês</b>Assim que a planilha chegar, a automação lê os dados e o fundo segue para Riscos.</div></div>';
-  else c+='<div><h3 style="margin-bottom:6px">Principais dados e indicadores</h3>'+tabInd(f)+'</div>';
-  c+='<div class="pilha">'+alertas(f)+'</div>';
-  return moldura(f,k,'Dados do mês',c,f.dados==='atualizados'?seguir(k,'Seguir para Riscos'):'<button type="button" class="bt pri" disabled>Seguir para Riscos'+ic('ava')+'</button>');
-}
+function semVez(txt){return '<span class="perm">'+ic('cad')+txt+'</span>'}
 function tabInd(f){return '<table class="ind"><thead><tr><th>Indicador</th><th class="n">Outubro</th><th class="n">Setembro</th><th class="ori">Origem</th></tr></thead><tbody>'+f.ind.map(function(r,i){return '<tr><td>'+r[0]+'</td><td class="n">'+r[1]+'</td><td class="n">'+r[2]+'</td><td class="ori">'+(i===4?'API TLDR':'Planilha')+'</td></tr>'}).join('')+'</tbody></table>'}
 function alertas(f){
   if(!f.alertas.length)return '<div class="alerta ok">'+ic('ok')+'<span>Nenhum alerta de validação.</span></div>';
   return f.alertas.map(function(a){return '<div class="alerta'+(a[0]==='err'?' err':'')+'">'+ic(a[0]==='err'?'ex':'info')+'<span>'+esc(a[1])+'</span></div>'}).join('');
 }
-function ultimaAud(id,op){for(var i=0;i<S.aud.length;i++)if(S.aud[i].fundo===id&&S.aud[i].op===op)return S.aud[i]}
 
-function etapaRiscos(f,k){
-  var c='<div class="duas"><div>'+tabInd(f)+'</div><div class="pilha">'+alertas(f);
-  if(f.motivo&&(f.riscos==='correcao'||f.riscos==='reprovado'))c+='<div class="cartao registro"><div><span>Motivo</span><span>'+esc(f.motivo)+'</span></div></div>';
-  if(f.riscos==='aprovado'){var a=ultimaAud(f.id,'Dados aprovados');c+='<div class="cartao registro"><div><span>Aprovado por</span><span>'+esc(a?a.usuario:USUARIO.riscos)+'</span></div><div><span>Data e hora</span><span>'+esc(a?a.quando:'06/11/2026 11:20')+'</span></div></div>'}
-  c+='</div></div>';
+function painelRiscos(f){
+  var c='<div class="fichas"><div class="ficha"><span>Última atualização</span><b>'+f.atual+'</b></div><div class="ficha"><span>Origem dos dados</span><b>'+esc(f.origem)+'</b></div><div class="ficha"><span>Carteira utilizada</span><b>'+esc(f.carteira)+'</b></div></div>';
+  if(f.dados!=='ok')c+='<div class="trava">'+ic('rel')+'<div><b>Aguardando a carteira do mês</b>Assim que a planilha chegar, os dados aparecem aqui para Riscos conferir.</div></div>';
+  else c+='<div class="duas"><div>'+tabInd(f)+'</div><div class="pilha">'+alertas(f)+(f.motivo?'<div class="cartao registro"><div><span>Motivo</span><span>'+esc(f.motivo)+'</span></div></div>':'')+'</div></div>';
   var pe;
-  if(f.riscos==='aprovado')pe=seguir(k,'Seguir para o comentário');
-  else if(f.riscos==='correcao'||f.riscos==='reprovado')pe='<button type="button" class="bt" data-acao="reenviar-dados">Dados corrigidos: enviar para Riscos</button>';
-  else if(!pode('validar_dados'))pe=semPerm('Riscos');
-  else pe='<button type="button" class="bt neg" data-acao="reprovar-dados">Reprovar dados</button><button type="button" class="bt" data-acao="corrigir-dados">Solicitar correção</button><button type="button" class="bt pri" data-acao="aprovar-dados">'+ic('ok')+'Aprovar dados</button>';
-  return moldura(f,k,'Riscos confere os dados',c,pe);
+  if(f.dados!=='ok')pe=semVez('Esperando a carteira.');
+  else if(f.riscos==='correcao'||f.riscos==='reprovado')pe=semVez('Voltou para corrigir os dados.')+'<button type="button" class="bt" data-acao="reenviar">Dados corrigidos: enviar para Riscos</button>';
+  else if(S.perfil!=='riscos')pe=semVez('Está com Riscos. Troque para "Riscos" no topo para aprovar.');
+  else pe='<button type="button" class="bt neg" data-acao="reprovar">Reprovar dados</button><button type="button" class="bt" data-acao="corrigir">Solicitar correção</button><button type="button" class="bt pri" data-acao="aprovar-dados">'+ic('ok')+'Aprovar dados</button>';
+  return painel('Riscos confere os dados do mês','Ao aprovar, a IA gera o comentário com estes dados.',c,pe);
+}
+function painelComentario(f){
+  if(f.com==='gerando')return painel('A IA está escrevendo o comentário','Usa só os dados aprovados por Riscos e os comentários anteriores do fundo.','<div class="gerando"><span class="roda"></span>Gerando o comentário: rentabilidade do mês no começo e a carteira em relação a setembro no restante</div>','');
+  var meu=f.pediu===S.perfil,sv=selVersao(f),atual=sv[1];
+  var c='<div class="alerta err">'+ic('ex')+'<span><b>'+(f.pediu==='gestao'?'A Gestão':'O Comercial')+' pediu alterações:</b> '+esc(f.motivo)+'</span></div>';
+  c+='<div class="duas"><div>'+(ui.editando&&meu?'<textarea class="md" id="editor" aria-label="Comentário">'+esc(atual?atual.texto:'')+'</textarea>':'<div class="previa">'+mdHtml(atual?atual.texto:'')+'</div>')+'</div><div class="pilha"><h3>Versões</h3>'+versoesHtml(f,sv[0])+'</div></div>';
+  var pe;
+  if(!meu)pe=semVez('Está com '+(f.pediu==='gestao'?'a Gestão':'o Comercial')+', que pediu a alteração.');
+  else if(ui.editando)pe='<button type="button" class="bt" data-acao="cancelar">Cancelar</button><button type="button" class="bt pri" data-acao="salvar">Salvar e mandar para revisão'+ic('ava')+'</button>';
+  else pe='<label class="bt">'+ic('sub')+'Importar .md<input type="file" accept=".md,.txt,text/markdown" id="importar" hidden></label><button type="button" class="bt" data-acao="editar">'+ic('lapis')+'Editar eu mesmo</button><button type="button" class="bt pri" data-acao="regerar">'+ic('ia')+'Pedir nova versão à IA</button>';
+  return painel('Ajustar o comentário','A nova versão volta para o Comercial e a Gestão revisarem.',c,pe);
+}
+function painelRevisao(f){
+  var sv=selVersao(f),atual=sv[1],ant=sv[2],eu=S.perfil==='comercial'||S.perfil==='gestao'?S.perfil:null,jaFiz=eu&&f.rev[eu]==='aprovado';
+  var c='<div class="revisores">'+[['comercial','Comercial'],['gestao','Gestão']].map(function(r){var s=f.rev[r[0]],q=f.quando[r[0]];
+    return '<div class="revisor'+(eu===r[0]?' eu':'')+'"><div class="l1"><b>'+r[1]+(eu===r[0]?' (você)':'')+'</b>'+pill(s==='aprovado'?['Aprovou','ok','ok']:['Pendente','and','rel'])+'</div><small>'+(q?esc(q[0])+', '+q[1]:'Ainda não revisou')+'</small></div>'}).join('')+'</div>';
+  c+='<p class="perm">'+ic('info')+'Com o OK dos dois, os materiais são gerados na hora.</p>';
+  c+='<div class="duas"><div class="pilha"><div class="modo" role="group" aria-label="Modo">'+[['ver','Comentário'],['comparar','Comparar versões']].map(function(m){return '<button type="button" data-modo="'+m[0]+'" class="'+(ui.modo===m[0]?'on':'')+'">'+m[1]+'</button>'}).join('')+'</div>';
+  if(ui.editando&&eu)c+='<textarea class="md" id="editor" aria-label="Comentário">'+esc(atual?atual.texto:'')+'</textarea>';
+  else if(ui.modo==='comparar')c+=ant?'<div class="dif">'+difHtml(ant.texto,atual.texto)+'</div><p class="perm">'+ic('info')+'v'+atual.v+' comparada com v'+ant.v+'. Em verde o que entrou, em vermelho o que saiu.</p>':'<div class="trava">'+ic('info')+'<div><b>Esta é a primeira versão</b>Não há versão anterior para comparar.</div></div>';
+  else c+='<div class="previa">'+mdHtml(atual?atual.texto:'')+'</div>';
+  c+='</div><div class="pilha"><h3>Versões</h3>'+versoesHtml(f,sv[0])+'</div></div>';
+  var pe;
+  if(!eu)pe=semVez('Está com o Comercial e a Gestão. Troque o perfil no topo para revisar.');
+  else if(jaFiz)pe=semVez('Você já aprovou. Falta '+(eu==='comercial'?'a Gestão':'o Comercial')+'.');
+  else if(ui.editando)pe='<button type="button" class="bt" data-acao="cancelar">Cancelar</button><button type="button" class="bt pri" data-acao="salvar">Salvar nova versão</button>';
+  else pe='<button type="button" class="bt" data-acao="editar">'+ic('lapis')+'Editar</button><button type="button" class="bt neg" data-acao="alterar">Solicitar alterações</button><button type="button" class="bt pri" data-acao="aprovar-com">'+ic('ok')+'Aprovar comentário</button>';
+  return painel('Revisão do comentário','O Comercial e a Gestão revisam o texto que a IA escreveu.',c,pe);
+}
+function painelMateriais(f){
+  var c;
+  if(f.mat==='gerando')c='<div class="gerando"><span class="roda"></span>Gerando relatório, post e deck com os dados aprovados e o comentário v'+ultima(f).v+'</div>';
+  else c='<div class="feito">'+ic('ok')+'<div><b>'+(concluido(f)?'Peças prontas e publicadas':'Peças prontas')+'</b><span>Clique numa peça para ver em tamanho maior.</span></div></div>'+galeria(f);
+  var h=painel('Materiais do mês','Gerados com os dados aprovados por Riscos e o comentário aprovado pelo Comercial e pela Gestão.',c,'');
+  if(f.mat==='gerado')h+='<div class="bloco"><h2>SharePoint</h2>'+(f.sp==='publicado'?'':'<div class="gerando" style="min-height:90px"><span class="roda"></span>Enviando os arquivos</div>')+
+    '<div class="arqs">'+f.arquivos.map(function(a){return '<div class="arq">'+ic('doc')+'<div><div>'+esc(a.nome)+'</div><small>'+esc(a.pasta)+'</small></div>'+pill(a.st==='publicado'?['Conferido','ok','ok']:['Enviando','and','nuv'])+'</div>'}).join('')+'</div></div>';
+  return h;
+}
+function galeria(f){
+  var P=PECAS[f.id]||[];
+  if(!P.length)return '<p class="sub">Sem prévia das peças deste fundo.</p>';
+  return '<div class="pecas">'+P.map(function(p,i){return '<button type="button" class="peca" data-peca="'+i+'"><span class="moldura"><img src="'+p.img+'" alt="'+esc(p.t)+' do '+esc(f.nome)+'" loading="lazy" width="'+p.w+'" height="'+p.h+'"></span><span><b>'+esc(p.t)+'</b><small>'+esc(p.fmt)+'</small></span></button>'}).join('')+'</div>';
 }
 
-function mdHtml(t){
-  return String(t||'').split(/\n{2,}/).map(function(b){var s=esc(b.trim()).replace(/\*\*(.+?)\*\*/g,'<strong>$1</strong>').replace(/\*(.+?)\*/g,'<em>$1</em>');return s?'<p>'+s.replace(/\n/g,'<br>')+'</p>':''}).join('');
-}
+function mdHtml(t){return String(t||'').split(/\n{2,}/).map(function(b){var s=esc(b.trim()).replace(/\*\*(.+?)\*\*/g,'<strong>$1</strong>').replace(/\*(.+?)\*/g,'<em>$1</em>');return s?'<p>'+s.replace(/\n/g,'<br>')+'</p>':''}).join('')}
 function difHtml(a,b){
   var A=(a||'').split(/(\s+)/),B=(b||'').split(/(\s+)/),n=A.length,m=B.length;
   if(n*m>400000)return esc(b);
@@ -580,102 +611,26 @@ function difHtml(a,b){
   while(i<n)o+='<del>'+esc(A[i++])+'</del>';while(j<m)o+='<ins>'+esc(B[j++])+'</ins>';
   return o;
 }
+function selVersao(f){var s=ui.ver&&ui.ver.f===f.id?ui.ver.v:(f.versoes.length?ultima(f).v:null),atual=null,ant=null;f.versoes.forEach(function(v,i){if(v.v===s){atual=v;ant=f.versoes[i-1]||null}});return [s,atual,ant]}
 function versoesHtml(f,sel){
   if(!f.versoes.length)return '<p class="sub">Nenhuma versão ainda.</p>';
-  return '<div class="versoes">'+f.versoes.slice().reverse().map(function(v){return '<button type="button" class="versao'+(v.v===sel?' on':'')+'" data-ver="'+v.v+'"><b>v'+v.v+'</b> '+esc(v.tipo)+'<small>'+esc(v.autor)+', '+v.quando+'</small></button>'}).join('')+'</div><p class="perm" style="margin-top:10px">'+ic('info')+'Nenhuma versão é apagada.</p>';
+  return '<div class="versoes">'+f.versoes.slice().reverse().map(function(v){return '<button type="button" class="versao'+(v.v===sel?' on':'')+'" data-ver="'+v.v+'"><b>v'+v.v+'</b> '+esc(v.tipo)+'<small>'+esc(v.autor)+', '+v.quando+'</small></button>'}).join('')+'</div><p class="perm">'+ic('info')+'Nenhuma versão é apagada.</p>';
 }
-function selVersao(f){var s=ui.ver&&ui.ver.f===f.id?ui.ver.v:(f.versoes.length?ultima(f).v:null),atual=null,ant=null;f.versoes.forEach(function(v,i){if(v.v===s){atual=v;ant=f.versoes[i-1]||null}});return [s,atual,ant]}
-
-function etapaComentario(f,k){
-  var sv=selVersao(f),atual=sv[1],podeEd=pode('editar_comentario'),passou=f.com==='aguardando'||f.com==='aprovado';
-  var c='';
-  if(f.com==='alteracoes'&&f.motivo)c+='<div class="alerta err">'+ic('ex')+'<span><b>Alterações pedidas pelo Comercial:</b> '+esc(f.motivo)+'</span></div>';
-  if(f.com==='gerando')c+='<div class="gerando"><span class="roda"></span>Gerando o comentário com os dados aprovados por Riscos e os comentários anteriores do fundo</div>';
-  else if(!f.versoes.length&&!ui.editando)c+='<div class="trava">'+ic('doc')+'<div><b>O comentário deste mês ainda não existe</b>Gere pela IA, com os dados aprovados por Riscos e os comentários anteriores do fundo, ou escreva à mão. O começo fala da rentabilidade do mês; o restante, da carteira em relação ao mês anterior.</div></div>';
-  else {
-    var ed=ui.editando&&podeEd&&!passou;
-    c+='<div class="duas"><div class="pilha">'+(ed?'<textarea class="md" id="editor" placeholder="Escreva, cole o texto ou importe um arquivo .md.">'+esc(atual?atual.texto:'')+'</textarea>':'<div class="previa">'+mdHtml(atual?atual.texto:'')+'</div>')+'</div>'+
-       '<div><h3 style="margin-bottom:10px">Versões</h3>'+versoesHtml(f,sv[0])+'</div></div>';
-  }
-  var pe='';
-  if(passou)pe=seguir(k,'Ver aprovação');
-  else if(!podeEd)pe=semPerm('Comercial');
-  else if(f.com!=='gerando'){
-    pe='<label class="bt">'+ic('sub')+'Importar .md<input type="file" accept=".md,.txt,text/markdown" id="importar" hidden></label>';
-    pe+='<button type="button" class="bt" data-acao="gerar-com">'+ic('ia')+(f.versoes.length?'Gerar nova versão':'Gerar comentário')+'</button>';
-    if(ui.editando)pe+='<button type="button" class="bt" data-acao="salvar-com">Salvar rascunho</button>';
-    else pe+='<button type="button" class="bt" data-acao="editar">'+ic('lapis')+(f.versoes.length?'Editar':'Escrever')+'</button>';
-    pe+='<button type="button" class="bt pri" data-acao="enviar-com"'+(f.versoes.length&&!ui.editando?'':' disabled')+'>Enviar para aprovação'+ic('ava')+'</button>';
-  }
-  return moldura(f,k,'Comentário do mês',c,pe);
-}
-
-function etapaAprovacao(f,k){
-  var sv=selVersao(f),atual=sv[1],ant=sv[2],podeAp=pode('aprovar_comentario');
-  var c='<div class="ferr"><div class="modo" role="group" aria-label="Modo">'+[['ver','Comentário'],['comparar','Comparar versões']].map(function(m){return '<button type="button" data-modo="'+m[0]+'" class="'+(ui.modo===m[0]?'on':'')+'">'+m[1]+'</button>'}).join('')+'</div></div>';
-  var corpo;
-  if(ui.modo==='comparar')corpo=ant?'<div class="dif">'+difHtml(ant.texto,atual.texto)+'</div><p class="perm" style="margin-top:8px">'+ic('info')+'v'+atual.v+' comparada com v'+ant.v+'. Em verde o que entrou, em vermelho o que saiu.</p>':'<div class="trava">'+ic('info')+'<div><b>Esta é a primeira versão</b>Não há versão anterior para comparar.</div></div>';
-  else corpo='<div class="previa">'+mdHtml(atual?atual.texto:'')+'</div>';
-  var lado='<div class="pilha">';
-  if(f.aprov)lado+='<div class="cartao registro"><div><span>Aprovado por</span><span>'+esc(f.aprov.usuario)+'</span></div><div><span>Data e hora</span><span>'+f.aprov.quando+'</span></div><div><span>Versão aprovada</span><span>v'+f.aprov.versao+'</span></div></div>';
-  lado+='<h3>Versões</h3>'+versoesHtml(f,sv[0])+'</div>';
-  c+='<div class="duas"><div>'+corpo+'</div>'+lado+'</div>';
-  var pe;
-  if(f.com==='aprovado')pe=seguir(k,'Seguir para os materiais');
-  else if(!podeAp)pe=semPerm('Comercial');
-  else pe='<button type="button" class="bt" data-acao="editar-aprov">'+ic('lapis')+'Editar</button><button type="button" class="bt" data-acao="regerar">'+ic('ia')+'Pedir nova geração</button><button type="button" class="bt neg" data-acao="alterar-com">Solicitar alterações</button><button type="button" class="bt pri" data-acao="aprovar-com">'+ic('ok')+'Aprovar comentário</button>';
-  return moldura(f,k,'Aprovação do comentário',c,pe);
-}
-
-function galeria(f){
-  var P=PECAS[f.id]||[];
-  if(!P.length)return '<p class="sub">Sem prévia das peças deste fundo.</p>';
-  return '<div class="pecas">'+P.map(function(p,i){return '<button type="button" class="peca" data-peca="'+i+'"><span class="moldura"><img src="'+p.img+'" alt="'+esc(p.t)+' do '+esc(f.nome)+'" loading="lazy" width="'+p.w+'" height="'+p.h+'"></span><span><b>'+esc(p.t)+'</b><small>'+esc(p.fmt)+'</small></span></button>'}).join('')+'</div>';
-}
-function etapaMateriais(f,k){
-  var cs=criterios(f),ok=pronto(f),c;
-  if(f.mat==='gerando')c='<div class="gerando"><span class="roda"></span>Gerando relatório, post e deck com os dados aprovados e o comentário v'+(f.aprov?f.aprov.versao:'')+'</div>';
-  else if(f.mat==='gerado')c='<div class="feito">'+ic('ok')+'<div><b>Peças prontas</b><span>Clique numa peça para ver em tamanho maior.</span></div></div>'+galeria(f);
-  else c='<div class="crit">'+cs.map(function(x){return '<div class="'+(x[1]?'ok':'nao')+'">'+ic(x[1]?'ok':'x')+x[0]+'</div>'}).join('')+'</div><p class="pronto'+(ok?'':' nao')+'">'+(ok?'STATUS: PRONTO PARA GERAR':'STATUS: BLOQUEADO')+'</p>';
-  var pe;
-  if(f.mat==='gerado')pe=seguir(k,'Ver no SharePoint');
-  else if(f.mat==='gerando')pe='';
-  else if(!pode('gerar_material'))pe=semPerm('Comercial');
-  else pe='<button type="button" class="bt pri" data-acao="gerar-mat"'+(ok?'':' disabled')+'>'+ic('cx')+'Gerar materiais</button>';
-  return moldura(f,k,'Materiais do mês',c,pe);
-}
-function etapaSharepoint(f,k){
-  var c=f.sp==='publicado'?'<div class="feito">'+ic('ok')+'<div><b>Publicado no SharePoint</b><span>Os arquivos substituíram os do mês anterior em _Atual e ficaram guardados no histórico de outubro.</span></div></div>':
-    '<div class="gerando" style="min-height:120px"><span class="roda"></span>Enviando os arquivos ao SharePoint</div>';
-  c+='<div class="arqs">'+f.arquivos.map(function(a){return '<div class="arq">'+ic('doc')+'<div><div>'+esc(a.nome)+'</div><small>'+esc(a.pasta)+'</small></div>'+pill(a.st==='publicado'?['Conferido','ok','ok']:['Enviando','and','nuv'])+'</div>'}).join('')+'</div>';
-  var prox=S.fundos.filter(function(x){return x.id!==f.id&&suaVez(x)})[0];
-  var pe=prox?'<button type="button" class="bt pri" data-abrir="'+prox.id+'">Próximo fundo: '+esc(prox.nome.replace('Tivio ',''))+ic('ava')+'</button>':'<a class="bt pri" href="#inicio">Voltar aos fundos</a>';
-  return moldura(f,k,'Envio ao SharePoint',c,pe);
-}
-
 function audTabela(L,comFundo){
   if(!L.length)return '<p class="sub">Nenhum registro.</p>';
-  return '<table class="aud"><thead><tr>'+(comFundo?'<th>Fundo</th>':'')+'<th>Competência</th><th>Operação</th><th>Usuário</th><th>Área</th><th>Data e hora</th><th>Versão</th><th>Status</th></tr></thead><tbody>'+
-    L.map(function(a){var f=fundo(a.fundo);return '<tr>'+(comFundo?'<td><b>'+esc(f?f.nome:a.fundo)+'</b></td>':'')+'<td>'+a.comp+'</td><td>'+esc(a.op)+(a.obs?'<span class="obs">'+esc(a.obs)+'</span>':'')+'</td><td>'+esc(a.usuario)+'</td><td>'+esc(a.area)+'</td><td class="q">'+a.quando+'</td><td>'+a.versao+'</td><td>'+esc(a.de)+'<span class="seta">&rarr;</span>'+esc(a.para)+'</td></tr>'}).join('')+'</tbody></table>';
+  return '<table class="aud"><thead><tr>'+(comFundo?'<th>Fundo</th>':'')+'<th>Operação</th><th>Usuário</th><th>Área</th><th>Data e hora</th><th>Versão</th><th>Status</th></tr></thead><tbody>'+
+    L.map(function(a){var f=fundo(a.fundo);return '<tr>'+(comFundo?'<td><b>'+esc(f?f.nome:a.fundo)+'</b></td>':'')+'<td>'+esc(a.op)+(a.obs?'<span class="obs">'+esc(a.obs)+'</span>':'')+'</td><td>'+esc(a.usuario)+'</td><td>'+esc(a.area)+'</td><td class="q">'+a.quando+'</td><td>'+a.versao+'</td><td>'+esc(a.de)+'<span class="seta">&rarr;</span>'+esc(a.para)+'</td></tr>'}).join('')+'</tbody></table>';
 }
 var filtroAud='';
 function telaAuditoria(){
-  var h='<div class="cab"><div><h1>Auditoria</h1><p class="sub">Toda aprovação fica registrada. Uma aprovação nova nunca apaga a anterior.</p></div>'+
+  var h='<div class="cab"><div class="tit"><h1>Auditoria</h1><p class="sub">Competência outubro de 2026. Toda aprovação fica registrada; uma aprovação nova nunca apaga a anterior.</p></div>'+
     '<label class="sel"><span>Fundo</span><select id="f-aud"><option value="">Todos</option>'+S.fundos.map(function(f){return '<option value="'+f.id+'"'+(filtroAud===f.id?' selected':'')+'>'+esc(f.nome)+'</option>'}).join('')+'</select></label></div>';
   return h+'<div class="cartao rola">'+audTabela(S.aud.filter(function(a){return !filtroAud||a.fundo===filtroAud}),true)+'</div>';
-}
-function telaAdmin(){
-  if(S.perfil!=='admin')return '<div class="trava">'+ic('cad')+'<div><b>Só o perfil Administrador</b>Troque o perfil no topo para ver esta tela.</div></div>';
-  var h='<div class="cab"><div><h1>Administração</h1><p class="sub">Fundos, templates e integrações da automação.</p></div></div><div class="grade3">';
-  h+='<div class="cartao"><h2 style="margin-bottom:6px">Integrações</h2>'+[['Planilha mensal','dados_mensais.xlsx',['Conectada','ok','ok']],['API TLDR','cotas, PL e carteira',['Conectada','ok','ok']],['IA para comentários','via MCP, só com as fontes autorizadas',['A conectar','and','rel']],['SharePoint','Materiais AutomaTivio',['A configurar','and','rel']]].map(function(x){return '<div class="lin"><div>'+x[0]+'<small>'+x[1]+'</small></div>'+pill(x[2])+'</div>'}).join('')+'</div>';
-  h+='<div class="cartao"><h2 style="margin-bottom:6px">Templates</h2>'+[['Relatório de gestão','HTML, PDF e PPTX'],['Post de rentabilidade','JPG por vertical'],['E-mail de Fundos de Crédito','Ágora, BTG e XP'],['Decks','18 decks do time']].map(function(x){return '<div class="lin"><div>'+x[0]+'<small>'+x[1]+'</small></div>'+pill(['Disponível','ok','ok'])+'</div>'}).join('')+'</div>';
-  h+='<div class="cartao"><h2 style="margin-bottom:6px">Fundos</h2>'+S.fundos.map(function(f){return '<div class="lin"><div>'+esc(f.nome)+'<small>'+AREA[f.area]+'</small></div><button type="button" class="bt peq" disabled>Configurar</button></div>'}).join('')+'</div>';
-  return h+'</div>';
 }
 
 /* ---------- ações ---------- */
 function registrar(f,op,de,para,versao,obs,usuario,area){
-  S.aud.unshift({fundo:f.id,comp:'Outubro 2026',op:op,usuario:usuario||USUARIO[S.perfil],area:area||AREA_PERFIL[S.perfil],quando:agora(),versao:versao||'-',de:de,para:para,obs:obs||''});
+  S.aud.unshift({fundo:f.id,comp:'Outubro 2026',op:op,usuario:usuario||USUARIO[S.perfil],area:area||NOME[S.perfil],quando:agora(),versao:versao||'-',de:de,para:para,obs:obs||''});
 }
 function novaVersao(f,tipo,texto,autor){var v=(f.versoes.length?ultima(f).v:0)+1;f.versoes.push({v:v,tipo:tipo,texto:texto,autor:autor||USUARIO[S.perfil],quando:agora()});ui.ver={f:f.id,v:v};return v}
 function pedirMotivo(titulo,texto,cb){
@@ -685,47 +640,52 @@ function pedirMotivo(titulo,texto,cb){
   document.getElementById('m-c').onclick=function(){m.classList.remove('on')};
   document.getElementById('m-ok').onclick=function(){var v=t.value.trim();if(!v){t.style.borderColor='var(--err)';return}m.classList.remove('on');cb(v)};
 }
-function avisar(t){var a=document.getElementById('aviso');a.textContent=t;a.classList.add('on');clearTimeout(avisar.t);avisar.t=setTimeout(function(){a.classList.remove('on')},2800)}
-function etapa(f,id){ir('f--'+f.id+'--'+id)}
+function avisar(t){var a=document.getElementById('aviso');a.textContent=t;a.classList.add('on');clearTimeout(avisar.t);avisar.t=setTimeout(function(){a.classList.remove('on')},3000)}
 function fim(){salvar();render()}
 
-function acao(nome){
-  var f=fundo(rota.id),rl=function(k){return ST_RISCOS[k][0]},cl=function(k){return ST_COM[k][0]};
-  if(nome==='aprovar-dados'){var d=f.riscos;f.riscos='aprovado';f.motivo='';registrar(f,'Dados aprovados',rl(d),rl('aprovado'));salvar();avisar('Dados aprovados. O comentário está liberado.');etapa(f,'comentario');return}
-  if(nome==='corrigir-dados')return pedirMotivo('Solicitar correção','O que precisa ser corrigido nos dados?',function(m){var d=f.riscos;f.riscos='correcao';f.motivo=m;registrar(f,'Correção solicitada',rl(d),rl('correcao'),'',m);fim()});
-  if(nome==='reprovar-dados')return pedirMotivo('Reprovar dados','Por que os dados foram reprovados?',function(m){var d=f.riscos;f.riscos='reprovado';f.motivo=m;registrar(f,'Dados reprovados',rl(d),rl('reprovado'),'',m);fim()});
-  if(nome==='reenviar-dados'){var d2=f.riscos;f.riscos='aguardando';f.alertas=[];f.atual=agora();registrar(f,'Dados corrigidos',rl(d2),rl('aguardando'),'','Enviado de volta para Riscos.');avisar('Enviado para Riscos validar.')}
-  if(nome==='editar'){ui.editando=true;render();var e=document.getElementById('editor');if(e)e.focus();return}
-  if(nome==='editar-aprov'){var d7=f.com;f.com='rascunho';registrar(f,'Voltou para edição',cl(d7),cl('rascunho'),'v'+ultima(f).v);ui.editando=true;salvar();etapa(f,'comentario');return}
-  if(nome==='regerar'||nome==='gerar-com'){
-    var d3=f.com,n=f.versoes.length;f.com='gerando';ui.editando=false;salvar();
-    if(nome==='regerar')etapa(f,'comentario');else render();
-    setTimeout(function(){var v=novaVersao(f,n?'Regenerado':'Gerado por IA',textoIA(f,n+1),'IA (rascunho)');f.com='rascunho';registrar(f,n?'Nova versão gerada':'Comentário gerado',cl(d3),cl('rascunho'),'v'+v,'','IA (rascunho)','Comercial');fim();avisar('Rascunho v'+v+' pronto.')},1600);
-    return;
-  }
-  if(nome==='salvar-com'){
-    var t=document.getElementById('editor').value.trim();if(!t){avisar('O comentário está vazio.');return}
-    ui.editando=false;
-    if(f.versoes.length&&ultima(f).texto===t){avisar('Nada mudou desde a última versão.');render();return}
-    var d4=f.com,v2=novaVersao(f,'Editado manualmente',t);f.com='rascunho';registrar(f,'Comentário editado',cl(d4),cl('rascunho'),'v'+v2);avisar('Rascunho v'+v2+' salvo.')
-  }
-  if(nome==='enviar-com'){var d5=f.com;f.com='aguardando';f.motivo='';registrar(f,'Enviado para aprovação',cl(d5),cl('aguardando'),'v'+ultima(f).v);salvar();ui.modo='ver';avisar('Enviado para aprovação do Comercial.');etapa(f,'comercial');return}
-  if(nome==='alterar-com')return pedirMotivo('Solicitar alterações','O que precisa mudar no comentário?',function(m){var d=f.com;f.com='alteracoes';f.motivo=m;registrar(f,'Alterações solicitadas',cl(d),cl('alteracoes'),'v'+ultima(f).v,m);salvar();etapa(f,'comentario')});
-  if(nome==='aprovar-com'){
-    var u=ultima(f),d6=f.com,v3=novaVersao(f,'Aprovado pelo Comercial',u.texto);
-    f.com='aprovado';f.motivo='';f.aprov={usuario:USUARIO[S.perfil],quando:agora(),versao:v3};
-    registrar(f,'Comentário aprovado',cl(d6),cl('aprovado'),'v'+v3);salvar();avisar('Comentário aprovado. Materiais liberados.');etapa(f,'materiais');return
-  }
-  if(nome==='gerar-mat'){gerarMat(f);return}
-  fim();
+/* a IA escreve depois que Riscos aprova (simulado) */
+function iaGera(f,de){
+  f.com='gerando';fim();
+  setTimeout(function(){var n=f.versoes.length,v=novaVersao(f,n?'Regenerado':'Gerado por IA',textoIA(f,n+1),'IA');
+    f.com='revisao';f.rev={comercial:null,gestao:null};f.pediu=null;f.motivo='';delete f.quando.comercial;delete f.quando.gestao;f.quando.comentario=['IA',agora()];
+    registrar(f,n?'Nova versão gerada':'Comentário gerado',de,'Em revisão','v'+v,'','IA','Automação');fim();avisar('Comentário v'+v+' pronto. Foi para o Comercial e a Gestão.')},1800);
 }
-function gerarMat(f){
+/* com o OK dos dois, os materiais saem e sobem para o SharePoint (simulado) */
+function geraMateriais(f){
   f.mat='gerando';fim();
   setTimeout(function(){
-    f.mat='gerado';f.arquivos=arquivosDe(f,'enviando');f.sp='enviando';
-    registrar(f,'Materiais gerados','Pronto para gerar','Gerados','v'+(f.aprov?f.aprov.versao:'-'));fim();avisar('Peças prontas. Enviando ao SharePoint.');
-    setTimeout(function(){f.arquivos.forEach(function(a){a.st='publicado'});f.sp='publicado';registrar(f,'Publicado no SharePoint','Enviando','Publicado no SharePoint','v'+(f.aprov?f.aprov.versao:'-'),f.arquivos.length+' arquivos conferidos.','AutomaTivio','Automação');fim()},1800);
-  },1500);
+    f.mat='gerado';f.arquivos=arquivosDe(f,'enviando');f.sp='enviando';f.quando.materiais=['AutomaTivio',agora()];
+    registrar(f,'Materiais gerados','Comentário aprovado','Gerados','v'+ultima(f).v,'','AutomaTivio','Automação');fim();
+    setTimeout(function(){f.arquivos.forEach(function(a){a.st='publicado'});f.sp='publicado';f.quando.sharepoint=['AutomaTivio',agora()];registrar(f,'Publicado no SharePoint','Gerados','Publicado','v'+ultima(f).v,f.arquivos.length+' arquivos conferidos.','AutomaTivio','Automação');fim();avisar('Publicado no SharePoint.')},1800);
+  },1600);
+}
+function acao(nome){
+  var f=fundo(rota.id),sr={aguardando:'Aguardando Riscos',correcao:'Correção solicitada',reprovado:'Dados reprovados'};
+  if(nome==='aprovar-dados'){var d=sr[f.riscos];f.riscos='aprovado';f.motivo='';f.quando.riscos=[USUARIO.riscos,agora()];registrar(f,'Dados aprovados',d,'Dados aprovados');avisar('Dados aprovados. A IA está gerando o comentário.');iaGera(f,'Dados aprovados');return}
+  if(nome==='corrigir')return pedirMotivo('Solicitar correção','O que precisa ser corrigido nos dados?',function(m){var d=sr[f.riscos];f.riscos='correcao';f.motivo=m;registrar(f,'Correção solicitada',d,'Correção solicitada','',m);fim()});
+  if(nome==='reprovar')return pedirMotivo('Reprovar dados','Por que os dados foram reprovados?',function(m){var d=sr[f.riscos];f.riscos='reprovado';f.motivo=m;registrar(f,'Dados reprovados',d,'Dados reprovados','',m);fim()});
+  if(nome==='reenviar'){var d2=sr[f.riscos];f.riscos='aguardando';f.motivo='';f.alertas=[];f.atual=agora();registrar(f,'Dados corrigidos',d2,'Aguardando Riscos','','Enviado de volta para Riscos.');avisar('Enviado para Riscos.')}
+  if(nome==='editar'){ui.editando=true;render();var e=document.getElementById('editor');if(e)e.focus();return}
+  if(nome==='cancelar'){ui.editando=false}
+  if(nome==='regerar'){registrar(f,'Nova versão pedida à IA','Alterações solicitadas','IA gerando','v'+ultima(f).v);iaGera(f,'Alterações solicitadas');return}
+  if(nome==='salvar'){
+    var t=document.getElementById('editor').value.trim();if(!t){avisar('O comentário está vazio.');return}
+    ui.editando=false;
+    if(ultima(f).texto===t){avisar('Nada mudou desde a última versão.');render();return}
+    var v=novaVersao(f,'Editado por '+NOME[S.perfil],t);f.com='revisao';f.pediu=null;f.motivo='';
+    f.rev={comercial:null,gestao:null};delete f.quando.comercial;delete f.quando.gestao;
+    f.rev[S.perfil]='aprovado';f.quando[S.perfil]=[USUARIO[S.perfil],agora()];
+    registrar(f,'Comentário editado','Em revisão','Em revisão','v'+v,'Quem editou já conta como aprovado; falta '+(S.perfil==='comercial'?'a Gestão':'o Comercial')+'.');
+    avisar('Versão v'+v+' salva. Falta '+(S.perfil==='comercial'?'a Gestão':'o Comercial')+' revisar.');
+  }
+  if(nome==='alterar')return pedirMotivo('Solicitar alterações','O que precisa mudar no comentário?',function(m){f.com='alteracoes';f.pediu=S.perfil;f.motivo=m;f.rev[S.perfil]='alteracoes';registrar(f,'Alterações solicitadas','Em revisão','Alterações solicitadas','v'+ultima(f).v,m);fim();avisar('Pedido registrado. O comentário voltou para você ajustar ou pedir nova versão à IA.')});
+  if(nome==='aprovar-com'){
+    f.rev[S.perfil]='aprovado';f.quando[S.perfil]=[USUARIO[S.perfil],agora()];
+    registrar(f,'Comentário aprovado','Em revisão','Aprovado '+(S.perfil==='comercial'?'pelo Comercial':'pela Gestão'),'v'+ultima(f).v);
+    if(f.rev.comercial==='aprovado'&&f.rev.gestao==='aprovado'){f.com='aprovado';avisar('Comercial e Gestão aprovaram. Gerando os materiais.');geraMateriais(f);return}
+    avisar('Aprovado. Falta '+(S.perfil==='comercial'?'a Gestão':'o Comercial')+'.');
+  }
+  fim();
 }
 
 /* visualizador das peças */
@@ -745,18 +705,16 @@ function render(){
   document.getElementById('perfil').value=S.perfil;
   var h;
   if(rota.tela==='f')h=telaFundo();
+  else if(rota.tela==='fila')h=telaFila();
   else if(rota.tela==='auditoria')h=telaAuditoria();
-  else if(rota.tela==='administracao')h=telaAdmin();
-  else h=telaInicio();
+  else h=telaEsteira();
   document.getElementById('app').innerHTML=h;
 }
 document.addEventListener('click',function(e){
-  var t=e.target.closest('[data-filtro],[data-abrir],[data-etapa],[data-acao],[data-modo],[data-ver],[data-peca],[data-visor]');
+  var t=e.target.closest('[data-abrir],[data-acao],[data-modo],[data-ver],[data-peca],[data-visor]');
   if(!t||t.disabled)return;
   var d=t.dataset;
-  if(d.filtro){S.filtro=d.filtro;fim();return}
   if(d.abrir){ui.fundo=null;ir('f--'+d.abrir);window.scrollTo(0,0);return}
-  if(d.etapa){ui.editando=false;ir('f--'+rota.id+'--'+d.etapa);return}
   if(d.modo){ui.modo=d.modo;render();return}
   if(d.ver){ui.ver={f:rota.id,v:+d.ver};render();return}
   if(d.peca){abrirVisor(+d.peca);return}
@@ -764,11 +722,12 @@ document.addEventListener('click',function(e){
   if(d.acao)acao(d.acao);
 });
 document.addEventListener('change',function(e){
-  if(e.target.id==='perfil'){S.perfil=e.target.value;if(S.perfil==='admin'&&S.filtro==='vez')S.filtro='todos';fim();avisar('Perfil: '+e.target.options[e.target.selectedIndex].text+'.')}
+  if(e.target.id==='perfil'){S.perfil=e.target.value;ui.editando=false;fim();avisar('Agora você está como '+e.target.options[e.target.selectedIndex].text+'.')}
   if(e.target.id==='f-aud'){filtroAud=e.target.value;render()}
   if(e.target.id==='importar'&&e.target.files[0]){
     var f=fundo(rota.id),arq=e.target.files[0],r=new FileReader();
-    r.onload=function(){var d=f.com,v=novaVersao(f,'Importado de .md',String(r.result).trim());f.com='rascunho';ui.editando=false;registrar(f,'Comentário importado',ST_COM[d][0],ST_COM.rascunho[0],'v'+v,arq.name);fim();avisar('Arquivo importado como rascunho v'+v+'.')};
+    r.onload=function(){var v=novaVersao(f,'Importado de .md',String(r.result).trim());f.com='revisao';f.pediu=null;f.motivo='';f.rev={comercial:null,gestao:null};delete f.quando.comercial;delete f.quando.gestao;
+      f.rev[S.perfil]='aprovado';f.quando[S.perfil]=[USUARIO[S.perfil],agora()];registrar(f,'Comentário importado','Alterações solicitadas','Em revisão','v'+v,arq.name);fim();avisar('Arquivo importado como v'+v+'. Voltou para revisão.')};
     r.readAsText(arq);
   }
 });
@@ -778,9 +737,9 @@ document.addEventListener('keydown',function(e){
 });
 document.getElementById('visor').addEventListener('click',function(e){if(e.target===this)fecharVisor()});
 document.getElementById('modal').addEventListener('click',function(e){if(e.target===this)this.classList.remove('on')});
-document.getElementById('zerar').onclick=function(){try{localStorage.removeItem(CHAVE)}catch(e){}S=seed();ui={fundo:null,modo:'ver',ver:null,editando:false};filtroAud='';ir('inicio')};
+document.getElementById('zerar').onclick=function(){try{localStorage.removeItem(CHAVE)}catch(e){}S=seed();ui={fundo:null,modo:'ver',ver:null,editando:false};filtroAud='';ir('esteira')};
 function aplicarTema(){if(S.tema)document.documentElement.setAttribute('data-theme',S.tema);else document.documentElement.removeAttribute('data-theme')}
-document.getElementById('tema').onclick=function(){var atual=document.documentElement.getAttribute('data-theme')||(matchMedia('(prefers-color-scheme: light)').matches?'light':'dark');S.tema=atual==='light'?'dark':'light';aplicarTema();salvar()};
+document.getElementById('tema').onclick=function(){var atual=document.documentElement.getAttribute('data-theme')||'dark';S.tema=atual==='light'?'dark':'light';aplicarTema();salvar()};
 window.addEventListener('hashchange',function(){render();window.scrollTo(0,0)});
 carregar();aplicarTema();render();
 })();
