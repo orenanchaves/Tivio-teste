@@ -99,6 +99,23 @@ reais, vale abrir e olhar:
 
 ---
 
+## 7. Próximo passo: comentário mensal gerado por IA
+
+Ideia registrada em 10/11/2026. Hoje o comentário de cada fundo vem escrito pelo
+gestor (`comentarios.docx` / `comentarios.md`), e a automação só preenche os
+marcadores `X%`. A ideia é os comentários mensais passarem a ser gerados por IA:
+
+- [ ] **Começo: a rentabilidade do fundo no mês.**
+- [ ] **Restante: a carteira, comparada com o mês anterior.**
+- [ ] **Num portal:** o portal gera o relatório com os números e gera o
+      comentário com base na carteira e nas análises anteriores.
+- [ ] **Telas do portal e fluxo de aprovação** (Riscos aprova os dados, Comercial
+      aprova o comentário, só então gera os materiais) e **envio automático ao
+      SharePoint** no fim do backend: na pasta `../FrontEnd - AutomaTivio/`
+      (`index.html`, `FLUXO_DE_APROVACAO.md`, `SHAREPOINT.md`).
+
+---
+
 ## Resolvido em 15/10/2026
 
 - Abas de Investment Solutions mapeadas: os gráficos dos decks do Prev Low Vol e

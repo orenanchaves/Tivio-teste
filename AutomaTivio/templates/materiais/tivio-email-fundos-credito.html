@@ -513,6 +513,7 @@ function echartOption(f,dark){
   var cats=labs.map(mmYY);
   var tickSet={};histTicks(labs).forEach(function(i){tickSet[i]=1;});
   return {
+    animation:false,   /* sem animação: o export tira a foto logo depois do buildDeck e pegava a linha no meio do desenho */
     backgroundColor:'transparent',
     textStyle:{fontFamily:'Versos, Arial, sans-serif'},
     grid:{left:48,right:88,top:48,bottom:70,containLabel:false},
