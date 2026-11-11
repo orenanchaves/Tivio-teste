@@ -463,6 +463,59 @@ textarea.mot{width:100%;min-height:90px;background:var(--input-bg);border:1px so
 .dd-corpo{max-width:none}
 .dd-corpo .fichas{margin-bottom:4px}
 
+/* Materiais: mesmo desenho da Central de Materiais */
+.mt-hero{padding-block:24px 26px;display:grid;gap:14px;justify-items:start}
+.mt-hero h1{font-size:clamp(30px,4.6vw,54px);font-weight:300;letter-spacing:-.025em;line-height:1.08}
+.mt-hero h1 strong{font-weight:700}
+.mt-hero p{color:var(--text-muted);max-width:660px;font-size:15px}
+.central{border-radius:28px;border:1px solid var(--line);background:var(--bg-glass);backdrop-filter:blur(18px) saturate(140%);-webkit-backdrop-filter:blur(18px) saturate(140%);overflow:hidden}
+.tabs-wrap{display:flex;align-items:stretch;border-bottom:1px solid var(--line)}
+.tabs{flex:1 1 auto;min-width:0;display:flex;gap:2px;padding:10px 12px;overflow-x:auto;scroll-behavior:smooth;scrollbar-width:none}
+.tabs::-webkit-scrollbar{display:none}
+.tab{display:inline-flex;align-items:center;gap:9px;padding:11px 20px;border-radius:var(--r-full);font-size:13.5px;font-weight:400;color:var(--text-muted);background:transparent;border:1px solid transparent;cursor:pointer;white-space:nowrap;transition:.2s var(--ease)}
+.tab:hover{color:var(--text-primary);background:var(--input-bg)}
+.tab[aria-selected="true"]{color:var(--text-primary);font-weight:600;background:var(--pill-bg);border-color:color-mix(in srgb,var(--tv-verde) 35%,transparent)}
+.tab svg.i{width:15px;height:15px}
+.tab .badge{font-size:10px;font-weight:700;padding:2px 8px;border-radius:var(--r-full);background:var(--input-bg);border:1px solid var(--line-strong)}
+.tab[aria-selected="true"] .badge{background:var(--tv-verde);color:#000;border-color:transparent}
+:root[data-theme="light"] .tab[aria-selected="true"] .badge{background:#337F51;color:#FFF}
+.mt-filtros{display:flex;align-items:center;gap:8px;padding-right:12px}
+.tab-reset{flex:0 0 auto;align-self:center;display:inline-flex;align-items:center;gap:8px;padding:9px 32px 9px 16px;border-radius:var(--r-full);font-size:12.5px;font-weight:600;color:var(--text-muted);background:var(--input-bg);border:1px solid var(--line-strong);cursor:pointer;white-space:nowrap;appearance:none;-webkit-appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M1 1l4 4 4-4' stroke='%238A99A3' fill='none' stroke-width='1.5'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 13px center;transition:color .2s var(--ease),border-color .2s var(--ease)}
+.tab-reset:hover{color:var(--tv-verde);border-color:var(--tv-verde)}
+.tab-reset option{background:var(--bg-elev-1);color:var(--text-primary)}
+.central .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(268px,1fr));gap:18px;padding:22px}
+.central .item{position:relative;display:flex;flex-direction:column;border-radius:var(--r-lg);background:var(--bg-glass);border:1px solid var(--line);overflow:hidden;transition:.25s var(--ease)}
+.central .item:hover{transform:translateY(-4px);border-color:var(--tv-verde);box-shadow:0 18px 44px rgba(0,0,0,.42)}
+.central .item .thumb{position:relative;aspect-ratio:4/3;background:linear-gradient(140deg,color-mix(in srgb,var(--dot) 22%,var(--bg-elev-1)),var(--bg-elev-1));display:flex;align-items:center;justify-content:center;overflow:hidden;border-bottom:1px solid var(--line)}
+.central .item .thumb img{width:100%;height:100%;object-fit:cover;object-position:top}
+.central .item .thumb .gm{width:52px;height:52px;color:color-mix(in srgb,var(--dot) 85%,transparent);opacity:.55}
+.central .item .thumb .mt-logo{opacity:.9;max-width:80%}
+.central .item .thumb .mt-logo .lg-card{height:26px}
+.central .item .thumb .kind{position:absolute;top:12px;left:12px;padding:5px 11px;border-radius:var(--r-full);font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;background:rgba(10,15,20,.62);backdrop-filter:blur(10px);border:1px solid rgba(255,255,255,.2);color:#FFF}
+.central .item .thumb .soon{position:absolute;inset:auto 12px 12px auto;padding:5px 11px;border-radius:var(--r-full);font-size:10px;font-weight:700;background:var(--input-bg);border:1px dashed var(--line-strong);color:var(--text-muted)}
+.central .item .bd{padding:16px 18px 18px;display:flex;flex-direction:column;gap:8px;flex:1 1 0%}
+.central .item .bd .vt{display:inline-flex;align-items:center;gap:7px;font-size:10px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--text-muted)}
+.central .item .bd .vdot{width:7px;height:7px;border-radius:50%;background:var(--dot)}
+.central .item .bd h4{margin:0;font-size:15.5px;font-weight:600;color:var(--text-primary);line-height:1.3}
+.central .item .bd p{margin:0;font-size:12.5px;color:var(--text-muted);line-height:1.45}
+.central .item .ft{margin-top:auto;padding-top:12px;display:flex;align-items:center;justify-content:space-between;gap:10px}
+.central .item .ft .dt{font-size:11px;color:var(--text-muted)}
+.central .item .ft .acts{display:inline-flex;gap:6px}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:10px;padding:12px 22px;white-space:nowrap;border-radius:999px;font-size:14px;font-weight:600;line-height:1.2;border:1px solid transparent;cursor:pointer;transition:background-color .2s var(--ease),color .2s var(--ease),border-color .2s var(--ease),transform .2s var(--ease)}
+.btn svg.i{width:1em;height:1em}
+.btn-xs{padding:6px 14px;font-size:11px;gap:6px}
+.btn-primary{background:var(--tv-verde);color:#000}
+.btn-primary:hover{background:#92D3AB;transform:translateY(-1px)}
+:root[data-theme="light"] .btn-primary{background:#337F51;color:#FFF}
+.btn-glass{background:var(--bg-glass);color:var(--text-primary);border-color:var(--line-strong)}
+.btn-glass:hover{border-color:var(--tv-verde);color:var(--tv-verde);transform:translateY(-1px)}
+.btn.mt-off{cursor:default;opacity:.55}
+.btn.mt-off:hover{border-color:var(--line-strong);color:var(--text-primary);transform:none}
+.mt-vazio{grid-column:1/-1;color:var(--text-muted);font-size:14px;padding:30px 4px;text-align:center}
+.btn:focus-visible,.tab:focus-visible,.tab-reset:focus-visible{outline:none;box-shadow:0 0 0 3px color-mix(in srgb,var(--tv-verde) 45%,transparent)}
+.entra .central .item{animation:sobe .4s var(--ease) backwards}
+.entra .central .item:nth-child(2){animation-delay:60ms}.entra .central .item:nth-child(3){animation-delay:110ms}.entra .central .item:nth-child(4){animation-delay:160ms}.entra .central .item:nth-child(n+5){animation-delay:200ms}
+
 /* histórico e auditoria */
 .hist{margin-top:20px}
 .hist summary{cursor:pointer;color:var(--text-muted);font-size:14px;padding:8px 0;list-style:none;display:inline-flex;gap:6px;align-items:center}
@@ -524,6 +577,11 @@ textarea.mot{width:100%;min-height:90px;background:var(--input-bg);border:1px so
   .linha>:nth-child(4){grid-column:2;grid-row:2}
   .linha>:nth-child(6){grid-column:3;grid-row:1/3}
   .cab-l{display:none}
+  .tabs-wrap{flex-direction:column}
+  .mt-filtros{padding:0 12px 12px}
+  .mt-filtros .tab-reset{flex:1;min-width:0}
+  .central .grid{padding:14px;gap:14px}
+  .central{border-radius:20px}
   .cm{grid-template-columns:1fr;gap:16px}
   .cm-lista{position:static;max-height:none;display:flex;overflow-x:auto;gap:8px;padding-bottom:6px;scrollbar-width:none}
   .cm-grupo{display:contents}
@@ -904,14 +962,45 @@ function telaComentarios(){
   var f=fundo(ui.aberto);
   return h+'<div class="cm">'+lista+'<section class="cm-doc" id="cm-doc" aria-label="Comentário">'+(f?comDoc(f):'')+'</section></div>';
 }
+/* Materiais no mesmo desenho da Central de Materiais: abas por tipo, cartões com miniatura */
+var MT_ABAS=[['gerar','Para gerar','cx'],['relatorios','Relatórios de Gestão','doc'],['posts','Posts','sub'],['decks','Apresentações','pes'],['informativos','Informativos','info'],['sharepoint','SharePoint','nuv']];
+var MT_TIPO={'Relatório de Gestão':'relatorios','Post':'posts','Deck':'decks','Informativo':'informativos'};
+var MT_KIND={relatorios:'Relatório',posts:'Post',decks:'Apresentação',informativos:'Informativo'};
+function mtCor(a){return a==='investment_solutions'?'var(--tv-azul)':a==='previdencia'?'#92D3AB':'var(--tv-verde)'}
 function telaMateriais(){
-  var F=S.fundos,G=F.filter(function(f){return f.mat!=='nao'||f.com==='aprovado'});
-  var h=cabTela('Materiais','A Comunicação gera relatório, post e deck com o comentário aprovado. Tudo fica salvo aqui e na Central de Materiais do mês, com o link no SharePoint.','Comunicação');
-  h+=resumo([['para gerar',F.filter(function(f){return f.com==='aprovado'&&f.mat==='nao'}).length],['gerados',F.filter(function(f){return f.mat==='gerado'}).length],['ainda no comentário',F.filter(function(f){return f.com!=='aprovado'}).length]]);
-  if(G.length)h+=tabelaTela(['Comentário','Situação','Peças'],ordem(G,'materiais'),'materiais',function(f){var n=(PECAS[f.id]||[]).length;
-    return ['<span class="m">'+ic('doc')+'v'+ultima(f).v+' aprovada</span>',pill(matSit(f)),'<span class="m">'+(n||1)+(n>1?' peças':' peça')+'</span>']});
-  h+=centraisHtml()+historicoMateriais();
-  return h;
+  var F=S.fundos,mes=ui.mes||MESES[0][0],atual=mes===MESES[0][0],nomeMes=MESES.filter(function(m){return m[0]===mes})[0][1],area=ui.area||'';
+  var fila=F.filter(function(f){return f.com==='aprovado'&&f.mat!=='gerado'});
+  var feitos=(atual?F.filter(function(f){return f.mat==='gerado'}):F.filter(function(f){return (PECAS[f.id]||[]).length})).filter(function(f){return !area||f.area===area});
+  var pecas={};MT_ABAS.forEach(function(a){pecas[a[0]]=[]});
+  feitos.forEach(function(f){(PECAS[f.id]||[]).forEach(function(pc,i){var k=MT_TIPO[pc.t];if(k)pecas[k].push([f,pc,i])})});
+  var cont={gerar:atual?fila.filter(function(f){return !area||f.area===area}).length:0,sharepoint:3};
+  ['relatorios','posts','decks','informativos'].forEach(function(k){cont[k]=pecas[k].length});
+  var aba=ui.mt;if(!aba||(aba==='gerar'&&!atual))aba=S.perfil==='comunicacao'&&cont.gerar?'gerar':'relatorios';
+  var h='<section class="mt-hero"><h1>Central de <strong>materiais</strong></h1><p>A Comunicação gera os materiais do mês com o comentário aprovado. Ficam aqui, organizados por tipo e vertical, com o mês atual e o histórico; no SharePoint vai o link da Central de cada mês.</p><span class="dono">'+ic('pes')+'Quem gera: <b>Comunicação</b></span></section>';
+  h+='<div class="central"><div class="tabs-wrap"><div class="tabs" role="tablist">'+MT_ABAS.filter(function(a){return a[0]!=='gerar'||atual}).map(function(a){var on=a[0]===aba;
+      return '<button type="button" class="tab" role="tab" data-mt="'+a[0]+'" aria-selected="'+on+'">'+ic(a[2])+a[1]+'<span class="badge">'+cont[a[0]]+'</span></button>'}).join('')+'</div>'+
+    '<div class="mt-filtros"><select id="mt-mes" class="tab-reset" aria-label="Mês">'+MESES.map(function(m,i){return '<option value="'+m[0]+'"'+(m[0]===mes?' selected':'')+'>'+m[1]+'</option>'}).join('')+'</select>'+
+    '<select id="f-area" class="tab-reset" aria-label="Vertical"><option value="">Todas</option>'+Object.keys(AREA).map(function(k){return '<option value="'+k+'"'+(k===area?' selected':'')+'>'+AREA[k]+'</option>'}).join('')+'</select></div></div>';
+  var itens='';
+  if(aba==='gerar'){
+    itens=fila.filter(function(f){return !area||f.area===area}).map(function(f){var gerando=f.mat==='gerando',pode=S.perfil==='comunicacao'&&!gerando;
+      return '<article class="item" style="--dot:'+mtCor(f.area)+'"><div class="thumb">'+(LOGOS[f.id]?'<span class="mt-logo">'+logoFundo(f,'lg-card')+'</span>':'<svg class="gm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4">'+I.cx+'</svg>')+'<span class="kind">Para gerar</span>'+(gerando?'<span class="soon">Gerando</span>':'')+'</div>'+
+        '<div class="bd"><span class="vt"><span class="vdot"></span>'+AREA[f.area]+'</span><h4>'+esc(f.nome)+'</h4><p>Comentário v'+ultima(f).v+' aprovado pelo Comercial e pela Gestão. Gera '+((PECAS[f.id]||[]).map(function(x){return x.t}).join(', ').replace(/, ([^,]*)$/,' e $1')||'o relatório')+'.</p>'+
+        '<div class="ft"><span class="dt">'+nomeMes+'</span><span class="acts">'+(pode?'<button type="button" class="btn btn-primary btn-xs" data-ok="'+f.id+'">'+ic('cx')+'Gerar materiais</button>':'<span class="btn btn-glass btn-xs mt-off">'+(gerando?'Gerando':'Com a Comunicação')+'</span>')+'</span></div></div></article>'}).join('');
+    if(!itens)itens='<p class="mt-vazio">Nada para gerar agora. Os fundos aparecem aqui quando o Comercial e a Gestão aprovam o comentário.</p>';
+  }else if(aba==='sharepoint'){
+    var g=F.filter(function(f){return f.mat==='gerado'}).length;
+    itens=[['Outubro 2026','2026-10',g?'Atualizada com '+g+' de '+F.length+' fundos':'Sem fundos gerados ainda',true],['Setembro 2026','2026-09','Publicada'],['Agosto 2026','2026-08','Publicada']].map(function(c){
+      return '<article class="item" style="--dot:var(--tv-azul)"><div class="thumb"><svg class="gm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4">'+I.nuv+'</svg><span class="kind">Central</span>'+(c[3]?'<span class="soon">Atual</span>':'')+'</div>'+
+        '<div class="bd"><span class="vt"><span class="vdot"></span>SharePoint</span><h4>Central de Materiais · '+c[0]+'</h4><p>Materiais AutomaTivio/_Historico/'+c[1]+'/Interno/Edição completa</p><div class="ft"><span class="dt">'+c[2]+'</span><span class="acts"><span class="btn btn-glass btn-xs mt-off" title="O endereço entra quando o site do SharePoint for criado">Link em breve</span></span></div></div></article>'}).join('');
+  }else{
+    itens=pecas[aba].map(function(x){var f=x[0],pc=x[1];
+      return '<article class="item" style="--dot:'+mtCor(f.area)+'"><div class="thumb"><img src="'+pc.img+'" alt="'+esc(pc.t)+' do '+esc(f.nome)+'" loading="lazy"><span class="kind">'+MT_KIND[aba]+'</span></div>'+
+        '<div class="bd"><span class="vt"><span class="vdot"></span>'+AREA[f.area]+'</span><h4>'+esc(pc.t)+' · '+esc(f.nome)+'</h4><p>'+esc(pc.fmt)+'. '+(atual?'Gerado com o comentário v'+ultima(f).v+'.':'Edição de setembro de 2026.')+'</p>'+
+        '<div class="ft"><span class="dt">'+(atual&&f.quando.materiais?'Gerado '+f.quando.materiais[1].slice(0,5):nomeMes)+'</span><span class="acts"><button type="button" class="btn btn-glass btn-xs" data-peca="'+f.id+':'+x[2]+'">Abrir'+ic('ava')+'</button></span></div></div></article>'}).join('');
+    if(!itens)itens='<p class="mt-vazio">'+(atual?'Nenhum '+MT_KIND[aba].toLowerCase()+' gerado em outubro ainda. Aparece aqui assim que a Comunicação gerar.':'Nada deste tipo nesta edição.')+'</p>';
+  }
+  return h+'<div class="grid">'+itens+'</div></div>';
 }
 /* SharePoint: um link por mês para a Central de Materiais daquela edição */
 function centraisHtml(){
@@ -1233,7 +1322,7 @@ function geraMateriais(f){
   depois(function(){
     f.mat='gerado';f.arquivos=arquivosDe(f,'enviando');f.sp='enviando';f.quando.materiais=['AutomaTivio',agora()];
     registrar(f,'Materiais gerados','Comentário aprovado','Gerados','v'+ultima(f).v,'','AutomaTivio','Automação');fim();
-    depois(function(){f.arquivos.forEach(function(a){a.st='publicado'});f.sp='publicado';f.quando.sharepoint=['AutomaTivio',agora()];registrar(f,'Publicado no SharePoint','Gerados','Publicado','v'+ultima(f).v,f.arquivos.length+' arquivos conferidos.','AutomaTivio','Automação');fim();avisar('Publicado no SharePoint.')},1800);
+    depois(function(){f.arquivos.forEach(function(a){a.st='publicado'});f.sp='publicado';f.quando.sharepoint=['AutomaTivio',agora()];registrar(f,'Publicado no SharePoint','Gerados','Publicado','v'+ultima(f).v,f.arquivos.length+' arquivos conferidos.','AutomaTivio','Automação');fim();avisar('Entrou na Central de Materiais do mês.')},1800);
   },1600);
 }
 function acao(nome){
@@ -1316,7 +1405,7 @@ function render(){
   medir();
 }
 document.addEventListener('click',function(e){
-  var t=e.target.closest('[data-dado],[data-coment],[data-aba],[data-mes],[data-ok],[data-vista],[data-filtro],[data-lote],[data-abrir],[data-acao],[data-modo],[data-ver],[data-peca],[data-visor]');
+  var t=e.target.closest('[data-mt],[data-dado],[data-coment],[data-aba],[data-mes],[data-ok],[data-vista],[data-filtro],[data-lote],[data-abrir],[data-acao],[data-modo],[data-ver],[data-peca],[data-visor]');
   if(!t||t.disabled)return;
   var d=t.dataset;
   if(d.ok){e.preventDefault();aprovarRapido(d.ok);return}
@@ -1326,6 +1415,7 @@ document.addEventListener('click',function(e){
   if(d.abrir){ui.fundo=null;ui.de=rota.tela==='f'?ui.de:rota.tela;ui.abaIr=d.abaIr||null;ir('f--'+d.abrir);window.scrollTo(0,0);return}
   if(d.modo){ui.modo=d.modo;render();return}
   if(d.ver){ui.ver={f:fAtual().id,v:+d.ver};render();return}
+  if(d.mt){ui.mt=d.mt;render();return}
   if(d.dado){if(d.dado===ui.dado)return;ui.dado=d.dado;render();if(innerWidth<=760){var dd=document.getElementById('cm-doc');if(dd)dd.scrollIntoView({block:'start',behavior:'smooth'})}return}
   if(d.coment){var ab=d.coment;if(ab===ui.aberto&&rota.tela==='comentarios')return;ui.aberto=ab;ui.ver=null;ui.editando=false;ui.modo='ver';render();if(innerWidth<=760){var dc=document.getElementById('cm-doc');if(dc)dc.scrollIntoView({block:'start',behavior:'smooth'})}return;if(ab){var l=document.getElementById('lin-'+ab);if(l)l.scrollIntoView({block:'start',behavior:'smooth'})}return}
   if(d.peca){var pp=String(d.peca).split(':');if(pp.length>1)abrirVisor(+pp[1],pp[0]);else abrirVisor(+pp[0],rota.id);return}
@@ -1338,6 +1428,7 @@ document.addEventListener('change',function(e){
   if(e.target.id==='perfil'){S.perfil=e.target.value;ui.editando=false;fim();avisar('Agora você está como '+e.target.options[e.target.selectedIndex].text+'.')}
   if(e.target.id==='f-aud'){filtroAud=e.target.value;render()}
   if(e.target.id==='f-area'){ui.area=e.target.value;render()}
+  if(e.target.id==='mt-mes'){ui.mes=e.target.value;render()}
   if(e.target.id==='importar'&&e.target.files[0]){
     var f=fAtual(),arq=e.target.files[0],r=new FileReader();
     r.onload=function(){var v=novaVersao(f,'Importado de .md',String(r.result).trim());f.com='revisao';f.pediu=null;f.motivo='';f.rev={comercial:null,gestao:null};delete f.quando.comercial;delete f.quando.gestao;
