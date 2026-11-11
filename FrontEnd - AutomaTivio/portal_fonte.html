@@ -411,6 +411,51 @@ textarea.mot{width:100%;min-height:90px;background:var(--input-bg);border:1px so
 .cm-pe{position:sticky;bottom:0;display:flex;justify-content:flex-end;align-items:center;gap:10px;flex-wrap:wrap;padding:14px 28px;border-top:1px solid var(--line);background:var(--header-bg);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border-radius:0 0 var(--r-lg) var(--r-lg)}
 .cm-pe .perm{margin-right:auto}
 
+/* transições */
+@keyframes sobe{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+@keyframes surge{from{opacity:0}to{opacity:1}}
+@keyframes troca{from{opacity:0;transform:translateX(12px)}to{opacity:1;transform:none}}
+@keyframes cresce{from{opacity:0;transform:translateY(12px) scale(.97)}to{opacity:1;transform:none}}
+.entra>*{animation:sobe .45s var(--ease) backwards}
+.entra>*:nth-child(2){animation-delay:.05s}
+.entra>*:nth-child(3){animation-delay:.1s}
+.entra>*:nth-child(4){animation-delay:.15s}
+.entra>*:nth-child(n+5){animation-delay:.2s}
+.entra :is(.cm-item,.cfundo,.linha,.resumo>span,.coluna,.mat-fundo){animation:sobe .4s var(--ease) backwards}
+.entra :is(.cm-item,.cfundo,.linha,.resumo>span,.coluna,.mat-fundo):nth-child(1){animation-delay:75ms}
+.entra :is(.cm-item,.cfundo,.linha,.resumo>span,.coluna,.mat-fundo):nth-child(2){animation-delay:110ms}
+.entra :is(.cm-item,.cfundo,.linha,.resumo>span,.coluna,.mat-fundo):nth-child(3){animation-delay:145ms}
+.entra :is(.cm-item,.cfundo,.linha,.resumo>span,.coluna,.mat-fundo):nth-child(4){animation-delay:180ms}
+.entra :is(.cm-item,.cfundo,.linha,.resumo>span,.coluna,.mat-fundo):nth-child(5){animation-delay:215ms}
+.entra :is(.cm-item,.cfundo,.linha,.resumo>span,.coluna,.mat-fundo):nth-child(6){animation-delay:250ms}
+.entra :is(.cm-item,.cfundo,.linha,.resumo>span,.coluna,.mat-fundo):nth-child(7){animation-delay:285ms}
+.entra :is(.cm-item,.cfundo,.linha,.resumo>span,.coluna,.mat-fundo):nth-child(8){animation-delay:320ms}
+.entra :is(.cm-item,.cfundo,.linha,.resumo>span,.coluna,.mat-fundo):nth-child(9){animation-delay:355ms}
+.entra :is(.cm-item,.cfundo,.linha,.resumo>span,.coluna,.mat-fundo):nth-child(10){animation-delay:390ms}
+.entra :is(.cm-item,.cfundo,.linha,.resumo>span,.coluna,.mat-fundo):nth-child(11){animation-delay:425ms}
+.entra :is(.cm-item,.cfundo,.linha,.resumo>span,.coluna,.mat-fundo):nth-child(12){animation-delay:460ms}
+.entra :is(.cm-item,.cfundo,.linha,.coluna,.mat-fundo):nth-child(n+13){animation-delay:470ms}
+.cm-doc.troca>*{animation:troca .32s var(--ease) backwards}
+.cm-doc.troca>*:nth-child(2){animation-delay:.04s}
+.cm-doc.troca>*:nth-child(3){animation-delay:.08s}
+.cm-item{transition:background .2s var(--ease),box-shadow .25s var(--ease),transform .2s var(--ease)}
+.cm-item:active{transform:scale(.985)}
+.cfundo{transition:border-color .2s var(--ease),transform .2s var(--ease),box-shadow .2s var(--ease)}
+.cfundo:hover{transform:translateY(-2px);box-shadow:0 8px 20px rgba(0,0,0,.18)}
+.linha{transition:background .2s var(--ease)}
+.bt:active:not(:disabled){transform:scale(.97)}
+.abas button{transition:border-color .2s var(--ease),background .2s var(--ease),box-shadow .25s var(--ease)}
+.modo button{transition:background .2s var(--ease),color .2s var(--ease)}
+.fundo-modal.on{animation:surge .2s var(--ease) both}
+.fundo-modal.on .modal{animation:cresce .28s var(--ease) both}
+.visor.on{animation:surge .2s var(--ease) both}
+.st{transition:background .3s var(--ease),color .3s var(--ease)}
+.peca .moldura{transition:box-shadow .3s var(--ease)}
+.peca:hover .moldura{box-shadow:0 10px 28px rgba(0,0,0,.25)}
+.cm-v.err{color:var(--err)}
+.dd-corpo{max-width:none}
+.dd-corpo .fichas{margin-bottom:4px}
+
 /* histórico e auditoria */
 .hist{margin-top:20px}
 .hist summary{cursor:pointer;color:var(--text-muted);font-size:14px;padding:8px 0;list-style:none;display:inline-flex;gap:6px;align-items:center}
@@ -790,7 +835,7 @@ function listaHtml(F){
   return h+'</div>';
 }
 var TITULO={esteira:'Esteira',dados:'Dados',comentarios:'Comentários',materiais:'Materiais',fila:'Minha fila',auditoria:'Auditoria'};
-function fAtual(){return rota.tela==='comentarios'?fundo(ui.aberto):fundo(rota.id)}
+function fAtual(){return rota.tela==='comentarios'?fundo(ui.aberto):rota.tela==='dados'?fundo(ui.dado):fundo(rota.id)}
 function telaDaEtapa(f){var e=etapa(f);return e===0?'dados':e<=2?'comentarios':'materiais'}
 function cabTela(t,sub,dono){return '<div class="cab"><div class="tit"><h1>'+t+'</h1><p class="sub">'+sub+'</p></div><span class="dono">'+ic('pes')+'Quem mexe: <b>'+dono+'</b></span></div>'}
 function resumo(L){return '<div class="resumo">'+L.filter(function(x){return x[1]}).map(function(x){return '<span><b>'+x[1]+'</b>'+x[0]+'</span>'}).join('')+'</div>'}
@@ -826,13 +871,18 @@ function matSit(f){
 }
 function ordem(L,aba){return L.slice().sort(function(a,b){return (comigo(b)&&telaDaEtapa(b)===aba)-(comigo(a)&&telaDaEtapa(a)===aba)||etapa(a)-etapa(b)||a.nome.localeCompare(b.nome)})}
 function telaDados(){
-  var F=S.fundos,P=pendRiscos();
+  var F=S.fundos,P=pendRiscos(),O=ordem(F,'dados');
+  if(!ui.dado||!fundo(ui.dado)){var p1=P[0]||O[0];ui.dado=p1?p1.id:null}
   var h=cabTela('Dados','Riscos confere e aprova os dados de cada fundo. Com todos aprovados, a IA escreve os comentários.','Riscos');
   h+=resumo([['aguardando Riscos',P.length],['aprovados',F.filter(function(f){return f.riscos==='aprovado'}).length],['voltaram para correção',F.filter(function(f){return f.riscos==='correcao'||f.riscos==='reprovado'}).length],['sem carteira',F.filter(function(f){return f.dados!=='ok'}).length]]);
   if(S.perfil==='riscos'&&P.length)h+=loteHtml(P.length);
-  return h+tabelaTela(['Alertas','Situação','Atualizado'],ordem(F,'dados'),'dados',function(f){
-    var er=f.alertas.filter(function(a){return a[0]==='err'}).length,n=f.alertas.length;
-    return [er?'<span class="m err">'+ic('ex')+er+(er>1?' erros':' erro')+'</span>':n?'<span class="m">'+ic('info')+n+(n>1?' avisos':' aviso')+'</span>':'<span class="m">Sem alertas</span>',pill(dadosSit(f)),'<span class="m">'+esc(f.atual)+'</span>']});
+  var G=[['Aguardando Riscos',P],
+         ['Voltaram para correção',O.filter(function(f){return f.dados==='ok'&&(f.riscos==='correcao'||f.riscos==='reprovado')})],
+         ['Sem carteira',O.filter(function(f){return f.dados!=='ok'})],
+         ['Aprovados',O.filter(function(f){return f.riscos==='aprovado'})]];
+  var lista='<nav class="cm-lista" aria-label="Fundos">'+G.filter(function(g){return g[1].length}).map(function(g){return '<div class="cm-grupo"><span class="cm-gt">'+g[0]+'<i>'+g[1].length+'</i></span>'+g[1].map(ddItem).join('')+'</div>'}).join('')+'</nav>';
+  var f=fundo(ui.dado);
+  return h+'<div class="cm">'+lista+'<section class="cm-doc" id="cm-doc" aria-label="Dados do fundo">'+(f?dadosDoc(f):'')+'</section></div>';
 }
 function telaComentarios(){
   var F=S.fundos,O=ordem(F,'comentarios');
@@ -912,16 +962,29 @@ function alertas(f){
   return f.alertas.map(function(a){return '<div class="alerta'+(a[0]==='err'?' err':'')+'">'+ic(a[0]==='err'?'ex':'info')+'<span>'+esc(a[1])+'</span></div>'}).join('');
 }
 
-function painelRiscos(f){
+function dadosCorpo(f){
   var c='<div class="fichas"><div class="ficha"><span>Última atualização</span><b>'+f.atual+'</b></div><div class="ficha"><span>Origem dos dados</span><b>'+esc(f.origem)+'</b></div><div class="ficha"><span>Carteira utilizada</span><b>'+esc(f.carteira)+'</b></div></div>';
-  if(f.dados!=='ok')c+='<div class="trava">'+ic('rel')+'<div><b>Aguardando a carteira do mês</b>Assim que a planilha chegar, os dados aparecem aqui para Riscos conferir.</div></div>';
-  else c+='<div class="duas"><div>'+tabInd(f)+'</div><div class="pilha">'+alertas(f)+(f.motivo?'<div class="cartao registro"><div><span>Motivo</span><span>'+esc(f.motivo)+'</span></div></div>':'')+'</div></div>';
-  var pe;
-  if(f.dados!=='ok')pe=semVez('Esperando a carteira.');
-  else if(f.riscos==='correcao'||f.riscos==='reprovado')pe=semVez('Voltou para corrigir os dados.')+'<button type="button" class="bt" data-acao="reenviar">Dados corrigidos: enviar para Riscos</button>';
-  else if(S.perfil!=='riscos')pe=semVez('Está com Riscos. Troque para "Riscos" no topo para aprovar.');
-  else pe='<button type="button" class="bt neg" data-acao="reprovar">Reprovar dados</button><button type="button" class="bt" data-acao="corrigir">Solicitar correção</button><button type="button" class="bt pri" data-acao="aprovar-dados">'+ic('ok')+'Aprovar dados</button>';
-  return painel('Riscos confere os dados do mês','Com todos os fundos aprovados, a IA gera os comentários com estes dados.',c,pe);
+  if(f.dados!=='ok')return c+'<div class="trava">'+ic('rel')+'<div><b>Aguardando a carteira do mês</b>Assim que a planilha chegar, os dados aparecem aqui para Riscos conferir.</div></div>';
+  return c+'<div class="duas"><div>'+tabInd(f)+'</div><div class="pilha">'+alertas(f)+(f.motivo?'<div class="cartao registro"><div><span>Motivo</span><span>'+esc(f.motivo)+'</span></div></div>':'')+'</div></div>';
+}
+function dadosAcoes(f){
+  if(f.dados!=='ok')return semVez('Esperando a carteira.');
+  if(f.riscos==='aprovado')return '<span class="perm">'+ic('ok')+'Aprovado'+(f.quando.riscos?' por '+esc(f.quando.riscos[0])+', '+f.quando.riscos[1]:'')+'.</span>';
+  if(f.riscos==='correcao'||f.riscos==='reprovado')return semVez('Voltou para corrigir os dados.')+'<button type="button" class="bt" data-acao="reenviar">Dados corrigidos: enviar para Riscos</button>';
+  if(S.perfil!=='riscos')return semVez('Está com Riscos. Só Riscos aprova os dados.');
+  return '<button type="button" class="bt neg" data-acao="reprovar">Reprovar</button><button type="button" class="bt" data-acao="corrigir">Pedir correção</button><button type="button" class="bt pri" data-acao="aprovar-dados">'+ic('ok')+'Aprovar dados</button>';
+}
+function painelRiscos(f){
+  return painel('Riscos confere os dados do mês','Com todos os fundos aprovados, a IA gera os comentários com estes dados.',dadosCorpo(f),dadosAcoes(f));
+}
+function dadosDoc(f){
+  var ac=dadosAcoes(f);
+  return '<header class="cm-cab"><div class="cm-tit"><div><h2>'+esc(f.nome)+'</h2><small>'+AREA[f.area]+' · Data base '+f.dataBase+'</small></div></div>'+pill(dadosSit(f))+'</header>'+
+    '<div class="cm-corpo dd-corpo">'+dadosCorpo(f)+'</div>'+(ac?'<div class="cm-pe">'+ac+'</div>':'');
+}
+function ddItem(f){
+  var t=dadosSit(f),on=ui.dado===f.id,er=f.alertas.filter(function(a){return a[0]==='err'}).length;
+  return '<button type="button" class="cm-item'+(on?' on':'')+'" data-dado="'+f.id+'"'+(on?' aria-current="true"':'')+'><span class="cm-nome">'+esc(curto(f))+'</span>'+(er?'<span class="cm-v err">'+er+(er>1?' erros':' erro')+'</span>':'<span></span>')+'<span class="cm-sit '+t[1]+'"><i></i>'+esc(t[0])+'</span></button>';
 }
 /* a folha do relatório: o comentário aparece onde vai sair, e edita ali mesmo */
 function folhaHtml(f,texto,modo,ant){
@@ -1168,7 +1231,7 @@ function geraMateriais(f){
 }
 function acao(nome){
   var f=fAtual(),sr={aguardando:'Aguardando Riscos',correcao:'Correção solicitada',reprovado:'Dados reprovados'};
-  if(nome==='aprovar-dados'){aprovarDados(f);var mg=geraSeTudo();fim();avisar('Dados aprovados. '+mg);return}
+  if(nome==='aprovar-dados'){aprovarDados(f);var mg=geraSeTudo();if(rota.tela==='dados'){var px=pendRiscos()[0];if(px)ui.dado=px.id}fim();avisar('Dados do '+curto(f)+' aprovados. '+mg);return}
   if(nome==='corrigir')return pedirMotivo('Solicitar correção','O que precisa ser corrigido nos dados?',function(m){var d=sr[f.riscos];f.riscos='correcao';f.motivo=m;registrar(f,'Correção solicitada',d,'Correção solicitada','',m);fim()});
   if(nome==='reprovar')return pedirMotivo('Reprovar dados','Por que os dados foram reprovados?',function(m){var d=sr[f.riscos];f.riscos='reprovado';f.motivo=m;registrar(f,'Dados reprovados',d,'Dados reprovados','',m);fim()});
   if(nome==='reenviar'){var d2=sr[f.riscos];f.riscos='aguardando';f.motivo='';f.alertas=[];f.atual=agora();registrar(f,'Dados corrigidos',d2,'Aguardando Riscos','','Enviado de volta para Riscos.');avisar('Enviado para Riscos.')}
@@ -1234,11 +1297,19 @@ function render(){
   else if(rota.tela==='dados')h=telaDados();
   else if(rota.tela==='comentarios')h=telaComentarios();
   else h=telaEsteira();
-  document.getElementById('app').innerHTML=h;
+  var app=document.getElementById('app');app.innerHTML=h;
+  /* anima ao trocar de tela e ao trocar o fundo aberto; re-render da mesma tela não pisca */
+  var chave=rota.tela+'|'+(rota.id||''),sel=rota.tela==='dados'?ui.dado:rota.tela==='comentarios'?ui.aberto:'';
+  if(chave!==render.tela){app.classList.remove('entra');void app.offsetWidth;app.classList.add('entra');clearTimeout(render.t);render.t=setTimeout(function(){app.classList.remove('entra')},1000)}
+  else{app.classList.remove('entra')}
+  if(chave===render.tela&&sel!==render.sel){var dc=document.getElementById('cm-doc');if(dc)dc.classList.add('troca')}
+  render.tela=chave;render.sel=sel;
+  /* no celular a lista corre para o lado: mostra o fundo aberto */
+  var on=document.querySelector('.cm-lista .cm-item.on');if(on&&innerWidth<=760){var l=on.closest('.cm-lista');l.scrollLeft+=on.getBoundingClientRect().left-l.getBoundingClientRect().left-8}
   medir();
 }
 document.addEventListener('click',function(e){
-  var t=e.target.closest('[data-coment],[data-aba],[data-mes],[data-ok],[data-vista],[data-filtro],[data-lote],[data-abrir],[data-acao],[data-modo],[data-ver],[data-peca],[data-visor]');
+  var t=e.target.closest('[data-dado],[data-coment],[data-aba],[data-mes],[data-ok],[data-vista],[data-filtro],[data-lote],[data-abrir],[data-acao],[data-modo],[data-ver],[data-peca],[data-visor]');
   if(!t||t.disabled)return;
   var d=t.dataset;
   if(d.ok){e.preventDefault();aprovarRapido(d.ok);return}
@@ -1248,6 +1319,7 @@ document.addEventListener('click',function(e){
   if(d.abrir){ui.fundo=null;ui.de=rota.tela==='f'?ui.de:rota.tela;ui.abaIr=d.abaIr||null;ir('f--'+d.abrir);window.scrollTo(0,0);return}
   if(d.modo){ui.modo=d.modo;render();return}
   if(d.ver){ui.ver={f:fAtual().id,v:+d.ver};render();return}
+  if(d.dado){if(d.dado===ui.dado)return;ui.dado=d.dado;render();if(innerWidth<=760){var dd=document.getElementById('cm-doc');if(dd)dd.scrollIntoView({block:'start',behavior:'smooth'})}return}
   if(d.coment){var ab=d.coment;if(ab===ui.aberto&&rota.tela==='comentarios')return;ui.aberto=ab;ui.ver=null;ui.editando=false;ui.modo='ver';render();if(innerWidth<=760){var dc=document.getElementById('cm-doc');if(dc)dc.scrollIntoView({block:'start',behavior:'smooth'})}return;if(ab){var l=document.getElementById('lin-'+ab);if(l)l.scrollIntoView({block:'start',behavior:'smooth'})}return}
   if(d.peca){var pp=String(d.peca).split(':');if(pp.length>1)abrirVisor(+pp[1],pp[0]);else abrirVisor(+pp[0],rota.id);return}
   if(d.aba){ui.aba=d.aba;ui.editando=false;render();return}
