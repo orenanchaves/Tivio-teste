@@ -360,6 +360,45 @@ textarea.mot{width:100%;min-height:90px;background:var(--input-bg);border:1px so
 .linha-det{padding:4px 18px 22px;border-top:0}
 .linha-det .painel{background:var(--bg-base)}
 
+/* tela Comentários: lista + documento */
+.cm{display:grid;grid-template-columns:280px minmax(0,1fr);gap:24px;align-items:start}
+.cm-lista{position:sticky;top:90px;display:grid;gap:20px;max-height:calc(100vh - 120px);overflow:auto;padding:2px 4px 2px 0}
+.cm-grupo{display:grid;gap:2px}
+.cm-gt{display:flex;justify-content:space-between;font-size:12px;color:var(--text-muted);padding:0 12px 6px}
+.cm-gt i{font-style:normal;font-variant-numeric:tabular-nums}
+.cm-item{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:3px 10px;text-align:left;background:none;border:0;border-radius:var(--r-md);padding:10px 12px;cursor:pointer;color:inherit;transition:background .15s}
+.cm-item:hover{background:var(--pill-bg)}
+.cm-item.on{background:var(--bg-glass);box-shadow:inset 3px 0 0 var(--acento)}
+.cm-item:focus-visible,.cm-ver:focus-visible{outline:none;box-shadow:0 0 0 3px color-mix(in srgb,var(--tv-azul) 50%,transparent)}
+.cm-nome{font-size:14.5px;font-weight:600;line-height:1.3}
+.cm-v{font-size:12px;color:var(--text-muted);font-variant-numeric:tabular-nums}
+.cm-sit{grid-column:1/-1;display:flex;align-items:center;gap:7px;font-size:12.5px;color:var(--text-muted)}
+.cm-sit i{width:7px;height:7px;border-radius:50%;background:var(--blq);flex:none}
+.cm-sit.ok i{background:var(--ok)}
+.cm-sit.and i{background:var(--and)}
+.cm-sit.err i{background:var(--err)}
+.cm-doc{background:var(--bg-glass);border:1px solid var(--line);border-radius:var(--r-lg);min-width:0}
+.cm-cab{display:flex;justify-content:space-between;align-items:center;gap:14px 20px;flex-wrap:wrap;padding:22px 28px 18px;border-bottom:1px solid var(--line)}
+.cm-tit{display:flex;align-items:center;gap:16px;min-width:0}
+.cm-tit .lg{height:26px}
+.cm-tit h2{font-size:18px}
+.cm-tit small{font-size:13px;color:var(--text-muted)}
+.cm-revs{display:flex;gap:8px;flex-wrap:wrap}
+.cm-rev{display:inline-flex;align-items:center;gap:6px;font-size:12.5px;font-weight:600;padding:5px 12px 5px 9px;border-radius:var(--r-full);border:1px solid var(--line-strong);color:var(--text-muted)}
+.cm-rev svg.i{width:13px;height:13px;stroke-width:2.2}
+.cm-rev.ok{color:var(--ok);background:var(--ok-bg);border-color:transparent}
+.cm-rev.err{color:var(--err);background:var(--err-bg);border-color:transparent}
+.cm-corpo{padding:22px 28px 28px;display:grid;gap:16px}
+.cm-corpo>.alerta,.cm-barra,.cm-nota,.cm-corpo .folha-area{width:100%;max-width:720px;margin-inline:auto}
+.cm-barra{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap}
+.cm-vers{display:flex;align-items:center;gap:6px;flex-wrap:wrap;min-width:0}
+.cm-ver{border:1px solid var(--line-strong);background:none;border-radius:var(--r-full);padding:3px 11px;font-size:12.5px;font-weight:600;cursor:pointer;color:var(--text-muted);font-variant-numeric:tabular-nums}
+.cm-ver.on{background:var(--pill-bg);color:var(--text-primary)}
+.cm-vinfo{font-size:12.5px;color:var(--text-muted);margin-left:6px}
+.cm-corpo .folha{max-width:none;box-shadow:0 10px 28px rgba(0,0,0,.22)}
+.cm-pe{position:sticky;bottom:0;display:flex;justify-content:flex-end;align-items:center;gap:10px;flex-wrap:wrap;padding:14px 28px;border-top:1px solid var(--line);background:var(--header-bg);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border-radius:0 0 var(--r-lg) var(--r-lg)}
+.cm-pe .perm{margin-right:auto}
+
 /* histórico e auditoria */
 .hist{margin-top:20px}
 .hist summary{cursor:pointer;color:var(--text-muted);font-size:14px;padding:8px 0;list-style:none;display:inline-flex;gap:6px;align-items:center}
@@ -421,6 +460,18 @@ textarea.mot{width:100%;min-height:90px;background:var(--input-bg);border:1px so
   .linha>:nth-child(4){grid-column:2;grid-row:2}
   .linha>:nth-child(6){grid-column:3;grid-row:1/3}
   .cab-l{display:none}
+  .cm{grid-template-columns:1fr;gap:16px}
+  .cm-lista{position:static;max-height:none;display:flex;overflow-x:auto;gap:8px;padding-bottom:6px;scrollbar-width:none}
+  .cm-grupo{display:contents}
+  .cm-gt{display:none}
+  .cm-item{flex:0 0 auto;min-width:180px;border:1px solid var(--line)}
+  .cm-item.on{box-shadow:inset 0 -3px 0 var(--acento)}
+  .cm-cab{padding:18px 16px 14px}
+  .cm-corpo{padding:16px 12px 20px}
+  .cm-pe{position:static;padding:14px 16px;backdrop-filter:none;-webkit-backdrop-filter:none}
+  .cm-pe .bt{flex:1 1 calc(50% - 5px);padding-inline:12px}
+  .cm-pe .perm{margin-right:0;flex-basis:100%}
+  .cm-vinfo{flex-basis:100%;margin-left:0}
   .linha-det{padding:2px 8px 14px}
   .cab>.vista{align-self:flex-start}
   .passagem{grid-template-columns:1fr;gap:0}
@@ -771,14 +822,17 @@ function telaDados(){
     return [er?'<span class="m err">'+ic('ex')+er+(er>1?' erros':' erro')+'</span>':n?'<span class="m">'+ic('info')+n+(n>1?' avisos':' aviso')+'</span>':'<span class="m">Sem alertas</span>',pill(dadosSit(f)),'<span class="m">'+esc(f.atual)+'</span>']});
 }
 function telaComentarios(){
-  var F=S.fundos;
+  var F=S.fundos,O=ordem(F,'comentarios');
+  var meu=function(f){return comigo(f)&&S.perfil!=='admin'&&telaDaEtapa(f)==='comentarios'};
+  if(ui.aberto===undefined||ui.aberto===null||!fundo(ui.aberto)){var p1=O.filter(meu)[0]||O.filter(function(f){return f.versoes.length})[0]||O[0];ui.aberto=p1?p1.id:null}
   var h=cabTela('Comentários','A IA escreve com os dados aprovados. Comercial, Gestão e Comunicação editam na folha do relatório; Comercial e Gestão aprovam.','Comercial, Gestão e Comunicação');
-  h+=resumo([['em revisão',F.filter(function(f){return f.com==='revisao'}).length],['com alterações pedidas',F.filter(function(f){return f.com==='alteracoes'}).length],['aprovados',F.filter(function(f){return f.com==='aprovado'}).length],['esperando os dados',F.filter(function(f){return f.com==='nao'||f.com==='espera'}).length]]);
-  var O=ordem(F,'comentarios');
-  if(ui.aberto===undefined){var p1=O.filter(function(f){return comigo(f)&&telaDaEtapa(f)==='comentarios'})[0]||O.filter(function(f){return f.versoes.length})[0];ui.aberto=p1?p1.id:null}
-  return h+tabelaTela(['Versão','Situação','Aprovações'],O,'comentarios',function(f){
-    var v=f.versoes.length?ultima(f):null;
-    return ['<span class="m">'+(v?ic('doc')+'v'+v.v+'. '+esc(v.tipo):'Sem texto')+'</span>',pill(comSit(f)),bolas(f)]},painelCom);
+  var G=[['Com você',O.filter(meu)],
+         ['Em revisão',O.filter(function(f){return !meu(f)&&(f.com==='revisao'||f.com==='alteracoes'||f.com==='gerando')})],
+         ['Aprovados',O.filter(function(f){return !meu(f)&&f.com==='aprovado'})],
+         ['Esperando os dados',O.filter(function(f){return !meu(f)&&(f.com==='nao'||f.com==='espera')})]];
+  var lista='<nav class="cm-lista" aria-label="Fundos">'+G.filter(function(g){return g[1].length}).map(function(g){return '<div class="cm-grupo"><span class="cm-gt">'+g[0]+'<i>'+g[1].length+'</i></span>'+g[1].map(cmItem).join('')+'</div>'}).join('')+'</nav>';
+  var f=fundo(ui.aberto);
+  return h+'<div class="cm">'+lista+'<section class="cm-doc" id="cm-doc" aria-label="Comentário">'+(f?comDoc(f):'')+'</section></div>';
 }
 function telaMateriais(){
   var F=S.fundos,G=F.filter(function(f){return f.mat!=='nao'||f.com==='aprovado'});
@@ -917,26 +971,55 @@ function revisoresHtml(f){
   return '<div class="revisores">'+[['comercial','Comercial'],['gestao','Gestão']].map(function(r){var s=f.rev[r[0]],q=f.quando[r[0]];
     return '<div class="revisor'+(eu===r[0]?' eu':'')+'"><div class="l1"><b>'+r[1]+(eu===r[0]?' (você)':'')+'</b>'+pill(s==='aprovado'?['Aprovou','ok','ok']:s==='alteracoes'?['Pediu alterações','err','ex']:['Pendente','and','rel'])+'</div><small>'+(q&&s==='aprovado'?esc(q[0])+', '+q[1]:'Ainda não aprovou')+'</small></div>'}).join('')+'</div>';
 }
-function painelCom(f){
-  var tit='Comentário do mês',sub='A IA escreve com os dados aprovados. Comercial, Gestão e Comunicação editam; Comercial e Gestão aprovam.';
-  if(f.com==='nao')return painel(tit,sub,'<div class="trava">'+ic('rel')+'<div><b>Ainda sem comentário</b>A IA escreve quando Riscos aprovar os dados de todos os fundos.</div></div>','');
-  if(f.com==='espera'){var P=pendRiscos();return painel(tit,sub,'<div class="trava">'+ic('rel')+'<div><b>Dados aprovados. Esperando '+P.length+(P.length===1?' fundo':' fundos')+' com Riscos</b>'+(P.length?esc(P.map(curto).join(', ').replace(/, ([^,]*)$/,' e $1'))+'. ':'')+'A IA escreve quando todos estiverem aprovados.</div></div>',S.perfil==='riscos'&&P.length?'<button type="button" class="bt pri" data-lote="riscos">'+ic('ok')+'Aprovar os outros ('+P.length+')</button>':'')}
-  if(f.com==='gerando')return painel(tit,sub,'<div class="gerando"><span class="roda"></span>Gerando o comentário: rentabilidade do mês no começo e a carteira em relação a setembro no restante</div>','');
+/* antes de existir texto: sem dados, esperando os outros fundos ou a IA escrevendo */
+function comEspera(f){
+  if(f.com==='nao')return '<div class="trava">'+ic('rel')+'<div><b>Ainda sem comentário</b>A IA escreve quando Riscos aprovar os dados de todos os fundos.</div></div>';
+  if(f.com==='espera'){var P=pendRiscos();return '<div class="trava">'+ic('rel')+'<div><b>Dados aprovados. Esperando '+P.length+(P.length===1?' fundo':' fundos')+' com Riscos</b>'+(P.length?esc(P.map(curto).join(', ').replace(/, ([^,]*)$/,' e $1'))+'. ':'')+'A IA escreve quando todos estiverem aprovados.</div></div>'}
+  if(f.com==='gerando')return '<div class="gerando"><span class="roda"></span>Gerando o comentário: rentabilidade do mês no começo e a carteira em relação a setembro no restante</div>';
+  return '';
+}
+function alertaAlt(f){return f.com==='alteracoes'?'<div class="alerta err">'+ic('ex')+'<span><b>'+(f.pediu==='gestao'?'A Gestão':'O Comercial')+' pediu alterações:</b> '+esc(f.motivo)+'</span></div>':''}
+function comAcoes(f){
+  if(f.com==='espera'){var P=pendRiscos();return S.perfil==='riscos'&&P.length?'<button type="button" class="bt pri" data-lote="riscos">'+ic('ok')+'Aprovar os outros ('+P.length+')</button>':''}
+  if(f.com==='nao'||f.com==='gerando')return '';
   var ed=podeEditar(f),eu=S.perfil==='comercial'||S.perfil==='gestao'?S.perfil:null;
-  var c=f.com==='alteracoes'?'<div class="alerta err">'+ic('ex')+'<span><b>'+(f.pediu==='gestao'?'A Gestão':'O Comercial')+' pediu alterações:</b> '+esc(f.motivo)+'</span></div>':'';
-  c+=revisoresHtml(f)+blocoFolha(f,ed);
-  if(ui.editando&&ed)return painel(tit,sub,c,'<span class="perm">'+ic('info')+'Ao salvar, a nova versão volta para o Comercial e a Gestão aprovarem.</span><button type="button" class="bt" data-acao="cancelar">Cancelar</button><button type="button" class="bt pri" data-acao="salvar">Salvar nova versão'+ic('ava')+'</button>');
+  if(ui.editando&&ed)return '<span class="perm">'+ic('info')+'Ao salvar, a nova versão volta para o Comercial e a Gestão aprovarem.</span><button type="button" class="bt" data-acao="cancelar">Cancelar</button><button type="button" class="bt pri" data-acao="salvar">Salvar nova versão</button>';
   var b=[],info;
   if(f.com==='alteracoes'&&ed)b.push('<label class="bt">'+ic('sub')+'Importar .md<input type="file" accept=".md,.txt,text/markdown" id="importar" hidden></label>','<button type="button" class="bt" data-acao="regerar">'+ic('ia')+'Pedir nova versão à IA</button>');
-  if(ed)b.push('<button type="button" class="bt" data-acao="editar">'+ic('lapis')+'Editar na folha</button>');
-  if(f.com==='revisao'&&eu&&f.rev[eu]!=='aprovado')b.push('<button type="button" class="bt neg" data-acao="alterar">Solicitar alterações</button>','<button type="button" class="bt pri" data-acao="aprovar-com">'+ic('ok')+'Aprovar comentário</button>');
-  if(f.mat!=='nao')info='Comentário fechado: os materiais saíram com a v'+ultima(f).v+'.';
-  else if(f.com==='aprovado')info='Aprovado pelo Comercial e pela Gestão. Está com a Comunicação para gerar os materiais.'+(ed?' Se editar, volta para aprovação.':'');
+  if(ed)b.push('<button type="button" class="bt" data-acao="editar">'+ic('lapis')+'Editar</button>');
+  if(f.com==='revisao'&&eu&&f.rev[eu]!=='aprovado')b.push('<button type="button" class="bt neg" data-acao="alterar">Pedir alterações</button>','<button type="button" class="bt pri" data-acao="aprovar-com">'+ic('ok')+'Aprovar</button>');
+  if(f.mat!=='nao')info='Fechado: os materiais saíram com a v'+ultima(f).v+'.';
+  else if(f.com==='aprovado')info='Aprovado. Está com a Comunicação para gerar os materiais.'+(ed?' Se editar, volta para aprovação.':'');
   else if(f.com==='alteracoes')info='Comercial, Gestão ou Comunicação ajustam o texto.';
   else if(eu&&f.rev[eu]==='aprovado')info='Você já aprovou. Falta '+(eu==='comercial'?'a Gestão':'o Comercial')+'.';
-  else if(S.perfil==='comunicacao')info='Quem aprova é o Comercial e a Gestão. Você pode editar o texto.';
-  else if(!ed&&!eu)info='Você acompanha. Quem mexe no comentário é Comercial, Gestão e Comunicação.';
-  return painel(tit,sub,c,(info?'<span class="perm">'+ic(b.length?'info':'cad')+info+'</span>':'')+b.join(''));
+  else if(S.perfil==='comunicacao')info='Quem aprova é o Comercial e a Gestão. Você pode editar.';
+  else if(!ed&&!eu)info='Você acompanha. Quem mexe é Comercial, Gestão e Comunicação.';
+  return (info?'<span class="perm">'+ic(b.length?'info':'cad')+info+'</span>':'')+b.join('');
+}
+function painelCom(f){
+  var tit='Comentário do mês',sub='A IA escreve com os dados aprovados. Comercial, Gestão e Comunicação editam; Comercial e Gestão aprovam.';
+  var x=comEspera(f);if(x)return painel(tit,sub,x,comAcoes(f));
+  return painel(tit,sub,alertaAlt(f)+revisoresHtml(f)+blocoFolha(f,podeEditar(f)),comAcoes(f));
+}
+/* tela Comentários: lista de fundos à esquerda, o comentário como documento à direita */
+function comDoc(f){
+  var eu=S.perfil==='comercial'||S.perfil==='gestao'?S.perfil:null;
+  var revs=[['comercial','Comercial'],['gestao','Gestão']].map(function(r){var st=f.rev[r[0]],q=f.quando[r[0]];
+    var c=st==='aprovado'?'ok':st==='alteracoes'?'err':'';
+    return '<span class="cm-rev '+c+'" title="'+(st==='aprovado'&&q?esc(q[0])+', '+q[1]:st==='alteracoes'?'Pediu alterações':'Ainda não aprovou')+'">'+ic(c==='ok'?'ok':c==='err'?'ex':'rel')+r[1]+(eu===r[0]?' (você)':'')+'</span>'}).join('');
+  var h='<header class="cm-cab"><div class="cm-tit"><div><h2>'+esc(f.nome)+'</h2><small>'+AREA[f.area]+' · Outubro de 2026</small></div></div><div class="cm-revs">'+revs+'</div></header>';
+  var x=comEspera(f),ac=comAcoes(f);
+  if(x)return h+'<div class="cm-corpo">'+x+'</div>'+(ac?'<div class="cm-pe">'+ac+'</div>':'');
+  var sv=selVersao(f),atual=sv[1],ant=sv[2],ed=ui.editando&&podeEditar(f);
+  var modo=ed?'editar':ui.modo==='comparar'?'comparar':'ver';
+  var barra=ed?'<p class="perm">'+ic('lapis')+'Editando. Clique no texto e escreva.</p>'
+    :'<div class="cm-vers" role="group" aria-label="Versões">'+f.versoes.map(function(v){return '<button type="button" class="cm-ver'+(v.v===atual.v?' on':'')+'" data-ver="'+v.v+'" aria-pressed="'+(v.v===atual.v)+'" title="'+esc(v.tipo)+'">v'+v.v+'</button>'}).join('')+'<span class="cm-vinfo">'+esc(atual.tipo)+' · '+esc(atual.autor)+', '+atual.quando+'</span></div>'+(f.versoes.length>1?modoHtml():'');
+  var nota=modo==='comparar'&&ant?'<p class="perm cm-nota">'+ic('info')+'v'+atual.v+' comparada com v'+ant.v+'. Em verde o que entrou, em vermelho o que saiu.</p>':'';
+  return h+'<div class="cm-corpo">'+alertaAlt(f)+'<div class="cm-barra">'+barra+'</div>'+folhaHtml(f,atual.texto,modo,ant?ant.texto:'')+nota+'</div>'+(ac?'<div class="cm-pe">'+ac+'</div>':'');
+}
+function cmItem(f){
+  var t=comSit(f),v=f.versoes.length?ultima(f).v:0,on=ui.aberto===f.id;
+  return '<button type="button" class="cm-item'+(on?' on':'')+'" data-coment="'+f.id+'"'+(on?' aria-current="true"':'')+'><span class="cm-nome">'+esc(curto(f))+'</span>'+(v?'<span class="cm-v">v'+v+'</span>':'<span></span>')+'<span class="cm-sit '+t[1]+'"><i></i>'+esc(t[0])+'</span></button>';
 }
 function painelMateriais(f){
   var c;
@@ -1152,7 +1235,7 @@ document.addEventListener('click',function(e){
   if(d.abrir){ui.fundo=null;ui.de=rota.tela==='f'?ui.de:rota.tela;ui.abaIr=d.abaIr||null;ir('f--'+d.abrir);window.scrollTo(0,0);return}
   if(d.modo){ui.modo=d.modo;render();return}
   if(d.ver){ui.ver={f:fAtual().id,v:+d.ver};render();return}
-  if(d.coment){var ab=ui.aberto===d.coment?null:d.coment;ui.aberto=ab;ui.ver=null;ui.editando=false;ui.modo='ver';render();if(ab){var l=document.getElementById('lin-'+ab);if(l)l.scrollIntoView({block:'start',behavior:'smooth'})}return}
+  if(d.coment){var ab=d.coment;if(ab===ui.aberto&&rota.tela==='comentarios')return;ui.aberto=ab;ui.ver=null;ui.editando=false;ui.modo='ver';render();if(innerWidth<=760){var dc=document.getElementById('cm-doc');if(dc)dc.scrollIntoView({block:'start',behavior:'smooth'})}return;if(ab){var l=document.getElementById('lin-'+ab);if(l)l.scrollIntoView({block:'start',behavior:'smooth'})}return}
   if(d.peca){var pp=String(d.peca).split(':');if(pp.length>1)abrirVisor(+pp[1],pp[0]);else abrirVisor(+pp[0],rota.id);return}
   if(d.aba){ui.aba=d.aba;ui.editando=false;render();return}
   if(d.mes){ui.mes=d.mes;render();return}
