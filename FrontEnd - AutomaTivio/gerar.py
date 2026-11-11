@@ -5,7 +5,7 @@
 - portal(...): a mesma página para a Central (tivio-central.pages.dev); o montar.py
   da Central chama esta função com as fontes embutidas e o link de volta da Central.
 
-Uso: python gerar.py   (antes, se as peças mudaram: python gerar_pecas.py)
+Uso: python gerar.py   (antes, se as peças mudaram: python gerar_pecas.py; se houve rodada nova: python gerar_dados.py)
 """
 import json
 import pathlib
@@ -22,8 +22,10 @@ def portal(faces, casa, logo=None, local=False):
     pecas = (AQUI / "pecas.json").read_text(encoding="utf-8") if (AQUI / "pecas.json").exists() else "{}"
     central = (AQUI / "central.json").read_text(encoding="utf-8") if (AQUI / "central.json").exists() else "[]"
     logos = (AQUI / "logos.json").read_text(encoding="utf-8") if (AQUI / "logos.json").exists() else "{}"
+    dados = (AQUI / "dados.json").read_text(encoding="utf-8") if (AQUI / "dados.json").exists() else "{}"
     return (s.replace("{{FACES}}", faces).replace("{{CASA}}", casa).replace("{{LOGO}}", logo)
              .replace("/*PECAS*/{}", pecas.replace("</", "<\\/")).replace("/*LOGOS*/{}", logos).replace("/*CENTRAL*/[]", central.replace("</", "<\\/"))
+             .replace("/*DADOS*/{}", dados.replace("</", "<\\/"))
              .replace("/*LOCAL*/false", "true" if local else "false"))
 
 

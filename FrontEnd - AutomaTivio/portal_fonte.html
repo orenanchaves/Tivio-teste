@@ -671,6 +671,36 @@ textarea.mot{width:100%;min-height:90px;background:var(--input-bg);border:1px so
 .mt-cab small{font-size:12.5px}
 .mt-cab-a{gap:6px}
 
+/* Dados completos do fundo */
+.dd-corpo{min-width:0}
+.dd-corpo>*{min-width:0;max-width:100%}
+.dd-meta{display:flex;align-items:center;gap:8px;font-size:12.5px;color:var(--text-muted);margin-bottom:14px}
+.dd-meta svg.i{width:15px;height:15px;flex:none}
+.dd-kpis{display:grid;grid-template-columns:repeat(auto-fill,minmax(130px,1fr));gap:10px;margin-bottom:16px}
+.dd-kpi{border:1px solid var(--line);border-radius:var(--r-md);padding:12px 14px;min-width:0}
+.dd-kpi span{display:block;font-size:12px;color:var(--text-muted)}
+.dd-kpi b{display:block;font-size:18px;font-weight:600;margin-top:2px;font-variant-numeric:tabular-nums;white-space:nowrap}
+.dd-kpi small{display:block;font-size:12px;color:var(--text-muted)}
+.dd-alertas{display:grid;gap:8px;margin-bottom:8px}
+.dd-sec{margin-top:24px}
+.dd-sec h3{font-size:15px;font-weight:600;margin-bottom:10px}
+.dd-rol{overflow-x:auto}
+.dd-rent{min-width:560px}
+.dd-rent tr.fundo td{font-weight:600}
+.dd-rent tr.desde td{color:var(--text-muted);font-size:12.5px}
+.dd-cart{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:18px 24px}
+.dd-lista h4{font-size:12.5px;font-weight:600;color:var(--text-muted);margin-bottom:6px}
+.dd-li{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:2px 10px;font-size:13px;padding:5px 0}
+.dd-li span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.dd-li b{font-weight:600;font-variant-numeric:tabular-nums}
+.dd-li i{grid-column:1/-1;display:block;height:4px;border-radius:2px;background:var(--tv-azul);opacity:.7}
+.dd-mais{margin-top:18px;border-top:1px solid var(--line);padding-top:12px}
+.dd-mais summary{cursor:pointer;font-size:14px;font-weight:600;padding:4px 0}
+.dd-mais[open] summary{margin-bottom:10px}
+.dd-cad{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:10px 20px}
+.dd-cad span{display:block;font-size:12px;color:var(--text-muted)}
+.dd-cad b{font-weight:600;font-size:13.5px;overflow-wrap:anywhere}
+
 /* histórico e auditoria */
 .hist{margin-top:20px}
 .hist summary{cursor:pointer;color:var(--text-muted);font-size:14px;padding:8px 0;list-style:none;display:inline-flex;gap:6px;align-items:center}
@@ -822,6 +852,7 @@ var CENTRAL=/*CENTRAL*/[];
 /* no portal local os arquivos e as páginas em código vêm da pasta saida do AutomaTivio */
 var LOCAL=/*LOCAL*/false;
 var LOGOS=/*LOGOS*/{};
+var DADOS=/*DADOS*/{};
 /* logo oficial do fundo: branco no escuro, preto no claro; sem logo, o nome escrito */
 function logoFundo(f,cls,fixo){var l=LOGOS[f.id];if(!l)return '';
   if(l.texto)return '<span class="lg lg-txt '+cls+(fixo?' fixo':'')+'" role="img" aria-label="'+esc(f.nome)+'"><span>TIVIO</span><span>'+esc(l.texto[0])+' <b>'+esc(l.texto[1])+'</b></span></span>';
@@ -1445,7 +1476,27 @@ function alertas(f){
   return f.alertas.map(function(a){return '<div class="alerta'+(a[0]==='err'?' err':'')+'">'+ic(a[0]==='err'?'ex':'info')+'<span>'+esc(a[1])+'</span></div>'}).join('');
 }
 
+function dReal(f){return DADOS[f.id]||null}
+function ddNum(v){var n=parseFloat(String(v).replace(/\./g,'').replace(',','.').replace('−','-'));return isNaN(n)?0:n}
+function ddKpis(d){return '<div class="dd-kpis">'+d.kpis.map(function(k){return '<div class="dd-kpi"><span>'+esc(k[0])+'</span><b>'+esc(k[1])+'</b>'+(k[2]?'<small>'+esc(k[2])+'</small>':'')+'</div>'}).join('')+'</div>'}
+function ddRent(d){if(!d.rent)return '';var L=d.rent.linhas;
+  return '<section class="dd-sec"><h3>Rentabilidade</h3><div class="dd-rol"><table class="ind dd-rent"><thead><tr>'+d.rent.cab.map(function(c,i){return '<th'+(i?' class="n"':'')+'>'+(i?esc(c):'')+'</th>'}).join('')+'</tr></thead><tbody>'+
+    L.map(function(l){var desde=l[0]==='Desde';return '<tr class="'+(l[0]==='Fundo'?'fundo':desde?'desde':'')+'">'+l.map(function(c,i){return i?'<td class="n">'+esc(c)+'</td>':'<td>'+(desde?'Data de partida':esc(c))+'</td>'}).join('')+'</tr>'}).join('')+'</tbody></table></div></section>'}
+function ddCart(d){if(!d.cart||!d.cart.length)return '';
+  var C=d.cart.filter(function(c,i){return !(c[0]==='HG / HY Informativo'&&JSON.stringify(c[1])===JSON.stringify((d.cart.filter(function(x){return x[0]==='HG / HY / Caixa'})[0]||[])[1]))});
+  return '<section class="dd-sec"><h3>Carteira</h3><div class="dd-cart">'+C.map(function(c){var mx=Math.max.apply(null,c[1].map(function(x){return ddNum(x[1])}).concat([1]));
+    return '<div class="dd-lista"><h4>'+esc(c[0])+'</h4>'+c[1].map(function(x){var w=Math.max(2,Math.round(ddNum(x[1])/mx*100));return '<div class="dd-li"><span>'+esc(x[0])+'</span><b>'+esc(x[1])+'</b><i style="width:'+w+'%"></i></div>'}).join('')+'</div>'}).join('')+'</div></section>'}
+function ddMais(d){var h='';
+  if(d.cad)h+='<details class="dd-mais"><summary>Cadastro e datas</summary><div class="dd-cad">'+d.cad.map(function(x){return '<div><span>'+esc(x[0])+'</span><b>'+esc(x[1]||'-')+'</b></div>'}).join('')+'</div></details>';
+  if(d.hist)h+='<details class="dd-mais"><summary>Últimos pontos do histórico diário</summary><table class="ind"><thead><tr>'+d.hist.cab.map(function(c,i){return '<th'+(i?' class="n"':'')+'>'+esc(c)+'</th>'}).join('')+'</tr></thead><tbody>'+d.hist.linhas.map(function(l){return '<tr>'+l.map(function(c,i){return '<td'+(i?' class="n"':'')+'>'+esc(c)+'</td>'}).join('')+'</tr>'}).join('')+'</tbody></table></details>';
+  return h}
+function ddConferir(d,f){var L=(d.conferir||[]);
+  var h=L.length?L.map(function(x){var err=x[0]==='divergência'||x[0]==='faltante';return '<div class="alerta'+(err?' err':'')+'">'+ic(err?'ex':'info')+'<span><b>'+esc(x[0].charAt(0).toUpperCase()+x[0].slice(1))+'</b> · '+(/^[—–-]?$/.test(String(x[1]).trim())?'':esc(x[1])+': ')+esc(x[2])+'</span></div>'}).join(''):'<div class="alerta ok">'+ic('ok')+'<span>Nada a conferir nesta rodada.</span></div>';
+  return h+(f.motivo?'<div class="cartao registro"><div><span>Motivo</span><span>'+esc(f.motivo)+'</span></div></div>':'')}
 function dadosCorpo(f){
+  var d=dReal(f),M=DADOS._meta||{};
+  if(d&&f.dados==='ok')return '<div class="dd-meta">'+ic('info')+'<span>Dados da rodada de '+esc(M.gerado||'')+' · data base '+esc(M.base||'')+' · '+esc(M.fonte||'')+'</span></div>'+
+    ddKpis(d)+'<div class="dd-alertas">'+ddConferir(d,f)+'</div>'+ddRent(d)+ddCart(d)+ddMais(d);
   var c='<div class="fichas"><div class="ficha"><span>Última atualização</span><b>'+f.atual+'</b></div><div class="ficha"><span>Origem dos dados</span><b>'+esc(f.origem)+'</b></div><div class="ficha"><span>Carteira utilizada</span><b>'+esc(f.carteira)+'</b></div></div>';
   if(f.dados!=='ok')return c+'<div class="trava">'+ic('rel')+'<div><b>Aguardando a carteira do mês</b>Assim que a planilha chegar, os dados aparecem aqui para Riscos conferir.</div></div>';
   return c+'<div class="duas"><div>'+tabInd(f)+'</div><div class="pilha">'+alertas(f)+(f.motivo?'<div class="cartao registro"><div><span>Motivo</span><span>'+esc(f.motivo)+'</span></div></div>':'')+'</div></div>';
@@ -1462,15 +1513,16 @@ function painelRiscos(f){
 }
 function dadosDoc(f){
   var ac=dadosAcoes(f);
-  return '<header class="cm-cab"><div class="cm-tit"><div><h2>'+esc(f.nome)+'</h2><small>'+AREA[f.area]+' · Data base '+f.dataBase+'</small></div></div>'+pill(dadosSit(f))+'</header>'+
+  return '<header class="cm-cab"><div class="cm-tit"><div><h2>'+esc(f.nome)+'</h2><small>'+AREA[f.area]+' · Data base '+(dReal(f)&&DADOS._meta?DADOS._meta.base:f.dataBase)+'</small></div></div>'+pill(dadosSit(f))+'</header>'+
     '<div class="cm-corpo dd-corpo">'+dadosCorpo(f)+'</div>'+(ac?'<div class="cm-pe">'+ac+'</div>':'');
 }
 function buscaDe(f){return (f.nome+' '+AREA[f.area]+' '+dadosSit(f)[0]).toLowerCase()}
 function tabelaDados(O){
   var riscos=S.perfil==='riscos';
-  var cab=(riscos?'<th class="c"><span class="sr">Aprovar</span></th>':'')+'<th>Fundo</th><th>Vertical</th><th>Situação</th><th class="n">Mês</th><th class="n">% CDI</th><th class="n">No ano</th><th class="n">12 meses</th><th class="n">PL</th><th class="n">Emissores</th><th class="n">Spread</th><th>Alertas</th><th>Atualizado</th>';
+  var cab=(riscos?'<th class="c"><span class="sr">Aprovar</span></th>':'')+'<th>Fundo</th><th>Vertical</th><th>Situação</th><th class="n">Mês</th><th class="n">% bench.</th><th class="n">No ano</th><th class="n">12 meses</th><th class="n">PL</th><th class="n">Carrego</th><th class="n">Duration</th><th>Alertas</th><th>Atualizado</th>';
   var L=O.map(function(f){var r=f.ind,er=f.alertas.filter(function(a){return a[0]==='err'}).length,n=f.alertas.length,sem=f.dados!=='ok',pode=podeAprovar(f)&&etapa(f)===0;
-    function v(i){return sem?'<td class="n vz">-</td>':'<td class="n">'+r[i][1]+'</td>'}
+    var dr=dReal(f);if(dr){var K={};dr.kpis.forEach(function(k){K[k[0]]=k});r=[[0,K['Mês']?K['Mês'][1]:'-'],[0,K['Mês']&&K['Mês'][2]?K['Mês'][2].split(' ')[0]:'-'],[0,K['Ano']?K['Ano'][1]:'-'],[0,K['12 meses']?K['12 meses'][1]:'-'],[0,K['PL']?K['PL'][1]:'-'],[0,K['Carrego']?K['Carrego'][1]:'-'],[0,K['Duration']?K['Duration'][1]:'-']]}
+    function v(i){return sem?'<td class="n vz">-</td>':'<td class="n">'+esc(r[i][1])+'</td>'}
     return '<tr data-busca="'+esc(buscaDe(f))+'" data-linha-dado="'+f.id+'" tabindex="0">'+
       (riscos?'<td class="c"><label class="chk" title="'+(pode?'Aprovar':f.riscos==='aprovado'?'Aprovado':'Não está para aprovar')+'"><input type="checkbox"'+(pode?' data-ok="'+f.id+'"':' disabled')+(f.riscos==='aprovado'?' checked':'')+' aria-label="Aprovar '+esc(f.nome)+'"><span class="caixa-chk">'+ic('ok')+'</span></label></td>':'')+
       '<td class="tt-f"><b>'+esc(curto(f))+'</b></td><td class="tt-m">'+AREA[f.area]+'</td><td>'+pill(dadosSit(f))+'</td>'+v(0)+v(1)+v(2)+v(3)+v(4)+v(5)+v(6)+
@@ -1889,7 +1941,10 @@ document.getElementById('zerar').onclick=function(){try{localStorage.removeItem(
 function aplicarTema(){if(S.tema)document.documentElement.setAttribute('data-theme',S.tema);else document.documentElement.removeAttribute('data-theme');if(typeof mtTemaPeca==='function')mtTemaPeca()}
 document.getElementById('tema').onclick=function(){var atual=document.documentElement.getAttribute('data-theme')||'dark';S.tema=atual==='light'?'dark':'light';aplicarTema();salvar()};
 window.addEventListener('hashchange',function(){if(document.getElementById('visor').classList.contains('on'))fecharVisor(true);var antes=rota.tela;render();if(!(antes==='materiais'&&rota.tela==='materiais'))window.scrollTo(0,0)});
-carregar();aplicarTema();render();
+carregar();
+/* alertas de cada fundo vêm do que a rodada mandou conferir */
+S.fundos.forEach(function(f){var d=dReal(f);if(d)f.alertas=(d.conferir||[]).map(function(x){return [x[0]==='aviso'?'info':'err',(/^[—–-]?$/.test(String(x[1]).trim())?'':x[1]+': ')+x[2]]})});
+aplicarTema();render();
 })();
 </script>
 </body>
