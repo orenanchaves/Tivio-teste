@@ -181,6 +181,40 @@ for fundo, (branco, preto) in LOGOS.items():
 for fundo, linhas in LOGO_TEXTO.items():
     logos[fundo] = {"texto": linhas}
 (AQUI / "logos.json").write_text(json.dumps(logos, ensure_ascii=False), encoding="utf-8")
+# a Central de Materiais inteira (os itens dela), para a tela Materiais do portal virar a Central
+import urllib.parse
+_c = (EDICAO / "central" / "tivio-central.html").read_text(encoding="utf-8")
+_seed = json.loads(re.search(r"const SEED=(\[.*?\]);\n", _c, re.S).group(1))
+_seed = [i for i in _seed if not (i["kind"] == "apresentacoes" and not i.get("link") and re.match(r"^s\d+$", i["id"]))]
+_seed = [i for i in _seed if not (i["kind"] == "emails" and not i.get("link") and i["id"] in ("s4", "s5", "s7"))]
+
+
+def _alvo(u):
+    """html da edição: abre no portal; arquivo da edição: baixa no local; https: abre fora."""
+    if not u:
+        return None
+    if re.match(r"^https?:", u):
+        return {"tipo": "ext", "url": u}
+    rel = pathlib.PurePosixPath("central", urllib.parse.unquote(u))
+    partes = []
+    for x in rel.parts:
+        if x == "..":
+            partes.pop()
+        else:
+            partes.append(x)
+    rel = "/".join(partes)
+    if not (EDICAO / rel).exists():
+        return None
+    return {"tipo": "html" if rel.endswith(".html") else "arq", "url": BASE_HTML + rel}
+
+
+central = []
+for i in _seed:
+    central.append({"kind": i["kind"], "vert": i["vert"], "t": i["title"], "d": i.get("desc", ""), "dt": i.get("date", ""),
+                    "st": i.get("status", ""), "thumb": i.get("thumb", ""), "link": _alvo(i.get("link")),
+                    "pdf": _alvo(i.get("pdf")), "code": _alvo(i.get("code"))})
+(AQUI / "central.json").write_text(json.dumps(central, ensure_ascii=False), encoding="utf-8")
+print("central", len(central))
 print("logos", len(logos))
 print("peças", sum(len(v) for v in saida.values()), "tamanho", round(total / 1e6, 2), "MB")
 if faltou:

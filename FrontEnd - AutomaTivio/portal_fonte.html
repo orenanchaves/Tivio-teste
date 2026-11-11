@@ -563,6 +563,33 @@ textarea.mot{width:100%;min-height:90px;background:var(--input-bg);border:1px so
 .visor-seta.esq{left:max(16px,env(safe-area-inset-left,0px))}
 .visor-seta.dir{right:max(16px,env(safe-area-inset-right,0px))}
 @media (max-width:760px){.visor-seta{width:42px;height:42px;margin-top:-21px}.visor-seta.esq{left:8px}.visor-seta.dir{right:8px}}
+/* Central dentro do portal: verticais, busca, placeholders */
+.mt-verts{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:16px}
+.npill{display:inline-flex;align-items:center;gap:8px;padding:8px 14px;border-radius:var(--r-full);font-size:12.5px;font-weight:600;color:var(--text-muted);background:var(--input-bg);border:1px solid var(--line-strong);cursor:pointer;white-space:nowrap;transition:.2s var(--ease)}
+.npill .vdot{width:7px;height:7px;border-radius:50%;background:var(--dot);flex-shrink:0}
+.npill:hover{color:var(--text-primary);border-color:var(--tv-verde)}
+.npill.on{color:var(--text-primary);background:var(--pill-bg);border-color:color-mix(in srgb,var(--tv-verde) 35%,transparent)}
+.mt-busca{margin-left:auto}
+/* a .item da Minha fila não vaza para os cartões da Central */
+.central .item{align-items:stretch;padding:0;gap:0;cursor:default;text-align:left;grid-template-columns:none}
+.central .item.placeholder{border-style:dashed}
+.central .item.placeholder .bd h4{color:var(--text-muted)}
+.central .item .thumb .aprov{position:absolute;top:12px;right:12px;padding:5px 11px;border-radius:var(--r-full);font-size:10px;font-weight:700;background:rgba(10,15,20,.62);backdrop-filter:blur(10px);border:1px solid rgba(255,255,255,.2);color:#F5C26B}
+.central .item .thumb .aprov.ok{color:#C1F4D4}
+.ap{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,1.6fr);gap:16px 28px;align-items:center;padding:18px 22px;margin-bottom:16px;border-radius:var(--r-lg);border:1px solid var(--line);background:var(--bg-glass)}
+.ap.tudo{border-color:color-mix(in srgb,var(--tv-verde) 45%,transparent);background:var(--ok-bg)}
+.ap-cab{display:grid;gap:4px}
+.ap-cab b{font-size:16px;display:flex;align-items:center;gap:8px}
+.ap-cab b svg.i{color:var(--ok);stroke-width:2.2}
+.ap-cab small{font-size:13px;color:var(--text-muted)}
+.ap-barras{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}
+.ap-item{display:grid;gap:6px}
+.ap-l{display:flex;justify-content:space-between;gap:8px;font-size:12.5px;color:var(--text-muted)}
+.ap-l b{color:var(--text-primary);font-variant-numeric:tabular-nums}
+.ap-barra{height:6px;border-radius:3px;background:var(--line-strong);overflow:hidden}
+.ap-barra i{display:block;height:100%;background:var(--ok);border-radius:3px;transition:width .4s var(--ease)}
+.mt-sub{grid-column:1/-1;font-size:13px;font-weight:600;color:var(--text-muted);letter-spacing:.02em;padding-top:8px;border-top:1px solid var(--line);margin-top:4px}
+
 /* histórico e auditoria */
 .hist{margin-top:20px}
 .hist summary{cursor:pointer;color:var(--text-muted);font-size:14px;padding:8px 0;list-style:none;display:inline-flex;gap:6px;align-items:center}
@@ -624,6 +651,9 @@ textarea.mot{width:100%;min-height:90px;background:var(--input-bg);border:1px so
   .linha>:nth-child(4){grid-column:2;grid-row:2}
   .linha>:nth-child(6){grid-column:3;grid-row:1/3}
   .cab-l{display:none}
+  .mt-busca{margin-left:0;flex:1 1 100%}
+  .ap{grid-template-columns:1fr}
+  .ap-barras{grid-template-columns:1fr}
   .busca{flex:1 1 100%}
   .tt-caixa{max-height:none}
   .tabs-wrap{flex-direction:column}
@@ -701,6 +731,8 @@ textarea.mot{width:100%;min-height:90px;background:var(--input-bg);border:1px so
 (function(){
 "use strict";
 var PECAS=/*PECAS*/{};
+/* os materiais da Central de Materiais (lidos da última edição pelo gerar_pecas.py) */
+var CENTRAL=/*CENTRAL*/[];
 /* no portal local os arquivos e as páginas em código vêm da pasta saida do AutomaTivio */
 var LOCAL=/*LOCAL*/false;
 var LOGOS=/*LOGOS*/{};
@@ -728,6 +760,8 @@ var I={
   mail:'<rect x="3.5" y="5.5" width="17" height="13" rx="2"/><path d="M4 7l8 6 8-6"/>',
   web:'<circle cx="12" cy="12" r="8.5"/><path d="M3.5 12h17M12 3.5c2.5 2.6 2.5 14.4 0 17M12 3.5c-2.5 2.6-2.5 14.4 0 17"/>',
   lupa:'<circle cx="11" cy="11" r="6.5"/><path d="M16 16l4.5 4.5"/>',
+  ext:'<path d="M14 4.5h5.5V10"/><path d="M19.5 4.5L11 13"/><path d="M18 14v4.5a1.5 1.5 0 0 1-1.5 1.5h-11A1.5 1.5 0 0 1 4 18.5v-11A1.5 1.5 0 0 1 5.5 6H10"/>',
+  img:'<rect x="3.5" y="4.5" width="17" height="15" rx="2"/><circle cx="9" cy="10" r="1.6"/><path d="M20.5 16l-5-5-8.5 8.5"/>',
   quadro:'<rect x="3.5" y="4" width="5" height="16" rx="1.5"/><rect x="9.5" y="4" width="5" height="11" rx="1.5"/><rect x="15.5" y="4" width="5" height="7" rx="1.5"/>',
   lista:'<path d="M9 6.5h11M9 12h11M9 17.5h11"/><path d="M4 6.5l1 1 2-2M4 12l1 1 2-2M4 17.5l1 1 2-2"/>'
 };
@@ -1022,15 +1056,94 @@ function telaComentarios(){
   var f=fundo(ui.aberto);
   return h+'<div class="cm">'+lista+'<section class="cm-doc" id="cm-doc" aria-label="Comentário">'+(f?comDoc(f):'')+'</section></div>';
 }
-/* Materiais no mesmo desenho da Central de Materiais: abas por tipo, cartões com miniatura */
-var MT_ABAS=[['gerar','Para gerar','cx'],['relatorios','Relatórios de Gestão','doc'],['posts','Posts','sub'],['emails','E-mails','mail'],['decks','Apresentações','pes'],['landings','Landing Pages','web'],['informativos','Informativos','info'],['sharepoint','SharePoint','nuv']];
-var MT_TIPO={'Relatório de Gestão':'relatorios','Post':'posts','Deck':'decks','Informativo':'informativos'};
-var MT_KIND={emails:'E-mail',landings:'Landing page',relatorios:'Relatório',posts:'Post',decks:'Apresentação',informativos:'Informativo'};
+/* Materiais = a Central de Materiais dentro do portal: os mesmos itens, abas, verticais e busca,
+   mais o que é do fechamento (Para gerar, peças geradas por fundo e SharePoint) */
+var MT_ABAS=[['gerar','Para gerar','cx'],['destaques','Destaques','sub'],['relatorios','Relatórios de Gestão','doc'],['emails','E-mails','mail'],['apresentacoes','Apresentações','pes'],['landings','Landing Pages','web'],['onepagers','One Pagers','doc'],['assets','Assets','img'],['sharepoint','SharePoint','nuv']];
+var MT_KIND={destaques:'Destaque',relatorios:'Relatório',emails:'E-mail',apresentacoes:'Apresentação',landings:'Landing',onepagers:'One Pager',assets:'Asset'};
+var MT_TIPO={'Relatório de Gestão':'relatorios','Post':'destaques','Deck':'apresentacoes','Informativo':'apresentacoes'};
+var VERT={'imob':['Imobiliário','#C8D7E0'],'credito-estruturado':['Crédito Estruturado','var(--tv-verde)'],'credito-privado':['Crédito Privado','var(--tv-azul)'],'solutions':['Investment Solutions','var(--tv-azul)'],'energia':['Energia & Infraestrutura','#637881'],'agro':['Agro','#52B97A'],'previdencia':['Previdência','#92D3AB'],'central':['Central','#ABC6CD'],'institucional':['Institucional','#ABC6CD']};
+var VERT_FILTRO=[['todos','Todas'],['imob','Imobiliário'],['credito','Crédito'],['solutions','Investment Solutions'],['energia','Energia'],['agro','Agro'],['previdencia','Previdência'],['central','Central']];
+var AREA_VERT={credito_privado:'credito-privado',credito_estruturado:'credito-estruturado',investment_solutions:'solutions',previdencia:'previdencia'};
+function mtCor(v){return (VERT[v]||VERT.central)[1]}
+function vertOk(v){var f=ui.vf||'todos';return f==='todos'||v===f||(f==='credito'&&v.indexOf('credito')===0)}
+function buscaOk(txt){var q=(ui.mq||'').trim().toLowerCase();return !q||txt.toLowerCase().indexOf(q)>=0}
 function tam(b){return b>1048576?(b/1048576).toFixed(1).replace('.',',')+' MB':Math.max(1,Math.round(b/1024))+' KB'}
 function baixarHtml(pc){
   return (pc.arqs||[]).map(function(a){
     return LOCAL?'<a class="btn btn-glass btn-xs" href="'+encodeURI(a[1])+'" download title="Baixar '+a[0]+' ('+tam(a[2])+')">'+ic('baixar')+a[0]+'</a>'
                 :'<button type="button" class="btn btn-glass btn-xs" data-sem-local="1" title="Baixar '+a[0]+'">'+ic('baixar')+a[0]+'</button>'}).join('');
+}
+/* botão de um destino da Central: html abre no portal (com setas), arquivo baixa no local, https abre fora */
+function alvoBtn(a,rot,tit,prim){
+  if(!a)return '';
+  if(a.tipo==='html')return '<button type="button" class="btn '+(prim?'btn-primary':'btn-glass')+' btn-xs" data-vi="'+regItem({tipo:'html',url:a.url,tit:tit,nome:''})+'">'+ic('cod')+rot+'</button>';
+  if(a.tipo==='ext')return '<a class="btn btn-glass btn-xs" href="'+esc(a.url)+'" target="_blank" rel="noopener">'+rot+ic('ext')+'</a>';
+  return LOCAL?'<a class="btn btn-glass btn-xs" href="'+encodeURI(a.url)+'" download>'+ic('baixar')+rot+'</a>':'<button type="button" class="btn btn-glass btn-xs" data-sem-local="1">'+ic('baixar')+rot+'</button>';
+}
+function acoesCentral(it){
+  if(it.kind==='apresentacoes')return (alvoBtn(it.link,'PPT',it.t)||'<span class="btn btn-glass btn-xs mt-off">PPT</span>')+(alvoBtn(it.pdf,'PDF',it.t)||'<span class="btn btn-glass btn-xs mt-off">PDF</span>');
+  if(it.kind==='landings')return (alvoBtn(it.link,'Ver no ar',it.t,true)||'<span class="btn btn-glass btn-xs mt-off">Sem link</span>')+alvoBtn(it.code,'Código',it.t);
+  return alvoBtn(it.link,'Abrir',it.t,true)||'<span class="btn btn-glass btn-xs mt-off">'+(it.st==='producao'?'Em produção':'Sem link')+'</span>';
+}
+function cartaoCentral(it){
+  var sem=!it.link;
+  return '<article class="item'+(sem?' placeholder':'')+'" style="--dot:'+mtCor(it.vert)+'"><div class="thumb">'+(it.thumb?'<img src="'+esc(it.thumb)+'" alt="" loading="lazy" referrerpolicy="no-referrer">':'<svg class="gm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4">'+I[{destaques:'sub',relatorios:'doc',emails:'mail',apresentacoes:'pes',landings:'web',onepagers:'doc',assets:'img'}[it.kind]||'doc']+'</svg>')+
+    '<span class="kind">'+MT_KIND[it.kind]+'</span>'+((ui.mes||MESES[0][0])===MESES[0][0]&&(it.kind==='destaques'||it.kind==='relatorios')&&it.link?chipAprov(it.vert):'')+(sem&&it.st==='producao'?'<span class="soon">Em produção</span>':it.link&&it.link.tipo==='html'?'<span class="soon">Em código</span>':'')+'</div>'+
+    '<div class="bd"><span class="vt"><span class="vdot"></span>'+esc((VERT[it.vert]||VERT.central)[0])+'</span><h4>'+esc(it.t)+'</h4><p>'+esc(it.d)+'</p>'+
+    '<div class="ft"><span class="dt">'+esc(it.dt)+'</span><span class="acts">'+acoesCentral(it)+'</span></div></div></article>';
+}
+/* mês atual: quanto já está aprovado, para ver de relance se dá para fechar */
+function aprovVert(v){var L=S.fundos.filter(function(f){return AREA_VERT[f.area]===v});if(!L.length)return null;var ok=L.filter(function(f){return f.com==='aprovado'}).length;return [ok,L.length]}
+function chipAprov(v){var a=aprovVert(v);if(!a)return '';return '<span class="aprov '+(a[0]===a[1]?'ok':'')+'">'+(a[0]===a[1]?'Tudo aprovado':a[0]+' de '+a[1]+' aprovados')+'</span>'}
+function painelAprov(){
+  var F=S.fundos,n=F.length,d=F.filter(function(f){return f.riscos==='aprovado'}).length,c=F.filter(function(f){return f.com==='aprovado'}).length,m=F.filter(function(f){return f.mat==='gerado'}).length;
+  var falta=F.filter(function(f){return f.com!=='aprovado'});
+  function bar(rot,x){return '<div class="ap-item"><div class="ap-l"><span>'+rot+'</span><b>'+x+' de '+n+'</b></div><span class="ap-barra"><i style="width:'+Math.round(x/n*100)+'%"></i></span></div>'}
+  return '<section class="ap'+(c===n?' tudo':'')+'"><div class="ap-cab"><b>'+(c===n?ic('ok')+'Outubro está todo aprovado':'Outubro: '+c+' de '+n+' fundos com tudo aprovado')+'</b>'+(falta.length?'<small>Falta aprovar: '+esc(falta.map(curto).join(', ').replace(/, ([^,]*)$/,' e $1'))+'.</small>':'<small>Dados, comentários e materiais prontos.</small>')+'</div>'+
+    '<div class="ap-barras">'+bar('Dados aprovados',d)+bar('Comentários aprovados',c)+bar('Materiais gerados',m)+'</div></section>';
+}
+function telaMateriais(){
+  MT_LISTA=[];
+  var F=S.fundos,mes=ui.mes||MESES[0][0],atual=mes===MESES[0][0],nomeMes=MESES.filter(function(m){return m[0]===mes})[0][1];
+  var fila=F.filter(function(f){return f.com==='aprovado'&&f.mat!=='gerado'&&vertOk(AREA_VERT[f.area])&&buscaOk(f.nome)});
+  /* itens da Central + peças geradas por fundo no mês escolhido */
+  var C=CENTRAL.filter(function(it){return vertOk(it.vert)&&buscaOk(it.t+' '+it.d+' '+(VERT[it.vert]||[''])[0])});
+  var feitos=(atual?F.filter(function(f){return f.mat==='gerado'}):F.filter(function(f){return (PECAS[f.id]||[]).length})).filter(function(f){return vertOk(AREA_VERT[f.area])});
+  var pecas={};feitos.forEach(function(f){(PECAS[f.id]||[]).forEach(function(pc,i){var k=MT_TIPO[pc.t];if(k&&buscaOk(pc.t+' '+f.nome+' '+AREA[f.area]))(pecas[k]=pecas[k]||[]).push([f,pc,i])})});
+  var cont={gerar:atual?fila.length:0,sharepoint:3};
+  MT_ABAS.forEach(function(a){if(a[0]!=='gerar'&&a[0]!=='sharepoint')cont[a[0]]=C.filter(function(it){return it.kind===a[0]}).length+((pecas[a[0]]||[]).length)});
+  var aba=ui.mt;if(!aba||(aba==='gerar'&&!atual))aba=S.perfil==='comunicacao'&&cont.gerar?'gerar':'destaques';
+  var h='<section class="mt-hero"><h1>Central de <strong>materiais recorrentes</strong></h1><p>Um só lugar para os materiais que se repetem todo mês: destaques dos fundos, relatórios de gestão, e-mails, apresentações, landing pages, construtores de one pager e assets visuais, organizados por vertical e prontos para reutilizar. A Comunicação gera os do mês aqui, com o comentário aprovado.</p>'+
+    '<div class="mt-acoes"><span class="dono">'+ic('pes')+'Quem gera: <b>Comunicação</b></span>'+(S.perfil==='comunicacao'&&atual?'<button type="button" class="btn btn-primary btn-sm" data-gerar-tudo="1">'+ic('cx')+'Gerar a edição completa</button>':'')+'</div></section>';
+  if(atual)h+=painelAprov();
+  h+='<div class="mt-verts" role="group" aria-label="Vertical">'+VERT_FILTRO.map(function(v){var on=(ui.vf||'todos')===v[0];
+      return '<button type="button" class="npill'+(on?' on':'')+'" data-vf="'+v[0]+'" aria-pressed="'+on+'" style="--dot:'+(v[0]==='todos'?'var(--text-muted)':v[0]==='credito'?'var(--tv-verde)':mtCor(v[0]))+'"><span class="vdot"></span>'+v[1]+'</button>'}).join('')+
+    '<label class="busca mt-busca">'+ic('lupa')+'<input type="search" id="busca-mat" placeholder="Buscar material..." value="'+esc(ui.mq||'')+'" aria-label="Buscar material"></label></div>';
+  h+='<div class="central"><div class="tabs-wrap"><div class="tabs" role="tablist">'+MT_ABAS.filter(function(a){return a[0]!=='gerar'||atual}).map(function(a){var on=a[0]===aba;
+      return '<button type="button" class="tab" role="tab" data-mt="'+a[0]+'" aria-selected="'+on+'">'+ic(a[2])+a[1]+'<span class="badge">'+cont[a[0]]+'</span></button>'}).join('')+'</div>'+
+    '<div class="mt-filtros"><select id="mt-mes" class="tab-reset" aria-label="Mês das peças geradas">'+MESES.map(function(m){return '<option value="'+m[0]+'"'+(m[0]===mes?' selected':'')+'>'+m[1]+'</option>'}).join('')+'</select></div></div>';
+  var itens='';
+  if(aba==='gerar'){
+    itens=fila.map(function(f){var gerando=f.mat==='gerando',pode=S.perfil==='comunicacao'&&!gerando;
+      return '<article class="item" style="--dot:'+mtCor(AREA_VERT[f.area])+'"><div class="thumb">'+(LOGOS[f.id]?'<span class="mt-logo">'+logoFundo(f,'lg-card')+'</span>':'<svg class="gm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4">'+I.cx+'</svg>')+'<span class="kind">Para gerar</span>'+(gerando?'<span class="soon">Gerando</span>':'')+'</div>'+
+        '<div class="bd"><span class="vt"><span class="vdot"></span>'+AREA[f.area]+'</span><h4>'+esc(f.nome)+'</h4><p>Comentário v'+ultima(f).v+' aprovado pelo Comercial e pela Gestão. Gera '+((PECAS[f.id]||[]).map(function(x){return x.t}).join(', ').replace(/, ([^,]*)$/,' e $1')||'o relatório')+'.</p>'+
+        '<div class="ft"><span class="dt">'+nomeMes+'</span><span class="acts">'+(pode?'<button type="button" class="btn btn-primary btn-xs" data-ok="'+f.id+'">'+ic('cx')+'Gerar materiais</button>':'<span class="btn btn-glass btn-xs mt-off">'+(gerando?'Gerando':'Com a Comunicação')+'</span>')+'</span></div></div></article>'}).join('');
+    if(!itens)itens='<p class="mt-vazio">Nada para gerar agora. Os fundos aparecem aqui quando o Comercial e a Gestão aprovam o comentário.</p>';
+  }else if(aba==='sharepoint'){
+    var g=F.filter(function(f){return f.mat==='gerado'}).length;
+    itens=[['Outubro 2026','2026-10',g?'Atualizada com '+g+' de '+F.length+' fundos':'Sem fundos gerados ainda',true],['Setembro 2026','2026-09','Publicada'],['Agosto 2026','2026-08','Publicada']].map(function(c){
+      return '<article class="item" style="--dot:var(--tv-azul)"><div class="thumb"><svg class="gm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4">'+I.nuv+'</svg><span class="kind">Central</span>'+(c[3]?'<span class="soon">Atual</span>':'')+'</div>'+
+        '<div class="bd"><span class="vt"><span class="vdot"></span>SharePoint</span><h4>Central de Materiais · '+c[0]+'</h4><p>Materiais AutomaTivio/_Historico/'+c[1]+'/Interno/Edição completa</p><div class="ft"><span class="dt">'+c[2]+'</span><span class="acts"><span class="btn btn-glass btn-xs mt-off" title="O endereço entra quando o site do SharePoint for criado">Link em breve</span></span></div></div></article>'}).join('');
+  }else{
+    itens=C.filter(function(it){return it.kind===aba}).map(cartaoCentral).join('');
+    var P=pecas[aba]||[];
+    if(P.length)itens+='<h3 class="mt-sub">Por fundo · '+nomeMes+'</h3>'+P.map(function(x){var f=x[0],pc=x[1];
+      return '<article class="item" style="--dot:'+mtCor(AREA_VERT[f.area])+'"><div class="thumb"><img src="'+pc.img+'" alt="'+esc(pc.t)+' do '+esc(f.nome)+'" loading="lazy"><span class="kind">'+esc(pc.t==='Deck'?'Apresentação':pc.t==='Post'?'Destaque':pc.t)+'</span>'+(pc.html?'<span class="soon">Em código</span>':'')+'</div>'+
+        '<div class="bd"><span class="vt"><span class="vdot"></span>'+AREA[f.area]+'</span><h4>'+esc(pc.t)+' · '+esc(f.nome)+'</h4><p>'+esc(pc.fmt)+'. '+(atual?'Gerado com o comentário v'+ultima(f).v+'.':'Edição de setembro de 2026.')+'</p>'+
+        '<div class="ft"><span class="dt">'+(atual&&f.quando.materiais?'Gerado '+f.quando.materiais[1].slice(0,5):nomeMes)+'</span><span class="acts">'+(pc.html?btnHtml(pc.html,pc.t+' · '+f.nome,f.nome):'<button type="button" class="btn btn-glass btn-xs" data-vi="'+regItem({tipo:'img',fid:f.id,i:x[2],tit:pc.t+' · '+f.nome})+'">Abrir'+ic('ava')+'</button>')+baixarHtml(pc)+'</span></div></div></article>'}).join('');
+    if(!itens)itens='<p class="mt-vazio">Nada encontrado com esse filtro.</p>';
+  }
+  return h+'<div class="grid">'+itens+'</div></div>';
 }
 var MT_LISTA=[],VK=0;
 function regItem(o){MT_LISTA.push(o);return MT_LISTA.length-1}
@@ -1084,50 +1197,6 @@ function gerarTudo(){
       m.classList.remove('on');fim();avisar('Edição completa gerada: '+A.length+' fundos. Entrou na Central de Materiais de outubro.');
     },700*P.length+500);
   };
-}
-function mtCor(a){return a==='investment_solutions'?'var(--tv-azul)':a==='previdencia'?'#92D3AB':'var(--tv-verde)'}
-function telaMateriais(){
-  MT_LISTA=[];
-  var F=S.fundos,mes=ui.mes||MESES[0][0],atual=mes===MESES[0][0],nomeMes=MESES.filter(function(m){return m[0]===mes})[0][1],area=ui.area||'';
-  var fila=F.filter(function(f){return f.com==='aprovado'&&f.mat!=='gerado'});
-  var feitos=(atual?F.filter(function(f){return f.mat==='gerado'}):F.filter(function(f){return (PECAS[f.id]||[]).length})).filter(function(f){return !area||f.area===area});
-  var pecas={};MT_ABAS.forEach(function(a){pecas[a[0]]=[]});
-  feitos.forEach(function(f){(PECAS[f.id]||[]).forEach(function(pc,i){var k=MT_TIPO[pc.t];if(k)pecas[k].push([f,pc,i])})});
-  var cont={gerar:atual?fila.filter(function(f){return !area||f.area===area}).length:0,sharepoint:3};
-  var EX=(PECAS._extras||[]);pecas.emails=EX.filter(function(x){return x.aba==='emails'});pecas.landings=EX.filter(function(x){return x.aba==='landings'});
-  ['relatorios','posts','emails','decks','landings','informativos'].forEach(function(k){cont[k]=pecas[k].length});
-  var aba=ui.mt;if(!aba||(aba==='gerar'&&!atual))aba=S.perfil==='comunicacao'&&cont.gerar?'gerar':'relatorios';
-  var h='<section class="mt-hero"><h1>Central de <strong>materiais</strong></h1><p>A Comunicação gera os materiais do mês com o comentário aprovado. Ficam aqui, organizados por tipo e vertical, com o mês atual e o histórico; no SharePoint vai o link da Central de cada mês.</p><div class="mt-acoes"><span class="dono">'+ic('pes')+'Quem gera: <b>Comunicação</b></span>'+(S.perfil==='comunicacao'&&atual?'<button type="button" class="btn btn-primary btn-sm" data-gerar-tudo="1">'+ic('cx')+'Gerar a edição completa</button>':'')+'</div></section>';
-  h+='<div class="central"><div class="tabs-wrap"><div class="tabs" role="tablist">'+MT_ABAS.filter(function(a){return a[0]!=='gerar'||atual}).map(function(a){var on=a[0]===aba;
-      return '<button type="button" class="tab" role="tab" data-mt="'+a[0]+'" aria-selected="'+on+'">'+ic(a[2])+a[1]+'<span class="badge">'+cont[a[0]]+'</span></button>'}).join('')+'</div>'+
-    '<div class="mt-filtros"><select id="mt-mes" class="tab-reset" aria-label="Mês">'+MESES.map(function(m,i){return '<option value="'+m[0]+'"'+(m[0]===mes?' selected':'')+'>'+m[1]+'</option>'}).join('')+'</select>'+
-    '<select id="f-area" class="tab-reset" aria-label="Vertical"><option value="">Todas</option>'+Object.keys(AREA).map(function(k){return '<option value="'+k+'"'+(k===area?' selected':'')+'>'+AREA[k]+'</option>'}).join('')+'</select></div></div>';
-  var itens='';
-  if(aba==='gerar'){
-    itens=fila.filter(function(f){return !area||f.area===area}).map(function(f){var gerando=f.mat==='gerando',pode=S.perfil==='comunicacao'&&!gerando;
-      return '<article class="item" style="--dot:'+mtCor(f.area)+'"><div class="thumb">'+(LOGOS[f.id]?'<span class="mt-logo">'+logoFundo(f,'lg-card')+'</span>':'<svg class="gm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4">'+I.cx+'</svg>')+'<span class="kind">Para gerar</span>'+(gerando?'<span class="soon">Gerando</span>':'')+'</div>'+
-        '<div class="bd"><span class="vt"><span class="vdot"></span>'+AREA[f.area]+'</span><h4>'+esc(f.nome)+'</h4><p>Comentário v'+ultima(f).v+' aprovado pelo Comercial e pela Gestão. Gera '+((PECAS[f.id]||[]).map(function(x){return x.t}).join(', ').replace(/, ([^,]*)$/,' e $1')||'o relatório')+'.</p>'+
-        '<div class="ft"><span class="dt">'+nomeMes+'</span><span class="acts">'+(pode?'<button type="button" class="btn btn-primary btn-xs" data-ok="'+f.id+'">'+ic('cx')+'Gerar materiais</button>':'<span class="btn btn-glass btn-xs mt-off">'+(gerando?'Gerando':'Com a Comunicação')+'</span>')+'</span></div></div></article>'}).join('');
-    if(!itens)itens='<p class="mt-vazio">Nada para gerar agora. Os fundos aparecem aqui quando o Comercial e a Gestão aprovam o comentário.</p>';
-  }else if(aba==='sharepoint'){
-    var g=F.filter(function(f){return f.mat==='gerado'}).length;
-    itens=[['Outubro 2026','2026-10',g?'Atualizada com '+g+' de '+F.length+' fundos':'Sem fundos gerados ainda',true],['Setembro 2026','2026-09','Publicada'],['Agosto 2026','2026-08','Publicada']].map(function(c){
-      return '<article class="item" style="--dot:var(--tv-azul)"><div class="thumb"><svg class="gm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4">'+I.nuv+'</svg><span class="kind">Central</span>'+(c[3]?'<span class="soon">Atual</span>':'')+'</div>'+
-        '<div class="bd"><span class="vt"><span class="vdot"></span>SharePoint</span><h4>Central de Materiais · '+c[0]+'</h4><p>Materiais AutomaTivio/_Historico/'+c[1]+'/Interno/Edição completa</p><div class="ft"><span class="dt">'+c[2]+'</span><span class="acts"><span class="btn btn-glass btn-xs mt-off" title="O endereço entra quando o site do SharePoint for criado">Link em breve</span></span></div></div></article>'}).join('');
-  }else if(aba==='emails'||aba==='landings'){
-    itens=pecas[aba].map(function(x){
-      return '<article class="item" style="--dot:'+(x.vertical==='Previdência'?'#92D3AB':x.vertical==='Investment Solutions'?'var(--tv-azul)':'var(--tv-verde)')+'"><div class="thumb"><svg class="gm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4">'+I[aba==='emails'?'mail':'web']+'</svg><span class="kind">'+MT_KIND[aba]+'</span><span class="soon">Em código</span></div>'+
-        '<div class="bd"><span class="vt"><span class="vdot"></span>'+esc(x.vertical)+'</span><h4>'+esc(x.t)+'</h4><p>Feito em código: abre a peça viva, com os dados e gráficos do mês.</p>'+
-        '<div class="ft"><span class="dt">Edição de setembro</span><span class="acts">'+btnHtml(x.html,x.t)+'</span></div></div></article>'}).join('');
-    if(!itens)itens='<p class="mt-vazio">Nada deste tipo nesta edição.</p>';
-  }else{
-    itens=pecas[aba].map(function(x){var f=x[0],pc=x[1];
-      return '<article class="item" style="--dot:'+mtCor(f.area)+'"><div class="thumb"><img src="'+pc.img+'" alt="'+esc(pc.t)+' do '+esc(f.nome)+'" loading="lazy"><span class="kind">'+MT_KIND[aba]+'</span>'+(pc.html?'<span class="soon">Em código</span>':'')+'</div>'+
-        '<div class="bd"><span class="vt"><span class="vdot"></span>'+AREA[f.area]+'</span><h4>'+esc(pc.t)+' · '+esc(f.nome)+'</h4><p>'+esc(pc.fmt)+'. '+(atual?'Gerado com o comentário v'+ultima(f).v+'.':'Edição de setembro de 2026.')+'</p>'+
-        '<div class="ft"><span class="dt">'+(atual&&f.quando.materiais?'Gerado '+f.quando.materiais[1].slice(0,5):nomeMes)+'</span><span class="acts">'+(pc.html?btnHtml(pc.html,pc.t+' · '+f.nome,f.nome):'<button type="button" class="btn btn-glass btn-xs" data-vi="'+regItem({tipo:'img',fid:f.id,i:x[2],tit:pc.t+' · '+f.nome})+'">Abrir'+ic('ava')+'</button>')+baixarHtml(pc)+'</span></div></div></article>'}).join('');
-    if(!itens)itens='<p class="mt-vazio">'+(atual?'Nenhum '+MT_KIND[aba].toLowerCase()+' gerado em outubro ainda. Aparece aqui assim que a Comunicação gerar.':'Nada deste tipo nesta edição.')+'</p>';
-  }
-  return h+'<div class="grid">'+itens+'</div></div>';
 }
 /* SharePoint: um link por mês para a Central de Materiais daquela edição */
 function centraisHtml(){
@@ -1552,7 +1621,7 @@ function render(){
   medir();
 }
 document.addEventListener('click',function(e){
-  var t=e.target.closest('[data-ddv],[data-linha-dado],[data-vi],[data-html],[data-sem-local],[data-gerar-tudo],[data-mt],[data-dado],[data-coment],[data-aba],[data-mes],[data-ok],[data-vista],[data-filtro],[data-lote],[data-abrir],[data-acao],[data-modo],[data-ver],[data-peca],[data-visor]');
+  var t=e.target.closest('[data-vf],[data-ddv],[data-linha-dado],[data-vi],[data-html],[data-sem-local],[data-gerar-tudo],[data-mt],[data-dado],[data-coment],[data-aba],[data-mes],[data-ok],[data-vista],[data-filtro],[data-lote],[data-abrir],[data-acao],[data-modo],[data-ver],[data-peca],[data-visor]');
   if(!t||t.disabled)return;
   var d=t.dataset;
   if(d.ok){e.preventDefault();aprovarRapido(d.ok);return}
@@ -1562,6 +1631,7 @@ document.addEventListener('click',function(e){
   if(d.abrir){ui.fundo=null;ui.de=rota.tela==='f'?ui.de:rota.tela;ui.abaIr=d.abaIr||null;ir('f--'+d.abrir);window.scrollTo(0,0);return}
   if(d.modo){ui.modo=d.modo;render();return}
   if(d.ver){ui.ver={f:fAtual().id,v:+d.ver};render();return}
+  if(d.vf){ui.vf=d.vf;render();return}
   if(d.ddv){ui.ddv=d.ddv;render();return}
   if(d.linhaDado){if(e.target.closest('.chk'))return;ui.dado=d.linhaDado;ui.ddv='lista';render();window.scrollTo(0,0);return}
   if(d.html){abrirHtml(d.html,d.tit||'');return}
@@ -1589,7 +1659,7 @@ document.addEventListener('change',function(e){
     r.readAsText(arq);
   }
 });
-document.addEventListener('input',function(e){if(e.target.id==='caixa')medir();if(e.target.id==='busca-dados'){ui.busca=e.target.value;aplicaBusca()}});
+document.addEventListener('input',function(e){if(e.target.id==='caixa')medir();if(e.target.id==='busca-dados'){ui.busca=e.target.value;aplicaBusca()}if(e.target.id==='busca-mat'){ui.mq=e.target.value;var pos=e.target.selectionStart;render();var b=document.getElementById('busca-mat');if(b){b.focus();try{b.setSelectionRange(pos,pos)}catch(x){}}}});
 /* cartão abre com Enter; arrastar para a coluna seguinte aprova */
 document.addEventListener('keydown',function(e){var tr=e.target.closest&&e.target.closest('tr[data-linha-dado]');if(tr&&e.target===tr&&e.key==='Enter'){ui.dado=tr.dataset.linhaDado;ui.ddv='lista';render();return}var c=e.target.closest&&e.target.closest('article.cfundo');if(c&&e.target===c&&(e.key==='Enter'||e.key===' ')){e.preventDefault();ir('f--'+c.dataset.abrir)}});
 var arrasto=null;

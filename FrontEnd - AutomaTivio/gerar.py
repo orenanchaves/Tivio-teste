@@ -20,9 +20,10 @@ def portal(faces, casa, logo=None, local=False):
         logo = (RAIZ / "AutomaTivio/assets/marca/tivio.svg").read_text(encoding="utf-8").strip()
         logo = logo.replace('class="tv-brand"', 'role="img" aria-label="Tivio Capital"', 1)
     pecas = (AQUI / "pecas.json").read_text(encoding="utf-8") if (AQUI / "pecas.json").exists() else "{}"
+    central = (AQUI / "central.json").read_text(encoding="utf-8") if (AQUI / "central.json").exists() else "[]"
     logos = (AQUI / "logos.json").read_text(encoding="utf-8") if (AQUI / "logos.json").exists() else "{}"
     return (s.replace("{{FACES}}", faces).replace("{{CASA}}", casa).replace("{{LOGO}}", logo)
-             .replace("/*PECAS*/{}", pecas.replace("</", "<\\/")).replace("/*LOGOS*/{}", logos)
+             .replace("/*PECAS*/{}", pecas.replace("</", "<\\/")).replace("/*LOGOS*/{}", logos).replace("/*CENTRAL*/[]", central.replace("</", "<\\/"))
              .replace("/*LOCAL*/false", "true" if local else "false"))
 
 
