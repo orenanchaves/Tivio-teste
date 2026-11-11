@@ -35,11 +35,11 @@ css = fontes + """:root{--bg:#0A0F14;--bg-elev:linear-gradient(135deg,rgba(255,2
 shutil.copy(S/"favicon.ico", OUT/"favicon.ico"); shutil.copy(S/"editar.js", OUT/"editar.js"); shutil.copy(S/"navegar.js", OUT/"navegar.js")
 JS = """(function(){try{var t=localStorage.getItem('tivio-tema');if(t==='light'||t==='dark')document.documentElement.setAttribute('data-theme',t)}catch(x){}
 var Q='tivio-chave',F=document.getElementById('f'),E=document.getElementById('e'),C=document.getElementById('c');function u(x){return Uint8Array.from(atob(x),function(c){return c.charCodeAt(0)})}
-async function abre(k,m){var p=await crypto.subtle.decrypt({name:'AES-GCM',iv:u(D.i)},k,u(D.c));var h=new TextDecoder().decode(p);if(m)await new Promise(function(r){setTimeout(r,Math.max(0,m-Date.now()))});if(document.readyState!=='complete')await new Promise(function(r){addEventListener('load',r)});document.open();document.write(h);document.close()}
+async function abre(k,m){var p=await crypto.subtle.decrypt({name:'AES-GCM',iv:u(TVTRAVA.i)},k,u(TVTRAVA.c));var h=new TextDecoder().decode(p);if(m)await new Promise(function(r){setTimeout(r,Math.max(0,m-Date.now()))});if(document.readyState!=='complete')await new Promise(function(r){addEventListener('load',r)});document.open();document.write(h);document.close()}
 async function chave(){var g=null;try{g=sessionStorage.getItem(Q)}catch(x){}if(!g)return null;try{return await crypto.subtle.importKey('raw',u(g),'AES-GCM',false,['decrypt'])}catch(x){return null}}
 (async function(){var k=await chave();if(k){try{await abre(k);return}catch(x){try{sessionStorage.removeItem(Q)}catch(y){}}}F.hidden=false;document.getElementById('s').focus()})();
 document.getElementById('l').addEventListener('submit',async function(e){e.preventDefault();E.hidden=true;var B=this.querySelector('button'),M=Date.now()+1500;B.disabled=true;F.hidden=true;C.hidden=false;try{var kb=await crypto.subtle.importKey('raw',new TextEncoder().encode(document.getElementById('s').value),'PBKDF2',false,['deriveKey']);
-var k=await crypto.subtle.deriveKey({name:'PBKDF2',salt:u(D.s),iterations:D.n,hash:'SHA-256'},kb,{name:'AES-GCM',length:256},true,['decrypt']);var r=new Uint8Array(await crypto.subtle.exportKey('raw',k));try{sessionStorage.setItem(Q,btoa(String.fromCharCode.apply(null,r)))}catch(x){}await abre(k,M)}catch(x){try{sessionStorage.removeItem(Q)}catch(y){}C.hidden=true;F.hidden=false;E.hidden=false;B.disabled=false;document.getElementById('s').focus()}})})();"""
+var k=await crypto.subtle.deriveKey({name:'PBKDF2',salt:u(TVTRAVA.s),iterations:TVTRAVA.n,hash:'SHA-256'},kb,{name:'AES-GCM',length:256},true,['decrypt']);var r=new Uint8Array(await crypto.subtle.exportKey('raw',k));try{sessionStorage.setItem(Q,btoa(String.fromCharCode.apply(null,r)))}catch(x){}await abre(k,M)}catch(x){try{sessionStorage.removeItem(Q)}catch(y){}C.hidden=true;F.hidden=false;E.hidden=false;B.disabled=false;document.getElementById('s').focus()}})})();"""
 TRANS = """<style>@keyframes tvIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}.wrap{animation:tvIn .32s ease-out}@media (prefers-reduced-motion:reduce){.wrap{animation:none}}</style><script src="navegar.js"></script>"""
 def casca(iv, ct):
     return f"""<!doctype html>
@@ -56,7 +56,7 @@ def casca(iv, ct):
 <body class="trv">
 <main class="ent" id="f" hidden>{logo}<h1>Comunicação &amp; Marketing</h1><p>Área restrita da Tivio Capital.</p><form id="l"><label for="s">Senha</label><input id="s" type="password" autocomplete="current-password" required><button type="submit">Entrar</button><p id="e" role="alert" hidden>Senha incorreta.</p></form></main>
 <div class="car" id="c" role="status" aria-label="Carregando" hidden><svg viewBox="118 106 213 186" aria-hidden="true"><path d="M173.91,110.53h-51.56v26.9h102.14l-2.53-3.27c-11.6-15.02-29.12-23.63-48.06-23.63Z"/><path d="M227.02,134.16l-2.53,3.27h102.14v-26.9h-51.56c-18.94,0-36.45,8.61-48.06,23.63Z"/><path d="M210.25,176.57v111.2s28.51,0,28.51,0l-.02-111.2c0-13.53-4.37-26.35-12.64-37.06l-1.61-2.08-1.61,2.08c-8.27,10.71-12.64,23.52-12.64,37.06Z"/></svg></div>
-<script>var D={{s:"{b(sal)}",i:"{b(iv)}",c:"{b(ct)}",n:{ITER}}};{JS}</script>
+<script>var TVTRAVA={{s:"{b(sal)}",i:"{b(iv)}",c:"{b(ct)}",n:{ITER}}};{JS}</script>
 </body>
 </html>
 """
