@@ -530,6 +530,39 @@ textarea.mot{width:100%;min-height:90px;background:var(--input-bg);border:1px so
 .visor-aviso p{max-width:440px;font-size:14px}
 .visor.on>.visor-img img,.visor.on>.visor-frame{animation:surge .25s var(--ease) both}
 
+/* Dados: lista ou tabela, com pesquisa */
+.dd-barra{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:16px}
+.dd-barra .modo button{display:inline-flex;align-items:center;gap:6px}
+.dd-barra .modo svg.i{width:15px;height:15px}
+.busca{display:flex;align-items:center;gap:8px;flex:0 1 360px;min-width:0;padding:0 14px;height:40px;border-radius:var(--r-full);border:1px solid var(--line-strong);background:var(--input-bg);color:var(--text-muted);transition:border-color .2s var(--ease)}
+.busca:focus-within{border-color:var(--tv-verde)}
+.busca input{flex:1;min-width:0;border:0;background:none;outline:none;font-size:14px;color:var(--text-primary)}
+.busca input::placeholder{color:var(--text-muted)}
+.tt-caixa{overflow:auto;max-height:calc(100vh - 220px);border:1px solid var(--line);border-radius:var(--r-lg);background:var(--bg-glass)}
+.tt{width:100%;border-collapse:separate;border-spacing:0;font-size:13.5px;min-width:1100px}
+.tt th{position:sticky;top:0;z-index:1;background:var(--bg-elev-1);font-size:12px;font-weight:600;color:var(--text-muted);text-align:left;padding:12px 14px;border-bottom:1px solid var(--line-strong);white-space:nowrap}
+.tt td{padding:11px 14px;border-bottom:1px solid var(--line);white-space:nowrap;vertical-align:middle}
+.tt tbody tr{cursor:pointer;transition:background .15s var(--ease)}
+.tt tbody tr:hover{background:var(--pill-bg)}
+.tt tbody tr:focus-visible{outline:none;box-shadow:inset 0 0 0 2px color-mix(in srgb,var(--tv-azul) 60%,transparent)}
+.tt tbody tr:last-child td{border-bottom:0}
+.tt .n{text-align:right;font-variant-numeric:tabular-nums}
+.tt .vz{color:var(--text-muted)}
+.tt .c{width:44px;padding-right:0}
+.tt-f b{font-weight:600}
+.tt-m{color:var(--text-muted);font-size:12.5px}
+.tt-dica{margin-top:10px}
+.entra .tt tbody tr{animation:sobe .35s var(--ease) backwards}
+
+/* setas grandes nas laterais do visualizador */
+.visor-seta{position:fixed;top:50%;z-index:3;width:52px;height:52px;margin-top:-26px;border-radius:50%;display:grid;place-items:center;cursor:pointer;color:#FFF;background:rgba(10,15,20,.72);border:1px solid rgba(255,255,255,.22);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);box-shadow:0 8px 24px rgba(0,0,0,.35);transition:background .2s var(--ease),transform .2s var(--ease),border-color .2s var(--ease)}
+.visor-seta svg.i{width:22px;height:22px;stroke-width:2}
+.visor-seta:hover{background:rgba(10,15,20,.92);border-color:var(--tv-verde);transform:scale(1.06)}
+.visor-seta:active{transform:scale(.96)}
+.visor-seta:focus-visible{outline:none;box-shadow:0 0 0 3px color-mix(in srgb,var(--tv-verde) 50%,transparent)}
+.visor-seta.esq{left:max(16px,env(safe-area-inset-left,0px))}
+.visor-seta.dir{right:max(16px,env(safe-area-inset-right,0px))}
+@media (max-width:760px){.visor-seta{width:42px;height:42px;margin-top:-21px}.visor-seta.esq{left:8px}.visor-seta.dir{right:8px}}
 /* histórico e auditoria */
 .hist{margin-top:20px}
 .hist summary{cursor:pointer;color:var(--text-muted);font-size:14px;padding:8px 0;list-style:none;display:inline-flex;gap:6px;align-items:center}
@@ -591,6 +624,8 @@ textarea.mot{width:100%;min-height:90px;background:var(--input-bg);border:1px so
   .linha>:nth-child(4){grid-column:2;grid-row:2}
   .linha>:nth-child(6){grid-column:3;grid-row:1/3}
   .cab-l{display:none}
+  .busca{flex:1 1 100%}
+  .tt-caixa{max-height:none}
   .tabs-wrap{flex-direction:column}
   .mt-filtros{padding:0 12px 12px}
   .mt-filtros .tab-reset{flex:1;min-width:0}
@@ -692,6 +727,7 @@ var I={
   cod:'<path d="M8.5 7L3.5 12l5 5"/><path d="M15.5 7l5 5-5 5"/>',
   mail:'<rect x="3.5" y="5.5" width="17" height="13" rx="2"/><path d="M4 7l8 6 8-6"/>',
   web:'<circle cx="12" cy="12" r="8.5"/><path d="M3.5 12h17M12 3.5c2.5 2.6 2.5 14.4 0 17M12 3.5c-2.5 2.6-2.5 14.4 0 17"/>',
+  lupa:'<circle cx="11" cy="11" r="6.5"/><path d="M16 16l4.5 4.5"/>',
   quadro:'<rect x="3.5" y="4" width="5" height="16" rx="1.5"/><rect x="9.5" y="4" width="5" height="11" rx="1.5"/><rect x="15.5" y="4" width="5" height="7" rx="1.5"/>',
   lista:'<path d="M9 6.5h11M9 12h11M9 17.5h11"/><path d="M4 6.5l1 1 2-2M4 12l1 1 2-2M4 17.5l1 1 2-2"/>'
 };
@@ -966,6 +1002,10 @@ function telaDados(){
          ['Sem carteira',O.filter(function(f){return f.dados!=='ok'})],
          ['Aprovados',O.filter(function(f){return f.riscos==='aprovado'})]];
   var lista='<nav class="cm-lista" aria-label="Fundos">'+G.filter(function(g){return g[1].length}).map(function(g){return '<div class="cm-grupo"><span class="cm-gt">'+g[0]+'<i>'+g[1].length+'</i></span>'+g[1].map(ddItem).join('')+'</div>'}).join('')+'</nav>';
+  var vt=ui.ddv||'lista';
+  h+='<div class="dd-barra"><div class="modo" role="group" aria-label="Visualização">'+[['lista','Lista'],['tabela','Tabela']].map(function(m){return '<button type="button" data-ddv="'+m[0]+'" class="'+(vt===m[0]?'on':'')+'" aria-pressed="'+(vt===m[0])+'">'+ic(m[0]==='lista'?'lista':'quadro')+m[1]+'</button>'}).join('')+'</div>'+
+    '<label class="busca">'+ic('lupa')+'<input type="search" id="busca-dados" placeholder="Pesquisar fundo, vertical ou situação" value="'+esc(ui.busca||'')+'" aria-label="Pesquisar fundos"></label></div>';
+  if(vt==='tabela')return h+tabelaDados(O);
   var f=fundo(ui.dado);
   return h+'<div class="cm">'+lista+'<section class="cm-doc" id="cm-doc" aria-label="Dados do fundo">'+(f?dadosDoc(f):'')+'</section></div>';
 }
@@ -997,29 +1037,29 @@ function regItem(o){MT_LISTA.push(o);return MT_LISTA.length-1}
 function btnHtml(url,tit,nome){return '<button type="button" class="btn btn-primary btn-xs" data-vi="'+regItem({tipo:'html',url:url,tit:tit,nome:nome||''})+'">'+ic('cod')+'Abrir</button>'}
 function abrirItem(k){
   var n=MT_LISTA.length;if(!n)return;VK=((k%n)+n)%n;var it=MT_LISTA[VK],v=document.getElementById('visor'),html=it.tipo==='html';
-  var u=html?encodeURI(it.url):'';
+  var u=html?encodeURI(LOCAL?it.url:it.url.split('/').pop()):'';
   var nav=(n>1?'<button type="button" class="icone-bt" data-visor="-1" aria-label="Anterior" title="Anterior (seta para a esquerda)">'+ic('vol')+'</button><button type="button" class="icone-bt" data-visor="1" aria-label="Próxima" title="Próxima (seta para a direita)">'+ic('ava')+'</button>':'')+
-    (html&&LOCAL?'<a class="icone-bt" href="'+u+'" target="_blank" rel="noopener" aria-label="Abrir em nova aba" title="Abrir em nova aba">'+ic('web')+'</a>':'')+
+    (html?'<a class="icone-bt" href="'+u+'" target="_blank" rel="noopener" aria-label="Abrir em nova aba" title="Abrir em nova aba">'+ic('web')+'</a>':'')+
     '<button type="button" class="icone-bt" data-visor="x" aria-label="Fechar">'+ic('x')+'</button>';
   var corpo;
-  if(html&&LOCAL)corpo='<iframe class="visor-frame" src="'+u+'" title="'+esc(it.tit)+'"></iframe>';
+  if(html)corpo='<iframe class="visor-frame" src="'+u+'" title="'+esc(it.tit)+'"></iframe>';
   else if(html)corpo='<div class="visor-aviso">'+ic('cod')+'<p>'+AVISO_LOCAL+'</p></div>';
   else{var pc=PECAS[it.fid][it.i];corpo='<div class="visor-img larga"><img src="'+pc.img+'" alt="'+esc(it.tit)+'"></div>'}
-  v.innerHTML='<div class="visor-cab larga"><div><b>'+esc(it.tit)+'</b><small>'+(VK+1)+' de '+n+(html?' · peça em código':'')+'</small></div><div class="visor-nav">'+nav+'</div></div>'+corpo;
+  v.innerHTML='<div class="visor-cab larga"><div><b>'+esc(it.tit)+'</b><small>'+(VK+1)+' de '+n+(html?' · peça em código':'')+'</small></div><div class="visor-nav">'+nav+'</div></div>'+corpo+(n>1?'<button type="button" class="visor-seta esq" data-visor="-1" aria-label="Anterior">'+ic('vol')+'</button><button type="button" class="visor-seta dir" data-visor="1" aria-label="Próxima">'+ic('ava')+'</button>':'');
   v.dataset.modo='mt';v.classList.toggle('html',html);v.classList.add('on');
   var fr=v.querySelector('iframe');
-  if(fr)fr.onload=function(){try{var d=fr.contentDocument;
+  /* na Central a peça vem cifrada: espera abrir (sem pedir senha de novo) para mexer nela */
+  if(fr)fr.onload=function(){var tent=0;(function pronto(){try{var d=fr.contentDocument;if(!d||!d.body||d.querySelector('meta[name="tivio-trava"]')){if(++tent<40)setTimeout(pronto,250);return}
     /* relatório por vertical: já abre na aba do fundo */
     if(it.nome)[].forEach.call(d.querySelectorAll('#fundtabs [role=tab]'),function(b){var t=b.querySelector('.ft-n');if(t&&t.textContent.trim()===it.nome)b.click()});
     /* as setas continuam funcionando com o foco dentro da peça */
-    d.addEventListener('keydown',function(e){if(e.key==='ArrowRight'||e.key==='ArrowLeft'||e.key==='Escape'){var tg=e.target;if(tg&&(tg.isContentEditable||/INPUT|TEXTAREA|SELECT/.test(tg.tagName)))return;e.preventDefault();teclaVisor(e.key)}});
-  }catch(x){}};
+    if(d.__setas)return;d.__setas=1;d.addEventListener('keydown',function(e){if(e.key==='ArrowRight'||e.key==='ArrowLeft'||e.key==='Escape'){var tg=e.target;if(tg&&(tg.isContentEditable||/INPUT|TEXTAREA|SELECT/.test(tg.tagName)))return;e.preventDefault();teclaVisor(e.key)}});
+  }catch(x){}})()};
 }
 function teclaVisor(k){if(k==='Escape')return fecharVisor();var d=k==='ArrowRight'?1:-1;if(document.getElementById('visor').dataset.modo==='mt')abrirItem(VK+d);else abrirVisor(visorI+d)}
-var AVISO_LOCAL='Aqui na Central o arquivo vem do SharePoint quando ele estiver ligado. No portal local, na pasta FrontEnd - AutomaTivio, já abre e baixa.';
+var AVISO_LOCAL='Aqui na Central o download vem do SharePoint quando ele estiver ligado. No portal local, na pasta FrontEnd - AutomaTivio, já baixa.';
 function abrirHtml(url,tit){
-  if(!LOCAL){avisar(AVISO_LOCAL);return}
-  var v=document.getElementById('visor'),u=encodeURI(url);
+  var v=document.getElementById('visor'),u=encodeURI(LOCAL?url:url.split('/').pop());
   v.innerHTML='<div class="visor-cab larga"><div><b>'+esc(tit)+'</b><small>Peça em código, aberta como está na Central de Materiais</small></div><div class="visor-nav"><a class="icone-bt" href="'+u+'" target="_blank" rel="noopener" aria-label="Abrir em nova aba" title="Abrir em nova aba">'+ic('ava')+'</a><button type="button" class="icone-bt" data-visor="x" aria-label="Fechar">'+ic('x')+'</button></div></div><iframe class="visor-frame" src="'+u+'" title="'+esc(tit)+'"></iframe>';
   v.classList.add('on','html');
 }
@@ -1165,9 +1205,28 @@ function dadosDoc(f){
   return '<header class="cm-cab"><div class="cm-tit"><div><h2>'+esc(f.nome)+'</h2><small>'+AREA[f.area]+' · Data base '+f.dataBase+'</small></div></div>'+pill(dadosSit(f))+'</header>'+
     '<div class="cm-corpo dd-corpo">'+dadosCorpo(f)+'</div>'+(ac?'<div class="cm-pe">'+ac+'</div>':'');
 }
+function buscaDe(f){return (f.nome+' '+AREA[f.area]+' '+dadosSit(f)[0]).toLowerCase()}
+function tabelaDados(O){
+  var riscos=S.perfil==='riscos';
+  var cab=(riscos?'<th class="c"><span class="sr">Aprovar</span></th>':'')+'<th>Fundo</th><th>Vertical</th><th>Situação</th><th class="n">Mês</th><th class="n">% CDI</th><th class="n">No ano</th><th class="n">12 meses</th><th class="n">PL</th><th class="n">Emissores</th><th class="n">Spread</th><th>Alertas</th><th>Atualizado</th>';
+  var L=O.map(function(f){var r=f.ind,er=f.alertas.filter(function(a){return a[0]==='err'}).length,n=f.alertas.length,sem=f.dados!=='ok',pode=podeAprovar(f)&&etapa(f)===0;
+    function v(i){return sem?'<td class="n vz">-</td>':'<td class="n">'+r[i][1]+'</td>'}
+    return '<tr data-busca="'+esc(buscaDe(f))+'" data-linha-dado="'+f.id+'" tabindex="0">'+
+      (riscos?'<td class="c"><label class="chk" title="'+(pode?'Aprovar':f.riscos==='aprovado'?'Aprovado':'Não está para aprovar')+'"><input type="checkbox"'+(pode?' data-ok="'+f.id+'"':' disabled')+(f.riscos==='aprovado'?' checked':'')+' aria-label="Aprovar '+esc(f.nome)+'"><span class="caixa-chk">'+ic('ok')+'</span></label></td>':'')+
+      '<td class="tt-f"><b>'+esc(curto(f))+'</b></td><td class="tt-m">'+AREA[f.area]+'</td><td>'+pill(dadosSit(f))+'</td>'+v(0)+v(1)+v(2)+v(3)+v(4)+v(5)+v(6)+
+      '<td>'+(er?'<span class="m err">'+ic('ex')+er+(er>1?' erros':' erro')+'</span>':n?'<span class="m">'+ic('info')+n+(n>1?' avisos':' aviso')+'</span>':'<span class="m">Sem alertas</span>')+'</td><td class="tt-m">'+esc(f.atual)+'</td></tr>'}).join('');
+  return '<div class="tt-caixa"><table class="tt"><thead><tr>'+cab+'</tr></thead><tbody>'+L+'</tbody></table><p class="mt-vazio tt-nada" hidden>Nenhum fundo encontrado.</p></div><p class="perm tt-dica">'+ic('info')+'Clique na linha para abrir o fundo e conferir os alertas.</p>';
+}
+/* filtra sem redesenhar a tela, para o cursor não sair da pesquisa */
+function aplicaBusca(){
+  var q=(ui.busca||'').trim().toLowerCase();
+  [].forEach.call(document.querySelectorAll('[data-busca]'),function(el){el.hidden=!!q&&el.dataset.busca.indexOf(q)<0});
+  [].forEach.call(document.querySelectorAll('.cm-lista .cm-grupo'),function(g){g.hidden=!g.querySelector('.cm-item:not([hidden])')});
+  var t=document.querySelector('.tt tbody'),nada=document.querySelector('.tt-nada');if(t&&nada)nada.hidden=!!t.querySelector('tr:not([hidden])');
+}
 function ddItem(f){
   var t=dadosSit(f),on=ui.dado===f.id,er=f.alertas.filter(function(a){return a[0]==='err'}).length;
-  return '<button type="button" class="cm-item'+(on?' on':'')+'" data-dado="'+f.id+'"'+(on?' aria-current="true"':'')+'><span class="cm-nome">'+esc(curto(f))+'</span>'+(er?'<span class="cm-v err">'+er+(er>1?' erros':' erro')+'</span>':'<span></span>')+'<span class="cm-sit '+t[1]+'"><i></i>'+esc(t[0])+'</span></button>';
+  return '<button type="button" class="cm-item'+(on?' on':'')+'" data-busca="'+esc(buscaDe(f))+'" data-dado="'+f.id+'"'+(on?' aria-current="true"':'')+'><span class="cm-nome">'+esc(curto(f))+'</span>'+(er?'<span class="cm-v err">'+er+(er>1?' erros':' erro')+'</span>':'<span></span>')+'<span class="cm-sit '+t[1]+'"><i></i>'+esc(t[0])+'</span></button>';
 }
 /* a folha do relatório: o comentário aparece onde vai sair, e edita ali mesmo */
 function folhaHtml(f,texto,modo,ant){
@@ -1462,7 +1521,7 @@ var visorI=0,visorF=null;
 function abrirVisor(i,fid){
   if(fid)visorF=fid;var f=fundo(visorF||rota.id),P=PECAS[f.id]||[];if(!P.length)return;visorI=(i+P.length)%P.length;var p=P[visorI];
   var v=document.getElementById('visor');
-  v.innerHTML='<div class="visor-cab"><div><b>'+esc(p.t)+'</b><small>'+esc(f.nome)+' · '+esc(p.fmt)+'</small></div><div class="visor-nav">'+(P.length>1?'<button type="button" class="icone-bt" data-visor="-1" aria-label="Peça anterior">'+ic('vol')+'</button><button type="button" class="icone-bt" data-visor="1" aria-label="Próxima peça">'+ic('ava')+'</button>':'')+'<button type="button" class="icone-bt" data-visor="x" aria-label="Fechar">'+ic('x')+'</button></div></div><div class="visor-img"><img src="'+p.img+'" alt="'+esc(p.t)+'"></div>';
+  v.innerHTML='<div class="visor-cab"><div><b>'+esc(p.t)+'</b><small>'+esc(f.nome)+' · '+esc(p.fmt)+'</small></div><div class="visor-nav">'+(P.length>1?'<button type="button" class="icone-bt" data-visor="-1" aria-label="Peça anterior">'+ic('vol')+'</button><button type="button" class="icone-bt" data-visor="1" aria-label="Próxima peça">'+ic('ava')+'</button>':'')+'<button type="button" class="icone-bt" data-visor="x" aria-label="Fechar">'+ic('x')+'</button></div></div><div class="visor-img"><img src="'+p.img+'" alt="'+esc(p.t)+'"></div>'+(P.length>1?'<button type="button" class="visor-seta esq" data-visor="-1" aria-label="Anterior">'+ic('vol')+'</button><button type="button" class="visor-seta dir" data-visor="1" aria-label="Próxima">'+ic('ava')+'</button>':'');
   v.dataset.modo='';v.classList.remove('html');v.classList.add('on');
 }
 function fecharVisor(){var v=document.getElementById('visor');if(v.classList.contains('html'))v.innerHTML='';v.classList.remove('on','html')}
@@ -1487,12 +1546,13 @@ function render(){
   else{app.classList.remove('entra')}
   if(chave===render.tela&&sel!==render.sel){var dc=document.getElementById('cm-doc');if(dc)dc.classList.add('troca')}
   render.tela=chave;render.sel=sel;
+  aplicaBusca();
   /* no celular a lista corre para o lado: mostra o fundo aberto */
   var on=document.querySelector('.cm-lista .cm-item.on');if(on&&innerWidth<=760){var l=on.closest('.cm-lista');l.scrollLeft+=on.getBoundingClientRect().left-l.getBoundingClientRect().left-8}
   medir();
 }
 document.addEventListener('click',function(e){
-  var t=e.target.closest('[data-vi],[data-html],[data-sem-local],[data-gerar-tudo],[data-mt],[data-dado],[data-coment],[data-aba],[data-mes],[data-ok],[data-vista],[data-filtro],[data-lote],[data-abrir],[data-acao],[data-modo],[data-ver],[data-peca],[data-visor]');
+  var t=e.target.closest('[data-ddv],[data-linha-dado],[data-vi],[data-html],[data-sem-local],[data-gerar-tudo],[data-mt],[data-dado],[data-coment],[data-aba],[data-mes],[data-ok],[data-vista],[data-filtro],[data-lote],[data-abrir],[data-acao],[data-modo],[data-ver],[data-peca],[data-visor]');
   if(!t||t.disabled)return;
   var d=t.dataset;
   if(d.ok){e.preventDefault();aprovarRapido(d.ok);return}
@@ -1502,6 +1562,8 @@ document.addEventListener('click',function(e){
   if(d.abrir){ui.fundo=null;ui.de=rota.tela==='f'?ui.de:rota.tela;ui.abaIr=d.abaIr||null;ir('f--'+d.abrir);window.scrollTo(0,0);return}
   if(d.modo){ui.modo=d.modo;render();return}
   if(d.ver){ui.ver={f:fAtual().id,v:+d.ver};render();return}
+  if(d.ddv){ui.ddv=d.ddv;render();return}
+  if(d.linhaDado){if(e.target.closest('.chk'))return;ui.dado=d.linhaDado;ui.ddv='lista';render();window.scrollTo(0,0);return}
   if(d.html){abrirHtml(d.html,d.tit||'');return}
   if(d.semLocal){avisar(AVISO_LOCAL);return}
   if(d.gerarTudo){gerarTudo();return}
@@ -1527,9 +1589,9 @@ document.addEventListener('change',function(e){
     r.readAsText(arq);
   }
 });
-document.addEventListener('input',function(e){if(e.target.id==='caixa')medir()});
+document.addEventListener('input',function(e){if(e.target.id==='caixa')medir();if(e.target.id==='busca-dados'){ui.busca=e.target.value;aplicaBusca()}});
 /* cartão abre com Enter; arrastar para a coluna seguinte aprova */
-document.addEventListener('keydown',function(e){var c=e.target.closest&&e.target.closest('article.cfundo');if(c&&e.target===c&&(e.key==='Enter'||e.key===' ')){e.preventDefault();ir('f--'+c.dataset.abrir)}});
+document.addEventListener('keydown',function(e){var tr=e.target.closest&&e.target.closest('tr[data-linha-dado]');if(tr&&e.target===tr&&e.key==='Enter'){ui.dado=tr.dataset.linhaDado;ui.ddv='lista';render();return}var c=e.target.closest&&e.target.closest('article.cfundo');if(c&&e.target===c&&(e.key==='Enter'||e.key===' ')){e.preventDefault();ir('f--'+c.dataset.abrir)}});
 var arrasto=null;
 function limpaArrasto(){arrasto=null;[].forEach.call(document.querySelectorAll('.alvo,.sobre,.arrastando'),function(x){x.classList.remove('alvo','sobre','arrastando')})}
 document.addEventListener('dragstart',function(e){var c=e.target.closest&&e.target.closest('[data-arrasta]');if(!c)return;arrasto=c.dataset.arrasta;
