@@ -348,6 +348,11 @@ textarea.mot{width:100%;min-height:90px;background:var(--input-bg);border:1px so
 .secao{margin:36px 0 14px}
 .lista+.bloco{margin-top:32px}
 
+/* comentário aberto na própria tela */
+.linha.aberta{background:var(--bg-glass);border-bottom:0}
+.linha-det{padding:4px 18px 22px;border-top:0}
+.linha-det .painel{background:var(--bg-base)}
+
 /* histórico e auditoria */
 .hist{margin-top:20px}
 .hist summary{cursor:pointer;color:var(--text-muted);font-size:14px;padding:8px 0;list-style:none;display:inline-flex;gap:6px;align-items:center}
@@ -409,6 +414,7 @@ textarea.mot{width:100%;min-height:90px;background:var(--input-bg);border:1px so
   .linha>:nth-child(4){grid-column:2;grid-row:2}
   .linha>:nth-child(6){grid-column:3;grid-row:1/3}
   .cab-l{display:none}
+  .linha-det{padding:2px 8px 14px}
   .cab>.vista{align-self:flex-start}
   .passagem{grid-template-columns:1fr;gap:0}
   .mao{padding:0 0 14px}
@@ -713,17 +719,21 @@ function listaHtml(F){
   return h+'</div>';
 }
 var TITULO={esteira:'Esteira',dados:'Dados',comentarios:'Comentários',materiais:'Materiais',fila:'Minha fila',auditoria:'Auditoria'};
+function fAtual(){return rota.tela==='comentarios'?fundo(ui.aberto):fundo(rota.id)}
 function telaDaEtapa(f){var e=etapa(f);return e===0?'dados':e<=2?'comentarios':'materiais'}
 function cabTela(t,sub,dono){return '<div class="cab"><div class="tit"><h1>'+t+'</h1><p class="sub">'+sub+'</p></div><span class="dono">'+ic('pes')+'Quem mexe: <b>'+dono+'</b></span></div>'}
 function resumo(L){return '<div class="resumo">'+L.filter(function(x){return x[1]}).map(function(x){return '<span><b>'+x[1]+'</b>'+x[0]+'</span>'}).join('')+'</div>'}
 /* tabela comum das telas: check de quem é dono, fundo, três colunas e abrir */
-function tabelaTela(cab,L,aba,col){
+function tabelaTela(cab,L,aba,col,det){
   return '<div class="lista" role="table"><div class="linha cab-l" role="row"><span role="columnheader"><span class="sr">Ação</span></span><span role="columnheader">Fundo</span>'+cab.map(function(c){return '<span role="columnheader">'+c+'</span>'}).join('')+'<span role="columnheader"></span></div>'+
     L.map(function(f){var pode=podeAprovar(f)&&telaDaEtapa(f)===aba,feito=jaFizMinhaParte(f),c=col(f);
       var dica=pode?rotuloOk(f):feito?'Feito':'Não está com você';
-      return '<div class="linha'+(pode?' minha':'')+'" role="row"><label class="chk" title="'+dica+'"><input type="checkbox"'+(pode?' data-ok="'+f.id+'"':' disabled')+(feito?' checked':'')+' aria-label="'+dica+': '+esc(f.nome)+'"><span class="caixa-chk">'+ic('ok')+'</span></label>'+
+      var ab=det&&ui.aberto===f.id;
+      return '<div class="linha'+(pode?' minha':'')+(ab?' aberta':'')+'" role="row" id="lin-'+f.id+'"><label class="chk" title="'+dica+'"><input type="checkbox"'+(pode?' data-ok="'+f.id+'"':' disabled')+(feito?' checked':'')+' aria-label="'+dica+': '+esc(f.nome)+'"><span class="caixa-chk">'+ic('ok')+'</span></label>'+
         '<span class="l-fundo">'+nomeOuLogo(f,'lg-card')+'<small>'+AREA[f.area]+'</small></span>'+c.map(function(x){return '<span class="l-col">'+x+'</span>'}).join('')+
-        '<button type="button" class="bt peq" data-abrir="'+f.id+'" data-aba-ir="'+({dados:'dados',comentarios:'comentario',materiais:'materiais'})[aba]+'">Abrir'+ic('ava')+'</button></div>'}).join('')+'</div>';
+        (det?'<button type="button" class="bt peq'+(ab?' pri':'')+'" data-coment="'+f.id+'" aria-expanded="'+ab+'" aria-controls="det-'+f.id+'">'+(ab?'Fechar':'Ver comentário')+'</button>'
+          :'<button type="button" class="bt peq" data-abrir="'+f.id+'" data-aba-ir="'+({dados:'dados',comentarios:'comentario',materiais:'materiais'})[aba]+'">Abrir'+ic('ava')+'</button>')+'</div>'+
+        (ab?'<div class="linha-det" id="det-'+f.id+'">'+det(f)+'</div>':'')}).join('')+'</div>';
 }
 function dadosSit(f){
   if(f.dados!=='ok')return ['Aguardando carteira','blq','rel'];
@@ -757,9 +767,11 @@ function telaComentarios(){
   var F=S.fundos;
   var h=cabTela('Comentários','A IA escreve com os dados aprovados. Comercial, Gestão e Comunicação editam na folha do relatório; Comercial e Gestão aprovam.','Comercial, Gestão e Comunicação');
   h+=resumo([['em revisão',F.filter(function(f){return f.com==='revisao'}).length],['com alterações pedidas',F.filter(function(f){return f.com==='alteracoes'}).length],['aprovados',F.filter(function(f){return f.com==='aprovado'}).length],['esperando os dados',F.filter(function(f){return f.com==='nao'||f.com==='espera'}).length]]);
-  return h+tabelaTela(['Versão','Situação','Aprovações'],ordem(F,'comentarios'),'comentarios',function(f){
+  var O=ordem(F,'comentarios');
+  if(ui.aberto===undefined){var p1=O.filter(function(f){return comigo(f)&&telaDaEtapa(f)==='comentarios'})[0]||O.filter(function(f){return f.versoes.length})[0];ui.aberto=p1?p1.id:null}
+  return h+tabelaTela(['Versão','Situação','Aprovações'],O,'comentarios',function(f){
     var v=f.versoes.length?ultima(f):null;
-    return ['<span class="m">'+(v?ic('doc')+'v'+v.v+'. '+esc(v.tipo):'Sem texto')+'</span>',pill(comSit(f)),bolas(f)]});
+    return ['<span class="m">'+(v?ic('doc')+'v'+v.v+'. '+esc(v.tipo):'Sem texto')+'</span>',pill(comSit(f)),bolas(f)]},painelCom);
 }
 function telaMateriais(){
   var F=S.fundos,G=F.filter(function(f){return f.mat!=='nao'||f.com==='aprovado'});
@@ -1052,7 +1064,7 @@ function geraMateriais(f){
   },1600);
 }
 function acao(nome){
-  var f=fundo(rota.id),sr={aguardando:'Aguardando Riscos',correcao:'Correção solicitada',reprovado:'Dados reprovados'};
+  var f=fAtual(),sr={aguardando:'Aguardando Riscos',correcao:'Correção solicitada',reprovado:'Dados reprovados'};
   if(nome==='aprovar-dados'){aprovarDados(f);var mg=geraSeTudo();fim();avisar('Dados aprovados. '+mg);return}
   if(nome==='corrigir')return pedirMotivo('Solicitar correção','O que precisa ser corrigido nos dados?',function(m){var d=sr[f.riscos];f.riscos='correcao';f.motivo=m;registrar(f,'Correção solicitada',d,'Correção solicitada','',m);fim()});
   if(nome==='reprovar')return pedirMotivo('Reprovar dados','Por que os dados foram reprovados?',function(m){var d=sr[f.riscos];f.riscos='reprovado';f.motivo=m;registrar(f,'Dados reprovados',d,'Dados reprovados','',m);fim()});
@@ -1069,8 +1081,8 @@ function acao(nome){
     f.rev={comercial:null,gestao:null};delete f.quando.comercial;delete f.quando.gestao;
     var falta='o Comercial e a Gestão';
     if(S.perfil==='comercial'||S.perfil==='gestao'){f.rev[S.perfil]='aprovado';f.quando[S.perfil]=[USUARIO[S.perfil],agora()];falta=S.perfil==='comercial'?'a Gestão':'o Comercial'}
-    registrar(f,'Comentário editado',de,'Em revisão','v'+v,(S.perfil==='comunicacao'?'':'Quem editou já conta como aprovado. ')+'Falta '+falta+'.');
-    avisar('Versão v'+v+' salva. Falta '+falta+' aprovar.');
+    registrar(f,'Comentário editado',de,'Em revisão','v'+v,(S.perfil==='comunicacao'?'':'Quem editou já conta como aprovado. ')+(falta.indexOf(' e ')>0?'Faltam ':'Falta ')+falta+'.');
+    avisar('Versão v'+v+' salva. '+(falta.indexOf(' e ')>0?'Faltam '+falta+' aprovarem.':'Falta '+falta+' aprovar.'));
   }
   if(nome==='alterar')return pedirMotivo('Solicitar alterações','O que precisa mudar no comentário?',function(m){f.com='alteracoes';f.pediu=S.perfil;f.motivo=m;f.rev[S.perfil]='alteracoes';registrar(f,'Alterações solicitadas','Em revisão','Alterações solicitadas','v'+ultima(f).v,m);fim();avisar('Pedido registrado. O comentário voltou para você ajustar ou pedir nova versão à IA.')});
   if(nome==='aprovar-com'){avisar(aprovarCom(f,S.perfil))}
@@ -1123,7 +1135,7 @@ function render(){
   medir();
 }
 document.addEventListener('click',function(e){
-  var t=e.target.closest('[data-aba],[data-mes],[data-ok],[data-vista],[data-filtro],[data-lote],[data-abrir],[data-acao],[data-modo],[data-ver],[data-peca],[data-visor]');
+  var t=e.target.closest('[data-coment],[data-aba],[data-mes],[data-ok],[data-vista],[data-filtro],[data-lote],[data-abrir],[data-acao],[data-modo],[data-ver],[data-peca],[data-visor]');
   if(!t||t.disabled)return;
   var d=t.dataset;
   if(d.ok){e.preventDefault();aprovarRapido(d.ok);return}
@@ -1132,7 +1144,8 @@ document.addEventListener('click',function(e){
   if(d.lote){confirmarLote();return}
   if(d.abrir){ui.fundo=null;ui.de=rota.tela==='f'?ui.de:rota.tela;ui.abaIr=d.abaIr||null;ir('f--'+d.abrir);window.scrollTo(0,0);return}
   if(d.modo){ui.modo=d.modo;render();return}
-  if(d.ver){ui.ver={f:rota.id,v:+d.ver};render();return}
+  if(d.ver){ui.ver={f:fAtual().id,v:+d.ver};render();return}
+  if(d.coment){var ab=ui.aberto===d.coment?null:d.coment;ui.aberto=ab;ui.ver=null;ui.editando=false;ui.modo='ver';render();if(ab){var l=document.getElementById('lin-'+ab);if(l)l.scrollIntoView({block:'start',behavior:'smooth'})}return}
   if(d.peca){var pp=String(d.peca).split(':');if(pp.length>1)abrirVisor(+pp[1],pp[0]);else abrirVisor(+pp[0],rota.id);return}
   if(d.aba){ui.aba=d.aba;ui.editando=false;render();return}
   if(d.mes){ui.mes=d.mes;render();return}
@@ -1144,7 +1157,7 @@ document.addEventListener('change',function(e){
   if(e.target.id==='f-aud'){filtroAud=e.target.value;render()}
   if(e.target.id==='f-area'){ui.area=e.target.value;render()}
   if(e.target.id==='importar'&&e.target.files[0]){
-    var f=fundo(rota.id),arq=e.target.files[0],r=new FileReader();
+    var f=fAtual(),arq=e.target.files[0],r=new FileReader();
     r.onload=function(){var v=novaVersao(f,'Importado de .md',String(r.result).trim());f.com='revisao';f.pediu=null;f.motivo='';f.rev={comercial:null,gestao:null};delete f.quando.comercial;delete f.quando.gestao;
       if(S.perfil!=='comunicacao'){f.rev[S.perfil]='aprovado';f.quando[S.perfil]=[USUARIO[S.perfil],agora()]}registrar(f,'Comentário importado','Alterações solicitadas','Em revisão','v'+v,arq.name);fim();avisar('Arquivo importado como v'+v+'. Voltou para revisão.')};
     r.readAsText(arq);
