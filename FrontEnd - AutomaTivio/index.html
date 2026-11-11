@@ -597,6 +597,12 @@ textarea.mot{width:100%;min-height:90px;background:var(--input-bg);border:1px so
 .ap-barra i{display:block;height:100%;background:var(--ok);border-radius:3px;transition:width .4s var(--ease)}
 .mt-sub{grid-column:1/-1;font-size:13px;font-weight:600;color:var(--text-muted);letter-spacing:.02em;padding-top:8px;border-top:1px solid var(--line);margin-top:4px}
 
+/* peça em código: página do portal, com o menu em cima */
+.visor.pagina{top:var(--topo-h,72px);z-index:15;background:var(--bg-base);background-image:var(--bg-radial);padding:16px 16px calc(16px + env(safe-area-inset-bottom,0px))}
+.visor.pagina.on{animation:sobe .3s var(--ease) both}
+.visor.pagina .visor-frame{box-shadow:none;border:1px solid var(--line)}
+.visor.pagina .visor-seta{top:calc(50% + var(--topo-h,72px)/2)}
+
 /* histórico e auditoria */
 .hist{margin-top:20px}
 .hist summary{cursor:pointer;color:var(--text-muted);font-size:14px;padding:8px 0;list-style:none;display:inline-flex;gap:6px;align-items:center}
@@ -1166,10 +1172,13 @@ function abrirItem(k){
   else if(html)corpo='<div class="visor-aviso">'+ic('cod')+'<p>'+AVISO_LOCAL+'</p></div>';
   else{var pc=PECAS[it.fid][it.i];corpo='<div class="visor-img larga"><img src="'+pc.img+'" alt="'+esc(it.tit)+'"></div>'}
   v.innerHTML='<div class="visor-cab larga"><div><b>'+esc(it.tit)+'</b><small>'+(VK+1)+' de '+n+(html?' · peça em código':'')+'</small></div><div class="visor-nav">'+nav+'</div></div>'+corpo+(n>1?'<button type="button" class="visor-seta esq" data-visor="-1" aria-label="Anterior">'+ic('vol')+'</button><button type="button" class="visor-seta dir" data-visor="1" aria-label="Próxima">'+ic('ava')+'</button>':'');
-  v.dataset.modo='mt';v.classList.toggle('html',html);v.classList.add('on');
+  v.dataset.modo='mt';v.classList.toggle('html',html);v.classList.toggle('pagina',html);v.classList.add('on');encaixaPagina();
+  if(html&&!(history.state&&history.state.peca))try{history.pushState({peca:1},'')}catch(x){}
   var fr=v.querySelector('iframe');
   /* na Central a peça vem cifrada: espera abrir (sem pedir senha de novo) para mexer nela */
   if(fr)fr.onload=function(){var tent=0;(function pronto(){try{var d=fr.contentDocument;if(!d||!d.body||d.querySelector('meta[name="tivio-trava"]')){if(++tent<40)setTimeout(pronto,250);return}
+    /* o botão da peça que levava para a Central volta para Materiais, aqui no portal */
+    [].forEach.call(d.querySelectorAll('a[href*="tivio-central"]'),function(a){if(a.__portal)return;a.__portal=1;a.removeAttribute('target');var t=[].filter.call(a.childNodes,function(n){return n.nodeType===3&&n.textContent.trim()});if(t.length){t[0].textContent=t[0].textContent.replace(/Central de Materiais/,'Materiais')}a.addEventListener('click',function(e){e.preventDefault();fecharVisor()})});
     /* relatório por vertical: já abre na aba do fundo */
     if(it.nome)[].forEach.call(d.querySelectorAll('#fundtabs [role=tab]'),function(b){var t=b.querySelector('.ft-n');if(t&&t.textContent.trim()===it.nome)b.click()});
     /* as setas continuam funcionando com o foco dentro da peça */
@@ -1600,7 +1609,10 @@ function abrirVisor(i,fid){
   v.innerHTML='<div class="visor-cab"><div><b>'+esc(p.t)+'</b><small>'+esc(f.nome)+' · '+esc(p.fmt)+'</small></div><div class="visor-nav">'+(P.length>1?'<button type="button" class="icone-bt" data-visor="-1" aria-label="Peça anterior">'+ic('vol')+'</button><button type="button" class="icone-bt" data-visor="1" aria-label="Próxima peça">'+ic('ava')+'</button>':'')+'<button type="button" class="icone-bt" data-visor="x" aria-label="Fechar">'+ic('x')+'</button></div></div><div class="visor-img"><img src="'+p.img+'" alt="'+esc(p.t)+'"></div>'+(P.length>1?'<button type="button" class="visor-seta esq" data-visor="-1" aria-label="Anterior">'+ic('vol')+'</button><button type="button" class="visor-seta dir" data-visor="1" aria-label="Próxima">'+ic('ava')+'</button>':'');
   v.dataset.modo='';v.classList.remove('html');v.classList.add('on');
 }
-function fecharVisor(){var v=document.getElementById('visor');if(v.classList.contains('html'))v.innerHTML='';v.classList.remove('on','html')}
+function fecharVisor(semVoltar){var v=document.getElementById('visor');if(v.classList.contains('html'))v.innerHTML='';v.classList.remove('on','html','pagina');if(!semVoltar&&history.state&&history.state.peca)try{history.back()}catch(x){}}
+function encaixaPagina(){var t=document.querySelector('.topo'),v=document.getElementById('visor');if(t&&v)v.style.setProperty('--topo-h',Math.round(t.getBoundingClientRect().bottom)+'px')}
+window.addEventListener('popstate',function(){var v=document.getElementById('visor');if(v.classList.contains('on'))fecharVisor(true)});
+window.addEventListener('resize',encaixaPagina);
 
 /* ---------- render e eventos ---------- */
 function render(){
@@ -1687,7 +1699,7 @@ document.getElementById('modal').addEventListener('click',function(e){if(e.targe
 document.getElementById('zerar').onclick=function(){try{localStorage.removeItem(CHAVE)}catch(e){}S=seed();ui={fundo:null,modo:'ver',ver:null,editando:false};filtroAud='';ir('esteira')};
 function aplicarTema(){if(S.tema)document.documentElement.setAttribute('data-theme',S.tema);else document.documentElement.removeAttribute('data-theme')}
 document.getElementById('tema').onclick=function(){var atual=document.documentElement.getAttribute('data-theme')||'dark';S.tema=atual==='light'?'dark':'light';aplicarTema();salvar()};
-window.addEventListener('hashchange',function(){render();window.scrollTo(0,0)});
+window.addEventListener('hashchange',function(){if(document.getElementById('visor').classList.contains('on'))fecharVisor(true);render();window.scrollTo(0,0)});
 carregar();aplicarTema();render();
 })();
 </script>
