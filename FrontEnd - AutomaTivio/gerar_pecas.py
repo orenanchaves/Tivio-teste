@@ -87,7 +87,7 @@ import re
 LOGOS_DIR = AQUI.parent / "AutomaTivio" / "assets" / "logos"
 LOGOS = {
     "banks": ("credito_privado/_Banks - Horizontal - Branco.svg", "credito_privado/_Banks - Horizontal - Preto.svg"),
-    "institucional": ("credito_privado/_Institucional - Vertical - Branco.svg", "credito_privado/_Institucional - Horizontal - Preto.svg"),
+    "institucional": ("credito_privado/_Institucional - Horizontal - Preto.svg", "credito_privado/_Institucional - Horizontal - Preto.svg"),
     "institucional-15": ("credito_privado/_Institucional 15 - Horizontal - Branco.svg", "credito_privado/_Institucional 15 - Horizontal - Preto.svg"),
     "institucional-30": ("credito_privado/_Institucional 30 - Horizontal - Branco.svg", "credito_privado/_Institucional 30 - Horizontal - Preto.svg"),
     "infraplus-cdi": ("credito_privado/_Infra Plus CDI - Horizontal - Branco.svg", "credito_privado/_Infra Plus CDI - Horizontal - Preto.svg"),
@@ -97,12 +97,24 @@ LOGOS = {
     "infraplus": ("credito_privado/_Infra Plus - Horizontal - Branco.svg", "credito_privado/_Infra Plus - Horizontal - Preto.svg"),
     "rf-cp": ("credito_privado/_RF CP - Horizontal - Branco.svg", "credito_privado/_RF CP - Horizontal - Preto.svg"),
     "alt-light": ("credito_estruturado/ALT_LIGHT_horizontal_branco.svg", "credito_estruturado/ALT_LIGHT_horizontal_preto.svg"),
+    "hgd30": ("../landings/hgd30_horizontal.svg", "../landings/hgd30_horizontal.svg"),
 }
+# sem versão branca horizontal na pasta: a branca sai da preta, pintando de branco o que é preto
+BRANCO_DA_PRETA = {"institucional", "hgd30"}
+# fundos sem arquivo de logo: o nome como está na capa do deck (TIVIO / PREV LOW VOL)
+LOGO_TEXTO = {"low-vol": ["PREV", "LOW VOL"], "top-credit": ["PREV", "TOP CREDIT"]}
 
 
-def svg_limpo(caminho):
+def pinta_branco(s):
+    regra = "<style>path:not([class]),polygon:not([class]),rect:not([class]),.cls-2{fill:#fff}</style>" if "#79949b" not in s else             "<style>path:not([class]),polygon:not([class]),rect:not([class]){fill:#fff}</style>"
+    return s.replace("</defs>", regra + "</defs>", 1)
+
+
+def svg_limpo(caminho, branco=False):
     """Tira a chapa de fundo do Illustrator (rect do tamanho do quadro, sem cor), que pinta de preto."""
     s = caminho.read_text(encoding="utf-8")
+    if branco:
+        s = pinta_branco(s)
     s = re.sub(r'<g id="Background">.*?</g>', "", s, flags=re.S)
     s = re.sub(r"<rect(?![^>]*\b(?:class|fill|style)=)[^>]*/>", "", s, count=1)
     # recorta o viewBox no limite do desenho (os arquivos vêm com muita margem)
@@ -124,10 +136,12 @@ def svg_limpo(caminho):
 logos = {}
 for fundo, (branco, preto) in LOGOS.items():
     if (LOGOS_DIR / branco).exists() and (LOGOS_DIR / preto).exists():
-        logos[fundo] = {"branco": svg_limpo(LOGOS_DIR / branco), "preto": svg_limpo(LOGOS_DIR / preto),
+        logos[fundo] = {"branco": svg_limpo(LOGOS_DIR / branco, fundo in BRANCO_DA_PRETA), "preto": svg_limpo(LOGOS_DIR / preto),
                         "vertical": "Vertical" in branco}
     else:
         faltou.append(branco)
+for fundo, linhas in LOGO_TEXTO.items():
+    logos[fundo] = {"texto": linhas}
 (AQUI / "logos.json").write_text(json.dumps(logos, ensure_ascii=False), encoding="utf-8")
 print("logos", len(logos))
 print("peças", sum(len(v) for v in saida.values()), "tamanho", round(total / 1e6, 2), "MB")
