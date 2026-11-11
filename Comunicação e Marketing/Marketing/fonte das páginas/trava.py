@@ -60,8 +60,13 @@ def casca(iv, ct):
 </body>
 </html>
 """
+COD = set((S/"pecas_cod.txt").read_text(encoding="utf-8").splitlines()) if (S/"pecas_cod.txt").exists() else set()
 for f in sorted(ORIG.glob("*.html")):
     h = f.read_text(encoding="utf-8")
+    if f.name in COD:  # peça da Central de Materiais: cifra como está, sem os ajustes das páginas da Central
+        iv = os.urandom(12)
+        (OUT/f.name).write_text(casca(iv, AESGCM(k).encrypt(iv, h.encode("utf-8"), None)), encoding="utf-8")
+        continue
     fr = {"orcamento.html": "orc_frag.html", "transicao.html": "transicao_frag.html"}.get(f.name)
     if fr:
         i = h.index('<div class="wrap">'); j = h.rindex('<p class="rodape">'); j = h.index("</div>", j) + 6
