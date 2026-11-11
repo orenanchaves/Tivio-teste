@@ -69,6 +69,33 @@ def imagem(caminho):
     return "data:image/jpeg;base64," + base64.b64encode(buf.getvalue()).decode(), im.size
 
 
+# arquivos para baixar: os irmãos da peça (mesmo nome, outro formato), relativos à pasta do portal
+BASE = "../AutomaTivio/saida/_Atual/"
+EDICAO = AQUI.parent / "AutomaTivio" / "saida" / "_Historico" / "2026-09" / "Interno" / "Edição completa"
+BASE_HTML = "../AutomaTivio/saida/_Historico/2026-09/Interno/Edição completa/"
+AREA_DE = {f: a for a, fs in {
+    "cp": ["banks", "institucional", "institucional-15", "institucional-30", "infraplus-cdi", "esplanada", "infraplus", "rf-cp"],
+    "ce": ["alt-light", "alt180", "alt90"], "is": ["low-vol", "top-credit"], "pv": ["hgd30"]}.items() for f in fs}
+HTML_REL = {"cp": "central/Relatório de Gestão - Crédito Privado.html", "ce": "central/Relatório de Gestão - Crédito Estruturado.html"}
+HTML_POST = {"cp": "central/tivio-post-credito-privado.html", "ce": "central/tivio-post-credito-estruturado.html",
+             "is": "central/tivio-post-investment-solutions.html"}
+
+
+def arquivos(p):
+    out = []
+    for ext in ("pdf", "pptx", "jpg", "png"):
+        q = p.with_suffix("." + ext)
+        if q.exists():
+            out.append([ext.upper(), BASE + q.relative_to(ATUAL).as_posix(), q.stat().st_size])
+    return out
+
+
+def versao_html(fundo, titulo):
+    a = AREA_DE.get(fundo)
+    rel = HTML_REL.get(a) if titulo == REL else HTML_POST.get(a) if titulo == "Post" else None
+    return BASE_HTML + rel if rel and (EDICAO / rel).exists() else None
+
+
 saida, faltou, total = {}, [], 0
 for fundo, itens in PECAS.items():
     for titulo, fmt, rel in itens:
@@ -78,8 +105,19 @@ for fundo, itens in PECAS.items():
             continue
         src, (w, h) = imagem(p)
         total += len(src)
-        saida.setdefault(fundo, []).append({"t": titulo, "fmt": fmt, "arq": p.name, "w": w, "h": h, "img": src})
+        item = {"t": titulo, "fmt": fmt, "arq": p.name, "w": w, "h": h, "img": src, "arqs": arquivos(p)}
+        if versao_html(fundo, titulo):
+            item["html"] = versao_html(fundo, titulo)
+        saida.setdefault(fundo, []).append(item)
 
+# peças que só existem em HTML (feitas em código), como na Central: e-mails e landing pages
+EXTRAS = [("emails", "E-mail · Fundos de Crédito", "Multi-área", "central/tivio-email-fundos-credito.html"),
+          ("emails", "E-mail · Nordea Studio", "Investment Solutions", "central/tivio-email-nordea-studio.html"),
+          ("emails", "E-mail · Previdência", "Previdência", "central/tivio-email-previdencia.html"),
+          ("landings", "Landing page · Tivio HGD30", "Previdência", "landing page/tivio-hgd30-saiba-mais.html"),
+          ("landings", "Landing page · Tivio HYD60", "Previdência", "landing page/tivio-hyd60-saiba-mais.html")]
+saida["_extras"] = [{"aba": a, "t": t, "vertical": v, "html": BASE_HTML + r} for a, t, v, r in EXTRAS if (EDICAO / r).exists()]
+faltou += [r for a, t, v, r in EXTRAS if not (EDICAO / r).exists()]
 (AQUI / "pecas.json").write_text(json.dumps(saida, ensure_ascii=False), encoding="utf-8")
 
 # logos oficiais dos fundos (assets/logos): versão branca para fundo escuro, preta para fundo claro

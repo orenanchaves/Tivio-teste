@@ -14,7 +14,7 @@ AQUI = pathlib.Path(__file__).parent
 RAIZ = AQUI.parent
 
 
-def portal(faces, casa, logo=None):
+def portal(faces, casa, logo=None, local=False):
     s = (AQUI / "portal_fonte.html").read_text(encoding="utf-8")
     if logo is None:
         logo = (RAIZ / "AutomaTivio/assets/marca/tivio.svg").read_text(encoding="utf-8").strip()
@@ -22,13 +22,14 @@ def portal(faces, casa, logo=None):
     pecas = (AQUI / "pecas.json").read_text(encoding="utf-8") if (AQUI / "pecas.json").exists() else "{}"
     logos = (AQUI / "logos.json").read_text(encoding="utf-8") if (AQUI / "logos.json").exists() else "{}"
     return (s.replace("{{FACES}}", faces).replace("{{CASA}}", casa).replace("{{LOGO}}", logo)
-             .replace("/*PECAS*/{}", pecas.replace("</", "<\\/")).replace("/*LOGOS*/{}", logos))
+             .replace("/*PECAS*/{}", pecas.replace("</", "<\\/")).replace("/*LOGOS*/{}", logos)
+             .replace("/*LOCAL*/false", "true" if local else "false"))
 
 
 if __name__ == "__main__":
     faces = "\n".join(
         f'@font-face{{font-family:Versos;font-weight:{p};font-display:swap;src:url(fontes/Versos-{n}.woff2) format("woff2")}}'
         for p, n in ((300, "ExtraLight"), (400, "Regular"), (600, "SemiBold"), (700, "Bold")))
-    html = '<!doctype html>\n<html lang="pt-BR">\n<head>\n<meta charset="utf-8">\n' + portal(faces, "#inicio") + "\n</html>\n"
+    html = '<!doctype html>\n<html lang="pt-BR">\n<head>\n<meta charset="utf-8">\n' + portal(faces, "#inicio", local=True) + "\n</html>\n"
     (AQUI / "index.html").write_text(html, encoding="utf-8")
     print("index.html", round(len(html) / 1e6, 2), "MB")

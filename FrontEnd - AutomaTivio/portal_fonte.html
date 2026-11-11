@@ -509,6 +509,27 @@ textarea.mot{width:100%;min-height:90px;background:var(--input-bg);border:1px so
 .entra .central .item{animation:sobe .4s var(--ease) backwards}
 .entra .central .item:nth-child(2){animation-delay:60ms}.entra .central .item:nth-child(3){animation-delay:110ms}.entra .central .item:nth-child(4){animation-delay:160ms}.entra .central .item:nth-child(n+5){animation-delay:200ms}
 
+/* baixar, abrir em código, gerar a edição */
+.mt-acoes{display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+.btn-sm{padding:8px 16px;font-size:12px;gap:8px}
+.central .item .ft{flex-wrap:wrap}
+.central .item .ft .acts{flex-wrap:wrap;justify-content:flex-end}
+.visor.html{padding:calc(12px + env(safe-area-inset-top,0px)) 12px calc(12px + env(safe-area-inset-bottom,0px))}
+.visor-cab.larga{width:min(1280px,100%)}
+.visor-frame{flex:1;width:min(1280px,100%);border:0;border-radius:12px;background:#0A0F14;box-shadow:0 18px 44px rgba(0,0,0,.42)}
+.cmd{display:block;font-family:ui-monospace,Consolas,monospace;font-size:13px;padding:10px 14px;border-radius:var(--r-md);background:var(--input-bg);border:1px solid var(--line-strong);color:var(--text-primary)}
+.passos{list-style:none;display:grid;gap:10px;margin:4px 0 6px}
+.passos li{display:flex;align-items:center;gap:10px;font-size:14px;color:var(--text-muted)}
+.passos li .roda{width:16px;height:16px}
+.passos li.ok{color:var(--text-primary)}
+.passos li.ok svg.i{color:var(--ok);stroke-width:2.2}
+
+.visor-img.larga{width:min(1280px,100%)}
+.visor-aviso{flex:1;width:min(1280px,100%);display:grid;place-content:center;justify-items:center;gap:14px;text-align:center;color:var(--text-muted);border:1px dashed var(--line-strong);border-radius:12px;padding:24px}
+.visor-aviso svg.i{width:40px;height:40px;opacity:.6}
+.visor-aviso p{max-width:440px;font-size:14px}
+.visor.on>.visor-img img,.visor.on>.visor-frame{animation:surge .25s var(--ease) both}
+
 /* histórico e auditoria */
 .hist{margin-top:20px}
 .hist summary{cursor:pointer;color:var(--text-muted);font-size:14px;padding:8px 0;list-style:none;display:inline-flex;gap:6px;align-items:center}
@@ -645,6 +666,8 @@ textarea.mot{width:100%;min-height:90px;background:var(--input-bg);border:1px so
 (function(){
 "use strict";
 var PECAS=/*PECAS*/{};
+/* no portal local os arquivos e as páginas em código vêm da pasta saida do AutomaTivio */
+var LOCAL=/*LOCAL*/false;
 var LOGOS=/*LOGOS*/{};
 /* logo oficial do fundo: branco no escuro, preto no claro; sem logo, o nome escrito */
 function logoFundo(f,cls,fixo){var l=LOGOS[f.id];if(!l)return '';
@@ -665,6 +688,10 @@ var I={
   pes:'<circle cx="9" cy="8.5" r="3"/><path d="M3.5 19c.6-3 2.8-4.6 5.5-4.6s4.9 1.6 5.5 4.6"/><circle cx="16.5" cy="9.5" r="2.4"/><path d="M15.5 14.6c2.4 0 4.3 1.4 4.9 4"/>',
   sub:'<path d="M12 15.5V4M7.5 8.5L12 4l4.5 4.5M5 15v4.5h14V15"/>',info:'<circle cx="12" cy="12" r="8.5"/><path d="M12 11v5M12 7.9v.1"/>',
   lapis:'<path d="M4 20l1-4.5L15.5 5a2.1 2.1 0 0 1 3 3L8 18.5z"/><path d="M13.5 7l3 3"/>',ponto:'<circle cx="12" cy="12" r="3"/>',
+  baixar:'<path d="M12 4v11"/><path d="M7 10.5l5 5 5-5"/><path d="M5 20h14"/>',
+  cod:'<path d="M8.5 7L3.5 12l5 5"/><path d="M15.5 7l5 5-5 5"/>',
+  mail:'<rect x="3.5" y="5.5" width="17" height="13" rx="2"/><path d="M4 7l8 6 8-6"/>',
+  web:'<circle cx="12" cy="12" r="8.5"/><path d="M3.5 12h17M12 3.5c2.5 2.6 2.5 14.4 0 17M12 3.5c-2.5 2.6-2.5 14.4 0 17"/>',
   quadro:'<rect x="3.5" y="4" width="5" height="16" rx="1.5"/><rect x="9.5" y="4" width="5" height="11" rx="1.5"/><rect x="15.5" y="4" width="5" height="7" rx="1.5"/>',
   lista:'<path d="M9 6.5h11M9 12h11M9 17.5h11"/><path d="M4 6.5l1 1 2-2M4 12l1 1 2-2M4 17.5l1 1 2-2"/>'
 };
@@ -956,20 +983,81 @@ function telaComentarios(){
   return h+'<div class="cm">'+lista+'<section class="cm-doc" id="cm-doc" aria-label="Comentário">'+(f?comDoc(f):'')+'</section></div>';
 }
 /* Materiais no mesmo desenho da Central de Materiais: abas por tipo, cartões com miniatura */
-var MT_ABAS=[['gerar','Para gerar','cx'],['relatorios','Relatórios de Gestão','doc'],['posts','Posts','sub'],['decks','Apresentações','pes'],['informativos','Informativos','info'],['sharepoint','SharePoint','nuv']];
+var MT_ABAS=[['gerar','Para gerar','cx'],['relatorios','Relatórios de Gestão','doc'],['posts','Posts','sub'],['emails','E-mails','mail'],['decks','Apresentações','pes'],['landings','Landing Pages','web'],['informativos','Informativos','info'],['sharepoint','SharePoint','nuv']];
 var MT_TIPO={'Relatório de Gestão':'relatorios','Post':'posts','Deck':'decks','Informativo':'informativos'};
-var MT_KIND={relatorios:'Relatório',posts:'Post',decks:'Apresentação',informativos:'Informativo'};
+var MT_KIND={emails:'E-mail',landings:'Landing page',relatorios:'Relatório',posts:'Post',decks:'Apresentação',informativos:'Informativo'};
+function tam(b){return b>1048576?(b/1048576).toFixed(1).replace('.',',')+' MB':Math.max(1,Math.round(b/1024))+' KB'}
+function baixarHtml(pc){
+  return (pc.arqs||[]).map(function(a){
+    return LOCAL?'<a class="btn btn-glass btn-xs" href="'+encodeURI(a[1])+'" download title="Baixar '+a[0]+' ('+tam(a[2])+')">'+ic('baixar')+a[0]+'</a>'
+                :'<button type="button" class="btn btn-glass btn-xs" data-sem-local="1" title="Baixar '+a[0]+'">'+ic('baixar')+a[0]+'</button>'}).join('');
+}
+var MT_LISTA=[],VK=0;
+function regItem(o){MT_LISTA.push(o);return MT_LISTA.length-1}
+function btnHtml(url,tit,nome){return '<button type="button" class="btn btn-primary btn-xs" data-vi="'+regItem({tipo:'html',url:url,tit:tit,nome:nome||''})+'">'+ic('cod')+'Abrir</button>'}
+function abrirItem(k){
+  var n=MT_LISTA.length;if(!n)return;VK=((k%n)+n)%n;var it=MT_LISTA[VK],v=document.getElementById('visor'),html=it.tipo==='html';
+  var u=html?encodeURI(it.url):'';
+  var nav=(n>1?'<button type="button" class="icone-bt" data-visor="-1" aria-label="Anterior" title="Anterior (seta para a esquerda)">'+ic('vol')+'</button><button type="button" class="icone-bt" data-visor="1" aria-label="Próxima" title="Próxima (seta para a direita)">'+ic('ava')+'</button>':'')+
+    (html&&LOCAL?'<a class="icone-bt" href="'+u+'" target="_blank" rel="noopener" aria-label="Abrir em nova aba" title="Abrir em nova aba">'+ic('web')+'</a>':'')+
+    '<button type="button" class="icone-bt" data-visor="x" aria-label="Fechar">'+ic('x')+'</button>';
+  var corpo;
+  if(html&&LOCAL)corpo='<iframe class="visor-frame" src="'+u+'" title="'+esc(it.tit)+'"></iframe>';
+  else if(html)corpo='<div class="visor-aviso">'+ic('cod')+'<p>'+AVISO_LOCAL+'</p></div>';
+  else{var pc=PECAS[it.fid][it.i];corpo='<div class="visor-img larga"><img src="'+pc.img+'" alt="'+esc(it.tit)+'"></div>'}
+  v.innerHTML='<div class="visor-cab larga"><div><b>'+esc(it.tit)+'</b><small>'+(VK+1)+' de '+n+(html?' · peça em código':'')+'</small></div><div class="visor-nav">'+nav+'</div></div>'+corpo;
+  v.dataset.modo='mt';v.classList.toggle('html',html);v.classList.add('on');
+  var fr=v.querySelector('iframe');
+  if(fr)fr.onload=function(){try{var d=fr.contentDocument;
+    /* relatório por vertical: já abre na aba do fundo */
+    if(it.nome)[].forEach.call(d.querySelectorAll('#fundtabs [role=tab]'),function(b){var t=b.querySelector('.ft-n');if(t&&t.textContent.trim()===it.nome)b.click()});
+    /* as setas continuam funcionando com o foco dentro da peça */
+    d.addEventListener('keydown',function(e){if(e.key==='ArrowRight'||e.key==='ArrowLeft'||e.key==='Escape'){var tg=e.target;if(tg&&(tg.isContentEditable||/INPUT|TEXTAREA|SELECT/.test(tg.tagName)))return;e.preventDefault();teclaVisor(e.key)}});
+  }catch(x){}};
+}
+function teclaVisor(k){if(k==='Escape')return fecharVisor();var d=k==='ArrowRight'?1:-1;if(document.getElementById('visor').dataset.modo==='mt')abrirItem(VK+d);else abrirVisor(visorI+d)}
+var AVISO_LOCAL='Aqui na Central o arquivo vem do SharePoint quando ele estiver ligado. No portal local, na pasta FrontEnd - AutomaTivio, já abre e baixa.';
+function abrirHtml(url,tit){
+  if(!LOCAL){avisar(AVISO_LOCAL);return}
+  var v=document.getElementById('visor'),u=encodeURI(url);
+  v.innerHTML='<div class="visor-cab larga"><div><b>'+esc(tit)+'</b><small>Peça em código, aberta como está na Central de Materiais</small></div><div class="visor-nav"><a class="icone-bt" href="'+u+'" target="_blank" rel="noopener" aria-label="Abrir em nova aba" title="Abrir em nova aba">'+ic('ava')+'</a><button type="button" class="icone-bt" data-visor="x" aria-label="Fechar">'+ic('x')+'</button></div></div><iframe class="visor-frame" src="'+u+'" title="'+esc(tit)+'"></iframe>';
+  v.classList.add('on','html');
+}
+/* gerar a edição completa: chama o AutomaTivio (python run.py) com o que já foi aprovado */
+function gerarTudo(){
+  var A=S.fundos.filter(function(f){return f.com==='aprovado'}),fora=S.fundos.filter(function(f){return f.com!=='aprovado'});
+  var m=document.getElementById('modal'),c=document.getElementById('modal-c');
+  c.innerHTML='<h2>Gerar a edição completa de outubro</h2><p>Puxa do backend os dados aprovados por Riscos e os comentários aprovados, e gera de novo relatórios, posts, apresentações, e-mails, landing pages e a Central do mês.</p>'+
+    '<code class="cmd">python run.py</code>'+
+    '<p><b>'+A.length+(A.length===1?' fundo entra':' fundos entram')+'.</b> '+(fora.length?'Ficam de fora até o comentário ser aprovado: '+esc(fora.map(curto).join(', ').replace(/, ([^,]*)$/,' e $1'))+'.':'Todos os fundos estão aprovados.')+'</p>'+
+    '<div style="display:flex;gap:10px;justify-content:flex-end;flex-wrap:wrap"><button type="button" class="bt" id="m-c">Cancelar</button><button type="button" class="bt pri" id="m-ok"'+(A.length?'':' disabled')+'>'+ic('cx')+'Gerar agora</button></div>';
+  m.classList.add('on');
+  document.getElementById('m-c').onclick=function(){m.classList.remove('on')};
+  document.getElementById('m-ok').onclick=function(){
+    var P=['Lendo os dados aprovados no backend','Relatórios de Gestão','Posts','Apresentações','E-mails e landing pages','Central de Materiais de outubro'];
+    c.innerHTML='<h2>Gerando a edição completa</h2><code class="cmd">python run.py</code><ol class="passos">'+P.map(function(x){return '<li><span class="roda"></span>'+x+'</li>'}).join('')+'</ol>';
+    var L=c.querySelectorAll('.passos li');
+    P.forEach(function(x,k){depois(function(){L[k].classList.add('ok');L[k].querySelector('.roda').outerHTML=ic('ok')},700*(k+1))});
+    depois(function(){
+      A.forEach(function(f){var era=f.mat;f.mat='gerado';f.sp='publicado';f.arquivos=arquivosDe(f,'publicado');f.quando.materiais=['Analista de Comunicação',agora()];f.quando.sharepoint=['AutomaTivio',agora()];
+        registrar(f,'Edição completa gerada',era==='gerado'?'Gerados':'Comentário aprovado','Gerados','v'+ultima(f).v,'python run.py')});
+      m.classList.remove('on');fim();avisar('Edição completa gerada: '+A.length+' fundos. Entrou na Central de Materiais de outubro.');
+    },700*P.length+500);
+  };
+}
 function mtCor(a){return a==='investment_solutions'?'var(--tv-azul)':a==='previdencia'?'#92D3AB':'var(--tv-verde)'}
 function telaMateriais(){
+  MT_LISTA=[];
   var F=S.fundos,mes=ui.mes||MESES[0][0],atual=mes===MESES[0][0],nomeMes=MESES.filter(function(m){return m[0]===mes})[0][1],area=ui.area||'';
   var fila=F.filter(function(f){return f.com==='aprovado'&&f.mat!=='gerado'});
   var feitos=(atual?F.filter(function(f){return f.mat==='gerado'}):F.filter(function(f){return (PECAS[f.id]||[]).length})).filter(function(f){return !area||f.area===area});
   var pecas={};MT_ABAS.forEach(function(a){pecas[a[0]]=[]});
   feitos.forEach(function(f){(PECAS[f.id]||[]).forEach(function(pc,i){var k=MT_TIPO[pc.t];if(k)pecas[k].push([f,pc,i])})});
   var cont={gerar:atual?fila.filter(function(f){return !area||f.area===area}).length:0,sharepoint:3};
-  ['relatorios','posts','decks','informativos'].forEach(function(k){cont[k]=pecas[k].length});
+  var EX=(PECAS._extras||[]);pecas.emails=EX.filter(function(x){return x.aba==='emails'});pecas.landings=EX.filter(function(x){return x.aba==='landings'});
+  ['relatorios','posts','emails','decks','landings','informativos'].forEach(function(k){cont[k]=pecas[k].length});
   var aba=ui.mt;if(!aba||(aba==='gerar'&&!atual))aba=S.perfil==='comunicacao'&&cont.gerar?'gerar':'relatorios';
-  var h='<section class="mt-hero"><h1>Central de <strong>materiais</strong></h1><p>A Comunicação gera os materiais do mês com o comentário aprovado. Ficam aqui, organizados por tipo e vertical, com o mês atual e o histórico; no SharePoint vai o link da Central de cada mês.</p><span class="dono">'+ic('pes')+'Quem gera: <b>Comunicação</b></span></section>';
+  var h='<section class="mt-hero"><h1>Central de <strong>materiais</strong></h1><p>A Comunicação gera os materiais do mês com o comentário aprovado. Ficam aqui, organizados por tipo e vertical, com o mês atual e o histórico; no SharePoint vai o link da Central de cada mês.</p><div class="mt-acoes"><span class="dono">'+ic('pes')+'Quem gera: <b>Comunicação</b></span>'+(S.perfil==='comunicacao'&&atual?'<button type="button" class="btn btn-primary btn-sm" data-gerar-tudo="1">'+ic('cx')+'Gerar a edição completa</button>':'')+'</div></section>';
   h+='<div class="central"><div class="tabs-wrap"><div class="tabs" role="tablist">'+MT_ABAS.filter(function(a){return a[0]!=='gerar'||atual}).map(function(a){var on=a[0]===aba;
       return '<button type="button" class="tab" role="tab" data-mt="'+a[0]+'" aria-selected="'+on+'">'+ic(a[2])+a[1]+'<span class="badge">'+cont[a[0]]+'</span></button>'}).join('')+'</div>'+
     '<div class="mt-filtros"><select id="mt-mes" class="tab-reset" aria-label="Mês">'+MESES.map(function(m,i){return '<option value="'+m[0]+'"'+(m[0]===mes?' selected':'')+'>'+m[1]+'</option>'}).join('')+'</select>'+
@@ -986,11 +1074,17 @@ function telaMateriais(){
     itens=[['Outubro 2026','2026-10',g?'Atualizada com '+g+' de '+F.length+' fundos':'Sem fundos gerados ainda',true],['Setembro 2026','2026-09','Publicada'],['Agosto 2026','2026-08','Publicada']].map(function(c){
       return '<article class="item" style="--dot:var(--tv-azul)"><div class="thumb"><svg class="gm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4">'+I.nuv+'</svg><span class="kind">Central</span>'+(c[3]?'<span class="soon">Atual</span>':'')+'</div>'+
         '<div class="bd"><span class="vt"><span class="vdot"></span>SharePoint</span><h4>Central de Materiais · '+c[0]+'</h4><p>Materiais AutomaTivio/_Historico/'+c[1]+'/Interno/Edição completa</p><div class="ft"><span class="dt">'+c[2]+'</span><span class="acts"><span class="btn btn-glass btn-xs mt-off" title="O endereço entra quando o site do SharePoint for criado">Link em breve</span></span></div></div></article>'}).join('');
+  }else if(aba==='emails'||aba==='landings'){
+    itens=pecas[aba].map(function(x){
+      return '<article class="item" style="--dot:'+(x.vertical==='Previdência'?'#92D3AB':x.vertical==='Investment Solutions'?'var(--tv-azul)':'var(--tv-verde)')+'"><div class="thumb"><svg class="gm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4">'+I[aba==='emails'?'mail':'web']+'</svg><span class="kind">'+MT_KIND[aba]+'</span><span class="soon">Em código</span></div>'+
+        '<div class="bd"><span class="vt"><span class="vdot"></span>'+esc(x.vertical)+'</span><h4>'+esc(x.t)+'</h4><p>Feito em código: abre a peça viva, com os dados e gráficos do mês.</p>'+
+        '<div class="ft"><span class="dt">Edição de setembro</span><span class="acts">'+btnHtml(x.html,x.t)+'</span></div></div></article>'}).join('');
+    if(!itens)itens='<p class="mt-vazio">Nada deste tipo nesta edição.</p>';
   }else{
     itens=pecas[aba].map(function(x){var f=x[0],pc=x[1];
-      return '<article class="item" style="--dot:'+mtCor(f.area)+'"><div class="thumb"><img src="'+pc.img+'" alt="'+esc(pc.t)+' do '+esc(f.nome)+'" loading="lazy"><span class="kind">'+MT_KIND[aba]+'</span></div>'+
+      return '<article class="item" style="--dot:'+mtCor(f.area)+'"><div class="thumb"><img src="'+pc.img+'" alt="'+esc(pc.t)+' do '+esc(f.nome)+'" loading="lazy"><span class="kind">'+MT_KIND[aba]+'</span>'+(pc.html?'<span class="soon">Em código</span>':'')+'</div>'+
         '<div class="bd"><span class="vt"><span class="vdot"></span>'+AREA[f.area]+'</span><h4>'+esc(pc.t)+' · '+esc(f.nome)+'</h4><p>'+esc(pc.fmt)+'. '+(atual?'Gerado com o comentário v'+ultima(f).v+'.':'Edição de setembro de 2026.')+'</p>'+
-        '<div class="ft"><span class="dt">'+(atual&&f.quando.materiais?'Gerado '+f.quando.materiais[1].slice(0,5):nomeMes)+'</span><span class="acts"><button type="button" class="btn btn-glass btn-xs" data-peca="'+f.id+':'+x[2]+'">Abrir'+ic('ava')+'</button></span></div></div></article>'}).join('');
+        '<div class="ft"><span class="dt">'+(atual&&f.quando.materiais?'Gerado '+f.quando.materiais[1].slice(0,5):nomeMes)+'</span><span class="acts">'+(pc.html?btnHtml(pc.html,pc.t+' · '+f.nome,f.nome):'<button type="button" class="btn btn-glass btn-xs" data-vi="'+regItem({tipo:'img',fid:f.id,i:x[2],tit:pc.t+' · '+f.nome})+'">Abrir'+ic('ava')+'</button>')+baixarHtml(pc)+'</span></div></div></article>'}).join('');
     if(!itens)itens='<p class="mt-vazio">'+(atual?'Nenhum '+MT_KIND[aba].toLowerCase()+' gerado em outubro ainda. Aparece aqui assim que a Comunicação gerar.':'Nada deste tipo nesta edição.')+'</p>';
   }
   return h+'<div class="grid">'+itens+'</div></div>';
@@ -1369,9 +1463,9 @@ function abrirVisor(i,fid){
   if(fid)visorF=fid;var f=fundo(visorF||rota.id),P=PECAS[f.id]||[];if(!P.length)return;visorI=(i+P.length)%P.length;var p=P[visorI];
   var v=document.getElementById('visor');
   v.innerHTML='<div class="visor-cab"><div><b>'+esc(p.t)+'</b><small>'+esc(f.nome)+' · '+esc(p.fmt)+'</small></div><div class="visor-nav">'+(P.length>1?'<button type="button" class="icone-bt" data-visor="-1" aria-label="Peça anterior">'+ic('vol')+'</button><button type="button" class="icone-bt" data-visor="1" aria-label="Próxima peça">'+ic('ava')+'</button>':'')+'<button type="button" class="icone-bt" data-visor="x" aria-label="Fechar">'+ic('x')+'</button></div></div><div class="visor-img"><img src="'+p.img+'" alt="'+esc(p.t)+'"></div>';
-  v.classList.add('on');
+  v.dataset.modo='';v.classList.remove('html');v.classList.add('on');
 }
-function fecharVisor(){document.getElementById('visor').classList.remove('on')}
+function fecharVisor(){var v=document.getElementById('visor');if(v.classList.contains('html'))v.innerHTML='';v.classList.remove('on','html')}
 
 /* ---------- render e eventos ---------- */
 function render(){
@@ -1398,7 +1492,7 @@ function render(){
   medir();
 }
 document.addEventListener('click',function(e){
-  var t=e.target.closest('[data-mt],[data-dado],[data-coment],[data-aba],[data-mes],[data-ok],[data-vista],[data-filtro],[data-lote],[data-abrir],[data-acao],[data-modo],[data-ver],[data-peca],[data-visor]');
+  var t=e.target.closest('[data-vi],[data-html],[data-sem-local],[data-gerar-tudo],[data-mt],[data-dado],[data-coment],[data-aba],[data-mes],[data-ok],[data-vista],[data-filtro],[data-lote],[data-abrir],[data-acao],[data-modo],[data-ver],[data-peca],[data-visor]');
   if(!t||t.disabled)return;
   var d=t.dataset;
   if(d.ok){e.preventDefault();aprovarRapido(d.ok);return}
@@ -1408,13 +1502,17 @@ document.addEventListener('click',function(e){
   if(d.abrir){ui.fundo=null;ui.de=rota.tela==='f'?ui.de:rota.tela;ui.abaIr=d.abaIr||null;ir('f--'+d.abrir);window.scrollTo(0,0);return}
   if(d.modo){ui.modo=d.modo;render();return}
   if(d.ver){ui.ver={f:fAtual().id,v:+d.ver};render();return}
+  if(d.html){abrirHtml(d.html,d.tit||'');return}
+  if(d.semLocal){avisar(AVISO_LOCAL);return}
+  if(d.gerarTudo){gerarTudo();return}
   if(d.mt){ui.mt=d.mt;render();return}
   if(d.dado){if(d.dado===ui.dado)return;ui.dado=d.dado;render();if(innerWidth<=760){var dd=document.getElementById('cm-doc');if(dd)dd.scrollIntoView({block:'start',behavior:'smooth'})}return}
   if(d.coment){var ab=d.coment;if(ab===ui.aberto&&rota.tela==='comentarios')return;ui.aberto=ab;ui.ver=null;ui.editando=false;ui.modo='ver';render();if(innerWidth<=760){var dc=document.getElementById('cm-doc');if(dc)dc.scrollIntoView({block:'start',behavior:'smooth'})}return;if(ab){var l=document.getElementById('lin-'+ab);if(l)l.scrollIntoView({block:'start',behavior:'smooth'})}return}
   if(d.peca){var pp=String(d.peca).split(':');if(pp.length>1)abrirVisor(+pp[1],pp[0]);else abrirVisor(+pp[0],rota.id);return}
   if(d.aba){ui.aba=d.aba;ui.editando=false;render();return}
   if(d.mes){ui.mes=d.mes;render();return}
-  if(d.visor){if(d.visor==='x')fecharVisor();else abrirVisor(visorI+(+d.visor));return}
+  if(d.visor){if(d.visor==='x')fecharVisor();else teclaVisor(+d.visor>0?'ArrowRight':'ArrowLeft');return}
+  if(d.vi!==undefined){abrirItem(+d.vi);return}
   if(d.acao)acao(d.acao);
 });
 document.addEventListener('change',function(e){
@@ -1443,7 +1541,7 @@ document.addEventListener('dragleave',function(e){var col=e.target.closest&&e.ta
 document.addEventListener('drop',function(e){var col=e.target.closest&&e.target.closest('.coluna.alvo');if(!col||!arrasto)return;e.preventDefault();var id=arrasto;limpaArrasto();aprovarRapido(id)});
 document.addEventListener('keydown',function(e){
   if(!document.getElementById('visor').classList.contains('on'))return;
-  if(e.key==='Escape')fecharVisor();if(e.key==='ArrowRight')abrirVisor(visorI+1);if(e.key==='ArrowLeft')abrirVisor(visorI-1);
+  if(e.key==='Escape'||e.key==='ArrowRight'||e.key==='ArrowLeft')teclaVisor(e.key);
 });
 document.getElementById('visor').addEventListener('click',function(e){if(e.target===this)fecharVisor()});
 document.getElementById('modal').addEventListener('click',function(e){if(e.target===this)this.classList.remove('on')});
