@@ -28,8 +28,10 @@ BASE_CSS = ler("base.css")
 BASE_JS = ler("base.js")
 
 def hero(eyebrow, titulo, texto):
-    return (f'<section class="hero"><div><p class="eyebrow"><i></i>{eyebrow}</p><h1>{titulo}</h1>'
-            f'<p class="lead">{texto}</p></div>{T3D_HTML}</section>')
+    # sem rótulo acima do título (a versão já aparece no cartão de download)
+    nota = ""
+    return (f'<section class="hero"><div><h1>{titulo}</h1>'
+            f'<p class="lead">{texto}</p>{nota}</div>{T3D_HTML}</section>')
 
 def cabecalho(area, abas, global_menu=True):
     links = "".join(f'<a href="{i if i.endswith(".html") else "#" + i}">{t}</a>' for i, t in abas)

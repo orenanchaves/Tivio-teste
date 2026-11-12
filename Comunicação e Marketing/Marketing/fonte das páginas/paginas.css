@@ -1614,3 +1614,9 @@ h1,h2,h3{text-wrap:balance}p,li{text-wrap:pretty}
 .tl-rev{margin:-2px 0 10px;font-size:13px;font-weight:600;color:var(--verde-txt)}
 .d90 td b{font-weight:600;color:var(--verde-txt)}
 #apres .sl-g.c2.cmp{background:none}
+
+/* Revisão de design 12/11/2026: sem rótulo em caixa alta acima de título; rótulos internos em texto normal */
+.eyebrow{display:none!important}
+.seg-nome,.semanas em,.seg dt,.ficha dt,.ficha header small,.agente small,.slogan span,.zap-m span,.sub small,.anos span,.busca span,.kpis.peer span,.teses .tes-r,.dd-tit{text-transform:none!important;letter-spacing:0!important;font-size:13px!important}
+.dd-tit{font-size:12.5px!important}
+#apres .sl-sec,#apres .lg-sec{display:none!important}
