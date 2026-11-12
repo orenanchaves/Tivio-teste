@@ -57,6 +57,9 @@
     var qf = N ? [].slice.call(N.querySelectorAll(".fr-vis>section.frente")).filter(vis) : [];
     if (qf.length) S.push({ sec: "2027", h: "O que queremos <strong>em 2027</strong>", html: '<div class="quer"><p class="quer-f">Ser a <strong>casa de estruturados</strong> do mercado: quem explica o risco, com dado próprio e presença constante.</p><div class="sl-g c4 cmp">'
       + qf.map(function (f) { return "<div><b>" + esc(t(f.querySelector("h3")).replace(" com estratégia", "")) + "</b><span>" + esc(t(f.querySelector(".fr-m"))) + "</span></div>" }).join("") + "</div></div>" });
+    // o método: visão, ambição, prioridades e execução
+    var cm = N ? [].filter.call(N.querySelectorAll(".cam4>.sub"), vis) : [];
+    if (cm.length) S.push({ sec: "2027", h: "O plano em <strong>camadas</strong>", html: '<div class="sl-g c4 cmp">' + cm.map(function (x) { return "<div><b>" + esc(t(x.querySelector("b"))) + "</b><span>" + esc(t(x.querySelector("span"))) + "</span><span><em>" + esc(t(x.querySelector("em"))) + "</em></span></div>" }).join("") + "</div>" });
     var te = N ? blocos(N.querySelector(".teses")) : [];
     // por que: três teses por slide, cada uma com o que quer dizer, o que vimos e o que puxamos
     var tese = function (f, n) { var tg = function (c) { return t(f.querySelector(c)) }; return '<div class="ts" style="--n:' + n + '"><p class="ts-n">' + String(n + 1).padStart(2, "0") + "</p><h3>" + esc(tg("h3")) + '</h3><p class="ts-q">' + esc(tg(".tes-q")) + '</p><p class="ts-r">O que vimos</p><p class="ts-v">' + esc(tg(".dono")) + '</p><p class="ts-r ts-f">Por isso puxamos</p><ul>' + itens(f.querySelector("ul"), 3) + "</ul></div>" };
@@ -100,6 +103,9 @@
       S.push({ sec: "2027", h: "A linha do tempo <strong>de 2027</strong>", html: '<div class="lt"><div class="lt-h"><span></span>' + ["1º tri", "2º tri", "3º tri", "4º tri"].map(function (x, q) { return '<b style="--q:' + q + '">' + x + "<i></i></b>" }).join("") + "</div>"
         + raias.map(function (r, n) { return '<div class="lt-r" style="--n:' + n + '"><p class="lt-f">' + r.ic + "<span>" + esc(r.nm) + "</span></p>" + r.tri.map(function (l, q) { return '<ul style="--q:' + q + '">' + l.map(function (x) { return "<li>" + esc(x.charAt(0).toUpperCase() + x.slice(1)) + "</li>" }).join("") + "</ul>" }).join("") + "</div>" }).join("") + "</div>" });
     }
+    // os próximos 90 dias: iniciativa, hipótese e dono
+    var d9 = N ? [].slice.call(N.querySelectorAll(".d90 tr")).slice(1).filter(function (r) { return !r.hidden }) : [];
+    if (d9.length) S.push({ sec: "2027", fora: 1, h: "Os próximos <strong>90 dias</strong>", html: '<div class="sl-g c4 cmp">' + d9.slice(0, 8).map(function (r) { var c = r.querySelectorAll("td"); return "<div><b>" + esc(t(c[0])) + "</b><span>" + esc(t(c[2])) + "</span><span><em>" + esc(t(c[1])) + " · " + esc(t(c[4])) + "</em></span></div>" }).join("") + "</div>" });
     // gráfico: eventos Itaú mês a mês, lidos da linha do tempo
     var ms = N ? [].slice.call(N.querySelectorAll("#meses .tl-m")).filter(function (m) { return !/nov e dez/i.test(t(m.querySelector("h3"))) }) : [];
     var ev = ms.map(function (m) { var e = m.querySelector('.tl-i[data-c="2"] span'), q = e && t(e).match(/^(\d+) eventos?/); return [t(m.querySelector("h3")).slice(0, 3), q ? +q[1] : 0] });
@@ -116,6 +122,9 @@
       var e = t(x.querySelector("em")).split(" a "), h0 = num(e[0]), m1 = num(e[1]); var pc = h0 !== null && m1 ? Math.min(100, Math.round(h0 / m1 * 100)) : 0;
       return '<div class="mtl-r"><span>' + esc(t(x.querySelector("span"))) + '</span><i style="--w:' + pc + '%"><small>' + pc + '%</small></i><em>' + esc(e[0]) + '</em><strong>' + esc(e[1] || "") + "</strong></div>";
     }).join("") + '</div><p class="sl-nota">Proposta do time de Comunicação &amp; Marketing, a validar. A barra mostra quanto do caminho já foi feito.</p>' });
+    // como o plano se revisa
+    var rv = N ? blocos(N.querySelector(".rev")) : [];
+    if (rv.length) S.push({ sec: "2027", h: "Como o plano <strong>se revisa</strong>", html: '<div class="sl-g c3 cmp">' + rv.map(function (f) { return card(f, 3) }).join("") + "</div>" });
     // resumo de tudo
     var rs = [];
     var kR = N ? [].slice.call(N.querySelectorAll("#custo ~ .kpis .kpi b")).map(t) : [];

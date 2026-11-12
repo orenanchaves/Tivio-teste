@@ -1606,3 +1606,8 @@ h1,h2,h3{text-wrap:balance}p,li{text-wrap:pretty}
 #apres .ap-leg .ag-g svg{width:26px;height:26px;color:#C1F4D4}
 #apres .ap-leg .ag-g b{font-size:14px;line-height:1.25}
 #apres .ap-leg .ag-g span{font-size:12px;opacity:.75}
+
+/* Plano em camadas */
+.cam4{grid-template-columns:repeat(4,minmax(0,1fr))}@media (max-width:980px){.cam4{grid-template-columns:repeat(2,minmax(0,1fr))}}@media (max-width:640px){.cam4{grid-template-columns:minmax(0,1fr)}}
+.d90 td:first-child{font-weight:600}
+.cam4 .sub{grid-template-rows:auto auto 1fr;align-content:stretch}.cam4 .sub em{align-self:end}
