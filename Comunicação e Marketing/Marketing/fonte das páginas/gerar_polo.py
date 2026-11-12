@@ -16,7 +16,7 @@ _pesos = "".join(f'<div class="peso vidro"><b style="font-weight:{w}">Casa de es
 RAIOS = [("8", "sm"), ("12", "md"), ("20", "lg"), ("28", "xl"), ("999", "full")]
 _raios = "".join(f'<div class="raio"><i style="border-radius:{r}px"></i><span>{n}, {r}px</span></div>' for r, n in RAIOS)
 _t = (RAIZ / "AutomaTivio/assets/marca/tivio_t.svg").read_text(encoding="utf-8")
-_slogan = '<h2 id="slogan">Slogan</h2><section class="destaque aprende vidro"><p class="slogan"><span>Sugestão de slogan</span>Tivio Capital,<br>somos a alternativa</p></section>'
+_slogan = '<h2 id="slogan">Slogan</h2><section class="destaque aprende vidro"><p class="slogan"><span>Sugestão de slogan</span>Tivio Capital, <br>somos a alternativa</p></section>'
 _ds = ('<h2 id="design-system">Design <strong>system</strong></h2>'
     f'<h3 class="ds-t" id="logo">Logo</h3><div class="ds-logos"><div class="ds-logo escuro">{LOGO}</div><div class="ds-logo claro">{LOGO}</div><div class="ds-logo escuro simbolo">{_t}</div><div class="ds-logo claro simbolo">{_t}</div></div>'
     f'<h3 class="ds-t" id="cores">Cores</h3><div class="ds-cores">{_cores}</div>'
@@ -328,7 +328,7 @@ def _tl(col):
         itens = [i for i in nomes if r[i] and (col is None or i == col)]
         if not itens:
             continue
-        h += f'<section class="tl-m" id="m{m}"><h3>{r[0]}</h3>' + ('<p class="tl-rev">Revisão do trimestre: pilotos e próximos 90 dias</p>' if col is None and r[0] in ("Março", "Junho", "Setembro", "Dezembro") else "") + f'<div class="tl-c{" um" if col else ""}">' + "".join(f'<div class="tl-i vidro" data-c="{i}">{ICO27[nomes[i]]}<div><b>{nomes[i].replace(" com estratégia", "")}</b><span>{r[i]}</span></div></div>' for i in itens) + '</div></section>'
+        h += f'<section class="tl-m" id="m{m}"><h3>{r[0]}</h3>' + ('<p class="tl-rev">Revisão do trimestre: pilotos' + (', metas do funil' if r[0] == "Março" else "") + ' e próximos 90 dias</p>' if col is None and r[0] in ("Março", "Junho", "Setembro", "Dezembro") else "") + f'<div class="tl-c{" um" if col else ""}">' + "".join(f'<div class="tl-i vidro" data-c="{i}">{ICO27[nomes[i]]}<div><b>{nomes[i].replace(" com estratégia", "")}</b><span>{r[i]}</span></div></div>' for i in itens) + '</div></section>'
     return f'<div class="tl" id="{"meses" if col is None else "linha"}">{h}</div>'
 def _lig_vis():
     def ic(t):
@@ -368,10 +368,11 @@ _CAM = [("Visão", "Ser a casa de estruturados do mercado: quem explica o risco,
         ("Execução", "Iniciativas de 90 dias, cada uma com dono, hipótese e indicador.", "Revista a cada trimestre")]
 _90D = [("Automação", "Automação do imobiliário", "Renan Chaves", "Automatizar o imobiliário tira o retrabalho do mês e evita erro de número", "Horas do time por edição; correções depois de publicar", "Jan a abr"),
         ("Automação", "Publicação no site direto do AutomaTivio", "Renan Chaves", "Sem subida manual, o site fica em dia logo depois da aprovação", "Correções depois de publicar", "Fev"),
+        ("Automação", "Comentários da Gestão com IA", "Renan Chaves", "Com o rascunho da IA, o gestor revisa em vez de escrever do zero, com os números da rodada", "Tempo do gestor por comentário; quanto do rascunho ele aproveita", "Piloto em 1 ou 2 fundos, depois do aval do Enrico; decisão no fim de mar"),
         ("Eventos", "4 encontros com o Itaú", "Fernanda Acquati", "Encontro pequeno, um tema de estruturados por vez, vira reunião com quem indica", "Inscritos, presentes e pedidos de contato; captação de presentes em até 90 dias", "Jan a mar"),
         ("Eventos", "Summit BTG", "Fernanda Acquati", "O grande evento de plataforma traz o assessor que ainda não conhece a Tivio", "Inscritos, presentes e pedidos de contato", "Fev"),
         ("Conteúdo", "1º Raio X de Crédito + Tivio Quadrado", "Fernanda Acquati", "Explicar o risco gera confiança antes de falar de retorno", "Contatos vindos de cada série", "Jan"),
-        ("Conteúdo", "Deep Dive de ESG", "Uma pessoa do Comercial ou da Gestão", "O Deep Dive volta ao calendário e mostra a casa por dentro de um tema", "Contatos vindos de cada série", "Jan"),
+        ("Conteúdo", "Deep Dive de ESG", "Fred Duarte", "O Deep Dive volta ao calendário e mostra a casa por dentro de um tema", "Contatos vindos de cada série", "Jan"),
         ("Conteúdo", "Executivos no LinkedIn", "Gabriel Fiorilli", "Post com rosto da casa rende mais do que card de produto", "Executivos ativos no LinkedIn; colaboradores que engajam nos posts", "Piloto a partir de fev; decisão no fim de mar"),
         ("Conteúdo", "Rotina semanal no WhatsApp", "Gabriel Fiorilli", "Um canal direto leva o assessor ao conteúdo e ao contato", "Cliques do WhatsApp até um contato", "Piloto em mar; decisão no fim de mar"),
         ("Conteúdo", "Kit do assessor", "Fernanda Acquati", "Com material pronto, o assessor entende o fundo e indica", "Reuniões qualificadas", "Piloto em nov e dez; decisão no fim de mar"),
@@ -380,7 +381,7 @@ _90D = [("Automação", "Automação do imobiliário", "Renan Chaves", "Automati
         ("Digital", "Otimização do site", "Renan Chaves", "Site organizado por tema e com subida automática ranqueia e converte mais", "Visitas orgânicas ao site; posição no Google nos termos de estruturados", "Fev"),
         ("Digital", "Primeiros artigos: FIDC e crédito estruturado", "Renan Chaves", "Artigo que responde a dúvida real disputa o termo no Google e nas IAs", "Posição no Google nos termos de estruturados; citações da Tivio nas respostas de IAs", "Mar")]
 _REV = [("Todo mês", "Painel do mês", ["Funil: alcance, contato, reunião e captação", "O que cada frente entregou", "Uma decisão: o que ajustar no mês seguinte"]),
-        ("Todo trimestre", "Revisão dos 90 dias", ["Cada piloto: manter, ajustar ou parar", "O que mudou no mercado, no comportamento e na tecnologia", "As iniciativas dos próximos 90 dias, cada uma com dono"]),
+        ("Todo trimestre", "Revisão dos 90 dias", ["Cada piloto: continua se gerou reunião qualificada; se não, ajustar ou parar", "O que mudou no mercado, no comportamento e na tecnologia", "As iniciativas dos próximos 90 dias, cada uma com dono"]),
         ("Todo ano", "Revisão das camadas", ["Balanço das frentes, com os números do painel", "Prioridades do ano seguinte", "A ambição de 3 anos continua valendo?"])]
 _IA = [("No negócio", "Operações, produtos e cultura", ["Operações: AutomaTivio e agente para criar posts", "Produtos: GEO, a Tivio citada pelas IAs sobre estruturados", "Cultura: trilha de aprendizado e ferramenta de IA para o time"]),
        ("No planejamento", "Diagnóstico e revisão", ["Diagnóstico: benchmark e análises das postagens e do site", "Revisão: painel do mês e sinais de mercado reunidos para o ritual", "A escolha continua do time: separar sinal de ruído"])]
@@ -416,7 +417,7 @@ corpo_p27 = (cabecalho("Plano", []) + '<div class="wrap">'
     + "".join(f'<tr data-f="{fr}"><td>{a}</td><td data-r="Dono">{d}</td><td data-r="Hipótese">{h}</td><td data-r="Como vamos saber">{i}</td><td data-r="Quando">{"<b>Piloto</b>" + q[6:] if q.startswith("Piloto") else q}</td></tr>' for fr, a, d, h, i, q in _90D) + '</table></div>'
     + '<h2 id="juntas">Estratégias que se <strong>entrelaçam</strong></h2>' + _lig_vis()
     + '<h2 id="medir">Como vamos <strong>medir</strong></h2><div class="fu">'
-    + "".join(f'<div class="fu-i vidro" style="width:{w}%"><b>{a}</b><span>{b}</span></div>' for w, a, b in [(100, "Alcance", "Quem viu a Tivio"), (88, "Contato", "Quem deixou nome e origem"), (76, "Reunião", "Quem pediu conversa qualificada"), (64, "Captação", "Quanto veio, em R$")]) + '</div>'
+    + "".join(f'<div class="fu-i vidro" style="width:{w}%"><b>{a}</b><span>{b}</span></div>' for w, a, b in [(100, "Alcance", "Quem viu a Tivio"), (88, "Contato", "Quem deixou nome e origem"), (76, "Reunião", "Quem pediu conversa qualificada"), (64, "Captação", "Quanto veio, em R$")]) + '</div><p class="meta-txt">O 1º trimestre mede a linha de base de contato, reunião e captação. As metas do funil saem na revisão de março.</p>'
     + '<!--METAS--><div class="acc" id="numeros">'
     + "".join(f'<details><summary><b>{x[0]}</b><span>{sum(1 for n in _num27 if n[0] == x[0])} números</span></summary><div class="tab tab-pilha"><table><tr><th>Número</th><th>Hoje</th></tr>' + "".join(f'<tr><td>{b}</td><td data-r="Hoje">{d}</td></tr>' for a, b, d in _num27 if a == x[0]) + '</table></div></details>' for i, x in enumerate(_fr27)) + '</div>'
     + '<details class="det-ano" id="ano"><summary>Ver o ano <strong>mês a mês</strong></summary>' + _gantt() + '<div class="pil" id="pil" role="group" aria-label="Filtrar por frente">'
