@@ -327,7 +327,7 @@ def _tl(col):
         itens = [i for i in nomes if r[i] and (col is None or i == col)]
         if not itens:
             continue
-        h += f'<section class="tl-m" id="m{m}"><h3>{r[0]}</h3><div class="tl-c{" um" if col else ""}">' + "".join(f'<div class="tl-i vidro" data-c="{i}">{ICO27[nomes[i]]}<div><b>{nomes[i].replace(" com estratégia", "")}</b><span>{r[i]}</span></div></div>' for i in itens) + '</div></section>'
+        h += f'<section class="tl-m" id="m{m}"><h3>{r[0]}</h3>' + ('<p class="tl-rev">Revisão do trimestre: pilotos e próximos 90 dias</p>' if col is None and r[0] in ("Março", "Junho", "Setembro", "Dezembro") else "") + f'<div class="tl-c{" um" if col else ""}">' + "".join(f'<div class="tl-i vidro" data-c="{i}">{ICO27[nomes[i]]}<div><b>{nomes[i].replace(" com estratégia", "")}</b><span>{r[i]}</span></div></div>' for i in itens) + '</div></section>'
     return f'<div class="tl" id="{"meses" if col is None else "linha"}">{h}</div>'
 def _lig_vis():
     def ic(t):
@@ -365,14 +365,19 @@ _CAM = [("Visão", "Ser a casa de estruturados do mercado: quem explica o risco,
         ("Ambição", "Primeira lembrança do assessor em crédito estruturado, dado próprio citado pela imprensa e pelas IAs, e captação com origem registrada.", "3 anos, até 2029"),
         ("Prioridades", "Quatro frentes: Automação, Eventos, Conteúdo e Digital com estratégia.", "2027"),
         ("Execução", "Iniciativas de 90 dias, cada uma com dono, hipótese e indicador.", "Revista a cada trimestre")]
-_90D = [("Automação do imobiliário", "Renan Chaves", "Automatizar o imobiliário tira o retrabalho do mês e evita erro de número", "Horas do time por edição; correções depois de publicar", "Jan a abr"),
-        ("Publicação no site direto do AutomaTivio", "Renan Chaves", "Sem subida manual, o site fica em dia logo depois da aprovação", "Correções depois de publicar", "Fev"),
-        ("4 encontros com o Itaú", "Fernanda Acquati", "Encontro pequeno, um tema de estruturados por vez, vira reunião com quem indica", "Inscritos, presentes e pedidos de contato; captação de presentes em até 90 dias", "Jan a mar"),
-        ("1º Raio X de Crédito + Tivio Quadrado", "Fernanda Acquati e Gabriel Fiorilli", "Explicar o risco gera confiança antes de falar de retorno", "Contatos vindos de cada série", "Jan"),
-        ("Executivos no LinkedIn", "Fernanda Acquati e Gabriel Fiorilli", "Post com rosto da casa rende mais do que card de produto", "Executivos ativos no LinkedIn; colaboradores que engajam nos posts", "Fev"),
-        ("Rotina semanal no WhatsApp", "Fernanda Acquati e Gabriel Fiorilli", "Um canal direto leva o assessor ao conteúdo e ao contato", "Cliques do WhatsApp até um contato", "Mar"),
-        ("Landing do evento e primeiros artigos", "Renan Chaves", "Artigo de FIDC e crédito estruturado disputa o termo no Google e nas IAs", "Contatos por landing e por origem; posição no Google nos termos de estruturados", "Jan a mar"),
-        ("Kit do assessor", "Fernanda Acquati e Gabriel Fiorilli", "Com material pronto, o assessor entende o fundo e indica", "Reuniões qualificadas", "Piloto em nov e dez; decisão no fim de mar")]
+_90D = [("Automação", "Automação do imobiliário", "Renan Chaves", "Automatizar o imobiliário tira o retrabalho do mês e evita erro de número", "Horas do time por edição; correções depois de publicar", "Jan a abr"),
+        ("Automação", "Publicação no site direto do AutomaTivio", "Renan Chaves", "Sem subida manual, o site fica em dia logo depois da aprovação", "Correções depois de publicar", "Fev"),
+        ("Eventos", "4 encontros com o Itaú", "Fernanda Acquati", "Encontro pequeno, um tema de estruturados por vez, vira reunião com quem indica", "Inscritos, presentes e pedidos de contato; captação de presentes em até 90 dias", "Jan a mar"),
+        ("Eventos", "Summit BTG", "Fernanda Acquati", "O grande evento de plataforma traz o assessor que ainda não conhece a Tivio", "Inscritos, presentes e pedidos de contato", "Fev"),
+        ("Conteúdo", "1º Raio X de Crédito + Tivio Quadrado", "Fernanda Acquati", "Explicar o risco gera confiança antes de falar de retorno", "Contatos vindos de cada série", "Jan"),
+        ("Conteúdo", "Deep Dive de ESG", "Uma pessoa do Comercial ou da Gestão", "O Deep Dive volta ao calendário e mostra a casa por dentro de um tema", "Contatos vindos de cada série", "Jan"),
+        ("Conteúdo", "Executivos no LinkedIn", "Gabriel Fiorilli", "Post com rosto da casa rende mais do que card de produto", "Executivos ativos no LinkedIn; colaboradores que engajam nos posts", "Piloto a partir de fev; decisão no fim de mar"),
+        ("Conteúdo", "Rotina semanal no WhatsApp", "Gabriel Fiorilli", "Um canal direto leva o assessor ao conteúdo e ao contato", "Cliques do WhatsApp até um contato", "Piloto em mar; decisão no fim de mar"),
+        ("Conteúdo", "Kit do assessor", "Fernanda Acquati", "Com material pronto, o assessor entende o fundo e indica", "Reuniões qualificadas", "Piloto em nov e dez; decisão no fim de mar"),
+        ("Digital", "Newsletter no novo formato", "Renan Chaves", "Uma base própria de contatos não depende do algoritmo das redes", "Inscritos, abertura e cliques da newsletter", "Jan"),
+        ("Digital", "Landing do evento com tráfego pago", "Renan Chaves", "Anúncio para assessores de renda fixa traz contato a um custo que vale a pena", "Contatos por landing e por origem; custo por contato", "Piloto de jan a mar; decisão no fim de mar"),
+        ("Digital", "Otimização do site", "Renan Chaves", "Site organizado por tema e com subida automática ranqueia e converte mais", "Visitas orgânicas ao site; posição no Google nos termos de estruturados", "Fev"),
+        ("Digital", "Primeiros artigos: FIDC e crédito estruturado", "Renan Chaves", "Artigo que responde a dúvida real disputa o termo no Google e nas IAs", "Posição no Google nos termos de estruturados; citações da Tivio nas respostas de IAs", "Mar")]
 _REV = [("Todo mês", "Painel do mês", ["Funil: alcance, contato, reunião e captação", "O que cada frente entregou", "Uma decisão: o que ajustar no mês seguinte"]),
         ("Todo trimestre", "Revisão dos 90 dias", ["Cada piloto: manter, ajustar ou parar", "O que mudou no mercado, no comportamento e na tecnologia", "As iniciativas dos próximos 90 dias, cada uma com dono"]),
         ("Todo ano", "Revisão das camadas", ["Balanço das frentes, com os números do painel", "Prioridades do ano seguinte", "A ambição de 3 anos continua valendo?"])]
@@ -407,7 +412,7 @@ corpo_p27 = (cabecalho("Plano", []) + '<div class="wrap">'
     + '<h2 id="trimestres">O ano por <strong>trimestre</strong></h2><div class="frentes linhas">'
     + "".join(f'<section class="frente vidro"><h3>{a}</h3><p class="dono">{b}</p><ul>' + "".join(f"<li>{x}</li>" for x in l) + "</ul></section>" for a, b, l in _TRI) + '</div>'
     + '<h2 id="noventa">Os próximos <strong>90 dias</strong></h2><p class="secao-sub">O primeiro trimestre de 2027. Cada iniciativa é uma aposta com dono e um jeito de saber se deu certo.</p><div class="tab tab-pilha d90"><table><tr><th>Iniciativa</th><th>Dono</th><th>Hipótese</th><th>Como vamos saber</th><th>Quando</th></tr>'
-    + "".join(f'<tr><td>{a}</td><td data-r="Dono">{d}</td><td data-r="Hipótese">{h}</td><td data-r="Como vamos saber">{i}</td><td data-r="Quando">{q}</td></tr>' for a, d, h, i, q in _90D) + '</table></div>'
+    + "".join(f'<tr data-f="{fr}"><td>{a}</td><td data-r="Dono">{d}</td><td data-r="Hipótese">{h}</td><td data-r="Como vamos saber">{i}</td><td data-r="Quando">{"<b>Piloto</b>" + q[6:] if q.startswith("Piloto") else q}</td></tr>' for fr, a, d, h, i, q in _90D) + '</table></div>'
     + '<h2 id="juntas">Estratégias que se <strong>entrelaçam</strong></h2>' + _lig_vis()
     + '<h2 id="medir">Como vamos <strong>medir</strong></h2><div class="fu">'
     + "".join(f'<div class="fu-i vidro" style="width:{w}%"><b>{a}</b><span>{b}</span></div>' for w, a, b in [(100, "Alcance", "Quem viu a Tivio"), (88, "Contato", "Quem deixou nome e origem"), (76, "Reunião", "Quem pediu conversa qualificada"), (64, "Captação", "Quanto veio, em R$")]) + '</div>'
@@ -420,7 +425,7 @@ B.forEach(function(b){b.addEventListener('click',function(){var c=b.dataset.c;B.
 [].forEach.call(T.querySelectorAll('.tl-i'),function(e){e.hidden=c!=='0'&&e.dataset.c!==c});
 [].forEach.call(T.querySelectorAll('.tl-m'),function(m){m.hidden=!m.querySelector('.tl-i:not([hidden])')})})})})();</script>"""
     + '<h2 id="revisao">Como o plano <strong>se revisa</strong></h2><p class="secao-sub">O plano não fecha em dezembro: cada ritual termina em decisão, não em relatório de status.</p><div class="rev">' + _linhas(_REV) + '</div>'
-    + '<h2 id="ia">A IA <strong>no plano</strong></h2>' + _linhas(_IA)
+    + '<h2 id="ia">A IA <strong>no plano</strong></h2><div class="ia-pl">' + _linhas(_IA) + '</div>'
     + '<h2 id="bases">Onde o plano <strong>se apoia</strong></h2><div class="pl-base">' + cartoes([("frente-benchmark.html", "Benchmark", "O que vimos fora e o que fazemos."), ("analise-postagens.html", "Análise das postagens", "O que funciona hoje."), ("imprensa.html", "Imprensa", "Pauta, porta-vozes e filtro."), ("analise-site.html", "Análise do site", "O que melhorar."), ("orcamento.html", "Orçamento 2027", "Com o que contamos.")]) + '</div>'
     + '<p class="meta-txt">Proposta do time de Comunicação &amp; Marketing. As metas de negócio ficam para definir depois de medir a base, e a captação por origem depende de registrar a origem do contato até o comercial.</p></section>'
     + '<div id="apres" hidden role="dialog" aria-label="Modo apresentação"><div class="ap-logo"></div><div class="ap-sum" id="ap-sum" hidden></div><div class="ap-ctl"><button type="button" id="ap-menu" aria-label="Sumário" aria-expanded="false">Sumário</button><button type="button" id="ap-ant" aria-label="Anterior">‹</button><span id="ap-n"></span><button type="button" id="ap-prox" aria-label="Próximo">›</button><button type="button" id="ap-sair" aria-label="Sair">Sair</button></div></div>'

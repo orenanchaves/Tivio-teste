@@ -105,7 +105,8 @@
     }
     // os próximos 90 dias: iniciativa, hipótese e dono
     var d9 = N ? [].slice.call(N.querySelectorAll(".d90 tr")).slice(1).filter(function (r) { return !r.hidden }) : [];
-    if (d9.length) S.push({ sec: "2027", fora: 1, h: "Os próximos <strong>90 dias</strong>", html: '<div class="sl-g c4 cmp">' + d9.slice(0, 8).map(function (r) { var c = r.querySelectorAll("td"); return "<div><b>" + esc(t(c[0])) + "</b><span>" + esc(t(c[2])) + "</span><span><em>" + esc(t(c[1])) + " · " + esc(t(c[4])) + "</em></span></div>" }).join("") + "</div>" });
+    if (d9.length) { var FR = []; d9.forEach(function (r) { if (FR.indexOf(r.dataset.f) < 0) FR.push(r.dataset.f) });
+      S.push({ sec: "2027", fora: 1, h: "Os próximos <strong>90 dias</strong>", html: '<div class="sl-g c4 cmp">' + FR.map(function (f) { return "<div><b>" + esc(f) + "</b><ul>" + d9.filter(function (r) { return r.dataset.f === f }).map(function (r) { var c = r.querySelectorAll("td"), pi = /^Piloto/.test(t(c[4])); return "<li>" + esc(t(c[0])) + (pi ? " <em>(piloto)</em>" : "") + "</li>" }).join("") + "</ul></div>" }).join("") + "</div>" }) }
     // gráfico: eventos Itaú mês a mês, lidos da linha do tempo
     var ms = N ? [].slice.call(N.querySelectorAll("#meses .tl-m")).filter(function (m) { return !/nov e dez/i.test(t(m.querySelector("h3"))) }) : [];
     var ev = ms.map(function (m) { var e = m.querySelector('.tl-i[data-c="2"] span'), q = e && t(e).match(/^(\d+) eventos?/); return [t(m.querySelector("h3")).slice(0, 3), q ? +q[1] : 0] });
@@ -125,6 +126,9 @@
     // como o plano se revisa
     var rv = N ? blocos(N.querySelector(".rev")) : [];
     if (rv.length) S.push({ sec: "2027", h: "Como o plano <strong>se revisa</strong>", html: '<div class="sl-g c3 cmp">' + rv.map(function (f) { return card(f, 3) }).join("") + "</div>" });
+    // a IA no plano
+    var ia = N ? blocos(N.querySelector(".ia-pl")) : [];
+    if (ia.length) S.push({ sec: "2027", h: "A IA <strong>no plano</strong>", html: '<div class="sl-g c2 cmp">' + ia.map(function (f) { return card(f, 3) }).join("") + "</div>" });
     // resumo de tudo
     var rs = [];
     var kR = N ? [].slice.call(N.querySelectorAll("#custo ~ .kpis .kpi b")).map(t) : [];

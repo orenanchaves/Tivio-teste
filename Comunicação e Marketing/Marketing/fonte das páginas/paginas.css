@@ -1611,3 +1611,6 @@ h1,h2,h3{text-wrap:balance}p,li{text-wrap:pretty}
 .cam4{grid-template-columns:repeat(4,minmax(0,1fr))}@media (max-width:980px){.cam4{grid-template-columns:repeat(2,minmax(0,1fr))}}@media (max-width:640px){.cam4{grid-template-columns:minmax(0,1fr)}}
 .d90 td:first-child{font-weight:600}
 .cam4 .sub{grid-template-rows:auto auto 1fr;align-content:stretch}.cam4 .sub em{align-self:end}
+.tl-rev{margin:-2px 0 10px;font-size:13px;font-weight:600;color:var(--verde-txt)}
+.d90 td b{font-weight:600;color:var(--verde-txt)}
+#apres .sl-g.c2.cmp{background:none}
