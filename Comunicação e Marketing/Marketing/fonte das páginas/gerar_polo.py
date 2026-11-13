@@ -37,7 +37,7 @@ def _data(d):
 _feed = _json.loads((pathlib.Path("feed") / "feed.json").read_text(encoding="utf-8"))
 _grade = "".join(f'<a class="feed-item vidro" href="{x["h"]}" target="_blank" rel="noopener"><img src="feed/{x["f"]}" alt="{"Reel" if x["t"] == "Video" else "Post"} da Tivio Capital de {_data(x["d"])}" loading="lazy"><span>{"Reel" if x["t"] == "Video" else "Post"} · {_data(x["d"])}</span></a>' for x in _feed)
 _feed_h = f'<h2 id="feed">Feed do <strong>Instagram</strong></h2><p class="secao-sub">12 publicações mais recentes de @tiviocapital, copiadas em 30/10/2026. A primeira é a fixada no perfil.</p><div class="feed">{_grade}</div>'
-_chips = '<nav class="ds-nav" aria-label="Seções de Brand">' + "".join(f'<a href="#{i}">{n}</a>' for i, n in [("slogan", "Slogan"), ("logo", "Logo"), ("t-3d", "T em 3D"), ("cores", "Cores"), ("tipografia", "Tipografia"), ("forma", "Forma"), ("diretrizes", "Diretrizes"), ("apresentacoes", "Apresentações"), ("polo", "Polo"), ("feed", "Feed do Instagram")]) + "</nav>"
+_chips = '<nav class="ds-nav" aria-label="Seções de Brand">' + "".join(f'<a href="#{i}">{n}</a>' for i, n in [("slogan", "Slogan"), ("logo", "Logo"), ("t-3d", "T em 3D"), ("cores", "Cores"), ("tipografia", "Tipografia"), ("forma", "Forma"), ("diretrizes", "Diretrizes"), ("apresentacoes", "Apresentações"), ("templates", "Templates"), ("polo", "Polo"), ("feed", "Feed do Instagram")]) + "</nav>"
 _uso = lambda ok, cl, txt, st="": f'<div class="uso"><div class="uso-a {cl}"{st}>{LOGO}</div><p class="{"ok" if ok else "nao"}">{"Certo" if ok else "Evitar"}</p><span>{txt}</span></div>'
 _regras = [("Cor", ["Preto, branco e fundo escuro são a base", "Verde #C1F4D4 destaca no fundo escuro", "Verde #337F51 destaca no fundo claro", "Azul escuro #3C4A60 nos botões do tema claro", "Azul imobiliário e Agro só nesses segmentos"]),
            ("Tipografia", ["Versos em tudo", "Títulos leves, com a palavra-chave em negrito", "Corpo em Light, rótulos em SemiBold", "Rótulos curtos em maiúsculas e espaçados"]),
@@ -54,9 +54,73 @@ _lb = """<div id="lb" hidden><button type="button" aria-label="Fechar"><svg view
 <script>(function(){var l=document.getElementById('lb'),i=l.querySelector('img');function f(){l.hidden=true;i.removeAttribute('src')}
 [].forEach.call(document.querySelectorAll('a.zoom'),function(a){a.addEventListener('click',function(e){e.preventDefault();i.src=a.getAttribute('href');i.alt=a.querySelector('img').alt;l.hidden=false})});
 l.addEventListener('click',f);document.addEventListener('keydown',function(e){if(e.key==='Escape')f()})})();</script>"""
+
+# ---- Templates de apresentação (arquivos em /templates/, publicados pelo cf.sh) ----
+TPL_AREAS = [("Institucional", "institucional", "#ABC6CD", "#3C4A60"), ("Crédito Privado", "credito-privado", "#759DB4", "#3F6F8C"),
+             ("Crédito Estruturado", "credito-estruturado", "#C1F4D4", "#337F51"), ("Imobiliário", "imobiliario", "#C8D7E0", "#637881"),
+             ("Previdência", "previdencia", "#B8DFC8", "#4B9D74"), ("Infra e Energia", "infra-e-energia", "#ABDAEF", "#2F7FA0"),
+             ("Agro e Fiagro", "agro", "#52B97A", "#105D2D")]
+TPL_GRUPOS = [("Abertura e navegação", "Capa, sumário e as páginas que separam as seções. Sumário, divisor e subdivisor são escuros nas duas versões.", [(5, "Capa"), (6, "Sumário"), (10, "Divisor de seção"), (11, "Subdivisor de assunto")]),
+              ("A Tivio", "Para apresentar a casa antes do produto.", [(7, "A Tivio em números"), (8, "Liderança por área"), (9, "Estratégias de investimento")]),
+              ("Fundo", "Header de fundo com nome, CNPJ e data.", [(12, "Características"), (14, "Números do fundo"), (16, "Rentabilidade"), (15, "Gráfico com leitura")]),
+              ("Conteúdo", "Uma mensagem por slide, com o título dizendo a conclusão.", [(13, "Proposta de valor"), (21, "Três pontos"), (20, "Números grandes"), (17, "Processo"), (26, "Texto com imagem")]),
+              ("Destaques", "Para pausar o deck e dar peso a uma frase.", [(18, "Citação"), (19, "Página na cor da área")]),
+              ("Linhas do tempo", "Quatro formatos, do histórico ao cronograma.", [(22, "Marcos"), (23, "Alternada"), (24, "Vertical"), (25, "Cronograma")]),
+              ("Equipe", "Cartão do Time e experiência, em seis tamanhos.", [(27, "2 pessoas"), (28, "3 pessoas"), (29, "4 pessoas"), (30, "6 pessoas"), (31, "8 pessoas"), (32, "9 pessoas")]),
+              ("Fechamento", "Disclaimer MATERIAL TÉCNICO, com os selos, e contracapa.", [(33, "Disclaimer"), (34, "Contracapa")])]
+_dl = lambda a, m: f'<a class="tpl-bt{" claro" if m == "branco" else ""}" href="templates/arquivos/{a}-{m}.pptx" download>{m.capitalize()}</a>'
+_tpl_areas = "".join(f'<div class="tpl-area vidro"><div class="tpl-cor"><i style="background:{cp}"></i><i style="background:{cb}"></i></div><b>{n}</b>'
+                     f'<div class="tpl-bts">{_dl(a, "preto")}{_dl(a, "branco")}</div></div>' for n, a, cp, cb in TPL_AREAS)
+_tpl_grupos = "".join(
+    f'<section class="tpl-grupo"><header><h3>{g}</h3><span>{d}</span></header><div class="tpl-grade">'
+    + "".join(f'<figure><a class="zoom" href="templates/previa/preto-{n:02d}.webp" data-n="{n:02d}"><img class="vidro" src="templates/previa/preto-{n:02d}.webp" alt="Modelo {t}" width="960" height="540" loading="lazy"></a><figcaption>{t}</figcaption></figure>' for n, t in itens)
+    + '</div></section>' for g, d, itens in TPL_GRUPOS)
+_tpl_css = """<style>
+.tpl{margin-top:56px;padding-top:40px;border-top:1px solid var(--line-strong)}
+.tpl-passos{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin:18px 0 8px}
+.tpl-passos .sub b{font-size:15px}
+.tpl-areas{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:12px}
+.tpl-area{display:grid;gap:12px;padding:16px 18px;min-width:0}
+.tpl-area b{font-size:16px;font-weight:600;color:var(--fg)}
+.tpl-cor{display:flex;gap:6px}.tpl-cor i{width:28px;height:28px;border-radius:8px;border:1px solid var(--line)}
+.tpl-bts{display:flex;gap:8px;flex-wrap:wrap}
+.tpl-bt{font:600 13.5px var(--ff);padding:8px 14px;border-radius:999px;text-decoration:none;background:#0A0F14;color:#FFF;border:1px solid var(--line-strong)}
+.tpl-bt.claro{background:#FFF;color:#0A1418}
+.tpl-bt:hover{border-color:var(--accent)}
+.tpl-prompt{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:12px 24px;padding:18px 20px;margin-top:12px}
+.tpl-prompt p{margin:0;color:var(--muted);font-size:14.5px;line-height:1.5;max-width:640px}.tpl-prompt b{color:var(--fg)}
+.tpl-modo{display:inline-flex;gap:4px;padding:4px;border:1px solid var(--line-strong);border-radius:999px;margin:6px 0 4px}
+.tpl-modo button{font:600 13.5px var(--ff);padding:7px 16px;border-radius:999px;border:0;background:none;color:var(--fg);cursor:pointer}
+.tpl-modo button[aria-pressed=true]{background:var(--accent);color:var(--on-accent)}
+.tpl-grupo{padding:28px 0;border-bottom:1px solid var(--line)}
+.tpl-grupo:last-child{border-bottom:0}
+.tpl-grupo header{display:flex;flex-wrap:wrap;align-items:baseline;gap:4px 16px;margin-bottom:16px}
+.tpl-grupo h3{margin:0;font-size:20px}.tpl-grupo header span{color:var(--muted);font-size:14.5px}
+.tpl-grade{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:16px}
+.tpl-grade figure{margin:0;min-width:0}.tpl-grade img{width:100%;height:auto;display:block;border-radius:10px}
+.tpl-grade figcaption{margin-top:8px;font-size:14px;color:var(--fg-2)}
+@media (max-width:820px){.tpl-passos{grid-template-columns:1fr}}
+</style>"""
+_tpl_js = """<script>(function(){var bs=document.querySelectorAll('.tpl-modo button');[].forEach.call(bs,function(b){b.addEventListener('click',function(){var m=b.dataset.m;
+[].forEach.call(bs,function(x){x.setAttribute('aria-pressed',x===b)});
+[].forEach.call(document.querySelectorAll('.tpl-grade a.zoom'),function(a){var u='templates/previa/'+m+'-'+a.dataset.n+'.webp';a.href=u;a.querySelector('img').src=u})})})})();</script>"""
+_tpl = (_tpl_css + '<div class="tpl" id="templates"><h2>Templates de <strong>apresentação</strong></h2>'
+    '<p class="secao-sub">Arquivos de PowerPoint para começar qualquer deck da Tivio, com header, rodapé, fontes, grafismos e disclaimer prontos. Um arquivo por área, em versão preta ou branca. Responsável: Renan Chaves.</p>'
+    '<div class="tpl-passos">'
+    '<div class="sub vidro"><b>1. Escolha a área e a versão</b><span>A área define a cor. Preta para decks de fundo e eventos, branca para leitura e impressão.</span></div>'
+    '<div class="sub vidro"><b>2. Anexe no Claude com o material</b><span>Relatório, lâmina ou planilha. O primeiro slide já tem as instruções e as perguntas.</span></div>'
+    '<div class="sub vidro"><b>3. Revise e passe por Compliance</b><span>Confira números e itens [CONFIRMAR]. Material externo passa por Riscos e Compliance.</span></div>'
+    '</div>'
+    '<h3 class="ds-t">Baixar por área</h3><div class="tpl-areas">' + _tpl_areas + '</div>'
+    '<div class="tpl-prompt vidro"><p><b>Prompt para o Claude.</b> Regras de marca, perguntas, compliance e o que evitar no texto. Já vai dentro de cada template, nas notas do primeiro slide.</p>'
+    '<a class="tpl-bt" href="templates/arquivos/prompt-para-o-claude.md" download>Baixar prompt</a></div>'
+    '<p class="secao-sub" style="margin-top:12px">Investment Solutions e Private Solutions ainda não têm cor própria: use o Institucional.</p>'
+    '<h3 class="ds-t">Modelos</h3><p class="secao-sub">34 slides em cada arquivo: 4 de briefing e 30 modelos. Os mesmos nas duas versões e em todas as áreas. Exemplo em Crédito Privado (preto) e Crédito Estruturado (branco).</p>'
+    '<div class="tpl-modo" role="group" aria-label="Versão"><button type="button" data-m="preto" aria-pressed="true">Preto</button><button type="button" data-m="branco" aria-pressed="false">Branco</button></div>'
+    + _tpl_grupos + '</div>' + _tpl_js)
 corpo_polo = (cabecalho("Brand", []) + '<div class="wrap">'
     + trilha(("index.html", "Início"), ("marketing.html", "Central de Marketing"), ("", "Brand"))
-    + '<section class="topo-peer"><div><h1>Brand</h1></div></section>' + _chips + _slogan + _ds + _dir
+    + '<section class="topo-peer"><div><h1>Brand</h1></div></section>' + _chips + _slogan + _ds + _dir + _tpl
     + f'<h2 id="polo">Polo</h2><div class="polos">{_fig}</div>' + _feed_h
     + '<p class="rodape">Tivio Capital · Comunicação &amp; Marketing</p></div>' + _lb)
 (EXTRA / "brand.html").write_text(pagina("Brand", corpo_polo, CSS_P), encoding="utf-8")
