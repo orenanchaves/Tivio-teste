@@ -7,7 +7,7 @@
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 4v11"/><path d="m7 10 5 5 5-5"/><path d="M5 20h14"/></svg>
     Baixar AutomaTivio.zip
   </a>
-  <div class="meta"><span><b>717 MB</b></span><span>Versão de <b>28/10/2026</b></span><span>Windows, Python 3</span><a href="{{URL_REL}}">Ver no GitHub</a></div>
+  <div class="meta"><span><b>802 MB</b></span><span>Versão de <b>05/11/2026 às 16h59</b></span><span>Windows, Python 3</span><a href="{{URL_REL}}">Ver no GitHub</a></div>
 </section>
 <p class="meta-txt">Ao descompactar, sai a pasta <b>AutomaTivio</b>, com a documentação em <b>Documentacao</b>.</p>
 
@@ -23,7 +23,7 @@
 </ol>
 <div class="pontas">
   <div class="ponta"><b>Entra</b><code>entrada/</code> dados_mensais.xlsx, taxas, spreads e comentarios.md. Próxima fase: ler direto do Databricks interno, sem Excel.</div>
-  <div class="ponta"><b>Sai</b><code>saida/_Atual/</code> por área, com nome fixo, para publicar. <code>saida/_Historico/AAAA-MM/</code> o mês guardado, na mesma estrutura.</div>
+  <div class="ponta"><b>Sai</b><code>saida/_Atual/</code> por área, com nome fixo, para publicar. <code>saida/_Historico/AAAA-MM/</code> o mês guardado, na mesma estrutura. <code>saida/_Trabalho/AAAA-MM/</code> a edição completa, com a Central e o portal de dados.</div>
 </div>
 
 <h2 id="ambiente">No ambiente <strong>interno</strong></h2>
@@ -33,6 +33,29 @@
 
 
 {{SEGMENTOS}}
+
+<h2 id="status">Como estão os <strong>decks</strong></h2>
+<p class="secao-sub">O que já foi corrigido e o que ainda falta nos decks e na rodada do mês.</p>
+<div class="tab"><table>
+  <tr><th>Situação</th><th>O quê</th><th>Detalhe</th></tr>
+  <tr><td><span class="pill ok"><i></i>Novo</span></td><td>Carteira aberta do Esplanada</td><td>O relatório ganha a página Carteira aberta entre as páginas 3 e 4: ativo a ativo, com exposição, emissor, setor, taxa, spread, duration e rating; se não couber numa folha, continua na próxima. Entra na próxima rodada</td></tr>
+  <tr><td><span class="pill ok"><i></i>Corrigido</span></td><td>Comentários com <code>####</code> no título</td><td>O comentarios.md aceita qualquer nível de título; o Prev Low Vol e o Top Credit voltaram a sair com o comentário</td></tr>
+  <tr><td><span class="pill ok"><i></i>Corrigido</span></td><td>Alocação do Informativo</td><td>Classe sem posição no mês sai do slide e as outras se reorganizam; antes aparecia só "%"</td></tr>
+  <tr><td><span class="pill ok"><i></i>Corrigido</span></td><td>Distribuição de rating</td><td>Com muitas notas, os rótulos diminuem e usam uma casa decimal para não encavalar</td></tr>
+  <tr><td><span class="pill ok"><i></i>Corrigido</span></td><td>Selo ANBIMA de Distribuição</td><td>Saiu de relatórios, posts, one-pager e de todos os decks; fica só o de Gestão</td></tr>
+  <tr><td><span class="pill ok"><i></i>Novo</span></td><td>Marcadores nos comentários</td><td>python scripts/marcadores_comentarios.py troca os números de rentabilidade por {mes}, {pct_mes}, {ano}; o guia está em Documentacao/MARCADORES_COMENTARIOS.md</td></tr>
+  <tr><td><span class="pill ok"><i></i>Corrigido</span></td><td>Comentário do gestor do Prev Low Vol e do Top Credit</td><td>Os decks saem com o slide do comentário completo</td></tr>
+  <tr><td><span class="pill ok"><i></i>Corrigido</span></td><td>Gráficos do Prev Low Vol e do Top Credit</td><td>Volatilidade, PnL, cascata, alocação e top 5 vêm das abas Low Vol e TOP Credit</td></tr>
+  <tr><td><span class="pill ok"><i></i>Corrigido</span></td><td>Prev Top Credit na DePara e Fiagro Sr e Mz</td><td>Cadastro reconhece o fundo; os dois Fiagro saem com nome amigável</td></tr>
+  <tr><td><span class="pill ok"><i></i>Corrigido</span></td><td>Rodada de setembro</td><td>84 arquivos em cerca de 10 minutos, 0 erros e 18 avisos conhecidos</td></tr>
+  <tr><td><span class="pill espera"><i></i>Próximo passo</span></td><td>Criar uma página do AutomaTivio</td><td>Uma página para rodar a edição e acompanhar o resultado, sem abrir o terminal</td></tr>
+  <tr><td><span class="pill espera"><i></i>Falta</span></td><td>Atualizar todos os PPTs</td><td>Rodada completa e conferência dos 18 decks, dos relatórios em PPTX e dos Informativos; Tivio Conecta e Conexão Bradesco passam a puxar a rentabilidade pelas cotas da CVM</td></tr>
+  <tr><td><span class="pill espera"><i></i>Falta</span></td><td>JSON do Informativo</td><td>Exportar todo mês: sem ele, o AuM por vertical fica como no modelo</td></tr>
+  <tr><td><span class="pill espera"><i></i>Falta</span></td><td>Custódia do FIE I no ALT Light</td><td>Na taxas_prev.xlsx está 1720,46, um valor em reais na coluna de percentual</td></tr>
+  <tr><td><span class="pill espera"><i></i>Falta</span></td><td>Tivio Atuarial e logo do BVP</td><td>O Atuarial não está na DePara; o BVP sai sem logo</td></tr>
+  <tr><td><span class="pill espera"><i></i>Decidir</span></td><td>Rótulo de profissionais e anos de história</td><td>Profissionais de investimento (+40) e +25 ou +27 anos, a confirmar com o site</td></tr>
+  <tr><td><span class="pill espera"><i></i>Conferir</span></td><td>Primeira rodada com dados reais</td><td>HYD60 slide 10, HGD30 slides 8 e 9, Infra Plus CDI slide 8, Institucional 15 e cartões de AuM com decimal</td></tr>
+</table></div>
 
 <h2 id="fallback">Quando algo <strong>falha</strong></h2>
 <p class="secao-sub">O AutomaTivio nunca reescreve um número ou um texto por conta própria. Quando falta alguma coisa, ele segue do jeito seguro e registra o que fez.</p>
@@ -61,8 +84,8 @@
   <div class="area"><h3>Crédito Estruturado</h3><span class="caminho">_Atual/Crédito Estruturado/</span><ul><li>ALT 180, ALT 90 e ALT Light em PDF e PPTX</li><li>Destaques: 6 JPGs e PDF</li><li>Decks Tivio, BTG e XP, com e sem ROA</li></ul></div>
   <div class="area"><h3>Investment Solutions</h3><span class="caminho">_Atual/Investment Solutions/</span><ul><li>Destaques: 11 JPGs e PDF</li></ul></div>
   <div class="area"><h3>Previdência</h3><span class="caminho">_Atual/Previdência/HGD30 e HYD60/</span><ul><li>E-mail em blocos PNG, HTML e .eml</li><li>Informativo em PPTX e PDF</li><li>Página Saiba mais, pronta para o site</li></ul></div>
-  <div class="area"><h3>Multi-área</h3><span class="caminho">_Atual/Multi-área/</span><ul><li>E-mails de crédito para Ágora, BTG e XP</li><li>Decks Crédito Privado e Estruturado, Tivio Conecta</li></ul></div>
-  <div class="area"><h3>Interno</h3><span class="caminho">_Atual/Interno/</span><ul><li>Abrir a Central, Conferência.xlsx e o log da rodada</li><li>Não sai da empresa</li></ul></div>
+  <div class="area"><h3>Multi-área</h3><span class="caminho">_Atual/Multi-área/</span><ul><li>E-mails de crédito para Ágora, BTG e XP</li><li>Decks Crédito Privado e Estruturado, Tivio Conecta</li><li>Destaques: o PDF com os três carrosséis</li></ul></div>
+  <div class="area"><h3>Interno</h3><span class="caminho">_Atual/Interno/</span><ul><li>Abrir a Central, Conferência.xlsx e o log da rodada</li><li>Portal de dados: cada número por fundo e por deck, com filtro por material, para bater com a API</li><li>Não sai da empresa</li></ul></div>
 </div>
 
 <h2 id="comecar">Como <strong>começar</strong></h2>
@@ -70,6 +93,7 @@
   <li>Descompacte o zip e abra um terminal dentro da pasta <b>AutomaTivio</b>.</li>
   <li>Instale o que ele usa (uma vez só):<div class="cmd"><code id="c1">python -m pip install -r requirements.txt</code><button type="button" data-copiar="c1">Copiar</button></div><div class="cmd"><code id="c2">python -m playwright install chromium</code><button type="button" data-copiar="c2">Copiar</button></div></li>
   <li>Coloque as planilhas do mês em <b>entrada</b> e rode a edição (ou dê dois cliques no atualizar.bat):<div class="cmd"><code id="c3">python run.py</code><button type="button" data-copiar="c3">Copiar</button></div></li>
+  <li>Edição de outubro/2026: primeiro confira se todos os fundos estão aprovados na API (sign-off; o resultado fica em <b>saida/status_signoff.html</b>) e depois gere o material:<div class="cmd"><code id="c4">python ./scripts/status_signoff.py --data 2026-10-30</code><button type="button" data-copiar="c4">Copiar</button></div><div class="cmd"><code id="c5">python run.py --data-base 2026-10-30</code><button type="button" data-copiar="c5">Copiar</button></div></li>
   <li>Abra a <b>Conferência.xlsx</b> em <b>saida/_Atual/Interno</b> e olhe as abas Divergências e Dados faltantes antes de publicar.</li>
 </ol>
 
