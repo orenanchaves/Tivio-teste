@@ -16,10 +16,18 @@ _pesos = "".join(f'<div class="peso vidro"><b style="font-weight:{w}">Casa de es
 RAIOS = [("8", "sm"), ("12", "md"), ("20", "lg"), ("28", "xl"), ("999", "full")]
 _raios = "".join(f'<div class="raio"><i style="border-radius:{r}px"></i><span>{n}, {r}px</span></div>' for r, n in RAIOS)
 _t = (RAIZ / "AutomaTivio/assets/marca/tivio_t.svg").read_text(encoding="utf-8")
+T3D_CORES = [("verde", "Verde", "#C1F4D4"), ("verde-escuro", "Verde escuro", "#92D3AB"), ("azul", "Azul", "#759DB4"),
+             ("azul-imobiliario", "Azul imobiliário", "#C8D7E0"), ("cinza-azulado", "Cinza azulado", "#ABC6CD"), ("azul-escuro", "Azul escuro", "#3C4A60")]
+_t3d = ('<h3 class="ds-t" id="t-3d">T em 3D</h3><p class="secao-sub">O símbolo em 3D nas cores da paleta. GIF girando em loop (fundo escuro ou branco), vetor em SVG para editar e PNG transparente em 1600 px.</p><div class="t3d-grade">'
+    + "".join(f'<figure class="t3d-item vidro"><img src="t3d/tivio-T-3d-{k}-fundo-escuro.gif" alt="T da Tivio em 3D, {n.lower()}, girando" width="480" height="480" loading="lazy">'
+              f'<figcaption><b>{n}</b><span>{h}</span></figcaption><div class="t3d-baixar">'
+              f'<a href="t3d/tivio-T-3d-{k}-fundo-escuro.gif" download>GIF escuro</a><a href="t3d/tivio-T-3d-{k}-fundo-branco.gif" download>GIF branco</a>'
+              f'<a href="t3d/tivio-T-3d-{k}.svg" download>SVG</a><a href="t3d/tivio-T-3d-{k}.png" download>PNG</a></div></figure>' for k, n, h in T3D_CORES)
+    + '</div>')
 _slogan = '<h2 id="slogan">Slogan</h2><section class="destaque aprende vidro"><p class="slogan"><span>Sugestão de slogan</span>Tivio Capital, <br>somos a alternativa</p></section>'
 _ds = ('<h2 id="design-system">Design <strong>system</strong></h2>'
     f'<h3 class="ds-t" id="logo">Logo</h3><div class="ds-logos"><div class="ds-logo escuro">{LOGO}</div><div class="ds-logo claro">{LOGO}</div><div class="ds-logo escuro simbolo">{_t}</div><div class="ds-logo claro simbolo">{_t}</div></div>'
-    f'<h3 class="ds-t" id="cores">Cores</h3><div class="ds-cores">{_cores}</div>'
+    + _t3d + f'<h3 class="ds-t" id="cores">Cores</h3><div class="ds-cores">{_cores}</div>'
     f'<h3 class="ds-t" id="tipografia">Tipografia</h3><div class="ds-pesos">{_pesos}</div>'
     f'<h3 class="ds-t" id="forma">Forma</h3><div class="ds-raios">{_raios}</div>')
 import json as _json, datetime as _dt
@@ -29,7 +37,7 @@ def _data(d):
 _feed = _json.loads((pathlib.Path("feed") / "feed.json").read_text(encoding="utf-8"))
 _grade = "".join(f'<a class="feed-item vidro" href="{x["h"]}" target="_blank" rel="noopener"><img src="feed/{x["f"]}" alt="{"Reel" if x["t"] == "Video" else "Post"} da Tivio Capital de {_data(x["d"])}" loading="lazy"><span>{"Reel" if x["t"] == "Video" else "Post"} · {_data(x["d"])}</span></a>' for x in _feed)
 _feed_h = f'<h2 id="feed">Feed do <strong>Instagram</strong></h2><p class="secao-sub">12 publicações mais recentes de @tiviocapital, copiadas em 30/10/2026. A primeira é a fixada no perfil.</p><div class="feed">{_grade}</div>'
-_chips = '<nav class="ds-nav" aria-label="Seções de Brand">' + "".join(f'<a href="#{i}">{n}</a>' for i, n in [("slogan", "Slogan"), ("logo", "Logo"), ("cores", "Cores"), ("tipografia", "Tipografia"), ("forma", "Forma"), ("diretrizes", "Diretrizes"), ("apresentacoes", "Apresentações"), ("polo", "Polo"), ("feed", "Feed do Instagram")]) + "</nav>"
+_chips = '<nav class="ds-nav" aria-label="Seções de Brand">' + "".join(f'<a href="#{i}">{n}</a>' for i, n in [("slogan", "Slogan"), ("logo", "Logo"), ("t-3d", "T em 3D"), ("cores", "Cores"), ("tipografia", "Tipografia"), ("forma", "Forma"), ("diretrizes", "Diretrizes"), ("apresentacoes", "Apresentações"), ("polo", "Polo"), ("feed", "Feed do Instagram")]) + "</nav>"
 _uso = lambda ok, cl, txt, st="": f'<div class="uso"><div class="uso-a {cl}"{st}>{LOGO}</div><p class="{"ok" if ok else "nao"}">{"Certo" if ok else "Evitar"}</p><span>{txt}</span></div>'
 _regras = [("Cor", ["Preto, branco e fundo escuro são a base", "Verde #C1F4D4 destaca no fundo escuro", "Verde #337F51 destaca no fundo claro", "Azul escuro #3C4A60 nos botões do tema claro", "Azul imobiliário e Agro só nesses segmentos"]),
            ("Tipografia", ["Versos em tudo", "Títulos leves, com a palavra-chave em negrito", "Corpo em Light, rótulos em SemiBold", "Rótulos curtos em maiúsculas e espaçados"]),
