@@ -372,6 +372,11 @@ class RenderizadorRelatorio:
         return ''
 
     # ------------------------------------------------------------- composição
+    # linhas da Carteira aberta por folha (acima disso, continua na próxima)
+    ALTURA_CARTEIRA = 1080    # px da folha para as linhas (já sem o painel de vidro)
+    LINHA_MAX, LINHA_MIN = 24, 15   # altura da linha: folgada até apertada
+    CARACTERES_EMISSOR = 26   # acima disso o emissor quebra em duas linhas
+
     def secoes_do_fundo(self, key):
         """Composição do fundo: a da vertical, ajustada pelo que for do fundo.
 
@@ -387,7 +392,8 @@ class RenderizadorRelatorio:
 
         ajuste = (self.cfg.get('por_fundo') or {}).get(key) or {}
         desligar = set(ajuste.get('desligar', [])) | set(por_vert.get('desligar', []))
-        return [s for s in secoes if s['id'] not in desligar]
+        # `acrescentar`: seções só deste fundo (a Carteira aberta do Esplanada)
+        return [s for s in secoes if s['id'] not in desligar] + list(ajuste.get('acrescentar') or [])
 
     def paginas(self, key, ctx):
         """Agrupa as seções em páginas e resolve o par de duas colunas."""
@@ -406,14 +412,44 @@ class RenderizadorRelatorio:
             vazias.add('historico')
         if not self.mercado(ctx):
             vazias.add('mercado_credito')
+        if not ctx.carteira_aberta:
+            vazias.add('carteira_aberta')
         secoes = [s for s in secoes if s['id'] not in vazias]
         if vazias:
             self.log.aviso(key, 'seções sem dado nesta edição, omitidas: '
                                 + ', '.join(sorted(vazias)))
 
+        # `pagina` aceita meio número (3.5 = entre a 3 e a 4), para uma seção
+        # de um fundo só entrar no meio sem renumerar a composição da vertical
         por_pag = {}
         for s in secoes:
-            por_pag.setdefault(int(s.get('pagina', 1)), []).append(dict(s))
+            por_pag.setdefault(float(s.get('pagina', 1)), []).append(dict(s))
+        # a Carteira aberta quebra em quantas folhas precisar
+        # (emissor de nome longo, o nome completo que vem da API, ocupa duas
+        # linhas e conta dobrado)
+        # A folha comporta ALTURA_CARTEIRA px de linhas; a linha encolhe até
+        # LINHA_MIN para tudo caber numa folha só, e só passa disso quebra.
+        pesos = [2 if len(p['emissor']) > self.CARACTERES_EMISSOR else 1
+                 for p in ctx.carteira_aberta]
+        por_folha = int(self.ALTURA_CARTEIRA // self.LINHA_MIN)
+        cortes = []
+        ini, uso = 0, 0
+        for j, peso in enumerate(pesos):
+            if uso + peso > por_folha:
+                cortes.append((ini, j))
+                ini, uso = j, 0
+            uso += peso
+        cortes.append((ini, len(pesos)))
+        for num in [k for k, v in por_pag.items() if any(s['id'] == 'carteira_aberta' for s in v)]:
+            s = next(x for x in por_pag[num] if x['id'] == 'carteira_aberta')
+            for i, (a, b) in enumerate(cortes):
+                unid = max(sum(pesos[a:b]), 1)
+                linha = min(self.LINHA_MAX, self.ALTURA_CARTEIRA / unid - 1)   # 1px entre linhas
+                parte = dict(s, inicio=a, fim=b, continua=i > 0, linha=round(linha, 2))
+                if i == 0:
+                    por_pag[num] = [parte if x is s else x for x in por_pag[num]]
+                else:
+                    por_pag[num + i / 100] = [parte]
 
         paginas = []
         for numero in sorted(por_pag):

@@ -120,6 +120,24 @@ def _hghy(rating, classe):
     return [uma(n, t) for n, t in zip(rating, classe)]
 
 
+# Campos da posição que a "Carteira aberta" usa e que a carteira agregada não
+# precisa. O nome do campo na API pode variar; o primeiro que vier preenchido
+# vale. `configs/de_para_api.yml` pode trocar a lista em `campos_posicao`.
+CAMPOS_POSICAO = {
+    'spread': ['spread_ntnb', 'spread_over_benchmark', 'spread_benchmark',
+               'credit_spread', 'spread_vs_benchmark', 'z_spread'],
+    'emissor_nome': ['issuer_name', 'issuer_full_name', 'issuer_long_name',
+                     'issuer_description'],
+}
+
+
+def _campo(p, chave, mapas):
+    for nome in (mapas.get('campos_posicao') or {}).get(chave) or CAMPOS_POSICAO[chave]:
+        if nome in p.columns and p[nome].notna().any():
+            return p[nome]
+    return pd.Series([None] * len(p), index=p.index)
+
+
 def _carteira(api, cod, nome, mesa, db, signoff, mapas, nao_mapeados):
     pos = api.get(f'/v1/carteira/fundos/{cod}/posicoes', data=db, visao='expandida', signoff=signoff)
     p = pd.DataFrame(pos.get('positions') or [])
@@ -160,6 +178,9 @@ def _carteira(api, cod, nome, mesa, db, signoff, mapas, nao_mapeados):
         'Setor Aj.': [traduz(s, setor_hg if hg else setor_aj, 'setor_hg' if hg else 'setor_aj')
                       for s in sector],
         'Tipo aj.': [traduz(c, tipo_aj, 'tipo_aj') for c in classe],
+        # só para a Carteira aberta (em % a.a., como a Taxa)
+        'Spread': pd.to_numeric(_campo(p, 'spread', mapas), errors='coerce') / 100,
+        'Emissor Nome': _campo(p, 'emissor_nome', mapas),
     })
 
 

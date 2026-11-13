@@ -212,7 +212,29 @@ class Calc:
         if 'Book' in c.columns:
             rating_book = c.groupby(['Rating Externo', 'Book', 'Tipo aj.'],
                                     dropna=False)['Exposição'].sum() / pl
+        # Carteira aberta: ativo a ativo, maior exposição primeiro
+        posicoes = []
+        for (ativo,), g in c.groupby(['Nome'], sort=False):
+            e = float(g['Exposição'].sum())
+            if not e:
+                continue
+            w = g['Exposição'] / e
+            sp = g['Spread'] if 'Spread' in g.columns else None
+            sp = float((sp * w).sum()) if sp is not None and sp.notna().any() else None
+            nm = g['Emissor Nome'].dropna() if 'Emissor Nome' in g.columns else pd.Series(dtype=str)
+            nm = nm[nm.astype(str).str.strip() != '']
+            posicoes.append({
+                'ativo': str(ativo), 'exposicao': e / pl,
+                'emissor': str(nm.iloc[0]) if len(nm) else str(g['Emissor'].iloc[0]),
+                'setor': str(g['Setor'].iloc[0]),
+                'taxa': float((g['Taxa'] * w).sum()), 'spread': sp,
+                'duration': float((g['duration'] * w).sum()) / 252,
+                'rating': g['Rating Externo'].iloc[0], 'tipo': str(g['Tipo'].iloc[0]),
+                'book': str(g['Book'].iloc[0]) if 'Book' in g.columns else '',
+            })
+        posicoes.sort(key=lambda x: -x['exposicao'])
         return {
+            'posicoes': posicoes,
             'emissores': emissores, 'setores': setores, 'tipos': tipos, 'rating': rating,
             'estrategia': estrategia, 'book_tipo': book_tipo,
             'hghy_tipo': hghy_tipo, 'hghy_info': hghy_info, 'tipo_aj': tipo_aj, 'rating_book': rating_book,

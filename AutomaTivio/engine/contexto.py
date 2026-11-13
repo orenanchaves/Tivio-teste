@@ -268,6 +268,31 @@ class ContextoFundo:
                 for n, v in em.items()]
 
     @property
+    def carteira_aberta(self):
+        """Carteira aberta, ativo a ativo: o que a folha "CARTEIRA ABERTA" mostra.
+
+        Spread e nome completo do emissor vêm da API quando ela manda o campo
+        (loaders/api_tldr.py::CAMPOS_POSICAO); sem o campo, o spread sai "-" e
+        o emissor fica com o nome curto da carteira.
+        """
+        if not self.cart:
+            return []
+        tpf = ('NTN-B', 'NTN-F', 'LTN', 'LFT', 'NTN-C')
+
+        def nota(p):
+            r = str(p['rating'] or '').strip()
+            if p['tipo'].upper() in tpf or p['book'].upper() == 'TPF' or p['ativo'].upper().startswith(tpf):
+                return 'Título Público'
+            return '-' if r.upper() in ('', 'NA', 'NAN', 'N/A') else r
+
+        return [{'ativo': p['ativo'], 'exposicao': fmt.pct(p['exposicao'], 2),
+                 'emissor': p['emissor'], 'setor': p['setor'],
+                 'taxa': fmt.pct(p['taxa'], 2),
+                 'spread': '-' if p['spread'] is None else fmt.pct(p['spread'], 2),
+                 'duration': fmt.num(p['duration'], 2), 'rating': nota(p)}
+                for p in self.cart.get('posicoes') or []]
+
+    @property
     def rating(self):
         if not self.cart:
             return []

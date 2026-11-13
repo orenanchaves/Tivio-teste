@@ -1,0 +1,22 @@
+{# Carteira aberta, ativo a ativo (por enquanto só o Esplanada:
+   configs/relatorio.yml, por_fundo). Quebra em folhas de
+   ALTURA_CARTEIRA px (renderers/relatorio.py): a linha encolhe até caber
+   numa folha; só se não couber, continua na próxima. #}
+<div class="blk carteira-aberta">
+  <h3 class="sh sh-fino">{{ titulo }}{% if s.continua %} <span class="ca-cont">(continuação)</span>{% endif %}</h3>
+  <div class="ca-vidro">
+  <table class="ca-tab" style="--lh:{{ s.linha }}px">
+    <thead><tr>
+      <th>Ativo</th><th class="n">Exposição (%)</th><th>Emissor</th><th>Setor</th>
+      <th class="n">Taxa</th><th class="n">Spread</th><th class="n">Duration<br>(Anos)</th><th>Rating</th>
+    </tr></thead>
+    <tbody>
+    {% for p in c.carteira_aberta[s.inicio:s.fim] %}
+      <tr><td class="ca-at">{{ p.ativo }}</td><td class="n ca-ex">{{ p.exposicao }}</td><td class="ca-em">{{ p.emissor }}</td>
+        <td>{{ p.setor }}</td><td class="n">{{ p.taxa }}</td><td class="n">{{ p.spread }}</td>
+        <td class="n">{{ p.duration }}</td><td class="ca-rt">{{ p.rating }}</td></tr>
+    {% endfor %}
+    </tbody>
+  </table>
+  </div>
+</div>

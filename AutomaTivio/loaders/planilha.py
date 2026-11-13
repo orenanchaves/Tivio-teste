@@ -96,6 +96,9 @@ def ler_dados_mensais(path, log=print):
     for col in ('Taxa', 'duration', 'Exposição'):
         c[col] = pd.to_numeric(c[col], errors='coerce').fillna(0.0)
     c['FIDC'] = c['FIDC'].astype(str).str.upper().eq('TRUE')
+    # Carteira aberta: Spread e Emissor Nome são opcionais na Base Carteira
+    if 'Spread' in c.columns:
+        c['Spread'] = pd.to_numeric(c['Spread'], errors='coerce')
 
     fer = pd.to_datetime(raw['feriados'].iloc[:, 0], errors='coerce').dropna()
 

@@ -386,3 +386,44 @@ body.tv-exportando .rcard *{font-variant-numeric:normal!important}
    à toa — no celular são 36px de 390, quase 10%. */
 @media(max-width:760px){.folhas{gap:14px;padding:14px 10px}}
 @media(max-width:460px){.folhas{padding:10px 6px}}
+
+/* Carteira aberta (Esplanada): no mesmo painel de vidro da tabela de spreads
+   (.mkt-vidro, Mercado de Crédito), sem backdrop-filter pelo mesmo motivo (o
+   PDF perderia o texto selecionável). Uma linha por ativo; só o emissor de
+   nome longo quebra em duas, e a conta de linhas por folha
+   (renderers/relatorio.py::ALTURA_CARTEIRA) já desconta o painel. */
+.carteira-aberta{flex:1 1 auto;display:flex;flex-direction:column;min-height:0}
+.carteira-aberta .ca-cont{font-weight:400;text-transform:none;letter-spacing:0;color:#6B7780}
+/* no tom da faixa de baixo da folha (--ac-faixa, #5B8299 no Crédito
+   Privado), um pouco mais fundo para o texto branco ter contraste */
+.ca-vidro{position:relative;margin:4px 0 0;padding:12px 12px 12px;border-radius:24px;overflow:hidden;
+  background:
+    radial-gradient(520px 300px at 8% 0%,rgba(169,191,204,.40),transparent 70%),
+    radial-gradient(560px 360px at 100% 22%,rgba(91,130,153,.55),transparent 70%),
+    radial-gradient(480px 320px at 22% 100%,rgba(140,170,188,.30),transparent 70%),
+    linear-gradient(160deg,#557B92 0%,#4A6E85 52%,#41647A 100%);
+  box-shadow:0 18px 44px rgba(16,28,40,.22),inset 0 1px 0 rgba(255,255,255,.22)}
+.ca-tab{--lh:24px;width:100%;border-collapse:separate;border-spacing:0 1px;table-layout:fixed;
+  font-size:clamp(10.5px,calc(var(--lh) * .52),12.5px);line-height:1.15;font-variant-numeric:tabular-nums}
+.ca-tab th{height:34px;padding:2px 7px;background:rgba(20,40,56,.28);color:#fff;font-weight:600;font-size:11.5px;
+  text-align:left;vertical-align:middle;line-height:1.1;
+  border-top:1px solid rgba(255,255,255,.34);border-bottom:1px solid rgba(255,255,255,.10)}
+.ca-tab th:first-child{border-radius:12px 0 0 12px;border-left:1px solid rgba(255,255,255,.26);padding-left:12px}
+.ca-tab th:last-child{border-radius:0 12px 12px 0;border-right:1px solid rgba(255,255,255,.18)}
+.ca-tab thead tr:after{content:none}
+.ca-tab tbody tr:first-child td{border-top:0}
+.ca-tab td{height:var(--lh);box-sizing:border-box;padding:0 7px;vertical-align:middle;
+  background:rgba(255,255,255,.06);color:#fff;border-top:1px solid rgba(255,255,255,.10);
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.ca-tab tbody tr:nth-child(even) td{background:rgba(255,255,255,.13)}
+.ca-tab td:first-child{border-radius:8px 0 0 8px;padding-left:12px;color:#fff;font-weight:500}
+.ca-tab td:last-child{border-radius:0 8px 8px 0}
+.ca-tab td.ca-ex{color:#fff;font-weight:700}
+.ca-tab td.ca-rt{color:#E3EEF4}
+.ca-tab .n{text-align:left}   /* tudo à esquerda, inclusive os números */
+.ca-tab td.ca-em{white-space:normal;overflow:visible}
+.ca-tab thead th{position:relative}
+.ca-tab th:nth-child(1){width:16%}.ca-tab th:nth-child(2){width:10%}.ca-tab th:nth-child(3){width:21%}
+.ca-tab th:nth-child(4){width:18%}.ca-tab th:nth-child(5),.ca-tab th:nth-child(6){width:7%}
+.ca-tab th:nth-child(7){width:8%}.ca-tab th:nth-child(8){width:13%}
+.ca-tab tbody:before{content:"";display:block;height:3px}

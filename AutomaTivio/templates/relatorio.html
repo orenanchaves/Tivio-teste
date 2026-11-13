@@ -70,6 +70,8 @@
           <div class="gcol">{{ secao('setores') }}</div>
         </div>
         {% elif grade_hg and sid in ('setores', 'rating') %}
+        {% elif sid == 'carteira_aberta' %}
+          {% set titulo = titulos[sid] %}{% include 'componentes/carteira_aberta.html' %}
         {% else %}
           {% if s.primeiro_do_par %}<div class="twocol">{% endif %}
           {{ secao(sid) }}

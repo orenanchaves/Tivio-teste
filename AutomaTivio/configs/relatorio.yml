@@ -59,7 +59,16 @@ por_vertical:
       - {id: disclaimer,      pagina: 3, titulo: MATERIAL TÉCNICO}
 
 # ajustes de um fundo só (vencem sobre a vertical)
-por_fundo: {}
+#   desligar:    ids que saem
+#   acrescentar: seções só deste fundo; `pagina` aceita meio número (3.5 entra
+#                entre a 3 e a 4, antes das Características e do disclaimer)
+por_fundo:
+  esplanada:
+    acrescentar:
+      # ativo a ativo, da Base Carteira ou da API (posições). Spread e nome
+      # completo do emissor vêm da API quando ela manda o campo; na planilha,
+      # colunas opcionais "Spread" e "Emissor Nome" na Base Carteira.
+      - {id: carteira_aberta, pagina: 3.5, titulo: CARTEIRA ABERTA}
 
 # ----------------------------------------------------------------------------
 # Não implementado, por falta de dado na base:
