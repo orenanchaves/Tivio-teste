@@ -1622,3 +1622,5 @@ h1,h2,h3{text-wrap:balance}p,li{text-wrap:pretty}
 #apres .sl-sec,#apres .lg-sec{display:none!important}
 
 .fu+.meta-txt{margin-top:18px}
+
+.as-esp{margin:18px 0 0}.as-esp .ap-b{display:inline-flex;align-items:center;gap:8px;text-decoration:none}
